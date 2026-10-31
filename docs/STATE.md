@@ -1,6 +1,6 @@
 ﻿# Контекст для продолжения
 
-Последняя запись: S011, 2026-11-01. В работе **T014**, миграции. T015 завершена: каноническая схема и 48 backend tests. T016 завершена: expiry/reset/delete-all/cleanup, 41 backend и 8 E2E проходят. Пользователь поручил продолжать до MVP с отдельными Conventional Commits. T067 в review: конфигурация проверена, Docker API недоступен по правам.
+Последняя запись: S012, 2026-11-01. В работе **T012**, начальный каталог. T014 review: 54 backend passed / 1 PostgreSQL skipped. Docker применяет Alembic перед API. T015 завершена: каноническая схема и 48 backend tests. T016 завершена: expiry/reset/delete-all/cleanup, 41 backend и 8 E2E проходят. Пользователь поручил продолжать до MVP с отдельными Conventional Commits. T067 в review: конфигурация проверена, Docker API недоступен по правам.
 
 ## Проверенное состояние
 

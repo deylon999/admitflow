@@ -477,7 +477,7 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T009"
       ],
@@ -528,7 +528,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "L",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T004",
         "T015"
@@ -546,7 +546,12 @@
         "Схема PostgreSQL создаётся миграциями",
         "Ошибка миграции не скрывается автоматическим create_all в production"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S012: SQLite migration suite и PG offline SQL проходят, реальный PG skipped; CI подготовлен."
+        }
+      ],
       "blockedReason": null
     },
     {

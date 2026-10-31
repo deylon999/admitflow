@@ -24,7 +24,7 @@ services:
       DATABASE_URL: postgresql+psycopg://admitflow:admitflow@db:5432/admitflow
       ENVIRONMENT: development
       SECURE_COOKIE: "false"
-      AUTO_CREATE_SCHEMA: "true"
+      AUTO_CREATE_SCHEMA: "false"
     depends_on:
       db:
         condition: service_healthy
