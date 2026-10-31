@@ -766,7 +766,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T012",
         "T018"
@@ -783,7 +783,12 @@
         "Неподключённый вуз не выглядит рабочей интеграцией",
         "Можно добавить ручное направление без ложного promise автоматического сбора"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S015: выбор вузов и manual fallback проходят E2E; группы/фильтры пока не готовы."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -927,7 +932,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T004",
         "T009",

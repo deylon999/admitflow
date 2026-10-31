@@ -87,3 +87,10 @@ button:disabled { cursor: wait; opacity: .55; }
   .empty-state p { font-size: 14px; line-height: 22px; }
   .footer-inner { flex-direction: column; align-items: start; gap: 16px; }
 }
+.catalog-results { padding: 12px; border: 1px solid var(--line); border-radius: 10px; }
+.catalog-results ul { list-style: none; padding: 0; margin: 0; }
+.catalog-results li + li { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.catalog-option { display: flex; flex-direction: column; gap: 6px; width: 100%; padding: 8px 0; border: 0; background: transparent; text-align: left; }
+.catalog-option span { font-weight: 600; }
+.catalog-option small { color: var(--muted); line-height: 1.5; }
+.catalog-results a { color: var(--primary); font-size: 12px; }

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
+import { UniversityPicker } from '../components/UniversityPicker';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
@@ -38,7 +39,7 @@ function DirectionForm({ watch, onDone, onCancel }: { watch?: Watch; onDone: () 
   return <form className="direction-form surface" onSubmit={event => { event.preventDefault(); setSubmitted(true); if (!error && university.trim() && title.trim()) save.mutate(); }}>
     <div className="tracker-form-heading"><h2>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
     {watch ? <p className="small-copy">{watch.university} · {watch.title}</p> : <>
-      <div className="field"><label htmlFor="university">Вуз</label><input id="university" value={university} maxLength={160} required autoComplete="organization" onChange={event => setUniversity(event.target.value)} placeholder="Название вуза" /></div>
+      <UniversityPicker value={university} onChange={setUniversity} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
       <div className="field"><label htmlFor="direction-title">Направление и конкурсная группа</label><input id="direction-title" value={title} maxLength={200} required onChange={event => setTitle(event.target.value)} placeholder="Например: информатика, общий конкурс" /></div>
       <div className="field"><label htmlFor="source-url">Ссылка на конкурсный список</label><input id="source-url" type="url" pattern="https?://.+" value={sourceUrl} maxLength={2048} required onChange={event => setSourceUrl(event.target.value)} placeholder="https://…" /></div>
     </>}

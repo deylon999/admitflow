@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T022",
-  "nextTask": "T022",
+  "currentTask": "T028",
+  "nextTask": "T028",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S014",
-  "resumeAction": "T022: поиск вузов в форме, manual coverage; фильтры групп после аттестации источников.",
+  "lastSession": "S015",
+  "resumeAction": "T028: безопасный fetcher с allowlist, pinned DNS/TLS, лимитами и тестами.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",
