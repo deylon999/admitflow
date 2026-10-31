@@ -24,6 +24,20 @@ class SessionRead(CamelModel):
     expires_at: datetime
 
 
+class UniversityRead(CamelModel):
+    id: str
+    name: str
+    official_url: str
+    provenance_url: str
+    verified_at: datetime
+    coverage: Literal['manual']
+
+
+class CatalogRead(CamelModel):
+    items: list[UniversityRead]
+    total: int
+
+
 class SnapshotRead(CamelModel):
     id: str
     captured_at: datetime

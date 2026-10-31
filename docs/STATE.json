@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T012",
-  "nextTask": "T012",
+  "currentTask": "T018",
+  "nextTask": "T018",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S012",
-  "resumeAction": "T012: каталог двух исследованных вузов с provenance и manual coverage. T014 ждёт реального PostgreSQL-прогона.",
+  "lastSession": "S013",
+  "resumeAction": "T018: runtime validation DTO и общие контрактные fixtures; затем каталог в интерфейсе.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

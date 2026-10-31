@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 from contextlib import suppress
 from datetime import datetime, timedelta, timezone
 
-from fastapi import Depends, FastAPI, HTTPException, Request, Response
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from sqlalchemy import delete, func, select, text
 from sqlalchemy.orm import Session
 
@@ -15,7 +15,8 @@ from .config import Settings
 from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
-from . import admissions  # Register the shared schema before metadata creation.
+from .catalog import search_universities, seed_catalog
+from .schemas import CatalogRead
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -42,6 +43,7 @@ def create_app(settings: Settings | None = None):
         if config.auto_create_schema:
             Base.metadata.create_all(engine)
             cleanup_expired_sessions(engine)
+        seed_catalog(engine)
         async def cleanup_loop():
             while True:
                 await asyncio.sleep(3600)
@@ -115,6 +117,10 @@ def create_app(settings: Settings | None = None):
     @app.post('/api/v1/calculate', response_model=CalculationResult)
     def calculate_endpoint(values: CalculationInput):
         return calculate(values)
+
+    @app.get('/api/v1/universities', response_model=CatalogRead)
+    def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
+        return search_universities(db, q)
 
     @app.post('/api/v1/session', status_code=204)
     def start_session(request: Request, response: Response, db: Session = Depends(database)):

@@ -477,12 +477,12 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T009"
       ],
       "deliverables": [
-        "backend/app/catalog/",
+        "backend/app/catalog.py",
         "docs/catalog-coverage.md"
       ],
       "steps": [
@@ -493,7 +493,12 @@
         "Каждая опубликованная запись имеет источник",
         "Полнота измеряется относительно именованного набора, а не объявляется абсолютной"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S013: provenance/manual coverage и поиск проверены; 58 tests passed, 1 PG skipped."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -648,7 +653,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T005",
         "T015"
