@@ -140,7 +140,7 @@ def render(data):
             if task.get('blockedReason'):
                 lines += ['', '**Причина блокировки/переноса:** ' + task['blockedReason']]
             lines += ['']
-    return '\n'.join(lines) + '\n'
+    return '\n'.join(lines).rstrip() + '\n'
 
 
 def check_links():
