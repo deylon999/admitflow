@@ -12,6 +12,13 @@ class WatchCreate(CamelModel):
     source_url: HttpUrl = Field(max_length=2048)
     values: CalculationInput
 
+    @field_validator('source_url')
+    @classmethod
+    def no_credentials_in_source(cls, value):
+        if value.username or value.password:
+            raise ValueError('Ссылка не должна содержать логин или пароль.')
+        return value
+
     @field_validator('university', 'title')
     @classmethod
     def clean_title(cls, value):

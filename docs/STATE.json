@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T018",
-  "nextTask": "T018",
+  "currentTask": "T022",
+  "nextTask": "T022",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S013",
-  "resumeAction": "T018: runtime validation DTO и общие контрактные fixtures; затем каталог в интерфейсе.",
+  "lastSession": "S014",
+  "resumeAction": "T022: поиск вузов в форме, manual coverage; фильтры групп после аттестации источников.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

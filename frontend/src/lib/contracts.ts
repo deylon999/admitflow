@@ -1,0 +1,91 @@
+import { calculatePlace } from './calculator';
+import type { CalculationResult, CalculationValues } from './calculator';
+
+export type Snapshot = { id: string; capturedAt: string; sourceKind: 'manual'; modelVersion: 'manual-v1'; values: CalculationValues; calculation: CalculationResult };
+export type Watch = { id: string; university: string; title: string; sourceUrl: string; createdAt: string; latest: Snapshot };
+export type WatchDetail = Watch & { history: Snapshot[] };
+export type WatchCreate = { university: string; title: string; sourceUrl: string; values: CalculationValues };
+export type SessionInfo = { expiresAt: string };
+export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
+export type Catalog = { items: University[]; total: number };
+
+export class InvalidResponseError extends Error {
+  constructor() { super('Сервер вернул некорректные данные. Расчёт не показан — попробуйте обновить страницу.'); }
+}
+
+function object(value: unknown): Record<string, unknown> {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new InvalidResponseError();
+  return value as Record<string, unknown>;
+}
+function text(value: unknown, max = 2048): string {
+  if (typeof value !== 'string' || !value.trim() || value.length > max) throw new InvalidResponseError();
+  return value;
+}
+function timestamp(value: unknown): string {
+  const result = text(value, 50);
+  if (!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(result) || !Number.isFinite(Date.parse(result))) throw new InvalidResponseError();
+  return result;
+}
+function url(value: unknown): string {
+  const result = text(value);
+  try {
+    const parsed = new URL(result);
+    if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password) throw new Error();
+  } catch { throw new InvalidResponseError(); }
+  return result;
+}
+function array<T>(value: unknown, parse: (item: unknown) => T, max: number): T[] {
+  if (!Array.isArray(value) || value.length > max) throw new InvalidResponseError();
+  return value.map(parse);
+}
+
+export function parseSnapshot(value: unknown): Snapshot {
+  const row = object(value);
+  if (row.sourceKind !== 'manual' || row.modelVersion !== 'manual-v1') throw new InvalidResponseError();
+  const raw = object(row.values);
+  const values = {} as CalculationValues;
+  for (const key of ['rank', 'seats', 'excluded', 'noConsent'] as const) {
+    if (typeof raw[key] !== 'number' || !Number.isSafeInteger(raw[key])) throw new InvalidResponseError();
+    values[key] = raw[key];
+  }
+  const calculation = calculatePlace(values);
+  if ('error' in calculation) throw new InvalidResponseError();
+  const supplied = object(row.calculation);
+  for (const key of ['place', 'worstPlace', 'seats', 'state'] as const) {
+    if (supplied[key] !== calculation[key]) throw new InvalidResponseError();
+  }
+  text(supplied.status, 500);
+  return { id: text(row.id, 100), capturedAt: timestamp(row.capturedAt), sourceKind: 'manual', modelVersion: 'manual-v1', values, calculation };
+}
+
+export function parseWatch(value: unknown): Watch {
+  const row = object(value);
+  return { id: text(row.id, 100), university: text(row.university, 160), title: text(row.title, 200), sourceUrl: url(row.sourceUrl), createdAt: timestamp(row.createdAt), latest: parseSnapshot(row.latest) };
+}
+export function parseWatches(value: unknown): Watch[] {
+  const rows = array(value, parseWatch, 20);
+  if (new Set(rows.map(row => row.id)).size !== rows.length) throw new InvalidResponseError();
+  return rows;
+}
+export function parseDetail(value: unknown): WatchDetail {
+  const row = object(value);
+  const watch = parseWatch(row);
+  const history = array(row.history, parseSnapshot, 100);
+  if (!history.length || JSON.stringify(history[0]) !== JSON.stringify(watch.latest)
+    || new Set(history.map(item => item.id)).size !== history.length) throw new InvalidResponseError();
+  return { ...watch, history };
+}
+export function parseSession(value: unknown): SessionInfo {
+  return { expiresAt: timestamp(object(value).expiresAt) };
+}
+export function parseCatalog(value: unknown): Catalog {
+  const row = object(value);
+  const items = array(row.items, value => {
+    const item = object(value);
+    if (item.coverage !== 'manual') throw new InvalidResponseError();
+    return { id: text(item.id, 80), name: text(item.name, 300), officialUrl: url(item.officialUrl), provenanceUrl: url(item.provenanceUrl), verifiedAt: timestamp(item.verifiedAt), coverage: 'manual' as const };
+  }, 50);
+  if (typeof row.total !== 'number' || !Number.isSafeInteger(row.total) || row.total < items.length
+    || new Set(items.map(item => item.id)).size !== items.length) throw new InvalidResponseError();
+  return { items, total: row.total };
+}

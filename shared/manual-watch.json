@@ -1,0 +1,26 @@
+{
+  "id": "watch-1",
+  "university": "Тестовый вуз",
+  "title": "Тестовое направление",
+  "sourceUrl": "https://example.org/list",
+  "createdAt": "2026-11-01T00:00:00Z",
+  "latest": {
+    "id": "snapshot-1",
+    "capturedAt": "2026-11-01T00:00:00Z",
+    "sourceKind": "manual",
+    "modelVersion": "manual-v1",
+    "values": {
+      "rank": 120,
+      "seats": 90,
+      "excluded": 30,
+      "noConsent": 16
+    },
+    "calculation": {
+      "place": 74,
+      "worstPlace": 90,
+      "seats": 90,
+      "state": "safe",
+      "status": "В пределах мест в обоих рассмотренных сценариях"
+    }
+  }
+}
