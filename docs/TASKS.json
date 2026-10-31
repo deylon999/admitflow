@@ -528,7 +528,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T004",
         "T015"
@@ -555,7 +555,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T010"
       ],
@@ -571,7 +571,12 @@
         "Сезоны и чужие конкурсные группы невозможно спутать в ключах",
         "Автоматический список не копируется полностью на каждого владельца"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S011: 48 backend tests; identities, null semantics и межгрупповые FK проверены."
+        }
+      ],
       "blockedReason": null
     },
     {

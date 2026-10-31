@@ -15,6 +15,7 @@ from .config import Settings
 from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
+from . import admissions  # Register the shared schema before metadata creation.
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30

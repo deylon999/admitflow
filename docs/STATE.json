@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T015",
-  "nextTask": "T015",
+  "currentTask": "T014",
+  "nextTask": "T014",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S010",
-  "resumeAction": "T015: каноническая схема кампаний/групп/источников/снимков; затем T014 миграции.",
+  "lastSession": "S011",
+  "resumeAction": "T014: Alembic initial schema, upgrade/legacy data tests, PostgreSQL validation if available.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",
