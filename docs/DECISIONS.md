@@ -21,6 +21,7 @@
 | ADR-015 | selected | Документы и граф задач — постоянная память проекта | TASKS.json хранит статусы, LOG — историю, STATE — точку продолжения; всё проверяется скриптом |
 | ADR-016 | selected | MVP сначала для явно поддержанных групп бакалавриата/специалитета | Точный поднабор определяется после аудита. Магистратура/аспирантура/СПО и особые правила не считаются автоматически совместимыми |
 | ADR-017 | user-confirmed | Разделить код на frontend/backend и убрать неиспользуемые файлы | React, npm и браузерные тесты находятся в frontend; общие fixtures в shared; макеты в docs/design; память проекта сохранена в docs |
+| ADR-018 | user-confirmed | Docker Compose для локального запуска, supersedes локальную часть ADR-008 | PostgreSQL + FastAPI + Nginx с собранным React; один localhost:8080 и постоянный volume. Это не production: create_all и development cookies; worker пока не реализован |
 
 ## Основание выбора инструментов
 

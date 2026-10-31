@@ -6,8 +6,8 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S007",
-  "resumeAction": "T007: локальные шрифты в frontend/public/fonts; npm-команды из frontend. T066 завершена, затем T008; T004 всё ещё blocked.",
+  "lastSession": "S008",
+  "resumeAction": "T067 review: config готов, проверить Docker up в доступном Engine. Следующая реализация T007. Серверные тесты теперь запускать из собственной backend/.venv.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

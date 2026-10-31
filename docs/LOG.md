@@ -97,3 +97,15 @@
 ## S007 — 2026-11-01 — нейтральные формулировки документации
 
 По запросу пользователя убраны названия инструментов разработки из текущих документов; ответственные обозначены по роли. Сохранены инструкции продолжения, roadmap, критерии и результаты проверок. Код приложения и история Git не менялись. Изменения оформлены отдельным Conventional Commit. Проверка: поиск по отслеживаемым текстовым файлам, roadmap --render --check и git diff --check.
+
+## S008 — 2026-11-01 — локальный Docker Compose (T067)
+
+**Запрос:** добавить простой запуск через Docker после конфликта ручного API с портом 8000. Старый тестовый API остановлен; проверка socket показала свободный 8000.
+
+**Изменения:** compose.yaml с PostgreSQL 17, API на Python 3.12 и multi-stage frontend (Node 24 → Nginx). API/БД не публикуют порты на хост; один web-порт 127.0.0.1:8080 с WEB_PORT override. Nginx проксирует /api и поддерживает SPA /tracker. База в постоянном postgres_data; запуск ждёт healthcheck PostgreSQL и API. .dockerignore исключает окружения, базы, .env, кэши и артефакты. Frontend build context включает общие TS fixtures. README/RUNBOOK обновлены под docker compose up --build.
+
+**Проверка:** docker compose config --quiet — exit 0. Docker/Compose CLI установлены. Docker Desktop запущен скрыто, но из среды не найден docker_engine pipe, конфиг Docker недоступен по ACL. docker compose build — exit 1 (Access denied при подготовке build context, Buildx plugin недоступен). Образы и запуск контейнеров не проверены; T067 остаётся review. Существующий production-план T047 и миграции T014 не закрываются локальным development Compose.
+
+**Регрессия:** backend/.venv/Scripts/python.exe -m pytest -q из backend — exit 0, 36 passed; теперь использована собственная среда проекта, установленная пользователем. Чистую установку зависимостей заново не выполняли; T004 пока не закрыта. Исходники приложения не менялись, повтор frontend-тестов не требовался.
+
+**Границы:** локальные development-настройки, автоматическое create_all, тестовые реквизиты PostgreSQL и HTTP. Production требует отдельных миграций/HTTPS/секретов; worker отсутствует. История Git дополняется отдельным build-коммитом. Следующий шаг для проверки Docker — выполнить compose up --build в пользовательском терминале с готовым Docker Desktop, затем проверить health/CRUD и сохранность данных после down/up.

@@ -21,6 +21,28 @@
 
 ## Команды приложения
 
+### Docker
+
+Нужен запущенный Docker Desktop с Linux containers. Из корня репозитория:
+
+```powershell
+docker compose up --build
+```
+
+Сайт — http://localhost:8080, API-документация — http://localhost:8080/api/docs. Nginx отдаёт React и проксирует API с того же адреса. PostgreSQL и API доступны только внутри Docker-сети: хостовый порт 8000 не нужен. Зависимости устанавливаются внутри образов; локальные Node/Python не требуются.
+
+```powershell
+docker compose down          # остановить; данные сохранятся
+docker compose logs backend # логи API
+docker compose ps           # состояние сервисов
+```
+
+База хранится в volume `postgres_data`. Не добавлять `--volumes` к down, если данные нужно сохранить. В контейнере API сейчас включён development-режим с create_all; это локальный запуск с тестовыми реквизитами PostgreSQL. Production/HTTPS/Alembic остаются отдельными задачами.
+
+Если 8080 занят, задать `$env:WEB_PORT='8081'` перед запуском. При недоступном Docker Engine сначала дождаться готовности Docker Desktop. В текущей ограниченной среде `docker compose config --quiet` проходит, но сборка/запуск контейнеров пока не подтверждены из-за доступа к Engine и контексту сборки.
+
+### Без Docker
+
 T002/T003 выполнены: сборка и unit-тесты проходят. Frontend и backend запускаются из своих директорий.
 
 ```powershell
@@ -43,7 +65,7 @@ Copy-Item .env.example .env
 .venv/Scripts/python.exe -m pytest -q
 ```
 
-Нужен Python 3.12. `--env-file .env` явно загружает настройки при запуске Uvicorn; приложение само не читает файл. Без флага используются переменные процесса и defaults. Локальная SQLite создаётся при lifespan; production миграции пока отсутствуют. На текущей машине `.venv` создана, но pip блокируется WinError 10013. Проверка API на доступном тестовом интерпретаторе не закрывает T004.
+Нужен Python 3.12. `--env-file .env` явно загружает настройки при запуске Uvicorn; приложение само не читает файл. Без флага используются переменные процесса и defaults. Локальная SQLite создаётся при lifespan; production миграции пока отсутствуют. В S008 серверные тесты прошли уже из собственной .venv проекта. Чистая установка ещё требует отдельного подтверждения: pip ранее блокировался WinError 10013.
 
 ```powershell
 # Из abiturient/frontend/, один раз при установке браузера:

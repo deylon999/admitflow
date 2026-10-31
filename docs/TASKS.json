@@ -1934,6 +1934,40 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T067",
+      "title": "Добавить локальный запуск через Docker Compose",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T066"
+      ],
+      "deliverables": [
+        "compose.yaml",
+        "frontend/Dockerfile",
+        "frontend/nginx.conf",
+        "backend/Dockerfile",
+        ".dockerignore"
+      ],
+      "steps": [
+        "Собрать frontend и API в отдельных образах; добавить PostgreSQL и постоянный volume",
+        "Настроить same-origin proxy и healthchecks; обновить инструкции"
+      ],
+      "acceptance": [
+        "docker compose config проходит",
+        "Сборка и запуск проверены либо конкретный блокер окружения зафиксирован",
+        "README описывает одну команду запуска и сохранение БД"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S008: Compose config exit 0; build заблокирован доступом среды; запуск не подтверждён."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }
