@@ -1,0 +1,24 @@
+{
+  "valid": [
+    { "name": "пример макета", "input": { "rank": 120, "seats": 90, "excluded": 30, "noConsent": 16 }, "expected": { "place": 74, "worstPlace": 90, "seats": 90, "state": "safe" } },
+    { "name": "между сценариями", "input": { "rank": 120, "seats": 80, "excluded": 30, "noConsent": 16 }, "expected": { "place": 74, "worstPlace": 90, "seats": 80, "state": "conditional" } },
+    { "name": "вне границы", "input": { "rank": 120, "seats": 73, "excluded": 30, "noConsent": 16 }, "expected": { "place": 74, "worstPlace": 90, "seats": 73, "state": "out" } },
+    { "name": "первое место", "input": { "rank": 1, "seats": 1, "excluded": 0, "noConsent": 0 }, "expected": { "place": 1, "worstPlace": 1, "seats": 1, "state": "safe" } },
+    { "name": "последнее место текущего сценария", "input": { "rank": 120, "seats": 74, "excluded": 30, "noConsent": 16 }, "expected": { "place": 74, "worstPlace": 90, "seats": 74, "state": "conditional" } },
+    { "name": "все выше исключены", "input": { "rank": 120, "seats": 1, "excluded": 119, "noConsent": 0 }, "expected": { "place": 1, "worstPlace": 1, "seats": 1, "state": "safe" } },
+    { "name": "верхний предел", "input": { "rank": 1000000, "seats": 1000000, "excluded": 0, "noConsent": 0 }, "expected": { "place": 1000000, "worstPlace": 1000000, "seats": 1000000, "state": "safe" } }
+  ],
+  "invalid": [
+    { "name": "номер ноль", "patch": { "rank": 0 } },
+    { "name": "номер отрицательный", "patch": { "rank": -1 } },
+    { "name": "номер дробный", "patch": { "rank": 1.5 } },
+    { "name": "выше максимума", "patch": { "rank": 1000001 } },
+    { "name": "нет мест", "patch": { "seats": 0 } },
+    { "name": "отрицательная группа", "patch": { "excluded": -1 } },
+    { "name": "дробная группа", "patch": { "noConsent": 0.5 } },
+    { "name": "группы равны номеру", "patch": { "excluded": 104 } },
+    { "name": "группы больше номера", "patch": { "noConsent": 91 } },
+    { "name": "null не является нулём", "patch": { "excluded": null } },
+    { "name": "boolean не является числом", "patch": { "rank": true } }
+  ]
+}
