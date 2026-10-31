@@ -630,7 +630,8 @@
       "status": "todo",
       "dependsOn": [
         "T014",
-        "T016"
+        "T016",
+        "T068"
       ],
       "deliverables": [
         "backend/app/services/",
@@ -932,7 +933,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T004",
         "T009",
@@ -950,7 +951,12 @@
         "SSRF и redirect на приватный адрес отклоняются",
         "CAPTCHA/авторизация/ошибка HTTP не обходятся и не принимаются за список"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S016: pinned DNS/TLS, allowlist и 36 fetcher tests; 96 backend passed, 1 PG skipped."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -2012,6 +2018,34 @@
           "note": "S008: Compose config exit 0; build заблокирован доступом среды; запуск не подтверждён."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T068",
+      "title": "Реализовать атомарные ручные записи и идемпотентность",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T016",
+        "T018"
+      ],
+      "deliverables": [
+        "backend/app/main.py",
+        "backend/app/database.py",
+        "backend/tests/test_writes.py"
+      ],
+      "steps": [
+        "Сериализовать записи владельца и сохранять результат по ключу операции",
+        "Проверить конкурентные лимиты и повтор на локальной БД; PG остаётся частью T017"
+      ],
+      "acceptance": [
+        "Повтор POST с одним ключом не дублирует направление/снимок",
+        "Конкурентные запросы не обходят 20/500 на локальной БД",
+        "Удаление направления не оставляет сохранённые payload операций"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

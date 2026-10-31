@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T028",
-  "nextTask": "T028",
+  "currentTask": "T068",
+  "nextTask": "T068",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S015",
-  "resumeAction": "T028: безопасный fetcher с allowlist, pinned DNS/TLS, лимитами и тестами.",
+  "lastSession": "S016",
+  "resumeAction": "T068: атомарные ручные записи/идемпотентность; PostgreSQL остаётся отдельной проверкой.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

@@ -1,0 +1,1 @@
+"""Registered admissions source infrastructure."""

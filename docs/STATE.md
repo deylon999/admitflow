@@ -1,6 +1,6 @@
 ﻿# Контекст для продолжения
 
-Последняя запись: S015, 2026-11-01. В работе **T028**, безопасный fetcher. T022 review: выбор вуза готов, группы ещё не аттестованы; 11 E2E проходят. T018 завершена: runtime parsers и общий contract fixture, 60 backend/40 frontend/9 E2E. T012 завершена: два вуза с manual coverage и provenance. T014 review: 54 backend passed / 1 PostgreSQL skipped. Docker применяет Alembic перед API. T015 завершена: каноническая схема и 48 backend tests. T016 завершена: expiry/reset/delete-all/cleanup, 41 backend и 8 E2E проходят. Пользователь поручил продолжать до MVP с отдельными Conventional Commits. T067 в review: конфигурация проверена, Docker API недоступен по правам.
+Последняя запись: S016, 2026-11-01. В работе **T068**, атомарные ручные записи. T028 done: fetcher и 96 backend passed, 1 PostgreSQL skipped. T022 review: выбор вуза готов, группы ещё не аттестованы; 11 E2E проходят. T018 завершена: runtime parsers и общий contract fixture, 60 backend/40 frontend/9 E2E. T012 завершена: два вуза с manual coverage и provenance. T014 review: 54 backend passed / 1 PostgreSQL skipped. Docker применяет Alembic перед API. T015 завершена: каноническая схема и 48 backend tests. T016 завершена: expiry/reset/delete-all/cleanup, 41 backend и 8 E2E проходят. Пользователь поручил продолжать до MVP с отдельными Conventional Commits. T067 в review: конфигурация проверена, Docker API недоступен по правам.
 
 ## Проверенное состояние
 
