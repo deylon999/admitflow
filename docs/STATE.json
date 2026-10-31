@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": null,
-  "nextTask": "T007",
+  "currentTask": "T016",
+  "nextTask": "T016",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S008",
-  "resumeAction": "T067 review: config готов, проверить Docker up в доступном Engine. Следующая реализация T007. Серверные тесты теперь запускать из собственной backend/.venv.",
+  "lastSession": "S009",
+  "resumeAction": "Довести гостевую сессию: явное восстановление после expiry, удаление и очистка.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",
