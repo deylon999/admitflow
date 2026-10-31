@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-01",
+  "currentTask": null,
+  "nextTask": "T007",
+  "cycleStartDate": "2026-11-01",
+  "targetDays": 30,
+  "completedGates": [],
+  "lastSession": "S006",
+  "resumeAction": "T007: локальные шрифты в frontend/public/fonts; npm-команды из frontend. T066 завершена, затем T008; T004 всё ещё blocked.",
+  "externalConstraints": [
+    "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
+    "Источники автоматического импорта и сезон пилота пока не выбраны.",
+    "Production-хостинг, домен и бюджет не определены.",
+    "GitHub push не подтверждён: соединение Git с github.com:443 недоступно (S006)."
+  ]
+}

@@ -1,0 +1,1939 @@
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-11-01",
+  "owner": "Codex",
+  "statusLegend": {
+    "todo": "Запланировано",
+    "in_progress": "В работе",
+    "review": "Реализовано, ожидает проверки",
+    "done": "Критерии выполнены и есть evidence",
+    "blocked": "Есть конкретная внешняя блокировка",
+    "deferred": "Перенесено с объяснением"
+  },
+  "phases": [
+    {
+      "id": "E0",
+      "title": "Стабилизация",
+      "window": "D1–D3 (визуальная сверка до D10)"
+    },
+    {
+      "id": "E1",
+      "title": "Источники и правила",
+      "window": "D2–D7"
+    },
+    {
+      "id": "E2",
+      "title": "Ядро продукта",
+      "window": "D4–D10"
+    },
+    {
+      "id": "E3",
+      "title": "Автоматический сбор",
+      "window": "D8–D17"
+    },
+    {
+      "id": "E4",
+      "title": "Объяснения и UX",
+      "window": "D15–D22"
+    },
+    {
+      "id": "E5",
+      "title": "Качество и эксплуатация",
+      "window": "D20–D27"
+    },
+    {
+      "id": "E6",
+      "title": "Резерв и выпуск",
+      "window": "D28–D30"
+    },
+    {
+      "id": "E7",
+      "title": "После MVP: вся Россия, аккаунты, ИИ",
+      "window": "После G6; сроки после оценки данных и нагрузки"
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "title": "Исправная сборка и тестовый контур",
+      "tasks": [
+        "T002",
+        "T003",
+        "T004",
+        "T005",
+        "T006"
+      ]
+    },
+    {
+      "id": "G1",
+      "title": "Источники и правила подтверждены",
+      "tasks": [
+        "T009",
+        "T010",
+        "T011",
+        "T013"
+      ]
+    },
+    {
+      "id": "G2",
+      "title": "Ручной путь и данные надёжны",
+      "tasks": [
+        "T014",
+        "T015",
+        "T016",
+        "T017",
+        "T018",
+        "T019",
+        "T020",
+        "T023"
+      ]
+    },
+    {
+      "id": "G3",
+      "title": "Автоматизация двух источников",
+      "tasks": [
+        "T021",
+        "T027",
+        "T028",
+        "T029",
+        "T030",
+        "T031",
+        "T032",
+        "T033",
+        "T034",
+        "T035",
+        "T036",
+        "T037",
+        "T038"
+      ]
+    },
+    {
+      "id": "G4",
+      "title": "Интерфейс и объяснения готовы",
+      "tasks": [
+        "T007",
+        "T008",
+        "T022",
+        "T024",
+        "T025",
+        "T026",
+        "T039",
+        "T040"
+      ]
+    },
+    {
+      "id": "G5",
+      "title": "Качество и staging проверены",
+      "tasks": [
+        "T041",
+        "T042",
+        "T043",
+        "T044",
+        "T045",
+        "T046",
+        "T047",
+        "T048",
+        "T049",
+        "T050",
+        "T051",
+        "T052"
+      ]
+    },
+    {
+      "id": "G6",
+      "title": "Выпуск подтверждён",
+      "tasks": [
+        "T053",
+        "T054",
+        "T055"
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Зафиксировать фактическое состояние проекта",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/STATE.md",
+        "docs/LOG.md"
+      ],
+      "steps": [
+        "Прочитать текущие исходники и команды",
+        "Выполнить baseline build/test и проверить наличие миграций/E2E"
+      ],
+      "acceptance": [
+        "Ошибки и отсутствующие компоненты записаны с exit codes",
+        "Старые проверки отделены от текущей реализации"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S001: аудит исходников, build exit 1, test exit 1, проверка отсутствующих конфигураций; критерий задачи — зафиксировать факт, а не исправить."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T002",
+      "title": "Исправить React production build",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T001"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/dist/"
+      ],
+      "steps": [
+        "Исправить сужение CalculationResult/CalculationError без any и подавления TS",
+        "Выполнить tsc и Vite build и проверить создаваемый entrypoint"
+      ],
+      "acceptance": [
+        "npm run build завершается с кодом 0",
+        "Поля результата доступны только в валидной ветке"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S003: build и браузерная форма exit 0; Vitest 26 passed на текущем TS."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T003",
+      "title": "Перенести проверки калькулятора на Vitest и TS",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T002"
+      ],
+      "deliverables": [
+        "frontend/tests/calculator.test.ts",
+        "shared/calculations.json"
+      ],
+      "steps": [
+        "Убрать импорт старого dist и node:test из активного Vitest-набора",
+        "Добавить общий набор валидных и невалидных входов с ожидаемыми выходами"
+      ],
+      "acceptance": [
+        "npm test обнаруживает и выполняет ненулевой набор тестов",
+        "Изменение текущей TS-формулы приводит к ожидаемому падению контрольного теста"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S003: build и браузерная форма exit 0; Vitest 26 passed на текущем TS."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T004",
+      "title": "Сделать воспроизводимый backend setup",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "blocked",
+      "dependsOn": [
+        "T001"
+      ],
+      "deliverables": [
+        "backend/requirements.txt",
+        "backend/.env.example",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Создать собственную venv и проверить совместимость закреплённых зависимостей",
+        "Определить загрузку окружения и команды старта с корректной cwd"
+      ],
+      "acceptance": [
+        "API запускается из чистого checkout без путей к чужим проектам",
+        "Health и calculate проверены и результат записан"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S003: установка exit 1; команды setup документированы; внешняя тестовая среда не доказывает воспроизводимость."
+        }
+      ],
+      "blockedReason": "Собственная .venv создана, но pip install блокируется WinError 10013. Возобновить после восстановления доступа к PyPI; установка и smoke должны пройти именно из backend/.venv."
+    },
+    {
+      "id": "T005",
+      "title": "Покрыть ручной API и Python-расчёт",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T004"
+      ],
+      "deliverables": [
+        "backend/tests/",
+        "shared/calculations.json"
+      ],
+      "steps": [
+        "Проверить CRUD/историю/ошибки через TestClient с изолированной БД",
+        "Применить общие fixtures к Python-модели и сверить с TS"
+      ],
+      "acceptance": [
+        "Создание→обновление→история→удаление проходит",
+        "Невалидные значения не создают записи, расчёты двух реализаций совпадают"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S003: предварительные тесты 36 passed; не закрыто до установки из собственной среды (T004)."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T006",
+      "title": "Настроить CI для проверяемого checkout",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T003",
+        "T005"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Добавить установку по lockfiles, build, unit и backend tests",
+        "Сохранять отчёт ошибок без секретов и зависимости от локальных кэшей"
+      ],
+      "acceptance": [
+        "CI-конфигурация воспроизводима на чистом runner",
+        "Если remote CI недоступен, внешний прогон помечен непроверенным и задача не закрыта"
+      ],
+      "evidence": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "note": "Конфигурация подготовлена; удалённого запуска нет, задача не закрыта."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T007",
+      "title": "Закрепить шрифты и дизайн-токены",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T002"
+      ],
+      "deliverables": [
+        "frontend/public/fonts/",
+        "frontend/src/styles.css"
+      ],
+      "steps": [
+        "Получить лицензированные Inter/JetBrains Mono и сохранить лицензии",
+        "Проверить загрузку реальных FontFace и цвета/типографику четырёх макетов"
+      ],
+      "acceptance": [
+        "При отсутствии внешней сети шрифты доступны локально",
+        "Скриншоты используют реальные шрифты, а не fallback"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T008",
+      "title": "Сверить React-лендинг с исходными макетами",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T002",
+        "T007"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/landing.spec.ts",
+        "docs/evidence/visual.md"
+      ],
+      "steps": [
+        "Снять light/dark при 1440 и 390 и сравнить блоки с PNG",
+        "Проверить 320/768/1024, навигацию, калькулятор и FAQ"
+      ],
+      "acceptance": [
+        "Нет переполнения и потери текста",
+        "Существенные визуальные расхождения исправлены или отдельно предъявлены приёмке"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T009",
+      "title": "Исследовать источники и выбрать технический пилот",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T001"
+      ],
+      "deliverables": [
+        "docs/sources/",
+        "docs/evidence/source-audit.md"
+      ],
+      "steps": [
+        "Изучить не менее пяти кандидатов с разными форматами, сезонностью и доступностью",
+        "Выбрать два независимых источника и объяснить порядок подключения"
+      ],
+      "acceptance": [
+        "У кандидатов есть официальные URL и проверка доступа",
+        "Выбор не выдан за подтверждённую поддержку всех вузов"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T010",
+      "title": "Зафиксировать сезон и правила поддержанного конкурса",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T009"
+      ],
+      "deliverables": [
+        "docs/DATA_RULES.md",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Найти официальные актуальные правила и описать группу/места/приоритеты/согласия",
+        "Составить таблицу поддержанных и неизвестных случаев"
+      ],
+      "acceptance": [
+        "Каждое исключение участника имеет основание и сезон",
+        "Непроверенные правила не входят в автоматическую модель"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T011",
+      "title": "Описать доступ к данным и минимизацию",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T009"
+      ],
+      "deliverables": [
+        "docs/data-policy.md",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Проверить условия получения и хранения списков, область публичных ID",
+        "Определить redaction, retention, удаление и ограничения raw storage"
+      ],
+      "acceptance": [
+        "В fixtures/logs нет ненужных персональных данных",
+        "Внешний запуск имеет перечень правовых/организационных вопросов и ответственного, не ложное заявление о готовности"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T012",
+      "title": "Создать начальный каталог с происхождением записей",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T009"
+      ],
+      "deliverables": [
+        "backend/app/catalog/",
+        "docs/catalog-coverage.md"
+      ],
+      "steps": [
+        "Выбрать проверяемый официальный источник каталога и правила вуз/филиал",
+        "Сохранить version/date/provenance, нормализовать имена и не смешивать филиалы"
+      ],
+      "acceptance": [
+        "Каждая опубликованная запись имеет источник",
+        "Полнота измеряется относительно именованного набора, а не объявляется абсолютной"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T013",
+      "title": "Подготовить реальные и негативные fixtures",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T010",
+        "T011"
+      ],
+      "deliverables": [
+        "backend/tests/fixtures/sources/",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Сохранить разрешённые обезличенные образцы, hashes и описания полей",
+        "Извлечь контрольные строки первого источника и проверить схему, добавить архивные/неполные образцы"
+      ],
+      "acceptance": [
+        "Хотя бы один реальный образец разобран воспроизводимо до G1",
+        "Синтетические и архивные данные явно маркированы"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T014",
+      "title": "Ввести Alembic и PostgreSQL-проверки",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T004",
+        "T015"
+      ],
+      "deliverables": [
+        "backend/alembic/",
+        "backend/alembic.ini",
+        "backend/tests/integration/"
+      ],
+      "steps": [
+        "Создать миграции текущих и целевых сущностей без потери ручных данных",
+        "Проверить upgrade на пустой БД и на предыдущей схеме, описать восстановление"
+      ],
+      "acceptance": [
+        "Схема PostgreSQL создаётся миграциями",
+        "Ошибка миграции не скрывается автоматическим create_all в production"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T015",
+      "title": "Утвердить идентичность и каноническую модель данных",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T010"
+      ],
+      "deliverables": [
+        "backend/app/database.py",
+        "docs/ARCHITECTURE.md"
+      ],
+      "steps": [
+        "Разделить вуз/филиал/сезон/группу/source snapshot/watch/assessment",
+        "Задать уникальность ID, null semantics, времена и версии правил"
+      ],
+      "acceptance": [
+        "Сезоны и чужие конкурсные группы невозможно спутать в ключах",
+        "Автоматический список не копируется полностью на каждого владельца"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T016",
+      "title": "Довести гостевой доступ и жизненный цикл сессии",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T005",
+        "T011"
+      ],
+      "deliverables": [
+        "backend/app/main.py",
+        "frontend/src/lib/api.ts",
+        "backend/tests/test_sessions.py"
+      ],
+      "steps": [
+        "Зафиксировать expiry/refresh/delete-all и UX после потери доступа",
+        "Проверить cookies, два клиента, CSRF и отсутствие молчаливой подмены старых сохранений новой сессией"
+      ],
+      "acceptance": [
+        "Чужие направления недоступны во всех маршрутах",
+        "Пользователь понимает срок доступа и действие при истечении"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T017",
+      "title": "Сделать записи и лимиты устойчивыми к повторам",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T016"
+      ],
+      "deliverables": [
+        "backend/app/services/",
+        "backend/tests/integration/"
+      ],
+      "steps": [
+        "Добавить транзакционные гарантии и идемпотентность создающих операций",
+        "Протестировать конкурентные запросы, лимиты и потерянный ответ"
+      ],
+      "acceptance": [
+        "Повтор запроса не дублирует запись в предусмотренном контракте",
+        "Параллельные операции не обходят установленные лимиты"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T018",
+      "title": "Согласовать API-контракты и frontend types",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T005",
+        "T015"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts",
+        "backend/app/schemas.py",
+        "docs/api-contract.md"
+      ],
+      "steps": [
+        "Описать DTO режимов manual/automatic/archive и quality/freshness",
+        "Зафиксировать ошибки, валидацию границы, пагинацию и правила retry"
+      ],
+      "acceptance": [
+        "Невалидный response не отображается как достоверные числа",
+        "Контрактные тесты ловят несовместимое изменение backend/frontend"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T019",
+      "title": "Завершить ручное сохранение направлений",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T017",
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker.spec.ts"
+      ],
+      "steps": [
+        "Проверить создание/обновление/историю/удаление и pending/error/empty",
+        "Сохранить введённые поля при ошибке, исключить двойное нажатие и XSS"
+      ],
+      "acceptance": [
+        "Сквозной путь работает после reload и перезапуска API",
+        "Ручные данные не помечены автоматическими"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T020",
+      "title": "Уточнить сценарную модель и безопасные формулировки",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T003",
+        "T005",
+        "T010"
+      ],
+      "deliverables": [
+        "frontend/src/lib/calculator.ts",
+        "backend/app/calculation.py",
+        "docs/DATA_RULES.md"
+      ],
+      "steps": [
+        "Устранить неограниченное обещание «при любом сценарии»",
+        "Добавить unsupported/insufficient-data и согласовать границы ручной модели"
+      ],
+      "acceptance": [
+        "Статус объясняет входы и допущения",
+        "Все граничные cases совпадают с документированной моделью"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T021",
+      "title": "Найти абитуриента в конкретном источнике",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018",
+        "T029"
+      ],
+      "deliverables": [
+        "backend/app/candidates/",
+        "frontend/src/components/"
+      ],
+      "steps": [
+        "Определить допустимый публичный ID и область уникальности",
+        "Сделать поиск, подтверждение строки, not-found/ambiguous и rate limit"
+      ],
+      "acceptance": [
+        "Нет склейки людей по ФИО или чужому ID другого источника",
+        "Пользователь подтверждает правильную группу и запись до сохранения"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T022",
+      "title": "Добавить поиск вузов и групп с coverage",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T012",
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/",
+        "backend/app/catalog/"
+      ],
+      "steps": [
+        "Сделать поиск/фильтры/пагинацию по вузу, филиалу, сезону и группе",
+        "Показать automatic/manual/archive/unsupported и путь заявки на подключение"
+      ],
+      "acceptance": [
+        "Неподключённый вуз не выглядит рабочей интеграцией",
+        "Можно добавить ручное направление без ложного promise автоматического сбора"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T023",
+      "title": "Довести неизменяемую историю и сравнение снимков",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T018",
+        "T019"
+      ],
+      "deliverables": [
+        "backend/app/history/",
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Добавить стабильную пагинацию истории и model version",
+        "Проверить одинаковые timestamps, порядок событий и старый/new assessment"
+      ],
+      "acceptance": [
+        "История не теряет и не повторяет записи при перелистывании",
+        "Пересчёт новой версией не переписывает старый результат"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T024",
+      "title": "Показывать provenance и отдельные времена",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018",
+        "T033"
+      ],
+      "deliverables": [
+        "frontend/src/components/",
+        "backend/app/schemas.py"
+      ],
+      "steps": [
+        "Вывести fetched/source-updated/manual-captured без подмены смыслов",
+        "Реализовать stale/error/archive/unknown и ссылку на оригинал"
+      ],
+      "acceptance": [
+        "Ни одно число автоматической карточки не остаётся без источника/снимка",
+        "Ошибка обновления не освежает старые данные"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T025",
+      "title": "Закрыть ошибки загрузки и повторных действий",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T019",
+        "T021",
+        "T024"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts",
+        "frontend/src/pages/",
+        "frontend/tests/e2e/"
+      ],
+      "steps": [
+        "Добавить timeout/cancel/retry для чтения и явный исход записи",
+        "Проверить offline, 401/403/404/409/422/429/503 и recovery"
+      ],
+      "acceptance": [
+        "Интерфейс не зависает в бесконечном pending",
+        "Повтор после неизвестного исхода записи безопасен"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T026",
+      "title": "Проверить доступность кабинета и мобильный UX",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T008",
+        "T022",
+        "T025"
+      ],
+      "deliverables": [
+        "frontend/src/tracker.css",
+        "frontend/tests/e2e/accessibility.spec.ts"
+      ],
+      "steps": [
+        "Проверить keyboard, labels, focus, live errors и контраст",
+        "Проверить длинные названия, крупные числа, таблицу истории, 320px и две темы"
+      ],
+      "acceptance": [
+        "Основной путь выполним клавиатурой",
+        "Нет скрытых кнопок/обрезанных чисел и потери смысловых меток"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T027",
+      "title": "Определить интерфейс адаптера и registry",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T010",
+        "T013",
+        "T015"
+      ],
+      "deliverables": [
+        "backend/app/sources/",
+        "backend/tests/contracts/"
+      ],
+      "steps": [
+        "Создать ParsedList/Entry/Warnings с версиями и provenance",
+        "Добавить registry активных источников и контракт отказа"
+      ],
+      "acceptance": [
+        "Unknown/null сохраняются",
+        "Подключение адаптера требует паспорта и fixtures"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T028",
+      "title": "Реализовать ограниченный безопасный fetcher",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T004",
+        "T009",
+        "T011"
+      ],
+      "deliverables": [
+        "backend/app/sources/fetcher.py",
+        "backend/tests/test_fetcher.py"
+      ],
+      "steps": [
+        "Ограничить схемы/домены/DNS/redirects, timeout, размер и тип ответа",
+        "Добавить backoff/Retry-After и redaction, исключить внутренние адреса"
+      ],
+      "acceptance": [
+        "SSRF и redirect на приватный адрес отклоняются",
+        "CAPTCHA/авторизация/ошибка HTTP не обходятся и не принимаются за список"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T029",
+      "title": "Подключить первый официальный источник",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T027",
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/sources/adapters/",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Реализовать разбор, пагинацию и mapping полей первого формата",
+        "Сверить контрольные и граничные строки с оригиналом"
+      ],
+      "acceptance": [
+        "Contract tests и сверка минимум 50 строк либо всего меньшего списка пройдены",
+        "Паспорт указывает реальные ограничения и сезон"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T030",
+      "title": "Ввести нормализацию и карантин",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T029"
+      ],
+      "deliverables": [
+        "backend/app/sources/validation.py",
+        "backend/tests/"
+      ],
+      "steps": [
+        "Проверять дубли, полноту, обязательные поля, сезон и аномальное сокращение",
+        "Разделить warning и блокирующие дефекты с reason codes"
+      ],
+      "acceptance": [
+        "Повреждённый/неполный ответ не заменяет valid snapshot",
+        "Неизвестное значение не становится нулём"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T031",
+      "title": "Подключить второй независимый источник",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T029",
+        "T030"
+      ],
+      "deliverables": [
+        "backend/app/sources/adapters/",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Проверить второй вуз/формат отдельно, даже если платформа похожа",
+        "Добавить собственные реальные и негативные fixtures"
+      ],
+      "acceptance": [
+        "Второй источник проходит те же критерии, что первый",
+        "Доказательство не основано только на совпадении названий колонок"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T032",
+      "title": "Реализовать планировщик и отдельный worker",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T027",
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/worker/",
+        "backend/tests/integration/"
+      ],
+      "steps": [
+        "Сделать PostgreSQL jobs, атомарный lease, heartbeat, max retries и лимиты домена",
+        "Проверить два worker и восстановление задания после смерти процесса"
+      ],
+      "acceptance": [
+        "Одно задание не публикуется дважды",
+        "Worker не блокирует API и не создаёт шторм запросов"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T033",
+      "title": "Сохранять и публиковать снимки атомарно",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T030",
+        "T032"
+      ],
+      "deliverables": [
+        "backend/app/snapshots/",
+        "backend/tests/integration/"
+      ],
+      "steps": [
+        "Сохранить raw hash/provenance и normalised snapshot",
+        "Переключать latest только после полной проверки, ограничить retention"
+      ],
+      "acceptance": [
+        "Повтор импорта идемпотентен",
+        "Падение до commit сохраняет предыдущий latest и не показывает полуготовые данные"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T034",
+      "title": "Считать автоматические assessments и diff",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T020",
+        "T031",
+        "T033"
+      ],
+      "deliverables": [
+        "backend/app/assessments/",
+        "backend/tests/fixtures/"
+      ],
+      "steps": [
+        "Выполнить модель на подтверждённых группах и сохранить facts/rulesVersion",
+        "Сравнить старый/новый снимок и причины изменения, учитывать unknown"
+      ],
+      "acceptance": [
+        "Результат воспроизводится из snapshot и version",
+        "Смена мест/согласий/статуса вызывает правильный diff без двойного вычитания"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T035",
+      "title": "Обработать отказ и восстановление источника",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T024",
+        "T032",
+        "T033"
+      ],
+      "deliverables": [
+        "backend/app/sources/",
+        "frontend/tests/e2e/source-failure.spec.ts"
+      ],
+      "steps": [
+        "Ввести degradation/stale политики и диагностику ошибок",
+        "Проверить падение, карантин, восстановление и переход обратно к актуальному состоянию"
+      ],
+      "acceptance": [
+        "Последние корректные данные остаются доступны",
+        "Восстановление не скрывает историю неудач"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T036",
+      "title": "Сделать детерминированный replay архивов",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T013",
+        "T031",
+        "T034"
+      ],
+      "deliverables": [
+        "backend/tests/replay/",
+        "docs/evidence/replay.md"
+      ],
+      "steps": [
+        "Воспроизвести последовательность разрешённых архивных снимков",
+        "Разделить source time и replay time и сравнить ожидаемые изменения"
+      ],
+      "acceptance": [
+        "Повтор replay даёт те же outcomes",
+        "Архив в UI постоянно отличим от текущей кампании"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T037",
+      "title": "Добавить эксплуатационное управление источниками",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T031",
+        "T032",
+        "T035"
+      ],
+      "deliverables": [
+        "backend/app/manage.py",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Создать CLI/status для enable/disable/retry/quarantine и проверки версий",
+        "Защитить управление и исключить вывод секретов"
+      ],
+      "acceptance": [
+        "Оператор может отключить сломанный источник без изменения чужих данных",
+        "Все действия прослеживаются в audit log"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T038",
+      "title": "Посчитать честные метрики покрытия",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T012",
+        "T031",
+        "T035"
+      ],
+      "deliverables": [
+        "backend/app/coverage/",
+        "docs/catalog-coverage.md"
+      ],
+      "steps": [
+        "Разделить каталог/адаптер/успешно обновляемую группу/архив",
+        "Вывести даты и знаменатели измерений"
+      ],
+      "acceptance": [
+        "Карточка каталога не увеличивает число работающих интеграций",
+        "Отчёт воспроизводим по БД и паспортам"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T039",
+      "title": "Объяснять оценку и изменение проверенными фактами",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T020",
+        "T034"
+      ],
+      "deliverables": [
+        "backend/app/explanations/",
+        "frontend/src/components/"
+      ],
+      "steps": [
+        "Создать шаблоны для текущего сценария, условий, устаревания и неизвестных",
+        "Согласовать текст с числами и reason codes"
+      ],
+      "acceptance": [
+        "Объяснение не обещает поступления и не добавляет несуществующий процент",
+        "Текст содержит проверяемое основание изменения"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T040",
+      "title": "Показать изменения внутри приложения",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T023",
+        "T034",
+        "T039"
+      ],
+      "deliverables": [
+        "backend/app/changes/",
+        "frontend/src/pages/"
+      ],
+      "steps": [
+        "Создавать дедуплицированные события и seen-state владельца",
+        "Показать изменение и переход к исходному сравнению"
+      ],
+      "acceptance": [
+        "Повтор worker не создаёт повторных сообщений",
+        "Чужие события недоступны, прочтение идемпотентно"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T041",
+      "title": "Добавить наблюдаемость API/worker/источников",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T032",
+        "T035",
+        "T037"
+      ],
+      "deliverables": [
+        "backend/app/observability/",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Добавить структурированные логи, request/import IDs, freshness и worker heartbeat",
+        "Отделить здоровье API от доступности источников и убрать персональные поля"
+      ],
+      "acceptance": [
+        "По ошибке можно восстановить цепочку source→run→snapshot→assessment",
+        "Мёртвый worker и устаревший источник видны отдельно от HTTP health"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T042",
+      "title": "Собрать регрессию правил и качества данных",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T020",
+        "T034",
+        "T036"
+      ],
+      "deliverables": [
+        "backend/tests/",
+        "frontend/tests/fixtures/",
+        "docs/evidence/regression.md"
+      ],
+      "steps": [
+        "Проверить весь перечень доменных случаев QUALITY.md",
+        "Включить неподдержанный конкурс, tie-break и неполные поля"
+      ],
+      "acceptance": [
+        "Нет расхождений с подтверждёнными expected outcomes",
+        "Все невычислимые случаи дают явный отказ/ограничение"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T043",
+      "title": "Проверить безопасность и пользовательские данные",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T017",
+        "T028",
+        "T033"
+      ],
+      "deliverables": [
+        "backend/tests/security/",
+        "docs/evidence/security.md"
+      ],
+      "steps": [
+        "Проверить ownership, CSRF, SSRF, XSS, rate limits, raw access и cleanup",
+        "Проверить логи/backup/fixtures на лишние данные и конфигурацию production"
+      ],
+      "acceptance": [
+        "Нет критичных утечек и обхода доступа",
+        "Retention и удаление проверены, открытые организационные вопросы явно блокируют публичный запуск"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T044",
+      "title": "Измерить нагрузку и устранить узкие места",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T034",
+        "T041"
+      ],
+      "deliverables": [
+        "scripts/load/",
+        "docs/evidence/performance.md"
+      ],
+      "steps": [
+        "Зафиксировать профиль из QUALITY.md и реальные максимальные размеры",
+        "Измерить p95/5xx/память, N+1, jobs lag и экономию одного fetch на группу"
+      ],
+      "acceptance": [
+        "Порог качества достигнут на именованном стенде",
+        "Измерения включают большую группу и параллельное обновление, а не только пустую БД"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T045",
+      "title": "Проверить браузеры и визуальные состояния",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T026",
+        "T039",
+        "T040"
+      ],
+      "deliverables": [
+        "playwright.config.ts",
+        "frontend/tests/e2e/",
+        "docs/evidence/visual.md"
+      ],
+      "steps": [
+        "Настроить Chromium/Firefox/WebKit и desktop/mobile/light/dark",
+        "Пройти landing, tracker, history, source error и keyboard"
+      ],
+      "acceptance": [
+        "Существенные расхождения исправлены",
+        "Непроверенная платформа явно записана и не считается поддержанной по тестам"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T046",
+      "title": "Наблюдать циклы импорта и свежесть",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T035",
+        "T038",
+        "T041"
+      ],
+      "deliverables": [
+        "docs/evidence/source-soak.md"
+      ],
+      "steps": [
+        "Провести 24-часовое наблюдение доступных официальных источников",
+        "Дополнительно имитировать изменения, отказ и восстановление через replay"
+      ],
+      "acceptance": [
+        "Есть фактические timestamps и outcomes попыток",
+        "Успешный архивный replay не выдан за live-soak"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T047",
+      "title": "Подготовить контейнерный контур",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T006",
+        "T014",
+        "T032"
+      ],
+      "deliverables": [
+        "compose.yaml",
+        "Dockerfile",
+        "backend/Dockerfile",
+        "Caddyfile"
+      ],
+      "steps": [
+        "Собрать frontend/API/worker/PostgreSQL с healthchecks и volumes",
+        "Проверить fresh install, migrations, restart, same-origin routing и deep links"
+      ],
+      "acceptance": [
+        "После restart данные сохранены и worker возвращается в работу",
+        "БД и административные порты не открыты наружу"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T048",
+      "title": "Развернуть staging с HTTPS",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T047"
+      ],
+      "deliverables": [
+        "docs/deployment.md",
+        "docs/evidence/staging.md"
+      ],
+      "steps": [
+        "Зафиксировать площадку, домен, бюджет и регион до оплачиваемых действий",
+        "Выполнить deployment, secure-cookie smoke и проверить API вместе с UI"
+      ],
+      "acceptance": [
+        "Есть фактический доступный URL и версия всего контура",
+        "Статический frontend без работающего API не считается staging MVP"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T049",
+      "title": "Проверить backup, restore и retention",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T043",
+        "T048"
+      ],
+      "deliverables": [
+        "scripts/backup/",
+        "docs/evidence/restore.md",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Создать копию PostgreSQL/raw и восстановить в отдельную БД",
+        "Сверить записи/ownership/hashes, проверить cleanup и измерить RPO/RTO"
+      ],
+      "acceptance": [
+        "Данные восстановлены проверкой, а не только наличием файла",
+        "Результаты времени и известное окно потери записаны"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T050",
+      "title": "Настроить эксплуатационные сигналы и откат",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T041",
+        "T048"
+      ],
+      "deliverables": [
+        "docs/RUNBOOK.md",
+        "docs/evidence/operations.md"
+      ],
+      "steps": [
+        "Настроить readiness, worker stale, source quarantine, ошибки и размер БД",
+        "Проверить совместимый rollback и действия при несовместимой схеме"
+      ],
+      "acceptance": [
+        "Есть проверенный путь обнаружения и восстановления основных сбоев",
+        "Секреты и персональные данные не попадают в сигналы"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T051",
+      "title": "Пройти полный путь автоматизированного MVP",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T021",
+        "T022",
+        "T024",
+        "T034",
+        "T040",
+        "T048"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/mvp.spec.ts",
+        "docs/evidence/e2e.md"
+      ],
+      "steps": [
+        "Пройти выбор источника/группы/ID, сохранение, новый снимок, diff и историю",
+        "Проверить два владельца, удаление, stale и восстановление"
+      ],
+      "acceptance": [
+        "Пользовательский путь подтверждён на staging с реальным API",
+        "Внешний fetch при тестах не зависит от недетерминированной случайной выдачи"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T052",
+      "title": "Провести продуктовую приёмку",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T039",
+        "T045",
+        "T051"
+      ],
+      "deliverables": [
+        "docs/evidence/acceptance.md"
+      ],
+      "steps": [
+        "Дать задания первого расчёта, поиска причины изменения и проверки источника",
+        "Записать фактические наблюдения пользователя/тестеров и устранить критичные непонимания"
+      ],
+      "acceptance": [
+        "Понятность оценена по PRODUCT.md либо явно непроверена",
+        "Нет придуманных отзывов и смешения сценария с гарантией"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T053",
+      "title": "Собрать релизный кандидат и отчёт gates",
+      "phase": "E6",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T042",
+        "T043",
+        "T044",
+        "T045",
+        "T046",
+        "T049",
+        "T050",
+        "T051",
+        "T052"
+      ],
+      "deliverables": [
+        "docs/releases/",
+        "docs/STATE.json"
+      ],
+      "steps": [
+        "Проверить G0–G5, scope и список дефектов",
+        "Зафиксировать commit/images/schema/model/source versions и release notes"
+      ],
+      "acceptance": [
+        "Все обязательные критерии подтверждены ссылками",
+        "Наличие P0 или недоступной обязательной интеграции блокирует кандидат"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T054",
+      "title": "Использовать резерв на исправления и повторную проверку",
+      "phase": "E6",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T053"
+      ],
+      "deliverables": [
+        "docs/releases/",
+        "docs/LOG.md"
+      ],
+      "steps": [
+        "Закрыть дефекты приёмки или зафиксировать отсутствие нужных исправлений",
+        "Повторить затронутые тесты и проверить свежесть release evidence"
+      ],
+      "acceptance": [
+        "Резерв не потрачен на незаявленные функции",
+        "Release candidate соответствует последним проверенным изменениям"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T055",
+      "title": "Выпустить MVP и передать рабочий контекст",
+      "phase": "E6",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T054"
+      ],
+      "deliverables": [
+        "docs/releases/",
+        "docs/STATE.md",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Выполнить выпуск, production smoke и проверить доступность основных путей",
+        "Записать URL/версию/ограничения/backup/следующий backlog и обновить G6"
+      ],
+      "acceptance": [
+        "Выпуск подтверждён фактическим состоянием сервиса",
+        "Пользователь получил результат, а новая сессия может продолжить по STATE без догадок"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T056",
+      "title": "Расширить проверенный каталог до национального охвата",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T012",
+        "T038",
+        "T055"
+      ],
+      "deliverables": [
+        "backend/app/catalog/",
+        "docs/catalog-coverage.md"
+      ],
+      "steps": [
+        "Сверить организации/филиалы/уровни с датированным опорным реестром",
+        "Обновлять каталог воспроизводимым импортом и фиксировать исключения"
+      ],
+      "acceptance": [
+        "Есть понятный знаменатель полноты и дата",
+        "Полный каталог не называется полным автоматическим сбором"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T057",
+      "title": "Масштабировать адаптеры по платформам вузов",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T031",
+        "T037",
+        "T046",
+        "T055"
+      ],
+      "deliverables": [
+        "backend/app/sources/adapters/",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Сгруппировать новые сайты по реальным шаблонам и приоритету",
+        "Для каждой интеграции пройти passport/fixtures/сверку/наблюдение до включения"
+      ],
+      "acceptance": [
+        "Каждая добавленная группа имеет доказательство совместимости",
+        "Рост покрытия не ухудшает freshness и лимиты источников"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T058",
+      "title": "Добавить аккаунт и перенос гостевых направлений",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T043",
+        "T055"
+      ],
+      "deliverables": [
+        "backend/app/auth/",
+        "frontend/src/pages/account/",
+        "docs/data-policy.md"
+      ],
+      "steps": [
+        "Выбрать вход и recovery без самодельной криптографии",
+        "Перенести гостевые данные с защитой ownership и протестировать несколько устройств"
+      ],
+      "acceptance": [
+        "Нельзя присвоить чужую гостевую сессию",
+        "Восстановление, logout, удаление аккаунта и сессии проверены"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T059",
+      "title": "Подключить внешние уведомления по подписке",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T040",
+        "T058"
+      ],
+      "deliverables": [
+        "backend/app/notifications/",
+        "frontend/src/pages/settings/"
+      ],
+      "steps": [
+        "Выбрать один канал, явную подписку, настройки и отписку",
+        "Добавить очередь, rate limits, дедупликацию и обработку ошибок провайдера"
+      ],
+      "acceptance": [
+        "Сообщения получают только подписанные владельцы",
+        "Сбой доставки не тормозит импорт и не создаёт повторный спам"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T060",
+      "title": "Проверить реализуемость статистического прогноза",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T036",
+        "T055"
+      ],
+      "deliverables": [
+        "docs/research/forecast-data.md"
+      ],
+      "steps": [
+        "Провести аудит исторических снимков, меток исхода и допустимого использования",
+        "Оценить смещения выборки, утечки и минимальный полезный baseline"
+      ],
+      "acceptance": [
+        "Принято доказательное go/no-go для вероятностей",
+        "Недостаток данных приводит к отказу от процентов, а не к их выдумыванию"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T061",
+      "title": "Построить baseline на временно разделённых данных",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T060"
+      ],
+      "deliverables": [
+        "research/forecast/",
+        "docs/research/"
+      ],
+      "steps": [
+        "Зафиксировать признаки доступные до момента прогноза и train/validation/test",
+        "Обучить простой baseline и обеспечить воспроизводимость данных/seed/version"
+      ],
+      "acceptance": [
+        "Будущие согласия и приказы не попадают в признаки прошлого",
+        "Holdout не использован для настройки"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T062",
+      "title": "Проверить калибровку и применимость прогноза",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T061"
+      ],
+      "deliverables": [
+        "research/forecast/",
+        "docs/model-card.md"
+      ],
+      "steps": [
+        "Оценить Brier/log loss/calibration и сегменты по времени/вузам",
+        "Сравнить с baseline, определить интервалы неопределённости и abstention"
+      ],
+      "acceptance": [
+        "Порог качества задан до итогового теста и достигнут",
+        "Модель отказывается на неподдержанном домене и имеет мониторинг drift"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T063",
+      "title": "Добавить ИИ-объяснение с контролем фактов",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T039",
+        "T043",
+        "T055"
+      ],
+      "deliverables": [
+        "backend/app/assistant/",
+        "docs/model-card.md"
+      ],
+      "steps": [
+        "Ограничить вход структурированными facts и отделить недоверенный текст сайтов",
+        "Добавить проверку чисел/источников, timeout, бюджет и шаблонный fallback"
+      ],
+      "acceptance": [
+        "LLM не меняет расчёт и не выдумывает вероятность",
+        "Prompt injection и отказ провайдера не нарушают основной сценарий"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T064",
+      "title": "Пересмотреть инфраструктуру по стоимости и нагрузке",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T044",
+        "T055",
+        "T057"
+      ],
+      "deliverables": [
+        "docs/DECISIONS.md",
+        "docs/evidence/performance.md"
+      ],
+      "steps": [
+        "Измерить jobs lag, БД/raw объём, стоимость запроса и частоту обращений",
+        "Выбрать масштабирование worker/cache/queue только по установленным узким местам"
+      ],
+      "acceptance": [
+        "Есть сравнение измерений до/после и предел бюджета",
+        "Усложнение архитектуры обосновано результатом"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T065",
+      "title": "Подготовить следующий сезон приёма",
+      "phase": "E7",
+      "priority": "P2",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T010",
+        "T057"
+      ],
+      "deliverables": [
+        "docs/sources/",
+        "backend/app/rules/",
+        "docs/releases/"
+      ],
+      "steps": [
+        "Проверить новые официальные правила/сроки и повторно аттестовать источники",
+        "Создать campaign/rule versions и регрессию миграции между сезонами"
+      ],
+      "acceptance": [
+        "Прошлый сезон остаётся воспроизводимым",
+        "Новые правила не применяются к старым данным молча"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T066",
+      "title": "Разделить frontend/backend и очистить структуру",
+      "phase": "E0",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T003"
+      ],
+      "deliverables": [
+        "frontend/",
+        "backend/",
+        "shared/",
+        ".github/workflows/ci.yml"
+      ],
+      "steps": [
+        "Перенести React и зависимости в frontend; вынести общие fixtures",
+        "Удалить устаревшие артефакты; поправить CI, документацию и пути"
+      ],
+      "acceptance": [
+        "Сборка и 26 unit-тестов работают из frontend",
+        "36 серверных тестов и 6 E2E проходят после переноса",
+        "Roadmap проверяется, корень не содержит конфигов и исходников React"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S005: перенос, очистка; build / 26 unit / 36 API / 6 E2E прошли."
+        }
+      ],
+      "blockedReason": null
+    }
+  ]
+}
