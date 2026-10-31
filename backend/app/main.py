@@ -1,16 +1,20 @@
+import asyncio
 import hashlib
+import logging
 import secrets
 from contextlib import asynccontextmanager
+from contextlib import suppress
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Request, Response
-from sqlalchemy import func, select, text
+from sqlalchemy import delete, func, select, text
 from sqlalchemy.orm import Session
 
 from .calculation import CalculationInput, CalculationResult, calculate
 from .config import Settings
 from .database import Base, BrowserSession, Snapshot, Watch, make_engine
-from .schemas import SnapshotRead, WatchCreate, WatchDetail, WatchRead
+from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
+from .maintenance import cleanup_expired_sessions
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -36,8 +40,23 @@ def create_app(settings: Settings | None = None):
     async def lifespan(_):
         if config.auto_create_schema:
             Base.metadata.create_all(engine)
-        yield
-        engine.dispose()
+            cleanup_expired_sessions(engine)
+        async def cleanup_loop():
+            while True:
+                await asyncio.sleep(3600)
+                try:
+                    await asyncio.to_thread(cleanup_expired_sessions, engine)
+                except Exception:
+                    logging.getLogger(__name__).error('Expired-session cleanup failed; retry in one hour')
+
+        cleanup = asyncio.create_task(cleanup_loop())
+        try:
+            yield
+        finally:
+            cleanup.cancel()
+            with suppress(asyncio.CancelledError):
+                await cleanup
+            engine.dispose()
 
     app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None)
     app.state.engine = engine
@@ -61,6 +80,8 @@ def create_app(settings: Settings | None = None):
     def owner(request: Request, db: Session = Depends(database)):
         token = request.cookies.get(COOKIE, '')
         found = db.scalar(select(BrowserSession).where(BrowserSession.token_hash == token_hash(token), BrowserSession.expires_at > utcnow())) if token else None
+        if token and not found:
+            raise HTTPException(401, 'Срок гостевой сессии истёк. Начните новую сессию явно.')
         if not found:
             raise HTTPException(401, 'Сессия истекла. Обновите страницу.')
         return found.token_hash
@@ -98,11 +119,26 @@ def create_app(settings: Settings | None = None):
     def start_session(request: Request, response: Response, db: Session = Depends(database)):
         token = request.cookies.get(COOKIE, '')
         found = db.scalar(select(BrowserSession).where(BrowserSession.token_hash == token_hash(token), BrowserSession.expires_at > utcnow())) if token else None
+        if token and not found:
+            raise HTTPException(401, 'Срок гостевой сессии истёк. Начните новую сессию явно.')
         if not found:
             token = secrets.token_urlsafe(32)
             db.add(BrowserSession(token_hash=token_hash(token), expires_at=utcnow() + timedelta(days=SESSION_DAYS)))
             db.commit()
             response.set_cookie(COOKIE, token, httponly=True, secure=config.secure_cookie, samesite='lax', max_age=SESSION_DAYS * 86400, path='/api')
+
+    @app.get('/api/v1/session', response_model=SessionRead)
+    def get_session(owner_hash: str = Depends(owner), db: Session = Depends(database)):
+        return SessionRead(expires_at=utc(db.get(BrowserSession, owner_hash).expires_at))
+
+    @app.delete('/api/v1/session', status_code=204)
+    def delete_session(request: Request, response: Response, db: Session = Depends(database)):
+        # Explicit reset also works with an expired/unknown token and is idempotent.
+        token = request.cookies.get(COOKIE)
+        if token:
+            db.execute(delete(BrowserSession).where(BrowserSession.token_hash == token_hash(token)))
+            db.commit()
+        response.delete_cookie(COOKIE, path='/api', secure=config.secure_cookie, httponly=True, samesite='lax')
 
     @app.get('/api/v1/watches', response_model=list[WatchRead])
     def list_watches(owner_hash: str = Depends(owner), db: Session = Depends(database)):

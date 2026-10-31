@@ -20,6 +20,10 @@ class WatchCreate(CamelModel):
         return value.strip()
 
 
+class SessionRead(CamelModel):
+    expires_at: datetime
+
+
 class SnapshotRead(CamelModel):
     id: str
     captured_at: datetime

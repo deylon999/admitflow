@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
-import { api } from '../lib/api';
+import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
@@ -30,6 +30,9 @@ function DirectionForm({ watch, onDone, onCancel }: { watch?: Watch; onDone: () 
       await queryClient.invalidateQueries({ queryKey: ['watches'] });
       await queryClient.invalidateQueries({ queryKey: ['history'] });
       onDone();
+    },
+    onError: error => {
+      if (error instanceof SessionExpiredError) void queryClient.invalidateQueries({ queryKey: ['watches'] });
     },
   });
   return <form className="direction-form surface" onSubmit={event => { event.preventDefault(); setSubmitted(true); if (!error && university.trim() && title.trim()) save.mutate(); }}>
@@ -75,14 +78,35 @@ function DirectionCard({ watch, onEdit }: { watch: Watch; onEdit: () => void }) 
 export default function TrackerPage() {
   const [form, setForm] = useState<'new' | Watch | null>(null);
   const [notice, setNotice] = useState('');
+  const [confirmReset, setConfirmReset] = useState(false);
+  const queryClient = useQueryClient();
   const watches = useQuery({ queryKey: ['watches'], queryFn: api.list });
+  const reset = useMutation({
+    mutationFn: async () => {
+      await queryClient.cancelQueries({ queryKey: ['watches'] });
+      await queryClient.cancelQueries({ queryKey: ['history'] });
+      await api.resetSession();
+    },
+    onSuccess: async () => {
+      queryClient.removeQueries({ queryKey: ['history'] });
+      setForm(null);
+      setConfirmReset(false);
+      setNotice('Создана новая гостевая сессия.');
+      await queryClient.invalidateQueries({ queryKey: ['watches'] });
+    },
+  });
   const count = watches.data?.length ?? 0;
+  const expired = watches.error instanceof SessionExpiredError;
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button className="button button-primary" type="button" disabled={count >= 20} onClick={() => { setNotice(''); setForm('new'); }}>Добавить направление</button></div>
-    <div className="tracker-info"><span className="tag">Первая версия</span><p>Направления доступны в этом браузере. Пока вы вносите цифры сами — автоматическое обновление вузов ещё не подключено.</p></div>
+    <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
+    {count > 0 && <button className="text-button delete-link" type="button" onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}
+    {confirmReset && <div className="delete-confirm surface"><p>Удалить все направления и историю в этом браузере? Отменить удаление нельзя.</p><div><button className="button button-secondary" type="button" disabled={reset.isPending} onClick={() => setConfirmReset(false)}>Отмена</button><button className="button danger-button" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>Удалить всё</button></div></div>}
+    {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
+    {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
     <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">
-      {watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={() => setForm('new')}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} onEdit={() => { setNotice(''); setForm(watch); }} />)}
+      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={() => setForm('new')}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} onEdit={() => { setNotice(''); setForm(watch); }} />)}
     </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} watch={form === 'new' ? undefined : form} onCancel={() => setForm(null)} onDone={() => { setForm(null); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;

@@ -2,7 +2,9 @@ import { expect, test } from '@playwright/test';
 
 test('форма показывает корректный расчёт и отклоняет невозможные группы', async ({ page }) => {
   // Isolate the form from API availability; CRUD is tested separately against the API.
-  await page.route('**/api/v1/session', route => route.fulfill({ status: 204 }));
+  await page.route('**/api/v1/session', route => route.request().method() === 'GET'
+    ? route.fulfill({ json: { expiresAt: '2027-01-01T00:00:00Z' } })
+    : route.fulfill({ status: 204 }));
   await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();

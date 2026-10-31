@@ -555,7 +555,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T010"
       ],
@@ -580,7 +580,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T005",
         "T011"
@@ -598,7 +598,12 @@
         "Чужие направления недоступны во всех маршрутах",
         "Пользователь понимает срок доступа и действие при истечении"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S010: 41 backend, 26 unit, build и 8 E2E проходят; guest expiry/reset/cleanup проверены."
+        }
+      ],
       "blockedReason": null
     },
     {
