@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 73 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 74 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -120,7 +120,7 @@
 - [x] T115 Make history overflow usable from the keyboard
 - [x] T116 Refresh saved directions without losing a form draft
 - [x] T117 Preview direction names before confirming file import
-- [ ] T127 Align import preview date rules with server validation
+- [x] T127 Align import preview date rules with server validation
 - [ ] T138 Recover from lazy page loading failures
 
 ## Качество и эксплуатация

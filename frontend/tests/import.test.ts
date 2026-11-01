@@ -19,6 +19,13 @@ it('rejects impossible import result counts', () => {
   for (const row of [{ importedCount: 0, snapshotCount: 1, replayed: false }, { importedCount: 1, snapshotCount: 501, replayed: false }, { importedCount: 1, snapshotCount: 1, replayed: 'false' }]) expect(() => parseImportResult(row)).toThrow();
 });
 
+it('matches server date limits before confirming an import', () => {
+  const now = Date.parse('2026-11-01T01:00:00Z');
+  expect(() => parseImportText(JSON.stringify({ ...bundle, exportedAt: '2026-11-01T01:05:00Z' }), now)).not.toThrow();
+  expect(() => parseImportText(JSON.stringify({ ...bundle, exportedAt: '2026-11-01T01:05:00.000001Z' }), now)).toThrow('Даты файла');
+  expect(() => parseImportText(JSON.stringify({ ...bundle, watches: [{ ...bundle.watches[0], createdAt: '1999-12-31T23:59:59Z' }] }), now)).toThrow('Даты файла');
+});
+
 it('accepts its own maximum-count pretty export with full-length IDs and numbers', () => {
   const watches = Array.from({ length: 20 }, (_, watch) => {
     const history = Array.from({ length: 500 }, (_, snapshot) => ({ ...fixture.latest,

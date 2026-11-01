@@ -507,3 +507,7 @@ Equal-time updates retain exact observed time and use increasing UUID tie-breaks
 ## S084 - 2026-11-01 - B06 8/20 (T126)
 
 Manual DTO timestamps accept only explicit ISO timezone strings up to6fraction digits or aware internal datetimes; numeric/naive/coercible timestamps rejected422. Hardening/import/export32 passed; original timestamps remain unchanged.
+
+## S085 - 2026-11-01 - B06 9/20 (T127)
+
+Import preview enforces the server UTC year2000 floor and inclusive5minute future tolerance before POST. Boundary tested to1microsecond. Frontend70/build passed, maximum20x500 export still accepted.

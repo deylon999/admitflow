@@ -3835,7 +3835,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T091"
       ],
@@ -3849,7 +3849,12 @@
       "acceptance": [
         "Files too old or beyond server future tolerance rejected before POST; boundary is deterministic in tests."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S085: Import preview enforces the server UTC year2000 floor and inclusive5minute future tolerance before POST. Boundary tested to1microsecond. Frontend70/build passed, maximum20x500 export still accepted."
+        }
+      ],
       "blockedReason": null
     },
     {
