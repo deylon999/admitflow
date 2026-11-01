@@ -4031,7 +4031,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T081"
       ],
@@ -4045,7 +4045,12 @@
       "acceptance": [
         "Changed interval/max attempts apply to eligible jobs; running/backoff jobs remain untouched."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S092: Explicit eligible reenqueue applies requested interval/max attempts and resets due time; running and backoff jobs are not modified. Strict integer queue settings reject bool coercion. Queue/worker13 passed."
+        }
+      ],
       "blockedReason": null
     },
     {

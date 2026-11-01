@@ -48,7 +48,7 @@ def clock():
 
 def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
     now=now or clock()
-    if not 60 <= interval_seconds <= 86400 or not 1 <= max_attempts <= 20:
+    if type(interval_seconds) is not int or type(max_attempts) is not int or not 60 <= interval_seconds <= 86400 or not 1 <= max_attempts <= 20:
         raise ValueError('invalid_queue_policy')
     with Session(engine) as db:
         source=lock_source(db,engine,source_id)
@@ -61,6 +61,9 @@ def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
             job.state='queued'
             job.attempts=0
             job.last_error_code=None
+            job.interval_seconds=interval_seconds
+            job.max_attempts=max_attempts
+            job.next_run_at=now
         else:
             db.add(SourceJob(source_id=source_id,state='queued',next_run_at=now,attempts=0,max_attempts=max_attempts,interval_seconds=interval_seconds))
         db.commit()

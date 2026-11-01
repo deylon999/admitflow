@@ -535,3 +535,7 @@ Spool cleanup attempts all known files, logs only stable safe codes and never ma
 ## S091 - 2026-11-01 - B06 15/20 (T133)
 
 Adapter declarations require an actual boolean attestation, bounded version token, immutable exact domains and callable parser before registry use. Registry/status/worker21 passed; production registry remains empty.
+
+## S092 - 2026-11-01 - B06 16/20 (T134)
+
+Explicit eligible reenqueue applies requested interval/max attempts and resets due time; running and backoff jobs are not modified. Strict integer queue settings reject bool coercion. Queue/worker13 passed.
