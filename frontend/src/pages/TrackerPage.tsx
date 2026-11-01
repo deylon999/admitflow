@@ -3,6 +3,7 @@ import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
+import { HistoryComparison } from '../components/HistoryComparison';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
@@ -80,7 +81,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () =
     <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={onEdit}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button className="text-button delete-link" type="button" onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>
     {confirmDelete && <div className="delete-confirm"><p>Удалить направление и всю его историю?</p><div><button className="button button-secondary" type="button" disabled={remove.isPending} onClick={() => setConfirmDelete(false)}>Отмена</button><button className="button danger-button" type="button" disabled={remove.isPending} onClick={() => remove.mutate()}>{remove.isPending ? 'Удаляем…' : 'Да, удалить'}</button></div></div>}
     {remove.isError && <p className="form-error" role="alert">{errorText(remove.error)}</p>}
-    {showHistory && <div className="direction-history"><h3>История расчётов</h3>{history.isPending ? <p role="status">Загружаем историю…</p> : history.isError ? <p className="form-error" role="alert">{errorText(history.error)}</p> : <><p className="small-copy">Последние {history.data.history.length} сохранений. Дата — время ручного ввода.</p><div className="history-scroll"><table><caption className="visually-hidden">Сохранённые значения и рассчитанное место</caption><thead><tr><th>Дата</th><th>Номер</th><th>Место</th><th>Бюджет</th></tr></thead><tbody>{history.data.history.map(snapshot => <tr key={snapshot.id}><td><time dateTime={snapshot.capturedAt}>{date(snapshot.capturedAt)}</time></td><td>{snapshot.values.rank}</td><td>{snapshot.calculation.place}</td><td>{snapshot.values.seats}</td></tr>)}</tbody></table></div></>}</div>}
+    {showHistory && <div className="direction-history"><h3>История расчётов</h3>{history.isPending ? <p role="status">Загружаем историю…</p> : history.isError ? <p className="form-error" role="alert">{errorText(history.error)}</p> : <><HistoryComparison snapshots={history.data.history} /><p className="small-copy">Последние {history.data.history.length} сохранений. Дата — время ручного ввода.</p><div className="history-scroll"><table><caption className="visually-hidden">Сохранённые значения и рассчитанное место</caption><thead><tr><th>Дата</th><th>Номер</th><th>Место</th><th>Бюджет</th></tr></thead><tbody>{history.data.history.map(snapshot => <tr key={snapshot.id}><td><time dateTime={snapshot.capturedAt}>{date(snapshot.capturedAt)}</time></td><td>{snapshot.values.rank}</td><td>{snapshot.calculation.place}</td><td>{snapshot.values.seats}</td></tr>)}</tbody></table></div></>}</div>}
   </article>;
 }
 

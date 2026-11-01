@@ -2097,7 +2097,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T018",
         "T068"
@@ -2113,7 +2113,12 @@
         "Изменения места и входных данных показаны отдельно",
         "Первый снимок и неизменные данные обработаны корректно"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S022 / B01 3/5: manual history comparison; 53 unit / 4 tracker E2E / build passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -2122,7 +2127,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T016",
         "T018",

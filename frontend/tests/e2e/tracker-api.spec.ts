@@ -26,6 +26,7 @@ test('реальный API: создать, обновить, прочитать
   await expect(page.locator('.direction-result strong')).toHaveText('90');
   await page.getByRole('button', { name: 'История' }).click();
   await expect(page.locator('.direction-history tbody tr')).toHaveCount(2);
+  await expect(page.getByRole('region', { name: 'Сравнение ручных снимков' })).toContainText('Место: 74 → 90');
   await page.getByRole('button', { name: 'Удалить', exact: true }).click();
   await page.getByRole('button', { name: 'Да, удалить' }).click();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
