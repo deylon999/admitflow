@@ -9,6 +9,26 @@ function setup() {
 }
 const info = { expiresAt: '2026-12-02T00:00:00Z' };
 
+it('a canceled consumer settles before bootstrap while the shared session stays usable', async () => {
+  setup();
+  let release!: (value: Response) => void;
+  const gate = new Promise<Response>(resolve => { release = resolve; });
+  const fetch = vi.fn().mockReturnValueOnce(gate).mockResolvedValueOnce(Response.json([]));
+  vi.stubGlobal('fetch', fetch);
+  const { api } = await import('../src/lib/api');
+  const controller = new AbortController();
+  const canceled = api.list(controller.signal);
+  const failure = expect(canceled).rejects.toBeInstanceOf(DOMException);
+  const other = api.list();
+  controller.abort();
+  await failure;
+  expect(fetch).toHaveBeenCalledTimes(1);
+  release(Response.json(info));
+  expect(await other).toEqual([]);
+  expect(fetch).toHaveBeenCalledTimes(2);
+  expect(await api.session()).toEqual(info);
+});
+
 it('late bootstrap failure cannot clear a newer readonly session', async () => {
   setup();
   let release!: (response: Response) => void;

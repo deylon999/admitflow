@@ -592,3 +592,7 @@ npm test -- tests/catalog-cancel.test.ts:1 passed. Real QueryObserver unsubscrib
 ## S103 - 2026-11-01 - B07 6/15 (T144)
 
 Playwright catalog.spec.ts:3 passed on5186/API8006. ArrowDown/Up navigate two actual catalog choices, Escape restores input without closing form, Enter selects name and official source. Existing manual fallback and API failure cases also pass.
+
+## S104 - 2026-11-01 - B07 7/15 (T145)
+
+npm test -- tests/session-state.test.ts:3 passed. Cancel settles before a gated shared bootstrap response; another consumer completes using the same session and only one private fetch. Read epoch checked across bootstrap; abort listeners removed, shared bootstrap not canceled.

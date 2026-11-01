@@ -4370,7 +4370,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T098"
       ],
@@ -4384,7 +4384,12 @@
       "acceptance": [
         "Canceled consumers never dispatch a private read after shared bootstrap finishes; other consumers remain functional."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S104: npm test -- tests/session-state.test.ts:3 passed. Cancel settles before a gated shared bootstrap response; another consumer completes using the same session and only one private fetch. Read epoch checked across bootstrap; abort listeners removed, shared bootstrap not canceled."
+        }
+      ],
       "blockedReason": null
     },
     {

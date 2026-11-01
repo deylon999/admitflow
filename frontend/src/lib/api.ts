@@ -73,7 +73,19 @@ async function ensureSession() {
   return session;
 }
 async function read<T>(path: string, parse: (value: unknown) => T, signal?: AbortSignal): Promise<T> {
-  await ensureSession();
+  signal?.throwIfAborted();
+  const epoch = sessionEpoch;
+  const pending = ensureSession();
+  if (signal) {
+    let abort!: () => void;
+    const canceled = new Promise<never>((_resolve, reject) => { abort = () => reject(signal.reason); });
+    signal.addEventListener('abort', abort, { once: true });
+    if (signal.aborted) abort();
+    try { await Promise.race([pending, canceled]); }
+    finally { signal.removeEventListener('abort', abort); }
+    signal.throwIfAborted();
+  } else await pending;
+  if (epoch !== sessionEpoch) throw new SessionChangedError();
   return parse(await request(path, { signal }));
 }
 export const api = {
