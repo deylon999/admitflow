@@ -9,6 +9,7 @@ export type SessionInfo = { expiresAt: string };
 export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
 export type Catalog = { items: University[]; total: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
+export type HistoryPage = { items: Snapshot[]; nextCursor: string | null };
 
 export class InvalidResponseError extends Error {
   constructor() { super('Сервер вернул некорректные данные. Расчёт не показан — попробуйте обновить страницу.'); }
@@ -78,6 +79,15 @@ function parseHistory(value: unknown, maxRecords: number): WatchDetail {
 }
 export function parseDetail(value: unknown): WatchDetail {
   return parseHistory(value, 100);
+}
+export function parseHistoryPage(value: unknown): HistoryPage {
+  const row = object(value);
+  const items = array(row.items, parseSnapshot, 100);
+  const nextCursor = row.nextCursor === null ? null : text(row.nextCursor, 100);
+  if (new Set(items.map(item => item.id)).size !== items.length
+    || (nextCursor !== null && nextCursor !== items.at(-1)?.id)
+    || items.some((item, index) => index > 0 && Date.parse(item.capturedAt) > Date.parse(items[index - 1].capturedAt))) throw new InvalidResponseError();
+  return { items, nextCursor };
 }
 export function parseExport(value: unknown): DataExport {
   const row = object(value);

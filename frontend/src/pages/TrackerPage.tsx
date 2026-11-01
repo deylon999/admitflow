@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
@@ -70,7 +70,8 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
   const [showHistory, setShowHistory] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const queryClient = useQueryClient();
-  const history = useQuery({ queryKey: ['history', watch.id], queryFn: () => api.detail(watch.id), enabled: showHistory });
+  const history = useInfiniteQuery({ queryKey: ['history', watch.id], initialPageParam: null as string | null, queryFn: ({ pageParam, signal }) => api.history(watch.id, pageParam, signal), getNextPageParam: page => page.nextCursor, enabled: showHistory });
+  const snapshots = history.data?.pages.flatMap(page => page.items) ?? [];
   const remove = useMutation({ mutationFn: () => api.remove(watch.id), onSuccess: () => queryClient.invalidateQueries({ queryKey: ['watches'] }) });
   const { calculation } = watch.latest;
   const old = Date.now() - new Date(watch.latest.capturedAt).getTime() > 86400_000;
@@ -86,7 +87,11 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
     <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={event => onEdit(event.currentTarget)}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button className="text-button delete-link" type="button" onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>
     {confirmDelete && <div className="delete-confirm"><p>Удалить направление и всю его историю?</p><div><button className="button button-secondary" type="button" disabled={remove.isPending} onClick={() => setConfirmDelete(false)}>Отмена</button><button className="button danger-button" type="button" disabled={remove.isPending} onClick={() => remove.mutate()}>{remove.isPending ? 'Удаляем…' : 'Да, удалить'}</button></div></div>}
     {remove.isError && <p className="form-error" role="alert">{errorText(remove.error)}</p>}
-    {showHistory && <div className="direction-history"><h3>История расчётов</h3>{history.isPending ? <p role="status">Загружаем историю…</p> : history.isError ? <p className="form-error" role="alert">{errorText(history.error)}</p> : <><HistoryComparison snapshots={history.data.history} /><p className="small-copy">Последние {history.data.history.length} сохранений. Дата — время ручного ввода.</p><div className="history-scroll"><table><caption className="visually-hidden">Сохранённые значения и рассчитанное место</caption><thead><tr><th>Дата</th><th>Номер</th><th>Место</th><th>Бюджет</th></tr></thead><tbody>{history.data.history.map(snapshot => <tr key={snapshot.id}><td><time dateTime={snapshot.capturedAt}>{date(snapshot.capturedAt)}</time></td><td>{snapshot.values.rank}</td><td>{snapshot.calculation.place}</td><td>{snapshot.values.seats}</td></tr>)}</tbody></table></div></>}</div>}
+    {showHistory && <div className="direction-history"><h3>История расчётов</h3>{history.isPending ? <p role="status">Загружаем историю…</p> : <>
+      {history.isError && <p className="form-error" role="alert">{errorText(history.error)} <button className="text-button" type="button" onClick={() => void (history.isFetchNextPageError ? history.fetchNextPage() : history.refetch())}>Повторить загрузку истории</button></p>}
+      {snapshots.length > 0 && <><HistoryComparison snapshots={snapshots} /><p className="small-copy">Загружено {snapshots.length} сохранений. Дата — время ручного ввода.</p><div className="history-scroll"><table><caption className="visually-hidden">Сохранённые значения и рассчитанное место</caption><thead><tr><th>Дата</th><th>Номер</th><th>Место</th><th>Бюджет</th></tr></thead><tbody>{snapshots.map(snapshot => <tr key={snapshot.id}><td><time dateTime={snapshot.capturedAt}>{date(snapshot.capturedAt)}</time></td><td>{snapshot.values.rank}</td><td>{snapshot.calculation.place}</td><td>{snapshot.values.seats}</td></tr>)}</tbody></table></div></>}
+      {history.hasNextPage && <button className="text-button" type="button" disabled={history.isFetchingNextPage} onClick={() => void history.fetchNextPage()}>{history.isFetchingNextPage ? 'Загружаем…' : 'Загрузить ещё'}</button>}
+    </>}</div>}
   </article>;
 }
 

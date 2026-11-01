@@ -12,6 +12,7 @@ Same-origin `/api/v1`, JSON camelCase, даты ISO 8601 с явной timezone.
 - GET universities?q=: items/total, максимум 50, только manual coverage в текущей версии. Всего в стартовом наборе 2 исследованных вуза.
 - GET/POST watches: максимум 20 на владельца. GET detail содержит последние 100 снимков; latest совпадает с первой записью history. История не означает время обновления официального источника.
 - POST snapshots: новая запись, исходная история сохраняется. DELETE watch удаляет только свою запись с каскадом истории.
+- GET watches/{id}/history?before={snapshotId}&limit=100: items/nextCursor, от новых к старым по capturedAt/id. Limit 1–100, cursor только из истории этого направления; ошибочный — 400, чужое направление — 404. Новые сохранения не сдвигают следующие страницы. UI подгружает до всех 500 снимков, сохраняя уже прочитанные при ошибке следующей страницы.
 - GET export: JSON `manual-export-v1`, exportedAt и все свои направления с полной историей (до 500 снимков на каждое). Чужие данные, cookie, owner hash и ключи операций не включаются. Ответ private/no-store; filename admitflow-export.json. Это выгрузка для чтения, обратный импорт пока не поддерживается.
 - Snapshot: sourceKind=manual, modelVersion=manual-v1. Входы — четыре целых числа. Клиент перепроверяет диапазоны и совпадение place/worstPlace/seats/state с расчётом, не доверяет одному TypeScript cast. Некорректный response вызывает ошибку и не отображается как надёжные числа.
 

@@ -2230,7 +2230,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018",
         "T070"
@@ -2247,7 +2247,12 @@
         "Все 500 снимков доступны без дублей при новом сохранении",
         "Чужой или некорректный cursor не раскрывает данные"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S027 / B02 2/10: Keyset history pages support all 500 saves without duplicate rows during concurrent insert; cursor scoped to watch/owner. Backend targeted pytest: 2 passed; frontend 58 passed; build exit 0; recovery and real API browser tests: 7 passed. UI retains first page on failed next-page request. Preview now 5182/API8002, isolated batch02.db."
+        }
+      ],
       "blockedReason": null
     },
     {

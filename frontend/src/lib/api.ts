@@ -1,7 +1,7 @@
 import type { CalculationValues } from './calculator';
 import type { SessionInfo, WatchCreate } from './contracts';
 import { withRequestTimeout } from './transport';
-import { InvalidResponseError, parseCatalog, parseDetail, parseExport, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
+import { InvalidResponseError, parseCatalog, parseDetail, parseExport, parseHistoryPage, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -55,6 +55,7 @@ export const api = {
   exportData: () => read('/export', parseExport),
   list: (signal?: AbortSignal) => read('/watches', parseWatches, signal),
   detail: (id: string) => read(`/watches/${encodeURIComponent(id)}`, parseDetail),
+  history: (id: string, before: string | null, signal?: AbortSignal) => read(`/watches/${encodeURIComponent(id)}/history${before ? `?before=${encodeURIComponent(before)}` : ''}`, parseHistoryPage, signal),
   async create(body: WatchCreate, key?: string) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body), headers: key ? { 'Idempotency-Key': key } : undefined })); },
   async update(id: string, values: CalculationValues, key?: string) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values), headers: key ? { 'Idempotency-Key': key } : undefined })); },
   async remove(id: string) { await ensureSession(); await request(`/watches/${encodeURIComponent(id)}`, { method: 'DELETE' }); },

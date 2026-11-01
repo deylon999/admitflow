@@ -7,7 +7,7 @@ from contextlib import suppress
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
-from sqlalchemy import delete, func, select, text
+from sqlalchemy import and_, delete, func, or_, select, text
 from sqlalchemy.orm import Session
 
 from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
@@ -16,7 +16,7 @@ from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, DataExport
+from .schemas import CatalogRead, DataExport, HistoryPage
 from .operations import begin_operation, remember_operation, retire_operations
 
 COOKIE = 'abiturient_session'
@@ -226,6 +226,18 @@ def create_app(settings: Settings | None = None):
         retire_operations(db, watch_id)
         db.delete(watch)
         db.commit()
+
+    @app.get('/api/v1/watches/{watch_id}/history', response_model=HistoryPage)
+    def history_page(watch_id: str, before: str | None = Query(None, max_length=100), limit: int = Query(100, ge=1, le=100), owner_hash: str = Depends(owner), db: Session = Depends(database)):
+        watch_owned(watch_id, owner_hash, db)
+        query = select(Snapshot).where(Snapshot.watch_id == watch_id)
+        if before is not None:
+            cursor = db.scalar(select(Snapshot).where(Snapshot.id == before, Snapshot.watch_id == watch_id))
+            if cursor is None:
+                raise HTTPException(400, 'Курсор истории недействителен. Загрузите историю заново.')
+            query = query.where(or_(Snapshot.captured_at < cursor.captured_at, and_(Snapshot.captured_at == cursor.captured_at, Snapshot.id < cursor.id)))
+        rows = db.scalars(query.order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(limit + 1)).all()
+        return HistoryPage(items=[snapshot_read(row) for row in rows[:limit]], next_cursor=rows[limit - 1].id if len(rows) > limit else None)
 
     return app
 

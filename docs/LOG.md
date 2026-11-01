@@ -248,3 +248,7 @@ B01 завершён 5/5; 20 done из 72. Около 25% автоматичес
 ## S026 — 2026-11-01 — B02 1/10 (T073)
 
 Transport bounds response and body to 15s, supports AbortSignal and never retries writes. npm test: 57 passed; npm run build: exit 0; recovery + tracker API E2E: 6 passed. Files: transport.ts, api.ts, TrackerPage, transport/recovery tests. External CI unchanged.
+
+## S027 — 2026-11-01 — B02 2/10 (T074)
+
+Keyset history pages support all 500 saves without duplicate rows during concurrent insert; cursor scoped to watch/owner. Backend targeted pytest: 2 passed; frontend 58 passed; build exit 0; recovery and real API browser tests: 7 passed. UI retains first page on failed next-page request. Preview now 5182/API8002, isolated batch02.db.
