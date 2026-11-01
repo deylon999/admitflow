@@ -3,6 +3,7 @@ import type { CalculationForm } from './calculator';
 
 export type DirectionDraft = { university: string; title: string; sourceUrl: string; values: CalculationForm };
 export type MetadataErrors = Partial<Record<'university' | 'title' | 'sourceUrl', string>>;
+export function limitCodePoints(value: string, max: number): string { return Array.from(value).slice(0, max).join(''); }
 const inputIds = { rank: 'tracker-rank', seats: 'tracker-seats', excluded: 'tracker-excluded', noConsent: 'tracker-no-consent' } as const;
 
 export function draftSignature(draft: DirectionDraft): string {
@@ -12,8 +13,8 @@ export function draftSignature(draft: DirectionDraft): string {
 export function validateDirection(draft: DirectionDraft, editing = false) {
   const metadata: MetadataErrors = {};
   if (!editing) {
-    if (!draft.university.trim() || draft.university.trim().length > 160 || /[\u0000-\u001f\u007f]/.test(draft.university)) metadata.university = 'Введите название вуза, до 160 символов, без управляющих символов.';
-    if (!draft.title.trim() || draft.title.trim().length > 200 || /[\u0000-\u001f\u007f]/.test(draft.title)) metadata.title = 'Введите направление и конкурсную группу, до 200 символов, без управляющих символов.';
+    if (!draft.university.trim() || Array.from(draft.university.trim()).length > 160 || /[\u0000-\u001f\u007f]/.test(draft.university)) metadata.university = 'Введите название вуза, до 160 символов, без управляющих символов.';
+    if (!draft.title.trim() || Array.from(draft.title.trim()).length > 200 || /[\u0000-\u001f\u007f]/.test(draft.title)) metadata.title = 'Введите направление и конкурсную группу, до 200 символов, без управляющих символов.';
     try {
       const url = new URL(draft.sourceUrl.trim());
       if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password || url.href.length > 2048 || /[\u0000-\u001f\u007f]/.test(draft.sourceUrl)) throw new Error();

@@ -2444,7 +2444,7 @@
 
 ### T142. Align form Unicode length limits with the API
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
@@ -2462,7 +2462,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S101: npm test -- tests/direction.test.ts:4 passed; npm run build exit0. Form counts160/200 Unicode code points and rejects excess; removed conflicting UTF16 HTML maxlength for names. Catalog query truncation preserves complete supplementary characters.
 
 ### T143. Cancel abandoned catalog searches
 

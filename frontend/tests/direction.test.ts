@@ -1,9 +1,15 @@
 import { expect, it } from 'vitest';
-import { validateDirection } from '../src/lib/direction';
+import { limitCodePoints, validateDirection } from '../src/lib/direction';
 import { parseWatch } from '../src/lib/contracts';
 import fixture from '../../shared/manual-watch.json';
 
 const valid = { university: 'Test', title: 'Group', sourceUrl: 'https://example.org/list', values: { rank: 120, seats: 90, excluded: 30, noConsent: 16 } };
+it('counts supplementary characters consistently without splitting catalog queries', () => {
+  expect(validateDirection({ ...valid, university: '🎓'.repeat(160), title: '🎓'.repeat(200) }).firstInvalidId).toBeUndefined();
+  expect(validateDirection({ ...valid, university: '🎓'.repeat(161) }).firstInvalidId).toBe('university');
+  expect(validateDirection({ ...valid, title: '🎓'.repeat(201) }).firstInvalidId).toBe('direction-title');
+  expect(limitCodePoints('a'.repeat(119) + '🎓suffix', 120)).toBe('a'.repeat(119) + '🎓');
+});
 it('points to the first metadata error before numeric errors', () => {
   expect(validateDirection({ ...valid, university: ' ' }).firstInvalidId).toBe('university');
   expect(validateDirection({ ...valid, title: ' ' }).firstInvalidId).toBe('direction-title');

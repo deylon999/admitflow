@@ -2,6 +2,7 @@ import { useDeferredValue, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import type { University } from '../lib/api';
+import { limitCodePoints } from '../lib/direction';
 
 export function UniversityPicker({ value, onChange, onSelect, error }: {
   value: string;
@@ -11,7 +12,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
 }) {
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  const query = useDeferredValue(value.slice(0, 120));
+  const query = useDeferredValue(limitCodePoints(value, 120));
   const catalog = useQuery({ queryKey: ['universities', query], queryFn: () => api.universities(query), enabled: open, staleTime: 300_000 });
   return <div className="field university-picker" onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); input.current?.focus(); setOpen(false); }
@@ -19,7 +20,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }}>
     <label htmlFor="university">Вуз</label>
-    <input ref={input} id="university" value={value} maxLength={160} required autoComplete="off"
+    <input ref={input} id="university" value={value} required autoComplete="off"
       placeholder="Название вуза" aria-invalid={Boolean(error) || undefined} aria-describedby={error ? 'catalog-note university-error' : 'catalog-note'}
       onFocus={() => setOpen(true)}
       onChange={event => { onChange(event.target.value); setOpen(true); }} />

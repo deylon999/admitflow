@@ -4286,7 +4286,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -4300,7 +4300,12 @@
       "acceptance": [
         "Supplementary Unicode counts as one character in names and catalog queries; excess is still rejected."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S101: npm test -- tests/direction.test.ts:4 passed; npm run build exit0. Form counts160/200 Unicode code points and rejects excess; removed conflicting UTF16 HTML maxlength for names. Catalog query truncation preserves complete supplementary characters."
+        }
+      ],
       "blockedReason": null
     },
     {

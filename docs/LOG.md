@@ -580,3 +580,7 @@ npm test -- tests/import.test.ts:5 passed. Fatal UTF-8 byte decoding rejects mal
 ## S100 - 2026-11-01 - B07 3/15 (T141)
 
 E2E_API=1 E2E_BASE_URL=5186 Playwright import-cancel.spec.ts:1 passed on isolated API8006. Delayed old File.arrayBuffer explicitly released and two render frames observed after cancellation/new preview; no import POST or data writes. Cancel clears reading and stale selection skips parsing.
+
+## S101 - 2026-11-01 - B07 4/15 (T142)
+
+npm test -- tests/direction.test.ts:4 passed; npm run build exit0. Form counts160/200 Unicode code points and rejects excess; removed conflicting UTF16 HTML maxlength for names. Catalog query truncation preserves complete supplementary characters.
