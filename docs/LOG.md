@@ -400,3 +400,11 @@ S059 result: added backend/tests/runtime_smoke.py for repeatable local HTTP veri
 
 Docker info/compose ps still denied, native PG tools absent. Seven PG migration tests not rerun or claimed passed. Prior full unit/E2E results not repeated because application unchanged; new smoke ran successfully on current HTTP runtime. User confirmation of image rebuild after48f118f and old directions remaining is pending. T103 returned to review, not done; exactly one task continued and no unrelated task added. Next step remains actual PostgreSQL legacy upgrade evidence and preserved old history. Readiness/card count unchanged50/103. RUNBOOK/STATE/PROGRESS updated; roadmap render/check and diff checks follow before commit.
 S059 final checks: roadmap render/check valid103tasks and self-test rejected6invalid states; git diff --check exit0. Current task cleared, nextT103 remains review pending external migration evidence.
+
+## S060 - 2026-11-01 - B05 plan15
+
+User requested15 tasks. Docker Engine and GitHub remain inaccessible; no local fonts found. Select15 independent manual-UX/readiness steps from existing product scenarios, not synthetic adapters. T103 remains review; no native PG claim. Do not increase readiness from card count.
+
+## S061 - 2026-11-01 - B05 1/15 (T104)
+
+Search across university/title, manual-scenario filter, reset/no-results and exact-microsecond date/name sorting without mutating stored data. npm test68/build passed; one Chromium filter/sort check passed on5184. Initial Cyrillic script substitution corrected before verification.

@@ -119,3 +119,7 @@ button:disabled { cursor: wait; opacity: .55; }
 .coverage-numbers { display: flex; flex-wrap: wrap; gap: 20px 36px; margin: 0 0 16px; }
 .coverage-numbers dt { color: var(--muted); font-size: 13px; }
 .coverage-numbers dd { margin: 8px 0 0; font: 600 24px var(--mono); }
+.watch-filters { padding: 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; align-items: end; gap: 16px; }
+.watch-filters .field { flex: 1 1 220px; margin: 0; }
+select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; max-width: 100%; width: 100%; }
+.watch-filters > p { flex-basis: 100%; font-size: 13px; color: var(--muted); }

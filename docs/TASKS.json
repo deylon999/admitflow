@@ -3157,6 +3157,357 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T104",
+      "title": "Search, filter and sort saved directions",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Search, filter and sort saved directions",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Text/status filters, exact date/university sorting, reset and no-results preserve the full list."
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S061: Search across university/title, manual-scenario filter, reset/no-results and exact-microsecond date/name sorting without mutating stored data. npm test68/build passed; one Chromium filter/sort check passed on5184. Initial Cyrillic script substitution corrected before verification."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T105",
+      "title": "Compare any two loaded manual snapshots",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T070",
+        "T074"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Compare any two loaded manual snapshots",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Two distinct loaded snapshots can be selected; deleted/stale selection falls back safely."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T106",
+      "title": "Expose exact history totals and remaining snapshot capacity",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T074"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Expose exact history totals and remaining snapshot capacity",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Owner-only count remains accurate across pagination and UI shows the 500-record limit."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T107",
+      "title": "Show all saved inputs and exact timestamps in history",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T074"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Show all saved inputs and exact timestamps in history",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "History includes both disjoint groups, worst scenario, model and exact timestamp."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T108",
+      "title": "Print a readable manual directions report",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T075"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Print a readable manual directions report",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Print layout shows saved manual values, source/time and limitations without action controls."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T109",
+      "title": "Guard deletion of the direction being edited",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T097"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Guard deletion of the direction being edited",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Cancelling draft discard preserves form; deleting its watch closes the stale form after success."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T110",
+      "title": "Manage focus and Escape for delete confirmations",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T072"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Manage focus and Escape for delete confirmations",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Confirmation receives focus, Escape cancels, successful removal leaves a useful focused control."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T111",
+      "title": "Retain saved cards after background read failure",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T098"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Retain saved cards after background read failure",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Cached data remains visible with an error/retry; initial error and 401 remain separate."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T112",
+      "title": "Display the exact guest access deadline",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Display the exact guest access deadline",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Server expiry is shown without extending session; failure is not a fabricated date."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T113",
+      "title": "Invalidate private state when another tab resets access",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T098"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Invalidate private state when another tab resets access",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Other tabs hide old cards/forms and require explicit synchronization, without auto session POST."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T114",
+      "title": "Add skip navigation and focus route headings",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T072"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Add skip navigation and focus route headings",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Skip link reaches main; client navigation and missing routes focus the correct heading."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T115",
+      "title": "Make history overflow usable from the keyboard",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T074"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Make history overflow usable from the keyboard",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Named focusable region, column headers and narrow-screen keyboard scroll work."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T116",
+      "title": "Refresh saved directions without losing a form draft",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T097"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Refresh saved directions without losing a form draft",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Explicit readonly refresh retrieves updates, keeps draft, disables duplicate reads and reports failure."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T117",
+      "title": "Preview direction names before confirming file import",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Preview direction names before confirming file import",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Preview lists all names/counts, uses safe text and cancellation performs no import."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T118",
+      "title": "Reject readiness when database revision is incompatible",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T086"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Reject readiness when database revision is incompatible",
+        "Verify success, boundary and relevant failure behavior"
+      ],
+      "acceptance": [
+        "Ready/health require expected Alembic revision; live remains DB-independent; failures sanitized."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

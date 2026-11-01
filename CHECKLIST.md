@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 50 из 103 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 51 из 118 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -53,6 +53,8 @@
 - [x] T094 Разрешить безопасный replay импорта при заполненном лимите
 - [x] T095 Проверять действительные даты и порядок полной истории на клиенте
 - [x] T098 Согласовать истечение сессии во всех действиях кабинета
+- [ ] T106 Expose exact history totals and remaining snapshot capacity
+- [ ] T113 Invalidate private state when another tab resets access
 
 ## Автоматический сбор
 
@@ -93,6 +95,18 @@
 - [x] T093 Убрать категоричные обещания из ручного пользовательского пути
 - [x] T096 Привязать ошибки ручной формы к полям и фокусу
 - [x] T097 Защитить несохранённую форму от случайного переключения
+- [x] T104 Search, filter and sort saved directions
+- [ ] T105 Compare any two loaded manual snapshots
+- [ ] T107 Show all saved inputs and exact timestamps in history
+- [ ] T108 Print a readable manual directions report
+- [ ] T109 Guard deletion of the direction being edited
+- [ ] T110 Manage focus and Escape for delete confirmations
+- [ ] T111 Retain saved cards after background read failure
+- [ ] T112 Display the exact guest access deadline
+- [ ] T114 Add skip navigation and focus route headings
+- [ ] T115 Make history overflow usable from the keyboard
+- [ ] T116 Refresh saved directions without losing a form draft
+- [ ] T117 Preview direction names before confirming file import
 
 ## Качество и эксплуатация
 
@@ -115,6 +129,7 @@
 - [x] T088 Сохранять согласованную SQLite-копию с raw-файлами
 - [x] T089 Восстанавливать копию в новое SQLite-окружение
 - [x] T101 Не перезаписывать назначение при конкурентном restore
+- [ ] T118 Reject readiness when database revision is incompatible
 
 ## Резерв и выпуск
 

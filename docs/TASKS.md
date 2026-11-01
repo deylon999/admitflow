@@ -882,6 +882,50 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S053 / B04 6/10: Central QueryCache/MutationCache handler makes 401 consistent across history/export/delete/import/save, disables 401 retries and hides old form/cards/comparison/file. New session only explicit reset, with private query cancellation/refetch before reopening. Initial build required a literal return-type fix for the disabled access-state query. Final npm test67/build passed; 9 real-API session/action/CRUD E2E passed with dirty form, exact session-start count and empty new owner. No automatic cookie recreation.
 
+### T106. Expose exact history totals and remaining snapshot capacity
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T074.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Expose exact history totals and remaining snapshot capacity.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Owner-only count remains accurate across pagination and UI shows the 500-record limit..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T113. Invalidate private state when another tab resets access
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T098.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Invalidate private state when another tab resets access.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Other tabs hide old cards/forms and require explicit synchronization, without auto session POST..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E3. Автоматический сбор
 
 Плановый интервал: D8–D17.
@@ -1672,6 +1716,270 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S052 / B04 5/10: Unsaved form signature guards cancel, different-form switch and ordinary link navigation; dismiss keeps draft, successful save bypasses confirmation, clean form is unchanged. Browser beforeunload added without automatic draft persistence. Build exit0; 5 draft/keyboard Chromium tests passed, including accepted switch, dismissed cancel/link and save without prompt. SPA back/forward/crash recovery not claimed; broader browser/navigation gates remain open.
 
+### T104. Search, filter and sort saved directions
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Search, filter and sort saved directions.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Text/status filters, exact date/university sorting, reset and no-results preserve the full list..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S061: Search across university/title, manual-scenario filter, reset/no-results and exact-microsecond date/name sorting without mutating stored data. npm test68/build passed; one Chromium filter/sort check passed on5184. Initial Cyrillic script substitution corrected before verification.
+
+### T105. Compare any two loaded manual snapshots
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T070, T074.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Compare any two loaded manual snapshots.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Two distinct loaded snapshots can be selected; deleted/stale selection falls back safely..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T107. Show all saved inputs and exact timestamps in history
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T074.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Show all saved inputs and exact timestamps in history.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- History includes both disjoint groups, worst scenario, model and exact timestamp..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T108. Print a readable manual directions report
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T075.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Print a readable manual directions report.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Print layout shows saved manual values, source/time and limitations without action controls..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T109. Guard deletion of the direction being edited
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T097.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Guard deletion of the direction being edited.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Cancelling draft discard preserves form; deleting its watch closes the stale form after success..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T110. Manage focus and Escape for delete confirmations
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T072.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Manage focus and Escape for delete confirmations.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Confirmation receives focus, Escape cancels, successful removal leaves a useful focused control..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T111. Retain saved cards after background read failure
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T098.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Retain saved cards after background read failure.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Cached data remains visible with an error/retry; initial error and 401 remain separate..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T112. Display the exact guest access deadline
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T016.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Display the exact guest access deadline.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Server expiry is shown without extending session; failure is not a fabricated date..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T114. Add skip navigation and focus route headings
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T072.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Add skip navigation and focus route headings.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Skip link reaches main; client navigation and missing routes focus the correct heading..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T115. Make history overflow usable from the keyboard
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T074.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Make history overflow usable from the keyboard.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Named focusable region, column headers and narrow-screen keyboard scroll work..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T116. Refresh saved directions without losing a form draft
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T097.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Refresh saved directions without losing a form draft.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Explicit readonly refresh retrieves updates, keeps draft, disables duplicate reads and reports failure..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T117. Preview direction names before confirming file import
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T091.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Preview direction names before confirming file import.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Preview lists all names/counts, uses safe text and cancellation performs no import..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
@@ -2112,6 +2420,28 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S056 / B04 9/10: Restore reserves destination with exclusive mkdir and installs verified files without overwrite; concurrent attempts yield exactly one success. Failed finalization leaves restore.pending and verify/migration/API reject it. Initial test edit misplaced an existing schema assertion; corrected placement. Final restore/backup/migration pytest: 18 passed, 1 real PostgreSQL skipped. Hard-link filesystem requirement and partial-folder recovery documented.
+
+### T118. Reject readiness when database revision is incompatible
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T086.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Reject readiness when database revision is incompatible.
+2. Verify success, boundary and relevant failure behavior.
+
+**Критерии закрытия:**
+
+- Ready/health require expected Alembic revision; live remains DB-independent; failures sanitized..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

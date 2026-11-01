@@ -16,6 +16,8 @@ import { assertSnapshotOrder } from '../lib/contracts';
 import { draftSignature, validateDirection } from '../lib/direction';
 import { sessionAccessKey } from '../lib/query-client';
 import type { SessionAccess } from '../lib/query-client';
+import { selectWatches } from '../lib/watch-list';
+import type { WatchOrder } from '../lib/watch-list';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -129,6 +131,9 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
 }
 
 export default function TrackerPage() {
+  const [search, setSearch] = useState('');
+  const [scenario, setScenario] = useState('all');
+  const [order, setOrder] = useState<WatchOrder>('updated');
   const [form, setForm] = useState<'new' | Watch | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
   const formOpener = useRef<HTMLButtonElement | null>(null);
@@ -181,6 +186,7 @@ export default function TrackerPage() {
     },
   });
   const count = expired || watches.isError ? 0 : watches.data?.length ?? 0;
+  const visible = selectWatches(watches.data ?? [], search, scenario, order);
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
@@ -194,8 +200,14 @@ export default function TrackerPage() {
     <CoverageSummary />
     {!expired && <ImportData count={count} disabled={busy || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
     {!expired && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}
+    {!expired && count > 0 && <section className="watch-filters surface" aria-label="Поиск направлений">
+      <div className="field"><label htmlFor="watch-search">Поиск по вузу и направлению</label><input id="watch-search" type="search" value={search} onChange={event => setSearch(event.target.value)} /></div>
+      <div className="field"><label htmlFor="watch-state">Ручной сценарий</label><select id="watch-state" value={scenario} onChange={event => setScenario(event.target.value)}><option value="all">Все сценарии</option><option value="safe">В пределах в обоих сценариях</option><option value="conditional">В пределах только при текущих согласиях</option><option value="out">За границей мест</option></select></div>
+      <div className="field"><label htmlFor="watch-order">Порядок направлений</label><select id="watch-order" value={order} onChange={event => setOrder(event.target.value as WatchOrder)}><option value="updated">Недавно сохранённые</option><option value="university">По вузу и названию</option><option value="created">Недавно добавленные</option></select></div>
+      <p role="status">Показано {visible.length} из {count}</p><button className="text-button" type="button" onClick={() => { setSearch(''); setScenario('all'); setOrder('updated'); }}>Сбросить поиск и фильтры</button>
+    </section>}
     <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
-      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
+      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
     </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
