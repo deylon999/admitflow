@@ -21,3 +21,5 @@ docker compose up --build
 `frontend/` — интерфейс · `backend/` — API · `shared/` — общие тестовые данные · `docs/` — документация · `scripts/` — проверка плана.
 
 [План разработки](docs/ROADMAP.md) · [Правила расчёта](docs/DATA_RULES.md)
+
+[Готовность проекта и скриншоты](docs/PROGRESS.md)
