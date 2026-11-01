@@ -3433,6 +3433,116 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S095: Browser JSON reader enforces10MiB success/64KiB error bounds, cancels oversize/stalled streams, validates UTF8 and MIME, bounds displayed error strings. Four body regressions and all77 frontend tests/build passed; session epoch fence still covers body completion.
 
+### T164. Isolate every PostgreSQL migration test
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T004.
+
+**Результаты/файлы:** `backend/tests/pg_support.py`.
+
+**Шаги:**
+
+1. Isolate every PostgreSQL migration test.
+2. Verify successful preparation and meaningful refusal cases; record runtime limits.
+
+**Критерии закрытия:**
+
+- All destructive migration checks use a newly created random schema; failure cleanup never targets the shared schema. Native PostgreSQL acceptance remains separate..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S125: pytest test_pg_support.py/test_migrations.py21 passed/7 actual PG skipped. Upgrade/downgrade now uses the same isolated schema fixture as every native case; no destructive test targets public. SQL compiler/controller regressions prove scoped search_path and cleanup on body/engine-creation errors; failed CREATE never triggers DROP. Native PG execution remains unverified.
+
+### T165. Fail mandatory CI checks when PostgreSQL tests are absent or skipped
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T164.
+
+**Результаты/файлы:** `backend/tests/conftest.py`.
+
+**Шаги:**
+
+1. Fail mandatory CI checks when PostgreSQL tests are absent or skipped.
+2. Verify successful preparation and meaningful refusal cases; record runtime limits.
+
+**Критерии закрытия:**
+
+- Explicit mandatory mode fails on missing/unsafe configuration, no selected PG cases or any skipped native case; local optional mode remains explicit..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T166. Provide read-only redacted database diagnostics
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T004.
+
+**Результаты/файлы:** `backend/app/diagnostics.py`.
+
+**Шаги:**
+
+1. Provide read-only redacted database diagnostics.
+2. Verify successful preparation and meaningful refusal cases; record runtime limits.
+
+**Критерии закрытия:**
+
+- CLI reports dialect/revisions and aggregate manual row counts without migrations, schema creation, data mutation, credentials or row payloads; unavailable database exits nonzero..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T167. Prepare the Compose worker and shared raw volume
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T066.
+
+**Результаты/файлы:** `compose.yaml`.
+
+**Шаги:**
+
+1. Prepare the Compose worker and shared raw volume.
+2. Verify successful preparation and meaningful refusal cases; record runtime limits.
+
+**Критерии закрытия:**
+
+- Compose validates a separate optional worker with the same DB/raw volume and no published ports; default stack stays manual. Runtime/real-source gate remains open..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T168. Verify the compiled React application in the browser
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T163.
+
+**Результаты/файлы:** `frontend/playwright.config.ts`.
+
+**Шаги:**
+
+1. Verify the compiled React application in the browser.
+2. Verify successful preparation and meaningful refusal cases; record runtime limits.
+
+**Критерии закрытия:**
+
+- Manual browser suite runs against a fresh production build with current API; lazy error recovery works for emitted chunks; CI requests built-asset checks without claiming an unrun remote result..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

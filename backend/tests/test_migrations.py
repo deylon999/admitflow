@@ -2,14 +2,12 @@ import importlib.util
 import io
 import os
 from pathlib import Path
-from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import CheckConstraint, inspect, text
-from sqlalchemy.engine import make_url
-from sqlalchemy.schema import CreateSchema, DropSchema
+from pg_support import isolated_postgres
 
 from app.database import Base, make_engine
 
@@ -171,24 +169,10 @@ def test_changed_operations_boolean_grouping_is_not_adopted(migration_db):
 def postgres_legacy_db(monkeypatch):
     if not os.getenv('TEST_DATABASE_URL'):
         pytest.skip('Requires a disposable PostgreSQL test database')
-    url=make_url(os.environ['TEST_DATABASE_URL'])
-    if url.get_backend_name()!='postgresql' or not (url.database or '').startswith('admitflow_test'):
-        raise RuntimeError('TEST_DATABASE_URL must name a disposable PostgreSQL admitflow_test* database')
-    admin=make_engine(url.render_as_string(hide_password=False))
-    schema=f'admitflow_migration_{uuid4().hex}'
-    with admin.begin() as db:
-        db.execute(CreateSchema(schema))
-    scoped=url.update_query_dict({'options':f'-csearch_path={schema}'})
-    monkeypatch.setenv('DATABASE_URL',scoped.render_as_string(hide_password=False))
-    monkeypatch.setenv('ENVIRONMENT','development')
-    engine=make_engine(scoped.render_as_string(hide_password=False))
-    try:
+    with isolated_postgres(os.environ['TEST_DATABASE_URL']) as engine:
+        monkeypatch.setenv('DATABASE_URL',engine.url.render_as_string(hide_password=False))
+        monkeypatch.setenv('ENVIRONMENT','development')
         yield engine
-    finally:
-        engine.dispose()
-        with admin.begin() as db:
-            db.execute(DropSchema(schema,cascade=True))
-        admin.dispose()
 
 
 @pytest.mark.parametrize('full_schema',[False,True],ids=['manual-snapshots','full-with-operations'])
@@ -240,21 +224,11 @@ def test_postgres_offline_sql_compiles_without_a_server(monkeypatch):
     assert "INSERT INTO alembic_version" in sql
 
 
-@pytest.mark.skipif(not os.getenv('TEST_DATABASE_URL'), reason='Requires a disposable PostgreSQL test database')
-def test_postgres_real_upgrade_and_downgrade(monkeypatch):
-    url = os.environ['TEST_DATABASE_URL']
-    if not (make_url(url).database or '').startswith('admitflow_test'):
-        raise RuntimeError('TEST_DATABASE_URL must name a disposable admitflow_test* database')
-    monkeypatch.setenv('DATABASE_URL', url)
-    monkeypatch.setenv('ENVIRONMENT', 'development')
-    engine = make_engine(url)
-    try:
-        command.upgrade(config(), 'head')
-        command.check(config())
-        with engine.begin() as db:
-            db.execute(text('SELECT * FROM candidate_entries LIMIT 1'))
-        command.downgrade(config(), 'base')
-        command.upgrade(config(), 'head')
-        command.check(config())
-    finally:
-        engine.dispose()
+def test_postgres_real_upgrade_and_downgrade(postgres_legacy_db):
+    command.upgrade(config(), 'head')
+    command.check(config())
+    with postgres_legacy_db.begin() as db:
+        db.execute(text('SELECT * FROM candidate_entries LIMIT 1'))
+    command.downgrade(config(), 'base')
+    command.upgrade(config(), 'head')
+    command.check(config())

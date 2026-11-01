@@ -686,3 +686,11 @@ S123 runtime/evidence: frontend session83703 API_TARGET8007. Initial own API ses
 B08 final:10 task commits,110done/163total,3blocked,4review,46todo; all7 release gates open. Estimated automated MVP40% unchanged,day1/30. PRODUCT/DECISIONS/API/DATA_RULES/data-policy/RUNBOOK/STATE/PROGRESS/deliverables updated. Source original bytes still absent, pilot web opens inaccessible, Docker Engine/config ACL and GitHub443 denied. No automatic adapters, national coverage, ML, production deployment, remote push or CI success claimed. Prioritize obtaining real inputs/runtime rather than further cosmetic batches.
 
 S123 plan verification: --render/--check valid163tasks, all6 invalid-state self-tests rejected, git diff --check exit0. No active task, nextT103 review. All10 commits local under configured user identity; generated TASKS.md/CHECKLIST synchronized.
+
+## S124 - 2026-11-01 - B09 plan5
+
+User requested5 tasks. Clean Git at7d41b3f, roadmap valid163. Docker Engine/config ACL and GitHub443 denied again; no new original HTML/fonts. Compose config validation itself succeeds without Engine. Select5 release-preparation tasks addressing verification/runtime gaps, not cosmetic cards. Native PG/Compose/remote CI and source gates remain open.
+
+## S125 - 2026-11-01 - B09 1/5 (T164)
+
+pytest test_pg_support.py/test_migrations.py21 passed/7 actual PG skipped. Upgrade/downgrade now uses the same isolated schema fixture as every native case; no destructive test targets public. SQL compiler/controller regressions prove scoped search_path and cleanup on body/engine-creation errors; failed CREATE never triggers DROP. Native PG execution remains unverified.
