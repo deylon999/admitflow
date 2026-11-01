@@ -3,6 +3,8 @@ import logging
 from uuid import UUID
 
 from sqlalchemy.exc import OperationalError
+from sqlalchemy import text
+import pytest
 
 
 def test_request_id_and_logs_do_not_include_user_data(client,caplog):
@@ -37,3 +39,26 @@ def test_liveness_is_independent_of_readiness(client,monkeypatch):
         response=client.get(url)
         assert response.status_code==503 and 'private' not in response.text
         assert 'x-request-id' in response.headers
+
+
+@pytest.mark.parametrize('revision',['0001','future',None])
+def test_readiness_rejects_incompatible_or_empty_revision(client,application,revision):
+    with application.state.engine.begin() as db:
+        db.execute(text('DELETE FROM alembic_version'))
+        if revision is not None:
+            db.execute(text('INSERT INTO alembic_version VALUES (:revision)'),{'revision':revision})
+    assert client.get('/api/live').status_code==200
+    for path in ['/api/ready','/api/health']:
+        response=client.get(path)
+        assert response.status_code==503 and 'alembic_version' not in response.text
+    with application.state.engine.connect() as db:
+        assert db.execute(text('SELECT version_num FROM alembic_version')).scalars().all()==([] if revision is None else [revision])
+
+
+def test_missing_revision_table_is_not_ready_and_not_created(client,application):
+    with application.state.engine.begin() as db:
+        db.execute(text('DROP TABLE alembic_version'))
+    assert client.get('/api/ready').status_code==503
+    assert client.get('/api/live').status_code==200
+    with application.state.engine.connect() as db:
+        assert not db.execute(text("SELECT 1 FROM sqlite_master WHERE name='alembic_version'")).first()

@@ -123,6 +123,7 @@ test('переход по сайту и пропуск навигации упр
   await page.getByRole('link', { name: 'На главную', exact: true }).click();
   await expect(page.locator('main h1').first()).toBeFocused();
   const skip = page.getByRole('link', { name: 'Перейти к содержимому' });
+  await expect(skip).not.toBeInViewport();
   await skip.focus();
   await page.keyboard.press('Enter');
   await expect(page.locator('main')).toBeFocused();

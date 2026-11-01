@@ -23,7 +23,7 @@ from .coverage import coverage
 from .importing import import_bundle
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
-from .migrations import ensure_restore_complete, upgrade_schema
+from .migrations import ensure_restore_complete, schema_heads, upgrade_schema
 from .http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
 
 COOKIE = 'abiturient_session'
@@ -145,9 +145,11 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/ready')
     def health(db: Session = Depends(database)):
         try:
-            db.execute(text('SELECT 1'))
+            revisions = db.execute(text('SELECT version_num FROM alembic_version')).scalars().all()
         except SQLAlchemyError:
             raise HTTPException(503,'База данных временно недоступна.') from None
+        if set(revisions) != schema_heads():
+            raise HTTPException(503,'База данных требует совместимой версии миграций.')
         return {'status': 'ok', 'version': '0.2.0'}
 
     @app.post('/api/v1/calculate', response_model=CalculationResult)

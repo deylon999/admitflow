@@ -1,7 +1,15 @@
 from pathlib import Path
+from functools import lru_cache
 
 from alembic import command
 from alembic.config import Config
+from alembic.script import ScriptDirectory
+
+
+@lru_cache(maxsize=1)
+def schema_heads():
+    config = Config(str(Path(__file__).resolve().parents[1]/'alembic.ini'))
+    return frozenset(ScriptDirectory.from_config(config).get_heads())
 
 
 def ensure_restore_complete(engine):

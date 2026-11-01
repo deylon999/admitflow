@@ -23,8 +23,9 @@ import { DeleteConfirmation } from '../components/DeleteConfirmation';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+const exactDateFormat = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'short', timeStyle: 'medium' });
 function date(value: string) { return dateFormat.format(new Date(value)); }
-function exactDate(value: string) { return `${new Intl.DateTimeFormat('ru-RU', { dateStyle: 'short', timeStyle: 'medium' }).format(new Date(value))} (${value})`; }
+function exactDate(value: string) { return `${exactDateFormat.format(new Date(value))} (${value})`; }
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
 
 function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }: { watch?: Watch; focusRequest: number; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
@@ -137,7 +138,7 @@ function DirectionCard({ watch, onEdit, disabled, beforeDelete, onRemoved }: { w
 
 export default function TrackerPage() {
   const resetButton = useRef<HTMLButtonElement>(null);
-  const [reportDate, setReportDate] = useState('');
+  const [reportDate, setReportDate] = useState(() => new Date().toISOString());
   const [search, setSearch] = useState('');
   const [scenario, setScenario] = useState('all');
   const [order, setOrder] = useState<WatchOrder>('updated');
@@ -187,6 +188,7 @@ export default function TrackerPage() {
     queryClient.removeQueries({ queryKey: ['history'] });
     queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
     download.reset();
+    requestAnimationFrame(() => addButton.current?.focus());
   } });
   const reset = useMutation({
     mutationFn: async () => {
@@ -203,6 +205,7 @@ export default function TrackerPage() {
       await queryClient.invalidateQueries({ queryKey: ['watches'] });
       queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
       download.reset();
+    requestAnimationFrame(() => addButton.current?.focus());
     },
   });
   const count = expired ? 0 : watches.data?.length ?? 0;

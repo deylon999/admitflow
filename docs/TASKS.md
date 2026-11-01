@@ -888,7 +888,7 @@
 
 **Зависимости:** T074.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/app/schemas.py`; `backend/tests/test_history_totals.py`; `frontend/src/lib/contracts.ts`.
 
 **Шаги:**
 
@@ -910,7 +910,7 @@
 
 **Зависимости:** T098.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/src/lib/query-client.ts`; `frontend/src/main.tsx`; `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/session-tabs.spec.ts`.
 
 **Шаги:**
 
@@ -1722,7 +1722,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/lib/watch-list.ts`; `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/watch-list.test.ts`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1744,7 +1744,7 @@
 
 **Зависимости:** T070, T074.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/components/HistoryComparison.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1766,7 +1766,7 @@
 
 **Зависимости:** T074.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1788,7 +1788,7 @@
 
 **Зависимости:** T075.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/components/ManualReport.tsx`; `frontend/src/tracker.css`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1810,7 +1810,7 @@
 
 **Зависимости:** T097.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1832,7 +1832,7 @@
 
 **Зависимости:** T072.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/components/DeleteConfirmation.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1854,7 +1854,7 @@
 
 **Зависимости:** T098.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1876,7 +1876,7 @@
 
 **Зависимости:** T016.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1898,7 +1898,7 @@
 
 **Зависимости:** T072.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/main.tsx`; `frontend/src/styles.css`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1920,7 +1920,7 @@
 
 **Зависимости:** T074.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/tracker.css`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1942,7 +1942,7 @@
 
 **Зависимости:** T097.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -1964,7 +1964,7 @@
 
 **Зависимости:** T091.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`.
 
 **Шаги:**
 
@@ -2423,11 +2423,11 @@
 
 ### T118. Reject readiness when database revision is incompatible
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T086.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/app/migrations.py`; `backend/tests/test_diagnostics.py`.
 
 **Шаги:**
 
@@ -2441,7 +2441,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S075: Ready/health compare stored Alembic revisions with packaged migration heads; missing/empty/old/future revision503, live stays DB-independent and no automatic repair. Full backend205 passed/7 PG skipped; frontend68/build and44 Chromium passed on explicitly restarted API8004. After minor print-date/dateformatter/grid fixes, build and3 print/history/mobile checks passed again. Screenshots1440/390 refreshed, three history rows visible, no horizontal page overflow, demo sessions deleted204/204. B05 complete15/15; no real-source/PG/CI gate unlocked.
 
 ## E6. Резерв и выпуск
 

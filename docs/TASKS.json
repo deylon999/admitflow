@@ -3169,7 +3169,10 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/lib/watch-list.ts",
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/watch-list.test.ts",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Search, filter and sort saved directions",
@@ -3198,7 +3201,8 @@
         "T074"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/components/HistoryComparison.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Compare any two loaded manual snapshots",
@@ -3226,7 +3230,10 @@
         "T074"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/app/schemas.py",
+        "backend/tests/test_history_totals.py",
+        "frontend/src/lib/contracts.ts"
       ],
       "steps": [
         "Expose exact history totals and remaining snapshot capacity",
@@ -3254,7 +3261,8 @@
         "T074"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Show all saved inputs and exact timestamps in history",
@@ -3282,7 +3290,9 @@
         "T075"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/components/ManualReport.tsx",
+        "frontend/src/tracker.css",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Print a readable manual directions report",
@@ -3310,7 +3320,8 @@
         "T097"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Guard deletion of the direction being edited",
@@ -3338,7 +3349,8 @@
         "T072"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/components/DeleteConfirmation.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Manage focus and Escape for delete confirmations",
@@ -3366,7 +3378,8 @@
         "T098"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Retain saved cards after background read failure",
@@ -3394,7 +3407,8 @@
         "T016"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Display the exact guest access deadline",
@@ -3422,7 +3436,11 @@
         "T098"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/lib/api.ts",
+        "frontend/src/lib/query-client.ts",
+        "frontend/src/main.tsx",
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/session-tabs.spec.ts"
       ],
       "steps": [
         "Invalidate private state when another tab resets access",
@@ -3450,7 +3468,9 @@
         "T072"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/main.tsx",
+        "frontend/src/styles.css",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Add skip navigation and focus route headings",
@@ -3478,7 +3498,9 @@
         "T074"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/tracker.css",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Make history overflow usable from the keyboard",
@@ -3506,7 +3528,8 @@
         "T097"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Refresh saved directions without losing a form draft",
@@ -3534,7 +3557,8 @@
         "T091"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/components/ImportData.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts"
       ],
       "steps": [
         "Preview direction names before confirming file import",
@@ -3557,12 +3581,14 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T086"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/app/migrations.py",
+        "backend/tests/test_diagnostics.py"
       ],
       "steps": [
         "Reject readiness when database revision is incompatible",
@@ -3571,7 +3597,12 @@
       "acceptance": [
         "Ready/health require expected Alembic revision; live remains DB-independent; failures sanitized."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S075: Ready/health compare stored Alembic revisions with packaged migration heads; missing/empty/old/future revision503, live stays DB-independent and no automatic repair. Full backend205 passed/7 PG skipped; frontend68/build and44 Chromium passed on explicitly restarted API8004. After minor print-date/dateformatter/grid fixes, build and3 print/history/mobile checks passed again. Screenshots1440/390 refreshed, three history rows visible, no horizontal page overflow, demo sessions deleted204/204. B05 complete15/15; no real-source/PG/CI gate unlocked."
+        }
+      ],
       "blockedReason": null
     }
   ]
