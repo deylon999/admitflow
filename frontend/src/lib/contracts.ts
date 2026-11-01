@@ -6,7 +6,7 @@ export type Snapshot = { id: string; capturedAt: string; sourceKind: 'manual'; m
 export type Watch = { id: string; university: string; title: string; sourceUrl: string; createdAt: string; latest: Snapshot };
 export type WatchDetail = Watch & { history: Snapshot[] };
 export type WatchCreate = { university: string; title: string; sourceUrl: string; values: CalculationValues };
-export type SessionInfo = { expiresAt: string };
+export type SessionInfo = { expiresAt: string; draftScope?: string };
 export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
 export type Catalog = { items: University[]; total: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
@@ -123,7 +123,11 @@ export function assertSnapshotOrder(items: Snapshot[]): void {
   }
 }
 export function parseSession(value: unknown): SessionInfo {
-  return { expiresAt: timestamp(object(value).expiresAt) };
+  const row = object(value);
+  const expiresAt = timestamp(row.expiresAt);
+  if (row.draftScope === undefined) return { expiresAt }; // Older API: local recovery stays disabled.
+  if (typeof row.draftScope !== 'string' || !/^[a-f0-9]{64}$/.test(row.draftScope)) throw new InvalidResponseError();
+  return { expiresAt, draftScope: row.draftScope };
 }
 export function parseImportResult(value: unknown): ImportResult {
   const row = object(value);

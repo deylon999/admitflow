@@ -7,12 +7,12 @@ from test_api import start, create, HEADERS
 @pytest.mark.parametrize('value', ['0001-01-01T00:00:00+00:01', '9999-12-31T23:59:59.999999-00:01'])
 def test_offset_overflow_is_a_validation_error(value):
     with pytest.raises(ValidationError):
-        SessionRead(expires_at=value)
+        SessionRead(expires_at=value,draft_scope='a'*64)
 
 
 def test_calendar_boundaries_remain_valid():
     for value in ('0001-01-01T00:00:00Z', '9999-12-31T23:59:59.999999Z', '0001-01-01T01:00:00+01:00'):
-        assert SessionRead(expires_at=value).expires_at is not None
+        assert SessionRead(expires_at=value,draft_scope='a'*64).expires_at is not None
 
 
 def test_import_overflow_refuses_without_internal_error_or_write(client):

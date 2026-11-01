@@ -62,6 +62,7 @@ class WatchCreate(CamelModel):
 
 class SessionRead(CamelModel):
     expires_at: ManualTimestamp
+    draft_scope: str = Field(pattern=r'^[a-f0-9]{64}$')
 
 
 class UniversityRead(CamelModel):

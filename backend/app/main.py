@@ -262,7 +262,8 @@ def create_app(settings: Settings | None = None):
         session = db.get(BrowserSession, owner_hash)
         if session is None:
             raise HTTPException(401, 'Сессия завершена.')
-        return SessionRead(expires_at=utc(session.expires_at))
+        scope = hashlib.sha256(f'admitflow-draft-v1:{owner_hash}'.encode()).hexdigest()
+        return SessionRead(expires_at=utc(session.expires_at), draft_scope=scope)
 
     @app.delete('/api/v1/session', status_code=204)
     def delete_session(request: Request, response: Response, db: Session = Depends(database)):

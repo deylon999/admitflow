@@ -646,3 +646,7 @@ npm run build exit0; Playwright landing.spec.ts/tracker-tools.spec.ts16 passed o
 ## S115 - 2026-11-01 - B08 2/10 (T155)
 
 Playwright draft-navigation/draft/pending-form:5 passed. Native browser back/forward rejects without losing fields, accepts departure once, pending unchanged edit remains protected. Router links skip document guard to avoid double confirmation. Old link test now explicitly waits for async dialog event; initial timing failure documented, refusal assertions retained.
+
+## S116 - 2026-11-01 - B08 3/10 (T156)
+
+Backend draft_scope/timestamp_bounds/sessions10 passed; frontend draft-scope/session-state6 passed. Namespace stable per owner, changes after new session/reset, contains neither cookie nor stored owner hash and cannot authenticate as cookie. Frontend older-API contract remains usable with recovery disabled.
