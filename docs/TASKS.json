@@ -3751,7 +3751,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -3765,7 +3765,12 @@
       "acceptance": [
         "Read query counts stay bounded independently of watch count; latest ordering and full export preserved."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S082: Manual list and full export batch snapshots instead of one query per watch; bounded full export still validates500 per watch. Twenty-watch query-count/tied-order test plus export/import15 passed (at most3SELECTs per request)."
+        }
+      ],
       "blockedReason": null
     },
     {

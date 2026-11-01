@@ -141,6 +141,27 @@ def create_app(settings: Settings | None = None):
             raise HTTPException(409, 'История направления не соответствует ограничениям сервиса.')
         return WatchDetail(**watch_read(watch, db, latest=history[0]).model_dump(), history=[snapshot_read(item) for item in history])
 
+    def batch_watches(watches, db, *, full=False):
+        if not watches:
+            return []
+        ids = [watch.id for watch in watches]
+        if full:
+            rows = db.scalars(select(Snapshot).where(Snapshot.watch_id.in_(ids)).order_by(Snapshot.watch_id, Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(10001)).all()
+        else:
+            ranked = select(Snapshot.id, func.row_number().over(partition_by=Snapshot.watch_id, order_by=(Snapshot.captured_at.desc(), Snapshot.id.desc())).label('position')).where(Snapshot.watch_id.in_(ids)).subquery()
+            rows = db.scalars(select(Snapshot).join(ranked, Snapshot.id == ranked.c.id).where(ranked.c.position == 1)).all()
+        grouped = {id: [] for id in ids}
+        for row in rows:
+            grouped[row.watch_id].append(row)
+        result = []
+        for watch in watches:
+            history = grouped[watch.id]
+            if not 1 <= len(history) <= 500:
+                raise HTTPException(409,'История направления не соответствует ограничениям сервиса.')
+            value = watch_read(watch, db, latest=history[0])
+            result.append(WatchDetail(**value.model_dump(),history=[snapshot_read(row) for row in history]) if full else value)
+        return result
+
     def add_snapshot(watch_id, values, db):
         snapshot = Snapshot(watch_id=watch_id, captured_at=utcnow(), **values.model_dump())
         db.add(snapshot)
@@ -192,7 +213,7 @@ def create_app(settings: Settings | None = None):
         if len(watches) > 20:
             raise HTTPException(409, 'Количество направлений превышает лимит экспорта.')
         response.headers['Content-Disposition'] = 'attachment; filename="admitflow-export.json"'
-        return DataExport(exported_at=utcnow(), watches=[watch_detail(watch, db, limit=501) for watch in watches])
+        return DataExport(exported_at=utcnow(), watches=batch_watches(watches, db, full=True))
 
     @app.post('/api/v1/session', status_code=204)
     def start_session(request: Request, response: Response, db: Session = Depends(database)):
@@ -239,7 +260,7 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/v1/watches', response_model=list[WatchRead])
     def list_watches(owner_hash: str = Depends(owner), db: Session = Depends(database)):
         watches = db.scalars(select(Watch).where(Watch.owner_hash == owner_hash).order_by(Watch.created_at.desc()).limit(20)).all()
-        return [watch_read(watch, db) for watch in watches]
+        return batch_watches(watches, db)
 
     @app.post('/api/v1/watches', response_model=WatchRead, status_code=201)
     def create_watch(body: WatchCreate, request: Request, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):

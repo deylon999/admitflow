@@ -495,3 +495,7 @@ Settings fail closed for unknown environment/boolean strings; constructor enforc
 ## S081 - 2026-11-01 - B06 5/20 (T123)
 
 PostgreSQL connect timeout defaults5s (allowed1..10), pool checkout5s. Real local TCP peer accepted a connection then stalled: handshake timed out;4 tests passed. This is failure-path wire verification, not a successful PG migration/server test.
+
+## S082 - 2026-11-01 - B06 6/20 (T124)
+
+Manual list and full export batch snapshots instead of one query per watch; bounded full export still validates500 per watch. Twenty-watch query-count/tied-order test plus export/import15 passed (at most3SELECTs per request).
