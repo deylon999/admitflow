@@ -694,3 +694,7 @@ User requested5 tasks. Clean Git at7d41b3f, roadmap valid163. Docker Engine/conf
 ## S125 - 2026-11-01 - B09 1/5 (T164)
 
 pytest test_pg_support.py/test_migrations.py21 passed/7 actual PG skipped. Upgrade/downgrade now uses the same isolated schema fixture as every native case; no destructive test targets public. SQL compiler/controller regressions prove scoped search_path and cleanup on body/engine-creation errors; failed CREATE never triggers DROP. Native PG execution remains unverified.
+
+## S126 - 2026-11-01 - B09 2/5 (T165)
+
+Guard subprocess regressions8 passed; full collection301 tests succeeds. Actual pytest --require-postgres tests/test_migrations.py exits4 with missing disposable PG configuration, rather than green skipped checks. Guard also rejects filtered native cases and teardown skips. CI now requests mandatory PG and JUnit artifact; remote workflow remains unrun/T006 blocked.

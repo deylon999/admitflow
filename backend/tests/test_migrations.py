@@ -176,6 +176,7 @@ def postgres_legacy_db(monkeypatch):
 
 
 @pytest.mark.parametrize('full_schema',[False,True],ids=['manual-snapshots','full-with-operations'])
+@pytest.mark.postgres
 def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full_schema):
     seed_legacy(postgres_legacy_db)
     if full_schema:
@@ -191,6 +192,7 @@ def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full
 
 
 @pytest.mark.parametrize('case',['rank-operator','literal-case','not-valid','operations-logic'])
+@pytest.mark.postgres
 def test_postgres_refuses_incompatible_legacy_checks(postgres_legacy_db,case):
     seed_legacy(postgres_legacy_db)
     create_original_development_schema(postgres_legacy_db)
@@ -224,6 +226,7 @@ def test_postgres_offline_sql_compiles_without_a_server(monkeypatch):
     assert "INSERT INTO alembic_version" in sql
 
 
+@pytest.mark.postgres
 def test_postgres_real_upgrade_and_downgrade(postgres_legacy_db):
     command.upgrade(config(), 'head')
     command.check(config())

@@ -1,4 +1,5 @@
 import pytest
+pytest_plugins = ['pg_guard']
 from fastapi.testclient import TestClient
 
 from app.config import Settings

@@ -4988,7 +4988,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T164"
       ],
@@ -5002,7 +5002,12 @@
       "acceptance": [
         "Explicit mandatory mode fails on missing/unsafe configuration, no selected PG cases or any skipped native case; local optional mode remains explicit."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S126: Guard subprocess regressions8 passed; full collection301 tests succeeds. Actual pytest --require-postgres tests/test_migrations.py exits4 with missing disposable PG configuration, rather than green skipped checks. Guard also rejects filtered native cases and teardown skips. CI now requests mandatory PG and JUnit artifact; remote workflow remains unrun/T006 blocked."
+        }
+      ],
       "blockedReason": null
     },
     {
