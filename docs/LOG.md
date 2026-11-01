@@ -416,3 +416,7 @@ Distinct chronological snapshot selectors compare any loaded pair, with safe fal
 ## S063 - 2026-11-01 - B05 3/15 (T106)
 
 History API returns owner-scoped total independent of page size; UI shows remaining capacity out of500, older servers keep unknown total. Targeted backend1, frontend68/build and2 Chromium tools checks passed; current API process will be restarted before final real-API run.
+
+## S064 - 2026-11-01 - B05 4/15 (T107)
+
+History now displays all four saved inputs, both scenario places, model version and full ISO timestamp alongside readable seconds. Chromium history check passed with8columns and original timestamp/model. Formula unchanged.

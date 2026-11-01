@@ -16,6 +16,9 @@ test('можно сравнить любые два загруженных со�
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'История', exact: true }).click();
   await expect(page.getByText('Сохранено 3 из 500. Осталось обновлений: 497.')).toBeVisible();
+  await expect(page.locator('.direction-history tbody tr').first().locator('td')).toHaveCount(8);
+  await expect(page.locator('.direction-history tbody tr').first()).toContainText('manual-v1');
+  await expect(page.locator('.direction-history time').first()).toContainText(fixture.latest.capturedAt);
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 84 → 74');
   await page.getByLabel('Более раннее сохранение', { exact: true }).selectOption('snapshot-1');
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 104 → 74');
