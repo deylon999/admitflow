@@ -2,6 +2,7 @@
 import asyncio
 import json
 import logging
+import math
 import time
 from urllib.parse import urlsplit
 from uuid import uuid4
@@ -13,6 +14,44 @@ MAX_REQUEST_BYTES = 8*1024*1024
 
 class BodyTooLarge(Exception):
     pass
+
+
+def validate_json_document(body):
+    depth, quoted, escaped = 0, False, False
+    for byte in body:
+        if quoted:
+            if escaped:
+                escaped = False
+            elif byte == 92:
+                escaped = True
+            elif byte == 34:
+                quoted = False
+        elif byte == 34:
+            quoted = True
+        elif byte in (91, 123):
+            depth += 1
+            if depth > 64:
+                raise ValueError('json_depth')
+        elif byte in (93, 125):
+            depth -= 1
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            if key in result:
+                raise ValueError('duplicate_json_key')
+            result[key] = value
+        return result
+    def number(value):
+        result = float(value)
+        if not math.isfinite(result):
+            raise ValueError('nonfinite_json')
+        return result
+    def constant(_):
+        raise ValueError('nonfinite_json')
+    try:
+        json.loads(body, object_pairs_hook=pairs, parse_float=number, parse_constant=constant)
+    except json.JSONDecodeError:
+        pass  # Preserve FastAPI's normal malformed-document validation response.
 
 
 def permitted_origin(request, config):
@@ -67,6 +106,11 @@ class RequestBudgetMiddleware:
             return await self.reject(scope, receive, send, 408, 'Время приёма запроса истекло.')
         except BodyTooLarge:
             return await self.reject(scope, receive, send, 413, 'Размер запроса превышает 8 МБ.')
+        if body and headers.get(b'content-type', b'').split(b';')[0].strip().lower() == b'application/json':
+            try:
+                validate_json_document(body)
+            except (ValueError, RecursionError):
+                return await self.reject(scope, receive, send, 400, 'JSON содержит неоднозначные значения или превышает допустимую вложенность.')
         sent = False
 
         async def replay():

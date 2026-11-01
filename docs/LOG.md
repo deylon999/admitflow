@@ -479,3 +479,7 @@ User requested20 tasks. Existing critical path still needs external inputs: Dock
 ## S077 - 2026-11-01 - B06 1/20 (T119)
 
 Reject C0/DEL controls before Pydantic URL normalization; client form/import contracts reject them consistently. Targeted backend9 passed; frontend69 passed. No metadata write on invalid input.
+
+## S078 - 2026-11-01 - B06 2/20 (T120)
+
+Request JSON rejects duplicate keys, NaN/Infinity/overflow and depth over64 before writes, preserving normal malformed-JSON validation. Brackets inside strings remain valid. Targeted hardening14 passed; existing8MiB receive budget preserved.

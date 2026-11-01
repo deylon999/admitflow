@@ -3639,7 +3639,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T084"
       ],
@@ -3653,7 +3653,12 @@
       "acceptance": [
         "Duplicate keys, nonfinite numbers and excessive nesting are rejected before any endpoint writes."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S078: Request JSON rejects duplicate keys, NaN/Infinity/overflow and depth over64 before writes, preserving normal malformed-JSON validation. Brackets inside strings remain valid. Targeted hardening14 passed; existing8MiB receive budget preserved."
+        }
+      ],
       "blockedReason": null
     },
     {
