@@ -25,3 +25,11 @@ it('checks full export ordering, dates and cross-watch snapshot uniqueness', () 
   expect(() => parseExport({ ...bundle, exportedAt: '2026-10-01T00:00:00Z' })).toThrow();
   expect(() => parseExport({ ...bundle, watches: [...bundle.watches, { ...bundle.watches[0], id: 'another' }] })).toThrow();
 });
+
+it('uses Python code-point ID order and code-point length for Unicode exports', () => {
+  const latest = { ...fixture.latest, id: '😀'.repeat(100) };
+  const earlier = { ...fixture.latest, id: '\uffff' };
+  const bundle = { formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, latest, history: [latest, earlier] }] };
+  expect(() => parseExport(bundle)).not.toThrow();
+  expect(() => parseExport({ ...bundle, watches: [{ ...bundle.watches[0], latest: earlier, history: [earlier, latest] }] })).toThrow();
+});

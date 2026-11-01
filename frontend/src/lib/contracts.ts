@@ -1,6 +1,6 @@
 import { calculatePlace } from './calculator';
 import type { CalculationResult, CalculationValues } from './calculator';
-import { instantMicros } from './time';
+import { compareOpaqueIds, instantMicros } from './time';
 
 export type Snapshot = { id: string; capturedAt: string; sourceKind: 'manual'; modelVersion: 'manual-v1'; values: CalculationValues; calculation: CalculationResult };
 export type Watch = { id: string; university: string; title: string; sourceUrl: string; createdAt: string; latest: Snapshot };
@@ -23,7 +23,7 @@ function object(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 function text(value: unknown, max = 2048): string {
-  if (typeof value !== 'string' || !value.trim() || value.length > max || /[\u0000-\u001f\u007f]/.test(value)) throw new InvalidResponseError();
+  if (typeof value !== 'string' || !value.trim() || Array.from(value).length > max || /[\u0000-\u001f\u007f]/.test(value)) throw new InvalidResponseError();
   return value;
 }
 function timestamp(value: unknown): string {
@@ -117,7 +117,7 @@ export function assertSnapshotOrder(items: Snapshot[]): void {
   for (const item of items) {
     const current = instantMicros(item.capturedAt);
     if (seen.has(item.id) || (previous && (current > instantMicros(previous.capturedAt)
-      || (current === instantMicros(previous.capturedAt) && item.id >= previous.id)))) throw new InvalidResponseError();
+      || (current === instantMicros(previous.capturedAt) && compareOpaqueIds(item.id, previous.id) >= 0)))) throw new InvalidResponseError();
     seen.add(item.id);
     previous = item;
   }

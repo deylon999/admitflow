@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 74 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 75 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -59,7 +59,7 @@
 - [x] T124 Batch manual direction and export reads
 - [x] T125 Order same-time snapshots and refuse clock regression
 - [x] T126 Enforce ISO aware timestamps on manual DTOs
-- [ ] T128 Compare opaque IDs by Unicode code point
+- [x] T128 Compare opaque IDs by Unicode code point
 - [ ] T135 Serialize guest bootstrap between browser tabs
 - [ ] T136 Fence stale session results after access changes
 

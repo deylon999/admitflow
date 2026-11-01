@@ -1,4 +1,13 @@
 /** Match the server's real calendar and microsecond precision, without Date.parse rollover. */
+export function compareOpaqueIds(left: string, right: string): number {
+  const a = Array.from(left, char => char.codePointAt(0)!);
+  const b = Array.from(right, char => char.codePointAt(0)!);
+  for (let index = 0; index < Math.min(a.length, b.length); index++) {
+    if (a[index] !== b[index]) return a[index] < b[index] ? -1 : 1;
+  }
+  return Math.sign(a.length - b.length);
+}
+
 export function instantMicros(value: string): bigint {
   const match = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(?:\.(\d{1,6}))?(Z|[+-]\d{2}:\d{2})$/.exec(value);
   if (!match) throw new Error('Invalid timestamp');

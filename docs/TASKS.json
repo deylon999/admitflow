@@ -3863,7 +3863,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T095"
       ],
@@ -3877,7 +3877,12 @@
       "acceptance": [
         "Same-time ordering agrees with Python for BMP and supplementary Unicode IDs."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S086: Same-time opaque IDs compare Unicode code points like Python, not UTF16 code units. Text length counts code points, accepting valid100-character supplementary IDs from the server. Unicode ordering/export regression and all71 frontend tests passed."
+        }
+      ],
       "blockedReason": null
     },
     {
