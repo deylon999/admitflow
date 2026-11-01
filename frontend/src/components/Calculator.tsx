@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { assessScenario, exampleValues } from '../lib/calculator';
 import type { CalculationForm, CalculationError, ScenarioAssessment } from '../lib/calculator';
+import { ScenarioExplanation } from './ScenarioExplanation';
 
 export const calculationFields = [
   { name: 'rank', id: 'rank', label: 'Ваш номер в списке', min: 1 },
@@ -19,7 +20,7 @@ export function CalculationInputs({ values, onChange, error, prefix = '' }: { va
 export function ResultLegend() {
   return <div className="legend result-legend"><span><i className="swatch competitor" />Конкурируют с вами</span><span><i className="swatch yours" />Вы</span><span><i className="swatch vacant" />Свободно</span></div>;
 }
-export function CalculationOutput({ assessment }: { assessment: ScenarioAssessment }) {
+export function CalculationOutput({ assessment, values }: { assessment: ScenarioAssessment; values: CalculationForm }) {
   const result = assessment.state === 'ready' ? assessment.result : { error: assessment.reason, fields: [] };
   const valid = !('error' in result);
   return <div className="result-card surface" aria-live="polite" aria-atomic="true">
@@ -31,6 +32,7 @@ export function CalculationOutput({ assessment }: { assessment: ScenarioAssessme
     <div className="progress-bar" id="progress-bar" hidden={!valid} role="img" aria-label={valid ? `Ваше место ${result.place}, бюджетных мест ${result.seats}` : undefined}>
       <span className="progress-competitors" style={{ width: valid ? `${(result.place - 1) / Math.max(result.place, result.seats) * 100}%` : 0 }} /><span className="progress-yours" style={{ width: valid ? `${1 / Math.max(result.place, result.seats) * 100}%` : 0 }} /><span className="progress-free" />
     </div><ResultLegend />
+    {valid && <ScenarioExplanation values={values} />}
   </div>;
 }
 
@@ -44,6 +46,6 @@ export function Calculator() {
       <CalculationInputs values={values} onChange={setValues} error={error} />
       <p className="form-note">Значения — пример. Подставьте данные из своего списка. Учитывайте людей в одной конкурсной группе, без повторов между двумя вычитаемыми группами.</p>
       <p className="form-error" id="calculation-error" role="alert" hidden={!error}>{error?.error}</p>
-    </form><CalculationOutput assessment={assessment} /></div>
+    </form><CalculationOutput assessment={assessment} values={values} /></div>
   </section>;
 }

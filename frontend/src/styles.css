@@ -284,3 +284,8 @@ details[open] .faq-icon::after { transform: rotate(0); }
   *, *::before, *::after { transition: none !important; }
 }
 [data-state='insufficient_data'].result-status, [data-state='unsupported'].result-status { color: var(--muted); background: var(--surface); }
+.scenario-explanation { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; line-height: 1.6; }
+.scenario-explanation summary { font-weight: 600; }
+.scenario-explanation dt { margin-top: 12px; color: var(--muted); }
+.scenario-explanation dd { margin-top: 4px; font-family: var(--mono); overflow-wrap: anywhere; }
+.scenario-explanation p { margin-top: 12px; }

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
+import { ScenarioExplanation } from '../components/ScenarioExplanation';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
@@ -73,6 +74,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () =
     <div className="direction-result"><strong>{calculation.place}</strong><span>место сейчас<br /><b>{calculation.seats}</b> бюджетных мест</span></div>
     <p className="result-status" data-state={calculation.state}>{calculation.status}</p>
     <p className="direction-worst">Если все выше вас подадут согласие: <b>{calculation.worstPlace}-е место</b>.</p>
+    <ScenarioExplanation values={watch.latest.values} />
     <div className="direction-source"><a href={watch.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть источник ↗</a><span>Сохранено <time dateTime={watch.latest.capturedAt}>{date(watch.latest.capturedAt)}</time></span></div>
     {old && <p className="stale-note">Цифры сохранены больше суток назад. Проверьте свежий список.</p>}
     <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={onEdit}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button className="text-button delete-link" type="button" onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>

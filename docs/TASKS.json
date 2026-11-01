@@ -2067,7 +2067,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T020",
         "T018"
@@ -2083,7 +2083,12 @@
         "Объяснение связано с введёнными числами и двумя сценариями",
         "Нет обещания поступления или выдуманных процентов"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S021 / B01 2/5: numeric explanations; 49 unit / 4 landing E2E / build passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -2092,7 +2097,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T018",
         "T068"
