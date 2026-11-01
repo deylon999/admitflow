@@ -253,7 +253,7 @@
 
 **Зависимости:** T004, T015.
 
-**Результаты/файлы:** `backend/app/migration_checks.py`; `backend/alembic/versions/0001_initial.py`; `backend/alembic/versions/0002_operation_records.py`; `backend/tests/test_migrations.py`.
+**Результаты/файлы:** `backend/app/migration_checks.py`; `backend/alembic/versions/0001_initial.py`; `backend/alembic/versions/0002_operation_records.py`; `backend/tests/test_migrations.py`; `backend/tests/runtime_smoke.py`; `docs/evidence/t103-docker-smoke.json`.
 
 **Шаги:**
 
@@ -271,6 +271,7 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S058: fix implemented; migration regressions14 passed/7 real PG skipped, full backend200 passed/7 skipped. Docker runtime blocked by Engine ACL; preserve existing volume, validate real PG before done.
+- [docs/evidence/t103-docker-smoke.json](../docs/evidence/t103-docker-smoke.json) — S059: 15 real local HTTP checks passed on8080, two new guest sessions deleted204. Not evidence of image SHA, DB engine/revision or legacy migration; T103 remains review.
 
 ## E1. Источники и правила
 

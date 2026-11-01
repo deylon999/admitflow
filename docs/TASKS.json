@@ -3132,7 +3132,9 @@
         "backend/app/migration_checks.py",
         "backend/alembic/versions/0001_initial.py",
         "backend/alembic/versions/0002_operation_records.py",
-        "backend/tests/test_migrations.py"
+        "backend/tests/test_migrations.py",
+        "backend/tests/runtime_smoke.py",
+        "docs/evidence/t103-docker-smoke.json"
       ],
       "steps": [
         "Compare PostgreSQL reflected checks with server-rendered frozen checks, preserving semantics",
@@ -3148,6 +3150,10 @@
         {
           "path": "docs/LOG.md",
           "note": "S058: fix implemented; migration regressions14 passed/7 real PG skipped, full backend200 passed/7 skipped. Docker runtime blocked by Engine ACL; preserve existing volume, validate real PG before done."
+        },
+        {
+          "path": "docs/evidence/t103-docker-smoke.json",
+          "note": "S059: 15 real local HTTP checks passed on8080, two new guest sessions deleted204. Not evidence of image SHA, DB engine/revision or legacy migration; T103 remains review."
         }
       ],
       "blockedReason": null

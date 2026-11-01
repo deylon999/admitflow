@@ -51,6 +51,8 @@ docker compose exec -T db psql -U admitflow -d admitflow -c "SELECT conname, pg_
 
 Локальные SQLite-регрессии и PG offline SQL не подтверждают исправность запуска PostgreSQL. T103 остаётся review до успешного upgrade существующей PG-схемы с сохранением IDs/истории и healthy backend; в TEST_DATABASE_URL включены отдельные реальные PG-регрессии в изолированных тестовых схемах.
 
+Для быстрой проверки уже запущенного сайта из `backend/`: `.venv/Scripts/python.exe tests/runtime_smoke.py`. Другой локальный порт: `--base-url http://127.0.0.1:8081`. Требуется httpx из requirements-dev.txt; удалённые адреса и реквизиты в URL не принимаются. Скрипт создаёт две новые гостевые сессии, проверяет readiness/OpenAPI, CRUD, безопасный повтор, два сохранения после нового HTTP-соединения, экспорт и ownership. В finally пытается удалить только эти сессии; ошибка cleanup означает неуспешную проверку. Отчёт без cookies/owner hashes и конкретных watch IDs — docs/evidence/t103-docker-smoke.json. Это HTTP smoke, он не определяет движок БД, commit образа или revision и не доказывает сохранность данных после миграции/перезапуска. Не выдавать 15 успешных запросов за семь реальных PG migration-тестов.
+
 ### Без Docker
 
 T002/T003 выполнены: сборка и unit-тесты проходят. Frontend и backend запускаются из своих директорий.

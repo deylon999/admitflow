@@ -1,6 +1,6 @@
 # Контекст для продолжения
 
-Последняя запись: **S058, 2026-11-01**. После завершённого B04 пользователь сообщил сбой Docker: `Unexpected check constraints in snapshots`. Исправлены проверки legacy CHECK в 0001/0002; **T103 review**, нужен реальный PostgreSQL upgrade/healthy backend в доступной среде. Активной задачи нет, STATE.nextTask=T103. B04 завершён 10/10: T093–T102; история сохранена.
+Последняя запись: **S059, 2026-11-01**. Пользователь запросил ровно одну следующую задачу; продолжена T103. Через localhost:8080 подтверждены healthy API и 15 HTTP-проверок сохранения/истории/экспорта/ownership; две новые сессии удалены (204). **T103 review**: ещё нужны подтверждение пересборки после48f118f и сохранности старых данных, реальные PG migration-тесты остаются непроверенными. Активной задачи нет, STATE.nextTask=T103. B04 завершён 10/10: T093–T102; история сохранена.
 
 ## Текущее состояние
 
@@ -14,6 +14,7 @@
 - Retention dry-run по умолчанию, apply только старых unreferenced hashes. Все исторические refs сохраняются; DB failure запрещает удаление; lock от raw put до DB commit и на cleanup. Capture bundles/.writing и расписание не включены.
 - SQLite backup/verify/restore локальны. Restore резервирует новую папку exclusive mkdir и передаёт проверенные файлы hard links без overwrite (нужна поддержка в одном томе). При частичном сбое restore.pending запрещает verify, миграции и startup API, включая AUTO_CREATE_SCHEMA=false. Повторять в новую папку, маркер не обходить. Конкурентный restore даёт один успех. PostgreSQL/production recovery и RPO/RTO не подтверждены.
 - S058: **200 backend passed / 7 PostgreSQL skipped**; migration subset14 passed/7 skipped. Новые реальные PG-тесты: manual/full legacy adoption, сохранение истории и отказ при изменённых operator/literal/NOT VALID/operation logic. Docker info по-прежнему permission denied; compose config exit0. Код исправлен, runtime не подтверждён. Frontend/build/32 Chromium из S057 не повторялись: frontend не менялся. Один warning Starlette/httpx.
+- S059: `.venv/Scripts/python.exe tests/runtime_smoke.py` из backend → 15 checks passed, обе cleanup204, exit0 на http://127.0.0.1:8080 (nginx/1.28.3). Сохранён воспроизводимый скрипт и обезличенный JSON evidence. HTTP подтверждает работу текущего API, но не движок БД, SHA образа или Alembic revision/legacy upgrade. Повторного полного unit/E2E прогона не было: приложение не менялось, добавлен только ручной smoke-инструмент. Предыдущие результаты сохраняют свои даты и границы.
 - CHECKLIST.md/TASKS.md генерируются; PROGRESS.md — визуальный прогресс B01–B04. Desktop/mobile screenshots B04: синтетические карточки, coverage2/0/0, ошибка формы и фокус; horizontal overflow нет. Это не приёмка Figma/шрифтов. Demo sessions удалены, пользовательские БД не переключались.
 
 ## Критический путь и блокеры
@@ -25,6 +26,7 @@
 - T022 review: реальные группы/сезоны/фильтры требуют источников. После выбора релизного сезона и аттестации — lookup своей строки, автоматические assessments/diff, UI и реальные циклы. Исследование 2026 вне сезона требует архивной метки. Вероятности — отдельная работа с историей/backtest.
 - Широкие T019/T023/T025/T026/T035/T038/T039/T041/T043/T049 не закрыты локальными частями. Нужны реальный автоматический путь, браузерная/визуальная приёмка, нагрузка, production backup, staging/HTTPS. Площадка/домен/бюджет не выбраны.
 - Отправлен асинхронный вопрос о путях original HTML/шрифтов и адресе уже работающего PG без пароля. К checkpoint ответа нет; проверить новые сообщения/входы перед продолжением.
+- S059 отправлен уточняющий вопрос: пересобран ли Docker после48f118f и сохранились ли прежние направления. К checkpoint ответа нет. Docker info/compose ps от имени агента всё ещё permission denied, psql/postgres/pg_ctl не найдены. Не обходить ACL; HTTP health сам по себе не закрывает T103.
 
 ## Git и процессы
 
@@ -33,5 +35,7 @@ B04: c1efb3e (формулировки), 27e43a2 (replay), e56b820 (timestamps/h
 Preview **http://127.0.0.1:5183/tracker**. Frontend session24508, API_TARGET=8003. Актуальный API **session98287 / PID19396**, порт8003, изолированная backend/.pytest_cache/batch04.db, revision0004, без reload/access-log. Прежняя API session38488/PID18244 остановлена перед финальным прогоном. Старые 5173/8000, 5180/8001, 5182/8002 не трогались и не считаются актуальными. Перед повторным запуском проверить жизнь процессов.
 
 S058 не перезапускал preview, не обращался к пользовательской БД и не запускал её миграции. Новый helper app/migration_checks.py сравнивает PostgreSQL CHECK после серверного round-trip на пустой временной таблице; определения схемы/формула не менялись. Для пользователя следующий шаг: `docker compose up --build -d`, затем ps/logs и health через localhost:8080. Код копируется в образ, простой restart использует старый файл. Не удалять volume/stamp. Если остаётся ошибка — точная readonly команда pg_get_constraintdef в RUNBOOK.md; не считать форматирование доказанным единственным отличием без просмотра реальной схемы.
+
+S059 не перезапускал контейнеры/preview и не применял миграции: на localhost8080 выполнены только изолированные HTTP-пробы с новыми cookies, все созданные тестовые сессии удалены. JSON report: docs/evidence/t103-docker-smoke.json, содержит только route patterns/status без cookies/IDs. Временный backend/.pytest_cache/t103_smoke.py был первым запуском; постоянная команда — tests/runtime_smoke.py. Не создавать вторую задачу вместо недостающего доказательства. Следующий шаг — получить ответ на вопрос о пересборке/данных и выполнить семь native PG migration-проверок в доступной среде, сохранив рабочий volume.
 
 Продолжение: STATE → ROADMAP → roadmap --check/--next → карточка/DECISIONS/LOG → реальные файлы/git status. **Приоритет — реальные HTML, PG/Docker, CI, шрифты. Не заменять критический путь десяткой синтетических адаптеров или переписыванием готового контура.** Новые воспроизводимые дефекты фиксировать карточками/доказательствами, не повышая готовность от их числа. Временный backend/.pytest_cache/batch04.py — только помощник статусов; init повторно не запускать.
