@@ -115,6 +115,7 @@ export default function TrackerPage() {
     if (!current) { setRecovery(null); setNotice('Черновик больше недоступен.'); return; }
     const watch = current.watchId ? watches.data?.find(item => item.id === current.watchId) : undefined;
     if (current.watchId && !watch) { setNotice('Направление черновика уже удалено. Поля можно посмотреть перед удалением черновика.'); return; }
+    if (watch && watch.latest.id !== current.baseSnapshotId && !current.intent) { setNotice('На сервере более новая версия. Устаревший черновик не восстановлен.'); return; }
     setRestored(current);
     setForm(watch ?? 'new');
     setFocusRequest(value => value + 1);
@@ -155,6 +156,9 @@ export default function TrackerPage() {
   });
   const count = expired ? 0 : watches.data?.length ?? 0;
   const visible = selectWatches(watches.data ?? [], search, scenario, order);
+  const recoveryWatch = recovery?.watchId ? watches.data?.find(item => item.id === recovery.watchId) : undefined;
+  const recoveryBlocked = recovery?.watchId && !recoveryWatch ? 'Направление уже удалено.'
+    : recoveryWatch && recoveryWatch.latest.id !== recovery?.baseSnapshotId && !recovery?.intent ? 'На сервере есть более новое сохранение.' : undefined;
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
@@ -167,7 +171,7 @@ export default function TrackerPage() {
     {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён в другой вкладке' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {synchronize.isError && <p className="form-error" role="alert">{errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
-    {!expired && !form && recovery && <DraftRecovery record={recovery} disabled={busy} onRestore={restoreDraft} onDiscard={() => {
+    {!expired && !form && recovery && <DraftRecovery record={recovery} blockedReason={recoveryBlocked} disabled={busy || watches.isFetching || watches.isError} onRestore={restoreDraft} onDiscard={() => {
       if (!clearDraft()) { setNotice('Не удалось удалить черновик из хранилища вкладки.'); return; }
       setRecovery(null); setNotice('Черновик удалён. Сохранённые направления не изменены.'); requestAnimationFrame(() => addButton.current?.focus());
     }} />}

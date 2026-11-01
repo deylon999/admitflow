@@ -53,7 +53,7 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
       const fingerprint = JSON.stringify({ watchId: watch?.id, ...body });
       if (intent.current?.fingerprint !== fingerprint) intent.current = { fingerprint, key: crypto.randomUUID() };
       persist(); // Save the retry key before the request can commit or lose its response.
-      if (watch) await api.update(watch.id, numeric, intent.current.key);
+      if (watch) await api.update(watch.id, numeric, intent.current.key, baseSnapshotId.current ?? undefined);
       else await api.create(body, intent.current.key);
     },
     onSuccess: async () => {

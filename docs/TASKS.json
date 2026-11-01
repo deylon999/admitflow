@@ -4814,7 +4814,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T159"
       ],
@@ -4828,7 +4828,12 @@
       "acceptance": [
         "Expected latest snapshot fences fresh writes; cached retry still replays; stale/missing restored edits cannot silently overwrite newer data."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S120: Backend expected_snapshot/writes10 passed; Playwright draft-recovery4 passed on restarted API8007/session62597/PID13052. Stale/missing draft remains plaintext-readable without restore; already open stale edit refuses409 and preserves fields/history. Expected snapshot checked under owner lock after cached replay; malformed header400. DATA_RULES updated; PG concurrency not claimed."
+        }
+      ],
       "blockedReason": null
     },
     {

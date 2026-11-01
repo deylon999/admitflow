@@ -307,6 +307,13 @@ def create_app(settings: Settings | None = None):
         if cached is not None:
             return cached
         watch_owned(watch_id, owner_hash, db)
+        expected = request.headers.getlist('X-Expected-Snapshot')
+        if expected:
+            if len(expected) != 1 or not expected[0] or len(expected[0]) > 100 or expected[0].strip() != expected[0] or any(ord(char) < 32 or ord(char) == 127 for char in expected[0]):
+                raise HTTPException(400, 'Некорректная версия исходного сохранения.')
+            latest = db.scalar(select(Snapshot.id).where(Snapshot.watch_id == watch_id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(1))
+            if latest != expected[0]:
+                raise HTTPException(409, 'У направления есть более новое сохранение. Обновите кабинет и проверьте цифры перед новой отправкой.')
         count = db.scalar(select(func.count()).select_from(Snapshot).where(Snapshot.watch_id == watch_id))
         if count >= 500:
             raise HTTPException(409, 'Для направления сохранено максимальное число обновлений: 500.')

@@ -662,3 +662,7 @@ Playwright draft-recovery/draft3 passed and production build exit0. Changed fiel
 ## S119 - 2026-11-01 - B08 6/10 (T159)
 
 Production build exit0; Playwright draft-recovery/navigation3 passed. Reload shows a bounded plaintext preview, restore fills incomplete fields without POST, discard removes only local state and returns focus. Existing draft replacement requires explicit confirmation; restored retry intent preserved. No automatic restore or source fetch.
+
+## S120 - 2026-11-01 - B08 7/10 (T160)
+
+Backend expected_snapshot/writes10 passed; Playwright draft-recovery4 passed on restarted API8007/session62597/PID13052. Stale/missing draft remains plaintext-readable without restore; already open stale edit refuses409 and preserves fields/history. Expected snapshot checked under owner lock after cached replay; malformed header400. DATA_RULES updated; PG concurrency not claimed.

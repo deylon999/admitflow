@@ -121,6 +121,6 @@ export const api = {
   detail: (id: string) => read(`/watches/${encodeURIComponent(id)}`, parseDetail),
   history: (id: string, before: string | null, signal?: AbortSignal) => read(`/watches/${encodeURIComponent(id)}/history${before ? `?before=${encodeURIComponent(before)}` : ''}`, parseHistoryPage, signal),
   async create(body: WatchCreate, key?: string) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body), headers: key ? { 'Idempotency-Key': key } : undefined })); },
-  async update(id: string, values: CalculationValues, key?: string) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values), headers: key ? { 'Idempotency-Key': key } : undefined })); },
+  async update(id: string, values: CalculationValues, key?: string, expectedSnapshot?: string) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values), headers: { ...(key ? { 'Idempotency-Key': key } : {}), ...(expectedSnapshot ? { 'X-Expected-Snapshot': expectedSnapshot } : {}) } })); },
   async remove(id: string) { await ensureSession(); await request(`/watches/${encodeURIComponent(id)}`, { method: 'DELETE' }); },
 };
