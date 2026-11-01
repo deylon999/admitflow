@@ -1,4 +1,36 @@
 import { expect, test } from '@playwright/test';
+import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
+
+test('an open form preserves values and cannot submit during import', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Draft during import');
+  await page.getByLabel('Направление и конкурсная группа').fill('Draft group');
+  await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/draft');
+  await page.getByLabel('Ваш номер в списке').fill('10');
+  await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
+  await page.getByText('Восстановить из JSON', { exact: true }).click();
+  await page.getByLabel('Файл выгрузки, до 8 МБ').setInputFiles({ name: 'import.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify({ formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, history: [fixture.latest] }] })) });
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/api/v1/import', async route => { await gate; await route.continue(); });
+  let creates = 0;
+  page.on('request', request => { if (request.method() === 'POST' && request.url().endsWith('/api/v1/watches')) creates++; });
+  await page.getByRole('button', { name: 'Импортировать файл', exact: true }).click();
+  const save = page.getByRole('button', { name: 'Сохранить направление', exact: true });
+  try {
+    await expect(save).toBeDisabled();
+    await expect(page.getByLabel('Вуз', { exact: true })).toBeDisabled();
+    await page.locator('.direction-form').dispatchEvent('submit');
+    expect(creates).toBe(0);
+  } finally { release(); }
+  await expect(save).toBeEnabled();
+  await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Draft during import');
+  await save.click();
+  await expect(page.locator('.direction-card')).toHaveCount(2);
+  expect(creates).toBe(1);
+});
 
 test('an unchanged pending edit guards links and unload until its result arrives', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');

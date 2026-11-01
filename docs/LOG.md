@@ -604,3 +604,7 @@ npm test -- tests/session-state.test.ts:5 passed. ReadableStream cancel spies pr
 ## S106 - 2026-11-01 - B07 9/15 (T147)
 
 Playwright pending-form.spec.ts and draft.spec.ts:3 passed. A gated unchanged edit blocks current-tab navigation and beforeunload; after response the form closes and link works. Dirty-draft confirmation regressions preserved. SPA back/forward still not claimed.
+
+## S107 - 2026-11-01 - B07 10/15 (T148)
+
+Playwright pending-form.spec.ts:2 passed in final sequential run. During gated actual import, fields/save disabled and synthetic submit dispatch produces0 creates; after import original draft saves once,2 cards total. Initial test had incorrect field label; overlapping rerun collided with Playwright artifacts. Corrected label and waited for all runners before final2/2; application expectations unchanged.

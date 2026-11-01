@@ -28,7 +28,7 @@ function date(value: string) { return dateFormat.format(new Date(value)); }
 function exactDate(value: string) { return `${exactDateFormat.format(new Date(value))} (${value})`; }
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
 
-function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }: { watch?: Watch; focusRequest: number; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
+function DirectionForm({ watch, focusRequest, disabled, onDone, onCancel, onDirtyChange }: { watch?: Watch; focusRequest: number; disabled: boolean; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus(); }, [focusRequest]);
   const [values, setValues] = useState<CalculationForm>(watch?.latest.values ?? emptyValues);
@@ -83,12 +83,12 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
   }} onSubmit={event => {
     event.preventDefault();
     setSubmitted(true);
-    if (save.isPending) return;
+    if (save.isPending || disabled) return;
     if (validation.firstInvalidId) document.getElementById(validation.firstInvalidId)?.focus();
     else save.mutate();
   }}>
     <div className="tracker-form-heading"><h2 id="direction-form-heading" ref={heading} tabIndex={-1}>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
-    <fieldset className="direction-fields" disabled={save.isPending}><legend className="visually-hidden">Данные направления</legend>
+    <fieldset className="direction-fields" disabled={save.isPending || disabled}><legend className="visually-hidden">Данные направления</legend>
     {watch ? <p className="small-copy">{watch.university} · {watch.title}</p> : <>
       <UniversityPicker value={university} onChange={setUniversity} error={metadata.university} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
       <div className="field"><label htmlFor="direction-title">Направление и конкурсная группа</label><input id="direction-title" value={title} required aria-invalid={Boolean(metadata.title) || undefined} aria-describedby={metadata.title ? 'direction-title-error' : undefined} onChange={event => setTitle(event.target.value)} placeholder="Например: информатика, общий конкурс" />{metadata.title && <p id="direction-title-error" className="form-error" role="alert">{metadata.title}</p>}</div>
@@ -101,7 +101,8 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
     {submitted && error && <p className="form-error" id="tracker-calculation-error" role="alert">{error.error}</p>}
     {save.isError && <p className="form-error" role="alert">{errorText(save.error)}</p>}
     {save.isPending && <p role="status">Дождитесь результата сохранения перед переходом на другую страницу.</p>}
-    <button className="button button-primary" type="submit" disabled={save.isPending}>{save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}</button>
+    {disabled && !save.isPending && <p role="status">Дождитесь завершения текущей операции. Поля формы сохранены.</p>}
+    <button className="button button-primary" type="submit" disabled={save.isPending || disabled}>{save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}</button>
     <p className="form-note">Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.</p>
   </form>;
 }
@@ -236,7 +237,7 @@ export default function TrackerPage() {
     </section>}
     <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError && !watches.data ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} beforeDelete={() => form === null || form === 'new' || form.id !== watch.id || canDiscard()} onRemoved={() => { if (form && form !== 'new' && form.id === watch.id) closeForm(true); setNotice('Направление удалено.'); requestAnimationFrame(() => addButton.current?.focus()); }} />)}
-    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     {!expired && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
     {!expired && <ManualReport watches={visible} generatedAt={reportDate} />}
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>

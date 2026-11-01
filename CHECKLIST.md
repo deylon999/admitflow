@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 94 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 95 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -134,7 +134,7 @@
 - [x] T145 Stop canceled private reads after session bootstrap
 - [x] T146 Release response bodies discarded by session fencing
 - [x] T147 Guard navigation while a save is pending
-- [ ] T148 Prevent form submission during another mutation
+- [x] T148 Prevent form submission during another mutation
 - [ ] T151 Verify long manual cards at320px in both themes
 - [ ] T152 Verify filtered manual report printing
 

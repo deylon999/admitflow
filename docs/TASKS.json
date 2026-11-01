@@ -4454,7 +4454,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -4468,7 +4468,12 @@
       "acceptance": [
         "Import and save cannot overlap through an already open form; values survive the pending interval."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S107: Playwright pending-form.spec.ts:2 passed in final sequential run. During gated actual import, fields/save disabled and synthetic submit dispatch produces0 creates; after import original draft saves once,2 cards total. Initial test had incorrect field label; overlapping rerun collided with Playwright artifacts. Corrected label and waited for all runners before final2/2; application expectations unchanged."
+        }
+      ],
       "blockedReason": null
     },
     {

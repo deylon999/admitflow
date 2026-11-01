@@ -2576,7 +2576,7 @@
 
 ### T148. Prevent form submission during another mutation
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
@@ -2594,7 +2594,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S107: Playwright pending-form.spec.ts:2 passed in final sequential run. During gated actual import, fields/save disabled and synthetic submit dispatch produces0 creates; after import original draft saves once,2 cards total. Initial test had incorrect field label; overlapping rerun collided with Playwright artifacts. Corrected label and waited for all runners before final2/2; application expectations unchanged.
 
 ### T151. Verify long manual cards at320px in both themes
 
