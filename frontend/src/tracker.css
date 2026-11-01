@@ -19,7 +19,8 @@
 .empty-state h2 { font-size: 28px; line-height: 1.2; letter-spacing: -1px; }
 .empty-state p { max-width: 560px; margin: 18px auto 26px; color: var(--muted); font-size: 16px; line-height: 25px; }
 .empty-mark { display: grid; place-items: center; width: 52px; height: 52px; margin: 0 auto 24px; border-radius: 12px; background: var(--tag-bg); color: var(--primary); font-size: 30px; }
-.direction-form { padding: 24px; background: var(--bg); }
+.direction-form { padding: 24px; background: var(--bg); min-width: 0; overflow-wrap: anywhere; }
+.tracker-sidebar { min-width: 0; }
 .tracker-form-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
 .tracker-form-heading h2 { font-size: 24px; line-height: 1.2; letter-spacing: -.8px; }
 .direction-fields { border: 0; margin: 0; padding: 0; min-width: 0; }
@@ -28,7 +29,7 @@
 .direction-form input::placeholder { color: var(--muted); opacity: .8; }
 .tracker-number-fields { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }
 .direction-form > .button { width: 100%; margin-top: 24px; }
-.tracker-preview { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; color: var(--muted); font-size: 13px; }
+.tracker-preview { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-top: 24px; color: var(--muted); font-size: 13px; }
 .tracker-preview strong { color: var(--primary); font-size: 36px; letter-spacing: -1px; }
 .tracker-preview small { font-size: 14px; color: var(--muted); letter-spacing: 0; font-weight: 400; }
 .text-button { appearance: none; border: 0; padding: 8px 0; background: transparent; color: var(--primary); font-size: 13px; line-height: 20px; }
@@ -67,7 +68,7 @@ button:disabled { cursor: wait; opacity: .55; }
 .tracker-disclaimer { color: var(--muted); font-size: 13px; line-height: 21px; max-width: 800px; margin-top: 40px; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-width: 1000px) {
-  .tracker-layout.with-form { grid-template-columns: 1fr; }
+  .tracker-layout.with-form { grid-template-columns: minmax(0, 1fr); }
   .tracker-sidebar { grid-row: 1; }
   .directions-list { grid-template-columns: 1fr; }
   .tracker-page-heading { align-items: start; }
