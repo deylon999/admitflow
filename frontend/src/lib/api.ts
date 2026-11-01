@@ -1,6 +1,6 @@
 import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
-import { withRequestTimeout } from './transport';
+import { RequestTimeoutError, withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
@@ -31,13 +31,25 @@ let session: Promise<SessionInfo> | undefined;
 function usedSession() {
   try { return localStorage.getItem(sessionMarker) === '1'; } catch { return false; }
 }
-async function ensureSession() {
-  session ??= (async () => {
+async function serializeSession<T>(operation: () => Promise<T>): Promise<T> {
+  if (typeof navigator === 'undefined' || !navigator.locks) return operation();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(new RequestTimeoutError()), 15_000);
+  try {
+    return await navigator.locks.request('admitflow-guest-session', { signal: controller.signal }, () => {
+      clearTimeout(timer);
+      return operation();
+    });
+  } finally { clearTimeout(timer); }
+}
+async function loadSession() {
     if (!usedSession()) await request('/session', { method: 'POST' });
     const info = parseSession(await request('/session'));
     try { localStorage.setItem(sessionMarker, '1'); } catch { /* Cookie access still works. */ }
     return info;
-  })().catch(error => { session = undefined; throw error; });
+}
+async function ensureSession() {
+  session ??= serializeSession(loadSession).catch(error => { session = undefined; throw error; });
   return session;
 }
 async function read<T>(path: string, parse: (value: unknown) => T, signal?: AbortSignal): Promise<T> {
@@ -54,11 +66,15 @@ export const api = {
     return info;
   },
   async resetSession() {
+    return serializeSession(async () => {
     await request('/session', { method: 'DELETE' });
     try { localStorage.setItem(sessionChangeKey, crypto.randomUUID()); } catch { /* Cross-tab notification unavailable. */ }
     session = undefined;
     try { localStorage.removeItem(sessionMarker); } catch { /* Storage may be disabled. */ }
-    return ensureSession();
+    const info = await loadSession();
+    session = Promise.resolve(info);
+    return info;
+    });
   },
   universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
   coverage: async () => parseCoverage(await request('/coverage')),

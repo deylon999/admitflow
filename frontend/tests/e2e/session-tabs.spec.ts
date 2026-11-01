@@ -26,3 +26,27 @@ test('сброс в другой вкладке скрывает старый в
     await page.request.delete('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
   }
 });
+
+test('одновременные новые вкладки создают одну гостевую сессию', async ({ page, context }) => {
+  test.skip(process.env.E2E_API !== '1', 'Требуется API');
+  let starts = 0;
+  let release!: () => void;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await context.route('**/api/v1/session', async route => {
+    if (route.request().method() === 'POST') { starts++; await gate; }
+    await route.continue();
+  });
+  try {
+    const other = await context.newPage();
+    await Promise.all([page.goto('/tracker'), other.goto('/tracker')]);
+    await expect(page.getByRole('heading', { name: 'Мои направления', exact: true })).toBeVisible();
+    await expect(other.getByRole('heading', { name: 'Мои направления', exact: true })).toBeVisible();
+    release();
+    await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+    await expect(other.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+    expect(starts).toBe(1);
+  } finally {
+    release();
+    await page.request.delete('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
+  }
+});

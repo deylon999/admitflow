@@ -539,3 +539,7 @@ Adapter declarations require an actual boolean attestation, bounded version toke
 ## S092 - 2026-11-01 - B06 16/20 (T134)
 
 Explicit eligible reenqueue applies requested interval/max attempts and resets due time; running and backoff jobs are not modified. Strict integer queue settings reject bool coercion. Queue/worker13 passed.
+
+## S093 - 2026-11-01 - B06 17/20 (T135)
+
+Guest bootstrap and explicit reset serialize across tabs using Web Locks with bounded lock wait; reset avoids nested-lock deadlock. Build and2 real API cross-tab checks passed, including simultaneous first visits producing exactly one session POST. Unsupported Web Locks fallback documented later.

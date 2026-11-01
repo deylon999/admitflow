@@ -4059,7 +4059,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T098"
       ],
@@ -4073,7 +4073,12 @@
       "acceptance": [
         "Concurrent initial tabs share one guest bootstrap when Web Locks is available; no reset deadlock."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S093: Guest bootstrap and explicit reset serialize across tabs using Web Locks with bounded lock wait; reset avoids nested-lock deadlock. Build and2 real API cross-tab checks passed, including simultaneous first visits producing exactly one session POST. Unsupported Web Locks fallback documented later."
+        }
+      ],
       "blockedReason": null
     },
     {
