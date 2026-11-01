@@ -17,7 +17,7 @@ test('ошибка следующей страницы не скрывает у�
   test.skip(process.env.E2E_API !== '1', 'Требуется API');
   await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
   let failed = true;
-  const items = Array.from({ length: 150 }, (_, i) => ({ ...fixture.latest, id: `row-${i}` }));
+  const items = Array.from({ length: 150 }, (_, i) => ({ ...fixture.latest, id: `row-${String(150-i).padStart(4, '0')}` }));
   await page.route('**/api/v1/watches/*/history*', route => {
     const next = new URL(route.request().url()).searchParams.has('before');
     if (next && failed) return route.fulfill({ status: 503, json: { detail: 'Временная ошибка страницы.' } });

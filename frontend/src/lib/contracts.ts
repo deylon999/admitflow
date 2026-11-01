@@ -1,5 +1,6 @@
 import { calculatePlace } from './calculator';
 import type { CalculationResult, CalculationValues } from './calculator';
+import { instantMicros } from './time';
 
 export type Snapshot = { id: string; capturedAt: string; sourceKind: 'manual'; modelVersion: 'manual-v1'; values: CalculationValues; calculation: CalculationResult };
 export type Watch = { id: string; university: string; title: string; sourceUrl: string; createdAt: string; latest: Snapshot };
@@ -27,7 +28,7 @@ function text(value: unknown, max = 2048): string {
 }
 function timestamp(value: unknown): string {
   const result = text(value, 50);
-  if (!/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d{2}:\d{2})$/.test(result) || !Number.isFinite(Date.parse(result))) throw new InvalidResponseError();
+  try { instantMicros(result); } catch { throw new InvalidResponseError(); }
   return result;
 }
 function url(value: unknown): string {
@@ -64,7 +65,9 @@ export function parseSnapshot(value: unknown): Snapshot {
 
 export function parseWatch(value: unknown): Watch {
   const row = object(value);
-  return { id: text(row.id, 100), university: text(row.university, 160), title: text(row.title, 200), sourceUrl: url(row.sourceUrl), createdAt: timestamp(row.createdAt), latest: parseSnapshot(row.latest) };
+  const watch = { id: text(row.id, 100), university: text(row.university, 160), title: text(row.title, 200), sourceUrl: url(row.sourceUrl), createdAt: timestamp(row.createdAt), latest: parseSnapshot(row.latest) };
+  if (instantMicros(watch.latest.capturedAt) < instantMicros(watch.createdAt)) throw new InvalidResponseError();
+  return watch;
 }
 export function parseWatches(value: unknown): Watch[] {
   const rows = array(value, parseWatch, 20);
@@ -77,6 +80,8 @@ function parseHistory(value: unknown, maxRecords: number): WatchDetail {
   const history = array(row.history, parseSnapshot, maxRecords);
   if (!history.length || JSON.stringify(history[0]) !== JSON.stringify(watch.latest)
     || new Set(history.map(item => item.id)).size !== history.length) throw new InvalidResponseError();
+  assertSnapshotOrder(history);
+  if (history.some(item => instantMicros(item.capturedAt) < instantMicros(watch.createdAt))) throw new InvalidResponseError();
   return { ...watch, history };
 }
 export function parseDetail(value: unknown): WatchDetail {
@@ -88,7 +93,8 @@ export function parseHistoryPage(value: unknown): HistoryPage {
   const nextCursor = row.nextCursor === null ? null : text(row.nextCursor, 100);
   if (new Set(items.map(item => item.id)).size !== items.length
     || (nextCursor !== null && nextCursor !== items.at(-1)?.id)
-    || items.some((item, index) => index > 0 && Date.parse(item.capturedAt) > Date.parse(items[index - 1].capturedAt))) throw new InvalidResponseError();
+    ) throw new InvalidResponseError();
+  assertSnapshotOrder(items);
   return { items, nextCursor };
 }
 export function parseExport(value: unknown): DataExport {
@@ -96,7 +102,23 @@ export function parseExport(value: unknown): DataExport {
   if (row.formatVersion !== 'manual-export-v1') throw new InvalidResponseError();
   const watches = array(row.watches, item => parseHistory(item, 500), 20);
   if (new Set(watches.map(item => item.id)).size !== watches.length) throw new InvalidResponseError();
-  return { formatVersion: 'manual-export-v1', exportedAt: timestamp(row.exportedAt), watches };
+  const exportedAt = timestamp(row.exportedAt);
+  const snapshots = watches.flatMap(watch => watch.history);
+  if (new Set(snapshots.map(item => item.id)).size !== snapshots.length
+    || snapshots.some(item => instantMicros(item.capturedAt) > instantMicros(exportedAt))) throw new InvalidResponseError();
+  return { formatVersion: 'manual-export-v1', exportedAt, watches };
+}
+
+export function assertSnapshotOrder(items: Snapshot[]): void {
+  const seen = new Set<string>();
+  let previous: Snapshot | undefined;
+  for (const item of items) {
+    const current = instantMicros(item.capturedAt);
+    if (seen.has(item.id) || (previous && (current > instantMicros(previous.capturedAt)
+      || (current === instantMicros(previous.capturedAt) && item.id >= previous.id)))) throw new InvalidResponseError();
+    seen.add(item.id);
+    previous = item;
+  }
 }
 export function parseSession(value: unknown): SessionInfo {
   return { expiresAt: timestamp(object(value).expiresAt) };

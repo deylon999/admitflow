@@ -12,6 +12,7 @@ import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
+import { assertSnapshotOrder } from '../lib/contracts';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -73,8 +74,9 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
   const [showHistory, setShowHistory] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const queryClient = useQueryClient();
-  const history = useInfiniteQuery({ queryKey: ['history', watch.id], initialPageParam: null as string | null, queryFn: ({ pageParam, signal }) => api.history(watch.id, pageParam, signal), getNextPageParam: page => page.nextCursor, enabled: showHistory });
-  const snapshots = history.data?.pages.flatMap(page => page.items) ?? [];
+  const history = useInfiniteQuery({ queryKey: ['history', watch.id], initialPageParam: null as string | null, queryFn: ({ pageParam, signal }) => api.history(watch.id, pageParam, signal), getNextPageParam: page => page.nextCursor, enabled: showHistory,
+    select: data => { const snapshots = data.pages.flatMap(page => page.items); assertSnapshotOrder(snapshots); return { ...data, snapshots }; } });
+  const snapshots = history.data?.snapshots ?? [];
   const remove = useMutation({ mutationFn: () => api.remove(watch.id), onSuccess: () => queryClient.invalidateQueries({ queryKey: ['watches'] }) });
   const { calculation } = watch.latest;
   const old = Date.now() - new Date(watch.latest.capturedAt).getTime() > 86400_000;
