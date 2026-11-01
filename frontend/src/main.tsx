@@ -6,6 +6,7 @@ import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router';
 import { useEffect } from 'react';
 import { Header, Footer } from './components/Layout';
 import LandingPage from './pages/LandingPage';
+import { PageErrorBoundary } from './components/PageErrorBoundary';
 import { api, sessionChangeKey } from './lib/api';
 import { sessionAccessKey } from './lib/query-client';
 import './styles.css';
@@ -45,4 +46,4 @@ function App() {
   }, []);
   return <><PagePosition /><a className="skip-link" href="#top" onClick={() => { const main = document.querySelector('main'); if (main) { main.tabIndex = -1; main.focus(); } }}>Перейти к содержимому</a><Header /><Suspense fallback={<main id="top" className="container tracker-page"><p role="status">Загружаем страницу…</p></main>}><Routes><Route path="/" element={<LandingPage />} /><Route path="/tracker" element={<TrackerPage />} /><Route path="*" element={<main id="top" className="container tracker-page"><h1>Страница не найдена</h1><Link className="button button-primary" to="/">На главную</Link></main>} /></Routes></Suspense><Footer /></>;
 }
-ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><BrowserRouter><App /></BrowserRouter></QueryClientProvider></React.StrictMode>);
+ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><BrowserRouter><PageErrorBoundary><App /></PageErrorBoundary></BrowserRouter></QueryClientProvider></React.StrictMode>);

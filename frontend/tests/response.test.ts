@@ -15,7 +15,8 @@ it('cancels oversized chunks instead of consuming the rest', async () => {
 });
 
 it('rejects declared oversize and malformed UTF8', async () => {
-  await expect(readJsonResponse(new Response('{}', { headers: { 'Content-Length': '999' } }), new AbortController().signal, 16)).rejects.toThrow();
+  await expect(readJsonResponse(new Response('{}', { headers: { 'Content-Length': '999', 'Content-Type': 'application/json' } }), new AbortController().signal, 16)).rejects.toThrow();
+  await expect(readJsonResponse(new Response('{}', { headers: { 'Content-Type': 'text/html' } }), new AbortController().signal)).rejects.toThrow();
   await expect(readJsonResponse(new Response(new Uint8Array([0xc0, 0xaf])), new AbortController().signal)).rejects.toThrow();
 });
 

@@ -13,14 +13,16 @@ def test_control_characters_are_rejected_before_normalization(client,field,contr
 
 
 @pytest.mark.parametrize('case',['duplicate','nan','overflow','deep'])
-def test_ambiguous_json_never_writes(client,case):
+@pytest.mark.parametrize('content_type',['application/json','application/vnd.api+json',None])
+def test_ambiguous_json_never_writes(client,case,content_type):
     start(client)
     body=json.dumps(WATCH)
     if case=='duplicate': body=body.replace('"title":','"title":"first","title":')
     if case=='nan': body=body.replace('120','NaN')
     if case=='overflow': body=body.replace('120','1e9999')
     if case=='deep': body='['*65+'0'+']'*65
-    response=client.post('/api/v1/watches',content=body,headers=HEADERS|{'Content-Type':'application/json'})
+    headers=HEADERS|({'Content-Type':content_type} if content_type else {})
+    response=client.post('/api/v1/watches',content=body,headers=headers)
     assert response.status_code==400
     assert client.get('/api/v1/watches').json()==[]
 

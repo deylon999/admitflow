@@ -178,3 +178,18 @@ test('предпросмотр файла показывает названия 
   await expect(page.locator('.import-preview')).toHaveCount(0);
   expect(imports).toBe(0);
 });
+
+test('ошибка загрузки страницы показывает восстановление без автоповтора', async ({ page }) => {
+  let failed = true;
+  let starts = 0;
+  page.on('request', request => { if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++; });
+  await page.route('**/src/pages/TrackerPage.tsx*', route => failed ? route.abort('failed') : route.continue());
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  await page.goto('/tracker');
+  await expect(page.getByRole('heading', { name: 'Не удалось открыть страницу' })).toBeFocused();
+  expect(starts).toBe(0);
+  failed = false;
+  await page.getByRole('button', { name: 'Обновить страницу', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+  expect(starts).toBe(1);
+});

@@ -3609,14 +3609,17 @@
       "id": "T119",
       "title": "Reject control characters in manual metadata",
       "phase": "E2",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T018"
       ],
       "deliverables": [
-        "backend/app/schemas.py"
+        "backend/app/schemas.py",
+        "backend/tests/test_manual_hardening.py",
+        "frontend/src/lib/direction.ts",
+        "frontend/src/lib/contracts.ts"
       ],
       "steps": [
         "Reject control characters in manual metadata",
@@ -3644,7 +3647,8 @@
         "T084"
       ],
       "deliverables": [
-        "backend/app/http.py"
+        "backend/app/http.py",
+        "backend/tests/test_manual_hardening.py"
       ],
       "steps": [
         "Reject ambiguous JSON request documents",
@@ -3665,14 +3669,16 @@
       "id": "T121",
       "title": "Bound and redact validation error responses",
       "phase": "E5",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T086"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/app/schemas.py",
+        "backend/tests/test_manual_hardening.py"
       ],
       "steps": [
         "Bound and redact validation error responses",
@@ -3700,7 +3706,9 @@
         "T085"
       ],
       "deliverables": [
-        "backend/app/config.py"
+        "backend/app/config.py",
+        "backend/tests/test_config.py",
+        "backend/tests/test_config_strict.py"
       ],
       "steps": [
         "Fail closed on invalid environment and production settings",
@@ -3721,14 +3729,15 @@
       "id": "T123",
       "title": "Bound PostgreSQL connection establishment",
       "phase": "E5",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T004"
       ],
       "deliverables": [
-        "backend/app/database.py"
+        "backend/app/database.py",
+        "backend/tests/test_connection_timeout.py"
       ],
       "steps": [
         "Bound PostgreSQL connection establishment",
@@ -3749,14 +3758,15 @@
       "id": "T124",
       "title": "Batch manual direction and export reads",
       "phase": "E2",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T018"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/tests/test_batch_reads.py"
       ],
       "steps": [
         "Batch manual direction and export reads",
@@ -3784,7 +3794,9 @@
         "T068"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/tests/test_snapshot_clock.py",
+        "docs/DATA_RULES.md"
       ],
       "steps": [
         "Order same-time snapshots and refuse clock regression",
@@ -3805,14 +3817,15 @@
       "id": "T126",
       "title": "Enforce ISO aware timestamps on manual DTOs",
       "phase": "E2",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T090"
       ],
       "deliverables": [
-        "backend/app/schemas.py"
+        "backend/app/schemas.py",
+        "backend/tests/test_manual_hardening.py"
       ],
       "steps": [
         "Enforce ISO aware timestamps on manual DTOs",
@@ -3833,14 +3846,15 @@
       "id": "T127",
       "title": "Align import preview date rules with server validation",
       "phase": "E4",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T091"
       ],
       "deliverables": [
-        "frontend/src/lib/import.ts"
+        "frontend/src/lib/import.ts",
+        "frontend/tests/import.test.ts"
       ],
       "steps": [
         "Align import preview date rules with server validation",
@@ -3861,14 +3875,16 @@
       "id": "T128",
       "title": "Compare opaque IDs by Unicode code point",
       "phase": "E2",
-      "priority": "P0",
+      "priority": "P2",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T095"
       ],
       "deliverables": [
-        "frontend/src/lib/time.ts"
+        "frontend/src/lib/time.ts",
+        "frontend/src/lib/contracts.ts",
+        "frontend/tests/time.test.ts"
       ],
       "steps": [
         "Compare opaque IDs by Unicode code point",
@@ -3896,7 +3912,9 @@
         "T028"
       ],
       "deliverables": [
-        "backend/app/sources/fetcher.py"
+        "backend/app/sources/fetcher.py",
+        "backend/app/sources/publishing.py",
+        "backend/tests/test_fetcher.py"
       ],
       "steps": [
         "Reject truncated HTTP source responses",
@@ -3924,7 +3942,8 @@
         "T028"
       ],
       "deliverables": [
-        "backend/app/sources/fetcher.py"
+        "backend/app/sources/fetcher.py",
+        "backend/tests/test_fetcher.py"
       ],
       "steps": [
         "Reject ambiguous HTTP headers and malformed redirects",
@@ -3945,14 +3964,15 @@
       "id": "T131",
       "title": "Validate immutable fetch policies strictly",
       "phase": "E3",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T028"
       ],
       "deliverables": [
-        "backend/app/sources/fetcher.py"
+        "backend/app/sources/fetcher.py",
+        "backend/tests/test_fetcher.py"
       ],
       "steps": [
         "Validate immutable fetch policies strictly",
@@ -3973,14 +3993,15 @@
       "id": "T132",
       "title": "Preserve fetch outcome when spool cleanup fails",
       "phase": "E3",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T100"
       ],
       "deliverables": [
-        "backend/app/worker.py"
+        "backend/app/worker.py",
+        "backend/tests/test_fetch_exchange.py"
       ],
       "steps": [
         "Preserve fetch outcome when spool cleanup fails",
@@ -4008,7 +4029,8 @@
         "T076"
       ],
       "deliverables": [
-        "backend/app/sources/registry.py"
+        "backend/app/sources/registry.py",
+        "backend/tests/test_registry_contract.py"
       ],
       "steps": [
         "Validate adapter declarations before registry use",
@@ -4029,14 +4051,15 @@
       "id": "T134",
       "title": "Apply queue policies on explicit eligible reenqueue",
       "phase": "E3",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T081"
       ],
       "deliverables": [
-        "backend/app/jobs.py"
+        "backend/app/jobs.py",
+        "backend/tests/test_queue_policy.py"
       ],
       "steps": [
         "Apply queue policies on explicit eligible reenqueue",
@@ -4064,7 +4087,8 @@
         "T098"
       ],
       "deliverables": [
-        "frontend/src/lib/api.ts"
+        "frontend/src/lib/api.ts",
+        "frontend/tests/e2e/session-tabs.spec.ts"
       ],
       "steps": [
         "Serialize guest bootstrap between browser tabs",
@@ -4092,7 +4116,9 @@
         "T135"
       ],
       "deliverables": [
-        "frontend/src/lib/api.ts"
+        "frontend/src/lib/api.ts",
+        "frontend/src/lib/query-client.ts",
+        "frontend/tests/session-state.test.ts"
       ],
       "steps": [
         "Fence stale session results after access changes",
@@ -4113,14 +4139,16 @@
       "id": "T137",
       "title": "Bound JSON response consumption in the browser",
       "phase": "E5",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
       "status": "done",
       "dependsOn": [
         "T073"
       ],
       "deliverables": [
-        "frontend/src/lib/transport.ts"
+        "frontend/src/lib/transport.ts",
+        "frontend/src/lib/api.ts",
+        "frontend/tests/response.test.ts"
       ],
       "steps": [
         "Bound JSON response consumption in the browser",
@@ -4141,14 +4169,17 @@
       "id": "T138",
       "title": "Recover from lazy page loading failures",
       "phase": "E4",
-      "priority": "P0",
+      "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
       "deliverables": [
-        "frontend/src/main.tsx"
+        "frontend/src/components/PageErrorBoundary.tsx",
+        "frontend/src/main.tsx",
+        "frontend/tests/e2e/tracker-tools.spec.ts",
+        "docs/evidence/error-recovery-mobile.png"
       ],
       "steps": [
         "Recover from lazy page loading failures",
@@ -4157,7 +4188,12 @@
       "acceptance": [
         "Friendly fallback and explicit reload replace blank screen; no automatic retry/session creation."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S096: Page boundary provides focused recovery UI with explicit reload and no hidden retry/bootstrap. New failure/recovery E2E passed. Final backend269 passed/7 PG skipped, frontend77/build passed,46 Chromium passed on current API8005. First browser run45/46 had a transient Vite module-load failure; unchanged cookie-loss case passed3 repeats and full rerun. Final JSON-media-type bypass and huge-timeout edge corrected before full verification. B06 complete20/20; real data/PG/CI gates unchanged."
+        }
+      ],
       "blockedReason": null
     }
   ]

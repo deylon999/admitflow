@@ -928,11 +928,11 @@
 
 ### T119. Reject control characters in manual metadata
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `backend/app/schemas.py`.
+**Результаты/файлы:** `backend/app/schemas.py`; `backend/tests/test_manual_hardening.py`; `frontend/src/lib/direction.ts`; `frontend/src/lib/contracts.ts`.
 
 **Шаги:**
 
@@ -950,11 +950,11 @@
 
 ### T124. Batch manual direction and export reads
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/tests/test_batch_reads.py`.
 
 **Шаги:**
 
@@ -976,7 +976,7 @@
 
 **Зависимости:** T068.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/tests/test_snapshot_clock.py`; `docs/DATA_RULES.md`.
 
 **Шаги:**
 
@@ -994,11 +994,11 @@
 
 ### T126. Enforce ISO aware timestamps on manual DTOs
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T090.
 
-**Результаты/файлы:** `backend/app/schemas.py`.
+**Результаты/файлы:** `backend/app/schemas.py`; `backend/tests/test_manual_hardening.py`.
 
 **Шаги:**
 
@@ -1016,11 +1016,11 @@
 
 ### T128. Compare opaque IDs by Unicode code point
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T095.
 
-**Результаты/файлы:** `frontend/src/lib/time.ts`.
+**Результаты/файлы:** `frontend/src/lib/time.ts`; `frontend/src/lib/contracts.ts`; `frontend/tests/time.test.ts`.
 
 **Шаги:**
 
@@ -1042,7 +1042,7 @@
 
 **Зависимости:** T098.
 
-**Результаты/файлы:** `frontend/src/lib/api.ts`.
+**Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/tests/e2e/session-tabs.spec.ts`.
 
 **Шаги:**
 
@@ -1064,7 +1064,7 @@
 
 **Зависимости:** T135.
 
-**Результаты/файлы:** `frontend/src/lib/api.ts`.
+**Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/src/lib/query-client.ts`; `frontend/tests/session-state.test.ts`.
 
 **Шаги:**
 
@@ -1619,7 +1619,7 @@
 
 **Зависимости:** T028.
 
-**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+**Результаты/файлы:** `backend/app/sources/fetcher.py`; `backend/app/sources/publishing.py`; `backend/tests/test_fetcher.py`.
 
 **Шаги:**
 
@@ -1641,7 +1641,7 @@
 
 **Зависимости:** T028.
 
-**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+**Результаты/файлы:** `backend/app/sources/fetcher.py`; `backend/tests/test_fetcher.py`.
 
 **Шаги:**
 
@@ -1659,11 +1659,11 @@
 
 ### T131. Validate immutable fetch policies strictly
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T028.
 
-**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+**Результаты/файлы:** `backend/app/sources/fetcher.py`; `backend/tests/test_fetcher.py`.
 
 **Шаги:**
 
@@ -1681,11 +1681,11 @@
 
 ### T132. Preserve fetch outcome when spool cleanup fails
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T100.
 
-**Результаты/файлы:** `backend/app/worker.py`.
+**Результаты/файлы:** `backend/app/worker.py`; `backend/tests/test_fetch_exchange.py`.
 
 **Шаги:**
 
@@ -1707,7 +1707,7 @@
 
 **Зависимости:** T076.
 
-**Результаты/файлы:** `backend/app/sources/registry.py`.
+**Результаты/файлы:** `backend/app/sources/registry.py`; `backend/tests/test_registry_contract.py`.
 
 **Шаги:**
 
@@ -1725,11 +1725,11 @@
 
 ### T134. Apply queue policies on explicit eligible reenqueue
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T081.
 
-**Результаты/файлы:** `backend/app/jobs.py`.
+**Результаты/файлы:** `backend/app/jobs.py`; `backend/tests/test_queue_policy.py`.
 
 **Шаги:**
 
@@ -2268,11 +2268,11 @@
 
 ### T127. Align import preview date rules with server validation
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T091.
 
-**Результаты/файлы:** `frontend/src/lib/import.ts`.
+**Результаты/файлы:** `frontend/src/lib/import.ts`; `frontend/tests/import.test.ts`.
 
 **Шаги:**
 
@@ -2290,11 +2290,11 @@
 
 ### T138. Recover from lazy page loading failures
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/main.tsx`.
+**Результаты/файлы:** `frontend/src/components/PageErrorBoundary.tsx`; `frontend/src/main.tsx`; `frontend/tests/e2e/tracker-tools.spec.ts`; `docs/evidence/error-recovery-mobile.png`.
 
 **Шаги:**
 
@@ -2308,7 +2308,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S096: Page boundary provides focused recovery UI with explicit reload and no hidden retry/bootstrap. New failure/recovery E2E passed. Final backend269 passed/7 PG skipped, frontend77/build passed,46 Chromium passed on current API8005. First browser run45/46 had a transient Vite module-load failure; unchanged cookie-loss case passed3 repeats and full rerun. Final JSON-media-type bypass and huge-timeout edge corrected before full verification. B06 complete20/20; real data/PG/CI gates unchanged.
 
 ## E5. Качество и эксплуатация
 
@@ -2779,7 +2779,7 @@
 
 **Зависимости:** T084.
 
-**Результаты/файлы:** `backend/app/http.py`.
+**Результаты/файлы:** `backend/app/http.py`; `backend/tests/test_manual_hardening.py`.
 
 **Шаги:**
 
@@ -2797,11 +2797,11 @@
 
 ### T121. Bound and redact validation error responses
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T086.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/app/schemas.py`; `backend/tests/test_manual_hardening.py`.
 
 **Шаги:**
 
@@ -2823,7 +2823,7 @@
 
 **Зависимости:** T085.
 
-**Результаты/файлы:** `backend/app/config.py`.
+**Результаты/файлы:** `backend/app/config.py`; `backend/tests/test_config.py`; `backend/tests/test_config_strict.py`.
 
 **Шаги:**
 
@@ -2841,11 +2841,11 @@
 
 ### T123. Bound PostgreSQL connection establishment
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T004.
 
-**Результаты/файлы:** `backend/app/database.py`.
+**Результаты/файлы:** `backend/app/database.py`; `backend/tests/test_connection_timeout.py`.
 
 **Шаги:**
 
@@ -2863,11 +2863,11 @@
 
 ### T137. Bound JSON response consumption in the browser
 
-**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T073.
 
-**Результаты/файлы:** `frontend/src/lib/transport.ts`.
+**Результаты/файлы:** `frontend/src/lib/transport.ts`; `frontend/src/lib/api.ts`; `frontend/tests/response.test.ts`.
 
 **Шаги:**
 

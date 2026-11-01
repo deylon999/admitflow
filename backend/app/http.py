@@ -106,7 +106,9 @@ class RequestBudgetMiddleware:
             return await self.reject(scope, receive, send, 408, 'Время приёма запроса истекло.')
         except BodyTooLarge:
             return await self.reject(scope, receive, send, 413, 'Размер запроса превышает 8 МБ.')
-        if body and headers.get(b'content-type', b'').split(b';')[0].strip().lower() == b'application/json':
+        content_type = headers.get(b'content-type', b'').split(b';')[0].strip().lower()
+        json_body = not content_type or content_type == b'application/json' or (content_type.startswith(b'application/') and content_type.endswith(b'+json'))
+        if body and json_body:
             try:
                 validate_json_document(body)
             except (ValueError, RecursionError):

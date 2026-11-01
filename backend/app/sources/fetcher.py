@@ -74,7 +74,7 @@ class FetchPolicy:
     def __post_init__(self):
         supported = frozenset({'text/html','application/json','text/csv','text/plain'})
         if (not valid_domains(self.domains) or type(self.max_bytes) is not int or not 1<=self.max_bytes<=5*1024*1024
-                or type(self.timeout) not in (int,float) or not math.isfinite(self.timeout) or not 0<self.timeout<=30
+                or type(self.timeout) not in (int,float) or not 0<self.timeout<=30 or not math.isfinite(self.timeout)
                 or type(self.max_redirects) is not int or not 0<=self.max_redirects<=5
                 or not isinstance(self.content_types,frozenset) or not self.content_types or not self.content_types<=supported):
             raise ValueError('Invalid fetch policy')
