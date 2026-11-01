@@ -11,11 +11,25 @@ if context.is_offline_mode():
     with context.begin_transaction():
         context.run_migrations()
 else:
-    engine = make_engine(settings.database_url)
+    supplied = context.config.attributes.get('connection')
+    engine = None if supplied is not None else make_engine(settings.database_url)
+    connection = supplied if supplied is not None else engine.connect()
     try:
-        with engine.connect() as connection:
-            context.configure(connection=connection, target_metadata=Base.metadata, compare_type=True)
-            with context.begin_transaction():
-                context.run_migrations()
+        if connection.dialect.name == 'sqlite':
+            # Batch rebuilds need FK checks suspended on this migration-only connection.
+            connection.exec_driver_sql('PRAGMA foreign_keys=OFF')
+            connection.commit()
+        context.configure(connection=connection, target_metadata=Base.metadata, compare_type=True)
+        with context.begin_transaction():
+            context.run_migrations()
+            if connection.dialect.name == 'sqlite' and connection.exec_driver_sql('PRAGMA foreign_key_check').first():
+                raise RuntimeError('Migration violates foreign keys')
+        connection.commit()
     finally:
-        engine.dispose()
+        if connection.dialect.name == 'sqlite':
+            connection.rollback()
+            connection.exec_driver_sql('PRAGMA foreign_keys=ON')
+            connection.commit()
+        if supplied is None:
+            connection.close()
+            engine.dispose()

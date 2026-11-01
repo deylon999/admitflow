@@ -18,6 +18,7 @@ from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
 from .schemas import CatalogRead, DataExport, HistoryPage
 from .operations import begin_operation, remember_operation, retire_operations
+from .migrations import upgrade_schema
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -42,7 +43,7 @@ def create_app(settings: Settings | None = None):
     @asynccontextmanager
     async def lifespan(_):
         if config.auto_create_schema:
-            Base.metadata.create_all(engine)
+            upgrade_schema(engine)
             cleanup_expired_sessions(engine)
         seed_catalog(engine)
         async def cleanup_loop():

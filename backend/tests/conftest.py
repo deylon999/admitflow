@@ -15,3 +15,12 @@ def client(application):
     # Lifespan creates a separate temporary DB for every test.
     with TestClient(application) as client:
         yield client
+
+
+@pytest.fixture
+def source_engine(tmp_path):
+    from app.database import Base, make_engine
+    engine = make_engine(f"sqlite:///{tmp_path / 'sources.db'}")
+    Base.metadata.create_all(engine)
+    yield engine
+    engine.dispose()

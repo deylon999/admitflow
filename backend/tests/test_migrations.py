@@ -41,7 +41,7 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.check(config())
     assert len(inspect(migration_db).get_table_names()) == 14  # 13 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0002'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0003'
 
 
 def seed_legacy(engine):
@@ -63,9 +63,17 @@ def test_legacy_schema_is_adopted_without_losing_manual_history(migration_db):
         assert db.scalar(text('SELECT rank - excluded - no_consent FROM snapshots')) == 74
 
 
-def test_current_development_create_all_schema_is_also_adopted(migration_db):
+def create_original_development_schema(engine):
+    frozen_schema().create_all(engine)
+    spec = importlib.util.spec_from_file_location('operations_schema', BACKEND / 'alembic/versions/0002_operation_records.py')
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    module._table().create(engine)
+
+
+def test_original_development_create_all_schema_is_also_adopted(migration_db):
     seed_legacy(migration_db)
-    Base.metadata.create_all(migration_db)
+    create_original_development_schema(migration_db)
     command.upgrade(config(), 'head')
     command.check(config())
     with migration_db.connect() as db:
@@ -73,11 +81,36 @@ def test_current_development_create_all_schema_is_also_adopted(migration_db):
 
 
 def test_incompatible_existing_operations_are_not_stamped_over(migration_db):
-    Base.metadata.create_all(migration_db)
+    create_original_development_schema(migration_db)
     with migration_db.begin() as db:
         db.execute(text('ALTER TABLE operation_records ADD COLUMN unexpected TEXT'))
     with pytest.raises(RuntimeError, match='differs from migration 0002'):
         command.upgrade(config(), 'head')
+
+
+def test_future_unversioned_schema_is_not_guessed_or_stamped(migration_db):
+    Base.metadata.create_all(migration_db)
+    with pytest.raises(RuntimeError, match='differs from the initial schema'):
+        command.upgrade(config(), 'head')
+
+
+def test_import_migration_preserves_existing_snapshot_and_references(migration_db):
+    command.upgrade(config(),'0002')
+    with migration_db.begin() as db:
+        db.execute(text("INSERT INTO universities (id,name,official_url,provenance_url,verified_at) VALUES ('u','Synthetic','https://example.org','https://example.org/list','2026-01-01')"))
+        db.execute(text("INSERT INTO campaigns VALUES ('c','u',2026,'bachelor')"))
+        db.execute(text("INSERT INTO competition_groups (id,campaign_id,official_id,title,study_form,funding,category,seats,coverage) VALUES ('g','c','test','Synthetic','full-time','budget','general',10,'candidate')"))
+        db.execute(text("INSERT INTO sources (id,group_id,url,domain,enabled) VALUES ('s','g','https://example.org/list','example.org',0)"))
+        db.execute(text("INSERT INTO source_snapshots (id,source_id,group_id,payload_hash,fetched_at,kind,row_count,complete) VALUES ('snap','s','g',:hash,'2026-01-01','archive',1,1)"),{'hash':'a'*64})
+        db.execute(text("INSERT INTO candidate_entries (snapshot_id,candidate_key,official_rank,participation) VALUES ('snap','synthetic',1,'unknown')"))
+        db.execute(text("INSERT INTO published_snapshots VALUES ('s','snap')"))
+    command.upgrade(config(),'head')
+    command.check(config())
+    with migration_db.connect() as db:
+        assert db.scalar(text('SELECT snapshot_id FROM published_snapshots')) == 'snap'
+        assert db.scalar(text('SELECT count(*) FROM candidate_entries')) == 1
+        assert db.scalar(text('SELECT adapter_version FROM source_snapshots')) is None
+        assert db.execute(text('PRAGMA foreign_key_check')).all() == []
 
 
 def test_incompatible_schema_stops_before_domain_tables_are_changed(migration_db):

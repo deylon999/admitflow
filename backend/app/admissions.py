@@ -69,6 +69,7 @@ class Source(Base):
     domain: Mapped[str] = mapped_column(String(255))
     adapter_version: Mapped[str | None] = mapped_column(String(80))
     enabled: Mapped[bool] = mapped_column(Boolean, default=False)
+    snapshot_kind: Mapped[str] = mapped_column(String(16), default='archive', server_default='archive')
     last_checked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error_code: Mapped[str | None] = mapped_column(String(80))
@@ -77,7 +78,7 @@ class Source(Base):
 class SourceSnapshot(Base):
     __tablename__ = 'source_snapshots'
     __table_args__ = (
-        UniqueConstraint('source_id', 'payload_hash', name='uq_source_payload'),
+        UniqueConstraint('source_id', 'payload_hash', 'adapter_version', name='uq_source_payload_version'),
         UniqueConstraint('source_id', 'id', name='uq_source_snapshot_id'),
         UniqueConstraint('id', 'group_id', name='uq_snapshot_group'),
         ForeignKeyConstraint(['source_id', 'group_id'], ['sources.id', 'sources.group_id'], name='fk_snapshot_source_group'),
@@ -93,6 +94,13 @@ class SourceSnapshot(Base):
     kind: Mapped[str] = mapped_column(String(16))
     row_count: Mapped[int] = mapped_column(Integer)
     complete: Mapped[bool] = mapped_column(Boolean, default=False)
+    adapter_version: Mapped[str | None] = mapped_column(String(80))
+    normalized_hash: Mapped[str | None] = mapped_column(String(64))
+    seats: Mapped[int | None] = mapped_column(Integer)
+    warnings: Mapped[list | None] = mapped_column(JSON)
+    fetched_url: Mapped[str | None] = mapped_column(String(2048))
+    content_type: Mapped[str | None] = mapped_column(String(100))
+    charset: Mapped[str | None] = mapped_column(String(80))
 
 
 class CandidateEntry(Base):
@@ -110,6 +118,7 @@ class CandidateEntry(Base):
     consent: Mapped[bool | None] = mapped_column(Boolean)
     priority: Mapped[int | None] = mapped_column(Integer)
     participation: Mapped[str] = mapped_column(String(24), default='unknown')
+    row_ref: Mapped[str | None] = mapped_column(String(100))
 
 
 class PublishedSnapshot(Base):
