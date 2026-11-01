@@ -510,7 +510,8 @@
       "status": "todo",
       "dependsOn": [
         "T010",
-        "T011"
+        "T011",
+        "T083"
       ],
       "deliverables": [
         "backend/tests/fixtures/sources/",
@@ -690,7 +691,8 @@
       "dependsOn": [
         "T016",
         "T017",
-        "T018"
+        "T018",
+        "T091"
       ],
       "deliverables": [
         "frontend/src/pages/TrackerPage.tsx",
@@ -1224,7 +1226,8 @@
       "dependsOn": [
         "T012",
         "T031",
-        "T035"
+        "T035",
+        "T092"
       ],
       "deliverables": [
         "backend/app/coverage/",
@@ -1305,7 +1308,8 @@
       "dependsOn": [
         "T032",
         "T035",
-        "T037"
+        "T037",
+        "T086"
       ],
       "deliverables": [
         "backend/app/observability/",
@@ -1361,7 +1365,8 @@
         "T016",
         "T017",
         "T028",
-        "T033"
+        "T033",
+        "T085"
       ],
       "deliverables": [
         "backend/tests/security/",
@@ -1521,7 +1526,8 @@
       "status": "todo",
       "dependsOn": [
         "T043",
-        "T048"
+        "T048",
+        "T089"
       ],
       "deliverables": [
         "scripts/backup/",
@@ -2496,6 +2502,263 @@
           "note": "S035 / B02 10/10: Separate worker once/loop and local source CLI now connect queue/fetch/parse/validate/store/publish. Production registry has no real adapters and CLI has no bypass. Eight worker tests cover synthetic success/quarantine, revoked and expired leases, retry, process-wide fetch timeout, crash after publication replay and redacted parser errors. Final full pytest: 154 passed / 1 real PG skipped / exit 0; frontend npm test: 58 passed, build exit 0; full Chromium E2E: 20 passed after explicit API restart on migrated 0004, plus final comparison subset 2 passed. Initial CLI smoke failed because development reload had not migrated the old preview DB; stopped only own session 15194, explicitly ran alembic upgrade/check, restarted own API session 45338/PID15852, verified OpenAPI status route and revision 0004; worker once then idle and source list empty, exit 0. Final review added mobile table-scroll hint and keyboard scroll and fixed CSS token. Synthetic previews refreshed, demo session deleted (204). T082 done; B02 10/10. Current preview 5182/API8002, backend/.pytest_cache/batch02.db. GitHub:443 and Docker ACL remain blocked; real sources/PG/remote CI/hosting/fonts and release gates remain open. Overall engineering estimate approximately 35%, D1/30; 30 of 82 cards done, not a release claim."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T083",
+      "title": "Получать проверяемый пакет исходных страниц пилота",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T028",
+        "T078"
+      ],
+      "deliverables": [
+        "backend/app/sources/capture.py"
+      ],
+      "steps": [
+        "Закрытые цели пилота, оригинальные bytes и manifest/hash",
+        "Проверить offline отказ и повторное чтение пакета"
+      ],
+      "acceptance": [
+        "Нет обхода ограничений или production enable",
+        "Пакет не смешивается с аттестованным адаптером"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S037 / B03 1/10: Closed pilot capture CLI stores original bytes plus bounded manifest/hash in private folder, verifies binding and tampering, never attests/enables a source. pytest tests/test_capture.py: 3 passed / exit 0. Real capture command failed with network_error/captured=false/exit 1; no original fixture obtained and T013 stays open. Official indices only support candidate URLs, not parser structure. Commands and handoff documented in sources/pilot.md."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T084",
+      "title": "Ограничить размер и время приёма API-запросов",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "backend/app/http.py"
+      ],
+      "steps": [
+        "Ограничить Content-Length и реальный поток bytes",
+        "Вернуть безопасный отказ oversized/timeout"
+      ],
+      "acceptance": [
+        "413 для переполнения с заголовком и без него",
+        "408 для stalled body; обычные запросы не меняются"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T085",
+      "title": "Проверять Host и Origin запросов записи",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T084"
+      ],
+      "deliverables": [
+        "backend/app/config.py",
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Закрепить доверенные hosts и public origin",
+        "Проверить same-origin и чужие/null origin"
+      ],
+      "acceptance": [
+        "Production требует явный HTTPS origin",
+        "Чужой host/origin не изменяет данные"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T086",
+      "title": "Добавить безопасную диагностику HTTP и readiness",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T084",
+        "T085"
+      ],
+      "deliverables": [
+        "backend/app/http.py",
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Request ID, route template, status и duration без пользовательского тела",
+        "Отделить liveness от DB readiness"
+      ],
+      "acceptance": [
+        "Ошибка не раскрывает SQL/токен/PII",
+        "DB outage даёт readiness 503, liveness 200"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T087",
+      "title": "Очищать неиспользуемые raw-файлы с защитой публикации",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T078",
+        "T079"
+      ],
+      "deliverables": [
+        "backend/app/sources/retention.py"
+      ],
+      "steps": [
+        "Ввести межпроцессную блокировку raw store",
+        "Dry-run по возрасту, referenced hashes сохраняются"
+      ],
+      "acceptance": [
+        "Cleanup не гоняется с put/commit и не идёт по symlink",
+        "Удаление только явно указанным apply, ошибки БД запрещают удаление"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T088",
+      "title": "Сохранять согласованную SQLite-копию с raw-файлами",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T087"
+      ],
+      "deliverables": [
+        "backend/app/backup.py"
+      ],
+      "steps": [
+        "Online backup и manifest с хешами",
+        "Скопировать raw именно из сохранённой DB"
+      ],
+      "acceptance": [
+        "При ошибке нет готовой частичной копии",
+        "Копия содержит ручную историю и все referenced raw"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T089",
+      "title": "Восстанавливать копию в новое SQLite-окружение",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T088"
+      ],
+      "deliverables": [
+        "backend/app/backup.py"
+      ],
+      "steps": [
+        "Проверить manifest, hash, integrity и FK",
+        "Восстановить только в отсутствующее назначение"
+      ],
+      "acceptance": [
+        "Повреждённая копия и занятый путь отклоняются",
+        "Восстановленная история и ownership совпадают"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T090",
+      "title": "Импортировать ручную историю атомарно через API",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T071",
+        "T068",
+        "T084"
+      ],
+      "deliverables": [
+        "backend/app/importing.py"
+      ],
+      "steps": [
+        "Проверить export contract, формулы, даты, limits и manual provenance",
+        "Новые ownership/IDs и обязательный Idempotency-Key"
+      ],
+      "acceptance": [
+        "Невалидная запись откатывает весь файл",
+        "Повтор не дублирует; импорт не восстанавливает чужую сессию"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T091",
+      "title": "Восстанавливать ручную историю из файла в интерфейсе",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T090",
+        "T073"
+      ],
+      "deliverables": [
+        "frontend/src/components/ImportData.tsx"
+      ],
+      "steps": [
+        "Ограничить файл, проверить contract и показать подтверждение",
+        "Стабильный ключ повтора и обновление списка после успеха"
+      ],
+      "acceptance": [
+        "Невалидный файл не отправляется, отмена не пишет",
+        "Export/import в новой сессии сохраняет историю"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T092",
+      "title": "Показывать фактическое покрытие источников",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T012",
+        "T076",
+        "T080"
+      ],
+      "deliverables": [
+        "backend/app/coverage.py",
+        "frontend/src/components/CoverageSummary.tsx"
+      ],
+      "steps": [
+        "Отдельно считать каталог, аттестованные источники и опубликованные группы",
+        "Не подменять ошибку нулём или количеством вузов в каталоге"
+      ],
+      "acceptance": [
+        "Начальные 2 manual вуза не считаются автоинтеграциями",
+        "Нет выдуманного национального процента и stale/fresh смешения"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
