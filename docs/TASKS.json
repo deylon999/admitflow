@@ -3501,7 +3501,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T097"
       ],
@@ -3515,7 +3515,12 @@
       "acceptance": [
         "Explicit readonly refresh retrieves updates, keeps draft, disables duplicate reads and reports failure."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S073: Explicit readonly refresh updates saved cards while preserving unsaved form values, disables duplicate reads and makes no new session POST. Chromium server-change/draft check passed; refresh is not a university fetch."
+        }
+      ],
       "blockedReason": null
     },
     {

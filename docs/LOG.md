@@ -452,3 +452,7 @@ Skip navigation focuses main; route/hash changes focus destination including laz
 ## S072 - 2026-11-01 - B05 12/15 (T115)
 
 Named focusable history region and scoped column headers support keyboard horizontal scrolling. Mobile test first exposed intrinsic grid expansion; constrained tracks/card minimum widths. Final390px Chromium scroll/no-page-overflow check passed.
+
+## S073 - 2026-11-01 - B05 13/15 (T116)
+
+Explicit readonly refresh updates saved cards while preserving unsaved form values, disables duplicate reads and makes no new session POST. Chromium server-change/draft check passed; refresh is not a university fetch.

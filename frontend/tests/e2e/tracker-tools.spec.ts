@@ -142,3 +142,22 @@ test('историю на телефоне можно прокрутить с к
   await expect.poll(() => region.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
 });
+
+test('ручное обновление списка сохраняет ввод формы и не создаёт сессию', async ({ page }) => {
+  let rank = 120;
+  let starts = 0;
+  page.on('request', request => { if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++; });
+  await page.route('**/api/v1/watches', route => {
+    const values = { ...fixture.latest.values, rank };
+    return route.fulfill({ json: [{ ...fixture, latest: { ...fixture.latest, values, calculation: calculatePlace(values) } }] });
+  });
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
+  await page.locator('#tracker-rank').fill('125');
+  rank = 130;
+  const before = starts;
+  await page.getByRole('button', { name: 'Обновить направления', exact: true }).click();
+  await expect(page.locator('.direction-result strong')).toHaveText('84');
+  await expect(page.locator('#tracker-rank')).toHaveValue('125');
+  expect(starts).toBe(before);
+});
