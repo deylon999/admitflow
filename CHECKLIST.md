@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 61 из 118 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 62 из 118 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -104,7 +104,7 @@
 - [x] T111 Retain saved cards after background read failure
 - [x] T112 Display the exact guest access deadline
 - [x] T114 Add skip navigation and focus route headings
-- [ ] T115 Make history overflow usable from the keyboard
+- [x] T115 Make history overflow usable from the keyboard
 - [ ] T116 Refresh saved directions without losing a form draft
 - [ ] T117 Preview direction names before confirming file import
 

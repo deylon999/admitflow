@@ -11,9 +11,9 @@
 .tracker-info .tag { flex-shrink: 0; }
 .tracker-info p { color: var(--muted); font-size: 14px; line-height: 21px; }
 .tracker-notice { min-height: 24px; margin-block: 16px; color: var(--primary); font-size: 14px; }
-.tracker-layout { display: grid; grid-template-columns: 1fr; align-items: start; gap: 24px; }
+.tracker-layout { display: grid; grid-template-columns: minmax(0,1fr); align-items: start; gap: 24px; }
 .tracker-layout.with-form { grid-template-columns: minmax(0, 1fr) minmax(330px, 420px); }
-.directions-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.directions-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; min-width: 0; }
 .with-form .directions-list { grid-template-columns: 1fr; }
 .empty-state { grid-column: 1 / -1; text-align: center; padding: 64px 28px; }
 .empty-state h2 { font-size: 28px; line-height: 1.2; letter-spacing: -1px; }
@@ -34,7 +34,7 @@
 .text-button { appearance: none; border: 0; padding: 8px 0; background: transparent; color: var(--primary); font-size: 13px; line-height: 20px; }
 .text-button:hover { text-decoration: underline; }
 button:disabled { cursor: wait; opacity: .55; }
-.direction-card { padding: 28px; overflow-wrap: anywhere; }
+.direction-card { padding: 28px; overflow-wrap: anywhere; min-width: 0; }
 .direction-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
 .direction-top .eyebrow { letter-spacing: .5px; }
 .direction-top .tag { flex-shrink: 0; }

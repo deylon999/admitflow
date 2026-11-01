@@ -127,3 +127,18 @@ test('переход по сайту и пропуск навигации упр
   await page.keyboard.press('Enter');
   await expect(page.locator('main')).toBeFocused();
 });
+
+test('историю на телефоне можно прокрутить с клавиатуры', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items: [fixture.latest], nextCursor: null, total: 1 } }));
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'История', exact: true }).click();
+  const region = page.getByRole('region', { name: `История ${fixture.title}`, exact: true });
+  await region.focus();
+  await expect(region).toBeFocused();
+  await expect(region.locator('th[scope=col]')).toHaveCount(8);
+  await page.keyboard.press('ArrowRight');
+  await expect.poll(() => region.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
+});

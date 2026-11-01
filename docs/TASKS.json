@@ -3473,7 +3473,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T074"
       ],
@@ -3487,7 +3487,12 @@
       "acceptance": [
         "Named focusable region, column headers and narrow-screen keyboard scroll work."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S072: Named focusable history region and scoped column headers support keyboard horizontal scrolling. Mobile test first exposed intrinsic grid expansion; constrained tracks/card minimum widths. Final390px Chromium scroll/no-page-overflow check passed."
+        }
+      ],
       "blockedReason": null
     },
     {

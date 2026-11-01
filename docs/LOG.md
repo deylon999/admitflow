@@ -448,3 +448,7 @@ Cross-tab reset hides private cards/drafts, cancels private reads and requires e
 ## S071 - 2026-11-01 - B05 11/15 (T114)
 
 Skip navigation focuses main; route/hash changes focus destination including lazy headings, and404 has a correct title. Build and Chromium route/skip keyboard check passed; no full screen-reader/browser matrix claimed.
+
+## S072 - 2026-11-01 - B05 12/15 (T115)
+
+Named focusable history region and scoped column headers support keyboard horizontal scrolling. Mobile test first exposed intrinsic grid expansion; constrained tracks/card minimum widths. Final390px Chromium scroll/no-page-overflow check passed.
