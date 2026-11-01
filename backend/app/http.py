@@ -1,6 +1,10 @@
 """HTTP budgets are enforced on received bytes, independently of Content-Length."""
 import asyncio
+import json
+import logging
+import time
 from urllib.parse import urlsplit
+from uuid import uuid4
 
 from starlette.responses import JSONResponse
 
@@ -79,3 +83,45 @@ class RequestBudgetMiddleware:
         response = JSONResponse({'detail': detail}, status_code=status,
                                 headers={'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff'})
         await response(scope, receive, send)
+
+
+class RequestDiagnosticsMiddleware:
+    def __init__(self, app):
+        self.app = app
+        self.logger = logging.getLogger('admitflow.http')
+        self.logger.setLevel(logging.INFO)
+        if not self.logger.handlers and not logging.getLogger().handlers:
+            self.logger.addHandler(logging.StreamHandler())
+
+    async def __call__(self, scope, receive, send):
+        if scope['type'] != 'http':
+            return await self.app(scope, receive, send)
+        request_id = str(uuid4())
+        start = time.perf_counter()
+        status = 500
+        started = False
+
+        async def measured_send(message):
+            nonlocal status, started
+            if message['type'] == 'http.response.start':
+                started = True
+                status = message['status']
+                replaced = {b'x-request-id',b'cache-control',b'x-content-type-options'}
+                headers = [(key,value) for key,value in message.get('headers',[]) if key.lower() not in replaced]
+                headers.extend([(b'x-request-id',request_id.encode()),(b'cache-control',b'no-store'),(b'x-content-type-options',b'nosniff')])
+                message = {**message,'headers':headers}
+            await send(message)
+
+        try:
+            await self.app(scope, receive, measured_send)
+        except Exception:
+            if started:
+                # Streaming failures cannot start a second response.
+                raise
+            await JSONResponse({'detail':'Внутренняя ошибка сервиса. Повторите позже.','requestId':request_id},status_code=500)(scope,receive,measured_send)
+        finally:
+            route = getattr(scope.get('route'),'path','unmatched')
+            method = scope.get('method','OTHER')
+            if method not in ('GET','HEAD','POST','PUT','PATCH','DELETE','OPTIONS'):
+                method = 'OTHER'
+            self.logger.info(json.dumps(dict(event='http_request',requestId=request_id,method=method,route=route,status=status,durationMs=round((time.perf_counter()-start)*1000,2)),separators=(',',':')))

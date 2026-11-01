@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from sqlalchemy import and_, delete, func, or_, select, text
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
@@ -21,7 +22,7 @@ from .schemas import CatalogRead, DataExport, HistoryPage, SourceStatus
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import upgrade_schema
-from .http import RequestBudgetMiddleware, permitted_origin
+from .http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -83,6 +84,8 @@ def create_app(settings: Settings | None = None):
         response.headers['X-Content-Type-Options'] = 'nosniff'
         return response
 
+    app.add_middleware(RequestDiagnosticsMiddleware)
+
     def database():
         with Session(engine) as session:
             yield session
@@ -131,9 +134,17 @@ def create_app(settings: Settings | None = None):
         db.flush()
         return snapshot
 
+    @app.get('/api/live')
+    def live():
+        return {'status':'ok','version':'0.2.0'}
+
     @app.get('/api/health')
+    @app.get('/api/ready')
     def health(db: Session = Depends(database)):
-        db.execute(text('SELECT 1'))
+        try:
+            db.execute(text('SELECT 1'))
+        except SQLAlchemyError:
+            raise HTTPException(503,'База данных временно недоступна.') from None
         return {'status': 'ok', 'version': '0.2.0'}
 
     @app.post('/api/v1/calculate', response_model=CalculationResult)
