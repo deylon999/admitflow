@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 83 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 84 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -149,7 +149,7 @@
 - [x] T121 Bound and redact validation error responses
 - [x] T122 Fail closed on invalid environment and production settings
 - [x] T123 Bound PostgreSQL connection establishment
-- [ ] T137 Bound JSON response consumption in the browser
+- [x] T137 Bound JSON response consumption in the browser
 
 ## Резерв и выпуск
 

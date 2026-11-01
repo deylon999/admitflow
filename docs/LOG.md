@@ -547,3 +547,7 @@ Guest bootstrap and explicit reset serialize across tabs using Web Locks with bo
 ## S094 - 2026-11-01 - B06 18/20 (T136)
 
 Private requests fence epoch changes before headers/errors and after JSON body; superseded reads do not auto-retry. Late bootstrap catch clears only its own pending promise. Two deferred-response regressions and all73 frontend tests/build passed.
+
+## S095 - 2026-11-01 - B06 19/20 (T137)
+
+Browser JSON reader enforces10MiB success/64KiB error bounds, cancels oversize/stalled streams, validates UTF8 and MIME, bounds displayed error strings. Four body regressions and all77 frontend tests/build passed; session epoch fence still covers body completion.

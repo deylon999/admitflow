@@ -4115,7 +4115,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T073"
       ],
@@ -4129,7 +4129,12 @@
       "acceptance": [
         "Oversized/malformed response bodies stop reading; cancellation and timeout remain effective."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S095: Browser JSON reader enforces10MiB success/64KiB error bounds, cancels oversize/stalled streams, validates UTF8 and MIME, bounds displayed error strings. Four body regressions and all77 frontend tests/build passed; session epoch fence still covers body completion."
+        }
+      ],
       "blockedReason": null
     },
     {

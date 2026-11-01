@@ -1,6 +1,6 @@
 import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
-import { RequestTimeoutError, withRequestTimeout } from './transport';
+import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
@@ -25,14 +25,14 @@ async function request(path: string, init: RequestInit = {}): Promise<unknown> {
   checkAccess();
   if (!response.ok) {
     if (response.status === 401) throw new SessionExpiredError();
-    const body = await response.json().catch(() => null) as { detail?: unknown } | null;
+    const body = await readJsonResponse(response, signal, 64 * 1024).catch(() => null) as { detail?: unknown } | null;
     checkAccess();
-    const message = typeof body?.detail === 'string' ? body.detail : response.status === 422 ? 'Проверьте названия, ссылку и числовые значения.' : 'Сервис временно недоступен. Попробуйте ещё раз.';
+    const message = typeof body?.detail === 'string' && body.detail.length <= 500 ? body.detail : response.status === 422 ? 'Проверьте названия, ссылку и числовые значения.' : 'Сервис временно недоступен. Попробуйте ещё раз.';
     throw new ApiError(message, response.status);
   }
   if (response.status === 204) return undefined;
   let body: unknown;
-  try { body = await response.json(); } catch { checkAccess(); throw new InvalidResponseError(); }
+  try { body = await readJsonResponse(response, signal); } catch { checkAccess(); throw new InvalidResponseError(); }
   checkAccess();
   return body;
   }, init.signal);
