@@ -487,3 +487,7 @@ Request JSON rejects duplicate keys, NaN/Infinity/overflow and depth over64 befo
 ## S079 - 2026-11-01 - B06 3/20 (T121)
 
 Validation422 returns at most20 redacted field paths, no input/context or unknown key values, with matching OpenAPI schema. Targeted hardening/API/body-budget32 passed.
+
+## S080 - 2026-11-01 - B06 4/20 (T122)
+
+Settings fail closed for unknown environment/boolean strings; constructor enforces PostgreSQL, secure cookie and explicit production migrations. Updated prior test to reject an explicit unsafe true instead of silently ignoring it. Config/origin10 passed.

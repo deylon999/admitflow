@@ -23,6 +23,9 @@ def test_production_disables_schema_creation(monkeypatch):
     monkeypatch.setenv('AUTO_CREATE_SCHEMA', 'true')
     monkeypatch.setenv('ALLOWED_HOSTS','admitflow.example')
     monkeypatch.setenv('PUBLIC_ORIGIN','https://admitflow.example')
+    with pytest.raises(RuntimeError,match='explicit migrations'):
+        Settings.from_env()
+    monkeypatch.setenv('AUTO_CREATE_SCHEMA', 'false')
     config = Settings.from_env()
     assert config.secure_cookie is True
     assert config.auto_create_schema is False

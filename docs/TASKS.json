@@ -3695,7 +3695,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T085"
       ],
@@ -3709,7 +3709,12 @@
       "acceptance": [
         "Unknown environments/boolean values fail startup; direct Settings cannot bypass production invariants."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S080: Settings fail closed for unknown environment/boolean strings; constructor enforces PostgreSQL, secure cookie and explicit production migrations. Updated prior test to reject an explicit unsafe true instead of silently ignoring it. Config/origin10 passed."
+        }
+      ],
       "blockedReason": null
     },
     {

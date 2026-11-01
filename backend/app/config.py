@@ -2,6 +2,8 @@ import os
 import re
 from dataclasses import dataclass
 from urllib.parse import urlsplit
+from sqlalchemy.engine import make_url
+from sqlalchemy.exc import ArgumentError
 
 
 @dataclass(frozen=True)
@@ -14,6 +16,10 @@ class Settings:
     public_origin: str | None = None
 
     def __post_init__(self):
+        if self.environment not in ('development','production'):
+            raise RuntimeError('ENVIRONMENT must be development or production.')
+        if type(self.secure_cookie) is not bool or type(self.auto_create_schema) is not bool:
+            raise RuntimeError('Cookie/schema settings must be booleans.')
         if not self.allowed_hosts or any(not re.fullmatch(r'[a-z0-9](?:[a-z0-9.-]{0,252}[a-z0-9])?', host) for host in self.allowed_hosts):
             raise RuntimeError('ALLOWED_HOSTS must contain exact hostnames without wildcards or ports.')
         if self.public_origin:
@@ -28,18 +34,35 @@ class Settings:
                 raise RuntimeError('PUBLIC_ORIGIN must be an origin matching ALLOWED_HOSTS.')
         if self.environment == 'production' and (not self.public_origin or not self.public_origin.startswith('https://')):
             raise RuntimeError('Production requires an explicit HTTPS PUBLIC_ORIGIN.')
+        if self.environment == 'production':
+            try:
+                backend = make_url(self.database_url).get_backend_name()
+            except (ArgumentError, ValueError):
+                raise RuntimeError('Invalid DATABASE_URL.') from None
+            if backend != 'postgresql' or not self.secure_cookie:
+                raise RuntimeError('Production requires PostgreSQL and SECURE_COOKIE=true (HTTPS).')
+            if self.auto_create_schema:
+                raise RuntimeError('Production requires explicit migrations, not AUTO_CREATE_SCHEMA=true.')
 
     @classmethod
     def from_env(cls):
-        production = os.getenv('ENVIRONMENT', 'development') == 'production'
+        environment = os.getenv('ENVIRONMENT', 'development')
+        if environment not in ('development','production'):
+            raise RuntimeError('ENVIRONMENT must be development or production.')
+        production = environment == 'production'
+        def boolean(name,default):
+            value=os.getenv(name,default).lower()
+            if value not in ('true','false'):
+                raise RuntimeError(f'{name} must be true or false.')
+            return value=='true'
+        secure=boolean('SECURE_COOKIE','true' if production else 'false')
+        auto=boolean('AUTO_CREATE_SCHEMA','false' if production else 'true')
         config = cls(
             database_url=os.getenv('DATABASE_URL', 'sqlite:///./abiturient.db'),
             environment='production' if production else 'development',
-            secure_cookie=os.getenv('SECURE_COOKIE', 'true' if production else 'false').lower() == 'true',
-            auto_create_schema=not production and os.getenv('AUTO_CREATE_SCHEMA', 'true').lower() == 'true',
+            secure_cookie=secure,
+            auto_create_schema=auto,
             allowed_hosts=tuple(host.strip().lower() for host in os.getenv('ALLOWED_HOSTS','' if production else 'localhost,127.0.0.1,testserver').split(',') if host.strip()),
             public_origin=os.getenv('PUBLIC_ORIGIN') or None,
         )
-        if production and (config.database_url.startswith('sqlite') or not config.secure_cookie):
-            raise RuntimeError('Production requires PostgreSQL and SECURE_COOKIE=true (HTTPS).')
         return config
