@@ -4638,6 +4638,243 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T154",
+      "title": "Enable data-router navigation blocking",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T138"
+      ],
+      "deliverables": [
+        "frontend/src/main.tsx"
+      ],
+      "steps": [
+        "Enable data-router navigation blocking",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Routes, lazy failure recovery, titles and hash navigation remain functional with the installed router."
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S114: npm run build exit0; Playwright landing.spec.ts/tracker-tools.spec.ts16 passed on5187/API8007. Data router preserves routes, lazy failure recovery, hashes,404/title/focus and existing manual tools. Installed React Router7.18.4 exports verified; ADR022 records bounded draft/navigation choice."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T155",
+      "title": "Protect unsaved forms on browser back and forward",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T154",
+        "T147"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Protect unsaved forms on browser back and forward",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Rejecting back/forward preserves the form; accepting leaves once; pending saves cannot be discarded by SPA navigation."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T156",
+      "title": "Expose an isolated guest draft namespace",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016"
+      ],
+      "deliverables": [
+        "backend/app/schemas.py"
+      ],
+      "steps": [
+        "Expose an isolated guest draft namespace",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Session returns a stable one-way local draft scope, different between owners/reset; no token or owner hash exposed."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T157",
+      "title": "Validate bounded session-local draft storage",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T156"
+      ],
+      "deliverables": [
+        "frontend/src/lib/draft.ts"
+      ],
+      "steps": [
+        "Validate bounded session-local draft storage",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "One versioned draft per tab is bounded, scope/expiry checked, malformed data discarded and storage failure reported honestly."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T158",
+      "title": "Save form drafts and retry keys locally",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T157"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Save form drafts and retry keys locally",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Changed fields persist locally without POST; operation key is stored before sending; storage failure leaves form functional."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T159",
+      "title": "Offer explicit draft restore and discard",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T158"
+      ],
+      "deliverables": [
+        "frontend/src/components/DraftRecovery.tsx"
+      ],
+      "steps": [
+        "Offer explicit draft restore and discard",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Reload offers an accessible preview; restore fills fields without posting, discard removes only the draft."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T160",
+      "title": "Refuse stale draft updates without losing retry safety",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T159"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Refuse stale draft updates without losing retry safety",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Expected latest snapshot fences fresh writes; cached retry still replays; stale/missing restored edits cannot silently overwrite newer data."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T161",
+      "title": "Clear local drafts when access or saved data changes",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T159"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Clear local drafts when access or saved data changes",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Success, explicit discard/reset, expiry and cross-tab access change remove local recovery state and do not resurrect it."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T162",
+      "title": "Verify draft recovery across real browser reloads",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T160",
+        "T161"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/draft-recovery.spec.ts"
+      ],
+      "steps": [
+        "Verify draft recovery across real browser reloads",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Real API reload recovery and lost-response retry create no duplicates and preserve original owner boundaries."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T163",
+      "title": "Verify keyboard and narrow-screen draft recovery",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T162"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/draft-recovery.spec.ts"
+      ],
+      "steps": [
+        "Verify keyboard and narrow-screen draft recovery",
+        "Verify success and meaningful refusal cases"
+      ],
+      "acceptance": [
+        "Recovery and failure states remain usable at320px in both themes, by keyboard and with unavailable storage; current evidence captured."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

@@ -2640,6 +2640,226 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S111: Playwright manual-quality filtered-print case:1 passed. Two real API records, active filter selects only one; print media excludes second record and controls, includes source/model/limitations. Actual Chromium A4 PDF generated in ignored test-results; docs/evidence/manual-report.png visually inspected, clear labels/values. Existing mock-only print regression is preserved.
 
+### T154. Enable data-router navigation blocking
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T138.
+
+**Результаты/файлы:** `frontend/src/main.tsx`.
+
+**Шаги:**
+
+1. Enable data-router navigation blocking.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Routes, lazy failure recovery, titles and hash navigation remain functional with the installed router..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S114: npm run build exit0; Playwright landing.spec.ts/tracker-tools.spec.ts16 passed on5187/API8007. Data router preserves routes, lazy failure recovery, hashes,404/title/focus and existing manual tools. Installed React Router7.18.4 exports verified; ADR022 records bounded draft/navigation choice.
+
+### T155. Protect unsaved forms on browser back and forward
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T154, T147.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Protect unsaved forms on browser back and forward.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Rejecting back/forward preserves the form; accepting leaves once; pending saves cannot be discarded by SPA navigation..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T156. Expose an isolated guest draft namespace
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T016.
+
+**Результаты/файлы:** `backend/app/schemas.py`.
+
+**Шаги:**
+
+1. Expose an isolated guest draft namespace.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Session returns a stable one-way local draft scope, different between owners/reset; no token or owner hash exposed..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T157. Validate bounded session-local draft storage
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T156.
+
+**Результаты/файлы:** `frontend/src/lib/draft.ts`.
+
+**Шаги:**
+
+1. Validate bounded session-local draft storage.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- One versioned draft per tab is bounded, scope/expiry checked, malformed data discarded and storage failure reported honestly..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T158. Save form drafts and retry keys locally
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T157.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Save form drafts and retry keys locally.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Changed fields persist locally without POST; operation key is stored before sending; storage failure leaves form functional..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T159. Offer explicit draft restore and discard
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T158.
+
+**Результаты/файлы:** `frontend/src/components/DraftRecovery.tsx`.
+
+**Шаги:**
+
+1. Offer explicit draft restore and discard.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Reload offers an accessible preview; restore fills fields without posting, discard removes only the draft..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T160. Refuse stale draft updates without losing retry safety
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T159.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Refuse stale draft updates without losing retry safety.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Expected latest snapshot fences fresh writes; cached retry still replays; stale/missing restored edits cannot silently overwrite newer data..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T161. Clear local drafts when access or saved data changes
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T159.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Clear local drafts when access or saved data changes.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Success, explicit discard/reset, expiry and cross-tab access change remove local recovery state and do not resurrect it..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T162. Verify draft recovery across real browser reloads
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T160, T161.
+
+**Результаты/файлы:** `frontend/tests/e2e/draft-recovery.spec.ts`.
+
+**Шаги:**
+
+1. Verify draft recovery across real browser reloads.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Real API reload recovery and lost-response retry create no duplicates and preserve original owner boundaries..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T163. Verify keyboard and narrow-screen draft recovery
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T162.
+
+**Результаты/файлы:** `frontend/tests/e2e/draft-recovery.spec.ts`.
+
+**Шаги:**
+
+1. Verify keyboard and narrow-screen draft recovery.
+2. Verify success and meaningful refusal cases.
+
+**Критерии закрытия:**
+
+- Recovery and failure states remain usable at320px in both themes, by keyboard and with unavailable storage; current evidence captured..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

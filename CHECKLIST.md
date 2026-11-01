@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 100 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 101 из 163 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -137,6 +137,16 @@
 - [x] T148 Prevent form submission during another mutation
 - [x] T151 Verify long manual cards at320px in both themes
 - [x] T152 Verify filtered manual report printing
+- [x] T154 Enable data-router navigation blocking
+- [ ] T155 Protect unsaved forms on browser back and forward
+- [ ] T156 Expose an isolated guest draft namespace
+- [ ] T157 Validate bounded session-local draft storage
+- [ ] T158 Save form drafts and retry keys locally
+- [ ] T159 Offer explicit draft restore and discard
+- [ ] T160 Refuse stale draft updates without losing retry safety
+- [ ] T161 Clear local drafts when access or saved data changes
+- [ ] T162 Verify draft recovery across real browser reloads
+- [ ] T163 Verify keyboard and narrow-screen draft recovery
 
 ## Качество и эксплуатация
 

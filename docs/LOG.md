@@ -634,3 +634,11 @@ S112 final checkpoint,2026-11-01: backend `.venv/Scripts/python.exe -m pytest -q
 S112 evidence: docs/evidence/manual-mobile-b07.png from final real API at390px with clearly named manual example, visually inspected; its new test session deleted afterward. manual-report.png visually inspected, chosen real API record with source and limitations; PDF generated in ignored test-results. No Figma/fonts/real-source acceptance claimed. API/RUNBOOK/DATA_RULES/STATE/PROGRESS/task deliverables updated.100done/153total,3blocked,4review,46todo; all7 gates open and estimated automated MVP40% unchanged. GitHub and Docker access still denied; no remote push/CI/native PG proof.
 
 S112 final plan checks: roadmap --render/--check valid153tasks; all6 invalid-state self-tests rejected; git diff --check exit0. B07 contains15 task commits, preserving configured user authorship. No active task; nextT103 review until native PostgreSQL evidence.
+
+## S113 - 2026-11-01 - B08 plan10
+
+User requested10 tasks. Git clean at396440f, roadmap valid153. Docker Engine/config and GitHub still denied; web original pilot pages inaccessible, no new local source/font inputs. Select unfinished form recovery and browser-history protection as10 coherent tasks, preserving all external gates. Session-local30-minute drafts are not server backups or crash guarantees. Data router uses installed dependency, no new framework.
+
+## S114 - 2026-11-01 - B08 1/10 (T154)
+
+npm run build exit0; Playwright landing.spec.ts/tracker-tools.spec.ts16 passed on5187/API8007. Data router preserves routes, lazy failure recovery, hashes,404/title/focus and existing manual tools. Installed React Router7.18.4 exports verified; ADR022 records bounded draft/navigation choice.
