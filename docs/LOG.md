@@ -620,3 +620,7 @@ Backend test_snapshot_clock.py/test_export.py/test_import.py:16 passed. One-micr
 ## S110 - 2026-11-01 - B07 13/15 (T151)
 
 Playwright manual-quality.spec.ts:2 passed after real overflow fix. Both themes at320px with160/200 unbroken Cyrillic names,1000000 values, expanded history and open edit. Initial test reproduced1919px grid expansion; minmax(0,1fr), bounded sidebar/form and wrapping preview fix it without clipping content.
+
+## S111 - 2026-11-01 - B07 14/15 (T152)
+
+Playwright manual-quality filtered-print case:1 passed. Two real API records, active filter selects only one; print media excludes second record and controls, includes source/model/limitations. Actual Chromium A4 PDF generated in ignored test-results; docs/evidence/manual-report.png visually inspected, clear labels/values. Existing mock-only print regression is preserved.

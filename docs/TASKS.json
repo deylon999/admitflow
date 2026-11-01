@@ -4566,7 +4566,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T108"
       ],
@@ -4580,7 +4580,12 @@
       "acceptance": [
         "Print media contains only selected manual records, sources and limitations; interactive controls are hidden."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S111: Playwright manual-quality filtered-print case:1 passed. Two real API records, active filter selects only one; print media excludes second record and controls, includes source/model/limitations. Actual Chromium A4 PDF generated in ignored test-results; docs/evidence/manual-report.png visually inspected, clear labels/values. Existing mock-only print regression is preserved."
+        }
+      ],
       "blockedReason": null
     },
     {
