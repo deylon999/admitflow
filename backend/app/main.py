@@ -23,7 +23,7 @@ from .coverage import coverage
 from .importing import import_bundle
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
-from .migrations import upgrade_schema
+from .migrations import ensure_restore_complete, upgrade_schema
 from .http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
 
 COOKIE = 'abiturient_session'
@@ -48,6 +48,7 @@ def create_app(settings: Settings | None = None):
 
     @asynccontextmanager
     async def lifespan(_):
+        ensure_restore_complete(engine)
         if config.auto_create_schema:
             upgrade_schema(engine)
             cleanup_expired_sessions(engine)

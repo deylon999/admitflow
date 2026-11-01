@@ -1,5 +1,8 @@
 import json
 import sqlite3
+from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
+import threading
 
 from fastapi.testclient import TestClient
 import pytest
@@ -64,3 +67,47 @@ def test_manifest_reference_tampering_and_database_integrity(client,application,
     path.write_text(json.dumps(original|{'databaseHash':file_hash(folder/'database.sqlite3')}))
     with pytest.raises(BackupError,match='unexpected_backup_schema'):
         verify_backup(folder)
+
+
+def test_two_restores_reserve_destination_without_overwrite(client,application,tmp_path,monkeypatch):
+    store=RawStore(tmp_path/'raw')
+    first=create_backup(application.state.engine,store,tmp_path/'backups')
+    second=create_backup(application.state.engine,store,tmp_path/'backups')
+    target=tmp_path/'contended'
+    barrier=threading.Barrier(2)
+    original=Path.mkdir
+    def synchronized(path,*args,**kwargs):
+        if path==target:
+            barrier.wait(timeout=5)
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(Path,'mkdir',synchronized)
+    def restore(folder):
+        try:
+            return str(restore_backup(folder,target))
+        except BackupError as error:
+            return str(error)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results=list(pool.map(restore,[first,second]))
+    assert results.count(str(target))==1
+    assert results.count('restore_destination_exists')==1
+    assert verify_backup(target).format=='sqlite-backup-v1'
+
+
+def test_partial_restore_is_not_ready_and_app_refuses_to_start(client,application,tmp_path,monkeypatch):
+    folder=create_backup(application.state.engine,RawStore(tmp_path/'raw'),tmp_path/'backups')
+    target=tmp_path/'partial'
+    original=__import__('os').link
+    def fail_copy(source,destination,*args,**kwargs):
+        if Path(destination)==target/'database.sqlite3':
+            raise OSError('simulated copy failure')
+        return original(source,destination,*args,**kwargs)
+    monkeypatch.setattr('app.backup.os.link',fail_copy)
+    with pytest.raises(OSError):
+        restore_backup(folder,target)
+    assert (target/'restore.pending').exists()
+    with pytest.raises(BackupError,match='restore_incomplete'):
+        verify_backup(target)
+    with pytest.raises(RuntimeError,match='restore is incomplete'):
+        with TestClient(create_app(Settings(database_url=f"sqlite:///{target/'database.sqlite3'}"))):
+            pass
+    assert not (target/'database.sqlite3').exists()

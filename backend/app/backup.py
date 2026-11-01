@@ -106,6 +106,8 @@ def create_backup(engine,store,output,*,timeout=60):
 
 def verify_backup(folder):
     folder=Path(folder).resolve()
+    if (folder/'restore.pending').exists() or (folder/'restore.pending').is_symlink():
+        raise BackupError('restore_incomplete')
     database=folder/'database.sqlite3'
     manifest_path=folder/'manifest.json'
     if any(path.is_symlink() for path in (database,manifest_path,folder/'raw')):
@@ -166,10 +168,19 @@ def restore_backup(folder,destination):
                 restored.put(saved.read(digest),digest)
             write_private(staging/'manifest.json',manifest.model_dump_json(by_alias=True).encode())
             verify_backup(staging)
-            # Another restore cannot overwrite a populated destination.
-            if target.exists() or target.is_symlink():
-                raise BackupError('restore_destination_exists')
-            staging.rename(target)
+            # mkdir reserves the destination without POSIX rename's empty-dir overwrite.
+            try:
+                target.mkdir(mode=0o700)
+            except FileExistsError:
+                raise BackupError('restore_destination_exists') from None
+            write_private(target/'restore.pending',b'Incomplete restore; do not start the application.\n')
+            (target/'raw').mkdir(mode=0o700)
+            # Hard links refuse any existing file, including one created after reservation.
+            os.link(staging/'database.sqlite3',target/'database.sqlite3')
+            for digest in manifest.raw_hashes:
+                os.link(staging/'raw'/digest,target/'raw'/digest)
+            os.link(staging/'manifest.json',target/'manifest.json')
+            (target/'restore.pending').unlink()
         return target
     finally:
         if staging.exists():
