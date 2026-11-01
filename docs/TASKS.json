@@ -713,7 +713,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T003",
         "T005",
@@ -732,7 +732,12 @@
         "Статус объясняет входы и допущения",
         "Все граничные cases совпадают с документированной моделью"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S020 / B01 1/5: общий assessment contract; 112 backend / 46 frontend / 4 landing E2E."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -802,7 +807,8 @@
       "dependsOn": [
         "T014",
         "T018",
-        "T019"
+        "T019",
+        "T070"
       ],
       "deliverables": [
         "backend/app/history/",
@@ -855,7 +861,8 @@
       "dependsOn": [
         "T019",
         "T021",
-        "T024"
+        "T024",
+        "T072"
       ],
       "deliverables": [
         "frontend/src/lib/api.ts",
@@ -1234,7 +1241,8 @@
       "status": "todo",
       "dependsOn": [
         "T020",
-        "T034"
+        "T034",
+        "T069"
       ],
       "deliverables": [
         "backend/app/explanations/",
@@ -2051,6 +2059,110 @@
           "note": "S017: 106 backend/40 frontend/12 E2E; concurrent limits and response-loss retry passed. PG remains separately unverified."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T069",
+      "title": "Объяснить ручной сценарий проверяемыми числами",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T020",
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/components/ScenarioExplanation.tsx"
+      ],
+      "steps": [
+        "Объяснить ручной сценарий проверяемыми числами",
+        "Проверить пользовательский путь и граничные состояния"
+      ],
+      "acceptance": [
+        "Объяснение связано с введёнными числами и двумя сценариями",
+        "Нет обещания поступления или выдуманных процентов"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T070",
+      "title": "Показать сравнение ручных снимков",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018",
+        "T068"
+      ],
+      "deliverables": [
+        "frontend/src/lib/comparison.ts"
+      ],
+      "steps": [
+        "Показать сравнение ручных снимков",
+        "Проверить пользовательский путь и граничные состояния"
+      ],
+      "acceptance": [
+        "Изменения места и входных данных показаны отдельно",
+        "Первый снимок и неизменные данные обработаны корректно"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T071",
+      "title": "Экспортировать свои ручные направления и полную историю",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T018",
+        "T068"
+      ],
+      "deliverables": [
+        "backend/app/main.py",
+        "frontend/src/lib/api.ts"
+      ],
+      "steps": [
+        "Экспортировать свои ручные направления и полную историю",
+        "Проверить пользовательский путь и граничные состояния"
+      ],
+      "acceptance": [
+        "Экспорт содержит все свои снимки, а не только последние 100",
+        "Чужие данные и токены не попадают в файл"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T072",
+      "title": "Довести управление ручной формой с клавиатуры",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T069",
+        "T070",
+        "T071"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/"
+      ],
+      "steps": [
+        "Довести управление ручной формой с клавиатуры",
+        "Проверить пользовательский путь и граничные состояния"
+      ],
+      "acceptance": [
+        "Фокус ставится в открытую форму и возвращается после закрытия",
+        "Escape и клавиатурные действия проверены, сохранение не прерывается"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

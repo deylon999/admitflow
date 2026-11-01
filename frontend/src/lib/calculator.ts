@@ -33,7 +33,21 @@ export function calculatePlace(form: CalculationForm): CalculationResult | Calcu
   const state = worstPlace <= values.seats ? 'safe' : place <= values.seats ? 'conditional' : 'out';
   return { place, worstPlace, seats: values.seats, state, status: {
     safe: 'В пределах мест в обоих рассмотренных сценариях',
-    conditional: 'Сейчас проходите. Новые согласия могут изменить место',
-    out: 'Сейчас не проходите на бюджет',
+    conditional: 'В пределах мест только в текущем сценарии согласий',
+    out: 'За границей мест по введённым данным',
   }[state] };
+}
+
+export type ScenarioAssessment =
+  | { state: 'ready'; result: CalculationResult }
+  | { state: 'unsupported'; reason: string }
+  | { state: 'insufficient_data'; reason: string; error?: CalculationError };
+
+export function assessScenario(form: CalculationForm | null, mode = 'manual', modelVersion = 'manual-v1'): ScenarioAssessment {
+  if (mode !== 'manual' || modelVersion !== 'manual-v1') {
+    return { state: 'unsupported', reason: 'Этот режим или версия правил ещё не поддерживается. Числовой вывод недоступен.' };
+  }
+  if (form === null) return { state: 'insufficient_data', reason: 'Недостаточно данных для расчёта. Заполните четыре числовых поля.' };
+  const result = calculatePlace(form);
+  return 'error' in result ? { state: 'insufficient_data', reason: result.error, error: result } : { state: 'ready', result };
 }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { calculatePlace, exampleValues } from '../lib/calculator';
-import type { CalculationForm, CalculationResult, CalculationError } from '../lib/calculator';
+import { assessScenario, exampleValues } from '../lib/calculator';
+import type { CalculationForm, CalculationError, ScenarioAssessment } from '../lib/calculator';
 
 export const calculationFields = [
   { name: 'rank', id: 'rank', label: 'Ваш номер в списке', min: 1 },
@@ -19,14 +19,15 @@ export function CalculationInputs({ values, onChange, error, prefix = '' }: { va
 export function ResultLegend() {
   return <div className="legend result-legend"><span><i className="swatch competitor" />Конкурируют с вами</span><span><i className="swatch yours" />Вы</span><span><i className="swatch vacant" />Свободно</span></div>;
 }
-export function CalculationOutput({ result }: { result: CalculationResult | CalculationError }) {
+export function CalculationOutput({ assessment }: { assessment: ScenarioAssessment }) {
+  const result = assessment.state === 'ready' ? assessment.result : { error: assessment.reason, fields: [] };
   const valid = !('error' in result);
   return <div className="result-card surface" aria-live="polite" aria-atomic="true">
-    <span className="tag">Расчёт по текущему списку</span>
+    <span className="tag">Ручной сценарий</span>
     <div className="result-place" id="result-place">{valid ? result.place : '—'}</div>
-    <p className="result-caption">ваше реальное место сейчас</p>
+    <p className="result-caption">место по введённым данным</p>
     <div className="result-facts"><div><strong id="effective-seats">{valid ? result.worstPlace : '—'}</strong><p>место, если все, кто выше и пока без согласия, подадут его</p></div><div><strong id="budget-seats">{valid ? result.seats : '—'}</strong><p>бюджетных мест</p></div></div>
-    <p className="result-status" id="result-status" data-state={valid ? result.state : 'out'}>{valid ? result.status : 'Проверьте введённые данные'}</p>
+    <p className="result-status" id="result-status" data-state={valid ? result.state : assessment.state}>{valid ? result.status : result.error}</p>
     <div className="progress-bar" id="progress-bar" hidden={!valid} role="img" aria-label={valid ? `Ваше место ${result.place}, бюджетных мест ${result.seats}` : undefined}>
       <span className="progress-competitors" style={{ width: valid ? `${(result.place - 1) / Math.max(result.place, result.seats) * 100}%` : 0 }} /><span className="progress-yours" style={{ width: valid ? `${1 / Math.max(result.place, result.seats) * 100}%` : 0 }} /><span className="progress-free" />
     </div><ResultLegend />
@@ -35,14 +36,14 @@ export function CalculationOutput({ result }: { result: CalculationResult | Calc
 
 export function Calculator() {
   const [values, setValues] = useState<CalculationForm>(exampleValues);
-  const result = calculatePlace(values);
-  const error = 'error' in result ? result : undefined;
+  const assessment = assessScenario(values);
+  const error = assessment.state === 'insufficient_data' ? assessment.error : undefined;
   return <section className="section container calculator-section" id="calculator" aria-labelledby="calculator-title">
     <p className="eyebrow">Калькулятор</p><h2 id="calculator-title">Посчитайте своё место</h2><p className="section-description">Подставьте данные из своего списка. Расчёт идёт по текущим цифрам.</p>
     <div className="calculator-grid"><form className="calculator-form" id="calculator-form" noValidate onSubmit={event => event.preventDefault()}>
       <CalculationInputs values={values} onChange={setValues} error={error} />
       <p className="form-note">Значения — пример. Подставьте данные из своего списка. Учитывайте людей в одной конкурсной группе, без повторов между двумя вычитаемыми группами.</p>
       <p className="form-error" id="calculation-error" role="alert" hidden={!error}>{error?.error}</p>
-    </form><CalculationOutput result={result} /></div>
+    </form><CalculationOutput assessment={assessment} /></div>
   </section>;
 }

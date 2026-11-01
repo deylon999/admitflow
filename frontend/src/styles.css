@@ -283,3 +283,4 @@ details[open] .faq-icon::after { transform: rotate(0); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }
 }
+[data-state='insufficient_data'].result-status, [data-state='unsupported'].result-status { color: var(--muted); background: var(--surface); }

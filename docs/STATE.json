@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": null,
-  "nextTask": "T020",
+  "currentTask": "T069",
+  "nextTask": "T069",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S019",
-  "resumeAction": "T020: уточнить сценарные формулировки. Для автоматического MVP получить оригинальные HTML двух источников и локальные лицензированные шрифты; проверить PostgreSQL/Docker. T068 завершена.",
+  "lastSession": "S020",
+  "resumeAction": "B01: T020 done; next T069, then T070/T071/T072.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

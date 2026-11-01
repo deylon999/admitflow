@@ -71,7 +71,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () =
     <div className="direction-top"><span className="eyebrow">{watch.university}</span><span className="tag">Ручной ввод</span></div>
     <h2>{watch.title}</h2>
     <div className="direction-result"><strong>{calculation.place}</strong><span>место сейчас<br /><b>{calculation.seats}</b> бюджетных мест</span></div>
-    <p className="result-status" data-state={calculation.state}>{calculation.state === 'safe' ? 'Проходите по модели расчёта' : calculation.state === 'conditional' ? 'Сейчас проходите, но новые согласия могут изменить место' : 'Сейчас не проходите на бюджет'}</p>
+    <p className="result-status" data-state={calculation.state}>{calculation.status}</p>
     <p className="direction-worst">Если все выше вас подадут согласие: <b>{calculation.worstPlace}-е место</b>.</p>
     <div className="direction-source"><a href={watch.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть источник ↗</a><span>Сохранено <time dateTime={watch.latest.capturedAt}>{date(watch.latest.capturedAt)}</time></span></div>
     {old && <p className="stale-note">Цифры сохранены больше суток назад. Проверьте свежий список.</p>}

@@ -13,6 +13,7 @@ for (const width of [320, 390, 768, 1440]) {
     await page.getByLabel('Ваш номер в списке', { exact: true }).fill('');
     await expect(page.locator('#calculation-error')).toBeVisible();
     await expect(page.locator('#result-place')).toHaveText('—');
+    await expect(page.locator('#result-status')).toHaveAttribute('data-state', 'insufficient_data');
     await page.getByLabel('Ваш номер в списке', { exact: true }).fill('120');
     for (const theme of ['dark', 'light']) {
       await page.getByRole('button', { name: theme === 'dark' ? 'Включить тёмную тему' : 'Включить светлую тему' }).click();

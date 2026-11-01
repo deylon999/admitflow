@@ -1,0 +1,7 @@
+[
+  { "name": "manual-ready", "input": { "mode": "manual", "modelVersion": "manual-v1", "values": { "rank": 120, "seats": 90, "excluded": 30, "noConsent": 16 } }, "state": "ready" },
+  { "name": "missing-values", "input": { "mode": "manual", "modelVersion": "manual-v1", "values": null }, "state": "insufficient_data" },
+  { "name": "unknown-model", "input": { "mode": "manual", "modelVersion": "unknown-v2", "values": { "rank": 120, "seats": 90, "excluded": 30, "noConsent": 16 } }, "state": "unsupported" },
+  { "name": "unverified-automatic", "input": { "mode": "automatic", "modelVersion": "manual-v1", "values": { "rank": 120, "seats": 90, "excluded": 30, "noConsent": 16 } }, "state": "unsupported" },
+  { "name": "unverified-archive", "input": { "mode": "archive", "modelVersion": "manual-v1", "values": null }, "state": "unsupported" }
+]

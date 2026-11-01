@@ -29,13 +29,33 @@ class CalculationResult(CamelModel):
     status: str
 
 
+class AssessmentInput(CamelModel):
+    mode: Literal['manual', 'automatic', 'archive'] = 'manual'
+    model_version: str = Field(default='manual-v1', max_length=80)
+    values: CalculationInput | None = None
+
+
+class ScenarioAssessment(CamelModel):
+    state: Literal['ready', 'unsupported', 'insufficient_data']
+    result: CalculationResult | None = None
+    reason: str | None = None
+
+
 def calculate(values: CalculationInput) -> CalculationResult:
     place = values.rank - values.excluded - values.no_consent
     worst = values.rank - values.excluded
     state = 'safe' if worst <= values.seats else 'conditional' if place <= values.seats else 'out'
     status = {
         'safe': 'В пределах мест в обоих рассмотренных сценариях',
-        'conditional': 'Сейчас проходите. Новые согласия могут изменить место',
-        'out': 'Сейчас не проходите на бюджет',
+        'conditional': 'В пределах мест только в текущем сценарии согласий',
+        'out': 'За границей мест по введённым данным',
     }[state]
     return CalculationResult(place=place, worst_place=worst, seats=values.seats, state=state, status=status)
+
+
+def assess_scenario(body: AssessmentInput) -> ScenarioAssessment:
+    if body.mode != 'manual' or body.model_version != 'manual-v1':
+        return ScenarioAssessment(state='unsupported', reason='Этот режим или версия правил ещё не поддерживается. Числовой вывод недоступен.')
+    if body.values is None:
+        return ScenarioAssessment(state='insufficient_data', reason='Недостаточно данных для расчёта. Заполните четыре числовых поля.')
+    return ScenarioAssessment(state='ready', result=calculate(body.values))

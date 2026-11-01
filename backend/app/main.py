@@ -10,7 +10,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from sqlalchemy import delete, func, select, text
 from sqlalchemy.orm import Session
 
-from .calculation import CalculationInput, CalculationResult, calculate
+from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
 from .config import Settings
 from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
@@ -68,7 +68,7 @@ def create_app(settings: Settings | None = None):
     @app.middleware('http')
     async def protect_writes(request: Request, call_next):
         # Same-origin fetch with a custom header; no cross-origin CORS is enabled.
-        if request.method not in ('GET', 'HEAD', 'OPTIONS') and request.url.path != '/api/v1/calculate':
+        if request.method not in ('GET', 'HEAD', 'OPTIONS') and request.url.path not in ('/api/v1/calculate', '/api/v1/assess'):
             if request.headers.get('X-Requested-With') != 'abiturient':
                 from fastapi.responses import JSONResponse
                 return JSONResponse({'detail': 'Запрос должен исходить из интерфейса приложения.'}, status_code=403)
@@ -127,6 +127,10 @@ def create_app(settings: Settings | None = None):
     @app.post('/api/v1/calculate', response_model=CalculationResult)
     def calculate_endpoint(values: CalculationInput):
         return calculate(values)
+
+    @app.post('/api/v1/assess', response_model=ScenarioAssessment)
+    def assess_endpoint(body: AssessmentInput):
+        return assess_scenario(body)
 
     @app.get('/api/v1/universities', response_model=CatalogRead)
     def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
