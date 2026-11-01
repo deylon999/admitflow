@@ -282,7 +282,8 @@ def create_app(settings: Settings | None = None):
                 raise HTTPException(400, 'Курсор истории недействителен. Загрузите историю заново.')
             query = query.where(or_(Snapshot.captured_at < cursor.captured_at, and_(Snapshot.captured_at == cursor.captured_at, Snapshot.id < cursor.id)))
         rows = db.scalars(query.order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(limit + 1)).all()
-        return HistoryPage(items=[snapshot_read(row) for row in rows[:limit]], next_cursor=rows[limit - 1].id if len(rows) > limit else None)
+        total = db.scalar(select(func.count()).select_from(Snapshot).where(Snapshot.watch_id == watch_id))
+        return HistoryPage(items=[snapshot_read(row) for row in rows[:limit]], next_cursor=rows[limit - 1].id if len(rows) > limit else None, total=total)
 
     return app
 

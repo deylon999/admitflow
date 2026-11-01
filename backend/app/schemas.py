@@ -96,6 +96,7 @@ class CoverageRead(CamelModel):
 class HistoryPage(CamelModel):
     items: list[SnapshotRead]
     next_cursor: str | None
+    total: int = Field(ge=1, le=500)
 
 
 class SourceStatus(CamelModel):

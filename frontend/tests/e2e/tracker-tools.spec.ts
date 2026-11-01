@@ -12,9 +12,10 @@ test('можно сравнить любые два загруженных со�
     return { ...fixture.latest, id: `snapshot-${3-index}`, values, calculation: calculatePlace(values) };
   });
   await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
-  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items, nextCursor: null } }));
+  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items, nextCursor: null, total: 3 } }));
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'История', exact: true }).click();
+  await expect(page.getByText('Сохранено 3 из 500. Осталось обновлений: 497.')).toBeVisible();
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 84 → 74');
   await page.getByLabel('Более раннее сохранение', { exact: true }).selectOption('snapshot-1');
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 104 → 74');

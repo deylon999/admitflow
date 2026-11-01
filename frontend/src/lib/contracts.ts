@@ -10,7 +10,7 @@ export type SessionInfo = { expiresAt: string };
 export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
 export type Catalog = { items: University[]; total: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
-export type HistoryPage = { items: Snapshot[]; nextCursor: string | null };
+export type HistoryPage = { items: Snapshot[]; nextCursor: string | null; total: number | null };
 export type ImportResult = { importedCount: number; snapshotCount: number; replayed: boolean };
 export type Coverage = { catalogUniversities: number; automaticSources: number; publishedGroups: number; freshGroups: number; archiveGroups: number; nationalTotal: null; generatedAt: string };
 
@@ -95,7 +95,9 @@ export function parseHistoryPage(value: unknown): HistoryPage {
     || (nextCursor !== null && nextCursor !== items.at(-1)?.id)
     ) throw new InvalidResponseError();
   assertSnapshotOrder(items);
-  return { items, nextCursor };
+  const total = row.total === undefined ? null : row.total;
+  if (total !== null && (typeof total !== 'number' || !Number.isInteger(total) || total < items.length || total < 1 || total > 500)) throw new InvalidResponseError();
+  return { items, nextCursor, total };
 }
 export function parseExport(value: unknown): DataExport {
   const row = object(value);

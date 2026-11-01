@@ -412,3 +412,7 @@ Search across university/title, manual-scenario filter, reset/no-results and exa
 ## S062 - 2026-11-01 - B05 2/15 (T105)
 
 Distinct chronological snapshot selectors compare any loaded pair, with safe fallback when selection disappears; default remains latest pair. Build and2 Chromium tools tests passed.
+
+## S063 - 2026-11-01 - B05 3/15 (T106)
+
+History API returns owner-scoped total independent of page size; UI shows remaining capacity out of500, older servers keep unknown total. Targeted backend1, frontend68/build and2 Chromium tools checks passed; current API process will be restarted before final real-API run.
