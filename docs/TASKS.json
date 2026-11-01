@@ -3305,7 +3305,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T097"
       ],
@@ -3319,7 +3319,12 @@
       "acceptance": [
         "Cancelling draft discard preserves form; deleting its watch closes the stale form after success."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S066: Deleting an edited direction requires draft discard confirmation before HTTP. Decline retains values and sends no delete; success closes stale form, failure keeps it. Build and Chromium cancel/confirm test passed."
+        }
+      ],
       "blockedReason": null
     },
     {

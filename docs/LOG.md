@@ -424,3 +424,7 @@ History now displays all four saved inputs, both scenario places, model version 
 ## S065 - 2026-11-01 - B05 5/15 (T108)
 
 Printable filtered manual report includes saved inputs, both places, original source/time, model and limitations. Print CSS hides controls and supports dark theme. Build and Chromium print-media check passed; no PDF/physical-printer acceptance claimed.
+
+## S066 - 2026-11-01 - B05 6/15 (T109)
+
+Deleting an edited direction requires draft discard confirmation before HTTP. Decline retains values and sends no delete; success closes stale form, failure keeps it. Build and Chromium cancel/confirm test passed.

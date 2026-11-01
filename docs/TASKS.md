@@ -1806,7 +1806,7 @@
 
 ### T109. Guard deletion of the direction being edited
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T097.
 
@@ -1824,7 +1824,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S066: Deleting an edited direction requires draft discard confirmation before HTTP. Decline retains values and sends no delete; success closes stale form, failure keeps it. Build and Chromium cancel/confirm test passed.
 
 ### T110. Manage focus and Escape for delete confirmations
 

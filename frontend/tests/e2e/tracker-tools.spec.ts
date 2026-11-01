@@ -52,3 +52,22 @@ test('печатный отчёт содержит источник и допу�
   await expect(page.locator('.print-report')).toContainText('manual-v1');
   await expect(page.locator('.tracker-page-heading')).toBeHidden();
 });
+
+test('удаление редактируемого направления требует подтвердить потерю черновика', async ({ page }) => {
+  let deleted = 0;
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: deleted ? [] : [fixture] }));
+  await page.route('**/api/v1/watches/watch-1', route => { deleted++; return route.fulfill({ status: 204 }); });
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
+  await page.locator('#tracker-rank').fill('125');
+  await page.getByRole('button', { name: 'Удалить', exact: true }).click();
+  page.once('dialog', dialog => dialog.dismiss());
+  await page.getByRole('button', { name: 'Да, удалить', exact: true }).click();
+  expect(deleted).toBe(0);
+  await expect(page.locator('#tracker-rank')).toHaveValue('125');
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Да, удалить', exact: true }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(0);
+  await expect(page.locator('.direction-form')).toHaveCount(0);
+  expect(deleted).toBe(1);
+});
