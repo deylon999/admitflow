@@ -4786,7 +4786,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T158"
       ],
@@ -4800,7 +4800,12 @@
       "acceptance": [
         "Reload offers an accessible preview; restore fills fields without posting, discard removes only the draft."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S119: Production build exit0; Playwright draft-recovery/navigation3 passed. Reload shows a bounded plaintext preview, restore fills incomplete fields without POST, discard removes only local state and returns focus. Existing draft replacement requires explicit confirmation; restored retry intent preserved. No automatic restore or source fetch."
+        }
+      ],
       "blockedReason": null
     },
     {

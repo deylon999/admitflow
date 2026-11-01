@@ -130,6 +130,13 @@ button:disabled { cursor: wait; opacity: .55; }
 select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; max-width: 100%; width: 100%; }
 .watch-filters > p { flex-basis: 100%; font-size: 13px; color: var(--muted); }
 .print-report { display: none; }
+.draft-recovery { padding: 24px; margin: 20px 0; overflow-wrap: anywhere; border: 1px solid var(--primary); }
+.draft-recovery h2 { font-size: 20px; margin-bottom: 12px; }
+.draft-recovery p, .draft-recovery details { margin: 12px 0; }
+.draft-recovery summary { cursor: pointer; }
+.draft-recovery dl { font-size: 13px; line-height: 1.6; margin-top: 12px; }
+.draft-recovery dt { font-weight: 600; }
+.draft-recovery dd { margin: 0 0 8px; }
 .stale-warning { border: 1px solid var(--error); padding: 20px; margin: 16px 0; font-size: 14px; line-height: 1.6; }
 @media print {
   :root, :root[data-theme='dark'] { --bg: #fff; --text: #000; --muted: #333; }

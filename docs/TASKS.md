@@ -2752,7 +2752,7 @@
 
 ### T159. Offer explicit draft restore and discard
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T158.
 
@@ -2770,7 +2770,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S119: Production build exit0; Playwright draft-recovery/navigation3 passed. Reload shows a bounded plaintext preview, restore fills incomplete fields without POST, discard removes only local state and returns focus. Existing draft replacement requires explicit confirmation; restored retry intent preserved. No automatic restore or source fetch.
 
 ### T160. Refuse stale draft updates without losing retry safety
 

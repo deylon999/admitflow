@@ -24,6 +24,7 @@ test('back and forward preserve a dirty form when rejected and leave once when a
   await expect(page).toHaveURL(/\/$/);
   await page.evaluate(() => history.back());
   await expect(page).toHaveURL(/\/tracker$/);
+  await page.getByRole('button', { name: 'Удалить черновик', exact: true }).click();
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();
   await input.fill('Forward draft');
   page.on('dialog', reject);

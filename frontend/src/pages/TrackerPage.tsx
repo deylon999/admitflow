@@ -1,4 +1,7 @@
 import { DirectionForm } from '../components/DirectionForm';
+import { DraftRecovery } from '../components/DraftRecovery';
+import { clearDraft, readDraft } from '../lib/draft';
+import type { StoredDraft } from '../lib/draft';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
@@ -62,6 +65,8 @@ export default function TrackerPage() {
   const [scenario, setScenario] = useState('all');
   const [order, setOrder] = useState<WatchOrder>('updated');
   const [form, setForm] = useState<'new' | Watch | null>(null);
+  const [recovery, setRecovery] = useState<StoredDraft | null>(null);
+  const [restored, setRestored] = useState<StoredDraft | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
   const formOpener = useRef<HTMLButtonElement | null>(null);
   const addButton = useRef<HTMLButtonElement>(null);
@@ -71,6 +76,8 @@ export default function TrackerPage() {
   function openForm(value: 'new' | Watch, button: HTMLButtonElement) {
     const sameForm = form === value || (form && form !== 'new' && value !== 'new' && form.id === value.id);
     if (!sameForm && !canDiscard()) return;
+    if (!form && recovery && !window.confirm('Заменить сохранённый черновик новой формой?')) return;
+    if (!sameForm) { clearDraft(); setRecovery(null); setRestored(null); }
     formOpener.current = button;
     setNotice('');
     setForm(value);
@@ -79,6 +86,9 @@ export default function TrackerPage() {
   function closeForm(saved = false) {
     if (!saved && !canDiscard()) return;
     draftDirty.current = false;
+    clearDraft();
+    setRecovery(null);
+    setRestored(null);
     setForm(null);
     requestAnimationFrame(() => {
       const target = formOpener.current?.isConnected ? formOpener.current : addButton.current;
@@ -94,6 +104,22 @@ export default function TrackerPage() {
   const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), enabled: !changed, staleTime: 0, refetchOnWindowFocus: true });
   const expired = changed || access.data === 'expired' || watches.error instanceof SessionExpiredError;
   const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: !expired, staleTime: Infinity });
+  useEffect(() => {
+    if (!expired && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
+      setRecovery(readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt));
+    }
+  }, [expired, form, watches.isSuccess, watches.data, sessionInfo.data]);
+  function restoreDraft() {
+    if (!recovery || !sessionInfo.data?.draftScope) return;
+    const current = readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt);
+    if (!current) { setRecovery(null); setNotice('Черновик больше недоступен.'); return; }
+    const watch = current.watchId ? watches.data?.find(item => item.id === current.watchId) : undefined;
+    if (current.watchId && !watch) { setNotice('Направление черновика уже удалено. Поля можно посмотреть перед удалением черновика.'); return; }
+    setRestored(current);
+    setForm(watch ?? 'new');
+    setFocusRequest(value => value + 1);
+    setRecovery(null);
+  }
   useEffect(() => {
     if (expired) { draftDirty.current = false; setForm(null); setConfirmReset(false); setNotice(''); }
   }, [expired]);
@@ -141,6 +167,10 @@ export default function TrackerPage() {
     {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён в другой вкладке' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {synchronize.isError && <p className="form-error" role="alert">{errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
+    {!expired && !form && recovery && <DraftRecovery record={recovery} disabled={busy} onRestore={restoreDraft} onDiscard={() => {
+      if (!clearDraft()) { setNotice('Не удалось удалить черновик из хранилища вкладки.'); return; }
+      setRecovery(null); setNotice('Черновик удалён. Сохранённые направления не изменены.'); requestAnimationFrame(() => addButton.current?.focus());
+    }} />}
     {!expired && watches.isError && watches.data && <div className="surface stale-warning" role="alert"><p>Не удалось обновить направления. Показаны последние загруженные сохранения с их исходными датами.</p><p>{errorText(watches.error)}</p><button className="text-button" type="button" disabled={watches.isFetching} onClick={() => void watches.refetch()}>Повторить обновление</button></div>}
     <CoverageSummary />
     {!expired && <ImportData count={count} disabled={busy || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
@@ -153,7 +183,7 @@ export default function TrackerPage() {
     </section>}
     <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError && !watches.data ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} beforeDelete={() => form === null || form === 'new' || form.id !== watch.id || canDiscard()} onRemoved={() => { if (form && form !== 'new' && form.id === watch.id) closeForm(true); setNotice('Направление удалено.'); requestAnimationFrame(() => addButton.current?.focus()); }} />)}
-    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm sessionInfo={sessionInfo.data} disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm restored={restored} sessionInfo={sessionInfo.data} disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     {!expired && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
     {!expired && <ManualReport watches={visible} generatedAt={reportDate} />}
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>

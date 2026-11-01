@@ -7,27 +7,27 @@ import { api } from '../lib/api';
 import type { Watch } from '../lib/api';
 import type { SessionInfo } from '../lib/contracts';
 import { clearDraft, storeDraft } from '../lib/draft';
-import type { SaveIntent } from '../lib/draft';
+import type { SaveIntent, StoredDraft } from '../lib/draft';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { draftSignature, validateDirection } from '../lib/direction';
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
 
-export function DirectionForm({ watch, sessionInfo, focusRequest, disabled, onDone, onCancel, onDirtyChange }: { watch?: Watch; sessionInfo?: SessionInfo; focusRequest: number; disabled: boolean; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
+export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disabled, onDone, onCancel, onDirtyChange }: { watch?: Watch; sessionInfo?: SessionInfo; restored?: StoredDraft | null; focusRequest: number; disabled: boolean; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus(); }, [focusRequest]);
-  const [values, setValues] = useState<CalculationForm>(watch?.latest.values ?? emptyValues);
-  const [university, setUniversity] = useState(watch?.university ?? '');
-  const [title, setTitle] = useState(watch?.title ?? '');
-  const [sourceUrl, setSourceUrl] = useState(watch?.sourceUrl ?? '');
+  const [values, setValues] = useState<CalculationForm>(restored?.draft.values ?? watch?.latest.values ?? emptyValues);
+  const [university, setUniversity] = useState(restored?.draft.university ?? watch?.university ?? '');
+  const [title, setTitle] = useState(restored?.draft.title ?? watch?.title ?? '');
+  const [sourceUrl, setSourceUrl] = useState(restored?.draft.sourceUrl ?? watch?.sourceUrl ?? '');
   const [submitted, setSubmitted] = useState(false);
   const currentDraft = draftSignature({ university, title, sourceUrl, values });
-  const initialDraft = useRef(currentDraft);
+  const initialDraft = useRef(draftSignature({ university: watch?.university ?? '', title: watch?.title ?? '', sourceUrl: watch?.sourceUrl ?? '', values: watch?.latest.values ?? emptyValues }));
   const dirty = currentDraft !== initialDraft.current;
   useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
-  const intent = useRef<SaveIntent | null>(null);
-  const baseSnapshotId = useRef(watch?.latest.id ?? null);
+  const intent = useRef<SaveIntent | null>(restored?.intent ?? null);
+  const baseSnapshotId = useRef(restored?.baseSnapshotId ?? watch?.latest.id ?? null);
   const [localSaved, setLocalSaved] = useState<boolean | null>(null);
   const scope = sessionInfo?.draftScope, deadline = sessionInfo?.expiresAt;
   const persist = useCallback(() => {

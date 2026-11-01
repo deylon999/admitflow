@@ -1,5 +1,30 @@
 import { expect, test } from '@playwright/test';
 
+test('reload offers explicit restore and discard without writing directions', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Reload draft');
+  await page.getByLabel('Направление и конкурсная группа').fill('Restorable title');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  const recovery = page.getByRole('region', { name: 'Есть несохранённый черновик' });
+  await expect(recovery).toContainText('Restorable title');
+  await expect(page.locator('.direction-form')).toHaveCount(0);
+  await recovery.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
+  await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Reload draft');
+  await expect(page.getByLabel('Направление и конкурсная группа')).toHaveValue('Restorable title');
+  expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  await recovery.getByRole('button', { name: 'Удалить черновик', exact: true }).click();
+  await expect(recovery).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+  await expect(page.getByRole('button', { name: 'Добавить направление', exact: true })).toBeFocused();
+  expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
+});
+
 test('typing only stores a local draft and saves its retry key before sending', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');

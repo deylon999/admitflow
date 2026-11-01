@@ -658,3 +658,7 @@ npm test -- tests/draft-store.test.ts4 passed; production build exit0. One versi
 ## S118 - 2026-11-01 - B08 5/10 (T158)
 
 Playwright draft-recovery/draft3 passed and production build exit0. Changed fields persist locally without server writes; route interceptor proves retry key exists in storage before POST dispatch. Failed request retains form and key. Extracted DirectionForm component to keep tracker readable; no autosave POST or false server-success message.
+
+## S119 - 2026-11-01 - B08 6/10 (T159)
+
+Production build exit0; Playwright draft-recovery/navigation3 passed. Reload shows a bounded plaintext preview, restore fills incomplete fields without POST, discard removes only local state and returns focus. Existing draft replacement requires explicit confirmation; restored retry intent preserved. No automatic restore or source fetch.
