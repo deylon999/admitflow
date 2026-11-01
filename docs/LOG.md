@@ -576,3 +576,7 @@ npm test -- tests/json.test.ts tests/import.test.ts:7 passed. Strict structural 
 ## S099 - 2026-11-01 - B07 2/15 (T140)
 
 npm test -- tests/import.test.ts:5 passed. Fatal UTF-8 byte decoding rejects malformed, truncated and surrogate encodings; valid Cyrillic and BOM roundtrip. ImportData uses arrayBuffer rather than lossy File.text.
+
+## S100 - 2026-11-01 - B07 3/15 (T141)
+
+E2E_API=1 E2E_BASE_URL=5186 Playwright import-cancel.spec.ts:1 passed on isolated API8006. Delayed old File.arrayBuffer explicitly released and two render frames observed after cancellation/new preview; no import POST or data writes. Cancel clears reading and stale selection skips parsing.

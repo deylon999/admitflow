@@ -4258,7 +4258,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T091"
       ],
@@ -4272,7 +4272,12 @@
       "acceptance": [
         "Cancel during reading permits a new selection; late results cannot replace the new preview."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S100: E2E_API=1 E2E_BASE_URL=5186 Playwright import-cancel.spec.ts:1 passed on isolated API8006. Delayed old File.arrayBuffer explicitly released and two render frames observed after cancellation/new preview; no import POST or data writes. Cancel clears reading and stale selection skips parsing."
+        }
+      ],
       "blockedReason": null
     },
     {
