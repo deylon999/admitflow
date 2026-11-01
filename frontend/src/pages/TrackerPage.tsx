@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
@@ -13,14 +13,14 @@ import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
 import { assertSnapshotOrder } from '../lib/contracts';
-import { validateDirection } from '../lib/direction';
+import { draftSignature, validateDirection } from '../lib/direction';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 function date(value: string) { return dateFormat.format(new Date(value)); }
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
 
-function DirectionForm({ watch, focusRequest, onDone, onCancel }: { watch?: Watch; focusRequest: number; onDone: () => void; onCancel: () => void }) {
+function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }: { watch?: Watch; focusRequest: number; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { heading.current?.focus(); }, [focusRequest]);
   const [values, setValues] = useState<CalculationForm>(watch?.latest.values ?? emptyValues);
@@ -28,6 +28,26 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel }: { watch?: Watc
   const [title, setTitle] = useState(watch?.title ?? '');
   const [sourceUrl, setSourceUrl] = useState(watch?.sourceUrl ?? '');
   const [submitted, setSubmitted] = useState(false);
+  const currentDraft = draftSignature({ university, title, sourceUrl, values });
+  const initialDraft = useRef(currentDraft);
+  const dirty = currentDraft !== initialDraft.current;
+  useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
+  useEffect(() => {
+    if (!dirty) return;
+    let acceptedLink = false;
+    const beforeUnload = (event: BeforeUnloadEvent) => { if (!acceptedLink) { event.preventDefault(); event.returnValue = ''; } };
+    const guardLink = (event: MouseEvent) => {
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+      if (!link || link.target === '_blank' || link.hasAttribute('download') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const target = new URL(link.href, location.href);
+      if (target.origin === location.origin && target.pathname === location.pathname && target.search === location.search) return;
+      if (!window.confirm('Удалить несохранённые изменения формы и перейти?')) { event.preventDefault(); event.stopPropagation(); }
+      else acceptedLink = true;
+    };
+    window.addEventListener('beforeunload', beforeUnload);
+    document.addEventListener('click', guardLink, true);
+    return () => { window.removeEventListener('beforeunload', beforeUnload); document.removeEventListener('click', guardLink, true); };
+  }, [dirty, currentDraft]);
   const intent = useRef<{ fingerprint: string; key: string } | null>(null);
   const result = calculatePlace(values);
   const validation = validateDirection({ university, title, sourceUrl, values }, Boolean(watch));
@@ -114,13 +134,20 @@ export default function TrackerPage() {
   const [focusRequest, setFocusRequest] = useState(0);
   const formOpener = useRef<HTMLButtonElement | null>(null);
   const addButton = useRef<HTMLButtonElement>(null);
+  const draftDirty = useRef(false);
+  const setDraftDirty = useCallback((dirty: boolean) => { draftDirty.current = dirty; }, []);
+  const canDiscard = () => !draftDirty.current || window.confirm('Удалить несохранённые изменения формы?');
   function openForm(value: 'new' | Watch, button: HTMLButtonElement) {
+    const sameForm = form === value || (form && form !== 'new' && value !== 'new' && form.id === value.id);
+    if (!sameForm && !canDiscard()) return;
     formOpener.current = button;
     setNotice('');
     setForm(value);
     setFocusRequest(request => request + 1);
   }
-  function closeForm() {
+  function closeForm(saved = false) {
+    if (!saved && !canDiscard()) return;
+    draftDirty.current = false;
     setForm(null);
     requestAnimationFrame(() => {
       const target = formOpener.current?.isConnected ? formOpener.current : addButton.current;
@@ -164,7 +191,7 @@ export default function TrackerPage() {
     {!watches.isError && watches.data && <WatchComparison watches={watches.data} />}
     <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
-    </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onCancel={closeForm} onDone={() => { closeForm(); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
 }

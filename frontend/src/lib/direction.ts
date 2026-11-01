@@ -5,6 +5,10 @@ export type DirectionDraft = { university: string; title: string; sourceUrl: str
 export type MetadataErrors = Partial<Record<'university' | 'title' | 'sourceUrl', string>>;
 const inputIds = { rank: 'tracker-rank', seats: 'tracker-seats', excluded: 'tracker-excluded', noConsent: 'tracker-no-consent' } as const;
 
+export function draftSignature(draft: DirectionDraft): string {
+  return JSON.stringify([draft.university, draft.title, draft.sourceUrl, ...(['rank', 'seats', 'excluded', 'noConsent'] as const).map(field => String(draft.values[field]))]);
+}
+
 export function validateDirection(draft: DirectionDraft, editing = false) {
   const metadata: MetadataErrors = {};
   if (!editing) {
