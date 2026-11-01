@@ -20,6 +20,7 @@ from .schemas import CatalogRead, DataExport, HistoryPage, SourceStatus
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import upgrade_schema
+from .http import RequestBudgetMiddleware
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -66,6 +67,7 @@ def create_app(settings: Settings | None = None):
 
     app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None)
     app.state.engine = engine
+    app.add_middleware(RequestBudgetMiddleware)
 
     @app.middleware('http')
     async def protect_writes(request: Request, call_next):
