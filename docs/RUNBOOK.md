@@ -111,6 +111,8 @@ API очищает просроченные сессии раз в час. Ло�
 
 ## Инциденты
 
+Для production обязательны точные ALLOWED_HOSTS (например admitflow.example) и PUBLIC_ORIGIN (например https://admitflow.example). Wildcard, лишний путь, иной host и HTTP origin не принимаются. Это дополняет PostgreSQL/SECURE_COOKIE; домен здесь только пример, реальная площадка не выбрана. Nginx передаёт Host, публичный Origin сравнивается с явной настройкой и не определяется из недоверенного X-Forwarded-Host.
+
 ### Worker и управление источниками
 
 Из backend с настроенным DATABASE_URL и после `.venv/Scripts/python.exe -m alembic upgrade head`:

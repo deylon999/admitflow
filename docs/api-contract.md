@@ -6,6 +6,8 @@ Same-origin `/api/v1`, JSON camelCase, даты ISO 8601 с явной timezone.
 
 Вход API ограничен 8 MiB по фактически принятым bytes независимо от Content-Length: превышение — 413. Время приёма полного тела — 10 секунд, timeout — 408; некорректная длина — 400. Отказ не запускает endpoint. Nginx настроен на такой же размер и idle body timeout; реальный запуск контейнера ещё требует проверки.
 
+Host должен входить в ALLOWED_HOSTS (точные имена без портов/wildcard). Запись с Origin проверяется дополнительно к custom header: чужой/null origin или Sec-Fetch-Site=cross-site — 403. В development разрешены origins доверенных локальных hosts на dev-портах; в production требуется точное совпадение с HTTPS PUBLIC_ORIGIN, включая порт. Клиенты без Origin по-прежнему требуют custom header. Readonly calculate/assess не изменяют сессию и исключены из write guard.
+
 ## Реализовано
 
 - POST assess: внешний state ready/insufficient_data/unsupported. Неизвестные версии, automatic и archive без аттестации не содержат result. Ручной ready содержит только условный расчёт; это не вероятность. Общие случаи — shared/assessment-cases.json.

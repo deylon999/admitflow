@@ -9,6 +9,7 @@ from datetime import datetime, timedelta, timezone
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from sqlalchemy import and_, delete, func, or_, select, text
 from sqlalchemy.orm import Session
+from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
 from .config import Settings
@@ -20,7 +21,7 @@ from .schemas import CatalogRead, DataExport, HistoryPage, SourceStatus
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import upgrade_schema
-from .http import RequestBudgetMiddleware
+from .http import RequestBudgetMiddleware, permitted_origin
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -68,12 +69,13 @@ def create_app(settings: Settings | None = None):
     app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None)
     app.state.engine = engine
     app.add_middleware(RequestBudgetMiddleware)
+    app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(config.allowed_hosts), www_redirect=False)
 
     @app.middleware('http')
     async def protect_writes(request: Request, call_next):
         # Same-origin fetch with a custom header; no cross-origin CORS is enabled.
         if request.method not in ('GET', 'HEAD', 'OPTIONS') and request.url.path not in ('/api/v1/calculate', '/api/v1/assess'):
-            if request.headers.get('X-Requested-With') != 'abiturient':
+            if request.headers.get('X-Requested-With') != 'abiturient' or not permitted_origin(request, config):
                 from fastapi.responses import JSONResponse
                 return JSONResponse({'detail': 'Запрос должен исходить из интерфейса приложения.'}, status_code=403)
         response = await call_next(request)

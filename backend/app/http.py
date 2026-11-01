@@ -1,5 +1,6 @@
 """HTTP budgets are enforced on received bytes, independently of Content-Length."""
 import asyncio
+from urllib.parse import urlsplit
 
 from starlette.responses import JSONResponse
 
@@ -8,6 +9,22 @@ MAX_REQUEST_BYTES = 8*1024*1024
 
 class BodyTooLarge(Exception):
     pass
+
+
+def permitted_origin(request, config):
+    if request.headers.get('sec-fetch-site') == 'cross-site':
+        return False
+    value = request.headers.get('origin')
+    if value is None:
+        return True  # Non-browser clients still need the existing custom write header.
+    try:
+        origin = urlsplit(value)
+        valid = (len(value) <= 2048 and origin.scheme in ('http','https') and origin.hostname in config.allowed_hosts
+                 and not origin.username and not origin.password and not origin.path
+                 and not origin.query and not origin.fragment and origin.port != 0)
+    except ValueError:
+        return False
+    return valid and (config.public_origin is None or value == config.public_origin)
 
 
 class RequestBudgetMiddleware:
