@@ -1,10 +1,11 @@
 """Closed code registry; production starts with zero attested adapters."""
 from dataclasses import dataclass
+import re
 from typing import Callable
 from urllib.parse import urlsplit
 
 from .contracts import AdapterError, ParsedList, SourceBinding
-from .fetcher import FetchResult
+from .fetcher import FetchResult, valid_domains
 
 
 @dataclass(frozen=True)
@@ -13,6 +14,11 @@ class Adapter:
     domains: frozenset[str]
     parse: Callable[[FetchResult, SourceBinding], ParsedList]
     attested: bool = False
+
+    def __post_init__(self):
+        if (not isinstance(self.version,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:+-]{0,79}',self.version)
+                or not valid_domains(self.domains) or not callable(self.parse) or type(self.attested) is not bool):
+            raise ValueError('invalid_adapter_declaration')
 
 
 class Registry:

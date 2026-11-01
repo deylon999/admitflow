@@ -531,3 +531,7 @@ Immutable fetch policy validates finite timeout up to30s, strict size up to5MiB,
 ## S090 - 2026-11-01 - B06 14/20 (T132)
 
 Spool cleanup attempts all known files, logs only stable safe codes and never masks valid fetch/error outcome. Process cleanup remains bounded without closing a live process. Exchange/worker11 passed; corrected test assumption when an empty folder was already removed.
+
+## S091 - 2026-11-01 - B06 15/20 (T133)
+
+Adapter declarations require an actual boolean attestation, bounded version token, immutable exact domains and callable parser before registry use. Registry/status/worker21 passed; production registry remains empty.

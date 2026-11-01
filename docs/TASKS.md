@@ -1703,7 +1703,7 @@
 
 ### T133. Validate adapter declarations before registry use
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T076.
 
@@ -1721,7 +1721,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S091: Adapter declarations require an actual boolean attestation, bounded version token, immutable exact domains and callable parser before registry use. Registry/status/worker21 passed; production registry remains empty.
 
 ### T134. Apply queue policies on explicit eligible reenqueue
 

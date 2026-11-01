@@ -4003,7 +4003,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T076"
       ],
@@ -4017,7 +4017,12 @@
       "acceptance": [
         "Attestation is an actual bool; version/domain/callable contract cannot silently admit malformed adapters."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S091: Adapter declarations require an actual boolean attestation, bounded version token, immutable exact domains and callable parser before registry use. Registry/status/worker21 passed; production registry remains empty."
+        }
+      ],
       "blockedReason": null
     },
     {
