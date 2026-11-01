@@ -624,3 +624,13 @@ Playwright manual-quality.spec.ts:2 passed after real overflow fix. Both themes 
 ## S111 - 2026-11-01 - B07 14/15 (T152)
 
 Playwright manual-quality filtered-print case:1 passed. Two real API records, active filter selects only one; print media excludes second record and controls, includes source/model/limitations. Actual Chromium A4 PDF generated in ignored test-results; docs/evidence/manual-report.png visually inspected, clear labels/values. Existing mock-only print regression is preserved.
+
+## S112 - 2026-11-01 - B07 15/15 (T153)
+
+test_restart.py:2 passed: three fresh Uvicorn processes on one temporary SQLite file preserve exact history, owner deadline, create/update replay and deleted-operation410; separate expired-owner lifespan check passes. Initial test-cookie Domain mismatch corrected to real host semantics. Final backend276 passed/7 actual PostgreSQL skipped; frontend87 passed and production build exit0; all53 Chromium passed on final API8006/session26232/PID5096. No PostgreSQL/Compose success claimed.
+
+S112 final checkpoint,2026-11-01: backend `.venv/Scripts/python.exe -m pytest -q` ->276 passed/7 actual PostgreSQL skipped,54.96s,exit0; existing Starlette/httpx warning. Frontend `npm test` ->87 passed; `npm run build` ->exit0. E2E_API=1 E2E_BASE_URL=http://127.0.0.1:5186 `npm run test:e2e -- --reporter=line` ->53 Chromium passed,1.5m,exit0. API explicitly restarted for final schema/export changes: session26232/PID5096,8006,batch07.db/revision0004; first own API session8562/PID19116 stopped. Frontend session91203. Existing previews and Docker8080 untouched.
+
+S112 evidence: docs/evidence/manual-mobile-b07.png from final real API at390px with clearly named manual example, visually inspected; its new test session deleted afterward. manual-report.png visually inspected, chosen real API record with source and limitations; PDF generated in ignored test-results. No Figma/fonts/real-source acceptance claimed. API/RUNBOOK/DATA_RULES/STATE/PROGRESS/task deliverables updated.100done/153total,3blocked,4review,46todo; all7 gates open and estimated automated MVP40% unchanged. GitHub and Docker access still denied; no remote push/CI/native PG proof.
+
+S112 final plan checks: roadmap --render/--check valid153tasks; all6 invalid-state self-tests rejected; git diff --check exit0. B07 contains15 task commits, preserving configured user authorship. No active task; nextT103 review until native PostgreSQL evidence.

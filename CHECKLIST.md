@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 99 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 100 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -64,7 +64,7 @@
 - [x] T136 Fence stale session results after access changes
 - [x] T149 Keep manual UTC timestamps inside the supported calendar
 - [x] T150 Refuse inconsistent exports after clock regression
-- [ ] T153 Verify manual data across API lifespan restarts
+- [x] T153 Verify manual data across API process restarts
 
 ## Автоматический сбор
 

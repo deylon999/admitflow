@@ -1086,7 +1086,7 @@
 
 **Зависимости:** T126.
 
-**Результаты/файлы:** `backend/app/schemas.py`.
+**Результаты/файлы:** `backend/app/schemas.py`; `frontend/src/lib/time.ts`; `backend/tests/test_timestamp_bounds.py`; `frontend/tests/time.test.ts`; `docs/DATA_RULES.md`.
 
 **Шаги:**
 
@@ -1108,7 +1108,7 @@
 
 **Зависимости:** T125.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/tests/test_snapshot_clock.py`; `docs/DATA_RULES.md`.
 
 **Шаги:**
 
@@ -1124,9 +1124,9 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S109: Backend test_snapshot_clock.py/test_export.py/test_import.py:16 passed. One-microsecond server clock regression causes409 and preserves exact history; export succeeds once clock restored. Read remains owner-locked; DATA_RULES documents imported future tolerance interaction.
 
-### T153. Verify manual data across API lifespan restarts
+### T153. Verify manual data across API process restarts
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
@@ -1144,7 +1144,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S112: test_restart.py:2 passed: three fresh Uvicorn processes on one temporary SQLite file preserve exact history, owner deadline, create/update replay and deleted-operation410; separate expired-owner lifespan check passes. Initial test-cookie Domain mismatch corrected to real host semantics. Final backend276 passed/7 actual PostgreSQL skipped; frontend87 passed and production build exit0; all53 Chromium passed on final API8006/session26232/PID5096. No PostgreSQL/Compose success claimed.
 
 ## E3. Автоматический сбор
 
@@ -2382,7 +2382,7 @@
 
 **Зависимости:** T091.
 
-**Результаты/файлы:** `frontend/src/lib/import.ts`.
+**Результаты/файлы:** `frontend/src/lib/import.ts`; `frontend/src/lib/json.ts`; `frontend/tests/json.test.ts`.
 
 **Шаги:**
 
@@ -2404,7 +2404,7 @@
 
 **Зависимости:** T091.
 
-**Результаты/файлы:** `frontend/src/components/ImportData.tsx`.
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`; `frontend/src/lib/import.ts`; `frontend/tests/import.test.ts`.
 
 **Шаги:**
 
@@ -2426,7 +2426,7 @@
 
 **Зависимости:** T091.
 
-**Результаты/файлы:** `frontend/src/components/ImportData.tsx`.
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`; `frontend/tests/e2e/import-cancel.spec.ts`.
 
 **Шаги:**
 
@@ -2448,7 +2448,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/lib/direction.ts`.
+**Результаты/файлы:** `frontend/src/lib/direction.ts`; `frontend/src/components/UniversityPicker.tsx`; `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/direction.test.ts`.
 
 **Шаги:**
 
@@ -2470,7 +2470,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`.
+**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`; `frontend/src/lib/api.ts`; `frontend/tests/catalog-cancel.test.ts`.
 
 **Шаги:**
 
@@ -2492,7 +2492,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`.
+**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`; `frontend/tests/e2e/catalog.spec.ts`.
 
 **Шаги:**
 
@@ -2514,7 +2514,7 @@
 
 **Зависимости:** T098.
 
-**Результаты/файлы:** `frontend/src/lib/api.ts`.
+**Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/tests/session-state.test.ts`.
 
 **Шаги:**
 
@@ -2536,7 +2536,7 @@
 
 **Зависимости:** T136.
 
-**Результаты/файлы:** `frontend/src/lib/api.ts`.
+**Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/tests/session-state.test.ts`.
 
 **Шаги:**
 
@@ -2558,7 +2558,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/pending-form.spec.ts`.
 
 **Шаги:**
 
@@ -2580,7 +2580,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/pending-form.spec.ts`.
 
 **Шаги:**
 
@@ -2602,7 +2602,7 @@
 
 **Зависимости:** T018.
 
-**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`.
+**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`; `frontend/src/tracker.css`.
 
 **Шаги:**
 
@@ -2624,7 +2624,7 @@
 
 **Зависимости:** T108.
 
-**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`.
+**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`; `docs/evidence/manual-report.png`.
 
 **Шаги:**
 

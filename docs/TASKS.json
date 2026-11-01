@@ -4207,7 +4207,9 @@
         "T091"
       ],
       "deliverables": [
-        "frontend/src/lib/import.ts"
+        "frontend/src/lib/import.ts",
+        "frontend/src/lib/json.ts",
+        "frontend/tests/json.test.ts"
       ],
       "steps": [
         "Reject ambiguous JSON import files",
@@ -4235,7 +4237,9 @@
         "T091"
       ],
       "deliverables": [
-        "frontend/src/components/ImportData.tsx"
+        "frontend/src/components/ImportData.tsx",
+        "frontend/src/lib/import.ts",
+        "frontend/tests/import.test.ts"
       ],
       "steps": [
         "Reject invalid UTF-8 import files",
@@ -4263,7 +4267,8 @@
         "T091"
       ],
       "deliverables": [
-        "frontend/src/components/ImportData.tsx"
+        "frontend/src/components/ImportData.tsx",
+        "frontend/tests/e2e/import-cancel.spec.ts"
       ],
       "steps": [
         "Cancel import preparation safely",
@@ -4291,7 +4296,10 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/lib/direction.ts"
+        "frontend/src/lib/direction.ts",
+        "frontend/src/components/UniversityPicker.tsx",
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/direction.test.ts"
       ],
       "steps": [
         "Align form Unicode length limits with the API",
@@ -4319,7 +4327,9 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/components/UniversityPicker.tsx"
+        "frontend/src/components/UniversityPicker.tsx",
+        "frontend/src/lib/api.ts",
+        "frontend/tests/catalog-cancel.test.ts"
       ],
       "steps": [
         "Cancel abandoned catalog searches",
@@ -4347,7 +4357,8 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/components/UniversityPicker.tsx"
+        "frontend/src/components/UniversityPicker.tsx",
+        "frontend/tests/e2e/catalog.spec.ts"
       ],
       "steps": [
         "Navigate university choices with the keyboard",
@@ -4375,7 +4386,8 @@
         "T098"
       ],
       "deliverables": [
-        "frontend/src/lib/api.ts"
+        "frontend/src/lib/api.ts",
+        "frontend/tests/session-state.test.ts"
       ],
       "steps": [
         "Stop canceled private reads after session bootstrap",
@@ -4403,7 +4415,8 @@
         "T136"
       ],
       "deliverables": [
-        "frontend/src/lib/api.ts"
+        "frontend/src/lib/api.ts",
+        "frontend/tests/session-state.test.ts"
       ],
       "steps": [
         "Release response bodies discarded by session fencing",
@@ -4431,7 +4444,8 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/pending-form.spec.ts"
       ],
       "steps": [
         "Guard navigation while a save is pending",
@@ -4459,7 +4473,8 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/tests/e2e/pending-form.spec.ts"
       ],
       "steps": [
         "Prevent form submission during another mutation",
@@ -4487,7 +4502,11 @@
         "T126"
       ],
       "deliverables": [
-        "backend/app/schemas.py"
+        "backend/app/schemas.py",
+        "frontend/src/lib/time.ts",
+        "backend/tests/test_timestamp_bounds.py",
+        "frontend/tests/time.test.ts",
+        "docs/DATA_RULES.md"
       ],
       "steps": [
         "Keep manual UTC timestamps inside the supported calendar",
@@ -4515,7 +4534,9 @@
         "T125"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/tests/test_snapshot_clock.py",
+        "docs/DATA_RULES.md"
       ],
       "steps": [
         "Refuse inconsistent exports after clock regression",
@@ -4543,7 +4564,8 @@
         "T018"
       ],
       "deliverables": [
-        "frontend/tests/e2e/manual-quality.spec.ts"
+        "frontend/tests/e2e/manual-quality.spec.ts",
+        "frontend/src/tracker.css"
       ],
       "steps": [
         "Verify long manual cards at320px in both themes",
@@ -4571,7 +4593,8 @@
         "T108"
       ],
       "deliverables": [
-        "frontend/tests/e2e/manual-quality.spec.ts"
+        "frontend/tests/e2e/manual-quality.spec.ts",
+        "docs/evidence/manual-report.png"
       ],
       "steps": [
         "Verify filtered manual report printing",
@@ -4590,11 +4613,11 @@
     },
     {
       "id": "T153",
-      "title": "Verify manual data across API lifespan restarts",
+      "title": "Verify manual data across API process restarts",
       "phase": "E2",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -4608,7 +4631,12 @@
       "acceptance": [
         "A fresh app using the same isolated SQLite file preserves ownership, history and idempotent operations; expired owners stay denied."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S112: test_restart.py:2 passed: three fresh Uvicorn processes on one temporary SQLite file preserve exact history, owner deadline, create/update replay and deleted-operation410; separate expired-owner lifespan check passes. Initial test-cookie Domain mismatch corrected to real host semantics. Final backend276 passed/7 actual PostgreSQL skipped; frontend87 passed and production build exit0; all53 Chromium passed on final API8006/session26232/PID5096. No PostgreSQL/Compose success claimed."
+        }
+      ],
       "blockedReason": null
     }
   ]
