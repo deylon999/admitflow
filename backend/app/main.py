@@ -18,7 +18,8 @@ from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, DataExport, HistoryPage, SourceStatus
+from .schemas import CatalogRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus
+from .importing import import_bundle
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import upgrade_schema
@@ -186,6 +187,20 @@ def create_app(settings: Settings | None = None):
             db.add(BrowserSession(token_hash=token_hash(token), expires_at=utcnow() + timedelta(days=SESSION_DAYS)))
             db.commit()
             response.set_cookie(COOKIE, token, httponly=True, secure=config.secure_cookie, samesite='lax', max_age=SESSION_DAYS * 86400, path='/api')
+
+    @app.post('/api/v1/import', response_model=ImportResult, status_code=201)
+    def import_data(body: ImportRequest, request: Request, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
+        if not request.headers.get('Idempotency-Key'):
+            raise HTTPException(400,'Для импорта нужен ключ операции.')
+        key,fingerprint,cached=begin_operation(request,body,owner_hash,db)
+        if cached is not None:
+            return {**cached,'replayed':True}
+        count,snapshots=import_bundle(db,owner_hash,body.bundle,utcnow())
+        result=ImportResult(imported_count=count,snapshot_count=snapshots)
+        # Only aggregate counts are cached; deleting a watch leaves no import payload.
+        remember_operation(db,owner_hash,key,fingerprint,None,result)
+        db.commit()
+        return result
 
     @app.get('/api/v1/session', response_model=SessionRead)
     def get_session(owner_hash: str = Depends(owner), db: Session = Depends(database)):

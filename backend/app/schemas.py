@@ -64,13 +64,23 @@ class WatchRead(CamelModel):
 
 
 class WatchDetail(WatchRead):
-    history: list[SnapshotRead]
+    history: list[SnapshotRead] = Field(min_length=1,max_length=500)
 
 
 class DataExport(CamelModel):
     format_version: Literal['manual-export-v1'] = 'manual-export-v1'
     exported_at: datetime
     watches: list[WatchDetail] = Field(max_length=20)
+
+
+class ImportRequest(CamelModel):
+    bundle: DataExport
+
+
+class ImportResult(CamelModel):
+    imported_count: int
+    snapshot_count: int
+    replayed: bool = False
 
 
 class HistoryPage(CamelModel):
