@@ -143,6 +143,26 @@ def render(data):
     return '\n'.join(lines).rstrip() + '\n'
 
 
+def render_checklist(data):
+    done = sum(task['status'] == 'done' for task in data['tasks'])
+    lines = ['# Чек-лист AdmitFlow', '',
+             '`[x]` — сделано и проверено. `[ ]` — ещё не завершено.', '',
+             f'**Закрыто {done} из {len(data["tasks"])} задач.** Это счёт задач, не процент готовности продукта.', '',
+             'Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.', '',
+             'Подробности и доказательства: [карточки задач](docs/TASKS.md). '
+             'Файл обновляется из `docs/TASKS.json` командой `python scripts/roadmap.py --render`.', '']
+    labels = {'in_progress': ' — **в работе**', 'review': ' — **нужна проверка / завершение**',
+              'blocked': ' — **заблокировано**', 'deferred': ' — отложено'}
+    for phase in data['phases']:
+        lines += [f'## {phase["title"]}', '']
+        for task in data['tasks']:
+            if task['phase'] == phase['id']:
+                mark = 'x' if task['status'] == 'done' else ' '
+                lines.append(f'- [{mark}] {task["id"]} {task["title"]}{labels.get(task["status"], "")}')
+        lines.append('')
+    return '\n'.join(lines).rstrip() + '\n'
+
+
 def check_links():
     errors = []
     for path in [ROOT / 'README.md', *DOCS.rglob('*.md')]:
@@ -202,13 +222,19 @@ def main():
         return 1
     expected = render(data)
     target = DOCS / 'TASKS.md'
+    checklist = ROOT / 'CHECKLIST.md'
+    expected_checklist = render_checklist(data)
     if args.render:
         target.write_text(expected, encoding='utf-8')
+        checklist.write_text(expected_checklist, encoding='utf-8')
         print('Rendered docs/TASKS.md')
+        print('Rendered CHECKLIST.md')
     if args.check or not any(vars(args).values()):
         errors = check_links()
         if not target.exists() or target.read_text(encoding='utf-8') != expected:
             errors.append('TASKS.md is stale or missing; run --render')
+        if not checklist.exists() or checklist.read_text(encoding='utf-8') != expected_checklist:
+            errors.append('CHECKLIST.md is stale or missing; run --render')
         if state['lastSession'] not in (DOCS / 'LOG.md').read_text(encoding='utf-8'):
             errors.append('STATE.lastSession is missing from LOG.md')
         if errors:

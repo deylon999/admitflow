@@ -23,3 +23,5 @@ docker compose up --build
 [План разработки](docs/ROADMAP.md) · [Правила расчёта](docs/DATA_RULES.md)
 
 [Готовность проекта и скриншоты](docs/PROGRESS.md)
+
+[Чек-лист: сделано / осталось](CHECKLIST.md)
