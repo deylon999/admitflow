@@ -523,3 +523,7 @@ Both HTTPS stream reader and injected reader contract reject declared-length mis
 ## S088 - 2026-11-01 - B06 12/20 (T130)
 
 Fetch reader rejects duplicate critical headers and conflicting transfer framing; malformed/control-character redirects become safe bounded errors. Fetcher42 passed, including no body read on ambiguity. Conservative framing policy follows RFC9112 section6.3.
+
+## S089 - 2026-11-01 - B06 13/20 (T131)
+
+Immutable fetch policy validates finite timeout up to30s, strict size up to5MiB, redirects0..5, exact lowercase DNS domains and supported content types before network. Fetcher/capture56 passed, including mutable sets, NaN, bool-as-int and wildcard/IP refusals.

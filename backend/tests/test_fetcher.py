@@ -176,3 +176,15 @@ def test_bad_redirect_is_a_safe_fetch_error(location):
     with pytest.raises(FetchError,match='invalid_redirect|invalid_headers'):
         fetcher(reader).fetch('https://lists.example.org')
     assert len(reader.calls)==1
+
+
+@pytest.mark.parametrize('changes',[
+    {'timeout':float('nan')},{'timeout':float('inf')},{'timeout':True},
+    {'max_bytes':1.5},{'max_bytes':True},{'max_bytes':6*1024*1024},
+    {'max_redirects':True},{'domains':{'lists.example.org'}},
+    {'domains':frozenset({'*.example.org'})},{'domains':frozenset({'127.0.0.1'})},
+    {'content_types':frozenset({'application/octet-stream'})},
+])
+def test_invalid_fetch_policy_is_rejected_before_network(changes):
+    with pytest.raises(ValueError,match='fetch policy'):
+        FetchPolicy(**({'domains':frozenset({'lists.example.org'})}|changes))

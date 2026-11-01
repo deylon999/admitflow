@@ -3947,7 +3947,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T028"
       ],
@@ -3961,7 +3961,12 @@
       "acceptance": [
         "Nonfinite or wrong-type limits and mutable/unapproved domain policy are rejected before network."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S089: Immutable fetch policy validates finite timeout up to30s, strict size up to5MiB, redirects0..5, exact lowercase DNS domains and supported content types before network. Fetcher/capture56 passed, including mutable sets, NaN, bool-as-int and wildcard/IP refusals."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -4,6 +4,7 @@ import http.client
 import ipaddress
 import socket
 import re
+import math
 import ssl
 import time
 from dataclasses import dataclass, field
@@ -46,6 +47,22 @@ def response_headers(items):
     return result
 
 
+def valid_domains(domains):
+    if not isinstance(domains, frozenset) or not domains:
+        return False
+    for domain in domains:
+        if not isinstance(domain,str) or len(domain)>253 or len(domain.split('.'))<2:
+            return False
+        if any(not re.fullmatch(r'[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?',label) for label in domain.split('.')):
+            return False
+        try:
+            ipaddress.ip_address(domain)
+        except ValueError:
+            continue
+        return False
+    return True
+
+
 @dataclass(frozen=True)
 class FetchPolicy:
     domains: frozenset[str]
@@ -53,6 +70,14 @@ class FetchPolicy:
     timeout: float = 10
     max_redirects: int = 3
     content_types: frozenset[str] = frozenset({'text/html', 'application/json', 'text/csv', 'text/plain'})
+
+    def __post_init__(self):
+        supported = frozenset({'text/html','application/json','text/csv','text/plain'})
+        if (not valid_domains(self.domains) or type(self.max_bytes) is not int or not 1<=self.max_bytes<=5*1024*1024
+                or type(self.timeout) not in (int,float) or not math.isfinite(self.timeout) or not 0<self.timeout<=30
+                or type(self.max_redirects) is not int or not 0<=self.max_redirects<=5
+                or not isinstance(self.content_types,frozenset) or not self.content_types or not self.content_types<=supported):
+            raise ValueError('Invalid fetch policy')
 
 
 @dataclass(frozen=True)
@@ -142,7 +167,7 @@ def retry_delay(value):
 
 class Fetcher:
     def __init__(self, policy, *, resolver=resolve, reader=None):
-        if not policy.domains or policy.max_bytes <= 0 or policy.timeout <= 0 or not 0 <= policy.max_redirects <= 5:
+        if not isinstance(policy, FetchPolicy):
             raise ValueError('Invalid fetch policy')
         self.policy, self.resolver, self.reader = policy, resolver, reader or HTTPSReader()
 
