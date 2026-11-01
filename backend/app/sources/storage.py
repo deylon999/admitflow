@@ -3,7 +3,19 @@ import hashlib
 import os
 import re
 import tempfile
+import threading
+import time
+from contextlib import contextmanager
 from pathlib import Path
+
+_states = {}
+_states_guard = threading.Lock()
+
+
+class LockState:
+    def __init__(self):
+        self.lock = threading.RLock()
+        self.depth = 0
 
 
 class StorageError(Exception):
@@ -19,6 +31,59 @@ class RawStore:
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.max_bytes = max_bytes
+        with _states_guard:
+            self._lock_state = _states.setdefault(str(self.root),LockState())
+
+    @contextmanager
+    def locked(self, timeout=10):
+        state = self._lock_state
+        with state.lock:
+            if state.depth:
+                state.depth += 1
+                try:
+                    yield
+                finally:
+                    state.depth -= 1
+                return
+            path = self.root/'.store.lock'
+            if path.is_symlink():
+                raise StorageError('unsafe_storage_path')
+            descriptor = os.open(path,os.O_RDWR|os.O_CREAT|getattr(os,'O_NOFOLLOW',0),0o600)
+            acquired = False
+            try:
+                if os.fstat(descriptor).st_size == 0:
+                    os.write(descriptor,b'0')
+                deadline = time.monotonic()+timeout
+                while True:
+                    try:
+                        os.lseek(descriptor,0,os.SEEK_SET)
+                        if os.name == 'nt':
+                            import msvcrt
+                            msvcrt.locking(descriptor,msvcrt.LK_NBLCK,1)
+                        else:
+                            import fcntl
+                            fcntl.flock(descriptor,fcntl.LOCK_EX|fcntl.LOCK_NB)
+                        acquired = True
+                        break
+                    except OSError:
+                        if time.monotonic()>=deadline:
+                            raise StorageError('raw_lock_timeout') from None
+                        time.sleep(0.02)
+                state.depth = 1
+                try:
+                    yield
+                finally:
+                    state.depth = 0
+            finally:
+                if acquired:
+                    if os.name == 'nt':
+                        import msvcrt
+                        os.lseek(descriptor,0,os.SEEK_SET)
+                        msvcrt.locking(descriptor,msvcrt.LK_UNLCK,1)
+                    else:
+                        import fcntl
+                        fcntl.flock(descriptor,fcntl.LOCK_UN)
+                os.close(descriptor)
 
     def _path(self, digest):
         if not isinstance(digest,str) or not re.fullmatch(r'[a-f0-9]{64}',digest):
@@ -29,6 +94,10 @@ class RawStore:
         return target
 
     def read(self, digest) -> bytes:
+        with self.locked():
+            return self._read(digest)
+
+    def _read(self, digest) -> bytes:
         target = self._path(digest)
         try:
             flags = os.O_RDONLY | getattr(os,'O_NOFOLLOW',0) | getattr(os,'O_BINARY',0)
@@ -43,6 +112,10 @@ class RawStore:
         return body
 
     def put(self, body: bytes, expected_hash: str | None = None) -> str:
+        with self.locked():
+            return self._put(body,expected_hash)
+
+    def _put(self, body: bytes, expected_hash: str | None = None) -> str:
         if not isinstance(body,bytes) or not body or len(body) > self.max_bytes:
             raise StorageError('raw_size_invalid')
         digest = hashlib.sha256(body).hexdigest()

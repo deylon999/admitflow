@@ -82,7 +82,10 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
     except Exception as error:
         if isinstance(error,FetchError):
             code,retry_after=error.code,error.retry_after
-        elif isinstance(error,(Quarantined,AdapterError,StorageError)):
+        elif isinstance(error,StorageError):
+            code=error.code
+            retry_after=60 if code in ('raw_lock_timeout','raw_write_failed') else None
+        elif isinstance(error,(Quarantined,AdapterError)):
             code,retry_after=error.code,None
         elif isinstance(error,ValidationError):
             code,retry_after='invalid_schema',None

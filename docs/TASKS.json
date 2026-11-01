@@ -2631,7 +2631,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T078",
         "T079"
@@ -2647,7 +2647,12 @@
         "Cleanup не гоняется с put/commit и не идёт по symlink",
         "Удаление только явно указанным apply, ошибки БД запрещают удаление"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S041 / B03 5/10: Raw retention is dry-run unless explicit apply; only old unreferenced SHA-256 files are eligible, all historical snapshot refs are retained, symlinks skipped and DB lookup failure precedes deletion. Shared reentrant interprocess lock spans raw put through publication commit and cleanup. pytest retention/store/publication/worker: 18 passed / exit 0, including process lock, GC-vs-commit race, historical refs and DB failure. Transient storage lock failures use bounded retry. No automatic production cleanup enabled."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, Session, mapped_column
 
 from .admissions import Source
 from .database import Base
-from .sources.publishing import FETCH_CODES, QUARANTINE_CODES, lock_source, utc
+from .sources.publishing import FETCH_CODES, QUARANTINE_CODES, STORAGE_RETRY_CODES, lock_source, utc
 
 
 class SourceJob(Base):
@@ -117,7 +117,7 @@ def complete(engine,lease,*,now=None):
 
 def fail(engine,lease,code,*,retry_after=None,now=None):
     now=now or clock()
-    safe_code=code if code in FETCH_CODES|QUARANTINE_CODES else 'internal_error'
+    safe_code=code if code in FETCH_CODES|QUARANTINE_CODES|STORAGE_RETRY_CODES else 'internal_error'
     with Session(engine) as db:
         source=lock_source(db,engine,lease.source_id)
         job=guard_lease(db,lease,now=now)

@@ -12,6 +12,7 @@ from .storage import RawStore
 from .validation import QualityPolicy, Quarantined, validate_list
 
 QUARANTINE_CODES = frozenset({'invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
+STORAGE_RETRY_CODES = frozenset({'raw_lock_timeout','raw_write_failed'})
 FETCH_CODES = frozenset({'invalid_url','domain_not_allowed','non_public_address','dns_unavailable','timeout','tls_error','network_error','too_many_redirects','invalid_redirect','access_denied','rate_limited','http_error','access_challenge','unsupported_encoding','unsupported_content_type','empty_response','response_too_large','invalid_headers','raw_unavailable','raw_hash_mismatch','raw_size_invalid','raw_write_failed','adapter_unavailable','source_disabled','unattested_adapter','invalid_binding','invalid_format'})
 
 
@@ -46,7 +47,7 @@ def stored_list(db, snapshot, year):
 
 
 def record_failure(engine, source_id, code, checked_at):
-    code = code if code in QUARANTINE_CODES | FETCH_CODES else 'internal_error'
+    code = code if code in QUARANTINE_CODES | FETCH_CODES | STORAGE_RETRY_CODES else 'internal_error'
     with Session(engine) as db:
         source = lock_source(db,engine,source_id)
         if source.last_checked_at is None or utc(source.last_checked_at) <= checked_at:
@@ -55,7 +56,12 @@ def record_failure(engine, source_id, code, checked_at):
             db.commit()
 
 
-def publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store: RawStore, *, registry=PRODUCTION_REGISTRY, allow_unattested=False, policy=QualityPolicy(), expected_binding=None, lease_guard=None) -> str:
+def publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store: RawStore, **options) -> str:
+    with store.locked():
+        return _publish(engine,source_id,parsed,raw,store,**options)
+
+
+def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store: RawStore, *, registry=PRODUCTION_REGISTRY, allow_unattested=False, policy=QualityPolicy(), expected_binding=None, lease_guard=None) -> str:
     # Raw can be orphaned after a rejected/rolled-back import; retention handles it.
     store.put(raw.body,raw.payload_hash)
     checked_at = raw.fetched_at
