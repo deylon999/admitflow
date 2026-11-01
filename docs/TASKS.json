@@ -3779,7 +3779,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T068"
       ],
@@ -3793,7 +3793,12 @@
       "acceptance": [
         "Equal-time updates become latest without changing observed time; backward-clock writes refuse atomically."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S083: Equal-time updates retain exact observed time and use increasing UUID tie-breaks, becoming latest deterministically. Backward clock refuses409 atomically; DATA_RULES updated, formula unchanged. Clock/API15 passed after correcting a nonexistent test filename."
+        }
+      ],
       "blockedReason": null
     },
     {

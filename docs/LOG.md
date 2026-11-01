@@ -499,3 +499,7 @@ PostgreSQL connect timeout defaults5s (allowed1..10), pool checkout5s. Real loca
 ## S082 - 2026-11-01 - B06 6/20 (T124)
 
 Manual list and full export batch snapshots instead of one query per watch; bounded full export still validates500 per watch. Twenty-watch query-count/tied-order test plus export/import15 passed (at most3SELECTs per request).
+
+## S083 - 2026-11-01 - B06 7/20 (T125)
+
+Equal-time updates retain exact observed time and use increasing UUID tie-breaks, becoming latest deterministically. Backward clock refuses409 atomically; DATA_RULES updated, formula unchanged. Clock/API15 passed after correcting a nonexistent test filename.

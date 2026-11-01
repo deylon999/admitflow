@@ -5,6 +5,7 @@ import secrets
 from contextlib import asynccontextmanager
 from contextlib import suppress
 from datetime import datetime, timedelta, timezone
+from uuid import UUID, uuid4
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
 from fastapi.exceptions import RequestValidationError
@@ -163,7 +164,18 @@ def create_app(settings: Settings | None = None):
         return result
 
     def add_snapshot(watch_id, values, db):
-        snapshot = Snapshot(watch_id=watch_id, captured_at=utcnow(), **values.model_dump())
+        captured = utcnow()
+        watch = db.get(Watch, watch_id)
+        previous = db.scalar(select(Snapshot).where(Snapshot.watch_id == watch_id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(1))
+        if captured < utc(watch.created_at) or (previous and captured < utc(previous.captured_at)):
+            raise HTTPException(409,'Время предыдущего сохранения опережает серверное. Проверьте часы или повторите позже.')
+        identifier = str(uuid4())
+        if previous and captured == utc(previous.captured_at) and identifier <= previous.id:
+            try:
+                identifier = str(UUID(int=UUID(previous.id).int + 1))
+            except (ValueError, OverflowError):
+                raise HTTPException(409,'Не удалось упорядочить сохранение. Повторите позже.') from None
+        snapshot = Snapshot(id=identifier,watch_id=watch_id, captured_at=captured, **values.model_dump())
         db.add(snapshot)
         db.flush()
         return snapshot
