@@ -97,7 +97,7 @@ export const api = {
     return info;
     });
   },
-  universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
+  universities: async (query: string, signal?: AbortSignal) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`, { signal })),
   coverage: async () => parseCoverage(await request('/coverage')),
   exportData: () => read('/export', parseExport),
   async importData(bundle: DataExport, key: string) {

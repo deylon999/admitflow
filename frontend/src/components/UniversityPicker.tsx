@@ -13,7 +13,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
   const query = useDeferredValue(limitCodePoints(value, 120));
-  const catalog = useQuery({ queryKey: ['universities', query], queryFn: () => api.universities(query), enabled: open, staleTime: 300_000 });
+  const catalog = useQuery({ queryKey: ['universities', query], queryFn: ({ signal }) => api.universities(query, signal), enabled: open, staleTime: 300_000 });
   return <div className="field university-picker" onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); input.current?.focus(); setOpen(false); }
   }} onBlur={event => {

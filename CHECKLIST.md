@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 89 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 90 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -129,7 +129,7 @@
 - [x] T140 Reject invalid UTF-8 import files
 - [x] T141 Cancel import preparation safely
 - [x] T142 Align form Unicode length limits with the API
-- [ ] T143 Cancel abandoned catalog searches
+- [x] T143 Cancel abandoned catalog searches
 - [ ] T144 Navigate university choices with the keyboard
 - [ ] T145 Stop canceled private reads after session bootstrap
 - [ ] T146 Release response bodies discarded by session fencing
