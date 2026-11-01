@@ -25,5 +25,8 @@ export function instantMicros(value: string): bigint {
   const date = new Date(0);
   date.setUTCFullYear(year, month - 1, day);
   date.setUTCHours(hour, minute, second, 0);
-  return BigInt(date.getTime() - offset * 60_000) * 1000n + BigInt((match[7] ?? '').padEnd(6, '0'));
+  const micros = BigInt(date.getTime() - offset * 60_000) * 1000n + BigInt((match[7] ?? '').padEnd(6, '0'));
+  // Python datetime supports UTC years 0001..9999, including microseconds.
+  if (micros < -62135596800000000n || micros > 253402300799999999n) throw new Error('Invalid timestamp');
+  return micros;
 }

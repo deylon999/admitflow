@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 95 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 96 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -62,7 +62,7 @@
 - [x] T128 Compare opaque IDs by Unicode code point
 - [x] T135 Serialize guest bootstrap between browser tabs
 - [x] T136 Fence stale session results after access changes
-- [ ] T149 Keep manual UTC timestamps inside the supported calendar
+- [x] T149 Keep manual UTC timestamps inside the supported calendar
 - [ ] T150 Refuse inconsistent exports after clock regression
 - [ ] T153 Verify manual data across API lifespan restarts
 

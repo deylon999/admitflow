@@ -608,3 +608,7 @@ Playwright pending-form.spec.ts and draft.spec.ts:3 passed. A gated unchanged ed
 ## S107 - 2026-11-01 - B07 10/15 (T148)
 
 Playwright pending-form.spec.ts:2 passed in final sequential run. During gated actual import, fields/save disabled and synthetic submit dispatch produces0 creates; after import original draft saves once,2 cards total. Initial test had incorrect field label; overlapping rerun collided with Playwright artifacts. Corrected label and waited for all runners before final2/2; application expectations unchanged.
+
+## S108 - 2026-11-01 - B07 11/15 (T149)
+
+Backend test_timestamp_bounds.py:4 passed; frontend time.test.ts:5 passed. Offset under/overflow yields422 before import writes, exact UTC year1/year9999 boundaries accepted. DATA_RULES updated; original accepted timestamps and formula preserved.

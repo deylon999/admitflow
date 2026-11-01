@@ -1,8 +1,8 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Annotated, Literal
 import re
 
-from pydantic import AwareDatetime, BeforeValidator, Field, HttpUrl, field_validator
+from pydantic import AfterValidator, AwareDatetime, BeforeValidator, Field, HttpUrl, field_validator
 
 from .calculation import CalculationInput, CalculationResult, CamelModel
 
@@ -15,7 +15,15 @@ def manual_timestamp(value):
     return value
 
 
-ManualTimestamp = Annotated[AwareDatetime, BeforeValidator(manual_timestamp)]
+def representable_utc(value):
+    try:
+        value.astimezone(timezone.utc)
+    except (OverflowError, ValueError):
+        raise ValueError('Дата в UTC должна быть в пределах годов 0001–9999.') from None
+    return value
+
+
+ManualTimestamp = Annotated[AwareDatetime, BeforeValidator(manual_timestamp), AfterValidator(representable_utc)]
 
 
 class ValidationProblem(CamelModel):

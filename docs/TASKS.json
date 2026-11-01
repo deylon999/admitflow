@@ -4482,7 +4482,7 @@
       "phase": "E2",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T126"
       ],
@@ -4496,7 +4496,12 @@
       "acceptance": [
         "Offset-normalized dates outside years1..9999 reject as validation errors on server and client."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S108: Backend test_timestamp_bounds.py:4 passed; frontend time.test.ts:5 passed. Offset under/overflow yields422 before import writes, exact UTC year1/year9999 boundaries accepted. DATA_RULES updated; original accepted timestamps and formula preserved."
+        }
+      ],
       "blockedReason": null
     },
     {
