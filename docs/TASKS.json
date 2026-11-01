@@ -2159,7 +2159,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T069",
         "T070",
@@ -2177,7 +2177,12 @@
         "Фокус ставится в открытую форму и возвращается после закрытия",
         "Escape и клавиатурные действия проверены, сохранение не прерывается"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S024 / B01 5/5: keyboard focus and nested Escape; 16 full Chromium E2E / 54 frontend / 116 backend passed; 1 PG skipped; build passed."
+        }
+      ],
       "blockedReason": null
     }
   ]

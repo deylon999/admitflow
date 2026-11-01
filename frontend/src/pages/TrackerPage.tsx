@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
@@ -15,7 +15,9 @@ const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'sh
 function date(value: string) { return dateFormat.format(new Date(value)); }
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
 
-function DirectionForm({ watch, onDone, onCancel }: { watch?: Watch; onDone: () => void; onCancel: () => void }) {
+function DirectionForm({ watch, focusRequest, onDone, onCancel }: { watch?: Watch; focusRequest: number; onDone: () => void; onCancel: () => void }) {
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => { heading.current?.focus(); }, [focusRequest]);
   const [values, setValues] = useState<CalculationForm>(watch?.latest.values ?? emptyValues);
   const [university, setUniversity] = useState(watch?.university ?? '');
   const [title, setTitle] = useState(watch?.title ?? '');
@@ -43,8 +45,10 @@ function DirectionForm({ watch, onDone, onCancel }: { watch?: Watch; onDone: () 
       if (error instanceof SessionExpiredError) void queryClient.invalidateQueries({ queryKey: ['watches'] });
     },
   });
-  return <form className="direction-form surface" onSubmit={event => { event.preventDefault(); setSubmitted(true); if (!save.isPending && !error && university.trim() && title.trim()) save.mutate(); }}>
-    <div className="tracker-form-heading"><h2>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
+  return <form className="direction-form surface" aria-labelledby="direction-form-heading" onKeyDown={event => {
+    if (event.key === 'Escape' && !event.defaultPrevented && !save.isPending) { event.preventDefault(); onCancel(); }
+  }} onSubmit={event => { event.preventDefault(); setSubmitted(true); if (!save.isPending && !error && university.trim() && title.trim()) save.mutate(); }}>
+    <div className="tracker-form-heading"><h2 id="direction-form-heading" ref={heading} tabIndex={-1}>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
     <fieldset className="direction-fields" disabled={save.isPending}><legend className="visually-hidden">Данные направления</legend>
     {watch ? <p className="small-copy">{watch.university} · {watch.title}</p> : <>
       <UniversityPicker value={university} onChange={setUniversity} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
@@ -62,7 +66,7 @@ function DirectionForm({ watch, onDone, onCancel }: { watch?: Watch; onDone: () 
   </form>;
 }
 
-function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () => void; disabled: boolean }) {
+function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (button: HTMLButtonElement) => void; disabled: boolean }) {
   const [showHistory, setShowHistory] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const queryClient = useQueryClient();
@@ -79,7 +83,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () =
     <ScenarioExplanation values={watch.latest.values} />
     <div className="direction-source"><a href={watch.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть источник ↗</a><span>Сохранено <time dateTime={watch.latest.capturedAt}>{date(watch.latest.capturedAt)}</time></span></div>
     {old && <p className="stale-note">Цифры сохранены больше суток назад. Проверьте свежий список.</p>}
-    <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={onEdit}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button className="text-button delete-link" type="button" onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>
+    <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={event => onEdit(event.currentTarget)}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button className="text-button delete-link" type="button" onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>
     {confirmDelete && <div className="delete-confirm"><p>Удалить направление и всю его историю?</p><div><button className="button button-secondary" type="button" disabled={remove.isPending} onClick={() => setConfirmDelete(false)}>Отмена</button><button className="button danger-button" type="button" disabled={remove.isPending} onClick={() => remove.mutate()}>{remove.isPending ? 'Удаляем…' : 'Да, удалить'}</button></div></div>}
     {remove.isError && <p className="form-error" role="alert">{errorText(remove.error)}</p>}
     {showHistory && <div className="direction-history"><h3>История расчётов</h3>{history.isPending ? <p role="status">Загружаем историю…</p> : history.isError ? <p className="form-error" role="alert">{errorText(history.error)}</p> : <><HistoryComparison snapshots={history.data.history} /><p className="small-copy">Последние {history.data.history.length} сохранений. Дата — время ручного ввода.</p><div className="history-scroll"><table><caption className="visually-hidden">Сохранённые значения и рассчитанное место</caption><thead><tr><th>Дата</th><th>Номер</th><th>Место</th><th>Бюджет</th></tr></thead><tbody>{history.data.history.map(snapshot => <tr key={snapshot.id}><td><time dateTime={snapshot.capturedAt}>{date(snapshot.capturedAt)}</time></td><td>{snapshot.values.rank}</td><td>{snapshot.calculation.place}</td><td>{snapshot.values.seats}</td></tr>)}</tbody></table></div></>}</div>}
@@ -88,6 +92,22 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: () =
 
 export default function TrackerPage() {
   const [form, setForm] = useState<'new' | Watch | null>(null);
+  const [focusRequest, setFocusRequest] = useState(0);
+  const formOpener = useRef<HTMLButtonElement | null>(null);
+  const addButton = useRef<HTMLButtonElement>(null);
+  function openForm(value: 'new' | Watch, button: HTMLButtonElement) {
+    formOpener.current = button;
+    setNotice('');
+    setForm(value);
+    setFocusRequest(request => request + 1);
+  }
+  function closeForm() {
+    setForm(null);
+    requestAnimationFrame(() => {
+      const target = formOpener.current?.isConnected ? formOpener.current : addButton.current;
+      target?.focus();
+    });
+  }
   const [notice, setNotice] = useState('');
   const [confirmReset, setConfirmReset] = useState(false);
   const busy = useIsMutating() > 0;
@@ -111,7 +131,7 @@ export default function TrackerPage() {
   const count = watches.data?.length ?? 0;
   const expired = watches.error instanceof SessionExpiredError;
   return <main className="container tracker-page" id="top">
-    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button className="button button-primary" type="button" disabled={count >= 20 || busy} onClick={() => { setNotice(''); setForm('new'); }}>Добавить направление</button></div>
+    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
     <div className="tracker-data-actions"><button className="text-button" type="button" disabled={busy || !count} onClick={() => download.mutate()}>{download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}</button>
     {count > 0 && <button className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
@@ -121,8 +141,8 @@ export default function TrackerPage() {
     {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
     <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">
-      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={() => setForm('new')}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={() => { setNotice(''); setForm(watch); }} />)}
-    </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} watch={form === 'new' ? undefined : form} onCancel={() => setForm(null)} onDone={() => { setForm(null); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
+    </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onCancel={closeForm} onDone={() => { closeForm(); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
 }

@@ -1,4 +1,4 @@
-import { useDeferredValue, useState } from 'react';
+import { useDeferredValue, useRef, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import type { University } from '../lib/api';
@@ -9,15 +9,18 @@ export function UniversityPicker({ value, onChange, onSelect }: {
   onSelect: (university: University) => void;
 }) {
   const [open, setOpen] = useState(false);
+  const input = useRef<HTMLInputElement>(null);
   const query = useDeferredValue(value.slice(0, 120));
   const catalog = useQuery({ queryKey: ['universities', query], queryFn: () => api.universities(query), enabled: open, staleTime: 300_000 });
-  return <div className="field university-picker" onBlur={event => {
+  return <div className="field university-picker" onKeyDown={event => {
+    if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); input.current?.focus(); setOpen(false); }
+  }} onBlur={event => {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }}>
     <label htmlFor="university">Вуз</label>
-    <input id="university" value={value} maxLength={160} required autoComplete="off"
+    <input ref={input} id="university" value={value} maxLength={160} required autoComplete="off"
       placeholder="Название вуза" aria-describedby="catalog-note"
-      onFocus={() => setOpen(true)} onKeyDown={event => { if (event.key === 'Escape') setOpen(false); }}
+      onFocus={() => setOpen(true)}
       onChange={event => { onChange(event.target.value); setOpen(true); }} />
     <p className="form-note" id="catalog-note">Можно выбрать из небольшого справочника или ввести любой вуз вручную.</p>
     {open && <div className="catalog-results">
@@ -25,7 +28,7 @@ export function UniversityPicker({ value, onChange, onSelect }: {
         : catalog.isError ? <p className="small-copy">Справочник недоступен. Название можно ввести вручную.</p>
           : catalog.data.items.length === 0 ? <p className="small-copy">Вуз пока не добавлен в справочник. Продолжайте с ручным вводом.</p>
             : <ul>{catalog.data.items.map(university => <li key={university.id}>
-              <button className="catalog-option" type="button" onClick={() => { onSelect(university); setOpen(false); }}>
+              <button className="catalog-option" type="button" onClick={() => { onSelect(university); input.current?.focus(); setOpen(false); }}>
                 <span>{university.name}</span><small>Ручной режим · автоматическое обновление не подключено</small>
               </button>
               <a href={university.provenanceUrl} target="_blank" rel="noopener noreferrer">Официальный список ↗</a>
