@@ -2,7 +2,7 @@ import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { SessionExpiredError } from './api';
 
 export const sessionAccessKey = ['session-access'] as const;
-export type SessionAccess = 'active' | 'expired';
+export type SessionAccess = 'active' | 'expired' | 'changed';
 
 export function createQueryClient() {
   const client: QueryClient = new QueryClient({

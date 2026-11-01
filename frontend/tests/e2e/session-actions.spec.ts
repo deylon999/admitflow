@@ -18,6 +18,7 @@ for (const action of ['history', 'export', 'delete', 'import']) {
     if (action === 'export') await page.getByRole('button', { name: 'Скачать данные (JSON)' }).click();
     if (action === 'delete') {
       await page.getByRole('button', { name: 'Удалить', exact: true }).click();
+      page.once('dialog', dialog => dialog.accept());
       await page.getByRole('button', { name: 'Да, удалить' }).click();
     }
     if (action === 'import') {

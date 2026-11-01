@@ -169,14 +169,25 @@ export default function TrackerPage() {
   const [confirmReset, setConfirmReset] = useState(false);
   const busy = useIsMutating() > 0;
   const queryClient = useQueryClient();
-  const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), staleTime: 0, refetchOnWindowFocus: true });
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
-  const expired = access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  const changed = access.data === 'changed';
+  const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), enabled: !changed, staleTime: 0, refetchOnWindowFocus: true });
+  const expired = changed || access.data === 'expired' || watches.error instanceof SessionExpiredError;
   const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: !expired, staleTime: Infinity });
   useEffect(() => {
     if (expired) { draftDirty.current = false; setForm(null); setConfirmReset(false); setNotice(''); }
   }, [expired]);
   const download = useMutation({ mutationFn: api.exportData, onSuccess: downloadExport });
+  const synchronize = useMutation({ mutationFn: async () => {
+    const info = await api.resumeSession();
+    await queryClient.fetchQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), staleTime: 0 });
+    return info;
+  }, onSuccess: info => {
+    queryClient.setQueryData(['session-info'], info);
+    queryClient.removeQueries({ queryKey: ['history'] });
+    queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
+    download.reset();
+  } });
   const reset = useMutation({
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
@@ -205,8 +216,8 @@ export default function TrackerPage() {
     {count > 0 && <button ref={resetButton} className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
     {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
     {confirmReset && !expired && <DeleteConfirmation text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя." label="Удалить всё" disabled={busy} onCancel={() => { setConfirmReset(false); requestAnimationFrame(() => resetButton.current?.focus()); }} onConfirm={() => reset.mutate()} />}
-    {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
-    {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
+    {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён в другой вкладке' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
+    {synchronize.isError && <p className="form-error" role="alert">{errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
     {!expired && watches.isError && watches.data && <div className="surface stale-warning" role="alert"><p>Не удалось обновить направления. Показаны последние загруженные сохранения с их исходными датами.</p><p>{errorText(watches.error)}</p><button className="text-button" type="button" disabled={watches.isFetching} onClick={() => void watches.refetch()}>Повторить обновление</button></div>}
     <CoverageSummary />

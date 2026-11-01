@@ -440,3 +440,7 @@ Cached cards and dirty form survive a background read error with original dates 
 ## S069 - 2026-11-01 - B05 9/15 (T112)
 
 Displays server-provided absolute guest expiry and original ISO value without sliding extension. Reset replaces cached deadline with new session info. Build and Chromium reload test passed; no fabricated date on error.
+
+## S070 - 2026-11-01 - B05 10/15 (T113)
+
+Cross-tab reset hides private cards/drafts, cancels private reads and requires explicit readonly synchronization. Listener lives across routes; cached API session forgotten; no automatic session POST in receiving tab. Build and5 real-API session/tab checks passed. Existing delete401 test now accepts the intentional draft-discard prompt.

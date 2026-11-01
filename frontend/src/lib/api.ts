@@ -26,6 +26,7 @@ async function request(path: string, init: RequestInit = {}): Promise<unknown> {
   }, init.signal);
 }
 const sessionMarker = 'admitflow-session-used';
+export const sessionChangeKey = 'admitflow-session-change';
 let session: Promise<SessionInfo> | undefined;
 function usedSession() {
   try { return localStorage.getItem(sessionMarker) === '1'; } catch { return false; }
@@ -45,8 +46,16 @@ async function read<T>(path: string, parse: (value: unknown) => T, signal?: Abor
 }
 export const api = {
   session: ensureSession,
+  forgetSession() { session = undefined; },
+  async resumeSession() {
+    const info = parseSession(await request('/session'));
+    session = Promise.resolve(info);
+    try { localStorage.setItem(sessionMarker, '1'); } catch { /* Cookie still works. */ }
+    return info;
+  },
   async resetSession() {
     await request('/session', { method: 'DELETE' });
+    try { localStorage.setItem(sessionChangeKey, crypto.randomUUID()); } catch { /* Cross-tab notification unavailable. */ }
     session = undefined;
     try { localStorage.removeItem(sessionMarker); } catch { /* Storage may be disabled. */ }
     return ensureSession();

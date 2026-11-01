@@ -6,6 +6,8 @@ import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router';
 import { useEffect } from 'react';
 import { Header, Footer } from './components/Layout';
 import LandingPage from './pages/LandingPage';
+import { api, sessionChangeKey } from './lib/api';
+import { sessionAccessKey } from './lib/query-client';
 import './styles.css';
 import './tracker.css';
 
@@ -21,6 +23,16 @@ function PagePosition() {
   return null;
 }
 function App() {
+  useEffect(() => {
+    const onStorage = (event: StorageEvent) => {
+      if (event.key !== sessionChangeKey) return;
+      api.forgetSession();
+      queryClient.setQueryData(sessionAccessKey, 'changed');
+      for (const key of ['watches', 'history', 'session-info']) void queryClient.cancelQueries({ queryKey: [key] });
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
   return <><PagePosition /><Header /><Suspense fallback={<main className="container tracker-page"><p role="status">Загружаем страницу…</p></main>}><Routes><Route path="/" element={<LandingPage />} /><Route path="/tracker" element={<TrackerPage />} /><Route path="*" element={<main className="container tracker-page"><h1>Страница не найдена</h1><Link className="button button-primary" to="/">На главную</Link></main>} /></Routes></Suspense><Footer /></>;
 }
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><BrowserRouter><App /></BrowserRouter></QueryClientProvider></React.StrictMode>);
