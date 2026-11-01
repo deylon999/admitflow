@@ -2442,7 +2442,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T076",
         "T079"
@@ -2459,7 +2459,12 @@
         "Два локальных worker не получают одновременно одно задание",
         "Старый token не подтверждает новую аренду; PG отдельно не объявлен проверенным"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S034 / B02 9/10: Durable source_jobs migration 0004; one job/source, atomic claims, token fencing, expiry recovery, bounded retry/backoff/Retry-After and periodic scheduling. Disable revokes active lease. pytest queue+migrations: 14 passed / 1 PG skipped / exit 0, including 16 concurrent enqueues/claims, retry exhaustion, stale owner rejection and populated upgrade preservation. PostgreSQL SKIP LOCKED code is not claimed runtime-tested."
+        }
+      ],
       "blockedReason": null
     },
     {

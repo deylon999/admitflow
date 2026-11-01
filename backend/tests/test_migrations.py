@@ -39,9 +39,9 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.upgrade(config(), 'head')
     command.upgrade(config(), 'head')
     command.check(config())
-    assert len(inspect(migration_db).get_table_names()) == 14  # 13 domain + revision.
+    assert len(inspect(migration_db).get_table_names()) == 15  # 14 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0003'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0004'
 
 
 def seed_legacy(engine):

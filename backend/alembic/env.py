@@ -1,6 +1,7 @@
 from alembic import context
 
 from app import admissions  # Register the complete target schema.
+from app import jobs
 from app.config import Settings
 from app.database import Base, make_engine
 
