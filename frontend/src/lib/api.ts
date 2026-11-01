@@ -1,5 +1,6 @@
 import type { CalculationValues } from './calculator';
 import type { SessionInfo, WatchCreate } from './contracts';
+import { withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseDetail, parseExport, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
@@ -9,10 +10,11 @@ class ApiError extends Error {
   constructor(message: string, readonly status: number) { super(message); }
 }
 async function request(path: string, init: RequestInit = {}): Promise<unknown> {
+  return withRequestTimeout(async signal => {
   let response: Response;
   try {
-    response = await fetch(`/api/v1${path}`, { ...init, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'abiturient', ...init.headers } });
-  } catch { throw new Error('Не удалось связаться с сервером. Проверьте соединение и попробуйте ещё раз.'); }
+    response = await fetch(`/api/v1${path}`, { ...init, signal, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'abiturient', ...init.headers } });
+  } catch { signal.throwIfAborted(); throw new Error('Не удалось связаться с сервером. Проверьте соединение и попробуйте ещё раз.'); }
   if (!response.ok) {
     if (response.status === 401) throw new SessionExpiredError();
     const body = await response.json().catch(() => null) as { detail?: unknown } | null;
@@ -21,6 +23,7 @@ async function request(path: string, init: RequestInit = {}): Promise<unknown> {
   }
   if (response.status === 204) return undefined;
   try { return await response.json(); } catch { throw new InvalidResponseError(); }
+  }, init.signal);
 }
 const sessionMarker = 'admitflow-session-used';
 let session: Promise<SessionInfo> | undefined;
@@ -36,9 +39,9 @@ async function ensureSession() {
   })().catch(error => { session = undefined; throw error; });
   return session;
 }
-async function read<T>(path: string, parse: (value: unknown) => T): Promise<T> {
+async function read<T>(path: string, parse: (value: unknown) => T, signal?: AbortSignal): Promise<T> {
   await ensureSession();
-  return parse(await request(path));
+  return parse(await request(path, { signal }));
 }
 export const api = {
   session: ensureSession,
@@ -50,7 +53,7 @@ export const api = {
   },
   universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
   exportData: () => read('/export', parseExport),
-  list: () => read('/watches', parseWatches),
+  list: (signal?: AbortSignal) => read('/watches', parseWatches, signal),
   detail: (id: string) => read(`/watches/${encodeURIComponent(id)}`, parseDetail),
   async create(body: WatchCreate, key?: string) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body), headers: key ? { 'Idempotency-Key': key } : undefined })); },
   async update(id: string, values: CalculationValues, key?: string) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values), headers: key ? { 'Idempotency-Key': key } : undefined })); },

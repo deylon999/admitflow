@@ -808,7 +808,8 @@
         "T014",
         "T018",
         "T019",
-        "T070"
+        "T070",
+        "T074"
       ],
       "deliverables": [
         "backend/app/history/",
@@ -862,7 +863,8 @@
         "T019",
         "T021",
         "T024",
-        "T072"
+        "T072",
+        "T073"
       ],
       "deliverables": [
         "frontend/src/lib/api.ts",
@@ -890,7 +892,8 @@
       "dependsOn": [
         "T008",
         "T022",
-        "T025"
+        "T025",
+        "T075"
       ],
       "deliverables": [
         "frontend/src/tracker.css",
@@ -917,7 +920,8 @@
       "dependsOn": [
         "T010",
         "T013",
-        "T015"
+        "T015",
+        "T076"
       ],
       "deliverables": [
         "backend/app/sources/",
@@ -1000,7 +1004,8 @@
       "size": "M",
       "status": "todo",
       "dependsOn": [
-        "T029"
+        "T029",
+        "T077"
       ],
       "deliverables": [
         "backend/app/sources/validation.py",
@@ -1053,7 +1058,8 @@
       "dependsOn": [
         "T014",
         "T027",
-        "T028"
+        "T028",
+        "T081"
       ],
       "deliverables": [
         "backend/app/worker/",
@@ -1080,7 +1086,8 @@
       "dependsOn": [
         "T014",
         "T030",
-        "T032"
+        "T032",
+        "T079"
       ],
       "deliverables": [
         "backend/app/snapshots/",
@@ -1134,7 +1141,8 @@
       "dependsOn": [
         "T024",
         "T032",
-        "T033"
+        "T033",
+        "T080"
       ],
       "deliverables": [
         "backend/app/sources/",
@@ -1188,7 +1196,8 @@
       "dependsOn": [
         "T031",
         "T032",
-        "T035"
+        "T035",
+        "T082"
       ],
       "deliverables": [
         "backend/app/manage.py",
@@ -2183,6 +2192,265 @@
           "note": "S024 / B01 5/5: keyboard focus and nested Escape; 16 full Chromium E2E / 54 frontend / 116 backend passed; 1 PG skipped; build passed."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T073",
+      "title": "Таймауты ручного API и восстановление чтения",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T018",
+        "T068"
+      ],
+      "deliverables": [
+        "frontend/src/lib/transport.ts"
+      ],
+      "steps": [
+        "Ограничить ожидание ответа и тела; отмена чтения",
+        "Проверить timeout/offline/503 и повтор без потери данных"
+      ],
+      "acceptance": [
+        "Pending ограничен по времени; запись не повторяется автоматически",
+        "После ошибки чтения доступен безопасный повтор"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S026 / B02 1/10: Transport bounds response and body to 15s, supports AbortSignal and never retries writes. npm test: 57 passed; npm run build: exit 0; recovery + tracker API E2E: 6 passed. Files: transport.ts, api.ts, TrackerPage, transport/recovery tests. External CI unchanged."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T074",
+      "title": "Загрузка полной ручной истории страницами",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018",
+        "T070"
+      ],
+      "deliverables": [
+        "backend/app/main.py",
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Добавить keyset cursor с проверкой владельца",
+        "Показать загрузку следующей страницы и ошибку повтора"
+      ],
+      "acceptance": [
+        "Все 500 снимков доступны без дублей при новом сохранении",
+        "Чужой или некорректный cursor не раскрывает данные"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T075",
+      "title": "Сравнение сохранённых ручных направлений",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T020",
+        "T070"
+      ],
+      "deliverables": [
+        "frontend/src/components/WatchComparison.tsx"
+      ],
+      "steps": [
+        "Добавить выбор до трёх направлений",
+        "Показать входы, сценарии и даты без общего рейтинга"
+      ],
+      "acceptance": [
+        "Два разных вуза сравниваются по одинаковым явным полям",
+        "Удаление выбранной записи не оставляет устаревшую строку"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T076",
+      "title": "Базовый контракт и закрытый реестр адаптеров",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T010",
+        "T015",
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/sources/contracts.py",
+        "backend/app/sources/registry.py"
+      ],
+      "steps": [
+        "Определить типизированный ParsedList с unknown и provenance",
+        "Связать точный source/group/season с зарегистрированным адаптером"
+      ],
+      "acceptance": [
+        "Неподдержанный источник или версия отклоняется",
+        "Нет публичного произвольного fetch и нет автоматической аттестации"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T077",
+      "title": "Нормализация и карантин неполного списка",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T076"
+      ],
+      "deliverables": [
+        "backend/app/sources/validation.py"
+      ],
+      "steps": [
+        "Проверить сезон, группу, строки, порядок и полноту",
+        "Сохранить unknown; выявить дубли и резкие изменения"
+      ],
+      "acceptance": [
+        "Неполный/неверный список не публикуется",
+        "Равные баллы не меняют официальный порядок; ошибки не содержат PII"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T078",
+      "title": "Приватное хранилище исходных ответов",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T028",
+        "T076"
+      ],
+      "deliverables": [
+        "backend/app/sources/storage.py"
+      ],
+      "steps": [
+        "Атомарно сохранить ограниченные bytes по SHA-256",
+        "Проверять целостность чтения и ограничения путей"
+      ],
+      "acceptance": [
+        "Повтор не создаёт дубликат; повреждение обнаруживается",
+        "Произвольный путь и превышение размера отклоняются"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T079",
+      "title": "Атомарная публикация нормализованного снимка",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T077",
+        "T078"
+      ],
+      "deliverables": [
+        "backend/app/sources/publishing.py",
+        "backend/alembic/versions/0003_import_provenance.py"
+      ],
+      "steps": [
+        "Версионировать provenance и normalized hash",
+        "В одной транзакции записать снимок/строки/latest"
+      ],
+      "acceptance": [
+        "Ошибка не меняет latest и прошлые строки",
+        "Повтор проверен; смена parser version сохраняет новый снимок"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T080",
+      "title": "Диагностика свежести зарегистрированного источника",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T079"
+      ],
+      "deliverables": [
+        "backend/app/sources/status.py"
+      ],
+      "steps": [
+        "Разделить fetched/source-updated/checked/success",
+        "Выдать bounded status без строк участников и raw"
+      ],
+      "acceptance": [
+        "Архив всегда помечен; ошибка не маскирует старый снимок",
+        "Disabled/unknown/stale не выдаются за fresh"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T081",
+      "title": "Очередь обновлений с lease и ограниченными повторами",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T076",
+        "T079"
+      ],
+      "deliverables": [
+        "backend/app/jobs.py",
+        "backend/alembic/versions/0004_source_jobs.py"
+      ],
+      "steps": [
+        "Дедупликация задания на источник и атомарный claim",
+        "Проверить lease expiry, fencing token, backoff и предел попыток"
+      ],
+      "acceptance": [
+        "Два локальных worker не получают одновременно одно задание",
+        "Старый token не подтверждает новую аренду; PG отдельно не объявлен проверенным"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T082",
+      "title": "Worker и локальные команды управления источниками",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T080",
+        "T081"
+      ],
+      "deliverables": [
+        "backend/app/worker.py",
+        "backend/app/sources/cli.py"
+      ],
+      "steps": [
+        "Связать fetch/parse/validate/store/publish с очередью",
+        "Добавить once/loop, status/enqueue/disable и документировать запуск"
+      ],
+      "acceptance": [
+        "Синтетический сквозной цикл и отказ сохраняют правильный latest",
+        "Неизвестные адаптеры запрещены; реальные интеграции остаются неаттестованными"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

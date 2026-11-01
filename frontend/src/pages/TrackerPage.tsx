@@ -112,7 +112,7 @@ export default function TrackerPage() {
   const [confirmReset, setConfirmReset] = useState(false);
   const busy = useIsMutating() > 0;
   const queryClient = useQueryClient();
-  const watches = useQuery({ queryKey: ['watches'], queryFn: api.list });
+  const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal) });
   const download = useMutation({ mutationFn: api.exportData, onSuccess: downloadExport });
   const reset = useMutation({
     mutationFn: async () => {

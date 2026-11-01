@@ -240,3 +240,11 @@ T020: добавлены ready/insufficient_data/unsupported в Python/TS и rea
 - Синтетические preview-desktop.png / preview-mobile.png пересняты Playwright из UTF-8 shared/manual-watch.json с дополнительным сохранением 74→90; обе картинки просмотрены. Демонстрационная сессия удалена, DELETE → 204. Исходные макеты и пользовательские данные не менялись.
 
 B01 завершён 5/5; 20 done из 72. Около 25% автоматического MVP, D1/30: ручные улучшения не закрывают отсутствующие реальные адаптеры, worker и release gates. STATE/PROGRESS/checklist обновлены. T006/T013 — следующие доступные P0; remote CI, исходные HTML, PostgreSQL/Docker и локальные шрифты требуют снятия прежних ограничений. Успешный push и production не заявлены. Приложение оставлено для просмотра на 5180/API 8001 в изолированной тестовой БД.
+
+## S025 — 2026-11-01 — подход B02: десять задач
+
+Пользователь запросил следующие 10 задач. Проверены GitHub (git ls-remote:443 недоступен) и Docker (доступ к Engine запрещён); T006/T014/T067 не закрываются. B02: T073–T082, самостоятельные части ручного пути и инфраструктуры импорта. Широкие задачи сохраняют требования реальных fixtures, PostgreSQL и аттестации. Нельзя выдавать синтетический цикл за интеграцию вуза. Последовательность: transport, history, comparison, registry, validation, raw store, publication, freshness, queue, worker/CLI.
+
+## S026 — 2026-11-01 — B02 1/10 (T073)
+
+Transport bounds response and body to 15s, supports AbortSignal and never retries writes. npm test: 57 passed; npm run build: exit 0; recovery + tracker API E2E: 6 passed. Files: transport.ts, api.ts, TrackerPage, transport/recovery tests. External CI unchanged.
