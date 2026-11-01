@@ -3891,7 +3891,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T028"
       ],
@@ -3905,7 +3905,12 @@
       "acceptance": [
         "Content-Length mismatch cannot produce a FetchResult; genuine complete responses remain valid."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S087: Both HTTPS stream reader and injected reader contract reject declared-length mismatch with retryable incomplete_response; complete bodies remain valid. Fetcher/worker45 passed. No real source attestation implied."
+        }
+      ],
       "blockedReason": null
     },
     {

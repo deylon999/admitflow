@@ -3,6 +3,7 @@ import hashlib
 import http.client
 import ipaddress
 import socket
+import re
 import ssl
 import time
 from dataclasses import dataclass, field
@@ -17,6 +18,18 @@ class FetchError(Exception):
         super().__init__(code)
         self.code = code
         self.retry_after = retry_after
+
+
+def declared_length(headers, maximum):
+    value = headers.get('content-length')
+    if value is None:
+        return None
+    if not isinstance(value,str) or not re.fullmatch(r'[0-9]{1,20}',value.strip()):
+        raise FetchError('invalid_headers')
+    size = int(value)
+    if size > maximum:
+        raise FetchError('response_too_large')
+    return size
 
 
 @dataclass(frozen=True)
@@ -80,13 +93,7 @@ class HTTPSReader:
                 return RawResponse(response.status, headers, b'')
             if headers.get('content-encoding', 'identity').lower() != 'identity':
                 raise FetchError('unsupported_encoding')
-            if 'content-length' in headers:
-                try:
-                    size = int(headers['content-length'])
-                except ValueError:
-                    raise FetchError('invalid_headers') from None
-                if size < 0 or size > policy.max_bytes:
-                    raise FetchError('response_too_large')
+            expected = declared_length(headers, policy.max_bytes)
             chunks, size = [], 0
             while True:
                 remaining = deadline - time.monotonic()
@@ -101,6 +108,8 @@ class HTTPSReader:
                 size += len(chunk)
                 if size > policy.max_bytes:
                     raise FetchError('response_too_large')
+            if expected is not None and size != expected:
+                raise FetchError('incomplete_response', retry_after=60)
             return RawResponse(response.status, headers, b''.join(chunks))
         finally:
             connection.close()
@@ -182,6 +191,9 @@ class Fetcher:
                 raise FetchError('empty_response')
             if len(response.body) > self.policy.max_bytes:
                 raise FetchError('response_too_large')
+            expected = declared_length(headers, self.policy.max_bytes)
+            if expected is not None and len(response.body) != expected:
+                raise FetchError('incomplete_response', retry_after=60)
             metadata = Message()
             metadata['content-type'] = headers['content-type']
             return FetchResult(target, response.body, content_type, hashlib.sha256(response.body).hexdigest(), datetime.now(timezone.utc), metadata.get_content_charset())

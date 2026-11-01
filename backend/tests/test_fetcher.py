@@ -136,3 +136,18 @@ def test_stream_reader_stops_at_size_limit(monkeypatch):
     with pytest.raises(FetchError, match='response_too_large'):
         HTTPSReader().read('https://lists.example.org', '93.184.216.34', POLICY)
     connection.close.assert_called_once()
+
+
+def test_truncated_declared_body_never_becomes_a_fetch_result(monkeypatch):
+    connection=Mock()
+    response=connection.getresponse.return_value
+    response.status=200
+    response.getheaders.return_value=[('content-type','text/html'),('content-length','20')]
+    response.read.side_effect=[b'partial',b'']
+    monkeypatch.setattr('app.sources.fetcher.PinnedHTTPSConnection',lambda *args:connection)
+    with pytest.raises(FetchError,match='incomplete_response'):
+        HTTPSReader().read('https://lists.example.org','93.184.216.34',POLICY)
+    connection.close.assert_called_once()
+    with pytest.raises(FetchError,match='incomplete_response'):
+        fetcher(Reader(RawResponse(200,{'content-type':'text/html','content-length':'20'},b'partial'))).fetch('https://lists.example.org')
+    assert fetcher(Reader(RawResponse(200,{'content-type':'text/html','content-length':'7'},b'partial'))).fetch('https://lists.example.org').body==b'partial'

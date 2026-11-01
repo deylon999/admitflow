@@ -1615,7 +1615,7 @@
 
 ### T129. Reject truncated HTTP source responses
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T028.
 
@@ -1633,7 +1633,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S087: Both HTTPS stream reader and injected reader contract reject declared-length mismatch with retryable incomplete_response; complete bodies remain valid. Fetcher/worker45 passed. No real source attestation implied.
 
 ### T130. Reject ambiguous HTTP headers and malformed redirects
 

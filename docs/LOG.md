@@ -515,3 +515,7 @@ Import preview enforces the server UTC year2000 floor and inclusive5minute futur
 ## S086 - 2026-11-01 - B06 10/20 (T128)
 
 Same-time opaque IDs compare Unicode code points like Python, not UTF16 code units. Text length counts code points, accepting valid100-character supplementary IDs from the server. Unicode ordering/export regression and all71 frontend tests passed.
+
+## S087 - 2026-11-01 - B06 11/20 (T129)
+
+Both HTTPS stream reader and injected reader contract reject declared-length mismatch with retryable incomplete_response; complete bodies remain valid. Fetcher/worker45 passed. No real source attestation implied.
