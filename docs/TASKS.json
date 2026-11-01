@@ -2413,7 +2413,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T079"
       ],
@@ -2428,7 +2428,12 @@
         "Архив всегда помечен; ошибка не маскирует старый снимок",
         "Disabled/unknown/stale не выдаются за fresh"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S033 / B02 8/10: Public bounded status separates season/dataKind and checked/success/fetched/source timestamps; no rows, raw or hashes. Archive/disabled/errors/unknown/unsupported never fresh; successful live content checks expire by policy. Late old errors do not replace newer success. pytest status+publication: 6 passed, final status subset 3 passed / exit 0. Production registry still empty and assessmentAvailable always false."
+        }
+      ],
       "blockedReason": null
     },
     {

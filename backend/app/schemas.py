@@ -76,3 +76,22 @@ class DataExport(CamelModel):
 class HistoryPage(CamelModel):
     items: list[SnapshotRead]
     next_cursor: str | None
+
+
+class SourceStatus(CamelModel):
+    source_id: str
+    group_id: str
+    season: int
+    state: Literal['fresh','stale','source_error','quarantined','archived','unknown','disabled','unsupported']
+    data_kind: Literal['live','archive']
+    enabled: bool
+    adapter_available: bool
+    assessment_available: Literal[False]
+    source_url: str | None
+    adapter_version: str | None
+    published_snapshot_id: str | None
+    last_checked_at: datetime | None
+    last_successful_check_at: datetime | None
+    fetched_at: datetime | None
+    source_updated_at: datetime | None
+    freshness_seconds: int

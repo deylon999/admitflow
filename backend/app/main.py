@@ -16,7 +16,8 @@ from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, DataExport, HistoryPage
+from .schemas import CatalogRead, DataExport, HistoryPage, SourceStatus
+from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import upgrade_schema
 
@@ -142,6 +143,13 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/v1/universities', response_model=CatalogRead)
     def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
         return search_universities(db, q)
+
+    @app.get('/api/v1/sources/{source_id}/status', response_model=SourceStatus)
+    def get_source_status(source_id: str, db: Session = Depends(database)):
+        result = source_status(db,source_id)
+        if result is None:
+            raise HTTPException(404,'Источник не найден.')
+        return result
 
     @app.get('/api/v1/export', response_model=DataExport)
     def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
