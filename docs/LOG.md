@@ -519,3 +519,7 @@ Same-time opaque IDs compare Unicode code points like Python, not UTF16 code uni
 ## S087 - 2026-11-01 - B06 11/20 (T129)
 
 Both HTTPS stream reader and injected reader contract reject declared-length mismatch with retryable incomplete_response; complete bodies remain valid. Fetcher/worker45 passed. No real source attestation implied.
+
+## S088 - 2026-11-01 - B06 12/20 (T130)
+
+Fetch reader rejects duplicate critical headers and conflicting transfer framing; malformed/control-character redirects become safe bounded errors. Fetcher42 passed, including no body read on ambiguity. Conservative framing policy follows RFC9112 section6.3.

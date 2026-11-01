@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 76 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 77 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -89,7 +89,7 @@
 - [x] T100 Ограничить весь обмен результата дочернего fetch-процесса
 - [x] T102 Показывать исчерпанные и истёкшие задания в диагностике источника
 - [x] T129 Reject truncated HTTP source responses
-- [ ] T130 Reject ambiguous HTTP headers and malformed redirects
+- [x] T130 Reject ambiguous HTTP headers and malformed redirects
 - [ ] T131 Validate immutable fetch policies strictly
 - [ ] T132 Preserve fetch outcome when spool cleanup fails
 - [ ] T133 Validate adapter declarations before registry use

@@ -3919,7 +3919,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T028"
       ],
@@ -3933,7 +3933,12 @@
       "acceptance": [
         "Critical duplicate headers fail safely; invalid redirect syntax becomes a bounded FetchError."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S088: Fetch reader rejects duplicate critical headers and conflicting transfer framing; malformed/control-character redirects become safe bounded errors. Fetcher42 passed, including no body read on ambiguity. Conservative framing policy follows RFC9112 section6.3."
+        }
+      ],
       "blockedReason": null
     },
     {

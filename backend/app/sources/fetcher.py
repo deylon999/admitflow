@@ -32,6 +32,20 @@ def declared_length(headers, maximum):
     return size
 
 
+def response_headers(items):
+    result = {}
+    unique = {'content-length','content-type','content-encoding','transfer-encoding','location','retry-after'}
+    for key, value in items:
+        name = key.lower()
+        if name in unique and (name in result or any(ord(char) < 32 and char != '\t' or ord(char) == 127 for char in value)):
+            raise FetchError('invalid_headers')
+        result[name] = value
+    if 'transfer-encoding' in result:
+        if 'content-length' in result or result['transfer-encoding'].strip().lower() != 'chunked':
+            raise FetchError('invalid_headers')
+    return result
+
+
 @dataclass(frozen=True)
 class FetchPolicy:
     domains: frozenset[str]
@@ -88,7 +102,7 @@ class HTTPSReader:
             path = urlunsplit(('', '', parsed.path or '/', parsed.query, ''))
             connection.request('GET', path, headers={'User-Agent': 'AdmitFlow/0.2', 'Accept-Encoding': 'identity'})
             response = connection.getresponse()
-            headers = {key.lower(): value for key, value in response.getheaders()}
+            headers = response_headers(response.getheaders())
             if response.status != 200:
                 return RawResponse(response.status, headers, b'')
             if headers.get('content-encoding', 'identity').lower() != 'identity':
@@ -165,14 +179,19 @@ class Fetcher:
                 raise FetchError('tls_error', retry_after=300) from None
             except (OSError, http.client.HTTPException):
                 raise FetchError('network_error', retry_after=60) from None
-            headers = {key.lower(): value for key, value in response.headers.items()}
+            headers = response_headers(response.headers.items())
             if response.status in (301, 302, 303, 307, 308):
                 if hop >= self.policy.max_redirects:
                     raise FetchError('too_many_redirects')
                 location = headers.get('location')
                 if not location:
                     raise FetchError('invalid_redirect')
-                url = urljoin(target, location)
+                try:
+                    if len(location)>4096 or any(ord(char)<32 or ord(char)==127 for char in location):
+                        raise ValueError()
+                    url = urljoin(target, location)
+                except ValueError:
+                    raise FetchError('invalid_redirect') from None
                 continue
             if response.status in (401, 403):
                 raise FetchError('access_denied')

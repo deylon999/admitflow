@@ -1637,7 +1637,7 @@
 
 ### T130. Reject ambiguous HTTP headers and malformed redirects
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T028.
 
@@ -1655,7 +1655,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S088: Fetch reader rejects duplicate critical headers and conflicting transfer framing; malformed/control-character redirects become safe bounded errors. Fetcher42 passed, including no body read on ambiguity. Conservative framing policy follows RFC9112 section6.3.
 
 ### T131. Validate immutable fetch policies strictly
 

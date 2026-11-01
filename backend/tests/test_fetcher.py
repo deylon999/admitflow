@@ -151,3 +151,28 @@ def test_truncated_declared_body_never_becomes_a_fetch_result(monkeypatch):
     with pytest.raises(FetchError,match='incomplete_response'):
         fetcher(Reader(RawResponse(200,{'content-type':'text/html','content-length':'20'},b'partial'))).fetch('https://lists.example.org')
     assert fetcher(Reader(RawResponse(200,{'content-type':'text/html','content-length':'7'},b'partial'))).fetch('https://lists.example.org').body==b'partial'
+
+
+@pytest.mark.parametrize('headers',[
+    [('Content-Length','1'),('content-length','2')],
+    [('content-length','1'),('transfer-encoding','chunked')],
+    [('content-type','text/html'),('Content-Type','application/json')],
+])
+def test_ambiguous_headers_fail_before_body_read(monkeypatch,headers):
+    connection=Mock()
+    response=connection.getresponse.return_value
+    response.status=200
+    response.getheaders.return_value=headers
+    monkeypatch.setattr('app.sources.fetcher.PinnedHTTPSConnection',lambda *args:connection)
+    with pytest.raises(FetchError,match='invalid_headers'):
+        HTTPSReader().read('https://lists.example.org','93.184.216.34',POLICY)
+    response.read.assert_not_called()
+    connection.close.assert_called_once()
+
+
+@pytest.mark.parametrize('location',['https://[broken','https://lists.example.org/\nprivate'])
+def test_bad_redirect_is_a_safe_fetch_error(location):
+    reader=Reader(RawResponse(302,{'location':location},b''))
+    with pytest.raises(FetchError,match='invalid_redirect|invalid_headers'):
+        fetcher(reader).fetch('https://lists.example.org')
+    assert len(reader.calls)==1
