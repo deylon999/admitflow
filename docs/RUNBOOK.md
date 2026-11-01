@@ -111,6 +111,10 @@ API очищает просроченные сессии раз в час. Ло�
 
 ## Инциденты
 
+### Локальная резервная копия SQLite
+
+После настройки DATABASE_URL и RAW_STORE_PATH из backend: `.venv/Scripts/python.exe -m app.backup create --output ./var/backups`. Команда использует SQLite online backup и под общей raw-блокировкой копирует только исходные файлы, на которые ссылается сохранённая БД, включая старые снимки. Manifest содержит SHA-256 БД и список raw; незавершённая копия не появляется под именем backup-*. Timeout/отсутствующий raw не выдаются за успешную копию. Каталог приватный и исключён из Git; он содержит всю ручную историю и ownership hashes, не публиковать. Это локальная SQLite-процедура; PostgreSQL backup/restore, внешний носитель, расписание и измеренные RPO/RTO ещё не проверены.
+
 HTTP-диагностика: /api/live проверяет процесс без БД; /api/ready и совместимый /api/health проверяют SELECT 1, при недоступной БД — 503. Ответы содержат новый X-Request-ID, клиентский ID не отражается. Журнал admitflow.http пишет JSON: requestId, method, шаблон route (без подставленных ID/query), status, durationMs. Тело, cookie, IP, заголовки и текст исключения не пишутся. Uvicorn запускать с --no-access-log, чтобы стандартный журнал не дублировал сырой URL; Docker/CI-команды обновлены. Неожиданная ошибка JSON endpoint получает общий 500 с requestId; streaming endpoints не используются.
 
 Для production обязательны точные ALLOWED_HOSTS (например admitflow.example) и PUBLIC_ORIGIN (например https://admitflow.example). Wildcard, лишний путь, иной host и HTTP origin не принимаются. Это дополняет PostgreSQL/SECURE_COOKIE; домен здесь только пример, реальная площадка не выбрана. Nginx передаёт Host, публичный Origin сравнивается с явной настройкой и не определяется из недоверенного X-Forwarded-Host.
