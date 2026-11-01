@@ -4758,7 +4758,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T157"
       ],
@@ -4772,7 +4772,12 @@
       "acceptance": [
         "Changed fields persist locally without POST; operation key is stored before sending; storage failure leaves form functional."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S118: Playwright draft-recovery/draft3 passed and production build exit0. Changed fields persist locally without server writes; route interceptor proves retry key exists in storage before POST dispatch. Failed request retains form and key. Extracted DirectionForm component to keep tracker readable; no autosave POST or false server-success message."
+        }
+      ],
       "blockedReason": null
     },
     {

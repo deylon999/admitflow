@@ -1,20 +1,15 @@
+import { DirectionForm } from '../components/DirectionForm';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useBlocker } from 'react-router';
 import { useInfiniteQuery, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CalculationInputs } from '../components/Calculator';
-import { UniversityPicker } from '../components/UniversityPicker';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
 import { HistoryComparison } from '../components/HistoryComparison';
 import { WatchComparison } from '../components/WatchComparison';
 import { ImportData } from '../components/ImportData';
 import { CoverageSummary } from '../components/CoverageSummary';
 import { downloadExport } from '../lib/download';
-import { calculatePlace } from '../lib/calculator';
-import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
 import { assertSnapshotOrder } from '../lib/contracts';
-import { draftSignature, validateDirection } from '../lib/direction';
 import { sessionAccessKey } from '../lib/query-client';
 import type { SessionAccess } from '../lib/query-client';
 import { selectWatches } from '../lib/watch-list';
@@ -22,99 +17,11 @@ import type { WatchOrder } from '../lib/watch-list';
 import { ManualReport } from '../components/ManualReport';
 import { DeleteConfirmation } from '../components/DeleteConfirmation';
 
-const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 const exactDateFormat = new Intl.DateTimeFormat('ru-RU', { dateStyle: 'short', timeStyle: 'medium' });
 function date(value: string) { return dateFormat.format(new Date(value)); }
 function exactDate(value: string) { return `${exactDateFormat.format(new Date(value))} (${value})`; }
 function errorText(error: unknown) { return error instanceof Error ? error.message : 'Не удалось выполнить действие.'; }
-
-function DirectionForm({ watch, focusRequest, disabled, onDone, onCancel, onDirtyChange }: { watch?: Watch; focusRequest: number; disabled: boolean; onDone: () => void; onCancel: () => void; onDirtyChange: (dirty: boolean) => void }) {
-  const heading = useRef<HTMLHeadingElement>(null);
-  useEffect(() => { heading.current?.focus(); }, [focusRequest]);
-  const [values, setValues] = useState<CalculationForm>(watch?.latest.values ?? emptyValues);
-  const [university, setUniversity] = useState(watch?.university ?? '');
-  const [title, setTitle] = useState(watch?.title ?? '');
-  const [sourceUrl, setSourceUrl] = useState(watch?.sourceUrl ?? '');
-  const [submitted, setSubmitted] = useState(false);
-  const currentDraft = draftSignature({ university, title, sourceUrl, values });
-  const initialDraft = useRef(currentDraft);
-  const dirty = currentDraft !== initialDraft.current;
-  useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
-  const intent = useRef<{ fingerprint: string; key: string } | null>(null);
-  const result = calculatePlace(values);
-  const validation = validateDirection({ university, title, sourceUrl, values }, Boolean(watch));
-  const error = validation.calculation;
-  const metadata = submitted ? validation.metadata : {};
-  const queryClient = useQueryClient();
-  const save = useMutation({
-    mutationFn: async () => {
-      const numeric = Object.fromEntries(Object.entries(values).map(([key, value]) => [key, Number(value)])) as CalculationValues;
-      const body = { university: university.trim(), title: title.trim(), sourceUrl: sourceUrl.trim(), values: numeric };
-      const fingerprint = JSON.stringify({ watchId: watch?.id, ...body });
-      if (intent.current?.fingerprint !== fingerprint) intent.current = { fingerprint, key: crypto.randomUUID() };
-      if (watch) await api.update(watch.id, numeric, intent.current.key);
-      else await api.create(body, intent.current.key);
-    },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['watches'] });
-      await queryClient.invalidateQueries({ queryKey: ['history'] });
-      onDone();
-    },
-  });
-  const blocker = useBlocker(({ currentLocation, nextLocation }) => (dirty || save.isPending)
-    && (currentLocation.pathname !== nextLocation.pathname || currentLocation.search !== nextLocation.search));
-  useEffect(() => {
-    if (blocker.state !== 'blocked') return;
-    if (save.isPending) blocker.reset();
-    else if (window.confirm('Покинуть форму с несохранёнными изменениями?')) blocker.proceed();
-    else blocker.reset();
-  }, [blocker, save.isPending]);
-  useEffect(() => {
-    if (!dirty && !save.isPending) return;
-    let acceptedLink = false;
-    const beforeUnload = (event: BeforeUnloadEvent) => { if (save.isPending || !acceptedLink) { event.preventDefault(); event.returnValue = ''; } };
-    const guardLink = (event: MouseEvent) => {
-      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-      if (!link || link.target === '_blank' || link.hasAttribute('download') || link.hasAttribute('data-router-link') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      const target = new URL(link.href, location.href);
-      if (target.origin === location.origin && target.pathname === location.pathname && target.search === location.search) return;
-      if (save.isPending) { event.preventDefault(); event.stopPropagation(); return; }
-      if (!window.confirm('Удалить несохранённые изменения формы и перейти?')) { event.preventDefault(); event.stopPropagation(); }
-      else acceptedLink = true;
-    };
-    window.addEventListener('beforeunload', beforeUnload);
-    document.addEventListener('click', guardLink, true);
-    return () => { window.removeEventListener('beforeunload', beforeUnload); document.removeEventListener('click', guardLink, true); };
-  }, [dirty, currentDraft, save.isPending]);
-  return <form className="direction-form surface" noValidate aria-labelledby="direction-form-heading" onKeyDown={event => {
-    if (event.key === 'Escape' && !event.defaultPrevented && !save.isPending) { event.preventDefault(); onCancel(); }
-  }} onSubmit={event => {
-    event.preventDefault();
-    setSubmitted(true);
-    if (save.isPending || disabled) return;
-    if (validation.firstInvalidId) document.getElementById(validation.firstInvalidId)?.focus();
-    else save.mutate();
-  }}>
-    <div className="tracker-form-heading"><h2 id="direction-form-heading" ref={heading} tabIndex={-1}>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
-    <fieldset className="direction-fields" disabled={save.isPending || disabled}><legend className="visually-hidden">Данные направления</legend>
-    {watch ? <p className="small-copy">{watch.university} · {watch.title}</p> : <>
-      <UniversityPicker value={university} onChange={setUniversity} error={metadata.university} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
-      <div className="field"><label htmlFor="direction-title">Направление и конкурсная группа</label><input id="direction-title" value={title} required aria-invalid={Boolean(metadata.title) || undefined} aria-describedby={metadata.title ? 'direction-title-error' : undefined} onChange={event => setTitle(event.target.value)} placeholder="Например: информатика, общий конкурс" />{metadata.title && <p id="direction-title-error" className="form-error" role="alert">{metadata.title}</p>}</div>
-      <div className="field"><label htmlFor="source-url">Ссылка на конкурсный список</label><input id="source-url" type="url" value={sourceUrl} maxLength={2048} required aria-invalid={Boolean(metadata.sourceUrl) || undefined} aria-describedby={metadata.sourceUrl ? 'source-url-error' : undefined} onChange={event => setSourceUrl(event.target.value)} placeholder="https://…" />{metadata.sourceUrl && <p id="source-url-error" className="form-error" role="alert">{metadata.sourceUrl}</p>}</div>
-    </>}
-    <div className="tracker-number-fields"><CalculationInputs values={values} onChange={setValues} error={submitted ? error : undefined} prefix="tracker-" /></div>
-    </fieldset>
-    <p className="form-note">Берите данные одной конкурсной группы. Каждый человек выше вас учитывается только в одной из двух вычитаемых групп.</p>
-    {!('error' in result) && <div className="tracker-preview"><span>Место по введённым данным</span><strong>{result.place} <small>из {result.seats}</small></strong></div>}
-    {submitted && error && <p className="form-error" id="tracker-calculation-error" role="alert">{error.error}</p>}
-    {save.isError && <p className="form-error" role="alert">{errorText(save.error)}</p>}
-    {save.isPending && <p role="status">Дождитесь результата сохранения перед переходом на другую страницу.</p>}
-    {disabled && !save.isPending && <p role="status">Дождитесь завершения текущей операции. Поля формы сохранены.</p>}
-    <button className="button button-primary" type="submit" disabled={save.isPending || disabled}>{save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}</button>
-    <p className="form-note">Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.</p>
-  </form>;
-}
 
 function DirectionCard({ watch, onEdit, disabled, beforeDelete, onRemoved }: { watch: Watch; onEdit: (button: HTMLButtonElement) => void; disabled: boolean; beforeDelete: () => boolean; onRemoved: () => void }) {
   const deleteButton = useRef<HTMLButtonElement>(null);
@@ -246,7 +153,7 @@ export default function TrackerPage() {
     </section>}
     <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError && !watches.data ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} beforeDelete={() => form === null || form === 'new' || form.id !== watch.id || canDiscard()} onRemoved={() => { if (form && form !== 'new' && form.id === watch.id) closeForm(true); setNotice('Направление удалено.'); requestAnimationFrame(() => addButton.current?.focus()); }} />)}
-    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm sessionInfo={sessionInfo.data} disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     {!expired && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
     {!expired && <ManualReport watches={visible} generatedAt={reportDate} />}
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>

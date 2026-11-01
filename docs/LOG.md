@@ -654,3 +654,7 @@ Backend draft_scope/timestamp_bounds/sessions10 passed; frontend draft-scope/ses
 ## S117 - 2026-11-01 - B08 4/10 (T157)
 
 npm test -- tests/draft-store.test.ts4 passed; production build exit0. One versioned16KiB sessionStorage record validates Unicode lengths, incomplete values, retry UUID/fingerprint, owner scope,30-minute TTL/session deadline; corrupt/foreign/expired records removed. Quota/access failures return unavailable without throwing.
+
+## S118 - 2026-11-01 - B08 5/10 (T158)
+
+Playwright draft-recovery/draft3 passed and production build exit0. Changed fields persist locally without server writes; route interceptor proves retry key exists in storage before POST dispatch. Failed request retains form and key. Extracted DirectionForm component to keep tracker readable; no autosave POST or false server-success message.

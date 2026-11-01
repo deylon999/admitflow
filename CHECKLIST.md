@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 104 из 163 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 105 из 163 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -141,7 +141,7 @@
 - [x] T155 Protect unsaved forms on browser back and forward
 - [x] T156 Expose an isolated guest draft namespace
 - [x] T157 Validate bounded session-local draft storage
-- [ ] T158 Save form drafts and retry keys locally
+- [x] T158 Save form drafts and retry keys locally
 - [ ] T159 Offer explicit draft restore and discard
 - [ ] T160 Refuse stale draft updates without losing retry safety
 - [ ] T161 Clear local drafts when access or saved data changes
