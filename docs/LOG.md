@@ -368,3 +368,17 @@ Removed poll-then-blocking-recv exchange: parent now waits for child exit within
 ## S056 — 2026-11-01 — B04 9/10 (T101)
 
 Restore reserves destination with exclusive mkdir and installs verified files without overwrite; concurrent attempts yield exactly one success. Failed finalization leaves restore.pending and verify/migration/API reject it. Initial test edit misplaced an existing schema assertion; corrected placement. Final restore/backup/migration pytest: 18 passed, 1 real PostgreSQL skipped. Hard-link filesystem requirement and partial-folder recovery documented.
+
+## S057 — 2026-11-01 — B04 10/10 (T102)
+
+Read-only diagnostics now expose bounded workerState and treat expired/final-failed jobs as source_error without overwriting source fields or published snapshots. Live/archive tests cover lease boundary, exhaustion, recovery and fresh coverage. Targeted status/queue/coverage/worker: 19 passed. Final full backend: 196 passed / 1 PostgreSQL skipped; frontend67 and production build passed; all32 Chromium E2E passed on explicitly restarted current API8003 (session98287/PID19396, isolated batch04.db). No real adapters or release gates unlocked.
+
+Final verification commands (2026-11-01, current checkout):
+- backend: `.venv/Scripts/python.exe -m pytest -q` → 196 passed, 1 PostgreSQL skipped, exit0; existing dependency warning only.
+- frontend: `npm test` → 67 passed; `npm run build` → exit0.
+- frontend with E2E_API=1/E2E_BASE_URL=http://127.0.0.1:5183: `npm run test:e2e -- --reporter=line` → 32 Chromium passed, exit0, current restarted API session98287/PID19396, isolated batch04.db.
+- `python scripts/roadmap.py --render --check --self-test` and `git diff --check` → results below/checkpoint commit; TASKS.md and CHECKLIST.md generated, not hand-edited.
+- Files: backend/app/sources/status.py, backend/app/schemas.py, backend/tests/test_source_status.py, docs/DATA_RULES.md, docs/api-contract.md, docs/RUNBOOK.md, docs/STATE.*, docs/PROGRESS.md, docs/evidence/preview-{desktop,mobile}.png.
+
+Screenshots refreshed at 1440 and390: bounded manual captions, synthetic cards, coverage2/0/0, form field error/focus, no horizontal overflow. First screenshot helper used a value still valid for the newest card and timed out awaiting an error; corrected helper to a provably invalid sum. Final captures show unchanged saved card values and an unsent invalid update. Both successful demo sessions deleted through API (204); the first helper's two demo watches/session removed using an exact fixture pair only in isolated batch04.db. No user DB or source record changed. Screenshot files visually inspected; fonts/Figma acceptance remains open. B04 completed10/10,50/102done, estimate40% unchanged, D1/30. No remote push or CI result claimed.
+Final checkpoint checks: roadmap render/check passed (102 tasks, 7 gates); self-test rejected all6 invalid states; git diff --check exit0. No active task; nextTask=null until concrete external inputs or a verified independent defect.

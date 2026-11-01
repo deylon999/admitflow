@@ -104,6 +104,7 @@ class SourceStatus(CamelModel):
     season: int
     state: Literal['fresh','stale','source_error','quarantined','archived','unknown','disabled','unsupported']
     data_kind: Literal['live','archive']
+    worker_state: Literal['unknown','queued','running','idle','failed','expired']
     enabled: bool
     adapter_available: bool
     assessment_available: Literal[False]
