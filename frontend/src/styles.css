@@ -46,6 +46,8 @@ button, a, input, summary { -webkit-tap-highlight-color: transparent; }
 button, summary { cursor: pointer; }
 button { color: inherit; }
 :focus-visible { outline: 3px solid var(--primary); outline-offset: 5px; }
+.skip-link { position: fixed; top: -160px; left: 16px; z-index: 100; padding: 12px 20px; background: var(--bg); color: var(--primary); border: 1px solid var(--primary); border-radius: 8px; }
+.skip-link:focus { top: 12px; }
 ::selection { background: var(--tag-bg); color: var(--primary); }
 h1, h2, h3, p, figure, blockquote, dl, dd { margin: 0; }
 .container { width: min(1280px, calc(100% - 160px)); margin-inline: auto; }

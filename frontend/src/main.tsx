@@ -16,9 +16,19 @@ const queryClient = createQueryClient();
 function PagePosition() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    document.title = pathname === '/tracker' ? 'Мои направления — Абитуриент' : 'Абитуриент — ручные сценарии поступления';
-    if (hash) requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView());
-    else window.scrollTo(0, 0);
+    document.title = pathname === '/tracker' ? 'Мои направления — Абитуриент' : pathname === '/' ? 'Абитуриент — ручные сценарии поступления' : 'Страница не найдена — Абитуриент';
+    const observer = new MutationObserver(position);
+    function position() {
+      const target = hash ? document.getElementById(hash.slice(1)) : document.querySelector<HTMLElement>('main h1');
+      if (!target) return false;
+      target.tabIndex = -1;
+      target.focus({ preventScroll: true });
+      if (hash) target.scrollIntoView(); else window.scrollTo(0, 0);
+      observer.disconnect();
+      return true;
+    }
+    if (!position()) observer.observe(document.getElementById('root')!, { childList: true, subtree: true });
+    return () => observer.disconnect();
   }, [pathname, hash]);
   return null;
 }
@@ -33,6 +43,6 @@ function App() {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
-  return <><PagePosition /><Header /><Suspense fallback={<main className="container tracker-page"><p role="status">Загружаем страницу…</p></main>}><Routes><Route path="/" element={<LandingPage />} /><Route path="/tracker" element={<TrackerPage />} /><Route path="*" element={<main className="container tracker-page"><h1>Страница не найдена</h1><Link className="button button-primary" to="/">На главную</Link></main>} /></Routes></Suspense><Footer /></>;
+  return <><PagePosition /><a className="skip-link" href="#top" onClick={() => { const main = document.querySelector('main'); if (main) { main.tabIndex = -1; main.focus(); } }}>Перейти к содержимому</a><Header /><Suspense fallback={<main id="top" className="container tracker-page"><p role="status">Загружаем страницу…</p></main>}><Routes><Route path="/" element={<LandingPage />} /><Route path="/tracker" element={<TrackerPage />} /><Route path="*" element={<main id="top" className="container tracker-page"><h1>Страница не найдена</h1><Link className="button button-primary" to="/">На главную</Link></main>} /></Routes></Suspense><Footer /></>;
 }
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><BrowserRouter><App /></BrowserRouter></QueryClientProvider></React.StrictMode>);

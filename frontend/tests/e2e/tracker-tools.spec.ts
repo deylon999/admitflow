@@ -115,3 +115,15 @@ test('срок доступа берётся с сервера и не прод�
   await expect(page.locator('.session-deadline time')).toHaveAttribute('datetime', '2026-12-01T00:00:00Z');
   expect(starts).toBe(1);
 });
+
+test('переход по сайту и пропуск навигации управляют фокусом', async ({ page }) => {
+  await page.goto('/missing-page');
+  await expect(page.getByRole('heading', { name: 'Страница не найдена' })).toBeFocused();
+  await expect(page).toHaveTitle('Страница не найдена — Абитуриент');
+  await page.getByRole('link', { name: 'На главную', exact: true }).click();
+  await expect(page.locator('main h1').first()).toBeFocused();
+  const skip = page.getByRole('link', { name: 'Перейти к содержимому' });
+  await skip.focus();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('main')).toBeFocused();
+});

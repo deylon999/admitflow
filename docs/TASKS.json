@@ -3445,7 +3445,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T072"
       ],
@@ -3459,7 +3459,12 @@
       "acceptance": [
         "Skip link reaches main; client navigation and missing routes focus the correct heading."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S071: Skip navigation focuses main; route/hash changes focus destination including lazy headings, and404 has a correct title. Build and Chromium route/skip keyboard check passed; no full screen-reader/browser matrix claimed."
+        }
+      ],
       "blockedReason": null
     },
     {

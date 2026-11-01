@@ -444,3 +444,7 @@ Displays server-provided absolute guest expiry and original ISO value without sl
 ## S070 - 2026-11-01 - B05 10/15 (T113)
 
 Cross-tab reset hides private cards/drafts, cancels private reads and requires explicit readonly synchronization. Listener lives across routes; cached API session forgotten; no automatic session POST in receiving tab. Build and5 real-API session/tab checks passed. Existing delete401 test now accepts the intentional draft-discard prompt.
+
+## S071 - 2026-11-01 - B05 11/15 (T114)
+
+Skip navigation focuses main; route/hash changes focus destination including lazy headings, and404 has a correct title. Build and Chromium route/skip keyboard check passed; no full screen-reader/browser matrix claimed.
