@@ -71,3 +71,17 @@ test('удаление редактируемого направления тр�
   await expect(page.locator('.direction-form')).toHaveCount(0);
   expect(deleted).toBe(1);
 });
+
+test('подтверждение удаления получает фокус и закрывается Escape', async ({ page }) => {
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.goto('/tracker');
+  const trigger = page.getByRole('button', { name: 'Удалить', exact: true });
+  await trigger.click();
+  await expect(page.getByRole('button', { name: 'Отмена', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(trigger).toBeFocused();
+  await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
+  await expect(page.getByRole('button', { name: 'Отмена', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Удалить все мои данные' })).toBeFocused();
+});

@@ -428,3 +428,7 @@ Printable filtered manual report includes saved inputs, both places, original so
 ## S066 - 2026-11-01 - B05 6/15 (T109)
 
 Deleting an edited direction requires draft discard confirmation before HTTP. Decline retains values and sends no delete; success closes stale form, failure keeps it. Build and Chromium cancel/confirm test passed.
+
+## S067 - 2026-11-01 - B05 7/15 (T110)
+
+Inline confirmations focus the safe Cancel action, Escape cancels and restores trigger focus; delete controls disabled during writes, removal returns focus to Add. Build and2 Chromium deletion checks passed.

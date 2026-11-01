@@ -3333,7 +3333,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T072"
       ],
@@ -3347,7 +3347,12 @@
       "acceptance": [
         "Confirmation receives focus, Escape cancels, successful removal leaves a useful focused control."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S067: Inline confirmations focus the safe Cancel action, Escape cancels and restores trigger focus; delete controls disabled during writes, removal returns focus to Add. Build and2 Chromium deletion checks passed."
+        }
+      ],
       "blockedReason": null
     },
     {
