@@ -456,3 +456,7 @@ Named focusable history region and scoped column headers support keyboard horizo
 ## S073 - 2026-11-01 - B05 13/15 (T116)
 
 Explicit readonly refresh updates saved cards while preserving unsaved form values, disables duplicate reads and makes no new session POST. Chromium server-change/draft check passed; refresh is not a university fetch.
+
+## S074 - 2026-11-01 - B05 14/15 (T117)
+
+Import preview lists every bounded direction name, original timestamp, history count and source as safe text before POST. Chromium malicious-markup-as-text and cancel-with-zero-imports check passed.

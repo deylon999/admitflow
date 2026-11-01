@@ -3529,7 +3529,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T091"
       ],
@@ -3543,7 +3543,12 @@
       "acceptance": [
         "Preview lists all names/counts, uses safe text and cancellation performs no import."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S074: Import preview lists every bounded direction name, original timestamp, history count and source as safe text before POST. Chromium malicious-markup-as-text and cancel-with-zero-imports check passed."
+        }
+      ],
       "blockedReason": null
     },
     {

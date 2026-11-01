@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 63 из 118 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 64 из 118 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -106,7 +106,7 @@
 - [x] T114 Add skip navigation and focus route headings
 - [x] T115 Make history overflow usable from the keyboard
 - [x] T116 Refresh saved directions without losing a form draft
-- [ ] T117 Preview direction names before confirming file import
+- [x] T117 Preview direction names before confirming file import
 
 ## Качество и эксплуатация
 

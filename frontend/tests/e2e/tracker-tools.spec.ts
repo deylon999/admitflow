@@ -161,3 +161,19 @@ test('ручное обновление списка сохраняет ввод
   await expect(page.locator('#tracker-rank')).toHaveValue('125');
   expect(starts).toBe(before);
 });
+
+test('предпросмотр файла показывает названия безопасным текстом до импорта', async ({ page }) => {
+  let imports = 0;
+  page.on('request', request => { if (request.url().endsWith('/api/v1/import')) imports++; });
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  await page.goto('/tracker');
+  await page.getByText('Восстановить из JSON', { exact: true }).click();
+  const bundle = { formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, title: '<img src=x onerror=alert(1)>', history: [fixture.latest] }] };
+  await page.getByLabel('Файл выгрузки, до 8 МБ').setInputFiles({ name: 'bundle.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(bundle)) });
+  await expect(page.locator('.import-preview')).toContainText('<img src=x onerror=alert(1)>');
+  await expect(page.locator('.import-preview img')).toHaveCount(0);
+  await expect(page.locator('.import-preview')).toContainText(fixture.sourceUrl);
+  await page.getByRole('button', { name: 'Отменить импорт' }).click();
+  await expect(page.locator('.import-preview')).toHaveCount(0);
+  expect(imports).toBe(0);
+});

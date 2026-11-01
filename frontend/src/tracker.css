@@ -116,6 +116,9 @@ button:disabled { cursor: wait; opacity: .55; }
 .import-data summary { cursor: pointer; font-weight: 600; }
 .import-data p { margin: 16px 0; }
 .import-data input[type="file"] { max-width: 100%; }
+.import-preview { padding-left: 20px; font-size: 13px; line-height: 1.6; }
+.import-preview li { margin: 12px 0; overflow-wrap: anywhere; }
+.import-preview p { margin: 4px 0; color: var(--muted); }
 .coverage-summary { padding: 20px 24px; margin-bottom: 24px; }
 .coverage-summary h2 { font-size: 18px; line-height: 1.4; letter-spacing: 0; margin: 0 0 16px; }
 .coverage-numbers { display: flex; flex-wrap: wrap; gap: 20px 36px; margin: 0 0 16px; }

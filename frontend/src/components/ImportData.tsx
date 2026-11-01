@@ -52,6 +52,7 @@ export function ImportData({ count, disabled, onDone }: { count: number; disable
     {error && <p className="form-error" role="alert">{error}</p>}
     {prepared && <div>
       <p role="status">Найдено направлений: {added}; сохранений: {prepared.bundle.watches.reduce((total,watch) => total + watch.history.length,0)}.</p>
+      <ul className="import-preview" aria-label="Направления из выбранного файла">{prepared.bundle.watches.map(watch => <li key={watch.id}><strong>{watch.university} · {watch.title}</strong><p>Сохранений: {watch.history.length}. Последний ручной ввод: <time dateTime={watch.latest.capturedAt}>{watch.latest.capturedAt}</time>.</p><p>Источник: {watch.sourceUrl}</p></li>)}</ul>
       <p className="small-copy">Существующие записи сохранятся. Повтор этого же файла в той же сессии не создаёт новые копии и не восстанавливает удалённые записи.</p>
       {tooMany && <p className="small-copy" id="import-quota-note" role="status">Для новых направлений недостаточно места. Можно проверить повтор уже выполненного импорта: сервер не добавит записи сверх лимита 20.</p>}
       <div className="direction-actions"><button className="button button-primary" type="button" disabled={disabled || mutation.isPending} aria-describedby={tooMany ? 'import-quota-note' : undefined} onClick={() => { if (!mutation.isPending) mutation.mutate(); }}>{mutation.isPending ? 'Импортируем…' : tooMany ? 'Проверить повтор импорта' : 'Импортировать файл'}</button><button className="text-button" type="button" disabled={disabled} onClick={clear}>Отменить импорт</button></div>
