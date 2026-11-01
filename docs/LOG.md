@@ -432,3 +432,7 @@ Deleting an edited direction requires draft discard confirmation before HTTP. De
 ## S067 - 2026-11-01 - B05 7/15 (T110)
 
 Inline confirmations focus the safe Cancel action, Escape cancels and restores trigger focus; delete controls disabled during writes, removal returns focus to Add. Build and2 Chromium deletion checks passed.
+
+## S068 - 2026-11-01 - B05 8/15 (T111)
+
+Cached cards and dirty form survive a background read error with original dates and explicit retry; initial failure and401 remain separate. Watches refetch on return to tab. Initial test revealed global focus refetch was disabled; enabled only watches. Chromium error/retry check passed.

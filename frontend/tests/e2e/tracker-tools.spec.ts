@@ -85,3 +85,19 @@ test('подтверждение удаления получает фокус и
   await page.keyboard.press('Escape');
   await expect(page.getByRole('button', { name: 'Удалить все мои данные' })).toBeFocused();
 });
+
+test('фоновая ошибка сохраняет карточки и открытый черновик', async ({ page }) => {
+  let failed = false;
+  await page.route('**/api/v1/watches', route => route.fulfill(failed ? { status: 503, json: { detail: 'Временный отказ' } } : { json: [fixture] }));
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
+  await page.locator('#tracker-rank').fill('125');
+  failed = true;
+  await page.evaluate(() => window.dispatchEvent(new Event('visibilitychange')));
+  await expect(page.locator('.stale-warning')).toBeVisible();
+  await expect(page.locator('.direction-card')).toHaveCount(1);
+  await expect(page.locator('#tracker-rank')).toHaveValue('125');
+  failed = false;
+  await page.getByRole('button', { name: 'Повторить обновление' }).click();
+  await expect(page.locator('.stale-warning')).toHaveCount(0);
+});

@@ -3361,7 +3361,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T098"
       ],
@@ -3375,7 +3375,12 @@
       "acceptance": [
         "Cached data remains visible with an error/retry; initial error and 401 remain separate."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S068: Cached cards and dirty form survive a background read error with original dates and explicit retry; initial failure and401 remain separate. Watches refetch on return to tab. Initial test revealed global focus refetch was disabled; enabled only watches. Chromium error/retry check passed."
+        }
+      ],
       "blockedReason": null
     },
     {

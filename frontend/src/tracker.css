@@ -126,6 +126,7 @@ button:disabled { cursor: wait; opacity: .55; }
 select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; max-width: 100%; width: 100%; }
 .watch-filters > p { flex-basis: 100%; font-size: 13px; color: var(--muted); }
 .print-report { display: none; }
+.stale-warning { border: 1px solid var(--error); padding: 20px; margin: 16px 0; font-size: 14px; line-height: 1.6; }
 @media print {
   :root, :root[data-theme='dark'] { --bg: #fff; --text: #000; --muted: #333; }
   .header, .footer, .skip-link, .tracker-page > :not(.print-report) { display: none !important; }
