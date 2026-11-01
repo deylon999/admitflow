@@ -4,7 +4,7 @@ from alembic import context
 from alembic.autogenerate import compare_metadata
 from alembic.migration import MigrationContext
 import sqlalchemy as sa
-import re
+from app.migration_checks import checks_match
 
 revision = '0002'
 down_revision = '0001'
@@ -46,9 +46,7 @@ def upgrade():
         differences = compare_metadata(MigrationContext.configure(bind, opts={'include_object': include}), table.metadata)
         if any(not isinstance(change, tuple) or change[0] != 'add_index' for change in differences):
             raise RuntimeError('Existing operation_records differs from migration 0002')
-        expected = re.sub(r'\s+', '', str(next(item for item in table.constraints if isinstance(item, sa.CheckConstraint)).sqltext)).lower()
-        actual = {re.sub(r'\s+', '', item['sqltext']).lower() for item in inspector.get_check_constraints(table.name)}
-        if actual != {expected} or inspector.get_pk_constraint(table.name)['constrained_columns'] != ['owner_hash', 'key']:
+        if not checks_match(bind, table) or inspector.get_pk_constraint(table.name)['constrained_columns'] != ['owner_hash', 'key']:
             raise RuntimeError('Existing operation_records has incompatible constraints')
     else:
         table.create(bind)

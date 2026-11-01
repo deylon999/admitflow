@@ -1,9 +1,9 @@
 """Initial schema, frozen independently of future application models."""
-import re
 from alembic import context, op
 from alembic.autogenerate import compare_metadata
 from alembic.migration import MigrationContext
 import sqlalchemy as sa
+from app.migration_checks import checks_match
 
 revision = '0001'
 down_revision = None
@@ -194,16 +194,13 @@ def _validate_existing(bind, metadata):
         raise RuntimeError('Existing database differs from the initial schema. Back up and inspect it before migration.')
     inspector = sa.inspect(bind)
     existing = set(inspector.get_table_names())
-    normalise = lambda value: re.sub(r'\s+', '', value).lower()
     for table in metadata.tables.values():
         if table.name not in existing:
             continue
         expected_pk = [column.name for column in table.primary_key.columns]
         if inspector.get_pk_constraint(table.name)['constrained_columns'] != expected_pk:
             raise RuntimeError(f'Unexpected primary key in {table.name}')
-        actual_checks = {normalise(item['sqltext']) for item in inspector.get_check_constraints(table.name)}
-        expected_checks = {normalise(str(item.sqltext)) for item in table.constraints if isinstance(item, sa.CheckConstraint)}
-        if actual_checks != expected_checks:
+        if not checks_match(bind, table):
             raise RuntimeError(f'Unexpected check constraints in {table.name}')
 
 

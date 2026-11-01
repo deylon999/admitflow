@@ -247,6 +247,31 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S008: Compose config exit 0; build заблокирован доступом среды; запуск не подтверждён.
 
+### T103. Fix PostgreSQL legacy CHECK reflection during migration adoption
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T004, T015.
+
+**Результаты/файлы:** `backend/app/migration_checks.py`; `backend/alembic/versions/0001_initial.py`; `backend/alembic/versions/0002_operation_records.py`; `backend/tests/test_migrations.py`.
+
+**Шаги:**
+
+1. Compare PostgreSQL reflected checks with server-rendered frozen checks, preserving semantics.
+2. Cover legacy snapshots and operation_records adoption and refusal of incompatible constraints.
+3. Document non-destructive Docker restart and real runtime verification limits.
+
+**Критерии закрытия:**
+
+- Formatting differences do not require data deletion or blind stamping.
+- Changed expressions, string literals and NOT VALID constraints remain rejected.
+- Regression tests and explicit real PostgreSQL verification status are recorded.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S058: fix implemented; migration regressions14 passed/7 real PG skipped, full backend200 passed/7 skipped. Docker runtime blocked by Engine ACL; preserve existing volume, validate real PG before done.
+
 ## E1. Источники и правила
 
 Плановый интервал: D2–D7.

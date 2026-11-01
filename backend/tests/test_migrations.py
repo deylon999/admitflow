@@ -2,12 +2,14 @@ import importlib.util
 import io
 import os
 from pathlib import Path
+from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
 from sqlalchemy import CheckConstraint, inspect, text
 from sqlalchemy.engine import make_url
+from sqlalchemy.schema import CreateSchema, DropSchema
 
 from app.database import Base, make_engine
 
@@ -132,16 +134,98 @@ def test_downgrade_and_upgrade_on_disposable_database(migration_db):
     command.check(config())
 
 
-def test_changed_check_constraint_is_not_silently_adopted(migration_db):
+@pytest.mark.parametrize('table_name,constraint,expression',[
+    ('snapshots','rank_range','rank > 999999'),
+    ('snapshots','groups_above','excluded >= 0 AND (no_consent >= 0 OR excluded + no_consent < rank)'),
+    ('competition_groups','group_coverage',"coverage IN ('candidate', 'MANUAL', 'automatic', 'suspended')"),
+    ('competition_groups','group_coverage',"coverage IN ('candidate', 'man ual', 'automatic', 'suspended')"),
+])
+def test_changed_check_constraint_is_not_silently_adopted(migration_db,table_name,constraint,expression):
     schema = frozen_schema()
-    table = schema.tables['snapshots']
-    original = next(item for item in table.constraints if isinstance(item, CheckConstraint) and item.name == 'rank_range')
+    table = schema.tables[table_name]
+    original = next(item for item in table.constraints if isinstance(item, CheckConstraint) and item.name == constraint)
     table.constraints.remove(original)
-    table.append_constraint(CheckConstraint('rank > 999999', name='rank_range'))
-    for name in ('browser_sessions', 'watches', 'snapshots'):
-        schema.tables[name].create(migration_db)
+    table.append_constraint(CheckConstraint(expression, name=constraint))
+    schema.create_all(migration_db)
     with pytest.raises(RuntimeError, match='Unexpected check constraints'):
         command.upgrade(config(), 'head')
+
+
+def test_changed_operations_boolean_grouping_is_not_adopted(migration_db):
+    create_original_development_schema(migration_db)
+    with migration_db.begin() as db:
+        db.execute(text('DROP TABLE operation_records'))
+    spec=importlib.util.spec_from_file_location('operations_schema',BACKEND/'alembic/versions/0002_operation_records.py')
+    module=importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    table=module._table()
+    check=next(item for item in table.constraints if isinstance(item,CheckConstraint))
+    table.constraints.remove(check)
+    table.append_constraint(CheckConstraint('(response_status = 201 AND response IS NOT NULL OR response_status = 410) AND response IS NULL',name='operation_response_state'))
+    table.create(migration_db)
+    with pytest.raises(RuntimeError,match='incompatible constraints'):
+        command.upgrade(config(),'head')
+
+
+@pytest.fixture
+def postgres_legacy_db(monkeypatch):
+    if not os.getenv('TEST_DATABASE_URL'):
+        pytest.skip('Requires a disposable PostgreSQL test database')
+    url=make_url(os.environ['TEST_DATABASE_URL'])
+    if url.get_backend_name()!='postgresql' or not (url.database or '').startswith('admitflow_test'):
+        raise RuntimeError('TEST_DATABASE_URL must name a disposable PostgreSQL admitflow_test* database')
+    admin=make_engine(url.render_as_string(hide_password=False))
+    schema=f'admitflow_migration_{uuid4().hex}'
+    with admin.begin() as db:
+        db.execute(CreateSchema(schema))
+    scoped=url.update_query_dict({'options':f'-csearch_path={schema}'})
+    monkeypatch.setenv('DATABASE_URL',scoped.render_as_string(hide_password=False))
+    monkeypatch.setenv('ENVIRONMENT','development')
+    engine=make_engine(scoped.render_as_string(hide_password=False))
+    try:
+        yield engine
+    finally:
+        engine.dispose()
+        with admin.begin() as db:
+            db.execute(DropSchema(schema,cascade=True))
+        admin.dispose()
+
+
+@pytest.mark.parametrize('full_schema',[False,True],ids=['manual-snapshots','full-with-operations'])
+def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full_schema):
+    seed_legacy(postgres_legacy_db)
+    if full_schema:
+        create_original_development_schema(postgres_legacy_db)
+    command.upgrade(config(),'head')
+    command.upgrade(config(),'head')
+    command.check(config())
+    with postgres_legacy_db.connect() as db:
+        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0004'
+        assert db.scalar(text('SELECT title FROM watches'))=='Test direction'
+        assert db.execute(text('SELECT id, watch_id, rank - excluded - no_consent FROM snapshots')).one()==('snapshot-1','watch-1',74)
+        assert not db.scalar(text("SELECT count(*) FROM pg_class WHERE relname LIKE '_admitflow_check_%' AND relnamespace=pg_my_temp_schema()"))
+
+
+@pytest.mark.parametrize('case',['rank-operator','literal-case','not-valid','operations-logic'])
+def test_postgres_refuses_incompatible_legacy_checks(postgres_legacy_db,case):
+    seed_legacy(postgres_legacy_db)
+    create_original_development_schema(postgres_legacy_db)
+    changes={
+        'rank-operator':('snapshots','rank_range','rank > 1 AND rank <= 1000000',''),
+        'literal-case':('competition_groups','group_coverage',"coverage IN ('candidate', 'MANUAL', 'automatic', 'suspended')",''),
+        'not-valid':('snapshots','rank_range','rank >= 1 AND rank <= 1000000',' NOT VALID'),
+        'operations-logic':('operation_records','operation_response_state','(response_status = 201 AND response IS NOT NULL) AND (response_status = 410 AND response IS NULL)',''),
+    }
+    table,name,expression,suffix=changes[case]
+    with postgres_legacy_db.begin() as db:
+        # All identifiers/expressions are fixed test constants, never user input.
+        db.execute(text(f'ALTER TABLE {table} DROP CONSTRAINT {name}'))
+        db.execute(text(f'ALTER TABLE {table} ADD CONSTRAINT {name} CHECK ({expression}){suffix}'))
+    with pytest.raises(RuntimeError,match='Unexpected check constraints|incompatible constraints'):
+        command.upgrade(config(),'head')
+    with postgres_legacy_db.connect() as db:
+        assert db.scalar(text('SELECT count(*) FROM snapshots'))==1
+        assert db.scalar(text('SELECT count(*) FROM watches'))==1
 
 
 def test_postgres_offline_sql_compiles_without_a_server(monkeypatch):

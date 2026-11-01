@@ -41,6 +41,16 @@ docker compose ps           # состояние сервисов
 
 Если 8080 занят, задать `$env:WEB_PORT='8081'` перед запуском. При недоступном Docker Engine сначала дождаться готовности Docker Desktop. В текущей ограниченной среде `docker compose config --quiet` проходит, но сборка/запуск контейнеров пока не подтверждены из-за доступа к Engine и контексту сборки.
 
+При `Unexpected check constraints in snapshots` на старой БД первая миграция могла отвергать PostgreSQL-представление того же CHECK: сервер возвращает SQL после разбора со скобками/casts, а прежняя проверка сравнивала текст с исходником. Исправление T103 сравнивает обе стороны после обработки тем же сервером. Пустая временная таблица содержит только замороженные колонки/CHECK миграции, удаляется после проверки и имеет ON COMMIT DROP; пользовательские таблицы/строки не копируются и не меняются этой проверкой. Реальные отличия выражений, строковых литералов, NOT VALID/NO INHERIT по-прежнему отклоняются. Нужна обычная привилегия TEMP в БД; при её отсутствии проверка остановится, а не пропустит constraints. Причина формата описана в [PostgreSQL pg_get_constraintdef](https://www.postgresql.org/docs/17/functions-info.html).
+
+После получения исправленного кода из корня репозитория: `docker compose up --build -d`, затем `docker compose ps` и `docker compose logs --tail=80 backend`. Пересборка необходима: код API копируется в образ, bind mount исходников нет. Команда сохраняет существующий volume. Не сбрасывать БД и не выполнять stamp для обхода проверки. Если ошибка остаётся, посмотреть только определения ограничений, без пользовательских строк:
+
+```powershell
+docker compose exec -T db psql -U admitflow -d admitflow -c "SELECT conname, pg_get_constraintdef(oid) FROM pg_constraint WHERE conrelid = 'snapshots'::regclass AND contype = 'c';"
+```
+
+Локальные SQLite-регрессии и PG offline SQL не подтверждают исправность запуска PostgreSQL. T103 остаётся review до успешного upgrade существующей PG-схемы с сохранением IDs/истории и healthy backend; в TEST_DATABASE_URL включены отдельные реальные PG-регрессии в изолированных тестовых схемах.
+
 ### Без Docker
 
 T002/T003 выполнены: сборка и unit-тесты проходят. Frontend и backend запускаются из своих директорий.
