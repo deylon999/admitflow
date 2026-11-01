@@ -60,3 +60,27 @@ it('private body received after access changes is never returned as current data
   controller.close();
   expect(await old).toBeInstanceOf(SessionChangedError);
 });
+
+it('unauthorized responses cancel unread bodies', async () => {
+  setup();
+  const cancel = vi.fn();
+  const body = new ReadableStream<Uint8Array>({ cancel });
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValueOnce(Response.json(info)).mockResolvedValueOnce(new Response(body, { status: 401 })));
+  const { api, SessionExpiredError } = await import('../src/lib/api');
+  await expect(api.list()).rejects.toBeInstanceOf(SessionExpiredError);
+  expect(cancel).toHaveBeenCalledTimes(1);
+});
+
+it('stale response headers cancel their unread body', async () => {
+  setup();
+  let release!: (value: Response) => void;
+  const cancel = vi.fn();
+  vi.stubGlobal('fetch', vi.fn().mockReturnValueOnce(new Promise<Response>(resolve => { release = resolve; })));
+  const { api, SessionChangedError } = await import('../src/lib/api');
+  const result = api.session();
+  const failure = expect(result).rejects.toBeInstanceOf(SessionChangedError);
+  api.forgetSession();
+  release(new Response(new ReadableStream<Uint8Array>({ cancel })));
+  await failure;
+  expect(cancel).toHaveBeenCalledTimes(1);
+});

@@ -2532,7 +2532,7 @@
 
 ### T146. Release response bodies discarded by session fencing
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T136.
 
@@ -2550,7 +2550,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S105: npm test -- tests/session-state.test.ts:5 passed. ReadableStream cancel spies prove401 and stale-header bodies are canceled exactly once; body results still fenced after access change. No response content exposed.
 
 ### T147. Guard navigation while a save is pending
 

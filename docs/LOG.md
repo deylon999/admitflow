@@ -596,3 +596,7 @@ Playwright catalog.spec.ts:3 passed on5186/API8006. ArrowDown/Up navigate two ac
 ## S104 - 2026-11-01 - B07 7/15 (T145)
 
 npm test -- tests/session-state.test.ts:3 passed. Cancel settles before a gated shared bootstrap response; another consumer completes using the same session and only one private fetch. Read epoch checked across bootstrap; abort listeners removed, shared bootstrap not canceled.
+
+## S105 - 2026-11-01 - B07 8/15 (T146)
+
+npm test -- tests/session-state.test.ts:5 passed. ReadableStream cancel spies prove401 and stale-header bodies are canceled exactly once; body results still fenced after access change. No response content exposed.

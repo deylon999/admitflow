@@ -22,9 +22,10 @@ async function request(path: string, init: RequestInit = {}): Promise<unknown> {
   try {
     response = await fetch(`/api/v1${path}`, { ...init, signal, credentials: 'same-origin', headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'abiturient', ...init.headers } });
   } catch { signal.throwIfAborted(); checkAccess(); throw new Error('Не удалось связаться с сервером. Проверьте соединение и попробуйте ещё раз.'); }
-  checkAccess();
+  try { checkAccess(); }
+  catch (error) { void response.body?.cancel().catch(() => {}); throw error; }
   if (!response.ok) {
-    if (response.status === 401) throw new SessionExpiredError();
+    if (response.status === 401) { void response.body?.cancel().catch(() => {}); throw new SessionExpiredError(); }
     const body = await readJsonResponse(response, signal, 64 * 1024).catch(() => null) as { detail?: unknown } | null;
     checkAccess();
     const message = typeof body?.detail === 'string' && body.detail.length <= 500 ? body.detail : response.status === 422 ? 'Проверьте названия, ссылку и числовые значения.' : 'Сервис временно недоступен. Попробуйте ещё раз.';

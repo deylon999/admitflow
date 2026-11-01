@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 92 из 153 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 93 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -132,7 +132,7 @@
 - [x] T143 Cancel abandoned catalog searches
 - [x] T144 Navigate university choices with the keyboard
 - [x] T145 Stop canceled private reads after session bootstrap
-- [ ] T146 Release response bodies discarded by session fencing
+- [x] T146 Release response bodies discarded by session fencing
 - [ ] T147 Guard navigation while a save is pending
 - [ ] T148 Prevent form submission during another mutation
 - [ ] T151 Verify long manual cards at320px in both themes

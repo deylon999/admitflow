@@ -4398,7 +4398,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T136"
       ],
@@ -4412,7 +4412,12 @@
       "acceptance": [
         "Unauthorized and stale-header responses cancel their unread body without exposing its contents."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S105: npm test -- tests/session-state.test.ts:5 passed. ReadableStream cancel spies prove401 and stale-header bodies are canceled exactly once; body results still fenced after access change. No response content exposed."
+        }
+      ],
       "blockedReason": null
     },
     {
