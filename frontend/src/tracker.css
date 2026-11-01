@@ -22,7 +22,8 @@
 .direction-form { padding: 24px; background: var(--bg); }
 .tracker-form-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 24px; }
 .tracker-form-heading h2 { font-size: 24px; line-height: 1.2; letter-spacing: -.8px; }
-.direction-form > .small-copy { margin-top: -12px; margin-bottom: 24px; }
+.direction-fields { border: 0; margin: 0; padding: 0; min-width: 0; }
+.direction-fields > .small-copy { margin-top: -12px; margin-bottom: 24px; }
 .direction-form .field input:not([type='number']) { font-family: var(--font); font-size: 14px; }
 .direction-form input::placeholder { color: var(--muted); opacity: .8; }
 .tracker-number-fields { margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--line); }

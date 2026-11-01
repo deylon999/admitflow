@@ -2026,7 +2026,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T016",
         "T018"
@@ -2045,7 +2045,12 @@
         "Конкурентные запросы не обходят 20/500 на локальной БД",
         "Удаление направления не оставляет сохранённые payload операций"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S017: 106 backend/40 frontend/12 E2E; concurrent limits and response-loss retry passed. PG remains separately unverified."
+        }
+      ],
       "blockedReason": null
     }
   ]

@@ -17,6 +17,7 @@ from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchR
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
 from .schemas import CatalogRead
+from .operations import begin_operation, remember_operation, retire_operations
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30
@@ -80,14 +81,23 @@ def create_app(settings: Settings | None = None):
         with Session(engine) as session:
             yield session
 
-    def owner(request: Request, db: Session = Depends(database)):
+    def identify_owner(request, db, *, lock=False):
         token = request.cookies.get(COOKIE, '')
-        found = db.scalar(select(BrowserSession).where(BrowserSession.token_hash == token_hash(token), BrowserSession.expires_at > utcnow())) if token else None
-        if token and not found:
-            raise HTTPException(401, 'Срок гостевой сессии истёк. Начните новую сессию явно.')
+        if lock and token and engine.dialect.name == 'sqlite':
+            db.execute(text('BEGIN IMMEDIATE'))
+        query = select(BrowserSession).where(BrowserSession.token_hash == token_hash(token), BrowserSession.expires_at > utcnow())
+        if lock:
+            query = query.with_for_update()
+        found = db.scalar(query) if token else None
         if not found:
-            raise HTTPException(401, 'Сессия истекла. Обновите страницу.')
+            raise HTTPException(401, 'Срок гостевой сессии истёк. Начните новую сессию явно.')
         return found.token_hash
+
+    def owner(request: Request, db: Session = Depends(database)):
+        return identify_owner(request, db)
+
+    def write_owner(request: Request, db: Session = Depends(database)):
+        return identify_owner(request, db, lock=True)
 
     def watch_owned(watch_id, owner_hash, db):
         watch = db.scalar(select(Watch).where(Watch.id == watch_id, Watch.owner_hash == owner_hash))
@@ -136,7 +146,10 @@ def create_app(settings: Settings | None = None):
 
     @app.get('/api/v1/session', response_model=SessionRead)
     def get_session(owner_hash: str = Depends(owner), db: Session = Depends(database)):
-        return SessionRead(expires_at=utc(db.get(BrowserSession, owner_hash).expires_at))
+        session = db.get(BrowserSession, owner_hash)
+        if session is None:
+            raise HTTPException(401, 'Сессия завершена.')
+        return SessionRead(expires_at=utc(session.expires_at))
 
     @app.delete('/api/v1/session', status_code=204)
     def delete_session(request: Request, response: Response, db: Session = Depends(database)):
@@ -153,7 +166,10 @@ def create_app(settings: Settings | None = None):
         return [watch_read(watch, db) for watch in watches]
 
     @app.post('/api/v1/watches', response_model=WatchRead, status_code=201)
-    def create_watch(body: WatchCreate, owner_hash: str = Depends(owner), db: Session = Depends(database)):
+    def create_watch(body: WatchCreate, request: Request, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
+        key, fingerprint, cached = begin_operation(request, body, owner_hash, db)
+        if cached is not None:
+            return cached
         count = db.scalar(select(func.count()).select_from(Watch).where(Watch.owner_hash == owner_hash))
         if count >= 20:
             raise HTTPException(409, 'Можно сохранить до 20 направлений.')
@@ -161,8 +177,10 @@ def create_app(settings: Settings | None = None):
         db.add(watch)
         db.flush()
         add_snapshot(watch.id, body.values, db)
+        result = watch_read(watch, db)
+        remember_operation(db, owner_hash, key, fingerprint, watch.id, result)
         db.commit()
-        return watch_read(watch, db)
+        return result
 
     @app.get('/api/v1/watches/{watch_id}', response_model=WatchDetail)
     def get_watch(watch_id: str, owner_hash: str = Depends(owner), db: Session = Depends(database)):
@@ -171,18 +189,23 @@ def create_app(settings: Settings | None = None):
         return WatchDetail(**watch_read(watch, db).model_dump(), history=[snapshot_read(item) for item in history])
 
     @app.post('/api/v1/watches/{watch_id}/snapshots', response_model=SnapshotRead, status_code=201)
-    def update_snapshot(watch_id: str, body: CalculationInput, owner_hash: str = Depends(owner), db: Session = Depends(database)):
+    def update_snapshot(watch_id: str, body: CalculationInput, request: Request, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
+        key, fingerprint, cached = begin_operation(request, body, owner_hash, db)
+        if cached is not None:
+            return cached
         watch_owned(watch_id, owner_hash, db)
         count = db.scalar(select(func.count()).select_from(Snapshot).where(Snapshot.watch_id == watch_id))
         if count >= 500:
             raise HTTPException(409, 'Для направления сохранено максимальное число обновлений: 500.')
-        result = add_snapshot(watch_id, body, db)
+        result = snapshot_read(add_snapshot(watch_id, body, db))
+        remember_operation(db, owner_hash, key, fingerprint, watch_id, result)
         db.commit()
-        return snapshot_read(result)
+        return result
 
     @app.delete('/api/v1/watches/{watch_id}', status_code=204)
-    def delete_watch(watch_id: str, owner_hash: str = Depends(owner), db: Session = Depends(database)):
+    def delete_watch(watch_id: str, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
         watch = watch_owned(watch_id, owner_hash, db)
+        retire_operations(db, watch_id)
         db.delete(watch)
         db.commit()
 

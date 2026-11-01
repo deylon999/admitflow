@@ -9,7 +9,7 @@ from alembic.config import Config
 from sqlalchemy import CheckConstraint, inspect, text
 from sqlalchemy.engine import make_url
 
-from app.database import make_engine
+from app.database import Base, make_engine
 
 BACKEND = Path(__file__).resolve().parents[1]
 
@@ -39,9 +39,9 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.upgrade(config(), 'head')
     command.upgrade(config(), 'head')
     command.check(config())
-    assert len(inspect(migration_db).get_table_names()) == 13  # 12 domain + revision.
+    assert len(inspect(migration_db).get_table_names()) == 14  # 13 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0001'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0002'
 
 
 def seed_legacy(engine):
@@ -61,6 +61,23 @@ def test_legacy_schema_is_adopted_without_losing_manual_history(migration_db):
     with migration_db.connect() as db:
         assert db.scalar(text('SELECT title FROM watches')) == 'Test direction'
         assert db.scalar(text('SELECT rank - excluded - no_consent FROM snapshots')) == 74
+
+
+def test_current_development_create_all_schema_is_also_adopted(migration_db):
+    seed_legacy(migration_db)
+    Base.metadata.create_all(migration_db)
+    command.upgrade(config(), 'head')
+    command.check(config())
+    with migration_db.connect() as db:
+        assert db.scalar(text('SELECT count(*) FROM watches')) == 1
+
+
+def test_incompatible_existing_operations_are_not_stamped_over(migration_db):
+    Base.metadata.create_all(migration_db)
+    with migration_db.begin() as db:
+        db.execute(text('ALTER TABLE operation_records ADD COLUMN unexpected TEXT'))
+    with pytest.raises(RuntimeError, match='differs from migration 0002'):
+        command.upgrade(config(), 'head')
 
 
 def test_incompatible_schema_stops_before_domain_tables_are_changed(migration_db):

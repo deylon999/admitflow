@@ -1,8 +1,7 @@
 import { expect, test } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
-test('реальный API: создать, обновить, прочитать историю, удалить', async ({ page }) => {
-  test.skip(process.env.E2E_API !== '1', 'Требуется API на 127.0.0.1:8000 и E2E_API=1');
-  await page.goto('/tracker');
+async function fillDirection(page: Page) {
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();
   await page.getByLabel('Вуз', { exact: true }).fill('Тестовый вуз');
   await page.getByLabel('Направление и конкурсная группа').fill('Проверка сквозного пути');
@@ -11,6 +10,12 @@ test('реальный API: создать, обновить, прочитать
   await page.getByLabel('Бюджетных мест').fill('90');
   await page.getByLabel('Выше вас вне общего конкурса').fill('30');
   await page.getByLabel('Выше вас без согласия на зачисление').fill('16');
+}
+
+test('реальный API: создать, обновить, прочитать историю, удалить', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Требуется API на 127.0.0.1:8000 и E2E_API=1');
+  await page.goto('/tracker');
+  await fillDirection(page);
   await page.getByRole('button', { name: 'Сохранить направление' }).click();
   await expect(page.locator('.direction-result strong')).toHaveText('74');
   await page.reload();
@@ -24,6 +29,32 @@ test('реальный API: создать, обновить, прочитать
   await page.getByRole('button', { name: 'Удалить', exact: true }).click();
   await page.getByRole('button', { name: 'Да, удалить' }).click();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+});
+
+test('повтор после потерянного ответа не создаёт второе направление', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
+  const keys: string[] = [];
+  await page.route('**/api/v1/watches', async route => {
+    if (route.request().method() !== 'POST') return route.continue();
+    keys.push(route.request().headers()['idempotency-key']);
+    if (keys.length === 1) {
+      const committed = await route.fetch();
+      expect(committed.status()).toBe(201);
+      return route.abort('failed');
+    }
+    return route.continue();
+  });
+  await page.goto('/tracker');
+  await fillDirection(page);
+  await page.getByRole('button', { name: 'Сохранить направление' }).click();
+  await expect(page.getByText('Не удалось связаться с сервером.', { exact: false })).toBeVisible();
+  await page.getByRole('button', { name: 'Сохранить направление' }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(1);
+  expect(keys).toHaveLength(2);
+  expect(keys[0]).toBeTruthy();
+  expect(keys[1]).toBe(keys[0]);
+  const response = await page.request.get('/api/v1/watches');
+  expect((await response.json()).length).toBe(1);
 });
 
 test('потеря cookies требует явного старта новой сессии', async ({ page, context }) => {

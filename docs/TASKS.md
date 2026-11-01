@@ -553,7 +553,7 @@
 
 ### T068. Реализовать атомарные ручные записи и идемпотентность
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T016, T018.
 
@@ -573,7 +573,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S017: 106 backend/40 frontend/12 E2E; concurrent limits and response-loss retry passed. PG remains separately unverified.
 
 ## E3. Автоматический сбор
 

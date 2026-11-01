@@ -187,8 +187,9 @@ def _schema():
 
 def _validate_existing(bind, metadata):
     # Adopt only identical tables (old development create_all databases).
-    # Never stamp over changed columns, foreign keys or unexpected tables.
-    differences = compare_metadata(MigrationContext.configure(bind), metadata)
+    # Extra tables may belong to later revisions or another tool; never alter them.
+    include = lambda obj, name, kind, reflected, compare_to: kind != 'table' or name in metadata.tables
+    differences = compare_metadata(MigrationContext.configure(bind, opts={'include_object': include}), metadata)
     if any(not isinstance(change, tuple) or change[0] not in ('add_table', 'add_index') for change in differences):
         raise RuntimeError('Existing database differs from the initial schema. Back up and inspect it before migration.')
     inspector = sa.inspect(bind)

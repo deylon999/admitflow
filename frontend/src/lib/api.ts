@@ -51,7 +51,7 @@ export const api = {
   universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
   list: () => read('/watches', parseWatches),
   detail: (id: string) => read(`/watches/${encodeURIComponent(id)}`, parseDetail),
-  async create(body: WatchCreate) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body) })); },
-  async update(id: string, values: CalculationValues) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values) })); },
+  async create(body: WatchCreate, key?: string) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body), headers: key ? { 'Idempotency-Key': key } : undefined })); },
+  async update(id: string, values: CalculationValues, key?: string) { await ensureSession(); return parseSnapshot(await request(`/watches/${encodeURIComponent(id)}/snapshots`, { method: 'POST', body: JSON.stringify(values), headers: key ? { 'Idempotency-Key': key } : undefined })); },
   async remove(id: string) { await ensureSession(); await request(`/watches/${encodeURIComponent(id)}`, { method: 'DELETE' }); },
 };
