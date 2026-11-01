@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 85 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 86 из 153 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -62,6 +62,9 @@
 - [x] T128 Compare opaque IDs by Unicode code point
 - [x] T135 Serialize guest bootstrap between browser tabs
 - [x] T136 Fence stale session results after access changes
+- [ ] T149 Keep manual UTC timestamps inside the supported calendar
+- [ ] T150 Refuse inconsistent exports after clock regression
+- [ ] T153 Verify manual data across API lifespan restarts
 
 ## Автоматический сбор
 
@@ -122,6 +125,18 @@
 - [x] T117 Preview direction names before confirming file import
 - [x] T127 Align import preview date rules with server validation
 - [x] T138 Recover from lazy page loading failures
+- [x] T139 Reject ambiguous JSON import files
+- [ ] T140 Reject invalid UTF-8 import files
+- [ ] T141 Cancel import preparation safely
+- [ ] T142 Align form Unicode length limits with the API
+- [ ] T143 Cancel abandoned catalog searches
+- [ ] T144 Navigate university choices with the keyboard
+- [ ] T145 Stop canceled private reads after session bootstrap
+- [ ] T146 Release response bodies discarded by session fencing
+- [ ] T147 Guard navigation while a save is pending
+- [ ] T148 Prevent form submission during another mutation
+- [ ] T151 Verify long manual cards at320px in both themes
+- [ ] T152 Verify filtered manual report printing
 
 ## Качество и эксплуатация
 

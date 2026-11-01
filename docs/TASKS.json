@@ -4195,6 +4195,356 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T139",
+      "title": "Reject ambiguous JSON import files",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/lib/import.ts"
+      ],
+      "steps": [
+        "Reject ambiguous JSON import files",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Duplicate decoded keys, nonfinite numbers and excessive nesting fail before preview or POST."
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S098: npm test -- tests/json.test.ts tests/import.test.ts:7 passed. Strict structural parser rejects decoded duplicate keys, depth65, nonfinite and malformed tokens; valid escaped strings and maximum-count exports preserved. Files frontend/src/lib/json.ts, import.ts and tests/json.test.ts."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T140",
+      "title": "Reject invalid UTF-8 import files",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/components/ImportData.tsx"
+      ],
+      "steps": [
+        "Reject invalid UTF-8 import files",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Invalid bytes cannot silently replace names; BOM and valid Unicode exports remain readable."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T141",
+      "title": "Cancel import preparation safely",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/components/ImportData.tsx"
+      ],
+      "steps": [
+        "Cancel import preparation safely",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Cancel during reading permits a new selection; late results cannot replace the new preview."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T142",
+      "title": "Align form Unicode length limits with the API",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/lib/direction.ts"
+      ],
+      "steps": [
+        "Align form Unicode length limits with the API",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Supplementary Unicode counts as one character in names and catalog queries; excess is still rejected."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T143",
+      "title": "Cancel abandoned catalog searches",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/components/UniversityPicker.tsx"
+      ],
+      "steps": [
+        "Cancel abandoned catalog searches",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Superseded or unmounted catalog requests receive cancellation without an error replacing the current search."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T144",
+      "title": "Navigate university choices with the keyboard",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/components/UniversityPicker.tsx"
+      ],
+      "steps": [
+        "Navigate university choices with the keyboard",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Arrow keys enter and navigate choices; Escape returns focus without closing the direction form."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T145",
+      "title": "Stop canceled private reads after session bootstrap",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T098"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts"
+      ],
+      "steps": [
+        "Stop canceled private reads after session bootstrap",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Canceled consumers never dispatch a private read after shared bootstrap finishes; other consumers remain functional."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T146",
+      "title": "Release response bodies discarded by session fencing",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T136"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts"
+      ],
+      "steps": [
+        "Release response bodies discarded by session fencing",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Unauthorized and stale-header responses cancel their unread body without exposing its contents."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T147",
+      "title": "Guard navigation while a save is pending",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Guard navigation while a save is pending",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Current-tab links cannot discard the pending operation; unload is guarded even for an unchanged edit."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T148",
+      "title": "Prevent form submission during another mutation",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Prevent form submission during another mutation",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Import and save cannot overlap through an already open form; values survive the pending interval."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T149",
+      "title": "Keep manual UTC timestamps inside the supported calendar",
+      "phase": "E2",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T126"
+      ],
+      "deliverables": [
+        "backend/app/schemas.py"
+      ],
+      "steps": [
+        "Keep manual UTC timestamps inside the supported calendar",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Offset-normalized dates outside years1..9999 reject as validation errors on server and client."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T150",
+      "title": "Refuse inconsistent exports after clock regression",
+      "phase": "E2",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T125"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Refuse inconsistent exports after clock regression",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Export refuses if observed saved dates exceed current server time, without rewriting dates or data."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T151",
+      "title": "Verify long manual cards at320px in both themes",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/manual-quality.spec.ts"
+      ],
+      "steps": [
+        "Verify long manual cards at320px in both themes",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Long labels and maximum numeric values stay usable with no page overflow in light and dark modes."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T152",
+      "title": "Verify filtered manual report printing",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T108"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/manual-quality.spec.ts"
+      ],
+      "steps": [
+        "Verify filtered manual report printing",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "Print media contains only selected manual records, sources and limitations; interactive controls are hidden."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T153",
+      "title": "Verify manual data across API lifespan restarts",
+      "phase": "E2",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "backend/tests/test_restart.py"
+      ],
+      "steps": [
+        "Verify manual data across API lifespan restarts",
+        "Run meaningful success and refusal regressions"
+      ],
+      "acceptance": [
+        "A fresh app using the same isolated SQLite file preserves ownership, history and idempotent operations; expired owners stay denied."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

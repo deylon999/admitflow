@@ -1080,6 +1080,72 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S094: Private requests fence epoch changes before headers/errors and after JSON body; superseded reads do not auto-retry. Late bootstrap catch clears only its own pending promise. Two deferred-response regressions and all73 frontend tests/build passed.
 
+### T149. Keep manual UTC timestamps inside the supported calendar
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T126.
+
+**Результаты/файлы:** `backend/app/schemas.py`.
+
+**Шаги:**
+
+1. Keep manual UTC timestamps inside the supported calendar.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Offset-normalized dates outside years1..9999 reject as validation errors on server and client..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T150. Refuse inconsistent exports after clock regression
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T125.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Refuse inconsistent exports after clock regression.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Export refuses if observed saved dates exceed current server time, without rewriting dates or data..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T153. Verify manual data across API lifespan restarts
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `backend/tests/test_restart.py`.
+
+**Шаги:**
+
+1. Verify manual data across API lifespan restarts.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- A fresh app using the same isolated SQLite file preserves ownership, history and idempotent operations; expired owners stay denied..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E3. Автоматический сбор
 
 Плановый интервал: D8–D17.
@@ -2309,6 +2375,270 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S096: Page boundary provides focused recovery UI with explicit reload and no hidden retry/bootstrap. New failure/recovery E2E passed. Final backend269 passed/7 PG skipped, frontend77/build passed,46 Chromium passed on current API8005. First browser run45/46 had a transient Vite module-load failure; unchanged cookie-loss case passed3 repeats and full rerun. Final JSON-media-type bypass and huge-timeout edge corrected before full verification. B06 complete20/20; real data/PG/CI gates unchanged.
+
+### T139. Reject ambiguous JSON import files
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T091.
+
+**Результаты/файлы:** `frontend/src/lib/import.ts`.
+
+**Шаги:**
+
+1. Reject ambiguous JSON import files.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Duplicate decoded keys, nonfinite numbers and excessive nesting fail before preview or POST..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S098: npm test -- tests/json.test.ts tests/import.test.ts:7 passed. Strict structural parser rejects decoded duplicate keys, depth65, nonfinite and malformed tokens; valid escaped strings and maximum-count exports preserved. Files frontend/src/lib/json.ts, import.ts and tests/json.test.ts.
+
+### T140. Reject invalid UTF-8 import files
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T091.
+
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`.
+
+**Шаги:**
+
+1. Reject invalid UTF-8 import files.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Invalid bytes cannot silently replace names; BOM and valid Unicode exports remain readable..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T141. Cancel import preparation safely
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T091.
+
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`.
+
+**Шаги:**
+
+1. Cancel import preparation safely.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Cancel during reading permits a new selection; late results cannot replace the new preview..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T142. Align form Unicode length limits with the API
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/lib/direction.ts`.
+
+**Шаги:**
+
+1. Align form Unicode length limits with the API.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Supplementary Unicode counts as one character in names and catalog queries; excess is still rejected..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T143. Cancel abandoned catalog searches
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`.
+
+**Шаги:**
+
+1. Cancel abandoned catalog searches.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Superseded or unmounted catalog requests receive cancellation without an error replacing the current search..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T144. Navigate university choices with the keyboard
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/components/UniversityPicker.tsx`.
+
+**Шаги:**
+
+1. Navigate university choices with the keyboard.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Arrow keys enter and navigate choices; Escape returns focus without closing the direction form..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T145. Stop canceled private reads after session bootstrap
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T098.
+
+**Результаты/файлы:** `frontend/src/lib/api.ts`.
+
+**Шаги:**
+
+1. Stop canceled private reads after session bootstrap.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Canceled consumers never dispatch a private read after shared bootstrap finishes; other consumers remain functional..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T146. Release response bodies discarded by session fencing
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T136.
+
+**Результаты/файлы:** `frontend/src/lib/api.ts`.
+
+**Шаги:**
+
+1. Release response bodies discarded by session fencing.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Unauthorized and stale-header responses cancel their unread body without exposing its contents..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T147. Guard navigation while a save is pending
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Guard navigation while a save is pending.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Current-tab links cannot discard the pending operation; unload is guarded even for an unchanged edit..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T148. Prevent form submission during another mutation
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Prevent form submission during another mutation.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Import and save cannot overlap through an already open form; values survive the pending interval..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T151. Verify long manual cards at320px in both themes
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`.
+
+**Шаги:**
+
+1. Verify long manual cards at320px in both themes.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Long labels and maximum numeric values stay usable with no page overflow in light and dark modes..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T152. Verify filtered manual report printing
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T108.
+
+**Результаты/файлы:** `frontend/tests/e2e/manual-quality.spec.ts`.
+
+**Шаги:**
+
+1. Verify filtered manual report printing.
+2. Run meaningful success and refusal regressions.
+
+**Критерии закрытия:**
+
+- Print media contains only selected manual records, sources and limitations; interactive controls are hidden..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E5. Качество и эксплуатация
 

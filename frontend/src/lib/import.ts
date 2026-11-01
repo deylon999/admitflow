@@ -1,12 +1,13 @@
 import { parseExport } from './contracts';
 import type { DataExport } from './contracts';
 import { instantMicros } from './time';
+import { parseStrictJson } from './json';
 
 export const MAX_IMPORT_FILE_BYTES = 8 * 1024 * 1024;
 
 export function parseImportText(text: string, nowMillis = Date.now()): DataExport {
   let data: DataExport;
-  try { data = parseExport(JSON.parse(text)); }
+  try { data = parseExport(parseStrictJson(text)); }
   catch { throw new Error('Файл не содержит корректную выгрузку AdmitFlow. Проверьте формат и расчёты.'); }
   if (!data.watches.length) throw new Error('В этом файле нет сохранённых направлений.');
   const futureLimit = BigInt(Math.trunc(nowMillis)) * 1000n + 300_000_000n;

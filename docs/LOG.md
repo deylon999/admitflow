@@ -564,3 +564,11 @@ B06 exactly20 task commits,85/138done,3blocked/4review/46todo, all7release gates
 
 New docs/evidence/error-recovery-mobile.png captures an intentionally failed lazy-module load at390px, keyboard focus and explicit reload; visually inspected, no horizontal overflow, no guest bootstrap for that screen. Existing normal screenshots remain B05 evidence, not new database/visual acceptance. PRODUCT scope unchanged; API/RUNBOOK/env/STATE/PROGRESS/TASKS and generated CHECKLIST updated. Common source/PG/CI blockers preserved. Do not spend the next batch rewriting the finished contour or creating synthetic adapters as a substitute for original bytes/environment.
 S096 final checkpoint checks: frontend77 passed after response-test MIME correction; roadmap render/check valid138tasks, all6 invalid-state self-tests rejected, git diff --check exit0. No active task; nextT103 review. Configured user identity preserved;20task commits remain local.
+
+## S097 - 2026-11-01 - B07 plan15
+
+User requested15 tasks. Git clean at c27e851; roadmap valid138. Docker Engine/config ACL denied and GitHub:443 still unreachable. Select manual import/session/form/date defects and concrete manual quality/restart checks, not synthetic adapters. Source/PG/CI/font blockers and all release gates remain open.
+
+## S098 - 2026-11-01 - B07 1/15 (T139)
+
+npm test -- tests/json.test.ts tests/import.test.ts:7 passed. Strict structural parser rejects decoded duplicate keys, depth65, nonfinite and malformed tokens; valid escaped strings and maximum-count exports preserved. Files frontend/src/lib/json.ts, import.ts and tests/json.test.ts.
