@@ -1060,7 +1060,7 @@
 
 ### T136. Fence stale session results after access changes
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T135.
 
@@ -1078,7 +1078,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S094: Private requests fence epoch changes before headers/errors and after JSON body; superseded reads do not auto-retry. Late bootstrap catch clears only its own pending promise. Two deferred-response regressions and all73 frontend tests/build passed.
 
 ## E3. Автоматический сбор
 

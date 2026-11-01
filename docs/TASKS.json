@@ -4087,7 +4087,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T135"
       ],
@@ -4101,7 +4101,12 @@
       "acceptance": [
         "Late promises from earlier access cannot clear/replace newer session state or trigger hidden writes."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S094: Private requests fence epoch changes before headers/errors and after JSON body; superseded reads do not auto-retry. Late bootstrap catch clears only its own pending promise. Two deferred-response regressions and all73 frontend tests/build passed."
+        }
+      ],
       "blockedReason": null
     },
     {

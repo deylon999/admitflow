@@ -543,3 +543,7 @@ Explicit eligible reenqueue applies requested interval/max attempts and resets d
 ## S093 - 2026-11-01 - B06 17/20 (T135)
 
 Guest bootstrap and explicit reset serialize across tabs using Web Locks with bounded lock wait; reset avoids nested-lock deadlock. Build and2 real API cross-tab checks passed, including simultaneous first visits producing exactly one session POST. Unsupported Web Locks fallback documented later.
+
+## S094 - 2026-11-01 - B06 18/20 (T136)
+
+Private requests fence epoch changes before headers/errors and after JSON body; superseded reads do not auto-retry. Late bootstrap catch clears only its own pending promise. Two deferred-response regressions and all73 frontend tests/build passed.

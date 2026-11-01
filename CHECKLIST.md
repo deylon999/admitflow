@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 82 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 83 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -61,7 +61,7 @@
 - [x] T126 Enforce ISO aware timestamps on manual DTOs
 - [x] T128 Compare opaque IDs by Unicode code point
 - [x] T135 Serialize guest bootstrap between browser tabs
-- [ ] T136 Fence stale session results after access changes
+- [x] T136 Fence stale session results after access changes
 
 ## Автоматический сбор
 

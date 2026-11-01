@@ -1,5 +1,5 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
-import { SessionExpiredError } from './api';
+import { SessionChangedError, SessionExpiredError } from './api';
 
 export const sessionAccessKey = ['session-access'] as const;
 export type SessionAccess = 'active' | 'expired' | 'changed';
@@ -9,7 +9,7 @@ export function createQueryClient() {
     queryCache: new QueryCache({ onError: error => markSessionFailure(client, error) }),
     mutationCache: new MutationCache({ onError: error => markSessionFailure(client, error) }),
     defaultOptions: {
-      queries: { retry: (failures, error) => !(error instanceof SessionExpiredError) && failures < 1, staleTime: 30_000, refetchOnWindowFocus: false },
+      queries: { retry: (failures, error) => !(error instanceof SessionExpiredError) && !(error instanceof SessionChangedError) && failures < 1, staleTime: 30_000, refetchOnWindowFocus: false },
       mutations: { retry: false },
     },
   });
