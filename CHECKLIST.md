@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 51 из 118 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 52 из 118 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -96,7 +96,7 @@
 - [x] T096 Привязать ошибки ручной формы к полям и фокусу
 - [x] T097 Защитить несохранённую форму от случайного переключения
 - [x] T104 Search, filter and sort saved directions
-- [ ] T105 Compare any two loaded manual snapshots
+- [x] T105 Compare any two loaded manual snapshots
 - [ ] T107 Show all saved inputs and exact timestamps in history
 - [ ] T108 Print a readable manual directions report
 - [ ] T109 Guard deletion of the direction being edited

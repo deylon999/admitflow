@@ -408,3 +408,7 @@ User requested15 tasks. Docker Engine and GitHub remain inaccessible; no local f
 ## S061 - 2026-11-01 - B05 1/15 (T104)
 
 Search across university/title, manual-scenario filter, reset/no-results and exact-microsecond date/name sorting without mutating stored data. npm test68/build passed; one Chromium filter/sort check passed on5184. Initial Cyrillic script substitution corrected before verification.
+
+## S062 - 2026-11-01 - B05 2/15 (T105)
+
+Distinct chronological snapshot selectors compare any loaded pair, with safe fallback when selection disappears; default remains latest pair. Build and2 Chromium tools tests passed.

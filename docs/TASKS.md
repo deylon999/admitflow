@@ -1740,7 +1740,7 @@
 
 ### T105. Compare any two loaded manual snapshots
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T070, T074.
 
@@ -1758,7 +1758,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S062: Distinct chronological snapshot selectors compare any loaded pair, with safe fallback when selection disappears; default remains latest pair. Build and2 Chromium tools tests passed.
 
 ### T107. Show all saved inputs and exact timestamps in history
 

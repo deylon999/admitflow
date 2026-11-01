@@ -1,8 +1,25 @@
 import { expect, test } from '@playwright/test';
 import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
+import { calculatePlace } from '../../src/lib/calculator';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/v1/session', route => route.request().method() === 'GET' ? route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } }) : route.fulfill({ status: 204 }));
+});
+
+test('можно сравнить любые два загруженных сохранения', async ({ page }) => {
+  const items = [120,130,150].map((rank,index) => {
+    const values = { ...fixture.latest.values, rank };
+    return { ...fixture.latest, id: `snapshot-${3-index}`, values, calculation: calculatePlace(values) };
+  });
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items, nextCursor: null } }));
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'История', exact: true }).click();
+  await expect(page.locator('.history-comparison strong')).toHaveText('Место: 84 → 74');
+  await page.getByLabel('Более раннее сохранение', { exact: true }).selectOption('snapshot-1');
+  await expect(page.locator('.history-comparison strong')).toHaveText('Место: 104 → 74');
+  await page.getByLabel('Новое сохранение', { exact: true }).selectOption('snapshot-2');
+  await expect(page.locator('.history-comparison strong')).toHaveText('Место: 104 → 84');
 });
 
 test('поиск, фильтр и порядок не удаляют направления', async ({ page }) => {

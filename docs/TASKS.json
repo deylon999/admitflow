@@ -3192,7 +3192,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T070",
         "T074"
@@ -3207,7 +3207,12 @@
       "acceptance": [
         "Two distinct loaded snapshots can be selected; deleted/stale selection falls back safely."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S062: Distinct chronological snapshot selectors compare any loaded pair, with safe fallback when selection disappears; default remains latest pair. Build and2 Chromium tools tests passed."
+        }
+      ],
       "blockedReason": null
     },
     {
