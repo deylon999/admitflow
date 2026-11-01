@@ -2855,7 +2855,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T090",
         "T091"
@@ -2871,7 +2871,12 @@
         "Replay при 20 не создаёт дубли",
         "Новый файл при 20 получает 409 без изменений"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S049 / B04 2/10: Confirmed UI quota bug with a 20-direction export: capacity check blocked an idempotent replay before server could return cached success. UI now offers explicit replay check at quota; server still rejects a new file with 409 and no writes. Build exit 0; 3 real-API import E2E passed, including reload/reselect at 20, successful replay, changed-file refusal and exact final count20."
+        }
+      ],
       "blockedReason": null
     },
     {

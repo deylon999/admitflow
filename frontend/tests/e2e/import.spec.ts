@@ -61,3 +61,28 @@ test('невалидный или слишком большой файл не о
   await expect(page.getByRole('alert')).toContainText('больше 8 МБ');
   expect(requests).toBe(0);
 });
+
+test('полный лимит разрешает replay, но не импорт нового файла', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Требуется API');
+  const data = { ...bundle, watches: Array.from({ length: 20 }, (_, index) => {
+    const latest = { ...fixture.latest, id: `old-snapshot-${index}` };
+    return { ...fixture, id: `old-watch-${index}`, title: `Quota ${index}`, latest, history: [latest] };
+  }) };
+  await page.goto('/tracker');
+  await page.getByText('Восстановить из JSON', { exact: true }).click();
+  await page.getByLabel('Файл выгрузки, до 8 МБ').setInputFiles(upload(data));
+  await page.getByRole('button', { name: 'Импортировать файл', exact: true }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(20);
+  await page.reload();
+  await page.getByText('Восстановить из JSON', { exact: true }).click();
+  const file = page.getByLabel('Файл выгрузки, до 8 МБ');
+  await file.setInputFiles(upload(data));
+  await page.getByRole('button', { name: 'Проверить повтор импорта' }).click();
+  await expect(page.locator('.tracker-notice')).toContainText('Этот файл уже импортирован');
+  await expect(page.locator('.direction-card')).toHaveCount(20);
+  const changed = { ...data, watches: data.watches.map(watch => ({ ...watch, title: `${watch.title} changed` })) };
+  await file.setInputFiles(upload(changed));
+  await page.getByRole('button', { name: 'Проверить повтор импорта' }).click();
+  await expect(page.locator('.import-data').getByRole('alert')).toContainText('больше 20 направлений');
+  expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(20);
+});

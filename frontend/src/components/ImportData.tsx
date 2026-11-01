@@ -53,8 +53,8 @@ export function ImportData({ count, disabled, onDone }: { count: number; disable
     {prepared && <div>
       <p role="status">Найдено направлений: {added}; сохранений: {prepared.bundle.watches.reduce((total,watch) => total + watch.history.length,0)}.</p>
       <p className="small-copy">Существующие записи сохранятся. Повтор этого же файла в той же сессии не создаёт новые копии и не восстанавливает удалённые записи.</p>
-      {tooMany && <p className="form-error" role="alert">После импорта будет больше 20 направлений. Сначала освободите место.</p>}
-      <div className="direction-actions"><button className="button button-primary" type="button" disabled={disabled || tooMany} onClick={() => mutation.mutate()}>{mutation.isPending ? 'Импортируем…' : 'Импортировать файл'}</button><button className="text-button" type="button" disabled={disabled} onClick={clear}>Отменить импорт</button></div>
+      {tooMany && <p className="small-copy" id="import-quota-note" role="status">Для новых направлений недостаточно места. Можно проверить повтор уже выполненного импорта: сервер не добавит записи сверх лимита 20.</p>}
+      <div className="direction-actions"><button className="button button-primary" type="button" disabled={disabled || mutation.isPending} aria-describedby={tooMany ? 'import-quota-note' : undefined} onClick={() => { if (!mutation.isPending) mutation.mutate(); }}>{mutation.isPending ? 'Импортируем…' : tooMany ? 'Проверить повтор импорта' : 'Импортировать файл'}</button><button className="text-button" type="button" disabled={disabled} onClick={clear}>Отменить импорт</button></div>
     </div>}
     {mutation.isError && <p className="form-error" role="alert">{mutation.error instanceof Error ? mutation.error.message : 'Не удалось импортировать файл.'} Повтор использует тот же ключ операции.</p>}
   </details>;
