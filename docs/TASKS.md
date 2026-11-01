@@ -3501,7 +3501,7 @@
 
 ### T167. Prepare the Compose worker and shared raw volume
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T066.
 
@@ -3519,7 +3519,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S128: docker compose config --quiet and --profile automation config --quiet exit0 despite Docker config ACL warning. Default services db/backend/frontend; automation adds worker. Shared raw_data path and app-owned image directory, no worker ports or parallel migrations. RUNBOOK includes raw-layer preservation and explicit Engine/image/permissions/runtime limitations; no container started or user volume changed.
 
 ### T168. Verify the compiled React application in the browser
 

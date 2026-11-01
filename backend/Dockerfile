@@ -7,7 +7,8 @@ WORKDIR /app
 COPY backend/requirements.txt ./requirements.txt
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-RUN useradd --create-home app
+RUN useradd --create-home --user-group app \
+    && install -d -o app -g app -m 0700 /app/var/raw
 COPY backend/app ./app
 COPY backend/alembic.ini ./alembic.ini
 COPY backend/alembic ./alembic

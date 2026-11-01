@@ -702,3 +702,7 @@ Guard subprocess regressions8 passed; full collection301 tests succeeds. Actual 
 ## S127 - 2026-11-01 - B09 3/5 (T166)
 
 Database diagnostic regressions5 passed: actual SQLite counts/read-only rejection, Unicode path, missing file not created, restore marker refusal, legacy/future revision and credential redaction. Real CLI on isolated batch08.db returns revision_current/sqlite/0004 and aggregate counts only. No migrations/repair/session cleanup. PG read-only repeatable-read SQL documented from primary docs, execution unverified.
+
+## S128 - 2026-11-01 - B09 4/5 (T167)
+
+docker compose config --quiet and --profile automation config --quiet exit0 despite Docker config ACL warning. Default services db/backend/frontend; automation adds worker. Shared raw_data path and app-owned image directory, no worker ports or parallel migrations. RUNBOOK includes raw-layer preservation and explicit Engine/image/permissions/runtime limitations; no container started or user volume changed.

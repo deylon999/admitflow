@@ -25,6 +25,9 @@ services:
       ENVIRONMENT: development
       SECURE_COOKIE: "false"
       AUTO_CREATE_SCHEMA: "false"
+      RAW_STORE_PATH: /app/var/raw
+    volumes:
+      - raw_data:/app/var/raw
     depends_on:
       db:
         condition: service_healthy
@@ -34,6 +37,27 @@ services:
       timeout: 3s
       retries: 12
       start_period: 10s
+
+  worker:
+    profiles: [automation]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "app.worker", "loop", "--poll-seconds", "5"]
+    environment:
+      DATABASE_URL: postgresql+psycopg://admitflow:admitflow@db:5432/admitflow
+      ENVIRONMENT: development
+      SECURE_COOKIE: "false"
+      AUTO_CREATE_SCHEMA: "false"
+      RAW_STORE_PATH: /app/var/raw
+    volumes:
+      - raw_data:/app/var/raw
+    depends_on:
+      backend:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    restart: unless-stopped
 
   frontend:
     build:
@@ -52,3 +76,4 @@ services:
 
 volumes:
   postgres_data:
+  raw_data:

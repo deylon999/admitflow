@@ -217,3 +217,21 @@ RawStore хранит исходные bytes вне web root (`backend/var/raw` 
 Если браузер не сохраняет черновик, предупреждение не блокирует обычное сохранение на сервер. Не предлагать очистку cookies как восстановление: она теряет гостевой доступ. При конфликте409 перечитать кабинет и проверить новые цифры, не обходить X-Expected-Snapshot. Черновик удалённого направления можно просмотреть, но он не создаёт заново удалённую запись.
 
 Для нового frontend нужен API с draftScope и X-Expected-Snapshot; namespace вычисляется, схема остаётся0004. Не считать старую Docker-сборку текущей до явной пересборки без удаления volume и smoke. Совместимость без scope оставляет базовую форму, но не обещает локальное восстановление. Скриншоты B08 не закрывают Figma/fonts/PG/real-source gates.
+
+### Обязательная проверка PostgreSQL и диагностика B09
+
+CI запускает backend с `python -m pytest -q --require-postgres --junitxml=test-results/backend.xml`. Нужен TEST_DATABASE_URL на отдельную PostgreSQL-базу admitflow_test*. Без него обязательный режим завершится кодом4. Пропуск, исключение через -k/-m или незавершённый native case также дают неуспех. Обычный локальный `pytest -q` сохраняет явные skips. Изоляция каждого native migration-test — отдельная случайная схема; upgrade/downgrade больше не работает в public. Это подготовка проверки, не результат недоступного remote CI.
+
+Из backend: `python -m app.diagnostics` читает DATABASE_URL. Для работающего нового контейнера: `docker compose exec -T backend python -m app.diagnostics`. Вывод — один JSON с dialect, expected/observed revisions и агрегатами sessions/watches/snapshots/operations. Код0 означает только текущую ревизию и наличие ручных таблиц; код1 — unavailable/schema_mismatch/restore_incomplete. Значения строк, токены, host/DSN/пароль не выводятся. Неизвестный текст ревизии заменяется на unknown.
+
+Команда не мигрирует, не создаёт схему, не удаляет данные и не исправляет restore.pending. SQLite открывается через mode=ro и query_only, отсутствующий файл не создаётся. Для PostgreSQL используется read-only repeatable-read transaction с statement timeout5s/lock timeout2s; фактическое выполнение на PG ещё не проверено. Синтаксис и границы read-only: [PostgreSQL SET TRANSACTION](https://www.postgresql.org/docs/17/sql-set-transaction.html).
+
+Для снятия T103 нужен реальный PG upgrade и сверка сохранённых данных до/после. Совпадение четырёх counts само по себе не доказывает сохранность содержимого. При старой остановленной API-сборке можно сначала собрать новый backend image, затем выполнить `docker compose run --rm --no-deps backend python -m app.diagnostics` при работающем db: command заменяет стартовый CMD и не запускает Alembic. Старый image без модуля diagnostics не является новой проверкой. Не использовать blind stamp, downgrade или удаление volume для обхода ошибки.
+
+### Отдельный worker в Compose
+
+По умолчанию запускаются db/backend/frontend. Worker описан в профиле automation: `docker compose --profile automation up -d --build`. Проверка конфигурации без Engine: `docker compose config --quiet` и `docker compose --profile automation config --quiet`. Профили работают согласно [Docker Compose profiles](https://docs.docker.com/compose/how-tos/profiles/).
+
+Worker использует тот же backend image, напрямую запускает app.worker loop, ждёт здоровые db/backend и не запускает миграцию параллельно API. Backend/worker разделяют raw_data:/app/var/raw; этот каталог подготовлен в image для пользователя app. Worker не публикует портов. Пустой production registry и выключенные источники сохраняются: профиль сам не подключает вуз и не подтверждает автоматизацию. Health API не доказывает продвижение worker.
+
+Если в прежнем контейнере уже были raw-файлы вне volume, сохранить и проверить их до пересоздания: новое монтирование скрывает старый каталог слоя контейнера. Не удалять postgres_data/raw_data и не переносить приватные raw в Git. В этой среде проверена только конфигурация профилей; сборка image, права volume, перезапуск worker и настоящие циклы PG/source ещё не приняты. T047/T067 и релизные gates остаются открыты.

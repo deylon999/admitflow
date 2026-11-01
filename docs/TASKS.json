@@ -5044,7 +5044,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T066"
       ],
@@ -5058,7 +5058,12 @@
       "acceptance": [
         "Compose validates a separate optional worker with the same DB/raw volume and no published ports; default stack stays manual. Runtime/real-source gate remains open."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S128: docker compose config --quiet and --profile automation config --quiet exit0 despite Docker config ACL warning. Default services db/backend/frontend; automation adds worker. Shared raw_data path and app-owned image directory, no worker ports or parallel migrations. RUNBOOK includes raw-layer preservation and explicit Engine/image/permissions/runtime limitations; no container started or user volume changed."
+        }
+      ],
       "blockedReason": null
     },
     {
