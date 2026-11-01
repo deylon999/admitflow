@@ -2323,7 +2323,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T076"
       ],
@@ -2338,7 +2338,12 @@
         "Неполный/неверный список не публикуется",
         "Равные баллы не меняют официальный порядок; ошибки не содержат PII"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S030 / B02 5/10: Strict normalized-list validation rejects wrong identity/season, incomplete pagination, duplicate identities/references, rank gaps/order, unconfirmed emptiness, future/regressed timestamps and configured large drops. Unknown fields retained; equal scores never reordered. pytest validation+contract: 13 passed / exit 0. QualityPolicy thresholds documented as review signals; synthetic samples only."
+        }
+      ],
       "blockedReason": null
     },
     {
