@@ -3723,7 +3723,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T004"
       ],
@@ -3737,7 +3737,12 @@
       "acceptance": [
         "Unresponsive PostgreSQL handshake fails within configured bounds; credentials are not logged."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S081: PostgreSQL connect timeout defaults5s (allowed1..10), pool checkout5s. Real local TCP peer accepted a connection then stalled: handshake timed out;4 tests passed. This is failure-path wire verification, not a successful PG migration/server test."
+        }
+      ],
       "blockedReason": null
     },
     {

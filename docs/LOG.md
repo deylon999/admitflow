@@ -491,3 +491,7 @@ Validation422 returns at most20 redacted field paths, no input/context or unknow
 ## S080 - 2026-11-01 - B06 4/20 (T122)
 
 Settings fail closed for unknown environment/boolean strings; constructor enforces PostgreSQL, secure cookie and explicit production migrations. Updated prior test to reject an explicit unsafe true instead of silently ignoring it. Config/origin10 passed.
+
+## S081 - 2026-11-01 - B06 5/20 (T123)
+
+PostgreSQL connect timeout defaults5s (allowed1..10), pool checkout5s. Real local TCP peer accepted a connection then stalled: handshake timed out;4 tests passed. This is failure-path wire verification, not a successful PG migration/server test.
