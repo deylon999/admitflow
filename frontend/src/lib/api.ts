@@ -1,7 +1,7 @@
 import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
 import { withRequestTimeout } from './transport';
-import { InvalidResponseError, parseCatalog, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
+import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -52,6 +52,7 @@ export const api = {
     return ensureSession();
   },
   universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
+  coverage: async () => parseCoverage(await request('/coverage')),
   exportData: () => read('/export', parseExport),
   async importData(bundle: DataExport, key: string) {
     await ensureSession();

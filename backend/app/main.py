@@ -18,7 +18,8 @@ from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus
+from .schemas import CatalogRead, CoverageRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus
+from .coverage import coverage
 from .importing import import_bundle
 from .sources.status import source_status
 from .operations import begin_operation, remember_operation, retire_operations
@@ -166,6 +167,10 @@ def create_app(settings: Settings | None = None):
         if result is None:
             raise HTTPException(404,'Источник не найден.')
         return result
+
+    @app.get('/api/v1/coverage', response_model=CoverageRead)
+    def get_coverage(db: Session = Depends(database)):
+        return coverage(db)
 
     @app.get('/api/v1/export', response_model=DataExport)
     def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):

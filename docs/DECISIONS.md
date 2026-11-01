@@ -24,6 +24,7 @@
 | ADR-018 | user-confirmed | Docker Compose для локального запуска, supersedes локальную часть ADR-008 | PostgreSQL + FastAPI + Nginx с собранным React; один localhost:8080 и постоянный volume. Это не production: create_all и development cookies; worker пока не реализован |
 | ADR-019 | selected | Alembic также для автоматического development setup; supersedes create_all из ADR-018 | 0003/0004 добавляют provenance и очередь; новая схема создаётся миграциями, старые совместимые 0001/0002 сохраняются. Production migration остаётся отдельным шагом. Контейнерный запуск по-прежнему требует проверки Engine |
 | ADR-020 | selected | Реестр production пуст до аттестации; синтетические интеграции только в тестах | Контур fetch/parse/validate/store/publish/queue/worker проверяется независимо от доступа к исходным HTML, не повышает coverage и не закрывает проверки реальных источников/PG. Worker запускается отдельным процессом, без публичной регистрации URL |
+| ADR-021 | selected | Явный HTTPS public origin/host в production, ограниченные тела API, приватные SQLite recovery bundles | Локальное восстановление и raw cleanup проверяются сейчас; PostgreSQL/production backup остаётся отдельным gate. Ручной JSON переносит значения и даты в новую ownership, не доступ к старой сессии. Метрики каталога и аттестованной автоматизации разделены |
 
 ## Основание выбора инструментов
 

@@ -11,6 +11,7 @@ export type Catalog = { items: University[]; total: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
 export type HistoryPage = { items: Snapshot[]; nextCursor: string | null };
 export type ImportResult = { importedCount: number; snapshotCount: number; replayed: boolean };
+export type Coverage = { catalogUniversities: number; automaticSources: number; publishedGroups: number; freshGroups: number; archiveGroups: number; nationalTotal: null; generatedAt: string };
 
 export class InvalidResponseError extends Error {
   constructor() { super('Сервер вернул некорректные данные. Расчёт не показан — попробуйте обновить страницу.'); }
@@ -108,6 +109,14 @@ export function parseImportResult(value: unknown): ImportResult {
     || typeof snapshots !== 'number' || !Number.isInteger(snapshots) || snapshots < count || snapshots > count * 500
     || typeof row.replayed !== 'boolean') throw new InvalidResponseError();
   return { importedCount: count, snapshotCount: snapshots, replayed: row.replayed };
+}
+export function parseCoverage(value: unknown): Coverage {
+  const row = object(value);
+  const counts = ['catalogUniversities', 'automaticSources', 'publishedGroups', 'freshGroups', 'archiveGroups'] as const;
+  for (const key of counts) if (typeof row[key] !== 'number' || !Number.isSafeInteger(row[key]) || row[key] < 0) throw new InvalidResponseError();
+  const result = Object.fromEntries(counts.map(key => [key, row[key]])) as Pick<Coverage, typeof counts[number]>;
+  if (result.publishedGroups > result.automaticSources || result.freshGroups + result.archiveGroups > result.publishedGroups || row.nationalTotal !== null) throw new InvalidResponseError();
+  return { ...result, nationalTotal: null, generatedAt: timestamp(row.generatedAt) };
 }
 export function parseCatalog(value: unknown): Catalog {
   const row = object(value);

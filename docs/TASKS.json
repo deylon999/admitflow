@@ -305,7 +305,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T003",
         "T005"
@@ -326,9 +326,13 @@
         {
           "path": ".github/workflows/ci.yml",
           "note": "Конфигурация подготовлена; удалённого запуска нет, задача не закрыта."
+        },
+        {
+          "path": "docs/LOG.md",
+          "note": "S036/S046: external prerequisite rechecked; concrete resumption condition recorded."
         }
       ],
-      "blockedReason": null
+      "blockedReason": "GitHub:443 remains unreachable in B03 (git ls-remote failed). Resume after repository access and a successful remote workflow for the tested SHA."
     },
     {
       "id": "T007",
@@ -507,7 +511,7 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T010",
         "T011",
@@ -525,8 +529,13 @@
         "Хотя бы один реальный образец разобран воспроизводимо до G1",
         "Синтетические и архивные данные явно маркированы"
       ],
-      "evidence": [],
-      "blockedReason": null
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S036/S046: external prerequisite rechecked; concrete resumption condition recorded."
+        }
+      ],
+      "blockedReason": "Original pilot list bytes unavailable: real capture returned network_error, SGU page timed out and SGUPS profile cache missed. Resume after verified original capture bundles and anonymized real fixtures; capture CLI alone is not a fixture."
     },
     {
       "id": "T014",
@@ -2780,7 +2789,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T012",
         "T076",
@@ -2798,7 +2807,12 @@
         "Начальные 2 manual вуза не считаются автоинтеграциями",
         "Нет выдуманного национального процента и stale/fresh смешения"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S046 / B03 10/10: Coverage API/UI separates catalog size from attested enabled automatic sources with group rules and complete published versions. National denominator is unknown/null, archive is never fresh, request failure is not zero. Backend coverage subset 2 passed; final full pytest: 188 passed / 1 real PostgreSQL skipped; frontend: 62 passed and build exit 0; full Chromium E2E: 24 passed on explicitly restarted current API, final import/coverage subset: 4 passed. Maximum pretty export 20x500 with full IDs/numbers exceeded 6 MiB, so UI limit corrected to 8 MiB with a regression test; HTTP normalized body remains bounded to 8 MiB. Final CSS heading/font tokens corrected after visual review. Desktop/mobile screenshots refreshed, synthetic import preview not submitted, demo session deleted (204). SQLite CLI backup/verify/restore smoke passed on isolated batch03.db, schema 0004/rawCount0, no working DB switch; retention dry-run 0 deletions. B03 10/10; 40/92 done, approximately 40 percent automated MVP, D1/30. T006/T013 now explicitly blocked on GitHub access/remote run and original source captures; real adapters/PG/production gates remain open. Preview 5183/API8003, API session 38488/PID18244, frontend session24508; all commits local, push unconfirmed."
+        }
+      ],
       "blockedReason": null
     }
   ]

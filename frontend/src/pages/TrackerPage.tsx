@@ -6,6 +6,7 @@ import { ScenarioExplanation } from '../components/ScenarioExplanation';
 import { HistoryComparison } from '../components/HistoryComparison';
 import { WatchComparison } from '../components/WatchComparison';
 import { ImportData } from '../components/ImportData';
+import { CoverageSummary } from '../components/CoverageSummary';
 import { downloadExport } from '../lib/download';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
@@ -147,6 +148,7 @@ export default function TrackerPage() {
     {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
+    <CoverageSummary />
     <ImportData count={count} disabled={busy || expired || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />
     {!watches.isError && watches.data && <WatchComparison watches={watches.data} />}
     <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">

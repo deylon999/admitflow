@@ -83,6 +83,16 @@ class ImportResult(CamelModel):
     replayed: bool = False
 
 
+class CoverageRead(CamelModel):
+    catalog_universities: int = Field(ge=0)
+    automatic_sources: int = Field(ge=0)
+    published_groups: int = Field(ge=0)
+    fresh_groups: int = Field(ge=0)
+    archive_groups: int = Field(ge=0)
+    national_total: None
+    generated_at: datetime
+
+
 class HistoryPage(CamelModel):
     items: list[SnapshotRead]
     next_cursor: str | None

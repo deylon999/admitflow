@@ -127,7 +127,7 @@
 
 ### T006. Настроить CI для проверяемого checkout
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T003, T005.
 
@@ -147,6 +147,9 @@
 **Доказательства:**
 
 - [.github/workflows/ci.yml](../.github/workflows/ci.yml) — Конфигурация подготовлена; удалённого запуска нет, задача не закрыта.
+- [docs/LOG.md](../docs/LOG.md) — S036/S046: external prerequisite rechecked; concrete resumption condition recorded.
+
+**Причина блокировки/переноса:** GitHub:443 remains unreachable in B03 (git ls-remote failed). Resume after repository access and a successful remote workflow for the tested SHA.
 
 ### T007. Закрепить шрифты и дизайн-токены
 
@@ -342,7 +345,7 @@
 
 ### T013. Подготовить реальные и негативные fixtures
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T010, T011, T083.
 
@@ -361,7 +364,9 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S036/S046: external prerequisite rechecked; concrete resumption condition recorded.
+
+**Причина блокировки/переноса:** Original pilot list bytes unavailable: real capture returned network_error, SGU page timed out and SGUPS profile cache missed. Resume after verified original capture bundles and anonymized real fixtures; capture CLI alone is not a fixture.
 
 ### T083. Получать проверяемый пакет исходных страниц пилота
 
@@ -1413,7 +1418,7 @@
 
 ### T092. Показывать фактическое покрытие источников
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T012, T076, T080.
 
@@ -1432,7 +1437,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S046 / B03 10/10: Coverage API/UI separates catalog size from attested enabled automatic sources with group rules and complete published versions. National denominator is unknown/null, archive is never fresh, request failure is not zero. Backend coverage subset 2 passed; final full pytest: 188 passed / 1 real PostgreSQL skipped; frontend: 62 passed and build exit 0; full Chromium E2E: 24 passed on explicitly restarted current API, final import/coverage subset: 4 passed. Maximum pretty export 20x500 with full IDs/numbers exceeded 6 MiB, so UI limit corrected to 8 MiB with a regression test; HTTP normalized body remains bounded to 8 MiB. Final CSS heading/font tokens corrected after visual review. Desktop/mobile screenshots refreshed, synthetic import preview not submitted, demo session deleted (204). SQLite CLI backup/verify/restore smoke passed on isolated batch03.db, schema 0004/rawCount0, no working DB switch; retention dry-run 0 deletions. B03 10/10; 40/92 done, approximately 40 percent automated MVP, D1/30. T006/T013 now explicitly blocked on GitHub access/remote run and original source captures; real adapters/PG/production gates remain open. Preview 5183/API8003, API session 38488/PID18244, frontend session24508; all commits local, push unconfirmed.
 
 ## E5. Качество и эксплуатация
 

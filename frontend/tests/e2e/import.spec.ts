@@ -18,7 +18,7 @@ test('новая сессия импортирует реальную выгру
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
   await page.getByText('Восстановить из JSON', { exact: true }).click();
-  const file = page.getByLabel('Файл выгрузки, до 6 МБ');
+  const file = page.getByLabel('Файл выгрузки, до 8 МБ');
   await file.setInputFiles(upload(exported));
   await expect(page.getByText('Найдено направлений: 1; сохранений: 2.')).toBeVisible();
   expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
@@ -53,11 +53,11 @@ test('невалидный или слишком большой файл не о
   page.on('request', request => { if (request.url().endsWith('/api/v1/import')) requests++; });
   await page.goto('/tracker');
   await page.getByText('Восстановить из JSON', { exact: true }).click();
-  const file = page.getByLabel('Файл выгрузки, до 6 МБ');
+  const file = page.getByLabel('Файл выгрузки, до 8 МБ');
   const invalid = { ...bundle, watches: [{ ...bundle.watches[0], latest: { ...fixture.latest, calculation: { ...fixture.latest.calculation, place: 1 } } }] };
   await file.setInputFiles(upload(invalid));
   await expect(page.getByRole('alert')).toContainText('корректную выгрузку');
-  await file.setInputFiles({ name: 'large.json', mimeType: 'application/json', buffer: Buffer.alloc(6 * 1024 * 1024 + 1) });
-  await expect(page.getByRole('alert')).toContainText('больше 6 МБ');
+  await file.setInputFiles({ name: 'large.json', mimeType: 'application/json', buffer: Buffer.alloc(8 * 1024 * 1024 + 1) });
+  await expect(page.getByRole('alert')).toContainText('больше 8 МБ');
   expect(requests).toBe(0);
 });

@@ -12,6 +12,7 @@ Host должен входить в ALLOWED_HOSTS (точные имена бе�
 
 - POST assess: внешний state ready/insufficient_data/unsupported. Неизвестные версии, automatic и archive без аттестации не содержат result. Ручной ready содержит только условный расчёт; это не вероятность. Общие случаи — shared/assessment-cases.json.
 - GET sources/{id}/status: публичная ограниченная диагностика зарегистрированного источника, без строк участников/raw/хешей. Отдельные season/dataKind, lastCheckedAt, lastSuccessfulCheckAt, fetchedAt и sourceUpdatedAt (null, если неизвестно). assessmentAvailable=false: диагностика сама по себе не является расчётом. Неизвестный source — 404.
+- GET coverage: catalogUniversities отдельно от automaticSources; publishedGroups/freshGroups/archiveGroups только для включённых источников аттестованной версии, automatic coverage группы и ненулевой rules_version. Снимок должен быть complete и той же parser version с normalized hash. Свежая группа требует fresh у всех её usable источников; архивная — archive у всех. nationalTotal=null, национальный процент не вычисляется. Начальный production registry даёт 2 вуза / 0 автоисточников, ошибка endpoint не подменяется нулём в UI.
 
 - POST/GET/DELETE session: создание, expiry, явное удаление. После 401 нельзя автоматически повторять создание или запись. Cookie Path=/api, HttpOnly, SameSite=Lax.
 - GET universities?q=: items/total, максимум 50, только manual coverage в текущей версии. Всего в стартовом наборе 2 исследованных вуза.

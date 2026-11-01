@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { importKey, parseImportText } from '../src/lib/import';
+import { importKey, MAX_IMPORT_FILE_BYTES, parseImportText } from '../src/lib/import';
 import { parseImportResult } from '../src/lib/contracts';
 
 const bundle = { formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, history: [fixture.latest] }] };
@@ -17,4 +17,21 @@ it('validates file contents and uses a stable key for an unchanged export', asyn
 it('rejects impossible import result counts', () => {
   expect(parseImportResult({ importedCount: 1, snapshotCount: 500, replayed: true }).replayed).toBe(true);
   for (const row of [{ importedCount: 0, snapshotCount: 1, replayed: false }, { importedCount: 1, snapshotCount: 501, replayed: false }, { importedCount: 1, snapshotCount: 1, replayed: 'false' }]) expect(() => parseImportResult(row)).toThrow();
+});
+
+it('accepts its own maximum-count pretty export with full-length IDs and numbers', () => {
+  const watches = Array.from({ length: 20 }, (_, watch) => {
+    const history = Array.from({ length: 500 }, (_, snapshot) => ({ ...fixture.latest,
+      id: `${String(watch).padStart(8, '0')}-0000-0000-0000-${String(500-snapshot).padStart(12, '0')}`,
+      capturedAt: '2026-11-01T00:00:00.123456+00:00',
+      values: { rank: 1_000_000, seats: 1_000_000, excluded: 0, noConsent: 0 },
+      calculation: { ...fixture.latest.calculation, place: 1_000_000, worstPlace: 1_000_000, seats: 1_000_000 },
+    }));
+    return { ...fixture, id: `watch-${watch}`, latest: history[0], history };
+  });
+  const text = JSON.stringify({ ...bundle, watches }, null, 2);
+  const size = new TextEncoder().encode(text).byteLength;
+  expect(size).toBeGreaterThan(6 * 1024 * 1024);
+  expect(size).toBeLessThan(MAX_IMPORT_FILE_BYTES);
+  expect(parseImportText(text).watches).toHaveLength(20);
 });

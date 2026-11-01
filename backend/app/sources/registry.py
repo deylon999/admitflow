@@ -21,6 +21,10 @@ class Registry:
         if len(self._adapters) != len(adapters):
             raise ValueError('duplicate_adapter_version')
 
+    @property
+    def attested_versions(self):
+        return tuple(version for version,adapter in self._adapters.items() if adapter.attested)
+
     def resolve(self, binding: SourceBinding, *, allow_unattested=False) -> Adapter:
         if not binding.enabled:
             raise AdapterError('source_disabled')
