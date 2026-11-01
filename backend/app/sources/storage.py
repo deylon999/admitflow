@@ -1,5 +1,6 @@
 """Private content-addressed store. Never mount this directory under a web root."""
 import hashlib
+import math
 import os
 import re
 import tempfile
@@ -24,6 +25,17 @@ class StorageError(Exception):
         super().__init__(code)
 
 
+@contextmanager
+def thread_lock(state, deadline):
+    remaining=max(0,deadline-time.monotonic())
+    if not state.lock.acquire(timeout=remaining):
+        raise StorageError('raw_lock_timeout')
+    try:
+        yield
+    finally:
+        state.lock.release()
+
+
 class RawStore:
     def __init__(self, root: str | Path, max_bytes=5*1024*1024):
         if max_bytes < 1:
@@ -32,12 +44,15 @@ class RawStore:
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)
         self.max_bytes = max_bytes
         with _states_guard:
-            self._lock_state = _states.setdefault(str(self.root),LockState())
+            self._lock_state = _states.setdefault(os.path.normcase(str(self.root)),LockState())
 
     @contextmanager
     def locked(self, timeout=10):
+        if not isinstance(timeout,(int,float)) or not math.isfinite(timeout) or timeout<0:
+            raise ValueError('invalid_lock_timeout')
+        deadline=time.monotonic()+timeout
         state = self._lock_state
-        with state.lock:
+        with thread_lock(state,deadline):
             if state.depth:
                 state.depth += 1
                 try:
@@ -53,7 +68,6 @@ class RawStore:
             try:
                 if os.fstat(descriptor).st_size == 0:
                     os.write(descriptor,b'0')
-                deadline = time.monotonic()+timeout
                 while True:
                     try:
                         os.lseek(descriptor,0,os.SEEK_SET)
@@ -68,22 +82,24 @@ class RawStore:
                     except OSError:
                         if time.monotonic()>=deadline:
                             raise StorageError('raw_lock_timeout') from None
-                        time.sleep(0.02)
+                        time.sleep(min(0.02,max(0,deadline-time.monotonic())))
                 state.depth = 1
                 try:
                     yield
                 finally:
                     state.depth = 0
             finally:
-                if acquired:
-                    if os.name == 'nt':
-                        import msvcrt
-                        os.lseek(descriptor,0,os.SEEK_SET)
-                        msvcrt.locking(descriptor,msvcrt.LK_UNLCK,1)
-                    else:
-                        import fcntl
-                        fcntl.flock(descriptor,fcntl.LOCK_UN)
-                os.close(descriptor)
+                try:
+                    if acquired:
+                        if os.name == 'nt':
+                            import msvcrt
+                            os.lseek(descriptor,0,os.SEEK_SET)
+                            msvcrt.locking(descriptor,msvcrt.LK_UNLCK,1)
+                        else:
+                            import fcntl
+                            fcntl.flock(descriptor,fcntl.LOCK_UN)
+                finally:
+                    os.close(descriptor)
 
     def _path(self, digest):
         if not isinstance(digest,str) or not re.fullmatch(r'[a-f0-9]{64}',digest):
