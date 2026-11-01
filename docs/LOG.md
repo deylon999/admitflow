@@ -698,3 +698,7 @@ pytest test_pg_support.py/test_migrations.py21 passed/7 actual PG skipped. Upgra
 ## S126 - 2026-11-01 - B09 2/5 (T165)
 
 Guard subprocess regressions8 passed; full collection301 tests succeeds. Actual pytest --require-postgres tests/test_migrations.py exits4 with missing disposable PG configuration, rather than green skipped checks. Guard also rejects filtered native cases and teardown skips. CI now requests mandatory PG and JUnit artifact; remote workflow remains unrun/T006 blocked.
+
+## S127 - 2026-11-01 - B09 3/5 (T166)
+
+Database diagnostic regressions5 passed: actual SQLite counts/read-only rejection, Unicode path, missing file not created, restore marker refusal, legacy/future revision and credential redaction. Real CLI on isolated batch08.db returns revision_current/sqlite/0004 and aggregate counts only. No migrations/repair/session cleanup. PG read-only repeatable-read SQL documented from primary docs, execution unverified.

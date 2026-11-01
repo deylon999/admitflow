@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 112 из 168 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 113 из 168 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -177,7 +177,7 @@
 - [x] T137 Bound JSON response consumption in the browser
 - [x] T164 Isolate every PostgreSQL migration test
 - [x] T165 Fail mandatory CI checks when PostgreSQL tests are absent or skipped
-- [ ] T166 Provide read-only redacted database diagnostics
+- [x] T166 Provide read-only redacted database diagnostics
 - [ ] T167 Prepare the Compose worker and shared raw volume
 - [ ] T168 Verify the compiled React application in the browser
 
