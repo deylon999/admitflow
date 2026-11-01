@@ -1,9 +1,21 @@
 from datetime import datetime
-from typing import Literal
+from typing import Annotated, Literal
+import re
 
-from pydantic import Field, HttpUrl, field_validator
+from pydantic import AwareDatetime, BeforeValidator, Field, HttpUrl, field_validator
 
 from .calculation import CalculationInput, CalculationResult, CamelModel
+
+
+def manual_timestamp(value):
+    if isinstance(value, datetime):
+        return value
+    if not isinstance(value,str) or not re.fullmatch(r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})',value):
+        raise ValueError('Требуется ISO-дата с часовым поясом и точностью до микросекунд.')
+    return value
+
+
+ManualTimestamp = Annotated[AwareDatetime, BeforeValidator(manual_timestamp)]
 
 
 class ValidationProblem(CamelModel):
@@ -41,7 +53,7 @@ class WatchCreate(CamelModel):
 
 
 class SessionRead(CamelModel):
-    expires_at: datetime
+    expires_at: ManualTimestamp
 
 
 class UniversityRead(CamelModel):
@@ -60,7 +72,7 @@ class CatalogRead(CamelModel):
 
 class SnapshotRead(CamelModel):
     id: str
-    captured_at: datetime
+    captured_at: ManualTimestamp
     source_kind: Literal['manual']
     model_version: str
     values: CalculationInput
@@ -72,7 +84,7 @@ class WatchRead(CamelModel):
     university: str
     title: str
     source_url: str
-    created_at: datetime
+    created_at: ManualTimestamp
     latest: SnapshotRead
 
 
@@ -82,7 +94,7 @@ class WatchDetail(WatchRead):
 
 class DataExport(CamelModel):
     format_version: Literal['manual-export-v1'] = 'manual-export-v1'
-    exported_at: datetime
+    exported_at: ManualTimestamp
     watches: list[WatchDetail] = Field(max_length=20)
 
 

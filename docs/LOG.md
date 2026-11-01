@@ -503,3 +503,7 @@ Manual list and full export batch snapshots instead of one query per watch; boun
 ## S083 - 2026-11-01 - B06 7/20 (T125)
 
 Equal-time updates retain exact observed time and use increasing UUID tie-breaks, becoming latest deterministically. Backward clock refuses409 atomically; DATA_RULES updated, formula unchanged. Clock/API15 passed after correcting a nonexistent test filename.
+
+## S084 - 2026-11-01 - B06 8/20 (T126)
+
+Manual DTO timestamps accept only explicit ISO timezone strings up to6fraction digits or aware internal datetimes; numeric/naive/coercible timestamps rejected422. Hardening/import/export32 passed; original timestamps remain unchanged.

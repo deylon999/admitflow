@@ -3807,7 +3807,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T090"
       ],
@@ -3821,7 +3821,12 @@
       "acceptance": [
         "Numeric/coercible timestamps and unsupported precision rejected; actual aware datetimes remain valid internally."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S084: Manual DTO timestamps accept only explicit ISO timezone strings up to6fraction digits or aware internal datetimes; numeric/naive/coercible timestamps rejected422. Hardening/import/export32 passed; original timestamps remain unchanged."
+        }
+      ],
       "blockedReason": null
     },
     {

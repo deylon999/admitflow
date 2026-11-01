@@ -40,3 +40,13 @@ def test_validation_errors_never_echo_input_or_unknown_keys(client):
     assert 'private' not in response.text and 'input' not in response.text and 'ctx' not in response.text
     schema=client.get('/api/openapi.json').json()
     assert schema['paths']['/api/v1/calculate']['post']['responses']['422']['content']['application/json']['schema']['$ref'].endswith('/ValidationProblem')
+
+
+@pytest.mark.parametrize('value',[1761955200,'2026-11-01T00:00:00','2026-11-01T00:00:00.1234567Z'])
+def test_import_requires_explicit_iso_timestamps(client,value):
+    start(client)
+    client.post('/api/v1/watches',json=WATCH,headers=HEADERS).raise_for_status()
+    bundle=client.get('/api/v1/export').json()
+    bundle['exportedAt']=value
+    response=client.post('/api/v1/import',json={'bundle':bundle},headers=HEADERS|{'Idempotency-Key':'timestamp-case'})
+    assert response.status_code==422 and len(client.get('/api/v1/watches').json())==1
