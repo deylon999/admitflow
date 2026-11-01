@@ -3389,7 +3389,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T016"
       ],
@@ -3403,7 +3403,12 @@
       "acceptance": [
         "Server expiry is shown without extending session; failure is not a fabricated date."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S069: Displays server-provided absolute guest expiry and original ISO value without sliding extension. Reset replaces cached deadline with new session info. Build and Chromium reload test passed; no fabricated date on error."
+        }
+      ],
       "blockedReason": null
     },
     {

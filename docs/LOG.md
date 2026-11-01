@@ -436,3 +436,7 @@ Inline confirmations focus the safe Cancel action, Escape cancels and restores t
 ## S068 - 2026-11-01 - B05 8/15 (T111)
 
 Cached cards and dirty form survive a background read error with original dates and explicit retry; initial failure and401 remain separate. Watches refetch on return to tab. Initial test revealed global focus refetch was disabled; enabled only watches. Chromium error/retry check passed.
+
+## S069 - 2026-11-01 - B05 9/15 (T112)
+
+Displays server-provided absolute guest expiry and original ISO value without sliding extension. Reset replaces cached deadline with new session info. Build and Chromium reload test passed; no fabricated date on error.

@@ -101,3 +101,17 @@ test('фоновая ошибка сохраняет карточки и отк�
   await page.getByRole('button', { name: 'Повторить обновление' }).click();
   await expect(page.locator('.stale-warning')).toHaveCount(0);
 });
+
+test('срок доступа берётся с сервера и не продлевается после reload', async ({ page }) => {
+  let starts = 0;
+  await page.route('**/api/v1/session', route => {
+    if (route.request().method() === 'POST') { starts++; return route.fulfill({ status: 204 }); }
+    return route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } });
+  });
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  await page.goto('/tracker');
+  await expect(page.locator('.session-deadline time')).toHaveAttribute('datetime', '2026-12-01T00:00:00Z');
+  await page.reload();
+  await expect(page.locator('.session-deadline time')).toHaveAttribute('datetime', '2026-12-01T00:00:00Z');
+  expect(starts).toBe(1);
+});

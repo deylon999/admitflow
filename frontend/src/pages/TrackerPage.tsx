@@ -172,6 +172,7 @@ export default function TrackerPage() {
   const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), staleTime: 0, refetchOnWindowFocus: true });
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
   const expired = access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: !expired, staleTime: Infinity });
   useEffect(() => {
     if (expired) { draftDirty.current = false; setForm(null); setConfirmReset(false); setNotice(''); }
   }, [expired]);
@@ -180,9 +181,10 @@ export default function TrackerPage() {
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
       await queryClient.cancelQueries({ queryKey: ['history'] });
-      await api.resetSession();
+      return api.resetSession();
     },
-    onSuccess: async () => {
+    onSuccess: async info => {
+      queryClient.setQueryData(['session-info'], info);
       queryClient.removeQueries({ queryKey: ['history'] });
       setForm(null);
       setConfirmReset(false);
@@ -197,6 +199,8 @@ export default function TrackerPage() {
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
+    {!expired && sessionInfo.data && <p className="small-copy session-deadline">Гостевой доступ до <time dateTime={sessionInfo.data.expiresAt} title={sessionInfo.data.expiresAt}>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(sessionInfo.data.expiresAt))}</time>. Открытие страницы не продлевает срок.</p>}
+    {!expired && sessionInfo.isError && <p className="small-copy">Не удалось проверить точную дату окончания доступа.</p>}
     <div className="tracker-data-actions"><button className="text-button" type="button" disabled={busy || !count} onClick={() => download.mutate()}>{download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}</button>
     {count > 0 && <button ref={resetButton} className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
     {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
