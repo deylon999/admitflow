@@ -1,11 +1,16 @@
 """Separate worker process. Production cannot execute unattested adapters."""
 import argparse
+import hashlib
 import json
+import math
 import multiprocessing
 import os
+from pathlib import Path
+import tempfile
 import time
+from typing import Literal
 
-from pydantic import ValidationError
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy.orm import Session
 
 from .admissions import Source
@@ -13,45 +18,93 @@ from .config import Settings
 from .database import make_engine
 from .jobs import LostLease, claim, clock, complete, fail, guard_lease
 from .sources.contracts import AdapterError
-from .sources.fetcher import FetchError, Fetcher, FetchPolicy
-from .sources.publishing import binding_from_db, publish
+from .sources.fetcher import FetchError, Fetcher, FetchPolicy, FetchResult
+from .sources.publishing import FETCH_CODES, binding_from_db, publish
 from .sources.registry import PRODUCTION_REGISTRY
 from .sources.storage import RawStore, StorageError
 from .sources.validation import Quarantined
 
 
-def _fetch_child(send,binding,domains):
+class FetchMetadata(BaseModel):
+    model_config=ConfigDict(extra='forbid')
+    state: Literal['ok']
+    url: str = Field(max_length=4096)
+    content_type: Literal['text/html','application/json','text/csv','text/plain']
+    payload_hash: str = Field(pattern='^[a-f0-9]{64}$')
+    fetched_at: AwareDatetime
+    charset: str | None = Field(max_length=100)
+    byte_count: int = Field(strict=True,ge=1,le=5*1024*1024)
+
+
+def _private_write(path,body):
+    with os.fdopen(os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600),'wb') as file:
+        file.write(body)
+
+
+def _fetch_child(folder,binding,domains):
+    folder=Path(folder)
     try:
         result=Fetcher(FetchPolicy(domains=domains)).fetch(binding.url)
-        send.send(('ok',result))
+        metadata=FetchMetadata(state='ok',url=result.url,content_type=result.content_type,payload_hash=result.payload_hash,fetched_at=result.fetched_at,charset=result.charset,byte_count=len(result.body))
+        _private_write(folder/'payload.bin',result.body)
+        message=metadata.model_dump(mode='json')
     except FetchError as error:
-        send.send(('error',error.code,error.retry_after))
+        message=dict(state='error',code=error.code,retryAfter=error.retry_after)
     except Exception:
-        send.send(('error','network_error',60))
-    finally:
-        send.close()
+        message=dict(state='error',code='network_error',retryAfter=60)
+    try:
+        _private_write(folder/'result.writing',json.dumps(message).encode())
+        (folder/'result.writing').rename(folder/'result.json')
+    except Exception:
+        # Parent sees a missing/incomplete envelope, never exception text or raw.
+        return
+
+
+def _read_fetch_result(folder):
+    try:
+        with (folder/'result.json').open('rb') as file:
+            payload=file.read(16385)
+        if len(payload)>16384:
+            raise ValueError()
+        message=json.loads(payload)
+        if not isinstance(message,dict):
+            raise ValueError()
+        if message.get('state')=='error':
+            if set(message)!={'state','code','retryAfter'} or message['code'] not in FETCH_CODES:
+                raise ValueError()
+            delay=message['retryAfter']
+            if delay is not None and (type(delay) is not int or not 30<=delay<=86400):
+                raise ValueError()
+            raise FetchError(message['code'],retry_after=delay)
+        metadata=FetchMetadata.model_validate(message)
+        with (folder/'payload.bin').open('rb') as file:
+            body=file.read(5*1024*1024+1)
+        if len(body)!=metadata.byte_count or hashlib.sha256(body).hexdigest()!=metadata.payload_hash:
+            raise ValueError()
+        return FetchResult(metadata.url,body,metadata.content_type,metadata.payload_hash,metadata.fetched_at,metadata.charset)
+    except FetchError:
+        raise
+    except (OSError,ValueError,TypeError,ValidationError):
+        raise FetchError('invalid_headers') from None
 
 
 def bounded_fetch(binding,domains,*,timeout=50):
-    # An OS resolver may ignore socket timeouts. Bound it in a disposable process.
+    # Wait for process exit, not a pipe prefix followed by an unbounded recv.
+    if not isinstance(timeout,(int,float)) or not math.isfinite(timeout) or timeout<=0:
+        raise ValueError('invalid_fetch_timeout')
+    deadline=time.monotonic()+timeout
     ctx=multiprocessing.get_context('spawn')
-    receive,send=ctx.Pipe(duplex=False)
-    process=ctx.Process(target=_fetch_child,args=(send,binding,domains),daemon=True)
+    folder=Path(tempfile.mkdtemp(prefix='admitflow-fetch-')).resolve()
+    process=ctx.Process(target=_fetch_child,args=(str(folder),binding,domains),daemon=True)
     try:
         process.start()
-        send.close()
-        if not receive.poll(timeout):
+        process.join(max(0,deadline-time.monotonic()))
+        if process.is_alive():
             raise FetchError('timeout',retry_after=60)
-        try:
-            result=receive.recv()
-        except EOFError:
-            raise FetchError('network_error',retry_after=60) from None
-        if result[0]=='error':
-            raise FetchError(result[1],retry_after=result[2])
-        return result[1]
+        if process.exitcode!=0:
+            raise FetchError('network_error',retry_after=60)
+        return _read_fetch_result(folder)
     finally:
-        send.close()
-        receive.close()
         if process.pid is not None:
             if process.is_alive():
                 process.terminate()
@@ -60,6 +113,10 @@ def bounded_fetch(binding,domains,*,timeout=50):
                 process.kill()
                 process.join(2)
             process.close()
+        # Only known files in the directory we created; no recursive deletion.
+        for name in ('payload.bin','result.writing','result.json'):
+            (folder/name).unlink(missing_ok=True)
+        folder.rmdir()
 
 
 def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now=clock,allow_unattested=False):
