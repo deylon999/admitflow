@@ -527,3 +527,7 @@ Fetch reader rejects duplicate critical headers and conflicting transfer framing
 ## S089 - 2026-11-01 - B06 13/20 (T131)
 
 Immutable fetch policy validates finite timeout up to30s, strict size up to5MiB, redirects0..5, exact lowercase DNS domains and supported content types before network. Fetcher/capture56 passed, including mutable sets, NaN, bool-as-int and wildcard/IP refusals.
+
+## S090 - 2026-11-01 - B06 14/20 (T132)
+
+Spool cleanup attempts all known files, logs only stable safe codes and never masks valid fetch/error outcome. Process cleanup remains bounded without closing a live process. Exchange/worker11 passed; corrected test assumption when an empty folder was already removed.

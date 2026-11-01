@@ -53,3 +53,26 @@ def test_large_completed_exchange_is_verified_and_malformed_result_rejected(tmp_
             with pytest.raises(FetchError,match='invalid_headers'):
                 bounded_fetch(BINDING,frozenset({'example.org'}))
         assert not folder.exists()
+
+
+def test_cleanup_failure_does_not_mask_fetch_outcome_or_reveal_paths(tmp_path,monkeypatch,caplog):
+    for child,valid in [(valid_child,True),(malformed_child,False)]:
+        folder=tmp_path/child.__name__
+        folder.mkdir()
+        original=Path.unlink
+        def denied(path,*args,**kwargs):
+            if path==folder/'payload.bin': raise PermissionError('private path credential')
+            return original(path,*args,**kwargs)
+        with monkeypatch.context() as patch:
+            patch.setattr('app.worker.tempfile.mkdtemp',lambda **_:str(folder))
+            patch.setattr('app.worker._fetch_child',child)
+            patch.setattr(Path,'unlink',denied)
+            if valid:
+                assert len(bounded_fetch(BINDING,frozenset({'example.org'})).body)==1024*1024
+            else:
+                with pytest.raises(FetchError,match='invalid_headers'):
+                    bounded_fetch(BINDING,frozenset({'example.org'}))
+        assert not (folder/'result.json').exists()
+        assert 'fetch_cleanup_incomplete' in caplog.text and 'private path' not in caplog.text
+        (folder/'payload.bin').unlink(missing_ok=True)
+        if folder.exists(): folder.rmdir()

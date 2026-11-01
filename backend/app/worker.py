@@ -2,6 +2,7 @@
 import argparse
 import hashlib
 import json
+import logging
 import math
 import multiprocessing
 import os
@@ -88,6 +89,21 @@ def _read_fetch_result(folder):
         raise FetchError('invalid_headers') from None
 
 
+def cleanup_fetch_folder(folder):
+    incomplete = False
+    for name in ('payload.bin','result.writing','result.json'):
+        try:
+            (folder/name).unlink(missing_ok=True)
+        except OSError:
+            incomplete = True
+    try:
+        folder.rmdir()
+    except OSError:
+        incomplete = True
+    if incomplete:
+        logging.getLogger('admitflow.worker').warning('fetch_cleanup_incomplete')
+
+
 def bounded_fetch(binding,domains,*,timeout=50):
     # Wait for process exit, not a pipe prefix followed by an unbounded recv.
     if not isinstance(timeout,(int,float)) or not math.isfinite(timeout) or timeout<=0:
@@ -105,18 +121,23 @@ def bounded_fetch(binding,domains,*,timeout=50):
             raise FetchError('network_error',retry_after=60)
         return _read_fetch_result(folder)
     finally:
-        if process.pid is not None:
-            if process.is_alive():
-                process.terminate()
-            process.join(2)
-            if process.is_alive():
-                process.kill()
+        try:
+            if process.pid is not None:
+                if process.is_alive():
+                    process.terminate()
                 process.join(2)
-            process.close()
-        # Only known files in the directory we created; no recursive deletion.
-        for name in ('payload.bin','result.writing','result.json'):
-            (folder/name).unlink(missing_ok=True)
-        folder.rmdir()
+                if process.is_alive():
+                    process.kill()
+                    process.join(2)
+                if not process.is_alive():
+                    process.close()
+                else:
+                    logging.getLogger('admitflow.worker').warning('fetch_process_cleanup_incomplete')
+        except (OSError, ValueError):
+            logging.getLogger('admitflow.worker').warning('fetch_process_cleanup_incomplete')
+        finally:
+            # Only known files in the directory we created; no recursive deletion.
+            cleanup_fetch_folder(folder)
 
 
 def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now=clock,allow_unattested=False):

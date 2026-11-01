@@ -3975,7 +3975,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T100"
       ],
@@ -3989,7 +3989,12 @@
       "acceptance": [
         "Cleanup attempts every known file and emits only a safe diagnostic without masking original fetch errors."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S090: Spool cleanup attempts all known files, logs only stable safe codes and never masks valid fetch/error outcome. Process cleanup remains bounded without closing a live process. Exchange/worker11 passed; corrected test assumption when an empty folder was already removed."
+        }
+      ],
       "blockedReason": null
     },
     {
