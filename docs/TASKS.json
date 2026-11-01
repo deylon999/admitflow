@@ -2291,7 +2291,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T010",
         "T015",
@@ -2309,7 +2309,12 @@
         "Неподдержанный источник или версия отклоняется",
         "Нет публичного произвольного fetch и нет автоматической аттестации"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S029 / B02 4/10: Frozen strict adapter DTOs preserve unknowns and official order; HMAC identities scoped by source/group/year. Closed registry checks domain/version/enabled/attestation; production registry empty. First collection found incorrect fetcher helper import; replaced with static URL binding validation, DNS remains fetcher responsibility. pytest contract+fetcher: 39 passed / exit 0. Real adapters remain unattested."
+        }
+      ],
       "blockedReason": null
     },
     {
