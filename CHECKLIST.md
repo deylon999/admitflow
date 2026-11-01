@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 67 из 138 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 68 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -146,7 +146,7 @@
 - [x] T101 Не перезаписывать назначение при конкурентном restore
 - [x] T118 Reject readiness when database revision is incompatible
 - [x] T120 Reject ambiguous JSON request documents
-- [ ] T121 Bound and redact validation error responses
+- [x] T121 Bound and redact validation error responses
 - [ ] T122 Fail closed on invalid environment and production settings
 - [ ] T123 Bound PostgreSQL connection establishment
 - [ ] T137 Bound JSON response consumption in the browser

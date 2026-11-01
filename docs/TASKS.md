@@ -2797,7 +2797,7 @@
 
 ### T121. Bound and redact validation error responses
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T086.
 
@@ -2815,7 +2815,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S079: Validation422 returns at most20 redacted field paths, no input/context or unknown key values, with matching OpenAPI schema. Targeted hardening/API/body-budget32 passed.
 
 ### T122. Fail closed on invalid environment and production settings
 

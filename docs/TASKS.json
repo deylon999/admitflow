@@ -3667,7 +3667,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T086"
       ],
@@ -3681,7 +3681,12 @@
       "acceptance": [
         "Validation responses expose no input/context values and contain a bounded error summary."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S079: Validation422 returns at most20 redacted field paths, no input/context or unknown key values, with matching OpenAPI schema. Targeted hardening/API/body-budget32 passed."
+        }
+      ],
       "blockedReason": null
     },
     {

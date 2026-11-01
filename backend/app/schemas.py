@@ -6,6 +6,12 @@ from pydantic import Field, HttpUrl, field_validator
 from .calculation import CalculationInput, CalculationResult, CamelModel
 
 
+class ValidationProblem(CamelModel):
+    detail: str
+    fields: list[list[str | int]] = Field(max_length=20)
+    truncated: bool
+
+
 class WatchCreate(CamelModel):
     university: str = Field(min_length=1, max_length=160)
     title: str = Field(min_length=1, max_length=200)

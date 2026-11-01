@@ -483,3 +483,7 @@ Reject C0/DEL controls before Pydantic URL normalization; client form/import con
 ## S078 - 2026-11-01 - B06 2/20 (T120)
 
 Request JSON rejects duplicate keys, NaN/Infinity/overflow and depth over64 before writes, preserving normal malformed-JSON validation. Brackets inside strings remain valid. Targeted hardening14 passed; existing8MiB receive budget preserved.
+
+## S079 - 2026-11-01 - B06 3/20 (T121)
+
+Validation422 returns at most20 redacted field paths, no input/context or unknown key values, with matching OpenAPI schema. Targeted hardening/API/body-budget32 passed.

@@ -7,6 +7,8 @@ from contextlib import suppress
 from datetime import datetime, timedelta, timezone
 
 from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from sqlalchemy import and_, delete, func, or_, select, text
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
@@ -18,7 +20,7 @@ from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, CoverageRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus
+from .schemas import CatalogRead, CoverageRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus, ValidationProblem
 from .coverage import coverage
 from .importing import import_bundle
 from .sources.status import source_status
@@ -70,8 +72,16 @@ def create_app(settings: Settings | None = None):
                 await cleanup
             engine.dispose()
 
-    app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None)
+    app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None, responses={422: {'model': ValidationProblem}})
     app.state.engine = engine
+
+    @app.exception_handler(RequestValidationError)
+    async def validation_error(_, error):
+        safe_names = {'body','path','query','header','cookie','bundle','watches','history','latest','values','rank','seats','excluded','noConsent','no_consent','university','title','sourceUrl','source_url','createdAt','created_at','capturedAt','captured_at','exportedAt','exported_at','formatVersion','format_version','calculation','modelVersion','model_version','sourceKind','source_kind','id','before','limit','q','watch_id','mode'}
+        errors = error.errors()
+        locations = [[part if type(part) is int and 0 <= part <= 10000 else part if isinstance(part,str) and part in safe_names else 'field' for part in item.get('loc',())[:12]] for item in errors[:20]]
+        problem = ValidationProblem(detail='Проверьте формат и значения запроса.',fields=locations,truncated=len(errors)>20)
+        return JSONResponse(problem.model_dump(by_alias=True),status_code=422)
     app.add_middleware(RequestBudgetMiddleware)
     app.add_middleware(TrustedHostMiddleware, allowed_hosts=list(config.allowed_hosts), www_redirect=False)
 
