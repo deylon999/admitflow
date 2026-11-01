@@ -4870,7 +4870,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T160",
         "T161"
@@ -4885,7 +4885,12 @@
       "acceptance": [
         "Real API reload recovery and lost-response retry create no duplicates and preserve original owner boundaries."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S122: Three real-API Chromium cases passed: lost create and update responses are committed, browser reloaded, explicit restore retries exactly the stored key without extra watch/snapshot; update replay preserves an intervening newer snapshot. Cookie owner replaced without storage event yields no old preview or stored record. No mocked success or inferred owner isolation."
+        }
+      ],
       "blockedReason": null
     },
     {

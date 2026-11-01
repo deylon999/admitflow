@@ -1,5 +1,75 @@
 import { expect, test } from '@playwright/test';
 
+for (const mode of ['create', 'update']) test(`reload after a lost ${mode} response reuses its stored key without duplicating history`, async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+  const values = { rank: 10, seats: 20, excluded: 0, noConsent: 0 };
+  let watchId: string | undefined;
+  if (mode === 'update') {
+    const watch = await (await page.request.post('/api/v1/watches', { headers: { 'X-Requested-With': 'abiturient' }, data: { university: 'Retry owner', title: 'Retry group', sourceUrl: 'https://example.org/list', values } })).json();
+    watchId = watch.id;
+    await page.reload();
+    await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
+    await page.getByLabel('Ваш номер в списке').fill('11');
+  } else {
+    await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+    await page.getByLabel('Вуз', { exact: true }).fill('Retry owner');
+    await page.getByLabel('Направление и конкурсная группа').fill('Retry group');
+    await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
+    await page.getByLabel('Ваш номер в списке').fill('10');
+    await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
+  }
+  const pattern = mode === 'update' ? '**/api/v1/watches/*/snapshots' : '**/api/v1/watches';
+  let originalKey: string | undefined;
+  await page.route(pattern, async route => {
+    if (route.request().method() !== 'POST') return route.continue();
+    originalKey = route.request().headers()['idempotency-key'];
+    expect((await route.fetch()).status()).toBe(201);
+    await route.abort('failed');
+  });
+  const saveLabel = mode === 'update' ? 'Сохранить обновление' : 'Сохранить направление';
+  await page.getByRole('button', { name: saveLabel, exact: true }).click();
+  await expect(page.getByRole('alert')).toContainText('Не удалось связаться');
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('admitflow-draft-v1')!).intent.key)).toBe(originalKey);
+  await page.unroute(pattern);
+  if (watchId) expect((await page.request.post(`/api/v1/watches/${watchId}/snapshots`, { headers: { 'X-Requested-With': 'abiturient' }, data: { ...values, rank: 12 } })).status()).toBe(201);
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  await page.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
+  let retryKey: string | undefined;
+  await page.route(pattern, async route => {
+    if (route.request().method() === 'POST') retryKey = route.request().headers()['idempotency-key'];
+    await route.continue();
+  });
+  await page.getByRole('button', { name: saveLabel, exact: true }).click();
+  await expect(page.locator('.direction-form')).toHaveCount(0);
+  expect(retryKey).toBe(originalKey);
+  const saved = await (await page.request.get('/api/v1/export')).json();
+  expect(saved.watches).toHaveLength(1);
+  expect(saved.watches[0].history).toHaveLength(mode === 'update' ? 3 : 1);
+  expect(saved.watches[0].latest.values.rank).toBe(mode === 'update' ? 12 : 10);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+});
+
+test('a cookie owner replacement without a storage event cannot restore the previous draft', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Previous owner secret');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  const previousScope = await page.evaluate(() => JSON.parse(sessionStorage.getItem('admitflow-draft-v1')!).scope);
+  await page.request.delete('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
+  await page.request.post('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
+  expect((await (await page.request.get('/api/v1/session')).json()).draftScope).not.toBe(previousScope);
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Есть несохранённый черновик' })).toHaveCount(0);
+  await expect(page.locator('body')).not.toContainText('Previous owner secret');
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+});
+
 test('expired local draft disappears without extending its lifetime', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');

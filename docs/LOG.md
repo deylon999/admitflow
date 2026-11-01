@@ -670,3 +670,7 @@ Backend expected_snapshot/writes10 passed; Playwright draft-recovery4 passed on 
 ## S121 - 2026-11-01 - B08 8/10 (T161)
 
 Playwright recovery/session-tabs8 passed plus expanded successful-save/cancel case1 passed. TTL expiry removes record without reading renewal;401 and cross-tab reset clear local state before explicit resync; success/cancel leave no record. Form and recovery timers bounded by original expiry; session-info cancellation added to reset. Data policy documents plaintext tab-local limits and suspended-timer caveat.
+
+## S122 - 2026-11-01 - B08 9/10 (T162)
+
+Three real-API Chromium cases passed: lost create and update responses are committed, browser reloaded, explicit restore retries exactly the stored key without extra watch/snapshot; update replay preserves an intervening newer snapshot. Cookie owner replaced without storage event yields no old preview or stored record. No mocked success or inferred owner isolation.
