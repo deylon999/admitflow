@@ -5,6 +5,7 @@ import { UniversityPicker } from '../components/UniversityPicker';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
 import { HistoryComparison } from '../components/HistoryComparison';
 import { WatchComparison } from '../components/WatchComparison';
+import { ImportData } from '../components/ImportData';
 import { downloadExport } from '../lib/download';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
@@ -146,6 +147,7 @@ export default function TrackerPage() {
     {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
+    <ImportData count={count} disabled={busy || expired || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />
     {!watches.isError && watches.data && <WatchComparison watches={watches.data} />}
     <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}

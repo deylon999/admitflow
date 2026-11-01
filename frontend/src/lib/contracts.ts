@@ -10,6 +10,7 @@ export type University = { id: string; name: string; officialUrl: string; proven
 export type Catalog = { items: University[]; total: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
 export type HistoryPage = { items: Snapshot[]; nextCursor: string | null };
+export type ImportResult = { importedCount: number; snapshotCount: number; replayed: boolean };
 
 export class InvalidResponseError extends Error {
   constructor() { super('Сервер вернул некорректные данные. Расчёт не показан — попробуйте обновить страницу.'); }
@@ -98,6 +99,15 @@ export function parseExport(value: unknown): DataExport {
 }
 export function parseSession(value: unknown): SessionInfo {
   return { expiresAt: timestamp(object(value).expiresAt) };
+}
+export function parseImportResult(value: unknown): ImportResult {
+  const row = object(value);
+  const count = row.importedCount;
+  const snapshots = row.snapshotCount;
+  if (typeof count !== 'number' || !Number.isInteger(count) || count < 1 || count > 20
+    || typeof snapshots !== 'number' || !Number.isInteger(snapshots) || snapshots < count || snapshots > count * 500
+    || typeof row.replayed !== 'boolean') throw new InvalidResponseError();
+  return { importedCount: count, snapshotCount: snapshots, replayed: row.replayed };
 }
 export function parseCatalog(value: unknown): Catalog {
   const row = object(value);

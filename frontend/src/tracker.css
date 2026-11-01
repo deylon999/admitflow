@@ -110,3 +110,7 @@ button:disabled { cursor: wait; opacity: .55; }
 .watch-comparison caption { text-align: left; font-weight: 600; margin-bottom: 12px; }
 .comparison-scroll-hint { display: none; }
 @media (max-width: 600px) { .comparison-scroll-hint { display: block; margin-bottom: 12px; } }
+.import-data { padding: 20px 24px; margin-bottom: 24px; }
+.import-data summary { cursor: pointer; font-weight: 600; }
+.import-data p { margin: 16px 0; }
+.import-data input[type="file"] { max-width: 100%; }
