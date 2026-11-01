@@ -572,3 +572,7 @@ User requested15 tasks. Git clean at c27e851; roadmap valid138. Docker Engine/co
 ## S098 - 2026-11-01 - B07 1/15 (T139)
 
 npm test -- tests/json.test.ts tests/import.test.ts:7 passed. Strict structural parser rejects decoded duplicate keys, depth65, nonfinite and malformed tokens; valid escaped strings and maximum-count exports preserved. Files frontend/src/lib/json.ts, import.ts and tests/json.test.ts.
+
+## S099 - 2026-11-01 - B07 2/15 (T140)
+
+npm test -- tests/import.test.ts:5 passed. Fatal UTF-8 byte decoding rejects malformed, truncated and surrogate encodings; valid Cyrillic and BOM roundtrip. ImportData uses arrayBuffer rather than lossy File.text.

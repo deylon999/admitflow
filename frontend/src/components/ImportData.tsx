@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
-import { importKey, MAX_IMPORT_FILE_BYTES, parseImportText } from '../lib/import';
+import { decodeImportBytes, importKey, MAX_IMPORT_FILE_BYTES, parseImportText } from '../lib/import';
 import type { DataExport, ImportResult } from '../lib/contracts';
 
 export function ImportData({ count, disabled, onDone }: { count: number; disabled: boolean; onDone: (result: ImportResult) => void }) {
@@ -35,7 +35,7 @@ export function ImportData({ count, disabled, onDone }: { count: number; disable
     if (file.size > MAX_IMPORT_FILE_BYTES) { setError('Файл больше 8 МБ. Выберите выгрузку меньшего размера.'); return; }
     setReading(true);
     try {
-      const bundle = parseImportText(await file.text());
+      const bundle = parseImportText(decodeImportBytes(await file.arrayBuffer()));
       const key = await importKey(bundle);
       if (selection.current === version) setPrepared({ bundle, key });
     } catch (error) {

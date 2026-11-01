@@ -5,6 +5,11 @@ import { parseStrictJson } from './json';
 
 export const MAX_IMPORT_FILE_BYTES = 8 * 1024 * 1024;
 
+export function decodeImportBytes(bytes: ArrayBuffer): string {
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+  catch { throw new Error('Файл должен содержать корректный UTF-8. Скачайте выгрузку заново.'); }
+}
+
 export function parseImportText(text: string, nowMillis = Date.now()): DataExport {
   let data: DataExport;
   try { data = parseExport(parseStrictJson(text)); }

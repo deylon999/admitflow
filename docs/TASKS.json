@@ -4230,7 +4230,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T091"
       ],
@@ -4244,7 +4244,12 @@
       "acceptance": [
         "Invalid bytes cannot silently replace names; BOM and valid Unicode exports remain readable."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S099: npm test -- tests/import.test.ts:5 passed. Fatal UTF-8 byte decoding rejects malformed, truncated and surrogate encodings; valid Cyrillic and BOM roundtrip. ImportData uses arrayBuffer rather than lossy File.text."
+        }
+      ],
       "blockedReason": null
     },
     {

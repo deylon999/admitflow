@@ -1,9 +1,15 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { importKey, MAX_IMPORT_FILE_BYTES, parseImportText } from '../src/lib/import';
+import { decodeImportBytes, importKey, MAX_IMPORT_FILE_BYTES, parseImportText } from '../src/lib/import';
 import { parseImportResult } from '../src/lib/contracts';
 
 const bundle = { formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, history: [fixture.latest] }] };
+
+it('decodes valid UTF-8 and BOM without silently repairing broken bytes', () => {
+  const text = JSON.stringify(bundle);
+  expect(parseImportText(decodeImportBytes(new TextEncoder().encode('\ufeff' + text).buffer))).toEqual(parseImportText(text));
+  for (const bytes of [[0xc3, 0x28], [0xf0, 0x9f], [0xed, 0xa0, 0x80]]) expect(() => decodeImportBytes(new Uint8Array(bytes).buffer)).toThrow('UTF-8');
+});
 
 it('validates file contents and uses a stable key for an unchanged export', async () => {
   const parsed = parseImportText(JSON.stringify(bundle));
