@@ -39,3 +39,16 @@ test('поиск, фильтр и порядок не удаляют напра�
   await page.locator('#watch-order').selectOption('university');
   await expect(page.locator('.direction-top .eyebrow').first()).toHaveText('Другой вуз');
 });
+
+test('печатный отчёт содержит источник и допущения, без кнопок', async ({ page }) => {
+  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.goto('/tracker');
+  await page.evaluate(() => { window.print = () => {}; });
+  await page.getByRole('button', { name: /Распечатать выбранный/ }).click();
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.locator('.print-report')).toBeVisible();
+  await expect(page.locator('.print-report')).toContainText(fixture.sourceUrl);
+  await expect(page.locator('.print-report')).toContainText('не гарантирует зачисление');
+  await expect(page.locator('.print-report')).toContainText('manual-v1');
+  await expect(page.locator('.tracker-page-heading')).toBeHidden();
+});

@@ -3277,7 +3277,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T075"
       ],
@@ -3291,7 +3291,12 @@
       "acceptance": [
         "Print layout shows saved manual values, source/time and limitations without action controls."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S065: Printable filtered manual report includes saved inputs, both places, original source/time, model and limitations. Print CSS hides controls and supports dark theme. Build and Chromium print-media check passed; no PDF/physical-printer acceptance claimed."
+        }
+      ],
       "blockedReason": null
     },
     {

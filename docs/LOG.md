@@ -420,3 +420,7 @@ History API returns owner-scoped total independent of page size; UI shows remain
 ## S064 - 2026-11-01 - B05 4/15 (T107)
 
 History now displays all four saved inputs, both scenario places, model version and full ISO timestamp alongside readable seconds. Chromium history check passed with8columns and original timestamp/model. Formula unchanged.
+
+## S065 - 2026-11-01 - B05 5/15 (T108)
+
+Printable filtered manual report includes saved inputs, both places, original source/time, model and limitations. Print CSS hides controls and supports dark theme. Build and Chromium print-media check passed; no PDF/physical-printer acceptance claimed.

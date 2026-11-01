@@ -18,6 +18,7 @@ import { sessionAccessKey } from '../lib/query-client';
 import type { SessionAccess } from '../lib/query-client';
 import { selectWatches } from '../lib/watch-list';
 import type { WatchOrder } from '../lib/watch-list';
+import { ManualReport } from '../components/ManualReport';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -133,6 +134,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
 }
 
 export default function TrackerPage() {
+  const [reportDate, setReportDate] = useState('');
   const [search, setSearch] = useState('');
   const [scenario, setScenario] = useState('all');
   const [order, setOrder] = useState<WatchOrder>('updated');
@@ -211,6 +213,8 @@ export default function TrackerPage() {
     <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
     </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    {!expired && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
+    {!expired && <ManualReport watches={visible} generatedAt={reportDate} />}
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
 }
