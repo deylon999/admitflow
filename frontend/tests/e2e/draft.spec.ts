@@ -35,8 +35,10 @@ test('ссылка на другую страницу не теряет ввод
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();
   await page.getByLabel('Вуз', { exact: true }).fill('Unsaved university');
+  const dialog = page.waitForEvent('dialog');
   page.once('dialog', dialog => dialog.dismiss());
   await page.getByRole('link', { name: 'Абитуриент — в начало' }).click();
+  await dialog;
   await expect(page).toHaveURL(/\/tracker$/);
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Unsaved university');
   page.once('dialog', dialog => dialog.accept());

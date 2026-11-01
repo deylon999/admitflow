@@ -34,7 +34,8 @@ test('an open form preserves values and cannot submit during import', async ({ p
 
 test('an unchanged pending edit guards links and unload until its result arrives', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
-  await page.goto('/tracker');
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Мои направления →', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
   const created = await page.request.post('/api/v1/watches', { headers: { 'X-Requested-With': 'abiturient' }, data: { university: 'Pending', title: 'Pending edit', sourceUrl: 'https://example.org/list', values: { rank: 10, seats: 20, excluded: 0, noConsent: 0 } } });
   expect(created.status()).toBe(201);
@@ -47,6 +48,8 @@ test('an unchanged pending edit guards links and unload until its result arrives
   try {
     await expect(page.getByRole('status').filter({ hasText: 'Дождитесь результата' })).toBeVisible();
     await page.getByRole('link', { name: 'Абитуриент — в начало' }).click();
+    await expect(page).toHaveURL(/\/tracker$/);
+    await page.evaluate(() => history.back());
     await expect(page).toHaveURL(/\/tracker$/);
     await expect(page.locator('.direction-form')).toBeVisible();
     expect(await page.evaluate(() => {

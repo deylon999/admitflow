@@ -642,3 +642,7 @@ User requested10 tasks. Git clean at396440f, roadmap valid153. Docker Engine/con
 ## S114 - 2026-11-01 - B08 1/10 (T154)
 
 npm run build exit0; Playwright landing.spec.ts/tracker-tools.spec.ts16 passed on5187/API8007. Data router preserves routes, lazy failure recovery, hashes,404/title/focus and existing manual tools. Installed React Router7.18.4 exports verified; ADR022 records bounded draft/navigation choice.
+
+## S115 - 2026-11-01 - B08 2/10 (T155)
+
+Playwright draft-navigation/draft/pending-form:5 passed. Native browser back/forward rejects without losing fields, accepts departure once, pending unchanged edit remains protected. Router links skip document guard to avoid double confirmation. Old link test now explicitly waits for async dialog event; initial timing failure documented, refusal assertions retained.

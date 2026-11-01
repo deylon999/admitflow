@@ -4673,7 +4673,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T154",
         "T147"
@@ -4688,7 +4688,12 @@
       "acceptance": [
         "Rejecting back/forward preserves the form; accepting leaves once; pending saves cannot be discarded by SPA navigation."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S115: Playwright draft-navigation/draft/pending-form:5 passed. Native browser back/forward rejects without losing fields, accepts departure once, pending unchanged edit remains protected. Router links skip document guard to avoid double confirmation. Old link test now explicitly waits for async dialog event; initial timing failure documented, refusal assertions retained."
+        }
+      ],
       "blockedReason": null
     },
     {

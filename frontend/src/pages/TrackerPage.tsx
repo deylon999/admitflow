@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useBlocker } from 'react-router';
 import { useInfiniteQuery, useIsMutating, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
@@ -61,13 +62,21 @@ function DirectionForm({ watch, focusRequest, disabled, onDone, onCancel, onDirt
       onDone();
     },
   });
+  const blocker = useBlocker(({ currentLocation, nextLocation }) => (dirty || save.isPending)
+    && (currentLocation.pathname !== nextLocation.pathname || currentLocation.search !== nextLocation.search));
+  useEffect(() => {
+    if (blocker.state !== 'blocked') return;
+    if (save.isPending) blocker.reset();
+    else if (window.confirm('Покинуть форму с несохранёнными изменениями?')) blocker.proceed();
+    else blocker.reset();
+  }, [blocker, save.isPending]);
   useEffect(() => {
     if (!dirty && !save.isPending) return;
     let acceptedLink = false;
     const beforeUnload = (event: BeforeUnloadEvent) => { if (save.isPending || !acceptedLink) { event.preventDefault(); event.returnValue = ''; } };
     const guardLink = (event: MouseEvent) => {
       const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-      if (!link || link.target === '_blank' || link.hasAttribute('download') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      if (!link || link.target === '_blank' || link.hasAttribute('download') || link.hasAttribute('data-router-link') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
       const target = new URL(link.href, location.href);
       if (target.origin === location.origin && target.pathname === location.pathname && target.search === location.search) return;
       if (save.isPending) { event.preventDefault(); event.stopPropagation(); return; }
