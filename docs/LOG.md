@@ -612,3 +612,7 @@ Playwright pending-form.spec.ts:2 passed in final sequential run. During gated a
 ## S108 - 2026-11-01 - B07 11/15 (T149)
 
 Backend test_timestamp_bounds.py:4 passed; frontend time.test.ts:5 passed. Offset under/overflow yields422 before import writes, exact UTC year1/year9999 boundaries accepted. DATA_RULES updated; original accepted timestamps and formula preserved.
+
+## S109 - 2026-11-01 - B07 12/15 (T150)
+
+Backend test_snapshot_clock.py/test_export.py/test_import.py:16 passed. One-microsecond server clock regression causes409 and preserves exact history; export succeeds once clock restored. Read remains owner-locked; DATA_RULES documents imported future tolerance interaction.

@@ -4510,7 +4510,7 @@
       "phase": "E2",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T125"
       ],
@@ -4524,7 +4524,12 @@
       "acceptance": [
         "Export refuses if observed saved dates exceed current server time, without rewriting dates or data."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S109: Backend test_snapshot_clock.py/test_export.py/test_import.py:16 passed. One-microsecond server clock regression causes409 and preserves exact history; export succeeds once clock restored. Read remains owner-locked; DATA_RULES documents imported future tolerance interaction."
+        }
+      ],
       "blockedReason": null
     },
     {

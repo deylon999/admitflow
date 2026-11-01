@@ -224,8 +224,12 @@ def create_app(settings: Settings | None = None):
         watches = db.scalars(select(Watch).where(Watch.owner_hash == owner_hash).order_by(Watch.created_at.desc(), Watch.id.desc()).limit(21)).all()
         if len(watches) > 20:
             raise HTTPException(409, 'Количество направлений превышает лимит экспорта.')
+        result = batch_watches(watches, db, full=True)
+        exported = utcnow()
+        if any(watch.created_at > exported or any(snapshot.captured_at > exported for snapshot in watch.history) for watch in result):
+            raise HTTPException(409, 'Время сохранённых данных опережает серверное. Проверьте часы или повторите экспорт позже.')
         response.headers['Content-Disposition'] = 'attachment; filename="admitflow-export.json"'
-        return DataExport(exported_at=utcnow(), watches=batch_watches(watches, db, full=True))
+        return DataExport(exported_at=exported, watches=result)
 
     @app.post('/api/v1/session', status_code=204)
     def start_session(request: Request, response: Response, db: Session = Depends(database)):

@@ -106,3 +106,5 @@ HTTP 200 с CAPTCHA, HTML-ошибкой или пустой таблицей н
 LLM получает только разрешённые структурированные facts; текст сайтов считается данными, не инструкциями. Ответ проверяется на соответствие числам и источникам. При таймауте/ошибке/противоречии используется шаблон. Автоматическая подача документов, отзыв согласия или выбор вуза за пользователя не входят в продукт.
 
 Manual UTC calendar bound (B07/T149): aware ISO timestamps must normalize to UTC years 0001 through 9999 inclusive. A locally valid offset timestamp outside this UTC range is a validation error, not an internal overflow. Original accepted offsets and microseconds are preserved. Tests: backend/tests/test_timestamp_bounds.py and frontend/tests/time.test.ts. Formula, consent groups and season unchanged.
+
+Manual export clock rule (B07/T150): export timestamp is observed after the consistent owner-locked read. If a saved timestamp is ahead of that clock, return409 and retain all data; never invent a later export date or alter history. This also applies briefly to imported timestamps within the allowed five-minute future tolerance. Retry after the server clock catches up.
