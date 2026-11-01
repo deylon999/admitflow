@@ -12,8 +12,8 @@ export function draftSignature(draft: DirectionDraft): string {
 export function validateDirection(draft: DirectionDraft, editing = false) {
   const metadata: MetadataErrors = {};
   if (!editing) {
-    if (!draft.university.trim() || draft.university.trim().length > 160) metadata.university = 'Введите название вуза, до 160 символов.';
-    if (!draft.title.trim() || draft.title.trim().length > 200) metadata.title = 'Введите направление и конкурсную группу, до 200 символов.';
+    if (!draft.university.trim() || draft.university.trim().length > 160 || /[\u0000-\u001f\u007f]/.test(draft.university)) metadata.university = 'Введите название вуза, до 160 символов, без управляющих символов.';
+    if (!draft.title.trim() || draft.title.trim().length > 200 || /[\u0000-\u001f\u007f]/.test(draft.title)) metadata.title = 'Введите направление и конкурсную группу, до 200 символов, без управляющих символов.';
     try {
       const url = new URL(draft.sourceUrl.trim());
       if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password || url.href.length > 2048 || /[\u0000-\u001f\u007f]/.test(draft.sourceUrl)) throw new Error();

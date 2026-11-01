@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 65 из 118 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 66 из 138 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -55,6 +55,13 @@
 - [x] T098 Согласовать истечение сессии во всех действиях кабинета
 - [x] T106 Expose exact history totals and remaining snapshot capacity
 - [x] T113 Invalidate private state when another tab resets access
+- [x] T119 Reject control characters in manual metadata
+- [ ] T124 Batch manual direction and export reads
+- [ ] T125 Order same-time snapshots and refuse clock regression
+- [ ] T126 Enforce ISO aware timestamps on manual DTOs
+- [ ] T128 Compare opaque IDs by Unicode code point
+- [ ] T135 Serialize guest bootstrap between browser tabs
+- [ ] T136 Fence stale session results after access changes
 
 ## Автоматический сбор
 
@@ -81,6 +88,12 @@
 - [x] T099 Соблюдать deadline блокировки внутри процесса и между процессами
 - [x] T100 Ограничить весь обмен результата дочернего fetch-процесса
 - [x] T102 Показывать исчерпанные и истёкшие задания в диагностике источника
+- [ ] T129 Reject truncated HTTP source responses
+- [ ] T130 Reject ambiguous HTTP headers and malformed redirects
+- [ ] T131 Validate immutable fetch policies strictly
+- [ ] T132 Preserve fetch outcome when spool cleanup fails
+- [ ] T133 Validate adapter declarations before registry use
+- [ ] T134 Apply queue policies on explicit eligible reenqueue
 
 ## Объяснения и UX
 
@@ -107,6 +120,8 @@
 - [x] T115 Make history overflow usable from the keyboard
 - [x] T116 Refresh saved directions without losing a form draft
 - [x] T117 Preview direction names before confirming file import
+- [ ] T127 Align import preview date rules with server validation
+- [ ] T138 Recover from lazy page loading failures
 
 ## Качество и эксплуатация
 
@@ -130,6 +145,11 @@
 - [x] T089 Восстанавливать копию в новое SQLite-окружение
 - [x] T101 Не перезаписывать назначение при конкурентном restore
 - [x] T118 Reject readiness when database revision is incompatible
+- [ ] T120 Reject ambiguous JSON request documents
+- [ ] T121 Bound and redact validation error responses
+- [ ] T122 Fail closed on invalid environment and production settings
+- [ ] T123 Bound PostgreSQL connection establishment
+- [ ] T137 Bound JSON response consumption in the browser
 
 ## Резерв и выпуск
 

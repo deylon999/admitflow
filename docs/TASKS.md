@@ -926,6 +926,160 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S070: Cross-tab reset hides private cards/drafts, cancels private reads and requires explicit readonly synchronization. Listener lives across routes; cached API session forgotten; no automatic session POST in receiving tab. Build and5 real-API session/tab checks passed. Existing delete401 test now accepts the intentional draft-discard prompt.
 
+### T119. Reject control characters in manual metadata
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `backend/app/schemas.py`.
+
+**Шаги:**
+
+1. Reject control characters in manual metadata.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- API names and URLs reject raw controls before normalization; client/import contracts agree..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S077: Reject C0/DEL controls before Pydantic URL normalization; client form/import contracts reject them consistently. Targeted backend9 passed; frontend69 passed. No metadata write on invalid input.
+
+### T124. Batch manual direction and export reads
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Batch manual direction and export reads.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Read query counts stay bounded independently of watch count; latest ordering and full export preserved..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T125. Order same-time snapshots and refuse clock regression
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T068.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Order same-time snapshots and refuse clock regression.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Equal-time updates become latest without changing observed time; backward-clock writes refuse atomically..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T126. Enforce ISO aware timestamps on manual DTOs
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T090.
+
+**Результаты/файлы:** `backend/app/schemas.py`.
+
+**Шаги:**
+
+1. Enforce ISO aware timestamps on manual DTOs.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Numeric/coercible timestamps and unsupported precision rejected; actual aware datetimes remain valid internally..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T128. Compare opaque IDs by Unicode code point
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T095.
+
+**Результаты/файлы:** `frontend/src/lib/time.ts`.
+
+**Шаги:**
+
+1. Compare opaque IDs by Unicode code point.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Same-time ordering agrees with Python for BMP and supplementary Unicode IDs..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T135. Serialize guest bootstrap between browser tabs
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T098.
+
+**Результаты/файлы:** `frontend/src/lib/api.ts`.
+
+**Шаги:**
+
+1. Serialize guest bootstrap between browser tabs.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Concurrent initial tabs share one guest bootstrap when Web Locks is available; no reset deadlock..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T136. Fence stale session results after access changes
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T135.
+
+**Результаты/файлы:** `frontend/src/lib/api.ts`.
+
+**Шаги:**
+
+1. Fence stale session results after access changes.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Late promises from earlier access cannot clear/replace newer session state or trigger hidden writes..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E3. Автоматический сбор
 
 Плановый интервал: D8–D17.
@@ -1459,6 +1613,138 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S057 / B04 10/10: Read-only diagnostics now expose bounded workerState and treat expired/final-failed jobs as source_error without overwriting source fields or published snapshots. Live/archive tests cover lease boundary, exhaustion, recovery and fresh coverage. Targeted status/queue/coverage/worker: 19 passed. Final full backend: 196 passed / 1 PostgreSQL skipped; frontend67 and production build passed; all32 Chromium E2E passed on explicitly restarted current API8003 (session98287/PID19396, isolated batch04.db). No real adapters or release gates unlocked.
 
+### T129. Reject truncated HTTP source responses
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T028.
+
+**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+
+**Шаги:**
+
+1. Reject truncated HTTP source responses.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Content-Length mismatch cannot produce a FetchResult; genuine complete responses remain valid..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T130. Reject ambiguous HTTP headers and malformed redirects
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T028.
+
+**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+
+**Шаги:**
+
+1. Reject ambiguous HTTP headers and malformed redirects.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Critical duplicate headers fail safely; invalid redirect syntax becomes a bounded FetchError..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T131. Validate immutable fetch policies strictly
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T028.
+
+**Результаты/файлы:** `backend/app/sources/fetcher.py`.
+
+**Шаги:**
+
+1. Validate immutable fetch policies strictly.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Nonfinite or wrong-type limits and mutable/unapproved domain policy are rejected before network..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T132. Preserve fetch outcome when spool cleanup fails
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T100.
+
+**Результаты/файлы:** `backend/app/worker.py`.
+
+**Шаги:**
+
+1. Preserve fetch outcome when spool cleanup fails.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Cleanup attempts every known file and emits only a safe diagnostic without masking original fetch errors..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T133. Validate adapter declarations before registry use
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T076.
+
+**Результаты/файлы:** `backend/app/sources/registry.py`.
+
+**Шаги:**
+
+1. Validate adapter declarations before registry use.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Attestation is an actual bool; version/domain/callable contract cannot silently admit malformed adapters..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T134. Apply queue policies on explicit eligible reenqueue
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T081.
+
+**Результаты/файлы:** `backend/app/jobs.py`.
+
+**Шаги:**
+
+1. Apply queue policies on explicit eligible reenqueue.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Changed interval/max attempts apply to eligible jobs; running/backoff jobs remain untouched..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E4. Объяснения и UX
 
 Плановый интервал: D15–D22.
@@ -1980,6 +2266,50 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S074: Import preview lists every bounded direction name, original timestamp, history count and source as safe text before POST. Chromium malicious-markup-as-text and cancel-with-zero-imports check passed.
 
+### T127. Align import preview date rules with server validation
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T091.
+
+**Результаты/файлы:** `frontend/src/lib/import.ts`.
+
+**Шаги:**
+
+1. Align import preview date rules with server validation.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Files too old or beyond server future tolerance rejected before POST; boundary is deterministic in tests..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T138. Recover from lazy page loading failures
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T018.
+
+**Результаты/файлы:** `frontend/src/main.tsx`.
+
+**Шаги:**
+
+1. Recover from lazy page loading failures.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Friendly fallback and explicit reload replace blank screen; no automatic retry/session creation..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
@@ -2442,6 +2772,116 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S075: Ready/health compare stored Alembic revisions with packaged migration heads; missing/empty/old/future revision503, live stays DB-independent and no automatic repair. Full backend205 passed/7 PG skipped; frontend68/build and44 Chromium passed on explicitly restarted API8004. After minor print-date/dateformatter/grid fixes, build and3 print/history/mobile checks passed again. Screenshots1440/390 refreshed, three history rows visible, no horizontal page overflow, demo sessions deleted204/204. B05 complete15/15; no real-source/PG/CI gate unlocked.
+
+### T120. Reject ambiguous JSON request documents
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T084.
+
+**Результаты/файлы:** `backend/app/http.py`.
+
+**Шаги:**
+
+1. Reject ambiguous JSON request documents.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Duplicate keys, nonfinite numbers and excessive nesting are rejected before any endpoint writes..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T121. Bound and redact validation error responses
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T086.
+
+**Результаты/файлы:** `backend/app/main.py`.
+
+**Шаги:**
+
+1. Bound and redact validation error responses.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Validation responses expose no input/context values and contain a bounded error summary..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T122. Fail closed on invalid environment and production settings
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T085.
+
+**Результаты/файлы:** `backend/app/config.py`.
+
+**Шаги:**
+
+1. Fail closed on invalid environment and production settings.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Unknown environments/boolean values fail startup; direct Settings cannot bypass production invariants..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T123. Bound PostgreSQL connection establishment
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T004.
+
+**Результаты/файлы:** `backend/app/database.py`.
+
+**Шаги:**
+
+1. Bound PostgreSQL connection establishment.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Unresponsive PostgreSQL handshake fails within configured bounds; credentials are not logged..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T137. Bound JSON response consumption in the browser
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T073.
+
+**Результаты/файлы:** `frontend/src/lib/transport.ts`.
+
+**Шаги:**
+
+1. Bound JSON response consumption in the browser.
+2. Verify success and meaningful refusal/boundary cases.
+
+**Критерии закрытия:**
+
+- Oversized/malformed response bodies stop reading; cancellation and timeout remain effective..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

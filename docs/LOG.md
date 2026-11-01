@@ -471,3 +471,11 @@ Final review fixed empty report-generation date, reused datetime formatter and c
 
 B05 exactly15 tasks and15 Conventional Commits;65/118done,3blocked,4review,46todo. Readiness estimate40% unchanged, all7release gates open; production adapters0, coverage2/0/0, no ML probability. No network/ACL bypass, push or remote CI. Updated PRODUCT/API/RUNBOOK/STATE/PROGRESS plus generated TASKS/CHECKLIST. Actual task deliverables corrected to modified files. Task T103 remains review; prior pending question about rebuilding48f118f/old data has no answer. Stop adding synthetic integrations: next progress needs real source bytes, fonts, PostgreSQL/Docker and CI. All old completed history remains intact.
 S075 final focus review also returns to Add after reset/synchronization; two real API reset/tab checks and final production build passed after that change. Roadmap render/check/self-test valid118tasks and6invalid-state cases rejected; git diff --check exit0. Final screenshots visually inspected after selector alignment; no active task, nextT103 review.
+
+## S076 - 2026-11-01 - B06 plan20
+
+User requested20 tasks. Existing critical path still needs external inputs: Docker Engine/GitHub denied, fonts absent in system/user/JetBrains roots, web source/font API attempts inaccessible. Select20 concrete validation/concurrency/HTTP/runtime defects found in code; no synthetic adapter or coverage claims. T103 remains review.
+
+## S077 - 2026-11-01 - B06 1/20 (T119)
+
+Reject C0/DEL controls before Pydantic URL normalization; client form/import contracts reject them consistently. Targeted backend9 passed; frontend69 passed. No metadata write on invalid input.

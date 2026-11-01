@@ -23,7 +23,7 @@ function object(value: unknown): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 function text(value: unknown, max = 2048): string {
-  if (typeof value !== 'string' || !value.trim() || value.length > max) throw new InvalidResponseError();
+  if (typeof value !== 'string' || !value.trim() || value.length > max || /[\u0000-\u001f\u007f]/.test(value)) throw new InvalidResponseError();
   return value;
 }
 function timestamp(value: unknown): string {

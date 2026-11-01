@@ -3604,6 +3604,471 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T119",
+      "title": "Reject control characters in manual metadata",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "backend/app/schemas.py"
+      ],
+      "steps": [
+        "Reject control characters in manual metadata",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "API names and URLs reject raw controls before normalization; client/import contracts agree."
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S077: Reject C0/DEL controls before Pydantic URL normalization; client form/import contracts reject them consistently. Targeted backend9 passed; frontend69 passed. No metadata write on invalid input."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T120",
+      "title": "Reject ambiguous JSON request documents",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T084"
+      ],
+      "deliverables": [
+        "backend/app/http.py"
+      ],
+      "steps": [
+        "Reject ambiguous JSON request documents",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Duplicate keys, nonfinite numbers and excessive nesting are rejected before any endpoint writes."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T121",
+      "title": "Bound and redact validation error responses",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T086"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Bound and redact validation error responses",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Validation responses expose no input/context values and contain a bounded error summary."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T122",
+      "title": "Fail closed on invalid environment and production settings",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T085"
+      ],
+      "deliverables": [
+        "backend/app/config.py"
+      ],
+      "steps": [
+        "Fail closed on invalid environment and production settings",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Unknown environments/boolean values fail startup; direct Settings cannot bypass production invariants."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T123",
+      "title": "Bound PostgreSQL connection establishment",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T004"
+      ],
+      "deliverables": [
+        "backend/app/database.py"
+      ],
+      "steps": [
+        "Bound PostgreSQL connection establishment",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Unresponsive PostgreSQL handshake fails within configured bounds; credentials are not logged."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T124",
+      "title": "Batch manual direction and export reads",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Batch manual direction and export reads",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Read query counts stay bounded independently of watch count; latest ordering and full export preserved."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T125",
+      "title": "Order same-time snapshots and refuse clock regression",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T068"
+      ],
+      "deliverables": [
+        "backend/app/main.py"
+      ],
+      "steps": [
+        "Order same-time snapshots and refuse clock regression",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Equal-time updates become latest without changing observed time; backward-clock writes refuse atomically."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T126",
+      "title": "Enforce ISO aware timestamps on manual DTOs",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T090"
+      ],
+      "deliverables": [
+        "backend/app/schemas.py"
+      ],
+      "steps": [
+        "Enforce ISO aware timestamps on manual DTOs",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Numeric/coercible timestamps and unsupported precision rejected; actual aware datetimes remain valid internally."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T127",
+      "title": "Align import preview date rules with server validation",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/lib/import.ts"
+      ],
+      "steps": [
+        "Align import preview date rules with server validation",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Files too old or beyond server future tolerance rejected before POST; boundary is deterministic in tests."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T128",
+      "title": "Compare opaque IDs by Unicode code point",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T095"
+      ],
+      "deliverables": [
+        "frontend/src/lib/time.ts"
+      ],
+      "steps": [
+        "Compare opaque IDs by Unicode code point",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Same-time ordering agrees with Python for BMP and supplementary Unicode IDs."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T129",
+      "title": "Reject truncated HTTP source responses",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/sources/fetcher.py"
+      ],
+      "steps": [
+        "Reject truncated HTTP source responses",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Content-Length mismatch cannot produce a FetchResult; genuine complete responses remain valid."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T130",
+      "title": "Reject ambiguous HTTP headers and malformed redirects",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/sources/fetcher.py"
+      ],
+      "steps": [
+        "Reject ambiguous HTTP headers and malformed redirects",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Critical duplicate headers fail safely; invalid redirect syntax becomes a bounded FetchError."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T131",
+      "title": "Validate immutable fetch policies strictly",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T028"
+      ],
+      "deliverables": [
+        "backend/app/sources/fetcher.py"
+      ],
+      "steps": [
+        "Validate immutable fetch policies strictly",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Nonfinite or wrong-type limits and mutable/unapproved domain policy are rejected before network."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T132",
+      "title": "Preserve fetch outcome when spool cleanup fails",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T100"
+      ],
+      "deliverables": [
+        "backend/app/worker.py"
+      ],
+      "steps": [
+        "Preserve fetch outcome when spool cleanup fails",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Cleanup attempts every known file and emits only a safe diagnostic without masking original fetch errors."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T133",
+      "title": "Validate adapter declarations before registry use",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T076"
+      ],
+      "deliverables": [
+        "backend/app/sources/registry.py"
+      ],
+      "steps": [
+        "Validate adapter declarations before registry use",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Attestation is an actual bool; version/domain/callable contract cannot silently admit malformed adapters."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T134",
+      "title": "Apply queue policies on explicit eligible reenqueue",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T081"
+      ],
+      "deliverables": [
+        "backend/app/jobs.py"
+      ],
+      "steps": [
+        "Apply queue policies on explicit eligible reenqueue",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Changed interval/max attempts apply to eligible jobs; running/backoff jobs remain untouched."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T135",
+      "title": "Serialize guest bootstrap between browser tabs",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T098"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts"
+      ],
+      "steps": [
+        "Serialize guest bootstrap between browser tabs",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Concurrent initial tabs share one guest bootstrap when Web Locks is available; no reset deadlock."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T136",
+      "title": "Fence stale session results after access changes",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T135"
+      ],
+      "deliverables": [
+        "frontend/src/lib/api.ts"
+      ],
+      "steps": [
+        "Fence stale session results after access changes",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Late promises from earlier access cannot clear/replace newer session state or trigger hidden writes."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T137",
+      "title": "Bound JSON response consumption in the browser",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T073"
+      ],
+      "deliverables": [
+        "frontend/src/lib/transport.ts"
+      ],
+      "steps": [
+        "Bound JSON response consumption in the browser",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Oversized/malformed response bodies stop reading; cancellation and timeout remain effective."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T138",
+      "title": "Recover from lazy page loading failures",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/main.tsx"
+      ],
+      "steps": [
+        "Recover from lazy page loading failures",
+        "Verify success and meaningful refusal/boundary cases"
+      ],
+      "acceptance": [
+        "Friendly fallback and explicit reload replace blank screen; no automatic retry/session creation."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

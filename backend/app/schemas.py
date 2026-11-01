@@ -12,6 +12,13 @@ class WatchCreate(CamelModel):
     source_url: HttpUrl = Field(max_length=2048)
     values: CalculationInput
 
+    @field_validator('university', 'title', 'source_url', mode='before')
+    @classmethod
+    def reject_controls(cls, value):
+        if isinstance(value, str) and any(ord(char) < 32 or ord(char) == 127 for char in value):
+            raise ValueError('Название и ссылка не должны содержать управляющие символы.')
+        return value
+
     @field_validator('source_url')
     @classmethod
     def no_credentials_in_source(cls, value):
