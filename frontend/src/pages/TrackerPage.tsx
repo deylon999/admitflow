@@ -14,6 +14,8 @@ import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
 import { assertSnapshotOrder } from '../lib/contracts';
 import { draftSignature, validateDirection } from '../lib/direction';
+import { sessionAccessKey } from '../lib/query-client';
+import type { SessionAccess } from '../lib/query-client';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -67,9 +69,6 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
       await queryClient.invalidateQueries({ queryKey: ['watches'] });
       await queryClient.invalidateQueries({ queryKey: ['history'] });
       onDone();
-    },
-    onError: error => {
-      if (error instanceof SessionExpiredError) void queryClient.invalidateQueries({ queryKey: ['watches'] });
     },
   });
   return <form className="direction-form surface" noValidate aria-labelledby="direction-form-heading" onKeyDown={event => {
@@ -159,6 +158,11 @@ export default function TrackerPage() {
   const busy = useIsMutating() > 0;
   const queryClient = useQueryClient();
   const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal) });
+  const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
+  const expired = access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  useEffect(() => {
+    if (expired) { draftDirty.current = false; setForm(null); setConfirmReset(false); setNotice(''); }
+  }, [expired]);
   const download = useMutation({ mutationFn: api.exportData, onSuccess: downloadExport });
   const reset = useMutation({
     mutationFn: async () => {
@@ -172,26 +176,27 @@ export default function TrackerPage() {
       setConfirmReset(false);
       setNotice('Создана новая гостевая сессия.');
       await queryClient.invalidateQueries({ queryKey: ['watches'] });
+      queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
+      download.reset();
     },
   });
-  const count = watches.data?.length ?? 0;
-  const expired = watches.error instanceof SessionExpiredError;
+  const count = expired || watches.isError ? 0 : watches.data?.length ?? 0;
   return <main className="container tracker-page" id="top">
-    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
+    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
     <div className="tracker-data-actions"><button className="text-button" type="button" disabled={busy || !count} onClick={() => download.mutate()}>{download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}</button>
     {count > 0 && <button className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
     {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
-    {confirmReset && <div className="delete-confirm surface"><p>Удалить все направления и историю в этом браузере? Отменить удаление нельзя.</p><div><button className="button button-secondary" type="button" disabled={reset.isPending} onClick={() => setConfirmReset(false)}>Отмена</button><button className="button danger-button" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>Удалить всё</button></div></div>}
+    {confirmReset && !expired && <div className="delete-confirm surface"><p>Удалить все направления и историю в этом браузере? Отменить удаление нельзя.</p><div><button className="button button-secondary" type="button" disabled={reset.isPending} onClick={() => setConfirmReset(false)}>Отмена</button><button className="button danger-button" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>Удалить всё</button></div></div>}
     {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
     <CoverageSummary />
-    <ImportData count={count} disabled={busy || expired || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />
-    {!watches.isError && watches.data && <WatchComparison watches={watches.data} />}
-    <div className={`tracker-layout ${form ? 'with-form' : ''}`}><div className="directions-list">
+    {!expired && <ImportData count={count} disabled={busy || watches.isPending || watches.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
+    {!expired && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}
+    <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
       {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>Направлений пока нет</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : watches.data?.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} />)}
-    </div>{form && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
 }

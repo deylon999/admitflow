@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { createQueryClient } from './lib/query-client';
 import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router';
 import { useEffect } from 'react';
 import { Header, Footer } from './components/Layout';
@@ -9,7 +10,7 @@ import './styles.css';
 import './tracker.css';
 
 const TrackerPage = lazy(() => import('./pages/TrackerPage'));
-const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false }, mutations: { retry: false } } });
+const queryClient = createQueryClient();
 function PagePosition() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
