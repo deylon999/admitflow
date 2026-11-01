@@ -4730,7 +4730,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T156"
       ],
@@ -4744,7 +4744,12 @@
       "acceptance": [
         "One versioned draft per tab is bounded, scope/expiry checked, malformed data discarded and storage failure reported honestly."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S117: npm test -- tests/draft-store.test.ts4 passed; production build exit0. One versioned16KiB sessionStorage record validates Unicode lengths, incomplete values, retry UUID/fingerprint, owner scope,30-minute TTL/session deadline; corrupt/foreign/expired records removed. Quota/access failures return unavailable without throwing."
+        }
+      ],
       "blockedReason": null
     },
     {

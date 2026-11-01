@@ -2708,7 +2708,7 @@
 
 ### T157. Validate bounded session-local draft storage
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T156.
 
@@ -2726,7 +2726,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S117: npm test -- tests/draft-store.test.ts4 passed; production build exit0. One versioned16KiB sessionStorage record validates Unicode lengths, incomplete values, retry UUID/fingerprint, owner scope,30-minute TTL/session deadline; corrupt/foreign/expired records removed. Quota/access failures return unavailable without throwing.
 
 ### T158. Save form drafts and retry keys locally
 

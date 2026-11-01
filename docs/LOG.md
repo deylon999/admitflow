@@ -650,3 +650,7 @@ Playwright draft-navigation/draft/pending-form:5 passed. Native browser back/for
 ## S116 - 2026-11-01 - B08 3/10 (T156)
 
 Backend draft_scope/timestamp_bounds/sessions10 passed; frontend draft-scope/session-state6 passed. Namespace stable per owner, changes after new session/reset, contains neither cookie nor stored owner hash and cannot authenticate as cookie. Frontend older-API contract remains usable with recovery disabled.
+
+## S117 - 2026-11-01 - B08 4/10 (T157)
+
+npm test -- tests/draft-store.test.ts4 passed; production build exit0. One versioned16KiB sessionStorage record validates Unicode lengths, incomplete values, retry UUID/fingerprint, owner scope,30-minute TTL/session deadline; corrupt/foreign/expired records removed. Quota/access failures return unavailable without throwing.
