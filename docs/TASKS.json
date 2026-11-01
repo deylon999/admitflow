@@ -4426,7 +4426,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -4440,7 +4440,12 @@
       "acceptance": [
         "Current-tab links cannot discard the pending operation; unload is guarded even for an unchanged edit."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S106: Playwright pending-form.spec.ts and draft.spec.ts:3 passed. A gated unchanged edit blocks current-tab navigation and beforeunload; after response the form closes and link works. Dirty-draft confirmation regressions preserved. SPA back/forward still not claimed."
+        }
+      ],
       "blockedReason": null
     },
     {

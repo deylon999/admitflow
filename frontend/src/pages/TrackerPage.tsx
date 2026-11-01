@@ -40,22 +40,6 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
   const initialDraft = useRef(currentDraft);
   const dirty = currentDraft !== initialDraft.current;
   useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
-  useEffect(() => {
-    if (!dirty) return;
-    let acceptedLink = false;
-    const beforeUnload = (event: BeforeUnloadEvent) => { if (!acceptedLink) { event.preventDefault(); event.returnValue = ''; } };
-    const guardLink = (event: MouseEvent) => {
-      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-      if (!link || link.target === '_blank' || link.hasAttribute('download') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
-      const target = new URL(link.href, location.href);
-      if (target.origin === location.origin && target.pathname === location.pathname && target.search === location.search) return;
-      if (!window.confirm('Удалить несохранённые изменения формы и перейти?')) { event.preventDefault(); event.stopPropagation(); }
-      else acceptedLink = true;
-    };
-    window.addEventListener('beforeunload', beforeUnload);
-    document.addEventListener('click', guardLink, true);
-    return () => { window.removeEventListener('beforeunload', beforeUnload); document.removeEventListener('click', guardLink, true); };
-  }, [dirty, currentDraft]);
   const intent = useRef<{ fingerprint: string; key: string } | null>(null);
   const result = calculatePlace(values);
   const validation = validateDirection({ university, title, sourceUrl, values }, Boolean(watch));
@@ -77,6 +61,23 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
       onDone();
     },
   });
+  useEffect(() => {
+    if (!dirty && !save.isPending) return;
+    let acceptedLink = false;
+    const beforeUnload = (event: BeforeUnloadEvent) => { if (save.isPending || !acceptedLink) { event.preventDefault(); event.returnValue = ''; } };
+    const guardLink = (event: MouseEvent) => {
+      const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
+      if (!link || link.target === '_blank' || link.hasAttribute('download') || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const target = new URL(link.href, location.href);
+      if (target.origin === location.origin && target.pathname === location.pathname && target.search === location.search) return;
+      if (save.isPending) { event.preventDefault(); event.stopPropagation(); return; }
+      if (!window.confirm('Удалить несохранённые изменения формы и перейти?')) { event.preventDefault(); event.stopPropagation(); }
+      else acceptedLink = true;
+    };
+    window.addEventListener('beforeunload', beforeUnload);
+    document.addEventListener('click', guardLink, true);
+    return () => { window.removeEventListener('beforeunload', beforeUnload); document.removeEventListener('click', guardLink, true); };
+  }, [dirty, currentDraft, save.isPending]);
   return <form className="direction-form surface" noValidate aria-labelledby="direction-form-heading" onKeyDown={event => {
     if (event.key === 'Escape' && !event.defaultPrevented && !save.isPending) { event.preventDefault(); onCancel(); }
   }} onSubmit={event => {
@@ -99,6 +100,7 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel, onDirtyChange }:
     {!('error' in result) && <div className="tracker-preview"><span>Место по введённым данным</span><strong>{result.place} <small>из {result.seats}</small></strong></div>}
     {submitted && error && <p className="form-error" id="tracker-calculation-error" role="alert">{error.error}</p>}
     {save.isError && <p className="form-error" role="alert">{errorText(save.error)}</p>}
+    {save.isPending && <p role="status">Дождитесь результата сохранения перед переходом на другую страницу.</p>}
     <button className="button button-primary" type="submit" disabled={save.isPending}>{save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}</button>
     <p className="form-note">Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.</p>
   </form>;

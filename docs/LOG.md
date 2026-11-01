@@ -600,3 +600,7 @@ npm test -- tests/session-state.test.ts:3 passed. Cancel settles before a gated 
 ## S105 - 2026-11-01 - B07 8/15 (T146)
 
 npm test -- tests/session-state.test.ts:5 passed. ReadableStream cancel spies prove401 and stale-header bodies are canceled exactly once; body results still fenced after access change. No response content exposed.
+
+## S106 - 2026-11-01 - B07 9/15 (T147)
+
+Playwright pending-form.spec.ts and draft.spec.ts:3 passed. A gated unchanged edit blocks current-tab navigation and beforeunload; after response the form closes and link works. Dirty-draft confirmation regressions preserved. SPA back/forward still not claimed.
