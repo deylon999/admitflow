@@ -13,7 +13,7 @@ const queryClient = new QueryClient({ defaultOptions: { queries: { retry: 1, sta
 function PagePosition() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    document.title = pathname === '/tracker' ? 'Мои направления — Абитуриент' : 'Абитуриент — реальное место в конкурсе';
+    document.title = pathname === '/tracker' ? 'Мои направления — Абитуриент' : 'Абитуриент — ручные сценарии поступления';
     if (hash) requestAnimationFrame(() => document.getElementById(hash.slice(1))?.scrollIntoView());
     else window.scrollTo(0, 0);
   }, [pathname, hash]);

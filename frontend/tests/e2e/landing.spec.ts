@@ -7,6 +7,9 @@ for (const width of [320, 390, 768, 1440]) {
     page.on('pageerror', error => errors.push(error.message));
     await page.goto('/');
     await expect(page.locator('#hero-title')).toBeVisible();
+    await expect(page.locator('#how-it-works')).toContainText('повторно вычитать нельзя');
+    await expect(page.locator('.features-grid .tag')).toHaveText(['Ручной режим', 'Доступно', 'В разработке']);
+    await expect(page.locator('.faq-list')).toContainText('Они не считаются навсегда выбывшими');
     await expect(page.locator('#result-place')).toHaveText('74');
     const explanation = page.locator('.scenario-explanation');
     await explanation.locator('summary').click();

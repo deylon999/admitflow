@@ -875,7 +875,8 @@
         "T021",
         "T024",
         "T072",
-        "T073"
+        "T073",
+        "T098"
       ],
       "deliverables": [
         "frontend/src/lib/api.ts",
@@ -904,7 +905,8 @@
         "T008",
         "T022",
         "T025",
-        "T075"
+        "T075",
+        "T097"
       ],
       "deliverables": [
         "frontend/src/tracker.css",
@@ -1153,7 +1155,8 @@
         "T024",
         "T032",
         "T033",
-        "T080"
+        "T080",
+        "T102"
       ],
       "deliverables": [
         "backend/app/sources/",
@@ -1375,7 +1378,8 @@
         "T017",
         "T028",
         "T033",
-        "T085"
+        "T085",
+        "T095"
       ],
       "deliverables": [
         "backend/tests/security/",
@@ -1536,7 +1540,8 @@
       "dependsOn": [
         "T043",
         "T048",
-        "T089"
+        "T089",
+        "T101"
       ],
       "deliverables": [
         "scripts/backup/",
@@ -2813,6 +2818,258 @@
           "note": "S046 / B03 10/10: Coverage API/UI separates catalog size from attested enabled automatic sources with group rules and complete published versions. National denominator is unknown/null, archive is never fresh, request failure is not zero. Backend coverage subset 2 passed; final full pytest: 188 passed / 1 real PostgreSQL skipped; frontend: 62 passed and build exit 0; full Chromium E2E: 24 passed on explicitly restarted current API, final import/coverage subset: 4 passed. Maximum pretty export 20x500 with full IDs/numbers exceeded 6 MiB, so UI limit corrected to 8 MiB with a regression test; HTTP normalized body remains bounded to 8 MiB. Final CSS heading/font tokens corrected after visual review. Desktop/mobile screenshots refreshed, synthetic import preview not submitted, demo session deleted (204). SQLite CLI backup/verify/restore smoke passed on isolated batch03.db, schema 0004/rawCount0, no working DB switch; retention dry-run 0 deletions. B03 10/10; 40/92 done, approximately 40 percent automated MVP, D1/30. T006/T013 now explicitly blocked on GitHub access/remote run and original source captures; real adapters/PG/production gates remain open. Preview 5183/API8003, API session 38488/PID18244, frontend session24508; all commits local, push unconfirmed."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T093",
+      "title": "Убрать категоричные обещания из ручного пользовательского пути",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T020"
+      ],
+      "deliverables": [
+        "frontend/src/pages/LandingPage.tsx"
+      ],
+      "steps": [
+        "Ограничить объяснения ручной моделью",
+        "Исправить определение согласия и состояния готовности features"
+      ],
+      "acceptance": [
+        "Нет обещания официального места или универсального правила согласий",
+        "Формула и интервью не переписываются как подтверждённый прогноз"
+      ],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S048 / B04 1/10: Removed universal actual-place/consent assertions from landing, diagram, metadata and tracker captions; manual assumptions and no double subtraction explicit, feature availability separated. Interview remains an attributed story, formula unchanged. Build exit 0; 4 landing Chromium checks passed at 320/390/768/1440 in both themes, including copy boundaries and overflow. Visual font/design acceptance remains open."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T094",
+      "title": "Разрешить безопасный replay импорта при заполненном лимите",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T090",
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/components/ImportData.tsx"
+      ],
+      "steps": [
+        "Не блокировать проверку уже импортированного файла при 20 записях",
+        "Сохранить серверный лимит для нового файла"
+      ],
+      "acceptance": [
+        "Replay при 20 не создаёт дубли",
+        "Новый файл при 20 получает 409 без изменений"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T095",
+      "title": "Проверять действительные даты и порядок полной истории на клиенте",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T074",
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/lib/contracts.ts"
+      ],
+      "steps": [
+        "Отклонить невозможные календарные даты",
+        "Сверить timezone, микросекунды, порядок и уникальность snapshots"
+      ],
+      "acceptance": [
+        "Невалидные даты и переставленная история не показываются как корректные",
+        "Собственный export с равными timestamp принимается"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T096",
+      "title": "Привязать ошибки ручной формы к полям и фокусу",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T072",
+        "T018"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/UniversityPicker.tsx"
+      ],
+      "steps": [
+        "Проверить названия/URL/числа до HTTP",
+        "Показать aria-invalid/описание и сфокусировать первое ошибочное поле"
+      ],
+      "acceptance": [
+        "Неверный URL/credentials не отправляется",
+        "Ошибка суммы групп указывает соответствующие поля"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T097",
+      "title": "Защитить несохранённую форму от случайного переключения",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T072"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx"
+      ],
+      "steps": [
+        "Отслеживать отличие от исходных значений",
+        "Подтверждать только реальное удаление черновика при cancel/switch"
+      ],
+      "acceptance": [
+        "Отказ от переключения сохраняет ввод",
+        "Чистая и успешно сохранённая форма не требуют подтверждения"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T098",
+      "title": "Согласовать истечение сессии во всех действиях кабинета",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T016",
+        "T091"
+      ],
+      "deliverables": [
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/ImportData.tsx"
+      ],
+      "steps": [
+        "Обработать 401 из delete/export/import/history",
+        "Скрыть старую форму и не создавать новую сессию автоматически"
+      ],
+      "acceptance": [
+        "Каждый 401 приводит к явному состоянию expiry",
+        "Новая ownership только по кнопке пользователя"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T099",
+      "title": "Соблюдать deadline блокировки внутри процесса и между процессами",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T087"
+      ],
+      "deliverables": [
+        "backend/app/sources/storage.py"
+      ],
+      "steps": [
+        "Ограничить ожидание RLock общим deadline",
+        "Проверить вложенные операции и освобождение после timeout"
+      ],
+      "acceptance": [
+        "Конкурирующий поток получает timeout в срок",
+        "Reentrant put/read под внешним lock работает"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T100",
+      "title": "Ограничить весь обмен результата дочернего fetch-процесса",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T082"
+      ],
+      "deliverables": [
+        "backend/app/worker.py"
+      ],
+      "steps": [
+        "Убрать неограниченный recv после poll",
+        "Ограничить процесс и проверять завершённый bounded result"
+      ],
+      "acceptance": [
+        "Частичный результат не зависает после deadline",
+        "Невалидный результат и cleanup не раскрывают raw/URL"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T101",
+      "title": "Не перезаписывать назначение при конкурентном restore",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T089"
+      ],
+      "deliverables": [
+        "backend/app/backup.py"
+      ],
+      "steps": [
+        "Зарезервировать новый destination без overwrite",
+        "Не считать незавершённый restore готовым"
+      ],
+      "acceptance": [
+        "Две попытки не перезаписывают чужую папку",
+        "Ошибка оставляет существующие данные без изменений"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T102",
+      "title": "Показывать исчерпанные и истёкшие задания в диагностике источника",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T080",
+        "T081"
+      ],
+      "deliverables": [
+        "backend/app/sources/status.py"
+      ],
+      "steps": [
+        "Учитывать failed/expired queue state при freshness",
+        "Вернуть ограниченные worker status без token"
+      ],
+      "acceptance": [
+        "Исчерпанное задание не маскируется fresh",
+        "Архивная метка и последний корректный снимок сохраняются"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

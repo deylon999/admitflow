@@ -81,7 +81,7 @@ function DirectionCard({ watch, onEdit, disabled }: { watch: Watch; onEdit: (but
   return <article className="direction-card surface">
     <div className="direction-top"><span className="eyebrow">{watch.university}</span><span className="tag">Ручной ввод</span></div>
     <h2>{watch.title}</h2>
-    <div className="direction-result"><strong>{calculation.place}</strong><span>место сейчас<br /><b>{calculation.seats}</b> бюджетных мест</span></div>
+    <div className="direction-result"><strong>{calculation.place}</strong><span>по вашему вводу<br /><b>{calculation.seats}</b> бюджетных мест</span></div>
     <p className="result-status" data-state={calculation.state}>{calculation.status}</p>
     <p className="direction-worst">Если все выше вас подадут согласие: <b>{calculation.worstPlace}-е место</b>.</p>
     <ScenarioExplanation values={watch.latest.values} />

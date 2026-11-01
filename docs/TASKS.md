@@ -787,6 +787,75 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S045 / B03 9/10: Import UI checks file size/content before network, previews counts and requires confirmation; cancel never writes. Deterministic content key survives reselect/retry, new-session transfer preserves both history records/dates and generates new owner IDs. npm test: 60 passed; build exit 0; 2 real API Chromium import tests passed including lost committed response replay and invalid/oversized file with zero POSTs. New isolated preview 5183/API8003 using batch03.db; API started explicitly without reload/access-log.
 
+### T094. Разрешить безопасный replay импорта при заполненном лимите
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T090, T091.
+
+**Результаты/файлы:** `frontend/src/components/ImportData.tsx`.
+
+**Шаги:**
+
+1. Не блокировать проверку уже импортированного файла при 20 записях.
+2. Сохранить серверный лимит для нового файла.
+
+**Критерии закрытия:**
+
+- Replay при 20 не создаёт дубли.
+- Новый файл при 20 получает 409 без изменений.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T095. Проверять действительные даты и порядок полной истории на клиенте
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T074, T091.
+
+**Результаты/файлы:** `frontend/src/lib/contracts.ts`.
+
+**Шаги:**
+
+1. Отклонить невозможные календарные даты.
+2. Сверить timezone, микросекунды, порядок и уникальность snapshots.
+
+**Критерии закрытия:**
+
+- Невалидные даты и переставленная история не показываются как корректные.
+- Собственный export с равными timestamp принимается.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T098. Согласовать истечение сессии во всех действиях кабинета
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T016, T091.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/ImportData.tsx`.
+
+**Шаги:**
+
+1. Обработать 401 из delete/export/import/history.
+2. Скрыть старую форму и не создавать новую сессию автоматически.
+
+**Критерии закрытия:**
+
+- Каждый 401 приводит к явному состоянию expiry.
+- Новая ownership только по кнопке пользователя.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E3. Автоматический сбор
 
 Плановый интервал: D8–D17.
@@ -1002,7 +1071,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T024, T032, T033, T080.
+**Зависимости:** T024, T032, T033, T080, T102.
 
 **Результаты/файлы:** `backend/app/sources/`; `frontend/tests/e2e/source-failure.spec.ts`.
 
@@ -1251,6 +1320,75 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S035 / B02 10/10: Separate worker once/loop and local source CLI now connect queue/fetch/parse/validate/store/publish. Production registry has no real adapters and CLI has no bypass. Eight worker tests cover synthetic success/quarantine, revoked and expired leases, retry, process-wide fetch timeout, crash after publication replay and redacted parser errors. Final full pytest: 154 passed / 1 real PG skipped / exit 0; frontend npm test: 58 passed, build exit 0; full Chromium E2E: 20 passed after explicit API restart on migrated 0004, plus final comparison subset 2 passed. Initial CLI smoke failed because development reload had not migrated the old preview DB; stopped only own session 15194, explicitly ran alembic upgrade/check, restarted own API session 45338/PID15852, verified OpenAPI status route and revision 0004; worker once then idle and source list empty, exit 0. Final review added mobile table-scroll hint and keyboard scroll and fixed CSS token. Synthetic previews refreshed, demo session deleted (204). T082 done; B02 10/10. Current preview 5182/API8002, backend/.pytest_cache/batch02.db. GitHub:443 and Docker ACL remain blocked; real sources/PG/remote CI/hosting/fonts and release gates remain open. Overall engineering estimate approximately 35%, D1/30; 30 of 82 cards done, not a release claim.
 
+### T099. Соблюдать deadline блокировки внутри процесса и между процессами
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T087.
+
+**Результаты/файлы:** `backend/app/sources/storage.py`.
+
+**Шаги:**
+
+1. Ограничить ожидание RLock общим deadline.
+2. Проверить вложенные операции и освобождение после timeout.
+
+**Критерии закрытия:**
+
+- Конкурирующий поток получает timeout в срок.
+- Reentrant put/read под внешним lock работает.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T100. Ограничить весь обмен результата дочернего fetch-процесса
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T082.
+
+**Результаты/файлы:** `backend/app/worker.py`.
+
+**Шаги:**
+
+1. Убрать неограниченный recv после poll.
+2. Ограничить процесс и проверять завершённый bounded result.
+
+**Критерии закрытия:**
+
+- Частичный результат не зависает после deadline.
+- Невалидный результат и cleanup не раскрывают raw/URL.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T102. Показывать исчерпанные и истёкшие задания в диагностике источника
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T080, T081.
+
+**Результаты/файлы:** `backend/app/sources/status.py`.
+
+**Шаги:**
+
+1. Учитывать failed/expired queue state при freshness.
+2. Вернуть ограниченные worker status без token.
+
+**Критерии закрытия:**
+
+- Исчерпанное задание не маскируется fresh.
+- Архивная метка и последний корректный снимок сохраняются.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E4. Объяснения и UX
 
 Плановый интервал: D15–D22.
@@ -1305,7 +1443,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T019, T021, T024, T072, T073.
+**Зависимости:** T019, T021, T024, T072, T073, T098.
 
 **Результаты/файлы:** `frontend/src/lib/api.ts`; `frontend/src/pages/`; `frontend/tests/e2e/`.
 
@@ -1328,7 +1466,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T008, T022, T025, T075.
+**Зависимости:** T008, T022, T025, T075, T097.
 
 **Результаты/файлы:** `frontend/src/tracker.css`; `frontend/tests/e2e/accessibility.spec.ts`.
 
@@ -1439,6 +1577,75 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S046 / B03 10/10: Coverage API/UI separates catalog size from attested enabled automatic sources with group rules and complete published versions. National denominator is unknown/null, archive is never fresh, request failure is not zero. Backend coverage subset 2 passed; final full pytest: 188 passed / 1 real PostgreSQL skipped; frontend: 62 passed and build exit 0; full Chromium E2E: 24 passed on explicitly restarted current API, final import/coverage subset: 4 passed. Maximum pretty export 20x500 with full IDs/numbers exceeded 6 MiB, so UI limit corrected to 8 MiB with a regression test; HTTP normalized body remains bounded to 8 MiB. Final CSS heading/font tokens corrected after visual review. Desktop/mobile screenshots refreshed, synthetic import preview not submitted, demo session deleted (204). SQLite CLI backup/verify/restore smoke passed on isolated batch03.db, schema 0004/rawCount0, no working DB switch; retention dry-run 0 deletions. B03 10/10; 40/92 done, approximately 40 percent automated MVP, D1/30. T006/T013 now explicitly blocked on GitHub access/remote run and original source captures; real adapters/PG/production gates remain open. Preview 5183/API8003, API session 38488/PID18244, frontend session24508; all commits local, push unconfirmed.
 
+### T093. Убрать категоричные обещания из ручного пользовательского пути
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T020.
+
+**Результаты/файлы:** `frontend/src/pages/LandingPage.tsx`.
+
+**Шаги:**
+
+1. Ограничить объяснения ручной моделью.
+2. Исправить определение согласия и состояния готовности features.
+
+**Критерии закрытия:**
+
+- Нет обещания официального места или универсального правила согласий.
+- Формула и интервью не переписываются как подтверждённый прогноз.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/LOG.md](../docs/LOG.md) — S048 / B04 1/10: Removed universal actual-place/consent assertions from landing, diagram, metadata and tracker captions; manual assumptions and no double subtraction explicit, feature availability separated. Interview remains an attributed story, formula unchanged. Build exit 0; 4 landing Chromium checks passed at 320/390/768/1440 in both themes, including copy boundaries and overflow. Visual font/design acceptance remains open.
+
+### T096. Привязать ошибки ручной формы к полям и фокусу
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T072, T018.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/UniversityPicker.tsx`.
+
+**Шаги:**
+
+1. Проверить названия/URL/числа до HTTP.
+2. Показать aria-invalid/описание и сфокусировать первое ошибочное поле.
+
+**Критерии закрытия:**
+
+- Неверный URL/credentials не отправляется.
+- Ошибка суммы групп указывает соответствующие поля.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T097. Защитить несохранённую форму от случайного переключения
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T072.
+
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+
+**Шаги:**
+
+1. Отслеживать отличие от исходных значений.
+2. Подтверждать только реальное удаление черновика при cancel/switch.
+
+**Критерии закрытия:**
+
+- Отказ от переключения сохраняет ввод.
+- Чистая и успешно сохранённая форма не требуют подтверждения.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
@@ -1493,7 +1700,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T016, T017, T028, T033, T085.
+**Зависимости:** T016, T017, T028, T033, T085, T095.
 
 **Результаты/файлы:** `backend/tests/security/`; `docs/evidence/security.md`.
 
@@ -1631,7 +1838,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T043, T048, T089.
+**Зависимости:** T043, T048, T089, T101.
 
 **Результаты/файлы:** `scripts/backup/`; `docs/evidence/restore.md`; `docs/RUNBOOK.md`.
 
@@ -1856,6 +2063,29 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S043 / B03 7/10: SQLite backup verification checks DB/raw hashes, integrity/FK, revision and exact raw references; unexpected views/triggers, symlinks, corruption and existing destination refused. Restore copies to new private environment and verifies again. pytest backup+restore: 6 passed / exit 0; actual restored FastAPI preserves watch IDs/history and cookie ownership, a new owner sees 404; source raw bytes verified. No working DB switched; PostgreSQL/production restore gate stays open.
+
+### T101. Не перезаписывать назначение при конкурентном restore
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T089.
+
+**Результаты/файлы:** `backend/app/backup.py`.
+
+**Шаги:**
+
+1. Зарезервировать новый destination без overwrite.
+2. Не считать незавершённый restore готовым.
+
+**Критерии закрытия:**
+
+- Две попытки не перезаписывают чужую папку.
+- Ошибка оставляет существующие данные без изменений.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 
