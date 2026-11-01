@@ -1,5 +1,84 @@
 import { expect, test } from '@playwright/test';
 
+test('expiry during a readonly restore check cannot reopen the draft', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Expires during check');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  const expiry = await page.evaluate(() => JSON.parse(sessionStorage.getItem('admitflow-draft-v1')!).expiresAt as number);
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  await expect(page.getByRole('region', { name: 'Есть несохранённый черновик' })).toBeVisible();
+  await page.clock.install();
+  let release!: () => void;
+  let checking = false;
+  const gate = new Promise<void>(resolve => { release = resolve; });
+  await page.route('**/api/v1/watches', async route => { checking = true; await gate; await route.continue(); });
+  await page.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
+  try {
+    await expect.poll(() => checking).toBe(true);
+    // Change wall time only: the network timeout must not cause this refusal.
+    await page.clock.setSystemTime(new Date(expiry + 1));
+  } finally { release(); }
+  await expect(page.locator('.tracker-notice')).toContainText('Черновик больше недоступен');
+  await expect(page.locator('.direction-form, .draft-recovery')).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+});
+
+for (const theme of ['light', 'dark']) test(`draft recovery is keyboard accessible at320px in ${theme} theme`, async ({ page }, info) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.setViewportSize({ width: 320, height: 780 });
+  await page.addInitScript(value => localStorage.setItem('abiturient-theme', value), theme);
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('У'.repeat(160));
+  await page.getByLabel('Направление и конкурсная группа').fill('Н'.repeat(200));
+  await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/' + 'a'.repeat(1800));
+  await page.getByLabel('Ваш номер в списке').fill('1000000');
+  await page.getByLabel('Бюджетных мест', { exact: true }).fill('1000000');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  const recovery = page.getByRole('region', { name: 'Есть несохранённый черновик' });
+  await expect(recovery).toBeVisible();
+  await recovery.locator('summary').focus();
+  await page.keyboard.press('Enter');
+  await expect(recovery.locator('details')).toHaveAttribute('open', '');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await recovery.getByRole('button', { name: 'Восстановить черновик', exact: true }).focus();
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('heading', { name: 'Добавить направление', exact: true })).toBeFocused();
+  await expect(page.getByLabel('Ваш номер в списке')).toHaveValue('1000000');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.locator('.direction-form').screenshot({ path: info.outputPath(`restored-${theme}.png`) });
+});
+
+for (const failure of ['denied', 'quota']) test(`the form remains usable when local storage is ${failure}`, async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.addInitScript(mode => {
+    if (mode === 'denied') Object.defineProperty(window, 'sessionStorage', { get() { throw new DOMException('denied', 'SecurityError'); } });
+    else {
+      const set = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (key, value) {
+        if (this === sessionStorage) throw new DOMException('full', 'QuotaExceededError');
+        return set.call(this, key, value);
+      };
+    }
+  }, failure);
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Storage unavailable');
+  await page.getByLabel('Направление и конкурсная группа').fill('Still usable');
+  await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
+  await page.getByLabel('Ваш номер в списке').fill('10');
+  await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
+  await expect(page.getByRole('status').filter({ hasText: 'Не удалось сохранить черновик' })).toBeVisible();
+  expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
+  await page.getByRole('button', { name: 'Сохранить направление', exact: true }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(1);
+});
+
 for (const mode of ['create', 'update']) test(`reload after a lost ${mode} response reuses its stored key without duplicating history`, async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
@@ -67,6 +146,26 @@ test('a cookie owner replacement without a storage event cannot restore the prev
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
   await expect(page.getByRole('region', { name: 'Есть несохранённый черновик' })).toHaveCount(0);
   await expect(page.locator('body')).not.toContainText('Previous owner secret');
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+});
+
+test('restore revalidates an owner changed while the preview is already open', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Old active preview');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  await expect(page.getByRole('region', { name: 'Есть несохранённый черновик' })).toBeVisible();
+  await page.request.delete('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
+  await page.request.post('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } });
+  let posts = 0;
+  page.on('request', request => { if (request.method() === 'POST') posts++; });
+  await page.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Гостевой доступ изменён' })).toBeVisible();
+  await expect(page.locator('.direction-form, .draft-recovery')).toHaveCount(0);
+  expect(posts).toBe(0);
   expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
 });
 

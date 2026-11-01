@@ -116,18 +116,27 @@ export default function TrackerPage() {
     }, Math.max(0, recovery.expiresAt - Date.now()));
     return () => clearTimeout(timer);
   }, [recovery, form]);
-  function restoreDraft() {
-    if (!recovery || !sessionInfo.data?.draftScope) return;
-    const current = readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt);
-    if (!current) { setRecovery(null); setNotice('Черновик больше недоступен.'); return; }
-    const watch = current.watchId ? watches.data?.find(item => item.id === current.watchId) : undefined;
-    if (current.watchId && !watch) { setNotice('Направление черновика уже удалено. Поля можно посмотреть перед удалением черновика.'); return; }
-    if (watch && watch.latest.id !== current.baseSnapshotId && !current.intent) { setNotice('На сервере более новая версия. Устаревший черновик не восстановлен.'); return; }
-    setRestored(current);
-    setForm(watch ?? 'new');
-    setFocusRequest(value => value + 1);
-    setRecovery(null);
-  }
+  const restore = useMutation({ mutationFn: async () => {
+    if (!recovery || !sessionInfo.data?.draftScope) return null;
+    // Recheck the cookie owner, including changes made without a storage event.
+    const info = await api.resumeSession();
+    if (info.draftScope !== sessionInfo.data.draftScope) {
+      clearDraft(); setRecovery(null); api.forgetSession();
+      queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'changed');
+      return null;
+    }
+    const latest = await api.list();
+    queryClient.setQueryData(['watches'], latest);
+    const current = readDraft(info.draftScope, info.expiresAt);
+    if (!current) { setRecovery(null); setNotice('Черновик больше недоступен.'); return null; }
+    const watch = current.watchId ? latest.find(item => item.id === current.watchId) : undefined;
+    if (current.watchId && !watch) { setNotice('Направление черновика уже удалено. Поля можно посмотреть перед удалением черновика.'); return null; }
+    if (watch && watch.latest.id !== current.baseSnapshotId && !current.intent) { setNotice('На сервере более новая версия. Устаревший черновик не восстановлен.'); return null; }
+    return { current, watch };
+  }, onSuccess: result => {
+    if (!result) return;
+    setRestored(result.current); setForm(result.watch ?? 'new'); setFocusRequest(value => value + 1); setRecovery(null);
+  } });
   useEffect(() => {
     if (expired) { clearDraft(); draftDirty.current = false; setRecovery(null); setRestored(null); setForm(null); setConfirmReset(false); setNotice(''); }
   }, [expired]);
@@ -177,10 +186,11 @@ export default function TrackerPage() {
     {count > 0 && <button ref={resetButton} className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
     {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
     {confirmReset && !expired && <DeleteConfirmation text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя." label="Удалить всё" disabled={busy} onCancel={() => { setConfirmReset(false); requestAnimationFrame(() => resetButton.current?.focus()); }} onConfirm={() => reset.mutate()} />}
-    {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён в другой вкладке' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
+    {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {synchronize.isError && <p className="form-error" role="alert">{errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
-    {!expired && !form && recovery && <DraftRecovery record={recovery} blockedReason={recoveryBlocked} disabled={busy || watches.isFetching || watches.isError} onRestore={restoreDraft} onDiscard={() => {
+    {restore.isError && !expired && <p className="form-error" role="alert">Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}</p>}
+    {!expired && !form && recovery && <DraftRecovery record={recovery} blockedReason={recoveryBlocked} disabled={busy || watches.isFetching || watches.isError} onRestore={() => restore.mutate()} onDiscard={() => {
       if (!clearDraft()) { setNotice('Не удалось удалить черновик из хранилища вкладки.'); return; }
       setRecovery(null); setNotice('Черновик удалён. Сохранённые направления не изменены.'); requestAnimationFrame(() => addButton.current?.focus());
     }} />}

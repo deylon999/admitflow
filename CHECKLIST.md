@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 109 из 163 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 110 из 163 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -146,7 +146,7 @@
 - [x] T160 Refuse stale draft updates without losing retry safety
 - [x] T161 Clear local drafts when access or saved data changes
 - [x] T162 Verify draft recovery across real browser reloads
-- [ ] T163 Verify keyboard and narrow-screen draft recovery
+- [x] T163 Verify keyboard and narrow-screen draft recovery
 
 ## Качество и эксплуатация
 

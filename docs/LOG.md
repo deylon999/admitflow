@@ -674,3 +674,15 @@ Playwright recovery/session-tabs8 passed plus expanded successful-save/cancel ca
 ## S122 - 2026-11-01 - B08 9/10 (T162)
 
 Three real-API Chromium cases passed: lost create and update responses are committed, browser reloaded, explicit restore retries exactly the stored key without extra watch/snapshot; update replay preserves an intervening newer snapshot. Cookie owner replaced without storage event yields no old preview or stored record. No mocked success or inferred owner isolation.
+
+## S123 - 2026-11-01 - B08 10/10 (T163)
+
+Final backend279 passed/7 actual PostgreSQL skipped, frontend92 passed/build exit0, full69 Chromium passed on API8007/session62597/PID13052. Before final expiry fix full68 passed; added wall-clock-only expiry-during-read test and repeated full69 without weakening expectations. Keyboard/320px light-dark and denied/quota storage cases pass. Restore now readonly-revalidates cookie scope and latest records; expiry checked after network wait, restored unchanged drafts retain expiry timer. Mobile evidence visually inspected; example guest/storage cleared.
+
+S123 final checkpoint,2026-11-01: backend `.venv/Scripts/python.exe -m pytest -q` ->279 passed/7 actual PostgreSQL skipped,55.92s,exit0; existing Starlette/httpx warning. Frontend `npm test` ->92 passed; final `npm run build` ->exit0. E2E_API=1 E2E_BASE_URL=http://127.0.0.1:5187 `npm run test:e2e -- --reporter=line` ->69 Chromium passed,2.1m,exit0 on final API8007/session62597/PID13052,batch08.db/revision0004. First full68 passed; final review found TTL could expire during readonly restore check, added wall-clock-only regression and retained original expiry timer for unchanged restored forms; final full69 repeated. No weakened assertion or hidden retry.
+
+S123 runtime/evidence: frontend session83703 API_TARGET8007. Initial own API session51868/PID1504 stopped before draftScope runtime checks, next21434/PID12824 stopped before expected snapshot contract checks. Final process62597/PID13052 unchanged during full checks. Older previews and Docker8080 untouched. docs/evidence/draft-recovery-mobile.png captured at390px with explicitly named local manual example, visually inspected; no watch POST, own guest DELETE204 and sessionStorage cleared afterward. No Figma/font/native PG acceptance claim.
+
+B08 final:10 task commits,110done/163total,3blocked,4review,46todo; all7 release gates open. Estimated automated MVP40% unchanged,day1/30. PRODUCT/DECISIONS/API/DATA_RULES/data-policy/RUNBOOK/STATE/PROGRESS/deliverables updated. Source original bytes still absent, pilot web opens inaccessible, Docker Engine/config ACL and GitHub443 denied. No automatic adapters, national coverage, ML, production deployment, remote push or CI success claimed. Prioritize obtaining real inputs/runtime rather than further cosmetic batches.
+
+S123 plan verification: --render/--check valid163tasks, all6 invalid-state self-tests rejected, git diff --check exit0. No active task, nextT103 review. All10 commits local under configured user identity; generated TASKS.md/CHECKLIST synchronized.

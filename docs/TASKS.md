@@ -2646,7 +2646,7 @@
 
 **Зависимости:** T138.
 
-**Результаты/файлы:** `frontend/src/main.tsx`.
+**Результаты/файлы:** `frontend/src/main.tsx`; `docs/DECISIONS.md`.
 
 **Шаги:**
 
@@ -2668,7 +2668,7 @@
 
 **Зависимости:** T154, T147.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/DirectionForm.tsx`; `frontend/src/components/Layout.tsx`; `frontend/tests/e2e/draft-navigation.spec.ts`; `frontend/tests/e2e/draft.spec.ts`; `frontend/tests/e2e/pending-form.spec.ts`.
 
 **Шаги:**
 
@@ -2690,7 +2690,7 @@
 
 **Зависимости:** T016.
 
-**Результаты/файлы:** `backend/app/schemas.py`.
+**Результаты/файлы:** `backend/app/schemas.py`; `backend/app/main.py`; `backend/tests/test_draft_scope.py`; `frontend/src/lib/contracts.ts`; `frontend/tests/draft-scope.test.ts`.
 
 **Шаги:**
 
@@ -2712,7 +2712,7 @@
 
 **Зависимости:** T156.
 
-**Результаты/файлы:** `frontend/src/lib/draft.ts`.
+**Результаты/файлы:** `frontend/src/lib/draft.ts`; `frontend/tests/draft-store.test.ts`.
 
 **Шаги:**
 
@@ -2734,7 +2734,7 @@
 
 **Зависимости:** T157.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/DirectionForm.tsx`; `frontend/tests/e2e/draft-recovery.spec.ts`.
 
 **Шаги:**
 
@@ -2756,7 +2756,7 @@
 
 **Зависимости:** T158.
 
-**Результаты/файлы:** `frontend/src/components/DraftRecovery.tsx`.
+**Результаты/файлы:** `frontend/src/components/DraftRecovery.tsx`; `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/DirectionForm.tsx`; `frontend/src/tracker.css`; `frontend/tests/e2e/draft-recovery.spec.ts`.
 
 **Шаги:**
 
@@ -2778,7 +2778,7 @@
 
 **Зависимости:** T159.
 
-**Результаты/файлы:** `backend/app/main.py`.
+**Результаты/файлы:** `backend/app/main.py`; `backend/tests/test_expected_snapshot.py`; `frontend/src/lib/api.ts`; `frontend/src/components/DirectionForm.tsx`; `frontend/src/components/DraftRecovery.tsx`; `frontend/src/pages/TrackerPage.tsx`; `docs/DATA_RULES.md`.
 
 **Шаги:**
 
@@ -2800,7 +2800,7 @@
 
 **Зависимости:** T159.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/src/main.tsx`; `frontend/src/lib/query-client.ts`; `frontend/src/components/DirectionForm.tsx`; `frontend/tests/e2e/draft-recovery.spec.ts`; `frontend/tests/e2e/session-tabs.spec.ts`; `docs/data-policy.md`.
 
 **Шаги:**
 
@@ -2840,11 +2840,11 @@
 
 ### T163. Verify keyboard and narrow-screen draft recovery
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T162.
 
-**Результаты/файлы:** `frontend/tests/e2e/draft-recovery.spec.ts`.
+**Результаты/файлы:** `frontend/tests/e2e/draft-recovery.spec.ts`; `frontend/src/pages/TrackerPage.tsx`; `frontend/src/components/DirectionForm.tsx`; `frontend/tests/e2e/session-tabs.spec.ts`; `docs/evidence/draft-recovery-mobile.png`.
 
 **Шаги:**
 
@@ -2858,7 +2858,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S123: Final backend279 passed/7 actual PostgreSQL skipped, frontend92 passed/build exit0, full69 Chromium passed on API8007/session62597/PID13052. Before final expiry fix full68 passed; added wall-clock-only expiry-during-read test and repeated full69 without weakening expectations. Keyboard/320px light-dark and denied/quota storage cases pass. Restore now readonly-revalidates cookie scope and latest records; expiry checked after network wait, restored unchanged drafts retain expiry timer. Mobile evidence visually inspected; example guest/storage cleared.
 
 ## E5. Качество и эксплуатация
 

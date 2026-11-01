@@ -17,7 +17,7 @@ test('сброс в другой вкладке скрывает старый в
     await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
     await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
-    await expect(other.getByRole('heading', { name: 'Гостевой доступ изменён в другой вкладке' })).toBeVisible();
+    await expect(other.getByRole('heading', { name: 'Гостевой доступ изменён' })).toBeVisible();
     await expect(other.locator('.direction-card, .direction-form')).toHaveCount(0);
     expect(await other.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
     const before = starts;

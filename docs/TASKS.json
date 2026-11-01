@@ -4650,7 +4650,8 @@
         "T138"
       ],
       "deliverables": [
-        "frontend/src/main.tsx"
+        "frontend/src/main.tsx",
+        "docs/DECISIONS.md"
       ],
       "steps": [
         "Enable data-router navigation blocking",
@@ -4679,7 +4680,12 @@
         "T147"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/src/components/Layout.tsx",
+        "frontend/tests/e2e/draft-navigation.spec.ts",
+        "frontend/tests/e2e/draft.spec.ts",
+        "frontend/tests/e2e/pending-form.spec.ts"
       ],
       "steps": [
         "Protect unsaved forms on browser back and forward",
@@ -4707,7 +4713,11 @@
         "T016"
       ],
       "deliverables": [
-        "backend/app/schemas.py"
+        "backend/app/schemas.py",
+        "backend/app/main.py",
+        "backend/tests/test_draft_scope.py",
+        "frontend/src/lib/contracts.ts",
+        "frontend/tests/draft-scope.test.ts"
       ],
       "steps": [
         "Expose an isolated guest draft namespace",
@@ -4735,7 +4745,8 @@
         "T156"
       ],
       "deliverables": [
-        "frontend/src/lib/draft.ts"
+        "frontend/src/lib/draft.ts",
+        "frontend/tests/draft-store.test.ts"
       ],
       "steps": [
         "Validate bounded session-local draft storage",
@@ -4763,7 +4774,9 @@
         "T157"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/tests/e2e/draft-recovery.spec.ts"
       ],
       "steps": [
         "Save form drafts and retry keys locally",
@@ -4791,7 +4804,11 @@
         "T158"
       ],
       "deliverables": [
-        "frontend/src/components/DraftRecovery.tsx"
+        "frontend/src/components/DraftRecovery.tsx",
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/src/tracker.css",
+        "frontend/tests/e2e/draft-recovery.spec.ts"
       ],
       "steps": [
         "Offer explicit draft restore and discard",
@@ -4819,7 +4836,13 @@
         "T159"
       ],
       "deliverables": [
-        "backend/app/main.py"
+        "backend/app/main.py",
+        "backend/tests/test_expected_snapshot.py",
+        "frontend/src/lib/api.ts",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/src/components/DraftRecovery.tsx",
+        "frontend/src/pages/TrackerPage.tsx",
+        "docs/DATA_RULES.md"
       ],
       "steps": [
         "Refuse stale draft updates without losing retry safety",
@@ -4847,7 +4870,13 @@
         "T159"
       ],
       "deliverables": [
-        "frontend/src/pages/TrackerPage.tsx"
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/main.tsx",
+        "frontend/src/lib/query-client.ts",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/tests/e2e/draft-recovery.spec.ts",
+        "frontend/tests/e2e/session-tabs.spec.ts",
+        "docs/data-policy.md"
       ],
       "steps": [
         "Clear local drafts when access or saved data changes",
@@ -4899,12 +4928,16 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T162"
       ],
       "deliverables": [
-        "frontend/tests/e2e/draft-recovery.spec.ts"
+        "frontend/tests/e2e/draft-recovery.spec.ts",
+        "frontend/src/pages/TrackerPage.tsx",
+        "frontend/src/components/DirectionForm.tsx",
+        "frontend/tests/e2e/session-tabs.spec.ts",
+        "docs/evidence/draft-recovery-mobile.png"
       ],
       "steps": [
         "Verify keyboard and narrow-screen draft recovery",
@@ -4913,7 +4946,12 @@
       "acceptance": [
         "Recovery and failure states remain usable at320px in both themes, by keyboard and with unavailable storage; current evidence captured."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S123: Final backend279 passed/7 actual PostgreSQL skipped, frontend92 passed/build exit0, full69 Chromium passed on API8007/session62597/PID13052. Before final expiry fix full68 passed; added wall-clock-only expiry-during-read test and repeated full69 without weakening expectations. Keyboard/320px light-dark and denied/quota storage cases pass. Restore now readonly-revalidates cookie scope and latest records; expiry checked after network wait, restored unchanged drafts retain expiry timer. Mobile evidence visually inspected; example guest/storage cleared."
+        }
+      ],
       "blockedReason": null
     }
   ]

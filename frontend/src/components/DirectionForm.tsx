@@ -28,8 +28,8 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
   useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
   const intent = useRef<SaveIntent | null>(restored?.intent ?? null);
   const baseSnapshotId = useRef(restored?.baseSnapshotId ?? watch?.latest.id ?? null);
-  const [localSaved, setLocalSaved] = useState<boolean | null>(null);
-  const [localExpiry, setLocalExpiry] = useState<number | null>(null);
+  const [localSaved, setLocalSaved] = useState<boolean | null>(restored ? true : null);
+  const [localExpiry, setLocalExpiry] = useState<number | null>(restored?.expiresAt ?? null);
   const scope = sessionInfo?.draftScope, deadline = sessionInfo?.expiresAt;
   const persist = useCallback(() => {
     const record = scope && deadline ? storeDraft(scope, deadline, {
