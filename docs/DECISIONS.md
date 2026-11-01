@@ -22,6 +22,8 @@
 | ADR-016 | selected | MVP сначала для явно поддержанных групп бакалавриата/специалитета | Точный поднабор определяется после аудита. Магистратура/аспирантура/СПО и особые правила не считаются автоматически совместимыми |
 | ADR-017 | user-confirmed | Разделить код на frontend/backend и убрать неиспользуемые файлы | React, npm и браузерные тесты находятся в frontend; общие fixtures в shared; макеты в docs/design; память проекта сохранена в docs |
 | ADR-018 | user-confirmed | Docker Compose для локального запуска, supersedes локальную часть ADR-008 | PostgreSQL + FastAPI + Nginx с собранным React; один localhost:8080 и постоянный volume. Это не production: create_all и development cookies; worker пока не реализован |
+| ADR-019 | selected | Alembic также для автоматического development setup; supersedes create_all из ADR-018 | 0003/0004 добавляют provenance и очередь; новая схема создаётся миграциями, старые совместимые 0001/0002 сохраняются. Production migration остаётся отдельным шагом. Контейнерный запуск по-прежнему требует проверки Engine |
+| ADR-020 | selected | Реестр production пуст до аттестации; синтетические интеграции только в тестах | Контур fetch/parse/validate/store/publish/queue/worker проверяется независимо от доступа к исходным HTML, не повышает coverage и не закрывает проверки реальных источников/PG. Worker запускается отдельным процессом, без публичной регистрации URL |
 
 ## Основание выбора инструментов
 

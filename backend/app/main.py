@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
 from .config import Settings
-from .database import Base, BrowserSession, Snapshot, Watch, make_engine
+from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog

@@ -1,6 +1,5 @@
 """Synthetic source only; never registered in the production registry."""
 import hashlib
-from dataclasses import replace
 from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session

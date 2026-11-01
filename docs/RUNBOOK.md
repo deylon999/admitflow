@@ -111,6 +111,25 @@ API очищает просроченные сессии раз в час. Ло�
 
 ## Инциденты
 
+### Worker и управление источниками
+
+Из backend с настроенным DATABASE_URL и после `.venv/Scripts/python.exe -m alembic upgrade head`:
+
+```powershell
+.venv/Scripts/python.exe -m app.sources.cli list
+.venv/Scripts/python.exe -m app.sources.cli status SOURCE_ID
+.venv/Scripts/python.exe -m app.sources.cli enqueue SOURCE_ID
+.venv/Scripts/python.exe -m app.sources.cli disable SOURCE_ID
+.venv/Scripts/python.exe -m app.worker once
+.venv/Scripts/python.exe -m app.worker loop --poll-seconds 5
+```
+
+CLI/worker читают переменные окружения, сами .env не загружают. RAW_STORE_PATH задаёт приватное хранилище, по умолчанию ./var/raw относительно backend. Для production — отдельный writable volume и проверенные права, не web root. Worker запускается отдельным процессом; в Compose текущего API он автоматически не включён.
+
+Registry production сейчас пуст: CLI enqueue отклоняет неподключённый/неаттестованный адаптер до загрузки. Тестовые адаптеры не доступны из CLI, нет флага обхода аттестации и регистрации произвольного URL. `once` без заданий выводит idle/exit 0; ошибка задания — failed/exit 1; loop продолжает bounded polling. Конфигурацию источника, сезон, правила и адаптер нужно аттестовать кодом и реальными fixtures перед enable. Disable отзывает lease, не удаляет историю и не возвращает coverage автоматически.
+
+Загрузка выполняется в отдельном дочернем процессе с общим пределом 50 секунд, включая DNS; затем parse/validate/store/publish. При публикации повторно проверяются binding, enabled и token аренды. Запоздалый worker не может публиковать за нового владельца. Падение после DB commit до подтверждения задания безопасно воспроизводится без второго снимка. Неизвестные ошибки записываются как internal_error, текст исключения/raw/public ID не логируются. После crash/unavailable следующий claim возможен по lease/backoff; постоянный форматный отказ требует оператора.
+
 RawStore хранит исходные bytes вне web root (`backend/var/raw` по умолчанию), имена — SHA-256. Каталог исключён из Git; его нельзя публиковать Nginx или отдавать через API. Запись через временный файл/fsync/атомарное создание ссылки, повтор проверяет существующий hash. На Unix новые файлы/каталог имеют ограничения временного файла/0700; на Windows необходимо проверить ACL владельца при развёртывании. Сроки очистки и backup сырого хранилища остаются частью T049, автоматическое удаление пока не включено.
 
 Очередь source_jobs (0004): одна строка на источник, queued/running/idle/failed. После успеха — idle до следующего интервала (по умолчанию 900 секунд); после временного отказа — ограниченный backoff с Retry-After и интервалом. 5 попыток по умолчанию, затем failed до явного enqueue после cooldown. Claim выдаёт новый token с lease 120 секунд; предыдущий token после expiry/повторного claim не может подтвердить результат. SQLite конкурентный claim проверен; PostgreSQL FOR UPDATE SKIP LOCKED пока только скомпилирован, настоящий многопроцессный PG-тест остаётся обязательным. Disable отзывает lease и сохраняет последний опубликованный снимок.

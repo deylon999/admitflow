@@ -106,5 +106,7 @@ button:disabled { cursor: wait; opacity: .55; }
 .watch-comparison label { display: flex; align-items: baseline; gap: 10px; margin: 12px 0; }
 .watch-comparison input { flex: 0 0 auto; accent-color: var(--primary); }
 .watch-comparison table { width: 100%; min-width: 540px; border-collapse: collapse; text-align: left; }
-.watch-comparison th, .watch-comparison td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.watch-comparison th, .watch-comparison td { padding: 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
 .watch-comparison caption { text-align: left; font-weight: 600; margin-bottom: 12px; }
+.comparison-scroll-hint { display: none; }
+@media (max-width: 600px) { .comparison-scroll-hint { display: block; margin-bottom: 12px; } }

@@ -18,7 +18,8 @@ export function WatchComparison({ watches }: { watches: Watch[] }) {
     <fieldset><legend>Выберите от двух до трёх направлений</legend>
       {watches.map(watch => <label key={watch.id}><input type="checkbox" checked={selected.includes(watch.id)} disabled={active.length >= 3 && !selected.includes(watch.id)} onChange={() => toggle(watch.id)} />{watch.university} · {watch.title}</label>)}
     </fieldset>
-    {active.length < 2 ? <p className="small-copy">Выберите ещё {2 - active.length}, чтобы показать таблицу.</p> : <div className="history-scroll"><table>
+    {active.length >= 2 && <p className="comparison-scroll-hint small-copy">Прокрутите таблицу вбок, чтобы увидеть остальные направления.</p>}
+    {active.length < 2 ? <p className="small-copy">Выберите ещё {2 - active.length}, чтобы показать таблицу.</p> : <div className="history-scroll" tabIndex={0} role="region" aria-label="Таблица сравнения направлений"><table>
       <caption>Сравнение ручных направлений</caption>
       <thead><tr><th scope="col">Показатель</th>{active.map(watch => <th scope="col" key={watch.id}>{watch.university}<br />{watch.title}</th>)}</tr></thead>
       <tbody>

@@ -19,6 +19,13 @@ for (const width of [390, 1440]) {
     const table = page.getByRole('table', { name: 'Сравнение ручных направлений' });
     await expect(table.getByRole('columnheader')).toHaveCount(4);
     await expect(table).toContainText('Сохранено вручную');
+    if (width === 390) {
+      await expect(page.getByText('Прокрутите таблицу вбок', { exact: false })).toBeVisible();
+      const scroll = page.getByRole('region', { name: 'Таблица сравнения направлений' });
+      await scroll.focus();
+      await page.keyboard.press('ArrowRight');
+      await expect.poll(() => scroll.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+    }
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     const card = page.locator('.direction-card').filter({ has: page.getByRole('heading', { name: 'Group 2', exact: true }) });
     await card.getByRole('button', { name: 'Удалить', exact: true }).click();
