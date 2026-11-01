@@ -2915,7 +2915,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T072",
         "T018"
@@ -2932,7 +2932,12 @@
         "Неверный URL/credentials не отправляется",
         "Ошибка суммы групп указывает соответствующие поля"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S051 / B04 4/10: Client validates trimmed names, URL scheme/credentials/canonical length and numeric groups before HTTP, links errors to fields with aria-invalid/describedby and focuses first invalid input. Native validation no longer swallows custom errors. npm test: 67 passed; build exit 0; 6 form/keyboard Chromium tests passed, including zero writes for credential URL, first-error focus, group error association and existing keyboard save flow."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -3,10 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import type { University } from '../lib/api';
 
-export function UniversityPicker({ value, onChange, onSelect }: {
+export function UniversityPicker({ value, onChange, onSelect, error }: {
   value: string;
   onChange: (value: string) => void;
   onSelect: (university: University) => void;
+  error?: string;
 }) {
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -19,10 +20,11 @@ export function UniversityPicker({ value, onChange, onSelect }: {
   }}>
     <label htmlFor="university">Вуз</label>
     <input ref={input} id="university" value={value} maxLength={160} required autoComplete="off"
-      placeholder="Название вуза" aria-describedby="catalog-note"
+      placeholder="Название вуза" aria-invalid={Boolean(error) || undefined} aria-describedby={error ? 'catalog-note university-error' : 'catalog-note'}
       onFocus={() => setOpen(true)}
       onChange={event => { onChange(event.target.value); setOpen(true); }} />
     <p className="form-note" id="catalog-note">Можно выбрать из небольшого справочника или ввести любой вуз вручную.</p>
+    {error && <p className="form-error" id="university-error" role="alert">{error}</p>}
     {open && <div className="catalog-results">
       {catalog.isPending ? <p className="small-copy" role="status">Ищем вуз…</p>
         : catalog.isError ? <p className="small-copy">Справочник недоступен. Название можно ввести вручную.</p>

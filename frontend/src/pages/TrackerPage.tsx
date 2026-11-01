@@ -13,6 +13,7 @@ import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
 import type { Watch } from '../lib/api';
 import { assertSnapshotOrder } from '../lib/contracts';
+import { validateDirection } from '../lib/direction';
 
 const emptyValues: CalculationForm = { rank: '', seats: '', excluded: '0', noConsent: '0' };
 const dateFormat = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
@@ -29,7 +30,9 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel }: { watch?: Watc
   const [submitted, setSubmitted] = useState(false);
   const intent = useRef<{ fingerprint: string; key: string } | null>(null);
   const result = calculatePlace(values);
-  const error = 'error' in result ? result : undefined;
+  const validation = validateDirection({ university, title, sourceUrl, values }, Boolean(watch));
+  const error = validation.calculation;
+  const metadata = submitted ? validation.metadata : {};
   const queryClient = useQueryClient();
   const save = useMutation({
     mutationFn: async () => {
@@ -49,15 +52,21 @@ function DirectionForm({ watch, focusRequest, onDone, onCancel }: { watch?: Watc
       if (error instanceof SessionExpiredError) void queryClient.invalidateQueries({ queryKey: ['watches'] });
     },
   });
-  return <form className="direction-form surface" aria-labelledby="direction-form-heading" onKeyDown={event => {
+  return <form className="direction-form surface" noValidate aria-labelledby="direction-form-heading" onKeyDown={event => {
     if (event.key === 'Escape' && !event.defaultPrevented && !save.isPending) { event.preventDefault(); onCancel(); }
-  }} onSubmit={event => { event.preventDefault(); setSubmitted(true); if (!save.isPending && !error && university.trim() && title.trim()) save.mutate(); }}>
+  }} onSubmit={event => {
+    event.preventDefault();
+    setSubmitted(true);
+    if (save.isPending) return;
+    if (validation.firstInvalidId) document.getElementById(validation.firstInvalidId)?.focus();
+    else save.mutate();
+  }}>
     <div className="tracker-form-heading"><h2 id="direction-form-heading" ref={heading} tabIndex={-1}>{watch ? 'Обновить цифры' : 'Добавить направление'}</h2><button className="text-button" type="button" onClick={onCancel} aria-label="Закрыть форму" disabled={save.isPending}>✕</button></div>
     <fieldset className="direction-fields" disabled={save.isPending}><legend className="visually-hidden">Данные направления</legend>
     {watch ? <p className="small-copy">{watch.university} · {watch.title}</p> : <>
-      <UniversityPicker value={university} onChange={setUniversity} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
-      <div className="field"><label htmlFor="direction-title">Направление и конкурсная группа</label><input id="direction-title" value={title} maxLength={200} required onChange={event => setTitle(event.target.value)} placeholder="Например: информатика, общий конкурс" /></div>
-      <div className="field"><label htmlFor="source-url">Ссылка на конкурсный список</label><input id="source-url" type="url" pattern="https?://.+" value={sourceUrl} maxLength={2048} required onChange={event => setSourceUrl(event.target.value)} placeholder="https://…" /></div>
+      <UniversityPicker value={university} onChange={setUniversity} error={metadata.university} onSelect={item => { setUniversity(item.name); setSourceUrl(item.provenanceUrl); }} />
+      <div className="field"><label htmlFor="direction-title">Направление и конкурсная группа</label><input id="direction-title" value={title} maxLength={200} required aria-invalid={Boolean(metadata.title) || undefined} aria-describedby={metadata.title ? 'direction-title-error' : undefined} onChange={event => setTitle(event.target.value)} placeholder="Например: информатика, общий конкурс" />{metadata.title && <p id="direction-title-error" className="form-error" role="alert">{metadata.title}</p>}</div>
+      <div className="field"><label htmlFor="source-url">Ссылка на конкурсный список</label><input id="source-url" type="url" value={sourceUrl} maxLength={2048} required aria-invalid={Boolean(metadata.sourceUrl) || undefined} aria-describedby={metadata.sourceUrl ? 'source-url-error' : undefined} onChange={event => setSourceUrl(event.target.value)} placeholder="https://…" />{metadata.sourceUrl && <p id="source-url-error" className="form-error" role="alert">{metadata.sourceUrl}</p>}</div>
     </>}
     <div className="tracker-number-fields"><CalculationInputs values={values} onChange={setValues} error={submitted ? error : undefined} prefix="tracker-" /></div>
     </fieldset>
