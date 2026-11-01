@@ -9,6 +9,7 @@ import LandingPage from './pages/LandingPage';
 import { PageErrorBoundary } from './components/PageErrorBoundary';
 import { api, sessionChangeKey } from './lib/api';
 import { sessionAccessKey } from './lib/query-client';
+import { clearDraft } from './lib/draft';
 import './styles.css';
 import './tracker.css';
 
@@ -37,6 +38,7 @@ function App() {
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
       if (event.key !== sessionChangeKey) return;
+      clearDraft();
       api.forgetSession();
       queryClient.setQueryData(sessionAccessKey, 'changed');
       for (const key of ['watches', 'history', 'session-info']) void queryClient.cancelQueries({ queryKey: [key] });

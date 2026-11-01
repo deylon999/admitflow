@@ -666,3 +666,7 @@ Production build exit0; Playwright draft-recovery/navigation3 passed. Reload sho
 ## S120 - 2026-11-01 - B08 7/10 (T160)
 
 Backend expected_snapshot/writes10 passed; Playwright draft-recovery4 passed on restarted API8007/session62597/PID13052. Stale/missing draft remains plaintext-readable without restore; already open stale edit refuses409 and preserves fields/history. Expected snapshot checked under owner lock after cached replay; malformed header400. DATA_RULES updated; PG concurrency not claimed.
+
+## S121 - 2026-11-01 - B08 8/10 (T161)
+
+Playwright recovery/session-tabs8 passed plus expanded successful-save/cancel case1 passed. TTL expiry removes record without reading renewal;401 and cross-tab reset clear local state before explicit resync; success/cancel leave no record. Form and recovery timers bounded by original expiry; session-info cancellation added to reset. Data policy documents plaintext tab-local limits and suspended-timer caveat.

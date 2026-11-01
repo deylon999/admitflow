@@ -4842,7 +4842,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T159"
       ],
@@ -4856,7 +4856,12 @@
       "acceptance": [
         "Success, explicit discard/reset, expiry and cross-tab access change remove local recovery state and do not resurrect it."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S121: Playwright recovery/session-tabs8 passed plus expanded successful-save/cancel case1 passed. TTL expiry removes record without reading renewal;401 and cross-tab reset clear local state before explicit resync; success/cancel leave no record. Form and recovery timers bounded by original expiry; session-info cancellation added to reset. Data policy documents plaintext tab-local limits and suspended-timer caveat."
+        }
+      ],
       "blockedReason": null
     },
     {

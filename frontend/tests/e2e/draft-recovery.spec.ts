@@ -1,5 +1,41 @@
 import { expect, test } from '@playwright/test';
 
+test('expired local draft disappears without extending its lifetime', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Expiring draft');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.reload();
+  const recovery = page.getByRole('region', { name: 'Есть несохранённый черновик' });
+  await expect(recovery).toBeVisible();
+  await page.clock.install();
+  // Re-mount so the already installed clock owns the expiry timer.
+  await page.getByRole('link', { name: 'Абитуриент — в начало' }).click();
+  await page.getByRole('link', { name: 'Мои направления →', exact: true }).click();
+  await expect(recovery).toBeVisible();
+  await page.clock.fastForward(30 * 60_000 + 1);
+  await expect(recovery).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+  expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
+});
+
+test('loss of guest access clears local recovery before explicit reset', async ({ page, context }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill('Private draft');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  await context.clearCookies();
+  await page.getByRole('button', { name: 'Обновить направления', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Срок гостевой сессии истёк' })).toBeVisible();
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+  await page.getByRole('button', { name: 'Начать новую сессию', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Есть несохранённый черновик' })).toHaveCount(0);
+});
+
 test('a stale or deleted edit draft stays readable without replacing newer data', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
@@ -93,4 +129,15 @@ test('typing only stores a local draft and saves its retry key before sending', 
   await expect(page.getByRole('alert')).toContainText('Не удалось связаться');
   expect(key).toMatch(/^[a-f0-9-]{36}$/);
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Local draft');
+  await page.unroute('**/api/v1/watches');
+  await page.getByRole('button', { name: 'Сохранить направление', exact: true }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(1);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
+  await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
+  await page.getByLabel('Ваш номер в списке').fill('11');
+  await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Закрыть форму' }).click();
+  await expect(page.locator('.direction-form')).toHaveCount(0);
+  expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
 });

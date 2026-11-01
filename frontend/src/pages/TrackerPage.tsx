@@ -109,6 +109,13 @@ export default function TrackerPage() {
       setRecovery(readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt));
     }
   }, [expired, form, watches.isSuccess, watches.data, sessionInfo.data]);
+  useEffect(() => {
+    if (!recovery || form) return;
+    const timer = setTimeout(() => {
+      clearDraft(); setRecovery(null); setNotice('Срок хранения черновика закончился. Сохранённые направления не изменены.');
+    }, Math.max(0, recovery.expiresAt - Date.now()));
+    return () => clearTimeout(timer);
+  }, [recovery, form]);
   function restoreDraft() {
     if (!recovery || !sessionInfo.data?.draftScope) return;
     const current = readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt);
@@ -122,7 +129,7 @@ export default function TrackerPage() {
     setRecovery(null);
   }
   useEffect(() => {
-    if (expired) { draftDirty.current = false; setForm(null); setConfirmReset(false); setNotice(''); }
+    if (expired) { clearDraft(); draftDirty.current = false; setRecovery(null); setRestored(null); setForm(null); setConfirmReset(false); setNotice(''); }
   }, [expired]);
   const download = useMutation({ mutationFn: api.exportData, onSuccess: downloadExport });
   const synchronize = useMutation({ mutationFn: async () => {
@@ -140,6 +147,8 @@ export default function TrackerPage() {
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
       await queryClient.cancelQueries({ queryKey: ['history'] });
+      await queryClient.cancelQueries({ queryKey: ['session-info'] });
+      clearDraft(); setRecovery(null); setRestored(null); draftDirty.current = false; setForm(null);
       return api.resetSession();
     },
     onSuccess: async info => {

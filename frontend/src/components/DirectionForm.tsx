@@ -29,18 +29,25 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
   const intent = useRef<SaveIntent | null>(restored?.intent ?? null);
   const baseSnapshotId = useRef(restored?.baseSnapshotId ?? watch?.latest.id ?? null);
   const [localSaved, setLocalSaved] = useState<boolean | null>(null);
+  const [localExpiry, setLocalExpiry] = useState<number | null>(null);
   const scope = sessionInfo?.draftScope, deadline = sessionInfo?.expiresAt;
   const persist = useCallback(() => {
     const record = scope && deadline ? storeDraft(scope, deadline, {
       draft: { university, title, sourceUrl, values }, watchId: watch?.id ?? null, baseSnapshotId: baseSnapshotId.current, intent: intent.current,
     }) : null;
     setLocalSaved(Boolean(record));
+    setLocalExpiry(record?.expiresAt ?? null);
     return record;
   }, [scope, deadline, university, title, sourceUrl, values, watch?.id]);
   useEffect(() => {
     if (dirty) persist();
     // Persist only when fields or access change, never refresh the TTL by rendering.
   }, [persist, dirty]);
+  useEffect(() => {
+    if (localExpiry === null) return;
+    const timer = setTimeout(() => { clearDraft(); setLocalSaved(false); setLocalExpiry(null); }, Math.max(0, localExpiry - Date.now()));
+    return () => clearTimeout(timer);
+  }, [localExpiry]);
   const result = calculatePlace(values);
   const validation = validateDirection({ university, title, sourceUrl, values }, Boolean(watch));
   const error = validation.calculation;

@@ -1,5 +1,6 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 import { SessionChangedError, SessionExpiredError } from './api';
+import { clearDraft } from './draft';
 
 export const sessionAccessKey = ['session-access'] as const;
 export type SessionAccess = 'active' | 'expired' | 'changed';
@@ -17,5 +18,5 @@ export function createQueryClient() {
 }
 
 function markSessionFailure(client: QueryClient, error: unknown) {
-  if (error instanceof SessionExpiredError) client.setQueryData<SessionAccess>(sessionAccessKey, 'expired');
+  if (error instanceof SessionExpiredError) { clearDraft(); client.setQueryData<SessionAccess>(sessionAccessKey, 'expired'); }
 }
