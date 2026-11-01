@@ -4342,7 +4342,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018"
       ],
@@ -4356,7 +4356,12 @@
       "acceptance": [
         "Arrow keys enter and navigate choices; Escape returns focus without closing the direction form."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S103: Playwright catalog.spec.ts:3 passed on5186/API8006. ArrowDown/Up navigate two actual catalog choices, Escape restores input without closing form, Enter selects name and official source. Existing manual fallback and API failure cases also pass."
+        }
+      ],
       "blockedReason": null
     },
     {

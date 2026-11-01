@@ -2488,7 +2488,7 @@
 
 ### T144. Navigate university choices with the keyboard
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T018.
 
@@ -2506,7 +2506,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/LOG.md](../docs/LOG.md) — S103: Playwright catalog.spec.ts:3 passed on5186/API8006. ArrowDown/Up navigate two actual catalog choices, Escape restores input without closing form, Enter selects name and official source. Existing manual fallback and API failure cases also pass.
 
 ### T145. Stop canceled private reads after session bootstrap
 

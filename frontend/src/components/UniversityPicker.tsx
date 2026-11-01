@@ -16,6 +16,16 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
   const catalog = useQuery({ queryKey: ['universities', query], queryFn: ({ signal }) => api.universities(query, signal), enabled: open, staleTime: 300_000 });
   return <div className="field university-picker" onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); input.current?.focus(); setOpen(false); }
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      const options = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('.catalog-option'));
+      const current = options.indexOf(document.activeElement as HTMLButtonElement);
+      if (document.activeElement !== input.current && current < 0) return;
+      event.preventDefault();
+      setOpen(true);
+      if (!options.length) return;
+      if (current === 0 && event.key === 'ArrowUp') input.current?.focus();
+      else options[current < 0 ? (event.key === 'ArrowDown' ? 0 : options.length - 1) : Math.min(options.length - 1, current + (event.key === 'ArrowDown' ? 1 : -1))].focus();
+    }
   }} onBlur={event => {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }}>
@@ -24,7 +34,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
       placeholder="Название вуза" aria-invalid={Boolean(error) || undefined} aria-describedby={error ? 'catalog-note university-error' : 'catalog-note'}
       onFocus={() => setOpen(true)}
       onChange={event => { onChange(event.target.value); setOpen(true); }} />
-    <p className="form-note" id="catalog-note">Можно выбрать из небольшого справочника или ввести любой вуз вручную.</p>
+    <p className="form-note" id="catalog-note">Можно выбрать из небольшого справочника или ввести любой вуз вручную. Стрелки ↑ и ↓ переходят к вариантам, Escape закрывает их.</p>
     {error && <p className="form-error" id="university-error" role="alert">{error}</p>}
     {open && <div className="catalog-results">
       {catalog.isPending ? <p className="small-copy" role="status">Ищем вуз…</p>

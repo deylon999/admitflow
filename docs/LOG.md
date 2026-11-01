@@ -588,3 +588,7 @@ npm test -- tests/direction.test.ts:4 passed; npm run build exit0. Form counts16
 ## S102 - 2026-11-01 - B07 5/15 (T143)
 
 npm test -- tests/catalog-cancel.test.ts:1 passed. Real QueryObserver unsubscribe aborts transport fetch, next catalog query succeeds. api.universities consumes the query signal; pending old searches do not keep reading after key change/unmount.
+
+## S103 - 2026-11-01 - B07 6/15 (T144)
+
+Playwright catalog.spec.ts:3 passed on5186/API8006. ArrowDown/Up navigate two actual catalog choices, Escape restores input without closing form, Enter selects name and official source. Existing manual fallback and API failure cases also pass.
