@@ -8,6 +8,7 @@ export type WatchCreate = { university: string; title: string; sourceUrl: string
 export type SessionInfo = { expiresAt: string };
 export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
 export type Catalog = { items: University[]; total: number };
+export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
 
 export class InvalidResponseError extends Error {
   constructor() { super('Сервер вернул некорректные данные. Расчёт не показан — попробуйте обновить страницу.'); }
@@ -67,13 +68,23 @@ export function parseWatches(value: unknown): Watch[] {
   if (new Set(rows.map(row => row.id)).size !== rows.length) throw new InvalidResponseError();
   return rows;
 }
-export function parseDetail(value: unknown): WatchDetail {
+function parseHistory(value: unknown, maxRecords: number): WatchDetail {
   const row = object(value);
   const watch = parseWatch(row);
-  const history = array(row.history, parseSnapshot, 100);
+  const history = array(row.history, parseSnapshot, maxRecords);
   if (!history.length || JSON.stringify(history[0]) !== JSON.stringify(watch.latest)
     || new Set(history.map(item => item.id)).size !== history.length) throw new InvalidResponseError();
   return { ...watch, history };
+}
+export function parseDetail(value: unknown): WatchDetail {
+  return parseHistory(value, 100);
+}
+export function parseExport(value: unknown): DataExport {
+  const row = object(value);
+  if (row.formatVersion !== 'manual-export-v1') throw new InvalidResponseError();
+  const watches = array(row.watches, item => parseHistory(item, 500), 20);
+  if (new Set(watches.map(item => item.id)).size !== watches.length) throw new InvalidResponseError();
+  return { formatVersion: 'manual-export-v1', exportedAt: timestamp(row.exportedAt), watches };
 }
 export function parseSession(value: unknown): SessionInfo {
   return { expiresAt: timestamp(object(value).expiresAt) };

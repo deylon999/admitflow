@@ -16,7 +16,7 @@ from .database import Base, BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead
+from .schemas import CatalogRead, DataExport
 from .operations import begin_operation, remember_operation, retire_operations
 
 COOKIE = 'abiturient_session'
@@ -109,9 +109,15 @@ def create_app(settings: Settings | None = None):
         values = CalculationInput(rank=snapshot.rank, seats=snapshot.seats, excluded=snapshot.excluded, no_consent=snapshot.no_consent)
         return SnapshotRead(id=snapshot.id, captured_at=utc(snapshot.captured_at), source_kind=snapshot.source_kind, model_version=snapshot.model_version, values=values, calculation=calculate(values))
 
-    def watch_read(watch, db):
-        latest = db.scalar(select(Snapshot).where(Snapshot.watch_id == watch.id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(1))
+    def watch_read(watch, db, latest=None):
+        latest = latest or db.scalar(select(Snapshot).where(Snapshot.watch_id == watch.id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(1))
         return WatchRead(id=watch.id, university=watch.university, title=watch.title, source_url=watch.source_url, created_at=utc(watch.created_at), latest=snapshot_read(latest))
+
+    def watch_detail(watch, db, limit=100):
+        history = db.scalars(select(Snapshot).where(Snapshot.watch_id == watch.id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(limit)).all()
+        if not history or len(history) > 500:
+            raise HTTPException(409, 'История направления не соответствует ограничениям сервиса.')
+        return WatchDetail(**watch_read(watch, db, latest=history[0]).model_dump(), history=[snapshot_read(item) for item in history])
 
     def add_snapshot(watch_id, values, db):
         snapshot = Snapshot(watch_id=watch_id, captured_at=utcnow(), **values.model_dump())
@@ -135,6 +141,15 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/v1/universities', response_model=CatalogRead)
     def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
         return search_universities(db, q)
+
+    @app.get('/api/v1/export', response_model=DataExport)
+    def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
+        # Hold the owner's lock for a consistent read; no data is changed.
+        watches = db.scalars(select(Watch).where(Watch.owner_hash == owner_hash).order_by(Watch.created_at.desc(), Watch.id.desc()).limit(21)).all()
+        if len(watches) > 20:
+            raise HTTPException(409, 'Количество направлений превышает лимит экспорта.')
+        response.headers['Content-Disposition'] = 'attachment; filename="admitflow-export.json"'
+        return DataExport(exported_at=utcnow(), watches=[watch_detail(watch, db, limit=501) for watch in watches])
 
     @app.post('/api/v1/session', status_code=204)
     def start_session(request: Request, response: Response, db: Session = Depends(database)):
@@ -189,8 +204,7 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/v1/watches/{watch_id}', response_model=WatchDetail)
     def get_watch(watch_id: str, owner_hash: str = Depends(owner), db: Session = Depends(database)):
         watch = watch_owned(watch_id, owner_hash, db)
-        history = db.scalars(select(Snapshot).where(Snapshot.watch_id == watch_id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(100)).all()
-        return WatchDetail(**watch_read(watch, db).model_dump(), history=[snapshot_read(item) for item in history])
+        return watch_detail(watch, db)
 
     @app.post('/api/v1/watches/{watch_id}/snapshots', response_model=SnapshotRead, status_code=201)
     def update_snapshot(watch_id: str, body: CalculationInput, request: Request, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):

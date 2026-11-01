@@ -65,3 +65,9 @@ class WatchRead(CamelModel):
 
 class WatchDetail(WatchRead):
     history: list[SnapshotRead]
+
+
+class DataExport(CamelModel):
+    format_version: Literal['manual-export-v1'] = 'manual-export-v1'
+    exported_at: datetime
+    watches: list[WatchDetail] = Field(max_length=20)

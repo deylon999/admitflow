@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-01",
-  "currentTask": "T071",
-  "nextTask": "T071",
+  "currentTask": null,
+  "nextTask": "T072",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S022",
-  "resumeAction": "B01: 3/5 done. Next T071 full manual data export, then T072 keyboard.",
+  "lastSession": "S023",
+  "resumeAction": "B01: 4/5 done. Next T072 keyboard and focus for manual forms.",
   "externalConstraints": [
     "Публикация ранее не прошла из-за сетевого доступа; текущую доступность проверить перед повтором.",
     "Источники автоматического импорта и сезон пилота пока не выбраны.",

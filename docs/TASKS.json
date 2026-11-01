@@ -2127,7 +2127,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T016",
         "T018",
@@ -2145,7 +2145,12 @@
         "Экспорт содержит все свои снимки, а не только последние 100",
         "Чужие данные и токены не попадают в файл"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/LOG.md",
+          "note": "S023 / B01 4/5: full private export; 116 backend / 54 frontend / 5 tracker E2E passed; 1 PG skipped."
+        }
+      ],
       "blockedReason": null
     },
     {

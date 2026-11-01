@@ -4,6 +4,7 @@ import { CalculationInputs } from '../components/Calculator';
 import { UniversityPicker } from '../components/UniversityPicker';
 import { ScenarioExplanation } from '../components/ScenarioExplanation';
 import { HistoryComparison } from '../components/HistoryComparison';
+import { downloadExport } from '../lib/download';
 import { calculatePlace } from '../lib/calculator';
 import type { CalculationForm, CalculationValues } from '../lib/calculator';
 import { api, SessionExpiredError } from '../lib/api';
@@ -92,6 +93,7 @@ export default function TrackerPage() {
   const busy = useIsMutating() > 0;
   const queryClient = useQueryClient();
   const watches = useQuery({ queryKey: ['watches'], queryFn: api.list });
+  const download = useMutation({ mutationFn: api.exportData, onSuccess: downloadExport });
   const reset = useMutation({
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
@@ -111,7 +113,9 @@ export default function TrackerPage() {
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button className="button button-primary" type="button" disabled={count >= 20 || busy} onClick={() => { setNotice(''); setForm('new'); }}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
-    {count > 0 && <button className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}
+    <div className="tracker-data-actions"><button className="text-button" type="button" disabled={busy || !count} onClick={() => download.mutate()}>{download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}</button>
+    {count > 0 && <button className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
+    {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
     {confirmReset && <div className="delete-confirm surface"><p>Удалить все направления и историю в этом браузере? Отменить удаление нельзя.</p><div><button className="button button-secondary" type="button" disabled={reset.isPending} onClick={() => setConfirmReset(false)}>Отмена</button><button className="button danger-button" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>Удалить всё</button></div></div>}
     {expired && <div className="surface empty-state"><h2>Срок гостевой сессии истёк</h2><p>Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.</p><button className="button button-primary" type="button" disabled={reset.isPending} onClick={() => reset.mutate()}>{reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
     {reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}

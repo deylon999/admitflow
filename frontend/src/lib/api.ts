@@ -1,6 +1,6 @@
 import type { CalculationValues } from './calculator';
 import type { SessionInfo, WatchCreate } from './contracts';
-import { InvalidResponseError, parseCatalog, parseDetail, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
+import { InvalidResponseError, parseCatalog, parseDetail, parseExport, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -49,6 +49,7 @@ export const api = {
     return ensureSession();
   },
   universities: async (query: string) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`)),
+  exportData: () => read('/export', parseExport),
   list: () => read('/watches', parseWatches),
   detail: (id: string) => read(`/watches/${encodeURIComponent(id)}`, parseDetail),
   async create(body: WatchCreate, key?: string) { await ensureSession(); return parseWatch(await request('/watches', { method: 'POST', body: JSON.stringify(body), headers: key ? { 'Idempotency-Key': key } : undefined })); },

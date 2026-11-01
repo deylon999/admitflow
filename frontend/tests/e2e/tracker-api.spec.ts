@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 
 async function fillDirection(page: Page) {
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();
@@ -56,6 +57,25 @@ test('повтор после потерянного ответа не созд�
   expect(keys[1]).toBe(keys[0]);
   const response = await page.request.get('/api/v1/watches');
   expect((await response.json()).length).toBe(1);
+});
+
+test('экспорт скачивается как JSON с полной своей историей', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
+  await page.goto('/tracker');
+  await fillDirection(page);
+  await page.getByRole('button', { name: 'Сохранить направление' }).click();
+  await expect(page.locator('.direction-card')).toHaveCount(1);
+  const pending = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Скачать данные (JSON)' }).click();
+  const file = await pending;
+  const path = await file.path();
+  expect(file.suggestedFilename()).toMatch(/^admitflow-\d{4}-\d{2}-\d{2}\.json$/);
+  const data = JSON.parse(await readFile(path!, 'utf8'));
+  expect(data.formatVersion).toBe('manual-export-v1');
+  expect(data.watches).toHaveLength(1);
+  expect(data.watches[0].history).toHaveLength(1);
+  expect(data.watches[0].latest.calculation.place).toBe(74);
+  expect(data.watches[0]).not.toHaveProperty('ownerHash');
 });
 
 test('потеря cookies требует явного старта новой сессии', async ({ page, context }) => {
