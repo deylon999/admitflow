@@ -123,3 +123,7 @@ Fixed focus loss when an archive save unmounts its confirmation (focus goes to s
 ### T183 — 26/30 — archive owner changes across tabs
 
 Two actual Chromium/multi-tab cases passed on current production build+native fixtureAPI. Existing archive facts/history disappear after reset in another tab without an automatic sessionPOST;explicit sync reveals only replacement guest's distinctrank2. A delayed previous-owner history response arriving after reset/sync cannot repopulate the old DOM. Existing query cancellation/epoch guard required no weakening or extra data storage. Test uses only fakeFIXTURE IDs,not real applicant identifiers.
+
+### T184 — 27/30 — current containers and persistent archive
+
+Fresh backend/frontend image builds passed. Owned admitflow-b11 upgraded old shared volume to0007 and force-recreated db/API/frontend;exact real573row archive,snapshotID,fetchedAt17:45:52Z,16seats persisted. No external site fetch or continuous worker. Onlyfrontend127.0.0.1:8090 exposed,API/db private. Two Nginx browser cases passed again after recreation (0skipped). Separate existing scripts/rehearse_compose.py with currentimages successfully recreated all4services,verifiedhistory/ownership/deadline/replays/tombstones/sharedraw nonroot/persistentmounts;actual worker refused synthetic unregistered source with0snapshots;cleanuptrue. Reports b11-container*.json include actualimages/schema. No HTTPS staging/remoteCI claim.

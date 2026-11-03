@@ -5670,7 +5670,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T035",
         "T181",
@@ -5688,7 +5688,12 @@
         "Фактическая схема/снимок сохранены после recreate",
         "БД/worker не выставлены наружу;версия и ограничения записаны"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 27/30:current0007 containers preserve actual573-row archive acrossrecreate,noexternalfetch;2nginxchecks andowned4service worker/raw/persistence rehearsal passed."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -3882,7 +3882,7 @@
 
 ### T184. Проверить текущий архивный контур в локальных контейнерах
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T035, T181, T023.
 
@@ -3901,7 +3901,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 27/30:current0007 containers preserve actual573-row archive acrossrecreate,noexternalfetch;2nginxchecks andowned4service worker/raw/persistence rehearsal passed.
 
 ### T185. Измерить чтение573-строчного архива с20подписками
 

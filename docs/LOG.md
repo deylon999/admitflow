@@ -852,3 +852,7 @@ B11 25/30:manual/archive keyboard and focus recovery,320px/longnames/million val
 ## S165 — 2026-11-04 — B11 26/30 T183
 
 B11 26/30:2nativeAPI/Chromium multi-tab archive privacy cases passed;old facts/history and delayed replies hidden,newowneronly after explicitsync,no automaticbootstrap.
+
+## S166 — 2026-11-04 — B11 27/30 T184
+
+B11 27/30:current0007 containers preserve actual573-row archive acrossrecreate,noexternalfetch;2nginxchecks andowned4service worker/raw/persistence rehearsal passed.

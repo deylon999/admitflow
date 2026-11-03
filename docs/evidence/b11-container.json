@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-11-03T21:33:21.759585+00:00",
+  "success": true,
+  "scope": "owned B11 local archive runtime;no external fetch/no live or HTTPS staging claim",
+  "archiveBeforeAfter": {
+    "id": "sgu-2026-4588",
+    "year": 2026,
+    "snapshotId": "8bf8bd49-df21-4265-9dc0-ff7e23c69b96",
+    "fetchedAt": "2026-11-03T17:45:52.985785Z",
+    "sourceUpdatedAt": null,
+    "rowCount": 573,
+    "seats": 16,
+    "coverage": "archive",
+    "lookupAvailable": true,
+    "assessmentAvailable": false
+  },
+  "containers": {
+    "backend": {
+      "image": "sha256:958f6522287fa8b8f6c46fb8de3e578a688b179d73f06b797d536c743ccbff9a",
+      "health": "healthy",
+      "ports": {}
+    },
+    "db": {
+      "image": "sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+      "health": "healthy",
+      "ports": {}
+    },
+    "frontend": {
+      "image": "sha256:4933128ba24b1c31e7ad1d3bf8136c538fb4e7922d02e29a1d0e3fa03a1d7a48",
+      "health": "healthy",
+      "ports": {
+        "80/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8090"
+          }
+        ]
+      }
+    }
+  },
+  "snapshotPreservedAcrossRecreate": true,
+  "externalHttpFetches": 0,
+  "workerLoopRunning": false,
+  "url": "http://127.0.0.1:8090",
+  "schemaRevision": "0007",
+  "nginxBrowserChecks": {
+    "passed": 2,
+    "skipped": 0
+  }
+}

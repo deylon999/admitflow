@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-11-03T21:32:56.531740+00:00",
+  "scope": "owned local synthetic Compose recreation; no production/live-source guarantee",
+  "success": true,
+  "recreatedServices": [
+    "backend",
+    "db",
+    "frontend",
+    "worker"
+  ],
+  "images": {
+    "backend": "sha256:958f6522287fa8b8f6c46fb8de3e578a688b179d73f06b797d536c743ccbff9a",
+    "db": "sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+    "frontend": "sha256:4933128ba24b1c31e7ad1d3bf8136c538fb4e7922d02e29a1d0e3fa03a1d7a48",
+    "worker": "sha256:958f6522287fa8b8f6c46fb8de3e578a688b179d73f06b797d536c743ccbff9a"
+  },
+  "recreationAndValidationSeconds": 24.678,
+  "exactHistory": true,
+  "stableDeadlineAndScope": true,
+  "ownership": true,
+  "retryAndTombstone": true,
+  "rawSharedAsNonRoot": true,
+  "persistentMounts": true,
+  "privatePorts": true,
+  "workerJob": {
+    "state": "failed",
+    "error": "adapter_unavailable",
+    "snapshots": 0
+  },
+  "databaseDiagnostic": {
+    "dialect": "postgresql",
+    "expectedRevisions": [
+      "0007"
+    ],
+    "format": "database-diagnostic-v1",
+    "generatedAt": "2026-11-03T21:33:54.405141+00:00",
+    "manualCounts": {
+      "browser_sessions": 2,
+      "operation_records": 3,
+      "snapshots": 2,
+      "watches": 1
+    },
+    "observedRevisions": [
+      "0007"
+    ],
+    "readOnly": true,
+    "status": "revision_current"
+  },
+  "cleanup": true
+}
