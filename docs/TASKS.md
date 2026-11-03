@@ -1269,7 +1269,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
 
-**Зависимости:** T029, T030.
+**Зависимости:** T029, T030, T187, T188.
 
 **Результаты/файлы:** `backend/app/sources/adapters/`; `docs/sources/`.
 
@@ -1854,6 +1854,52 @@
 **Доказательства:**
 
 - [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 11/30:explicit disabled/idempotent registration and keyed enable verified in actual Compose;conflicts refused,private key excluded from image context;full396backend/0skip passed.
+
+### T187. Поддержать конфигурируемые семейства адаптеров с аттестацией каждого источника
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T027.
+
+**Результаты/файлы:** `backend/app/sources/registry.py`; `docs/MILESTONE_70.md`.
+
+**Шаги:**
+
+1. Зафиксировать функциональный рубеж70% до реализации.
+2. Разрешить несколько проверенных scopes для общей версии parser без открытия произвольныхURL.
+
+**Критерии закрытия:**
+
+- Каждый подключённый URL/year/kind имеет собственный паспорт/fixture/hash.
+- Непроверенный scope отвергается;старые версии и hashes не меняются.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:multi-scope attestation registry and frozen70%milestone;38targeted tests passed,legacy scope preserved.
+
+### T188. Доказать переиспользование общего parser на настоящих конкурсных группах
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T187, T029.
+
+**Результаты/файлы:** `backend/app/sources/adapters/`; `backend/tests/fixtures/`; `docs/sources/`.
+
+**Шаги:**
+
+1. Выделить структурный parser и декларативные настройки профиля.
+2. Получить второй настоящий список и независимо сверить строки/места/сезон.
+
+**Критерии закрытия:**
+
+- Один parser обслуживает два реальных профиля без копирования алгоритма.
+- Различия схемы или неизвестная полнота отвергаются;национальное покрытие не заявлено.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E4. Объяснения и UX
 

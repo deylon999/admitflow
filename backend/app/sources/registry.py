@@ -57,15 +57,21 @@ class Adapter:
     attested: bool = False
     attestation: Attestation | None = None
     max_bytes: int = DEFAULT_SOURCE_BYTES
+    attestations: tuple[Attestation, ...] = ()
+
+    @property
+    def proofs(self):
+        return ((self.attestation,) if self.attestation is not None else ()) + self.attestations
 
     def __post_init__(self):
         if (not isinstance(self.version,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:+-]{0,79}',self.version)
                 or not valid_domains(self.domains) or not callable(self.parse) or type(self.attested) is not bool
                 or type(self.max_bytes) is not int or not 1 <= self.max_bytes <= MAX_SOURCE_BYTES):
             raise ValueError('invalid_adapter_declaration')
-        if self.attested and (not isinstance(self.attestation, Attestation)
-                              or self.attestation.adapter_version != self.version
-                              or urlsplit(self.attestation.source_url).hostname not in self.domains):
+        if (not isinstance(self.attestations,tuple) or any(not isinstance(proof,Attestation) for proof in self.proofs)
+                or (self.attested and not self.proofs)
+                or any(proof.adapter_version != self.version or urlsplit(proof.source_url).hostname not in self.domains for proof in self.proofs)
+                or len({(proof.source_url,proof.year,proof.kind) for proof in self.proofs}) != len(self.proofs)):
             raise ValueError('invalid_adapter_attestation')
 
 
@@ -87,8 +93,7 @@ class Registry:
             raise AdapterError('adapter_unavailable')
         if not adapter.attested and not allow_unattested:
             raise AdapterError('unattested_adapter')
-        if adapter.attested and (binding.url != adapter.attestation.source_url
-                                or binding.year != adapter.attestation.year or binding.kind != adapter.attestation.kind):
+        if adapter.attested and not any((binding.url,binding.year,binding.kind)==(proof.source_url,proof.year,proof.kind) for proof in adapter.proofs):
             raise AdapterError('invalid_binding')
         try:
             parsed = urlsplit(binding.url)

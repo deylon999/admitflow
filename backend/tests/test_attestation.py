@@ -40,3 +40,16 @@ def test_large_list_requires_at_least_fifty_checked_rows_and_matches_adapter_ver
     proof = replace(synthetic_attestation(),sample_rows=573,checked_rows=50)
     with pytest.raises(ValueError,match='invalid_adapter_attestation'):
         Adapter('different-v2',frozenset({'example.org'}),lambda *_:parsed(),attested=True,attestation=proof)
+
+
+def test_one_parser_can_attest_multiple_exact_sources_without_opening_the_domain():
+    first=synthetic_attestation();second=replace(first,source_url='https://example.org/group-two')
+    adapter=Adapter('synthetic-v1',frozenset({'example.org'}),lambda *_:parsed(),attested=True,attestations=(first,second))
+    registry=Registry((adapter,))
+    assert registry.resolve(BINDING) is registry.resolve(replace(BINDING,url=second.source_url)) is adapter
+    assert len(adapter.proofs)==2
+    for changes in [{'url':'https://example.org/unreviewed'},{'year':2027},{'kind':'live'},{'url':'https://sub.example.org/list','domain':'sub.example.org'}]:
+        with pytest.raises(AdapterError,match='invalid_binding'):registry.resolve(replace(BINDING,**changes))
+    for proofs in [(first,first),(first,replace(second,adapter_version='different-v2')),(first,replace(second,source_url='https://outside.example/list'))]:
+        with pytest.raises(ValueError,match='invalid_adapter_attestation'):
+            Adapter('synthetic-v1',frozenset({'example.org'}),lambda *_:parsed(),attested=True,attestations=proofs)

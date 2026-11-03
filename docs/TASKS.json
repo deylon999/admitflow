@@ -1125,7 +1125,9 @@
       "status": "todo",
       "dependsOn": [
         "T029",
-        "T030"
+        "T030",
+        "T187",
+        "T188"
       ],
       "deliverables": [
         "backend/app/sources/adapters/",
@@ -5762,6 +5764,63 @@
           "note": "B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T187",
+      "title": "Поддержать конфигурируемые семейства адаптеров с аттестацией каждого источника",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T027"
+      ],
+      "deliverables": [
+        "backend/app/sources/registry.py",
+        "docs/MILESTONE_70.md"
+      ],
+      "steps": [
+        "Зафиксировать функциональный рубеж70% до реализации",
+        "Разрешить несколько проверенных scopes для общей версии parser без открытия произвольныхURL"
+      ],
+      "acceptance": [
+        "Каждый подключённый URL/year/kind имеет собственный паспорт/fixture/hash",
+        "Непроверенный scope отвергается;старые версии и hashes не меняются"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "B12:multi-scope attestation registry and frozen70%milestone;38targeted tests passed,legacy scope preserved."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T188",
+      "title": "Доказать переиспользование общего parser на настоящих конкурсных группах",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T187",
+        "T029"
+      ],
+      "deliverables": [
+        "backend/app/sources/adapters/",
+        "backend/tests/fixtures/",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Выделить структурный parser и декларативные настройки профиля",
+        "Получить второй настоящий список и независимо сверить строки/места/сезон"
+      ],
+      "acceptance": [
+        "Один parser обслуживает два реальных профиля без копирования алгоритма",
+        "Различия схемы или неизвестная полнота отвергаются;национальное покрытие не заявлено"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

@@ -874,3 +874,9 @@ S169 precommit follow-up: final review found processing-time copy in newly appen
 ## S170 — 2026-11-04 — B11 final30/30 verification
 
 Reopened precommit audit resolved:source-fact processing time is separate from fetch time without rewriting old records. Current full454backend/72nativePG passed,0skipped;102unit,100Chromium and2actualNginx passed. Repeated real-format archive/rawrestore exact17tables/1146rows. Local currentruntime healthy,private scan0matches,disposable runtimes cleaned. T043done;all30B11tasks complete,nextT031 under a new assignment. Full production/second-source/live/staging requirements remain open.
+
+## S171 — 2026-11-04 — B12 старт до рубежа70%
+
+Новое поручение продолжать до70%. Зафиксирован функциональный рубеж,без пересмотра releasegates. Первая пятёрка:T187,T188,T031,T034,T039. ТекущаяT187;исследуется официальный GUAP как независимый источник,STUheaders-only не считается рабочим. Старые454backend/102unit/100+2browser — проверенный baseline B11.
+
+S171/T187done: multi-scope proof registry,legacy compatibility and refusal gates;38tests passed. T188inprogress. Genuine GUAPcontract profile captured privately581candidate rows,14headers;not yet attested or enabled. SGU second group4576 capture in progress;no coverage claim until independent audit.
