@@ -340,7 +340,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "in_progress",
       "dependsOn": [
         "T002"
       ],
@@ -357,7 +357,7 @@
         "Скриншоты используют реальные шрифты, а не fallback"
       ],
       "evidence": [],
-      "blockedReason": "Получение файлов шрифтов блокируется WinError 10013; локальные Inter/JetBrains Mono не найдены. Для снятия нужны лицензированные файлы и проверка FontFace."
+      "blockedReason": null
     },
     {
       "id": "T008",
@@ -708,7 +708,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T016",
         "T017",
@@ -717,7 +717,9 @@
       ],
       "deliverables": [
         "frontend/src/pages/TrackerPage.tsx",
-        "frontend/tests/e2e/tracker.spec.ts"
+        "frontend/tests/e2e/tracker-api.spec.ts",
+        "frontend/tests/e2e/tracker-form.spec.ts",
+        "docs/evidence/manual-acceptance.md"
       ],
       "steps": [
         "Проверить создание/обновление/историю/удаление и pending/error/empty",
@@ -727,7 +729,12 @@
         "Сквозной путь работает после reload и перезапуска API",
         "Ручные данные не помечены автоматическими"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 1/30:manual acceptance audited;10 current Chromium cases passed on PostgreSQL8090, existing exact restart/ownership/retry evidence remains applicable."
+        }
+      ],
       "blockedReason": null
     },
     {

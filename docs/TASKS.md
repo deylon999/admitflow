@@ -153,7 +153,7 @@
 
 ### T007. Закрепить шрифты и дизайн-токены
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T002.
 
@@ -173,8 +173,6 @@
 **Доказательства:**
 
 Пока нет.
-
-**Причина блокировки/переноса:** Получение файлов шрифтов блокируется WinError 10013; локальные Inter/JetBrains Mono не найдены. Для снятия нужны лицензированные файлы и проверка FontFace.
 
 ### T008. Сверить React-лендинг с исходными макетами
 
@@ -541,11 +539,11 @@
 
 ### T019. Завершить ручное сохранение направлений
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T016, T017, T018, T091.
 
-**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker.spec.ts`.
+**Результаты/файлы:** `frontend/src/pages/TrackerPage.tsx`; `frontend/tests/e2e/tracker-api.spec.ts`; `frontend/tests/e2e/tracker-form.spec.ts`; `docs/evidence/manual-acceptance.md`.
 
 **Шаги:**
 
@@ -560,7 +558,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 1/30:manual acceptance audited;10 current Chromium cases passed on PostgreSQL8090, existing exact restart/ownership/retry evidence remains applicable.
 
 ### T020. Уточнить сценарную модель и безопасные формулировки
 
