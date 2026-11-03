@@ -105,3 +105,7 @@ Schema0007 persists fenced completed source-check outcomes in the same transacti
 ### T181 — 22/30 — separate archive facts export
 
 Owner-only readonly archive-facts-v1 export covers current published facts of saved directions, bounded20 and independently dated snapshots. Explicit scope excludes full history/raw/access recovery; manual-export-v1 unchanged. Frontend validates/whitelists DTO before file download. NativePG1 case passed: unauthenticated401,otherownerempty,exact current facts/provenance,no public codes/HMAC/owner/cookie/confirmation,empty after deletion. Chromium actual file-download case passed; JSONparsed and checked, production build passed. No archive import is advertised.
+
+### T182 — 23/30 — SGU archive/subscription backup restore
+
+Extended existing owned PG/raw rehearsal with --archive-sgu, using genuine-derived anonymized573-row DOM and one clearly synthetic second template version. Actual pg_dump/pg_restore into a new DB compared every row in17tables and every referenced raw hash;1146entries,2snapshots,2immutablefact versions,owner isolation and lookup-key continuity confirmed. Both successful replay and deleted-confirmation410 survive restore. Truncated archive and corrupt raw refused. Report b11-sgu-restore.json;exit0,cleanup true;localquiesced timings0.117sbackup/0.387srestore+validation,not production/staging/RPO guarantee. Identity key remains separate, never in report.

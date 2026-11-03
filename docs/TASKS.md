@@ -3836,7 +3836,7 @@
 
 ### T182. Восстановить SGU-архив и подписки из PostgreSQL/raw backup
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T179, T178, T033.
 
@@ -3855,7 +3855,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 23/30:actual SGU573x2 PostgreSQL/raw restore exact across17tables;ownership,history,key continuity,replay/tombstones and corruption refusal passed,measured localtimings.
 
 ## E6. Резерв и выпуск
 

@@ -4,6 +4,8 @@ import argparse
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
+from dataclasses import replace
 from pathlib import Path
 import sys
 import tempfile
@@ -40,12 +42,16 @@ def inventory(engine):
                 for name in inspect(engine).get_table_names()}
 
 
-def rehearse(runtime, folder):
+def rehearse(runtime, folder, *, archive_sgu=False):
     source_url, restored_url = runtime.url(), runtime.url('admitflow_test_restored')
     source = make_engine(source_url)
     restored = make_engine(restored_url)
     try:
         upgrade_schema(source)
+        if archive_sgu:
+            from test_sgu_adapter import BINDING,KEY,response as sgu_response
+            from app.sources.pilots import register_sgu
+            os.environ['SOURCE_IDENTITY_KEY']=KEY.hex()  # Synthetic fixture key; never printed.
         store = RawStore(folder / 'source-raw')
         app = create_app(Settings(database_url=source_url, auto_create_schema=False))
         with TestClient(app) as owner, TestClient(app) as other:
@@ -65,10 +71,35 @@ def rehearse(runtime, folder):
             detail = owner.get(path).json()
             deadline = owner.get('/api/v1/session').json()
             owner_cookies, other_cookies = dict(owner.cookies), dict(other.cookies)
-        seed_source(source)
-        for response in (raw(), raw(b'second synthetic raw payload', NOW + timedelta(minutes=1))):
-            publish(source, 'source-1', parsed(), response, store, registry=registry(), allow_unattested=True)
-        enqueue(source, 'source-1', now=NOW)
+        if archive_sgu:
+            register_sgu(source,enable=True,registry=app.state.source_registry)
+            response=sgu_response();adapter=app.state.source_registry.resolve(BINDING)
+            publish(source,BINDING.source_id,adapter.parse(response,BINDING),response,store,registry=app.state.source_registry)
+            with TestClient(app) as owner:
+                owner.cookies.update(owner_cookies)
+                def confirm(code):
+                    found=owner.post(f'/api/v1/sources/{BINDING.source_id}/lookup',json={'publicCode':code},headers=HEADERS)
+                    require(found.status_code==200,'Fixture lookup failed')
+                    return {'confirmationToken':found.json()['confirmationToken']}
+                archive_body=confirm('FIXTURE-000001')
+                archive_saved=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)
+                require(archive_saved.status_code==201,'Archive save failed')
+                archive_path=f"/api/v1/subscriptions/{archive_saved.json()['id']}"
+                retired_body=confirm('FIXTURE-000002')
+                retired=owner.post('/api/v1/subscriptions',json=retired_body,headers=HEADERS)
+                require(retired.status_code==201,'Archive tombstone setup failed')
+                require(owner.delete('/api/v1/subscriptions/'+retired.json()['id'],headers=HEADERS).status_code==204,'Archive delete failed')
+                body=b'<!-- explicitly synthetic second template version for recovery rehearsal -->\n'+response.body
+                response=replace(response,body=body,payload_hash=hashlib.sha256(body).hexdigest(),fetched_at=response.fetched_at+timedelta(minutes=1))
+                publish(source,BINDING.source_id,adapter.parse(response,BINDING),response,store,registry=app.state.source_registry)
+                archive_history=owner.get(archive_path+'/history').json()
+                require(archive_history['total']==2,'Archive history setup differs')
+                archive_facts=owner.get('/api/v1/subscriptions').json()
+        else:
+            seed_source(source)
+            for response in (raw(), raw(b'second synthetic raw payload', NOW + timedelta(minutes=1))):
+                publish(source, 'source-1', parsed(), response, store, registry=registry(), allow_unattested=True)
+            enqueue(source, 'source-1', now=NOW)
         store.put(b'orphan excluded from the referenced backup')
         before = inventory(source)
         backup_start = time.monotonic()
@@ -112,6 +143,16 @@ def rehearse(runtime, folder):
             require(retry.status_code == 201 and retry.json() == updated.json(), 'Update replay differs')
             require(owner.post('/api/v1/watches', json=WATCH, headers=HEADERS | {'Idempotency-Key': 'restore-deleted-001'}).status_code == 410, 'Tombstone resurrected data')
             require(owner.get(path).json() == detail, 'Retries changed history')
+            if archive_sgu:
+                require(owner.get('/api/v1/subscriptions').json()==archive_facts,'Restored archive facts differ')
+                require(owner.get(archive_path+'/history').json()==archive_history,'Restored archive history differs')
+                require(other.get(archive_path+'/history').status_code==404,'Restored archive ownership failed')
+                require(other.get('/api/v1/subscriptions').json()==[],'Restored archive owner leaked')
+                retry=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)
+                require(retry.status_code==201 and retry.json()==archive_saved.json(),'Restored archive confirmation replay differs')
+                require(owner.post('/api/v1/subscriptions',json=retired_body,headers=HEADERS).status_code==410,'Restored archive tombstone resurrected')
+                found=owner.post(f'/api/v1/sources/{BINDING.source_id}/lookup',json={'publicCode':'FIXTURE-000001'},headers=HEADERS)
+                require(found.status_code==200 and found.json()['found'],'Restored identity key/source lookup differs')
         for digest, body in saved_raw.items():
             require(restored_store.read(digest) == body, 'Raw bytes differ')
         restore_seconds = time.monotonic() - restore_start
@@ -128,6 +169,7 @@ def rehearse(runtime, folder):
                     backupSeconds=round(backup_seconds, 3), restoreAndValidationSeconds=round(restore_seconds, 3),
                     corruptionChecks=['truncated archive rolls back all tables', 'raw SHA256 mismatch refused'],
                     ownership=True, exactHistory=True, exactTableContents=True, retryAndTombstone=True,
+                    archiveFacts=archive_sgu,archiveHistory=archive_sgu,identityKeyContinuity=archive_sgu,
                     rpo='0 writes during quiesced rehearsal only; production RPO not measured')
     finally:
         source.dispose()
@@ -137,12 +179,13 @@ def rehearse(runtime, folder):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--archive-sgu',action='store_true',help='Use anonymized real SGU DOM, never fetch external websites')
     args = parser.parse_args()
     with tempfile.TemporaryDirectory(prefix='admitflow-restore-') as folder:
         with disposable_postgres() as runtime:
-            report = rehearse(runtime, Path(folder))
+            report = rehearse(runtime, Path(folder),archive_sgu=args.archive_sgu)
     report.update(recordedAt=datetime.now(timezone.utc).isoformat(), cleanup=True,
-                  scope='disposable PostgreSQL17 synthetic/quiesced rehearsal, no production backup guarantee')
+                  scope=('anonymized SGU573-row archive+synthetic second template' if args.archive_sgu else 'synthetic')+';disposable PostgreSQL17/quiesced rehearsal,no production backup guarantee')
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report))
 

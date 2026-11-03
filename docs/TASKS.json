@@ -5598,7 +5598,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T179",
         "T178",
@@ -5616,7 +5616,12 @@
         "Восстановление проверено чтением и повтором операций",
         "Повреждённый backup отвергается;время и границы локального опыта записаны"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 23/30:actual SGU573x2 PostgreSQL/raw restore exact across17tables;ownership,history,key continuity,replay/tombstones and corruption refusal passed,measured localtimings."
+        }
+      ],
       "blockedReason": null
     }
   ]

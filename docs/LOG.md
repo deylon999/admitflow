@@ -836,3 +836,7 @@ B11 21/30:durable source check history and recovery without refreshing old facts
 ## S161 — 2026-11-04 — B11 22/30 T181
 
 B11 22/30:separate owner-only archive-facts-v1 export and actual JSON download verified;1nativePG+1Chromium passed,currentbuild,no identity/access fields.
+
+## S162 — 2026-11-04 — B11 23/30 T182
+
+B11 23/30:actual SGU573x2 PostgreSQL/raw restore exact across17tables;ownership,history,key continuity,replay/tombstones and corruption refusal passed,measured localtimings.
