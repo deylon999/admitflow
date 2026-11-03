@@ -1382,7 +1382,7 @@
 
 ### T036. Сделать детерминированный replay архивов
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T013, T031, T034.
 
@@ -2000,7 +2000,7 @@
 
 ### T039. Объяснять оценку и изменение проверенными фактами
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T020, T034, T069.
 
@@ -2019,7 +2019,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:storedfact-grounded explanations/UIconditionalbounds/refusals/history;16local+3nativePG+17TScontract+3Chromium/currentbuildpassed,320px/boththemes.
 
 ### T040. Показать изменения внутри приложения
 
@@ -3994,6 +3994,29 @@
 **Доказательства:**
 
 - [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput.
+
+### T189. Проверить полный локальный путь двух источников до рубежа70%
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T036, T040, T037, T038, T039.
+
+**Результаты/файлы:** `docs/evidence/b12-milestone70.json`; `frontend/tests/e2e/`.
+
+**Шаги:**
+
+1. Собрать текущий контур и пройти source/lookup/confirm/scenario/change/history/seen.
+2. Проверить два владельца,отказ/восстановление,архивные даты и честное покрытие.
+
+**Критерии закрытия:**
+
+- Все критерии MILESTONE_70 подтверждены текущими проверками.
+- Локальная приёмка не закрывает HTTPSstaging/live/production gates.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

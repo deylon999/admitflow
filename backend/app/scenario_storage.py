@@ -36,6 +36,9 @@ def append_one(db,subscription,snapshot,*,previous=None,rows=None,at=None):
     facts={'result':result.model_dump(mode='json',by_alias=True),'candidate':candidate_values(row),'sourceId':snapshot.source_id,'dataKind':snapshot.kind,'funding':group.funding,'category':group.category,'diff':[]}
     old=db.scalar(select(Assessment).where(Assessment.subscription_id==subscription.id,Assessment.snapshot_id==previous.id,Assessment.rules_version==VERSION)) if previous and previous.id!=snapshot.id else None
     if old is not None:facts['diff']=difference(old.facts,facts)
+    facts['previousAssessmentId']=old.id if old else None
+    from .scenario_explanations import explain
+    facts['explanation']=explain(result,facts['diff']).model_dump(mode='json',by_alias=True)
     if at is None:
         from .source_history import assessment_clock
         at=assessment_clock()

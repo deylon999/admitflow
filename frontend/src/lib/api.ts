@@ -1,3 +1,4 @@
+import { parseScenario, parseScenarioPage } from './scenario-contracts';
 import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
 import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
@@ -129,6 +130,8 @@ export const api = {
     return parseSubscriptionSaved(await request('/subscriptions', { method: 'POST', body: JSON.stringify({ confirmationToken }) }));
   },
   subscriptions: (signal?: AbortSignal) => read('/subscriptions', parseArchiveDirections, signal),
+  scenario: (id: string, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/scenario`, parseScenario, signal),
+  scenarioHistory: (id: string, before: string | null, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/scenario-history?limit=20${before ? `&before=${encodeURIComponent(before)}` : ''}`, parseScenarioPage, signal),
   exportArchive: () => read('/archive-export', parseArchiveExport),
   sourceChecks: async (id: string, signal?: AbortSignal) => parseSourceChecks(await request(`/sources/${encodeURIComponent(id)}/checks`, { signal })),
   archiveHistory: (id: string, before: string | null, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/history?limit=20${before ? `&before=${encodeURIComponent(before)}` : ''}`, parseArchiveHistory, signal),

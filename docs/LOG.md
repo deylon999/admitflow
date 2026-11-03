@@ -886,3 +886,7 @@ S171/T188done: one config-driven parser verified against all573SGU+581GUAPorigin
 S171/T031done:GUAPindependent581-rowarchive/allrowsaudited/explicitproof+JSONscope;actualboundedHTTPSworker/nativePGsuccess→idle,primaryruntime2universities1154rows.3native+40local+12negative checks passed. Contract0capacity/unknownconsent preserved,not converted tobudgetprediction. T034inprogress;continueB12milestone70,no prematurefinish.
 
 S171/T034done:versionedconditional list-consentbounds/diff with immutableAssessment and explicitrefusals.11domain+3storage/3nativePGcases passed,reproduction/atomicfailure/cursor/owner/retry checked. Group.scenarioAvailable separatefromofficialassessment. T039inprogress;no70%claim yet,needsUI/replay/changefeed.
+
+## S172 — 2026-11-04 — B12 первая пятёрка завершена
+
+T187/T188/T031/T034/T039done:sharedJSONdecoder,two independently auditedofficialsources,actualGUAPworkerHTTP,immutableconditionalmodel/diff,storedexplanations/UI.3scenarioChromium,17TScontracts,16localmodel/storage/template and3nativePGchecks passed. Exactremainingrubric:replay/changefeed/auditedops/coverage/currentlocalacceptance. Nextfive:T036,T040,T037,T038,T189;T036inprogress. Do notfinishatfive orrelabelfrom60to70withoutfunctionalproof.

@@ -30,6 +30,15 @@ def main():
             raw = response()
             publish(engine, BINDING.source_id, registry.resolve(BINDING).parse(raw, BINDING), raw,
                     RawStore(Path(folder)/'raw'), registry=registry)
+            if os.getenv('E2E_TWO_SOURCES')=='1':
+                from app.sources.table_profiles import GUAP
+                from app.sources.profile_registration import register_profile
+                from test_table_family import fetch,binding
+                from app.scenario_storage import enable_scenarios
+                register_profile(engine,GUAP,enable=True,registry=registry)
+                captured=fetch(GUAP)
+                publish(engine,GUAP.source_id,registry.resolve(binding(GUAP)).parse(captured,binding(GUAP)),captured,RawStore(Path(folder)/'raw'),registry=registry)
+                for source_id in (BINDING.source_id,GUAP.source_id):enable_scenarios(engine,source_id,registry=registry)
         finally:
             engine.dispose()
         env = {**os.environ, 'DATABASE_URL': runtime.url(), 'AUTO_CREATE_SCHEMA': 'false', 'RAW_STORE_PATH': str(Path(folder)/'raw')}

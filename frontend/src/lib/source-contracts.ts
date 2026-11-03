@@ -1,7 +1,7 @@
 import { InvalidResponseError } from './contracts';
 import { compareOpaqueIds, instantMicros } from './time';
 
-export type SourceGroup = { id: string; universityId: string; universityName: string; parentUniversityId: string | null; year: number; level: string; title: string; studyForm: string; funding: string; category: string; seats: number | null; coverage: 'manual' | 'archive' | 'automatic' | 'unsupported'; dataKind: 'archive' | 'live' | null; sourceId: string | null; sourceUrl: string | null; sourceState: string | null; snapshotId: string | null; fetchedAt: string | null; sourceUpdatedAt: string | null; lastCheckedAt: string | null; rowCount: number | null; lookupAvailable: boolean; assessmentAvailable: false };
+export type SourceGroup = { id: string; universityId: string; universityName: string; parentUniversityId: string | null; year: number; level: string; title: string; studyForm: string; funding: string; category: string; seats: number | null; coverage: 'manual' | 'archive' | 'automatic' | 'unsupported'; dataKind: 'archive' | 'live' | null; sourceId: string | null; sourceUrl: string | null; sourceState: string | null; snapshotId: string | null; fetchedAt: string | null; sourceUpdatedAt: string | null; lastCheckedAt: string | null; rowCount: number | null; lookupAvailable: boolean; assessmentAvailable: false; scenarioAvailable: boolean };
 export type GroupCatalog = { items: SourceGroup[]; total: number; nextCursor: string | null; facets: { branches: { id: string; name: string }[]; years: number[] } };
 export type CandidateFact = { rowRef: string; officialRank: number; score: string | null; consent: boolean | null; priority: number | null; participation: 'unknown' | 'active' | 'withdrawn' | 'enrolled' };
 export type LookupResult = { group: SourceGroup; found: boolean; candidate: CandidateFact | null; confirmationToken: string | null; expiresAt: string | null };
@@ -32,9 +32,10 @@ export function parseSourceGroup(value: unknown): SourceGroup {
     id: sourceText(o.id, 36), universityId: sourceText(o.universityId, 80), universityName: sourceText(o.universityName), parentUniversityId: nullableText(o.parentUniversityId, 80),
     year: sourceInt(o.year, 2000, 2100), level: sourceText(o.level, 24), title: sourceText(o.title), studyForm: sourceText(o.studyForm, 40), funding: sourceText(o.funding, 40), category: sourceText(o.category, 80), seats: o.seats === null ? null : sourceInt(o.seats),
     coverage: o.coverage as SourceGroup['coverage'], dataKind: o.dataKind, sourceId: nullableText(o.sourceId, 36), sourceUrl, sourceState: nullableText(o.sourceState, 40), snapshotId: nullableText(o.snapshotId, 36),
-    fetchedAt: nullableTime(o.fetchedAt), sourceUpdatedAt: nullableTime(o.sourceUpdatedAt), lastCheckedAt: nullableTime(o.lastCheckedAt), rowCount: o.rowCount === null ? null : sourceInt(o.rowCount), lookupAvailable: o.lookupAvailable, assessmentAvailable: false,
+    fetchedAt: nullableTime(o.fetchedAt), sourceUpdatedAt: nullableTime(o.sourceUpdatedAt), lastCheckedAt: nullableTime(o.lastCheckedAt), rowCount: o.rowCount === null ? null : sourceInt(o.rowCount), lookupAvailable: o.lookupAvailable, assessmentAvailable: false, scenarioAvailable: o.scenarioAvailable === undefined ? false : (() => { if (typeof o.scenarioAvailable !== 'boolean') throw new InvalidResponseError(); return o.scenarioAvailable; })(),
   };
   if (group.lookupAvailable && (!group.sourceId || !group.snapshotId || !group.fetchedAt || group.coverage === 'unsupported' || group.coverage === 'manual')) throw new InvalidResponseError();
+  if (group.scenarioAvailable && (!group.lookupAvailable || group.funding !== 'budget' || group.category !== 'general' || group.seats === null || group.seats <= 0)) throw new InvalidResponseError();
   return group;
 }
 

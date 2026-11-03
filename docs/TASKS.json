@@ -1291,7 +1291,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T013",
         "T031",
@@ -1374,7 +1374,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T020",
         "T034",
@@ -1392,7 +1392,12 @@
         "Объяснение не обещает поступления и не добавляет несуществующий процент",
         "Текст содержит проверяемое основание изменения"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "B12:storedfact-grounded explanations/UIconditionalbounds/refusals/history;16local+3nativePG+17TScontract+3Chromium/currentbuildpassed,320px/boththemes."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5836,6 +5841,35 @@
           "note": "B12:one JSON-configured parser independently verified on573SGU+581GUAPoriginal rows;22targetedchecks,privateIDsremoved,legacy preserved."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T189",
+      "title": "Проверить полный локальный путь двух источников до рубежа70%",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T036",
+        "T040",
+        "T037",
+        "T038",
+        "T039"
+      ],
+      "deliverables": [
+        "docs/evidence/b12-milestone70.json",
+        "frontend/tests/e2e/"
+      ],
+      "steps": [
+        "Собрать текущий контур и пройти source/lookup/confirm/scenario/change/history/seen",
+        "Проверить два владельца,отказ/восстановление,архивные даты и честное покрытие"
+      ],
+      "acceptance": [
+        "Все критерии MILESTONE_70 подтверждены текущими проверками",
+        "Локальная приёмка не закрывает HTTPSstaging/live/production gates"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

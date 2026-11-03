@@ -158,7 +158,7 @@ export default function TrackerPage() {
     return info;
   }, onSuccess: info => {
     queryClient.setQueryData(['session-info'], info);
-    for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history']) queryClient.removeQueries({ queryKey: [key] });
+    for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) queryClient.removeQueries({ queryKey: [key] });
     queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
     download.reset();
     requestAnimationFrame(() => addButton.current?.focus());
@@ -168,13 +168,13 @@ export default function TrackerPage() {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
       await queryClient.cancelQueries({ queryKey: ['history'] });
       await queryClient.cancelQueries({ queryKey: ['session-info'] });
-      for (const key of ['archive-directions', 'direction-budget', 'archive-history']) await queryClient.cancelQueries({ queryKey: [key] });
+      for (const key of ['archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) await queryClient.cancelQueries({ queryKey: [key] });
       clearDraft(); setRecovery(null); setRestored(null); draftDirty.current = false; setForm(null);
       return api.resetSession();
     },
     onSuccess: async info => {
       queryClient.setQueryData(['session-info'], info);
-      for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history']) queryClient.removeQueries({ queryKey: [key] });
+      for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) queryClient.removeQueries({ queryKey: [key] });
       setForm(null);
       setConfirmReset(false);
       setNotice('Создана новая гостевая сессия.');

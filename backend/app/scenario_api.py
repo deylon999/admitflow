@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from .admissions import Assessment,SourceSnapshot,Subscription
 from .calculation import CamelModel
 from .scenarios import VERSION,ScenarioResult
+from .scenario_explanations import Explanation,explain
 from .sources.publishing import utc
 
 
@@ -17,6 +18,9 @@ class Change(CamelModel):
 
 
 class ScenarioRead(CamelModel):
+    subscription_id:str
+    group_id:str
+    source_id:str|None=None
     available:bool
     id:str|None=None
     snapshot_id:str|None=None
@@ -26,6 +30,8 @@ class ScenarioRead(CamelModel):
     result:ScenarioResult|None=None
     changes:list[Change]=[]
     notice:str|None=None
+    explanation:Explanation|None=None
+    previous_id:str|None=None
 
 
 class ScenarioPage(CamelModel):
@@ -35,8 +41,10 @@ class ScenarioPage(CamelModel):
 
 
 def read(assessment,snapshot):
-    return ScenarioRead(available=True,id=assessment.id,snapshot_id=snapshot.id,fetched_at=utc(snapshot.fetched_at),source_updated_at=utc(snapshot.source_updated_at) if snapshot.source_updated_at else None,
-        assessed_at=utc(assessment.assessed_at),result=ScenarioResult.model_validate(assessment.facts['result']),changes=[Change.model_validate(x) for x in assessment.facts['diff']])
+    result=ScenarioResult.model_validate(assessment.facts['result'])
+    explanation=Explanation.model_validate(assessment.facts['explanation']) if assessment.facts.get('explanation') else explain(result,assessment.facts['diff'])
+    return ScenarioRead(subscription_id=assessment.subscription_id,group_id=assessment.group_id,source_id=snapshot.source_id,available=True,id=assessment.id,snapshot_id=snapshot.id,fetched_at=utc(snapshot.fetched_at),source_updated_at=utc(snapshot.source_updated_at) if snapshot.source_updated_at else None,
+        assessed_at=utc(assessment.assessed_at),result=result,changes=[Change.model_validate(x) for x in assessment.facts['diff']],explanation=explanation,previous_id=assessment.facts.get('previousAssessmentId'))
 
 
 def install(app,database,owner,registry):
@@ -49,7 +57,7 @@ def install(app,database,owner,registry):
         from .source_api import archive_directions
         value=own(db,subscription_id,owner_hash);record=archive_directions(db,[value],registry)[0]
         assessment=db.scalar(select(Assessment).where(Assessment.subscription_id==value.id,Assessment.snapshot_id==record.group.snapshot_id,Assessment.rules_version==VERSION))
-        if assessment is None:return ScenarioRead(available=False,snapshot_id=record.group.snapshot_id,notice='Для этого снимка ещё нет проверенного условного сценария.')
+        if assessment is None:return ScenarioRead(subscription_id=value.id,group_id=value.group_id,source_id=record.group.source_id,available=False,snapshot_id=record.group.snapshot_id,notice='Для этого снимка ещё нет проверенного условного сценария.')
         return read(assessment,db.get(SourceSnapshot,assessment.snapshot_id))
     @app.get('/api/v1/subscriptions/{subscription_id}/scenario-history',response_model=ScenarioPage)
     def history(subscription_id:str=Path(max_length=36),before:str|None=Query(None,max_length=36),limit:int=Query(20,ge=1,le=100),owner_hash:str=Depends(owner),db:Session=Depends(database)):

@@ -1,3 +1,4 @@
+import { ArchiveScenario } from './ArchiveScenario';
 import { useRef, useState } from 'react';
 import { DeleteConfirmation } from './DeleteConfirmation';
 import { ArchiveHistory } from './ArchiveHistory';
@@ -15,13 +16,13 @@ export function ArchiveDirections() {
   const focusAfterDelete = () => requestAnimationFrame(() => (refresh.current ?? document.querySelector<HTMLElement>('main h1'))?.focus());
   const download = useMutation({ mutationFn: api.exportArchive, onSuccess: value => downloadJson(value, `admitflow-archive-${value.exportedAt.slice(0,10)}.json`) });
   const remove = useMutation({ mutationFn: (id: string) => api.removeSubscription(id), onSuccess: async () => {
-    setDeleting(null); client.removeQueries({ queryKey: ['archive-history'] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); focusAfterDelete();
+    setDeleting(null); for (const key of ['archive-history', 'scenario', 'scenario-history']) client.removeQueries({ queryKey: [key] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); focusAfterDelete();
   }, onError: async (_error, id) => {
     // DELETE may have committed before its response was lost. Reconcile by read;
     // do not automatically repeat a mutation with an unknown outcome.
     const current = await client.fetchQuery({ queryKey: ['archive-directions'], queryFn: ({ signal }) => api.subscriptions(signal), staleTime: 0 }).catch(() => null);
     if (current && !current.some(item => item.id === id)) {
-      setDeleting(null); client.removeQueries({ queryKey: ['archive-history', id] });
+      setDeleting(null); for (const key of ['archive-history', 'scenario', 'scenario-history']) client.removeQueries({ queryKey: [key, id] });
       await client.invalidateQueries({ queryKey: ['direction-budget'] });
       focusAfterDelete();
     }
@@ -43,6 +44,7 @@ export function ArchiveDirections() {
       {item.candidate ? <><p>Строка официального списка: <strong>{item.candidate.officialRank}</strong> · баллы: {item.candidate.score ?? 'неизвестно'}</p><p>Согласие в источнике: {item.candidate.consent === null ? 'неизвестно' : item.candidate.consent ? 'да' : 'нет'} · приоритет: {item.candidate.priority ?? 'неизвестно'}</p></> : <p>{item.notice}</p>}
       <SourceProvenance group={item.group} />
       <p className="small-copy">Архив не является текущей кампанией. Вероятность и официальный результат зачисления не рассчитываются.</p>
+      <ArchiveScenario id={item.id} group={item.group} />
       <ArchiveHistory id={item.id} />
       <button id={`delete-archive-${item.id}`} type="button" className="text-button delete-link" disabled={remove.isPending} onClick={() => { remove.reset(); setDeleting(item.id); }}>Удалить архивную запись</button>
       {deleting === item.id && <DeleteConfirmation text="Удалить эту архивную запись и её личную историю? Общий снимок источника останется." label="Да, удалить архивную запись" disabled={remove.isPending} onCancel={() => { setDeleting(null); requestAnimationFrame(() => document.getElementById(`delete-archive-${item.id}`)?.focus()); }} onConfirm={() => remove.mutate(item.id)} />}

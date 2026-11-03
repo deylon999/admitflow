@@ -174,3 +174,12 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 .source-provenance dl { display: grid; gap: .3rem; }
 .source-provenance dt { font-weight: 600; }
 .source-provenance dd { margin: 0 0 .4rem; }
+.archive-scenario { padding-block: 1rem; border-block: 1px solid var(--line); margin-block: 1rem; overflow-wrap: anywhere; }
+.archive-scenario h4 { font-size: 1rem; margin-bottom: .75rem; }
+.scenario-summary { margin: .8rem 0; font-weight: 600; }
+.scenario-summary[data-state="out"] { color: var(--error); }
+.scenario-numbers { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .5rem; margin-block: 1rem; }
+.scenario-numbers dd { margin: 0; font-family: var(--mono); }
+.archive-scenario details, .scenario-changes { margin-top: 1rem; }
+.scenario-history ol { padding-left: 1.2rem; }
+.scenario-history li { margin-block: 1rem; }

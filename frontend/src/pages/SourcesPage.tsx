@@ -33,7 +33,7 @@ export default function SourcesPage() {
       {group.fetchedAt ? <p>Снимок получен: <time dateTime={group.fetchedAt}>{new Date(group.fetchedAt).toLocaleString('ru-RU')}</time>. Строк: {group.rowCount ?? 'не подтверждено'}.</p> : <p>Проверенный снимок ещё не получен.</p>}
       {group.sourceUpdatedAt === null && <p className="small-copy">Дата обновления самим источником не подтверждена.</p>}
       {['source_error', 'quarantined', 'disabled'].includes(group.sourceState ?? '') && <p role="status">Последняя проверка источника недоступна. Дата сохранённого снимка указана отдельно.</p>}
-      <p className="small-copy">Числовая оценка зачисления недоступна.</p>
+      <p className="small-copy">{group.scenarioAvailable ? 'После сохранения доступен условный сценарий по согласиям.' : 'Для этой группы числовой сценарий не подключён.'} Официальный результат зачисления не рассчитывается.</p>
       {group.lookupAvailable && <button id={`lookup-${group.id}`} className="button button-secondary" type="button" aria-expanded={selected === group.id} onClick={() => setSelected(group.id)}>Найти свою запись</button>}
       {selected === group.id && <SourceLookup key={group.id} group={group} onClose={() => { setSelected(null); requestAnimationFrame(() => document.getElementById(`lookup-${group.id}`)?.focus()); }} />}
       <SourceProvenance group={group} />
