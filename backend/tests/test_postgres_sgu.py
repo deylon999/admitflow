@@ -29,6 +29,13 @@ from test_source_lookup import (
     test_lookup_requires_guest_and_never_creates_a_subscription,
     test_invalid_lookup_does_not_echo_code_or_accept_other_sources,
 )
+from test_subscriptions import (
+    test_repeated_confirmation_saves_once_and_other_owner_cannot_use_it,
+    test_manual_and_archive_share_twenty_limit_under_concurrent_writes,
+    test_stale_unconsumed_confirmation_refuses_but_successful_replay_ignores_expiry,
+    test_guest_reset_removes_subscription_assessment_and_operation_payload,
+    test_expiry_hides_private_rows_and_cleanup_keeps_shared_archive,
+)
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 

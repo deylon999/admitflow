@@ -5424,7 +5424,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T176",
         "T017"
@@ -5440,7 +5440,12 @@
       "acceptance": [
         "Confirmation creates one subscription idempotently under owner lock;foreign/tampered/expired tickets fail,manual+archive directions share20-limit,guest reset/expiry removes subscriptions."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;native37cases passed,including data-preserving0005cascade fix,guest reset/expiry and cache replay safety."
+        }
+      ],
       "blockedReason": null
     }
   ]

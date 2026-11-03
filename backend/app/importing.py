@@ -62,7 +62,8 @@ def validate_import(bundle,now):
 
 def import_bundle(db,owner,bundle,now):
     validated=validate_import(bundle,now)
-    existing=db.scalar(select(func.count()).select_from(Watch).where(Watch.owner_hash==owner))
+    from .direction_budget import direction_budget
+    existing=direction_budget(db,owner).total
     if existing+len(validated)>20:
         raise HTTPException(409,'После импорта будет больше 20 направлений. Удалите лишние или выберите другую сессию.')
     snapshots=0

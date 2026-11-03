@@ -31,7 +31,7 @@ def issue(claims,owner,key):
     return payload+'.'+signature(payload,owner,key)
 
 
-def verify(token,owner,key,now):
+def verify(token,owner,key,now,*,allow_expired=False):
     if not isinstance(token,str) or len(token)>2048 or not re.fullmatch(r'[A-Za-z0-9_-]+\.[a-f0-9]{64}',token):
         raise ConfirmationError('invalid')
     payload,mac=token.split('.')
@@ -39,5 +39,5 @@ def verify(token,owner,key,now):
     try:
         claims=Confirmation.model_validate_json(base64.urlsafe_b64decode(payload+'='*(-len(payload)%4)))
     except (ValueError,TypeError,ValidationError):raise ConfirmationError('invalid') from None
-    if now>=claims.expires:raise ConfirmationError('expired')
+    if not allow_expired and now>=claims.expires:raise ConfirmationError('expired')
     return claims

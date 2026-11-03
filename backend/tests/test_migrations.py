@@ -41,7 +41,7 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.check(config())
     assert len(inspect(migration_db).get_table_names()) == 15  # 14 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0004'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0005'
 
 
 def seed_legacy(engine):
@@ -185,7 +185,7 @@ def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full
     command.upgrade(config(),'head')
     command.check(config())
     with postgres_legacy_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0004'
+        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0005'
         assert db.scalar(text('SELECT title FROM watches'))=='Test direction'
         assert db.execute(text('SELECT id, watch_id, rank - excluded - no_consent FROM snapshots')).one()==('snapshot-1','watch-1',74)
         assert not db.scalar(text("SELECT count(*) FROM pg_class WHERE relname LIKE '_admitflow_check_%' AND relnamespace=pg_my_temp_schema()"))
@@ -235,3 +235,45 @@ def test_postgres_real_upgrade_and_downgrade(postgres_legacy_db):
     command.downgrade(config(), 'base')
     command.upgrade(config(), 'head')
     command.check(config())
+
+
+def assert_assessment_cascade_upgrade_keeps_data(engine):
+    from datetime import datetime,timezone
+    from sqlalchemy import delete,func,select
+    from sqlalchemy.orm import Session
+    from app.database import BrowserSession
+    from app.admissions import Assessment,Campaign,CompetitionGroup,Source,SourceSnapshot,Subscription,University
+    command.upgrade(config(),'0004')
+    now=datetime(2026,11,3,tzinfo=timezone.utc)
+    with Session(engine) as db:
+        db.add(BrowserSession(token_hash='b'*64,expires_at=now));db.flush()
+        db.add(University(id='cascade-u',name='Synthetic migration only',official_url='https://example.org',provenance_url='https://example.org',verified_at=now));db.flush()
+        db.add(Campaign(id='cascade-c',university_id='cascade-u',year=2026,level='bachelor'));db.flush()
+        db.add(CompetitionGroup(id='cascade-g',campaign_id='cascade-c',official_id='test',title='Synthetic migration',study_form='full-time',funding='budget',category='general',seats=1,coverage='candidate'));db.flush()
+        db.add(Source(id='cascade-source',group_id='cascade-g',url='https://example.org/list',domain='example.org',enabled=False));db.flush()
+        db.add(SourceSnapshot(id='cascade-snapshot',source_id='cascade-source',group_id='cascade-g',payload_hash='a'*64,fetched_at=now,kind='archive',row_count=0,complete=False));db.flush()
+        db.add(Subscription(id='cascade-sub',owner_hash='b'*64,group_id='cascade-g',candidate_key='c'*64,created_at=now));db.flush()
+        db.add(Assessment(id='cascade-assessment',subscription_id='cascade-sub',group_id='cascade-g',snapshot_id='cascade-snapshot',rules_version='old-v1',assessed_at=now,state='unsupported',facts={'marker':'preserve'},assumptions=['Synthetic migration proof']));db.commit()
+    for target in ('head','0004','head'):
+        if target=='0004':command.downgrade(config(),target)
+        else:command.upgrade(config(),target)
+        with Session(engine) as db:
+            row=db.get(Assessment,'cascade-assessment')
+            assert row.facts=={'marker':'preserve'} and row.subscription_id=='cascade-sub' and row.snapshot_id=='cascade-snapshot'
+    command.check(config())
+    constraint=next(row for row in inspect(engine).get_foreign_keys('assessments') if row['name']=='fk_assessment_subscription_group')
+    assert constraint['options']['ondelete']=='CASCADE'
+    with Session(engine) as db:
+        db.execute(delete(BrowserSession).where(BrowserSession.token_hash=='b'*64));db.commit()
+        assert db.scalar(select(func.count()).select_from(Subscription))==0
+        assert db.scalar(select(func.count()).select_from(Assessment))==0
+        assert db.scalar(select(func.count()).select_from(SourceSnapshot))==1
+
+
+def test_assessment_cascade_upgrade_preserves_existing_data(migration_db):
+    assert_assessment_cascade_upgrade_keeps_data(migration_db)
+
+
+@pytest.mark.postgres
+def test_postgres_assessment_cascade_upgrade_preserves_existing_data(postgres_legacy_db):
+    assert_assessment_cascade_upgrade_keeps_data(postgres_legacy_db)

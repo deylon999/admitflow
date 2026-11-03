@@ -147,7 +147,7 @@ class Assessment(Base):
     __tablename__ = 'assessments'
     __table_args__ = (
         UniqueConstraint('subscription_id', 'snapshot_id', 'rules_version', name='uq_assessment'),
-        ForeignKeyConstraint(['subscription_id', 'group_id'], ['subscriptions.id', 'subscriptions.group_id'], name='fk_assessment_subscription_group'),
+        ForeignKeyConstraint(['subscription_id', 'group_id'], ['subscriptions.id', 'subscriptions.group_id'], name='fk_assessment_subscription_group', ondelete='CASCADE'),
         ForeignKeyConstraint(['snapshot_id', 'group_id'], ['source_snapshots.id', 'source_snapshots.group_id'], name='fk_assessment_snapshot_group'),
         CheckConstraint("state IN ('within', 'conditional', 'out', 'unsupported', 'insufficient_data')", name='assessment_state'),
     )

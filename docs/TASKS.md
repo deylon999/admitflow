@@ -2929,7 +2929,7 @@
 
 ### T177. Save owner-isolated source subscriptions within combined direction limits
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T176, T017.
 
@@ -2947,7 +2947,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;native37cases passed,including data-preserving0005cascade fix,guest reset/expiry and cache replay safety.
 
 ## E5. Качество и эксплуатация
 

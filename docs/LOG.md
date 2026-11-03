@@ -800,3 +800,7 @@ B11 12/30:real group catalog filters/branch/season/cursor and archive/manual/uns
 ## S152 — 2026-11-03 — B11 13/30 T176
 
 B11 13/30:scoped authenticated lookup and owner/snapshot-bound300s confirmation implemented;12local+9nativePG cases passed,no public-code persistence/automatic subscription.
+
+## S153 — 2026-11-03 — B11 14/30 T177
+
+B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;native37cases passed,including data-preserving0005cascade fix,guest reset/expiry and cache replay safety.

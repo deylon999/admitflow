@@ -298,7 +298,8 @@ def create_app(settings: Settings | None = None):
         key, fingerprint, cached = begin_operation(request, body, owner_hash, db)
         if cached is not None:
             return cached
-        count = db.scalar(select(func.count()).select_from(Watch).where(Watch.owner_hash == owner_hash))
+        from .direction_budget import direction_budget
+        count = direction_budget(db,owner_hash).total
         if count >= 20:
             raise HTTPException(409, 'Можно сохранить до 20 направлений.')
         watch = Watch(owner_hash=owner_hash, university=body.university, title=body.title, source_url=str(body.source_url), created_at=utcnow())
