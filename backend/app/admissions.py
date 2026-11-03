@@ -168,3 +168,13 @@ class ChangeEvent(Base):
     assessment_id: Mapped[str]=mapped_column(ForeignKey('assessments.id',ondelete='CASCADE'),unique=True,index=True)
     created_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))
     seen_at: Mapped[datetime | None]=mapped_column(DateTime(timezone=True))
+
+
+class SourceOperation(Base):
+    __tablename__='source_operations'
+    id: Mapped[str]=mapped_column(String(36),primary_key=True,default=new_id)
+    source_id: Mapped[str]=mapped_column(ForeignKey('sources.id',ondelete='CASCADE'),index=True)
+    action: Mapped[str]=mapped_column(String(24))
+    outcome: Mapped[str]=mapped_column(String(24))
+    adapter_version: Mapped[str | None]=mapped_column(String(80))
+    created_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))

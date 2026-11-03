@@ -56,6 +56,6 @@ def scoped_candidate_key(binding: SourceBinding, public_id: str, secret: bytes) 
 class AdapterError(Exception):
     """Only stable diagnostic codes may leave an adapter; no page text or IDs."""
     def __init__(self, code: str):
-        allowed = {'unsupported_source', 'adapter_unavailable', 'invalid_format', 'invalid_binding', 'source_disabled', 'unattested_adapter'}
+        allowed = {'operator_quarantine', 'unsupported_source', 'adapter_unavailable', 'invalid_format', 'invalid_binding', 'source_disabled', 'unattested_adapter'}
         self.code = code if code in allowed else 'invalid_format'
         super().__init__(self.code)

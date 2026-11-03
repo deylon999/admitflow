@@ -26,7 +26,10 @@ def register_profile(engine,profile,*,enable=False,registry=PRODUCTION_REGISTRY)
                'study_form':meta['study_form'],'funding':meta['funding'],'category':meta['category'],'seats':profile.seats},{'coverage':'candidate'})
         created=db.get(Source,profile.source_id) is None
         source=record(Source,profile.source_id,{'group_id':profile.group_id,'url':profile.url,'domain':profile.url.split('/')[2],'adapter_version':VERSION,'snapshot_kind':profile.kind},{'enabled':False})
+        if enable and source.last_error_code=='operator_quarantine':raise AdapterError('operator_quarantine')
         if enable:
             registry.resolve(SourceBinding(source.id,source.group_id,profile.year,source.url,source.domain,VERSION,profile.kind,True));source.enabled=True
         result={'sourceId':source.id,'groupId':source.group_id,'created':created,'enabled':source.enabled,'year':profile.year,'kind':profile.kind,'adapterVersion':VERSION}
+        from ..source_operations import record
+        record(db,source,'enable' if enable else 'register','created' if created else 'updated')
         db.commit();return result

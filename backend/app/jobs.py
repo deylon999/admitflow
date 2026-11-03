@@ -8,6 +8,7 @@ from sqlalchemy.orm import Mapped, Session, aliased, mapped_column
 
 from .admissions import PublishedSnapshot, Source
 from .database import Base
+from .source_operations import record
 from .sources.publishing import FETCH_CODES, QUARANTINE_CODES, STORAGE_RETRY_CODES, lock_source, utc
 
 
@@ -64,12 +65,12 @@ def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
         raise ValueError('invalid_queue_policy')
     with Session(engine) as db:
         source=lock_source(db,engine,source_id)
-        if not source.enabled:
-            return False
+        if not source.enabled or source.last_error_code=='operator_quarantine':
+            record(db,source,'enqueue','deferred',now=now);db.commit();return False
         job=db.scalar(select(SourceJob).where(SourceJob.source_id==source_id).with_for_update())
         if job:
             if job.state in ('queued','running') or utc(job.next_run_at)>now:
-                return False
+                record(db,source,'enqueue','deferred',now=now);db.commit();return False
             job.state='queued'
             job.attempts=0
             job.last_error_code=None
@@ -78,6 +79,7 @@ def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
             job.next_run_at=now
         else:
             db.add(SourceJob(source_id=source_id,state='queued',next_run_at=now,attempts=0,max_attempts=max_attempts,interval_seconds=interval_seconds))
+        record(db,source,'enqueue','queued',now=now)
         db.commit()
         return True
 
@@ -93,7 +95,7 @@ def claim(engine,*,now=None,lease_seconds=120):
         occupied=exists(select(other_job.source_id).join(other_source,other_source.id==other_job.source_id).where(
             other_source.domain==Source.domain,other_job.source_id!=SourceJob.source_id,
             other_job.state=='running',other_job.lease_until>now))
-        query=(select(SourceJob).join(Source).where(Source.enabled.is_(True),~occupied,or_(and_(SourceJob.state.in_(('queued','idle')),SourceJob.next_run_at<=now),and_(SourceJob.state=='running',SourceJob.lease_until<=now))).order_by(SourceJob.next_run_at,SourceJob.source_id).with_for_update(skip_locked=True,of=SourceJob))
+        query=(select(SourceJob).join(Source).where(Source.enabled.is_(True),or_(Source.last_error_code.is_(None),Source.last_error_code!='operator_quarantine'),~occupied,or_(and_(SourceJob.state.in_(('queued','idle')),SourceJob.next_run_at<=now),and_(SourceJob.state=='running',SourceJob.lease_until<=now))).order_by(SourceJob.next_run_at,SourceJob.source_id).with_for_update(skip_locked=True,of=SourceJob))
         # Expired final attempts are retired instead of reclaimed forever.
         for job in db.scalars(query.limit(100)).all():
             domain=db.scalar(select(Source.domain).where(Source.id==job.source_id))
@@ -190,4 +192,5 @@ def disable(engine,source_id,*,now=None):
             job.token=job.lease_until=None
             job.last_error_code='source_disabled'
             job.next_run_at=now+timedelta(seconds=job.interval_seconds)
+        record(db,source,'disable','disabled',now=now)
         db.commit()

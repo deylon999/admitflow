@@ -894,3 +894,5 @@ T187/T188/T031/T034/T039done:sharedJSONdecoder,two independently auditedofficial
 S172/T036done:two nativePG replayruns,6stages,identicalsemanticoutcomes/0HTTP/cleanuptrue. Genuine-derived baselines+explicitlysyntheticconsent/template/failure/recovery/absence,no live-soakclaim. T040inprogress:ownerchangefeed/seen-state;continue to70rubric.
 
 S172/T040done:private deduped changes,stable seen/cursors,exact storedversioncomparison.3local+3nativePG+23migration+6TScontracts+4actualAPIChromium passed. T037inprogress;remainingops/coverage/finalacceptance.
+
+S172/T037done:0009operatoraudit/explicitcontrols,quarantine fences leases andpublication,resume respectsinterval/refresh_pending.6local+2nativePG+23migration passed. T038inprogress;then fullcurrentacceptance.

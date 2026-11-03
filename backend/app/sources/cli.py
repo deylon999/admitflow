@@ -5,7 +5,7 @@ import json
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from ..admissions import Source
+from ..admissions import Source,SourceOperation
 from ..config import Settings
 from ..database import make_engine
 from ..jobs import SourceJob, disable, enqueue
@@ -23,10 +23,15 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
         if action=='status':
             result=source_status(db,source_id,registry=registry)
             job=db.get(SourceJob,source_id)
+            result['configuredAdapterVersion']=source.adapter_version
+            result['operations']=[dict(id=row.id,action=row.action,outcome=row.outcome,adapterVersion=row.adapter_version,createdAt=row.created_at) for row in db.scalars(select(SourceOperation).where(SourceOperation.source_id==source_id).order_by(SourceOperation.created_at.desc(),SourceOperation.id.desc()).limit(20))]
             result['job']=None if job is None else dict(state=job.state,attempts=job.attempts,nextRunAt=job.next_run_at,lastErrorCode=job.last_error_code)
             return result
         if action=='enqueue':
             registry.resolve(binding_from_db(db,source))
+    if action in ('enable','quarantine','resume'):
+        from ..source_operations import control
+        return control(engine,source_id,action,registry=registry)
     if action=='enqueue':
         return {'sourceId':source_id,'queued':enqueue(engine,source_id)}
     if action=='disable':
@@ -37,7 +42,7 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu','register-reviewed','enable-scenarios'])
+    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu','register-reviewed','enable-scenarios','enable','quarantine','resume'])
     parser.add_argument('source_id',nargs='?')
     parser.add_argument('--enable',action='store_true',help='Only with register-sgu; requires configured reviewed adapter key')
     args=parser.parse_args(argv)

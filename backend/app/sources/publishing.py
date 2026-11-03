@@ -11,9 +11,9 @@ from .registry import PRODUCTION_REGISTRY
 from .storage import RawStore
 from .validation import QualityPolicy, Quarantined, validate_list
 
-QUARANTINE_CODES = frozenset({'invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
+QUARANTINE_CODES = frozenset({'operator_quarantine','invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
 STORAGE_RETRY_CODES = frozenset({'raw_lock_timeout','raw_write_failed'})
-FETCH_CODES = frozenset({'invalid_url','domain_not_allowed','non_public_address','dns_unavailable','timeout','tls_error','network_error','too_many_redirects','invalid_redirect','access_denied','rate_limited','http_error','access_challenge','unsupported_encoding','unsupported_content_type','empty_response','incomplete_response','response_too_large','invalid_headers','raw_unavailable','raw_hash_mismatch','raw_size_invalid','raw_write_failed','adapter_unavailable','source_disabled','unattested_adapter','invalid_binding','invalid_format'})
+FETCH_CODES = frozenset({'refresh_pending','invalid_url','domain_not_allowed','non_public_address','dns_unavailable','timeout','tls_error','network_error','too_many_redirects','invalid_redirect','access_denied','rate_limited','http_error','access_challenge','unsupported_encoding','unsupported_content_type','empty_response','incomplete_response','response_too_large','invalid_headers','raw_unavailable','raw_hash_mismatch','raw_size_invalid','raw_write_failed','adapter_unavailable','source_disabled','unattested_adapter','invalid_binding','invalid_format'})
 
 
 def utc(value):
@@ -50,7 +50,7 @@ def record_failure(engine, source_id, code, checked_at):
     code = code if code in QUARANTINE_CODES | FETCH_CODES | STORAGE_RETRY_CODES else 'internal_error'
     with Session(engine) as db:
         source = lock_source(db,engine,source_id)
-        if source.last_checked_at is None or utc(source.last_checked_at) <= checked_at:
+        if source.last_error_code!='operator_quarantine' and (source.last_checked_at is None or utc(source.last_checked_at) <= checked_at):
             source.last_checked_at = checked_at
             source.last_error_code = code
             db.commit()
@@ -66,6 +66,7 @@ def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store
     checked_at = raw.fetched_at
     with Session(engine) as db:
         source = lock_source(db,engine,source_id)
+        if source.last_error_code=='operator_quarantine':raise AdapterError('operator_quarantine')
         binding = binding_from_db(db,source)
         if expected_binding is not None and binding != expected_binding:
             raise AdapterError('invalid_binding')

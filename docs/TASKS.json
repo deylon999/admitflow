@@ -1327,7 +1327,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T031",
         "T032",
@@ -1346,7 +1346,12 @@
         "Оператор может отключить сломанный источник без изменения чужих данных",
         "Все действия прослеживаются в audit log"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "Native operator fencing/rate limit/audit and migration checks passed;safe CLI documented."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1355,7 +1360,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T012",
         "T031",

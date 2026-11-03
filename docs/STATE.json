@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-04",
-  "currentTask": "T037",
-  "nextTask": "T037",
+  "currentTask": "T038",
+  "nextTask": "T038",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S172",
-  "resumeAction": "B12 seven done. T037 audited enable/disable/retry/quarantine, then T038 honest coverage and T189 current full local acceptance until70rubric.",
+  "resumeAction": "B12 eight done. T038 distinguish catalog/registered/reviewed/imported/conditional/live coverage;then T189 full current local acceptance to70rubric.",
   "externalConstraints": [
     "Two independently audited official archive sources published; live/currentseason automation and24h observation remain unverified.",
     "HTTPS staging/production host/domain/budget/region not selected or deployed.",

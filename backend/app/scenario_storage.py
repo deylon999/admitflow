@@ -78,4 +78,6 @@ def enable_scenarios(engine,source_id,*,registry):
         from .admissions import PublishedSnapshot
         pointer=db.get(PublishedSnapshot,source_id)
         if pointer:append_source(db,db.get(SourceSnapshot,pointer.snapshot_id))
+        from .source_operations import record
+        record(db,source,'enable-scenarios','enabled')
         db.commit();return {'sourceId':source_id,'rulesVersion':VERSION,'numericScope':'conditional listed-consent scenario only','officialResultAvailable':False}

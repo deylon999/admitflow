@@ -39,9 +39,12 @@ def register_sgu(engine,*,enable=False,registry=PRODUCTION_REGISTRY):
         if source is None:
             source=Source(id=SOURCE_ID,enabled=False,**SOURCE_FIELDS);db.add(source);db.flush()
         if any(getattr(source,key)!=value for key,value in SOURCE_FIELDS.items()):raise AdapterError('invalid_binding')
+        if enable and source.last_error_code=='operator_quarantine':raise AdapterError('operator_quarantine')
         if enable:
             registry.resolve(replace(binding_from_db(db,source),enabled=True))
             source.enabled=True
         result=dict(sourceId=SOURCE_ID,groupId=GROUP_ID,created=created,enabled=source.enabled,kind='archive',year=2026)
+        from ..source_operations import record
+        record(db,source,'enable' if enable else 'register','created' if created else 'updated')
         db.commit()
         return result
