@@ -22,9 +22,17 @@ def sanitize(body):
     if year is None:
         raise ValueError('Missing verified2026 season marker')
     result = BeautifulSoup('', 'html.parser')
-    for node in [soup.title, year.parent, *soup.select('div.svodka-table__info-wrap'), table]:
+    outer, head, body_tag = (copy.copy(node) for node in (soup.html, soup.head, soup.body))
+    for node in (outer, head, body_tag):
+        node.clear()
+    if soup.title:
+        head.append(copy.deepcopy(soup.title))
+    outer.append(head)
+    outer.append(body_tag)
+    result.append(outer)
+    for node in [year.parent, *soup.select('div.svodka-table__info-wrap'), table]:
         if node is not None:
-            result.append(copy.deepcopy(node))
+            body_tag.append(copy.deepcopy(node))
     identifiers = {}
     for cell in result.select('td[data-label="Код поступающего"]'):
         original = cell.get_text(' ', strip=True)

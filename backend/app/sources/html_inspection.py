@@ -31,8 +31,8 @@ def sgu_structure(body: bytes):
     for field in soup.select('div.svodka-table__info'):
         label, value = field.select_one('.svodka-table__info-title'), field.select_one('.svodka-table__info-name')
         if label and value:
-            key = label.get_text(' ', strip=True)
+            key = ' '.join(label.get_text(' ', strip=True).split())
             if key in metadata:
                 raise AdapterError('invalid_format')
-            metadata[key] = value.get_text(' ', strip=True)
+            metadata[key] = ' '.join(value.get_text(' ', strip=True).split())
     return soup, table, rows, metadata

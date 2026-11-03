@@ -772,3 +772,7 @@ B11 5/30:explicit passport/fixture attestation gates implemented;33 contract/reg
 ## S145 — 2026-11-03 — B11 6/30 T174
 
 B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 targeted checks passed and actual bounded SGU5851174byte fetch succeeded with pinned TLS.
+
+## S146 — 2026-11-03 — B11 7/30 T029
+
+B11 7/30:archive-only SGU adapter attested;all573 original rows independently matched,including16/17boundary and119tie-score groups;35 adapter/fixture/attestation regressions passed.

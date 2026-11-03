@@ -1221,7 +1221,7 @@
 
 ### T029. Подключить первый официальный источник
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T027, T028.
 
@@ -1240,7 +1240,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 7/30:archive-only SGU adapter attested;all573 original rows independently matched,including16/17boundary and119tie-score groups;35 adapter/fixture/attestation regressions passed.
 
 ### T030. Ввести нормализацию и карантин
 

@@ -1027,7 +1027,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T027",
         "T028"
@@ -1044,7 +1044,12 @@
         "Contract tests и сверка минимум 50 строк либо всего меньшего списка пройдены",
         "Паспорт указывает реальные ограничения и сезон"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 7/30:archive-only SGU adapter attested;all573 original rows independently matched,including16/17boundary and119tie-score groups;35 adapter/fixture/attestation regressions passed."
+        }
+      ],
       "blockedReason": null
     },
     {

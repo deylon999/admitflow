@@ -1,0 +1,23 @@
+{
+  "verifiedAt": "2026-11-03T17:18:33.121410+00:00",
+  "success": true,
+  "sourceUrl": "https://www.sgu.ru/svodka/4588",
+  "adapterVersion": "sgu-2026-4588-v1",
+  "kind": "archive",
+  "year": 2026,
+  "originalSha256": "e2e8686ed7de4687104aeac64bade4165afd90c354ff2265e869b9cd560906e8",
+  "fixtureSha256": "09b86aaf9b6d53b3a51008312569545c61c351405951c4b6a135374050bbcefd",
+  "checkedRows": 573,
+  "boundaryRanksChecked": [
+    16,
+    17
+  ],
+  "generalSeats": 16,
+  "consentYes": 165,
+  "consentNo": 408,
+  "enrolled": 16,
+  "tiedScoreGroups": 119,
+  "sourceUpdatedAt": null,
+  "identifiersOrKeysEmitted": false,
+  "method": "Independent stdlib HTMLParser vs BeautifulSoup adapter;all rows,including boundary/ties"
+}

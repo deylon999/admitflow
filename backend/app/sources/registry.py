@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import PurePosixPath
+import os
 import re
 from typing import Callable
 from urllib.parse import urlsplit
@@ -103,3 +104,14 @@ class Registry:
 
 
 PRODUCTION_REGISTRY = Registry()
+
+
+def runtime_registry():
+    """Opt in using an operator-owned stable key; never enable a Source row here."""
+    value = os.getenv('SOURCE_IDENTITY_KEY')
+    if value is None:
+        return PRODUCTION_REGISTRY
+    if not re.fullmatch(r'(?:[a-fA-F0-9]{2}){32,64}',value):
+        raise RuntimeError('SOURCE_IDENTITY_KEY must be32–64bytes encoded as hex')
+    from .adapters.sgu2026 import make_adapter
+    return Registry((make_adapter(bytes.fromhex(value)),))
