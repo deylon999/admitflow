@@ -81,7 +81,9 @@ def rehearse(runtime, folder, *, archive_sgu=False):
                     found=owner.post(f'/api/v1/sources/{BINDING.source_id}/lookup',json={'publicCode':code},headers=HEADERS)
                     require(found.status_code==200,'Fixture lookup failed')
                     return {'confirmationToken':found.json()['confirmationToken']}
-                archive_body=confirm('FIXTURE-000001')
+                from app.scenario_storage import enable_scenarios
+                enable_scenarios(source,BINDING.source_id,registry=app.state.source_registry)
+                archive_body=confirm('FIXTURE-000020')
                 archive_saved=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)
                 require(archive_saved.status_code==201,'Archive save failed')
                 archive_path=f"/api/v1/subscriptions/{archive_saved.json()['id']}"
@@ -89,9 +91,16 @@ def rehearse(runtime, folder, *, archive_sgu=False):
                 retired=owner.post('/api/v1/subscriptions',json=retired_body,headers=HEADERS)
                 require(retired.status_code==201,'Archive tombstone setup failed')
                 require(owner.delete('/api/v1/subscriptions/'+retired.json()['id'],headers=HEADERS).status_code==204,'Archive delete failed')
-                body=b'<!-- explicitly synthetic second template version for recovery rehearsal -->\n'+response.body
-                response=replace(response,body=body,payload_hash=hashlib.sha256(body).hexdigest(),fetched_at=response.fetched_at+timedelta(minutes=1))
-                publish(source,BINDING.source_id,adapter.parse(response,BINDING),response,store,registry=app.state.source_registry)
+                from test_scenario_storage import changed_consent
+                changed,response=changed_consent(app,folder)
+                publish(source,BINDING.source_id,changed,response,store,registry=app.state.source_registry)
+                archive_scenarios=owner.get(archive_path+'/scenario-history').json()
+                require(archive_scenarios['total']==2,'Scenario history setup differs')
+                changes=owner.get('/api/v1/changes').json()
+                require(changes['total']==1 and changes['unreadCount']==1,'Change event setup differs')
+                event_id=changes['items'][0]['id']
+                require(owner.post('/api/v1/changes/'+event_id+'/seen',headers=HEADERS).status_code==200,'Seen setup failed')
+                seen_changes=owner.get('/api/v1/changes').json()
                 archive_history=owner.get(archive_path+'/history').json()
                 require(archive_history['total']==2,'Archive history setup differs')
                 archive_facts=owner.get('/api/v1/subscriptions').json()
@@ -146,6 +155,9 @@ def rehearse(runtime, folder, *, archive_sgu=False):
             if archive_sgu:
                 require(owner.get('/api/v1/subscriptions').json()==archive_facts,'Restored archive facts differ')
                 require(owner.get(archive_path+'/history').json()==archive_history,'Restored archive history differs')
+                require(owner.get(archive_path+'/scenario-history').json()==archive_scenarios,'Restored scenario versions differ')
+                require(owner.get('/api/v1/changes').json()==seen_changes,'Restored change/seen state differs')
+                require(other.get('/api/v1/changes').json()['total']==0,'Restored events leaked')
                 require(other.get(archive_path+'/history').status_code==404,'Restored archive ownership failed')
                 require(other.get('/api/v1/subscriptions').json()==[],'Restored archive owner leaked')
                 retry=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)
@@ -169,7 +181,7 @@ def rehearse(runtime, folder, *, archive_sgu=False):
                     backupSeconds=round(backup_seconds, 3), restoreAndValidationSeconds=round(restore_seconds, 3),
                     corruptionChecks=['truncated archive rolls back all tables', 'raw SHA256 mismatch refused'],
                     ownership=True, exactHistory=True, exactTableContents=True, retryAndTombstone=True,
-                    archiveFacts=archive_sgu,archiveHistory=archive_sgu,identityKeyContinuity=archive_sgu,
+                    archiveFacts=archive_sgu,archiveHistory=archive_sgu,identityKeyContinuity=archive_sgu,scenarioVersions=archive_sgu,changeSeenState=archive_sgu,
                     rpo='0 writes during quiesced rehearsal only; production RPO not measured')
     finally:
         source.dispose()
@@ -185,7 +197,7 @@ def main():
         with disposable_postgres() as runtime:
             report = rehearse(runtime, Path(folder),archive_sgu=args.archive_sgu)
     report.update(recordedAt=datetime.now(timezone.utc).isoformat(), cleanup=True,
-                  scope=('anonymized SGU573-row archive+synthetic second template' if args.archive_sgu else 'synthetic')+';disposable PostgreSQL17/quiesced rehearsal,no production backup guarantee')
+                  scope=('anonymized SGU573-row archive+synthetic consent change/scenarios/events/seen' if args.archive_sgu else 'synthetic')+';disposable PostgreSQL17/quiesced rehearsal,no production backup guarantee')
     args.output.write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report))
 

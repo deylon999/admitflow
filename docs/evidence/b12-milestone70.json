@@ -1,0 +1,161 @@
+{
+  "recordedAt": "2026-11-03T23:04:36.188042+00:00",
+  "milestone": "B12 functional MVP around70%",
+  "status": "achieved",
+  "assessmentMethod": "Expert functional milestone fixed before implementation in docs/MILESTONE_70.md;not percent of task cards/code or national coverage;release gates unchanged.",
+  "criteria": [
+    {
+      "id": 1,
+      "result": "passed",
+      "evidence": [
+        "docs/evidence/b12-sgu-family-audit.json",
+        "docs/evidence/b12-guap-family-audit.json",
+        "backend/app/sources/profiles/reviewed.json"
+      ],
+      "finding": "One reviewed-html-table-v1 decoder works through two declarative independently attested profiles;frozen legacy SGU preserved."
+    },
+    {
+      "id": 2,
+      "result": "passed",
+      "evidence": [
+        "docs/evidence/b12-guap-worker.json",
+        "docs/evidence/b12-current-runtime.json",
+        "docs/sources/guap-2026-math.md"
+      ],
+      "finding": "Two independent official archive sources,all573+581originalrows independently compared;actual boundedGUAPHTTP/nativePGworker;primaryPG1154rows. GUAPcontract0places/unknownconsent never inferred as budget."
+    },
+    {
+      "id": 3,
+      "result": "passed",
+      "evidence": [
+        "backend/tests/test_scenarios.py",
+        "backend/tests/test_scenario_storage.py",
+        "frontend/tests/scenario-contracts.test.ts"
+      ],
+      "finding": "Immutable listed-consent-v1/scenario-explanation-v1 conditional bounds,source-specific policy gate,explicit unknown/unsupported refusal;not official admission/probability."
+    },
+    {
+      "id": 4,
+      "result": "passed",
+      "evidence": [
+        "docs/evidence/b12-replay.json",
+        "docs/evidence/b12-postgres-restore.json"
+      ],
+      "finding": "Two deterministic nativePG replay runs,six stages,identical semantic results/0HTTP;synthetic changes labeled;failed/recovery/absence preserve lastgood/history. Restore preserves19tables/scenarios/events/seen andowners."
+    },
+    {
+      "id": 5,
+      "result": "passed",
+      "evidence": [
+        "backend/tests/test_changes.py",
+        "frontend/tests/e2e/changes.spec.ts",
+        "backend/tests/test_source_operations.py"
+      ],
+      "finding": "ActualAPI/nativePG fixture browser path lookup/confirm/scenario/change/exactcomparison/seen/reload,twoowners;deduped transactional private events,idempotentseen,keysetpagination,operatorfencing/audit."
+    },
+    {
+      "id": 6,
+      "result": "passed",
+      "evidence": [
+        "docs/evidence/b12-current-runtime.json",
+        "docs/evidence/b12-private-artifacts.json"
+      ],
+      "finding": "Current Docker0009 deployed/healthy atlocalhost8090;502backend including85nativePG/0skip,115unit,100baselineChromium+4newscenario/change cases+2actualnginxcases passed. Documents/state/evidence updated;temporary fixture runtimes cleaned."
+    }
+  ],
+  "checks": [
+    {
+      "command": "backend/.venv/bin/python scripts/test_postgres.py --python /home/yurii/projects/admitflow/backend/.venv/bin/python tests",
+      "exitCode": 0,
+      "passed": 502,
+      "nativePostgres": 85,
+      "skipped": 0
+    },
+    {
+      "command": "cd frontend && npm test -- --run",
+      "exitCode": 0,
+      "passed": 115
+    },
+    {
+      "command": "docker build --network host --allow network.host -t admitflow-b11-backend -f backend/Dockerfile .",
+      "exitCode": 0
+    },
+    {
+      "command": "docker build --network host --allow network.host -t admitflow-b11-frontend -f frontend/Dockerfile .",
+      "exitCode": 0
+    },
+    {
+      "command": "WEB_PORT=8090 docker compose -p admitflow-b11 -f compose.yaml -f /tmp/admitflow-b11/images.yaml up -d --no-build --wait",
+      "exitCode": 0
+    },
+    {
+      "command": "cd frontend && API_TARGET=http://127.0.0.1:8013 E2E_API=1 E2E_SCENARIOS=1 E2E_CHANGES=1 E2E_SOURCE_CONTROL=/tmp/b12-source-control.json E2E_SERVER=preview E2E_BASE_URL=http://127.0.0.1:4192 npx playwright test tests/e2e/scenarios.spec.ts tests/e2e/changes.spec.ts tests/e2e/coverage.spec.ts",
+      "exitCode": 0,
+      "passed": 6,
+      "scope": "two-source fixture API/nativePG;includes two existing coverage cases"
+    },
+    {
+      "command": "cd frontend && E2E_NGINX=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8090 npx playwright test tests/e2e/assets.spec.ts",
+      "exitCode": 0,
+      "passed": 2
+    },
+    {
+      "command": "backend/.venv/bin/python scripts/replay_archives.py --output docs/evidence/b12-replay.json",
+      "exitCode": 0
+    },
+    {
+      "command": "backend/.venv/bin/python scripts/rehearse_postgres_restore.py --archive-sgu --output docs/evidence/b12-postgres-restore.json",
+      "exitCode": 0
+    },
+    {
+      "command": "docker compose -p admitflow-b11 -f compose.yaml -f /tmp/admitflow-b11/images.yaml exec -T backend python -m app.sources.audit SOURCE_ID",
+      "exitCode": 0,
+      "sources": 2,
+      "checkedRows": 1154,
+      "evidence": "docs/evidence/b12-runtime-archive-audit.json",
+      "externalHttpFetches": 0
+    },
+    {
+      "command": "backend/.venv/bin/python scripts/audit_private_artifacts.py --original backend/var/research/sgu4588.original.html --guap-original backend/var/research/b12/guap-profile.html --key-file backend/var/b11-identity.env --output docs/evidence/b12-private-artifacts.json",
+      "exitCode": 0,
+      "comparedPrivateCodes": 1154,
+      "privateMatches": 0
+    },
+    {
+      "command": "cd frontend && API_TARGET=http://127.0.0.1:8014 E2E_API=1 E2E_SOURCE=1 E2E_SOURCE_FIXTURE=1 E2E_SERVER=preview E2E_BASE_URL=http://127.0.0.1:4193 npx playwright test --workers=2 --grep-invert 'actual private changefeed|stored archive scenario|paid zero-capacity|missing build resources|HTML revalidates' --output=/tmp/b12-full-browser-results",
+      "exitCode": 0,
+      "passed": 100,
+      "skipped": 0
+    }
+  ],
+  "localRuntime": {
+    "url": "http://127.0.0.1:8090",
+    "schema": "0009",
+    "services": [
+      "db",
+      "backend",
+      "frontend"
+    ],
+    "workerLoop": false,
+    "genuineOfficialArchiveRows": 1154,
+    "archiveGroups": 2,
+    "conditionalGroups": 1,
+    "freshAutomaticGroups": 0,
+    "nationalTotal": null,
+    "externalHttpDuringFinalAcceptance": 0,
+    "images": {
+      "backend": "sha256:801f34ea2a966536037a299ae4555d25910efcb1ffeb118a03a35fca1305fe67",
+      "frontend": "sha256:a351d72e78ab7809ca30291bc5159143df8469154f8d3bb79e6b40ca414f90c7"
+    }
+  },
+  "remainingReleaseWork": [
+    "HTTPS staging/production domain/hosting",
+    "remote CI/push verification(T006blocked)",
+    "24h live/currentseason worker observation",
+    "national sources/coverage and accepted rules for further scopes",
+    "Firefox/WebKit,agreed load and user acceptance",
+    "production source-use/retention/operator/abuse policies"
+  ],
+  "verificationIncident": "Initial overlapping Playwright invocations shared output/dist:one trace ENOENT andone missing initialpageasset. No product assertion weakened;guest reset passed15isolated repeats. Baseline rerun serially with isolated output before accepting result. Further final run exposed old isolated form/tools/catalog mocks:mocked session had no real cookie,while newfeed reached actualAPI401. Added empty-feed mock only to those isolated tests;actualAPI/two-owner/privatefeed cases retain real transport. Final full baseline rerun passed without weakening access checks.",
+  "functionalEstimatePercent": 70
+}

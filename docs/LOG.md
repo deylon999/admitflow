@@ -898,3 +898,7 @@ S172/T040done:private deduped changes,stable seen/cursors,exact storedversioncom
 S172/T037done:0009operatoraudit/explicitcontrols,quarantine fences leases andpublication,resume respectsinterval/refresh_pending.6local+2nativePG+23migration passed. T038inprogress;then fullcurrentacceptance.
 
 S172/T038done:DB-derived reviewed/imported/archive/conditional/automatic metrics anddates,1154rows/2archivegroups/1conditional/0fresh validated.8local+1nativePG+TScontract/build passed. T189inprogress:fullcurrentchecks/deploy/demo/privacy before70claim.
+
+## S173 — 2026-11-04 — B12 10/10, функциональный рубеж около 70%
+
+T189done: все6заранее объявленных критериев выполнены. Текущие0009Dockerобразыhealthy8090,2настоящихархива/1154строки/1условнаягруппа/0fresh.502backend(85nativePG/0skip),115unit,100baseline+4new+2nginxbrowser passed;ещё2coverage повторенына2источниках. Replay2x6identical,exact19table/rawrestore сохраняетscenarios/events/seen;2actualruntimearchiveaudit/private1154codeaudit0matches. Исправлены только изоляция браузерных артефактов и старые mocked-session fixtures,контрольдоступа не ослаблялся. Две пятёрки завершены;statecurrentnull,nextT042. Временныеfixtureпроцессы очищены,основной8090оставленработать. Release/live24h/HTTPS/remoteCI/национальныйохват остаются неподтверждёнными;gates не снижены.

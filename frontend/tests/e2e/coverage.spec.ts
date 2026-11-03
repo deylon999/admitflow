@@ -4,7 +4,9 @@ test('справочник не выдаётся за автоматически
   test.skip(process.env.E2E_API !== '1', 'Требуется API');
   await page.goto('/tracker');
   const section = page.getByRole('region', { name: 'Покрытие источников' });
-  await expect(section.locator('dd')).toHaveText(['2','0','0']);
+  const coverage=await (await page.request.get('/api/v1/coverage')).json();
+  await expect(section.locator('dd')).toHaveText(['catalogUniversities','automaticSources','publishedGroups','reviewedSources','importedGroups','importedUniversities','conditionalGroups'].map(key=>String(coverage[key])));
+  await expect(section).toContainText('Последний импорт получен');
   await expect(section).toContainText('Это не полный охват');
 });
 

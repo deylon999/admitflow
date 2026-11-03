@@ -1,0 +1,85 @@
+{
+  "coverage": {
+    "registeredSources": 2,
+    "reviewedSources": 2,
+    "importedSources": 2,
+    "importedGroups": 2,
+    "importedUniversities": 2,
+    "importedRows": 1154,
+    "archiveImportedGroups": 2,
+    "conditionalGroups": 1,
+    "lastImportedAt": "2026-11-03T22:15:28.852436Z",
+    "catalogUniversities": 3,
+    "automaticSources": 0,
+    "publishedGroups": 0,
+    "freshGroups": 0,
+    "archiveGroups": 0,
+    "nationalTotal": null,
+    "generatedAt": "2026-11-03T22:55:29.000025Z"
+  },
+  "groups": {
+    "items": [
+      {
+        "id": "guap-2026-math-contract",
+        "universityId": "guap-spb",
+        "universityName": "Санкт-Петербургский государственный университет аэрокосмического приборостроения",
+        "parentUniversityId": null,
+        "year": 2026,
+        "level": "bachelor",
+        "title": "01.03.02 Прикладная математика и информатика — платный конкурс",
+        "studyForm": "full-time",
+        "funding": "contract",
+        "category": "general",
+        "seats": 0,
+        "coverage": "archive",
+        "sourceId": "guap-2026-math-contract",
+        "sourceUrl": "https://priem.guap.ru/bach/rating/list_1_1_1_3_1_f",
+        "sourceState": "archived",
+        "dataKind": "archive",
+        "snapshotId": "28d29840-8a97-468d-bd2c-084b561388d3",
+        "fetchedAt": "2026-11-03T22:15:28.852436Z",
+        "sourceUpdatedAt": null,
+        "lastCheckedAt": "2026-11-03T22:15:28.852436Z",
+        "rowCount": 581,
+        "lookupAvailable": true,
+        "assessmentAvailable": false,
+        "scenarioAvailable": false
+      },
+      {
+        "id": "sgu-2026-4588",
+        "universityId": "sgu-saratov",
+        "universityName": "СГУ имени Н. Г. Чернышевского",
+        "parentUniversityId": null,
+        "year": 2026,
+        "level": "bachelor",
+        "title": "09.03.04 Программная инженерия — общий конкурс",
+        "studyForm": "full-time",
+        "funding": "budget",
+        "category": "general",
+        "seats": 16,
+        "coverage": "archive",
+        "sourceId": "sgu-2026-4588",
+        "sourceUrl": "https://www.sgu.ru/svodka/4588",
+        "sourceState": "archived",
+        "dataKind": "archive",
+        "snapshotId": "8bf8bd49-df21-4265-9dc0-ff7e23c69b96",
+        "fetchedAt": "2026-11-03T17:45:52.985785Z",
+        "sourceUpdatedAt": null,
+        "lastCheckedAt": "2026-11-03T17:45:52.985785Z",
+        "rowCount": 573,
+        "lookupAvailable": true,
+        "assessmentAvailable": false,
+        "scenarioAvailable": true
+      }
+    ],
+    "total": 2,
+    "nextCursor": null,
+    "facets": {
+      "branches": [],
+      "years": [
+        2026
+      ]
+    }
+  },
+  "scope": "current local Docker/nativePG two genuine official archives; no new HTTP fetch;no candidate lookup/codes"
+}

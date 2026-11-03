@@ -4000,7 +4000,7 @@
 
 ### T189. Проверить полный локальный путь двух источников до рубежа70%
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T036, T040, T037, T038, T039.
 
@@ -4019,7 +4019,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-milestone70.json](../docs/evidence/b12-milestone70.json) — All six predeclared functional criteria met;current full tests/nativePG/local Docker,two-source browser path,exact restore/private audit verified. Production/live gates remain open.
 
 ## E6. Резерв и выпуск
 

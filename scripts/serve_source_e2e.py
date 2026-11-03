@@ -49,7 +49,7 @@ def main():
             fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
             with os.fdopen(fd,'w') as stream:json.dump({'url':runtime.url(),'raw':str(Path(folder)/'raw'),'fixtureOnly':True},stream)
         env = {**os.environ, 'DATABASE_URL': runtime.url(), 'AUTO_CREATE_SCHEMA': 'false', 'RAW_STORE_PATH': str(Path(folder)/'raw')}
-        child = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', '8013', '--no-access-log'], cwd=ROOT/'backend', env=env)
+        child = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', os.getenv('E2E_API_PORT','8013'), '--no-access-log'], cwd=ROOT/'backend', env=env)
         def stop(*_):
             child.terminate()
         signal.signal(signal.SIGTERM, stop)

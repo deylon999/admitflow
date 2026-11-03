@@ -1,0 +1,26 @@
+{
+  "sgu": {
+    "format": "source-audit-v1",
+    "sourceId": "sgu-2026-4588",
+    "readOnly": true,
+    "externalFetches": 0,
+    "checkedSnapshots": 1,
+    "checkedRows": 573,
+    "issues": [],
+    "truncated": false,
+    "publishedSnapshotId": "8bf8bd49-df21-4265-9dc0-ff7e23c69b96",
+    "success": true
+  },
+  "guap": {
+    "format": "source-audit-v1",
+    "sourceId": "guap-2026-math-contract",
+    "readOnly": true,
+    "externalFetches": 0,
+    "checkedSnapshots": 1,
+    "checkedRows": 581,
+    "issues": [],
+    "truncated": false,
+    "publishedSnapshotId": "28d29840-8a97-468d-bd2c-084b561388d3",
+    "success": true
+  }
+}

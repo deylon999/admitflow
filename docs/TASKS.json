@@ -5881,7 +5881,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T036",
         "T040",
@@ -5901,7 +5901,12 @@
         "Все критерии MILESTONE_70 подтверждены текущими проверками",
         "Локальная приёмка не закрывает HTTPSstaging/live/production gates"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-milestone70.json",
+          "note": "All six predeclared functional criteria met;current full tests/nativePG/local Docker,two-source browser path,exact restore/private audit verified. Production/live gates remain open."
+        }
+      ],
       "blockedReason": null
     }
   ]

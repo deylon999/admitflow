@@ -1,10 +1,25 @@
-# B12 — активная работа до рубежа70%
+# B12 — рубеж около 70% выполнен
 
-Поручение2026-11-04:не останавливаться до выполнения docs/MILESTONE_70.md. Goal active. Завершены T187,T188,T031,T034,T039,T036,T040,T037,T038;текущая T189. JSONparser общий для двух вузов,1154originalrows независимо сверены;GUAPплатный0мест/unknownconsent остаётсянеподдержанным для числового сценария. Conditionalmodel/diff/explanations/UI и2run/6stage replay работают вnativePG. Первые5закрепленыкоммитами. Не считать70достигнутыми доchangefeed/ops/coverage/currentlocalacceptance.
+2026-11-04, S173. Поручение «не останавливаться до 70%» выполнено по шести критериям, заранее записанным в [MILESTONE_70.md](MILESTONE_70.md). Это экспертная оценка функциональной готовности MVP; процент карточек и охват вузов России её не заменяют. Полный публичный выпуск ещё не подтверждён.
 
-Runtime8090 пока образT031:оба настоящихархива опубликованы,ноновыйmodel/UI ещё не развёрнуты. OwnfixtureAPI8013(E2E_TWO_SOURCES=1) содержит толькообезличенныеDOMиconditionalmodels;traces толькоFIXTUREкоды. Backend source timestamps/processing clock раздельны. Finalcurrent build/test/deploy запланированT189. PrivateSOURCE_IDENTITY_KEY/оригиналы сохранять какниже,непечатать.
+Завершены две пятёрки, каждая задача закреплена отдельным коммитом:
 
-Evidence:docs/evidence/b12-progress.md,b12-replay.json,b12-*-family-audit.json,b12-guap-worker.json,b12-guap-runtime.json. Currentguardedtests:3nativePGstorage/model,3browser320light/dark/refusal,17TScontracts,16localmodel/storage/template,plusregistry/decodernegativecases. FullB11baseline ниже исторический.
+| Пятёрка | Карточки | Проверенный результат |
+| --- | --- | --- |
+| 1–5 | T187, T188, T031, T034, T039 | Один parser с JSON-профилями двух вузов; второй независимый официальный архив; неизменяемые условные оценки, diff и объяснения в UI |
+| 6–10 | T036, T040, T037, T038, T189 | Воспроизводимый replay; личная лента/прочтение/сравнение; управление источниками и журнал; честное покрытие; текущая сквозная приёмка |
+
+Текущая сборка доступна на http://127.0.0.1:8090: Docker PostgreSQL/backend/nginx healthy, схема 0009, worker loop выключен. СГУ: 573 строки, общий бюджет, 16 мест. ГУАП: 581 строка, платный конкурс, 0 мест, согласие неизвестно — числовой сценарий явно не поддержан. Оба источника — архивы 2026 года. В справочнике 3 вуза, проверенных импортов 2, условных числовых групп 1, свежих автоматических групп 0. Последние реальные снимки сохранены; финальная проверка не загружала источники заново.
+
+Текущие проверки: 502 backend (85 обязательных native PostgreSQL, 0 skipped), 115 frontend unit, 100 основных Chromium + 4 новых сценария/изменения + 2 actual nginx. Ещё два coverage-сценария повторены на двух источниках. Два replay-прогона по 6 шагов идентичны; изменения синтетические и явно помечены. Восстановление точно сохраняет 19 таблиц, сценарии, seen-state, владельцев и referenced raw. Оба настоящих архива офлайн сверены в работающем контейнере; сравнение с 1154 приватными кодами в tracked-файлах/сборке дало 0 совпадений.
+
+Все временные fixture API/PostgreSQL и preview-процессы остановлены. Основной контур 8090 оставлен работающим; чужие Docker-проекты не изменялись. SOURCE_IDENTITY_KEY и оригиналы остаются приватными в backend/var с режимами 600/700, не печатать и не менять ключ без миграционного плана. Не повторять уже прошедшие проверки без нового изменения или основания.
+
+Итог: [b12-milestone70.json](evidence/b12-milestone70.json), [b12-progress.md](evidence/b12-progress.md), [b12-current-runtime.json](evidence/b12-current-runtime.json), [b12-postgres-restore.json](evidence/b12-postgres-restore.json), [b12-private-artifacts.json](evidence/b12-private-artifacts.json). TASKS.json: 164 done из 189, 1 blocked, 24 todo; in_progress нет. Сгенерированные TASKS.md/CHECKLIST.md отражают только done.
+
+Следующий конкретный шаг: T042 — сопоставить весь перечень доменных случаев QUALITY.md с подтверждёнными expected outcomes и явно зафиксировать оставшиеся неизвестные. Затем T041 наблюдаемость и T045 браузеры. Открыты HTTPS staging/production, remote CI (T006), суточное live-наблюдение, нагрузка/Firefox/WebKit/пользовательская приёмка и production source-use/retention/abuse-политики. Национальный охват не достигнут; исходные release gates не снижены.
+
+Ниже сохранена история B11; её цифры и ограничения относятся к прежнему этапу.
 
 ---
 

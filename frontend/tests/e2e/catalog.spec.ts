@@ -52,6 +52,7 @@ test('каталог выбирает вуз с честной пометкой 
 });
 
 test('ошибка справочника сохраняет возможность ручного ввода', async ({ page }) => {
+  await page.route('**/api/v1/changes*', route => route.fulfill({ json: { items: [], total: 0, unreadCount: 0, nextCursor: null } }));
   await page.route('**/api/v1/session', route => route.request().method() === 'GET'
     ? route.fulfill({ json: { expiresAt: '2027-01-01T00:00:00Z' } }) : route.fulfill({ status: 204 }));
   await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
