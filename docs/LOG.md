@@ -884,3 +884,5 @@ S171/T187done: multi-scope proof registry,legacy compatibility and refusal gates
 S171/T188done: one config-driven parser verified against all573SGU+581GUAPoriginal rows through independentstdlibaudits. JSONconfig replaces university-specific algorithms. GUAPcontract0places/unknownconsent preserved. T031nowinprogress:formal scoped proof/registration/native worker/API path. Header-only otherprofiles remain unconnected.
 
 S171/T031done:GUAPindependent581-rowarchive/allrowsaudited/explicitproof+JSONscope;actualboundedHTTPSworker/nativePGsuccess→idle,primaryruntime2universities1154rows.3native+40local+12negative checks passed. Contract0capacity/unknownconsent preserved,not converted tobudgetprediction. T034inprogress;continueB12milestone70,no prematurefinish.
+
+S171/T034done:versionedconditional list-consentbounds/diff with immutableAssessment and explicitrefusals.11domain+3storage/3nativePGcases passed,reproduction/atomicfailure/cursor/owner/retry checked. Group.scenarioAvailable separatefromofficialassessment. T039inprogress;no70%claim yet,needsUI/replay/changefeed.

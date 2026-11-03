@@ -37,7 +37,7 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu','register-reviewed'])
+    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu','register-reviewed','enable-scenarios'])
     parser.add_argument('source_id',nargs='?')
     parser.add_argument('--enable',action='store_true',help='Only with register-sgu; requires configured reviewed adapter key')
     args=parser.parse_args(argv)
@@ -56,6 +56,9 @@ def main(argv=None):
             profile=PROFILES.get(args.source_id)
             if profile is None:raise AdapterError('unsupported_source')
             result=register_profile(engine,profile,enable=args.enable,registry=runtime_registry())
+        elif args.action=='enable-scenarios':
+            from ..scenario_storage import enable_scenarios
+            result=enable_scenarios(engine,args.source_id,registry=runtime_registry())
         elif args.action=='list':
             with Session(engine) as db:
                 result={'items':list(db.scalars(select(Source.id).order_by(Source.id).limit(101)))}

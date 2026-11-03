@@ -1336,7 +1336,7 @@
 
 ### T034. Считать автоматические assessments и diff
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T020, T031, T033.
 
@@ -1355,7 +1355,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:immutable server-derived listed-consent-v1 bounds/refusals/diff and readonlyAPI;11domain+3local/3nativePGchecks passed,atomicrollback/oldversions/unknown preserved.
 
 ### T035. Обработать отказ и восстановление источника
 
@@ -2000,7 +2000,7 @@
 
 ### T039. Объяснять оценку и изменение проверенными фактами
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T020, T034, T069.
 

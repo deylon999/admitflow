@@ -134,6 +134,8 @@ def create_app(settings: Settings | None = None):
 
     from .source_api import install_source_routes
     install_source_routes(app,database,owner,write_owner,source_registry,source_identity_key,lambda:utcnow())
+    from .scenario_api import install as install_scenarios
+    install_scenarios(app,database,owner,source_registry)
 
     def snapshot_read(snapshot):
         values = CalculationInput(rank=snapshot.rank, seats=snapshot.seats, excluded=snapshot.excluded, no_consent=snapshot.no_consent)

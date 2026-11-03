@@ -205,7 +205,7 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
                 'snapshot_id':snapshot.id,'fetched_at':utc(snapshot.fetched_at),'source_updated_at':utc(snapshot.source_updated_at) if snapshot.source_updated_at else None,
                 'row_count':snapshot.row_count,'seats':snapshot.seats,'data_kind':snapshot.kind,'coverage':'archive' if snapshot.kind=='archive' else 'unsupported',
                 'source_url':snapshot.fetched_url,'lookup_available':False,'last_checked_at':None,
-                'source_state':'archived' if snapshot.kind=='archive' else 'unknown'})
+                'source_state':'archived' if snapshot.kind=='archive' else 'unknown','scenario_available':False})
             facts=assessment.facts
             candidate_data={name:facts[name] for name in ('rowRef','officialRank','score','consent','priority','participation')} if assessment.rules_version=='source-confirmation-v1' else facts['candidate']
             candidate=CandidateFact.model_validate(candidate_data) if candidate_data is not None else None
@@ -253,6 +253,8 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
             db.add(Assessment(subscription_id=existing.id,group_id=source.group_id,snapshot_id=snapshot.id,rules_version='source-confirmation-v1',assessed_at=now,state='unsupported',
                               facts=candidate_fact(row).model_dump(mode='json',by_alias=True)|{'sourceId':source.id,'dataKind':snapshot.kind},
                               assumptions=['Сохранены факты источника; официальный результат зачисления не рассчитывался.']))
+            from .scenario_storage import append_one
+            append_one(db,existing,snapshot,at=now)
         result=SubscriptionSaved(id=existing.id,group_id=existing.group_id,source_id=claims.source_id,created_at=utc(existing.created_at))
         remember_operation(db,owner_hash,operation_key,fingerprint,None,result)
         db.commit()

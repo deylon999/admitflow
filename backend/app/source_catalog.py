@@ -35,6 +35,7 @@ class GroupRead(CamelModel):
     row_count:int|None=None
     lookup_available:bool=False
     assessment_available:bool=False
+    scenario_available:bool=False
 
 
 class BranchRead(CamelModel):
@@ -70,7 +71,8 @@ def group_read(db,group,campaign,university,source,*,registry=PRODUCTION_REGISTR
                      data_kind=status['dataKind'] if status else None,
                      snapshot_id=snapshot.id if snapshot else None,fetched_at=status['fetchedAt'] if status else None,
                      source_updated_at=status['sourceUpdatedAt'] if status else None,last_checked_at=status['lastCheckedAt'] if status else None,
-                     row_count=snapshot.row_count if snapshot else None,lookup_available=lookup)
+                     row_count=snapshot.row_count if snapshot else None,lookup_available=lookup,
+                     scenario_available=bool(lookup and group.rules_version=='listed-consent-v1' and group.funding=='budget' and group.category=='general' and snapshot.seats and snapshot.seats>0))
 
 
 def groups(db,*,q='',university_id='',branch_id='',year=None,after=None,limit=20,registry=PRODUCTION_REGISTRY):

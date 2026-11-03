@@ -1225,7 +1225,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T020",
         "T031",
@@ -1243,7 +1243,12 @@
         "Результат воспроизводится из snapshot и version",
         "Смена мест/согласий/статуса вызывает правильный diff без двойного вычитания"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "B12:immutable server-derived listed-consent-v1 bounds/refusals/diff and readonlyAPI;11domain+3local/3nativePGchecks passed,atomicrollback/oldversions/unknown preserved."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1369,7 +1374,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T020",
         "T034",
