@@ -5733,7 +5733,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T029",
         "T033",
@@ -5751,7 +5751,12 @@
         "Аудит не меняет БД,историю илиsourceenabled",
         "Коды кандидатов/ключ/raw не попадают в отчёт"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput."
+        }
+      ],
       "blockedReason": null
     }
   ]

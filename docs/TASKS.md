@@ -3928,7 +3928,7 @@
 
 ### T186. Добавить offline аудит целостности архива и ключа сопоставления
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T029, T033, T179.
 
@@ -3947,7 +3947,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput.
 
 ## E6. Резерв и выпуск
 

@@ -131,3 +131,9 @@ Fresh backend/frontend image builds passed. Owned admitflow-b11 upgraded old sha
 ### T185 — 28/30 — measured archive reads and reduced N+1
 
 Fixed profile recorded before run:573rows,20subscriptions,4concurrent readers,60list+20historyGETs,ASGI/nativePG17. Firstp95 202.24ms,11120SQL/80reads. Batched confirmations/groups/sources/candidate entries and resolved each source pointer once perresponse;afterp95 30.90ms,680SQL/80reads (8.5average),0unexpected5xx,80responses200. RSS128.51MiB. Same500ms local target;no goalpostchange,no staging/parallelpublisher claim. Native23archivecases passed;new native20identity association plus explicitly synthetic candidate-code replacement verifies correct absence/current pointer and immutable prior history. Reports and reproducible script committed.
+
+### T186 — 29/30 — offline integrity and identity-key audit
+
+New operator-only audit reads readonly DB snapshot+private raw,no fetch/no source mutation. Checks rawSHA256,reviewed adapter/scope,original normalized hash,stored row count/order/fields/seats and published pointer;changed HMAC key is detected as normalized_hash_mismatch. Stored Numeric scale is compared semantically (299==299.00),without changing historical normalizedhash algorithm. Bounded100snapshots,truncatedcannotpass;SQLiteconnection readonly flag restored.
+
+NativePG3cases+SQLite3cases passed:valid573rows including disabledsource,no identifier/key in report,wrongkey,corrupt raw,modified storedconsent andtruncation. Initial audit compared Decimal JSON scale and falsely rejected correctrows;semantic comparison fixed,original parser hash still exact. Current backendimage rebuilt/upgraded and actual private SGU573-row archive audited successfully:1snapshot,573rows,noissues,noHTTP. Report b11-source-integrity.json. No raw/publiccodes printed or committed.

@@ -860,3 +860,7 @@ B11 27/30:current0007 containers preserve actual573-row archive acrossrecreate,n
 ## S167 — 2026-11-04 — B11 28/30 T185
 
 B11 28/30:573rows/20subscriptions/4readers measured;p95 202.24→30.90ms,SQL11120→680,80x200;23+1nativePG cases passed;localonly.
+
+## S168 — 2026-11-04 — B11 29/30 T186
+
+B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput.
