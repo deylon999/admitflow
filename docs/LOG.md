@@ -784,3 +784,7 @@ B11 8/30:25 real-source/quarantine/publishing/size checks passed;bad normalizati
 ## S148 — 2026-11-03 — B11 9/30 T032
 
 B11 9/30:actual SGUHTTPS/573rows/PG worker cycle+idle passed,current replay passed;16 local+11nativequeue+2nativeSGU/API checks verify heartbeat/domain limits and API isolation.
+
+## S149 — 2026-11-03 — B11 10/30 T033
+
+B11 10/30:nativePG573-row retries/rollback/crash/raw provenance/retention passed,11+5 cases;onlyexpiredorphanpurged,productionretention explicitly stillopen.

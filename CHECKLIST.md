@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 133 из 174 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 134 из 177 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -75,7 +75,7 @@
 - [x] T030 Ввести нормализацию и карантин
 - [ ] T031 Подключить второй независимый источник
 - [x] T032 Реализовать планировщик и отдельный worker
-- [ ] T033 Сохранять и публиковать снимки атомарно
+- [x] T033 Сохранять и публиковать снимки атомарно
 - [ ] T034 Считать автоматические assessments и diff
 - [ ] T035 Обработать отказ и восстановление источника
 - [ ] T036 Сделать детерминированный replay архивов
@@ -98,6 +98,7 @@
 - [x] T133 Validate adapter declarations before registry use
 - [x] T134 Apply queue policies on explicit eligible reenqueue
 - [x] T174 Bound larger verified source responses by explicit adapter policy
+- [ ] T175 Register the reviewed archive group through an explicit operator command
 
 ## Объяснения и UX
 
@@ -148,6 +149,8 @@
 - [x] T161 Clear local drafts when access or saved data changes
 - [x] T162 Verify draft recovery across real browser reloads
 - [x] T163 Verify keyboard and narrow-screen draft recovery
+- [ ] T176 Find a candidate by scoped public code and issue owner-bound confirmation
+- [ ] T177 Save owner-isolated source subscriptions within combined direction limits
 
 ## Качество и эксплуатация
 

@@ -1154,7 +1154,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T018, T029.
+**Зависимости:** T018, T029, T176, T177.
 
 **Результаты/файлы:** `backend/app/candidates/`; `frontend/src/components/`.
 
@@ -1313,11 +1313,11 @@
 
 ### T033. Сохранять и публиковать снимки атомарно
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T014, T030, T032, T079.
 
-**Результаты/файлы:** `backend/app/snapshots/`; `backend/tests/integration/`.
+**Результаты/файлы:** `backend/app/sources/publishing.py`; `backend/tests/test_postgres_sgu.py`; `docs/data-policy.md`.
 
 **Шаги:**
 
@@ -1332,7 +1332,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 10/30:nativePG573-row retries/rollback/crash/raw provenance/retention passed,11+5 cases;onlyexpiredorphanpurged,productionretention explicitly stillopen.
 
 ### T034. Считать автоматические assessments и diff
 
@@ -1832,6 +1832,28 @@
 **Доказательства:**
 
 - [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 targeted checks passed and actual bounded SGU5851174byte fetch succeeded with pinned TLS.
+
+### T175. Register the reviewed archive group through an explicit operator command
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T029, T033.
+
+**Результаты/файлы:** `backend/app/sources/pilots.py`; `backend/app/sources/cli.py`.
+
+**Шаги:**
+
+1. Register the reviewed archive group through an explicit operator command.
+2. Verify meaningful success,boundary,refusal and actual PostgreSQL cases.
+
+**Критерии закрытия:**
+
+- Default install creates no enabled source;explicit idempotent registration validates fixed group metadata,requires stable operator key before enable and never accepts arbitrary URL;existing conflicting records are refused..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E4. Объяснения и UX
 
@@ -2881,6 +2903,50 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S123: Final backend279 passed/7 actual PostgreSQL skipped, frontend92 passed/build exit0, full69 Chromium passed on API8007/session62597/PID13052. Before final expiry fix full68 passed; added wall-clock-only expiry-during-read test and repeated full69 without weakening expectations. Keyboard/320px light-dark and denied/quota storage cases pass. Restore now readonly-revalidates cookie scope and latest records; expiry checked after network wait, restored unchanged drafts retain expiry timer. Mobile evidence visually inspected; example guest/storage cleared.
+
+### T176. Find a candidate by scoped public code and issue owner-bound confirmation
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T022, T029.
+
+**Результаты/файлы:** `backend/app/source_api.py`.
+
+**Шаги:**
+
+1. Find a candidate by scoped public code and issue owner-bound confirmation.
+2. Verify meaningful success,boundary,refusal and actual PostgreSQL cases.
+
+**Критерии закрытия:**
+
+- Authenticated lookup uses source/group/year HMAC,never logs/persists public code;short-lived signed confirmation is bound to owner/source/snapshot and refuses stale or unsupported source..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T177. Save owner-isolated source subscriptions within combined direction limits
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T176, T017.
+
+**Результаты/файлы:** `backend/app/source_api.py`; `backend/tests/test_subscriptions.py`.
+
+**Шаги:**
+
+1. Save owner-isolated source subscriptions within combined direction limits.
+2. Verify meaningful success,boundary,refusal and actual PostgreSQL cases.
+
+**Критерии закрытия:**
+
+- Confirmation creates one subscription idempotently under owner lock;foreign/tampered/expired tickets fail,manual+archive directions share20-limit,guest reset/expiry removes subscriptions..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E5. Качество и эксплуатация
 

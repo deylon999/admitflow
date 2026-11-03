@@ -27,6 +27,7 @@
 | ADR-021 | selected | Явный HTTPS public origin/host в production, ограниченные тела API, приватные SQLite recovery bundles | Локальное восстановление и raw cleanup проверяются сейчас; PostgreSQL/production backup остаётся отдельным gate. Ручной JSON переносит значения и даты в новую ownership, не доступ к старой сессии. Метрики каталога и аттестованной автоматизации разделены |
 | ADR-022 | selected | Data router установленного React Router и временный черновик в sessionStorage вкладки | useBlocker защищает SPA back/forward, beforeunload отдельно защищает загрузку документа. Черновик живёт до30 минут и окончания гостевой сессии, восстанавливается только явно и не считается серверным сохранением. Scope — односторонний namespace, не доступ к API. При недоступном storage форма работает с предупреждением |
 | ADR-023 | selected | Native PG и Compose проверяются в owned disposable environments; supersedes непроверенность runtime из ADR-019/020 | B10 подтвердил legacy migration/concurrency/atomic publish и4-service recreation. CI browser проверяет fresh production build. pg_dump/raw rehearsal quiesced/synthetic, не production backup; registry остаётся пуст до реальной аттестации |
+| ADR-024 | selected | Один аттестованный SGU4588 archive2026,8MiB explicit policy,operator-owned HMAC key | Genuine573rows independently checked;no live/admission/second-source claim. Default5MiB remains;no automatic Source enable. Referenced raw retained for development replay;production retention remains T049 and public-release blocker |
 
 ## Основание выбора инструментов
 

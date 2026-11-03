@@ -43,3 +43,9 @@ Real SGU573-row DTO проходит existing normalization;quarantine suite ver
 ## 9/30 T032
 
 Actual separate app.worker once fetched SGU viaHTTPS,published573rows/16seats inownedPG17;secondprocessidle/onesnapshot/900s,noHTTPstorm(report b11-sgu-worker.json). После этого добавлены progress heartbeats междуphases иPGdomain concurrency mutex+running-jobfilter:expired/stolen/disabled token нельзяrevive,onedomain serialized,otherdomains parallel.16 local worker/queue checks,11nativePGqueuechecks и2nativePGreal-format/API-isolationchecks passed. While genuine-formatfetchgated,manualhealth/session/list/catalog доступнычерезsamePG. Currentcode separately replayed private original in2workerprocesses(noHTTP),573rows/success+idle,cleanuptrue(b11-sgu-worker-replay.json);externalfetchnotrepeatedwithin900s. Fixedlease/boundedfetch fencing andB10processdeath proofs retained. 24h/live/secondsource не заявлены.
+
+## 10/30 T033
+
+Native PG genuine-format573-row publication:8parallel retries→1snapshot;injected rowflush failure retains last-good/573entries;crashaftercommit replay→1snapshot/573entries;archive/provenance/version/timestampunknown preserved. Real-format retention keeps2referenced versions and deletes onlyexpiredorphan afterdry-run. Native SGU+existingatomic suite11passed;new retention completeSGU suite5passed,exit0. No already-checked step repeated without new code/data reason. DATA_POLICY contradiction about raw7day cap resolved explicitly:developmentorphan TTL7days,referencedhistoryretained;productioncampaignretention remainsopenT049,notclaimedready. Source/rawhistoryretention criteria documented without silently deleting evidence.
+
+Second5/5 complete. Next5:T175 explicitoperatorbootstrap,T022 groupcatalogfilters/coverage,T176 owner-bound lookup,T177 isolated20-limit subscriptions,T021 explicit frontend candidate confirmation. GenuineSTUstillunsupported;T031/live-soak remainopen.

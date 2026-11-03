@@ -793,7 +793,9 @@
       "status": "todo",
       "dependsOn": [
         "T018",
-        "T029"
+        "T029",
+        "T176",
+        "T177"
       ],
       "deliverables": [
         "backend/app/candidates/",
@@ -1151,7 +1153,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T030",
@@ -1159,8 +1161,9 @@
         "T079"
       ],
       "deliverables": [
-        "backend/app/snapshots/",
-        "backend/tests/integration/"
+        "backend/app/sources/publishing.py",
+        "backend/tests/test_postgres_sgu.py",
+        "docs/data-policy.md"
       ],
       "steps": [
         "Сохранить raw hash/provenance и normalised snapshot",
@@ -1170,7 +1173,12 @@
         "Повтор импорта идемпотентен",
         "Падение до commit сохраняет предыдущий latest и не показывает полуготовые данные"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 10/30:nativePG573-row retries/rollback/crash/raw provenance/retention passed,11+5 cases;onlyexpiredorphanpurged,productionretention explicitly stillopen."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5343,6 +5351,80 @@
           "note": "B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 targeted checks passed and actual bounded SGU5851174byte fetch succeeded with pinned TLS."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T175",
+      "title": "Register the reviewed archive group through an explicit operator command",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T029",
+        "T033"
+      ],
+      "deliverables": [
+        "backend/app/sources/pilots.py",
+        "backend/app/sources/cli.py"
+      ],
+      "steps": [
+        "Register the reviewed archive group through an explicit operator command",
+        "Verify meaningful success,boundary,refusal and actual PostgreSQL cases"
+      ],
+      "acceptance": [
+        "Default install creates no enabled source;explicit idempotent registration validates fixed group metadata,requires stable operator key before enable and never accepts arbitrary URL;existing conflicting records are refused."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T176",
+      "title": "Find a candidate by scoped public code and issue owner-bound confirmation",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T022",
+        "T029"
+      ],
+      "deliverables": [
+        "backend/app/source_api.py"
+      ],
+      "steps": [
+        "Find a candidate by scoped public code and issue owner-bound confirmation",
+        "Verify meaningful success,boundary,refusal and actual PostgreSQL cases"
+      ],
+      "acceptance": [
+        "Authenticated lookup uses source/group/year HMAC,never logs/persists public code;short-lived signed confirmation is bound to owner/source/snapshot and refuses stale or unsupported source."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T177",
+      "title": "Save owner-isolated source subscriptions within combined direction limits",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T176",
+        "T017"
+      ],
+      "deliverables": [
+        "backend/app/source_api.py",
+        "backend/tests/test_subscriptions.py"
+      ],
+      "steps": [
+        "Save owner-isolated source subscriptions within combined direction limits",
+        "Verify meaningful success,boundary,refusal and actual PostgreSQL cases"
+      ],
+      "acceptance": [
+        "Confirmation creates one subscription idempotently under owner lock;foreign/tampered/expired tickets fail,manual+archive directions share20-limit,guest reset/expiry removes subscriptions."
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
