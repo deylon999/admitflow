@@ -816,3 +816,7 @@ B11 16/30:individual archive deletion,owner isolation,cascading personal history
 ## S156 — 2026-11-03 — B11 17/30 T179
 
 B11 17/30:immutable atomic source-facts history with keyset/owner/version provenance;3nativePG cases passed,including synthetic consent change and rollback.
+
+## S157 — 2026-11-03 — B11 18/30 T180
+
+B11 18/30:archive history and factual comparison UI verified;2Chromium+10contract checks/currentbuild passed,source/season/cursor validation and session cleanup.

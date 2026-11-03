@@ -2,7 +2,7 @@ import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
 import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
-import { parseArchiveDirections, parseDirectionBudget, parseGroupCatalog, parseLookup, parseSubscriptionSaved } from './source-contracts';
+import { parseArchiveDirections, parseArchiveHistory, parseDirectionBudget, parseGroupCatalog, parseLookup, parseSubscriptionSaved } from './source-contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -129,6 +129,7 @@ export const api = {
     return parseSubscriptionSaved(await request('/subscriptions', { method: 'POST', body: JSON.stringify({ confirmationToken }) }));
   },
   subscriptions: (signal?: AbortSignal) => read('/subscriptions', parseArchiveDirections, signal),
+  archiveHistory: (id: string, before: string | null, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/history?limit=20${before ? `&before=${encodeURIComponent(before)}` : ''}`, parseArchiveHistory, signal),
   directionBudget: (signal?: AbortSignal) => read('/direction-budget', parseDirectionBudget, signal),
   coverage: async () => parseCoverage(await request('/coverage')),
   exportData: () => read('/export', parseExport),

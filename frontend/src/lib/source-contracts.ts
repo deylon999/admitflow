@@ -1,5 +1,5 @@
 import { InvalidResponseError } from './contracts';
-import { instantMicros } from './time';
+import { compareOpaqueIds, instantMicros } from './time';
 
 export type SourceGroup = { id: string; universityId: string; universityName: string; parentUniversityId: string | null; year: number; level: string; title: string; studyForm: string; funding: string; category: string; seats: number | null; coverage: 'manual' | 'archive' | 'automatic' | 'unsupported'; dataKind: 'archive' | 'live' | null; sourceId: string | null; sourceUrl: string | null; sourceState: string | null; snapshotId: string | null; fetchedAt: string | null; sourceUpdatedAt: string | null; lastCheckedAt: string | null; rowCount: number | null; lookupAvailable: boolean; assessmentAvailable: false };
 export type GroupCatalog = { items: SourceGroup[]; total: number; nextCursor: string | null; facets: { branches: { id: string; name: string }[]; years: number[] } };
@@ -7,6 +7,8 @@ export type CandidateFact = { rowRef: string; officialRank: number; score: strin
 export type LookupResult = { group: SourceGroup; found: boolean; candidate: CandidateFact | null; confirmationToken: string | null; expiresAt: string | null };
 export type ArchiveDirection = { id: string; createdAt: string; group: SourceGroup; candidate: CandidateFact | null; confirmedSnapshotId: string | null; notice: string | null };
 export type DirectionBudget = { limit: 20; total: number; manualCount: number; archiveCount: number };
+export type ArchiveHistoryItem = { id: string; assessedAt: string; modelVersion: string; group: SourceGroup; candidate: CandidateFact | null; present: boolean };
+export type ArchiveHistoryPage = { items: ArchiveHistoryItem[]; total: number; nextCursor: string | null };
 export function sourceObject(v: unknown): Record<string, unknown> { if (!v || typeof v !== 'object' || Array.isArray(v)) throw new InvalidResponseError(); return v as Record<string, unknown>; }
 export function sourceText(v: unknown, max = 300): string { if (typeof v !== 'string' || !v.trim() || Array.from(v).length > max || /[\u0000-\u001f\u007f]/.test(v)) throw new InvalidResponseError(); return v; }
 export function sourceInt(v: unknown, min = 0, max = 1_000_000): number { if (typeof v !== 'number' || !Number.isSafeInteger(v) || v < min || v > max) throw new InvalidResponseError(); return v; }
@@ -63,4 +65,29 @@ export function parseDirectionBudget(value: unknown): DirectionBudget {
   const o = sourceObject(value), total = sourceInt(o.total), manualCount = sourceInt(o.manualCount), archiveCount = sourceInt(o.archiveCount);
   if (o.limit !== 20 || manualCount + archiveCount !== total) throw new InvalidResponseError();
   return { limit: 20, total, manualCount, archiveCount };
+}
+
+export function assertArchiveOrder(items: ArchiveHistoryItem[]) {
+  const ids = new Set<string>();
+  items.forEach((item, index) => {
+    if (ids.has(item.id) || !item.group.fetchedAt) throw new InvalidResponseError();
+    if (item.group.id !== items[0].group.id || item.group.sourceId !== items[0].group.sourceId || item.group.year !== items[0].group.year) throw new InvalidResponseError();
+    ids.add(item.id);
+    const previous = items[index-1];
+    if (previous && (instantMicros(previous.group.fetchedAt!) < instantMicros(item.group.fetchedAt) ||
+      (instantMicros(previous.group.fetchedAt!) === instantMicros(item.group.fetchedAt) && compareOpaqueIds(previous.id, item.id) <= 0))) throw new InvalidResponseError();
+  });
+}
+export function parseArchiveHistory(value: unknown): ArchiveHistoryPage {
+  const o = sourceObject(value);
+  if (!Array.isArray(o.items) || o.items.length > 100) throw new InvalidResponseError();
+  const items = o.items.map(value => {
+    const item = sourceObject(value), candidate = item.candidate === null ? null : parseCandidate(item.candidate), group = parseSourceGroup(item.group);
+    if (item.present !== Boolean(candidate) || !group.snapshotId || !group.fetchedAt || group.lookupAvailable) throw new InvalidResponseError();
+    return { id: sourceText(item.id, 36), assessedAt: sourceTime(item.assessedAt), modelVersion: sourceText(item.modelVersion, 80), group, candidate, present: item.present as boolean };
+  });
+  assertArchiveOrder(items);
+  const nextCursor = nullableText(o.nextCursor, 36), total = sourceInt(o.total);
+  if (total < items.length || (nextCursor !== null && (!items.length || nextCursor !== items.at(-1)!.id))) throw new InvalidResponseError();
+  return { items, total, nextCursor };
 }

@@ -2997,7 +2997,7 @@
 
 ### T180. Показывать историю и сравнение подтверждённых архивных фактов
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T179, T021.
 
@@ -3016,7 +3016,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 18/30:archive history and factual comparison UI verified;2Chromium+10contract checks/currentbuild passed,source/season/cursor validation and session cleanup.
 
 ## E5. Качество и эксплуатация
 

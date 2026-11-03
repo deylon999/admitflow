@@ -5521,7 +5521,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T179",
         "T021"
@@ -5538,7 +5538,12 @@
         "Виден источник и снимок каждой версии",
         "Сравнение не выдаёт изменение строки за прогноз зачисления"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 18/30:archive history and factual comparison UI verified;2Chromium+10contract checks/currentbuild passed,source/season/cursor validation and session cleanup."
+        }
+      ],
       "blockedReason": null
     }
   ]

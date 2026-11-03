@@ -166,3 +166,7 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 .source-ack input { flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
 .archive-directions { margin: 2rem 0; }
 @media print { .archive-directions { display: none !important; } }
+.archive-history { margin: 1rem 0; }
+.archive-history select { display: block; max-width: 100%; width: 100%; }
+.archive-fact-list { padding-left: 1.4rem; }
+.archive-fact-list li { margin: 1rem 0; overflow-wrap: anywhere; }
