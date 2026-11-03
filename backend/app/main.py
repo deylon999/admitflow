@@ -47,8 +47,9 @@ def token_hash(token):
 
 def create_app(settings: Settings | None = None):
     config = settings or Settings.from_env()
-    from .sources.registry import runtime_registry
+    from .sources.registry import runtime_registry,identity_key
     source_registry=runtime_registry()
+    source_identity_key=identity_key()
     engine = make_engine(config.database_url)
 
     @asynccontextmanager
@@ -130,6 +131,9 @@ def create_app(settings: Settings | None = None):
         if not watch:
             raise HTTPException(404, 'Направление не найдено.')
         return watch
+
+    from .source_api import install_source_routes
+    install_source_routes(app,database,owner,write_owner,source_registry,source_identity_key,lambda:utcnow())
 
     def snapshot_read(snapshot):
         values = CalculationInput(rank=snapshot.rank, seats=snapshot.seats, excluded=snapshot.excluded, no_consent=snapshot.no_consent)

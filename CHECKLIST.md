@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 136 из 177 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 137 из 177 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -149,7 +149,7 @@
 - [x] T161 Clear local drafts when access or saved data changes
 - [x] T162 Verify draft recovery across real browser reloads
 - [x] T163 Verify keyboard and narrow-screen draft recovery
-- [ ] T176 Find a candidate by scoped public code and issue owner-bound confirmation
+- [x] T176 Find a candidate by scoped public code and issue owner-bound confirmation
 - [ ] T177 Save owner-isolated source subscriptions within combined direction limits
 
 ## Качество и эксплуатация

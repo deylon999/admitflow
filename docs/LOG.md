@@ -796,3 +796,7 @@ B11 11/30:explicit disabled/idempotent registration and keyed enable verified in
 ## S151 — 2026-11-03 — B11 12/30 T022
 
 B11 12/30:real group catalog filters/branch/season/cursor and archive/manual/unsupported UI done;6backend+8contract+10browser+3header/mobile checks passed,currentPGarchive573rows.
+
+## S152 — 2026-11-03 — B11 13/30 T176
+
+B11 13/30:scoped authenticated lookup and owner/snapshot-bound300s confirmation implemented;12local+9nativePG cases passed,no public-code persistence/automatic subscription.

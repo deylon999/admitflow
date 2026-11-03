@@ -2907,7 +2907,7 @@
 
 ### T176. Find a candidate by scoped public code and issue owner-bound confirmation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T022, T029.
 
@@ -2925,7 +2925,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 13/30:scoped authenticated lookup and owner/snapshot-bound300s confirmation implemented;12local+9nativePG cases passed,no public-code persistence/automatic subscription.
 
 ### T177. Save owner-isolated source subscriptions within combined direction limits
 

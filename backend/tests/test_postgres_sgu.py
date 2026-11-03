@@ -25,6 +25,10 @@ from test_pilot_registration import (
     test_registration_is_explicit_disabled_and_idempotent,
     test_enable_requires_attested_key_and_conflicting_metadata_is_not_overwritten,
 )
+from test_source_lookup import (
+    test_lookup_requires_guest_and_never_creates_a_subscription,
+    test_invalid_lookup_does_not_echo_code_or_accept_other_sources,
+)
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 
@@ -33,6 +37,18 @@ pytestmark=pytest.mark.postgres
 
 @pytest.fixture
 def source_engine(postgres_engine):return postgres_engine
+
+
+@pytest.fixture
+def lookup_context(source_engine,tmp_path,monkeypatch):
+    from app.sources.pilots import register_sgu
+    monkeypatch.setenv('SOURCE_IDENTITY_KEY',KEY.hex())
+    app=create_app(Settings(database_url=source_engine.url.render_as_string(hide_password=False),auto_create_schema=False))
+    with TestClient(app) as client:
+        register_sgu(source_engine,enable=True,registry=app.state.source_registry)
+        raw=response();parsed=app.state.source_registry.resolve(BINDING).parse(raw,BINDING)
+        publish(source_engine,BINDING.source_id,parsed,raw,RawStore(tmp_path/'raw'),registry=app.state.source_registry)
+        yield client,app
 
 
 def test_blocked_real_source_worker_does_not_block_manual_api(source_engine,tmp_path):

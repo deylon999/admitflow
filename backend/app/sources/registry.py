@@ -106,12 +106,18 @@ class Registry:
 PRODUCTION_REGISTRY = Registry()
 
 
-def runtime_registry():
-    """Opt in using an operator-owned stable key; never enable a Source row here."""
+def identity_key():
     value = os.getenv('SOURCE_IDENTITY_KEY')
     if value is None:
-        return PRODUCTION_REGISTRY
+        return None
     if not re.fullmatch(r'(?:[a-fA-F0-9]{2}){32,64}',value):
         raise RuntimeError('SOURCE_IDENTITY_KEY must be32–64bytes encoded as hex')
+    return bytes.fromhex(value)
+
+
+def runtime_registry():
+    """Opt in using an operator-owned stable key; never enable a Source row here."""
+    key=identity_key()
+    if key is None:return PRODUCTION_REGISTRY
     from .adapters.sgu2026 import make_adapter
-    return Registry((make_adapter(bytes.fromhex(value)),))
+    return Registry((make_adapter(key),))

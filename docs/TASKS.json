@@ -5395,7 +5395,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T022",
         "T029"
@@ -5410,7 +5410,12 @@
       "acceptance": [
         "Authenticated lookup uses source/group/year HMAC,never logs/persists public code;short-lived signed confirmation is bound to owner/source/snapshot and refuses stale or unsupported source."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 13/30:scoped authenticated lookup and owner/snapshot-bound300s confirmation implemented;12local+9nativePG cases passed,no public-code persistence/automatic subscription."
+        }
+      ],
       "blockedReason": null
     },
     {
