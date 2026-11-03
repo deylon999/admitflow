@@ -3570,7 +3570,7 @@
 
 ### T170. Verify atomic PostgreSQL snapshot publication
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T014, T079, T169.
 
@@ -3588,7 +3588,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10:7 native PostgreSQL publication cases passed; uncommitted rows remain invisible to another reader, rollback/quarantine preserve last good pointer and crash replay deduplicates.
 
 ### T171. Rehearse PostgreSQL and raw backup restoration
 

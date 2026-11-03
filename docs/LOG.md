@@ -730,3 +730,7 @@ B10 first5/5:92 frontend tests/build,12 repeated keyboard checks,70/70 full Chro
 ## S135 — 2026-11-03 — B10 T169
 
 B10:8 native PostgreSQL queue/fencing cases passed; independent spawn workers claim once and SKIP LOCKED completes while another transaction owns the row.
+
+## S136 — 2026-11-03 — B10 T170
+
+B10:7 native PostgreSQL publication cases passed; uncommitted rows remain invisible to another reader, rollback/quarantine preserve last good pointer and crash replay deduplicates.

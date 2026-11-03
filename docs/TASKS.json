@@ -5146,7 +5146,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T079",
@@ -5162,7 +5162,12 @@
       "acceptance": [
         "Concurrent imports deduplicate on PostgreSQL; row-write failures and quarantine retain the previous pointer/history; old parser versions and raw hashes remain readable."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10:7 native PostgreSQL publication cases passed; uncommitted rows remain invisible to another reader, rollback/quarantine preserve last good pointer and crash replay deduplicates."
+        }
+      ],
       "blockedReason": null
     },
     {

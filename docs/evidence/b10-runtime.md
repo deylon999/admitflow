@@ -48,3 +48,9 @@ T168 final: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 np
 ## T169 — PostgreSQL queue/fencing
 
 `TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_jobs.py --tb=short` → **8 native PG passed, exit0** (повтор после улучшения cleanup порядка locks).16 concurrent enqueue/claim дают ровно одну job/lease; два отдельных spawn-процесса с независимыми engines также дают одного победителя/attempt1. SKIP LOCKED возвращает None в другом соединении, пока первая transaction удерживает lock; после release job доступна. Expiry/retry/backoff/disable и отказ старого worker до publication сохранены. Все дочерние процессы завершаются в finally; это synthetic source, не аттестация реального адаптера.
+
+## T170 — PostgreSQL atomic publish
+
+`TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_publishing.py --tb=short` → **7 native PG passed, exit0**,1.95s. Concurrent repeat/parser-version tests, quarantine, injected row-write failure, crash-after-commit replay и safe parser error cases применяют общие assertions на настоящем PG.
+
+Новый gated writer уже flush-нул snapshot/rows в PostgreSQL, но не commit-нул. Параллельное соединение видит только прежний pointer/1 snapshot/3 rows; после release — новый pointer/2 immutable snapshots/6 rows. Оба исходных raw читаются с проверкой SHA256. Это доказательство transaction visibility на synthetic archive, не реальный список, нагрузка или uptime24h.
