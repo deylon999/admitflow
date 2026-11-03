@@ -1122,7 +1122,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T029",
         "T030",
@@ -1141,7 +1141,12 @@
         "Второй источник проходит те же критерии, что первый",
         "Доказательство не основано только на совпадении названий колонок"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "B12:independentGUAP581rowarchiveattested/allrowsaudited,commonJSONparser,native3cases,actualHTTPSworker+localruntime1154rows across2universities verified."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1220,7 +1225,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T020",
         "T031",

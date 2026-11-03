@@ -1267,7 +1267,7 @@
 
 ### T031. Подключить второй независимый источник
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T029, T030, T187, T188.
 
@@ -1286,7 +1286,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:independentGUAP581rowarchiveattested/allrowsaudited,commonJSONparser,native3cases,actualHTTPSworker+localruntime1154rows across2universities verified.
 
 ### T032. Реализовать планировщик и отдельный worker
 
@@ -1336,7 +1336,7 @@
 
 ### T034. Считать автоматические assessments и diff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T020, T031, T033.
 

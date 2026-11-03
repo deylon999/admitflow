@@ -17,7 +17,7 @@ def load_profiles():
         for name,fields in data['profiles'].items():
             if name!=fields.get('source_id'):raise ValueError()
             fields=dict(fields)
-            for key in ('columns','identity'):fields[key]=tuple(tuple(pair) for pair in fields[key])
+            for key in ('columns','identity','catalog'):fields[key]=tuple(tuple(pair) for pair in fields.get(key,[]))
             for key in ('headers','cell_labels'):fields[key]=tuple(fields[key])
             if fields['proof'] is not None:
                 proof=dict(fields['proof']);proof['verified_at']=datetime.fromisoformat(proof['verified_at']);fields['proof']=Attestation(**proof)

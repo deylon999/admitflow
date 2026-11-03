@@ -125,4 +125,6 @@ def runtime_registry():
     key=identity_key()
     if key is None:return PRODUCTION_REGISTRY
     from .adapters.sgu2026 import make_adapter
-    return Registry((make_adapter(key),))
+    from .table_family import make_table_adapter
+    from .table_profiles import PROFILES
+    return Registry((make_adapter(key),make_table_adapter(key,PROFILES.values())))

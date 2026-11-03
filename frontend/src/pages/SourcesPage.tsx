@@ -28,7 +28,7 @@ export default function SourcesPage() {
     {!catalog.isPending && items.length === 0 && <p className="notice">Подходящих подключённых групп пока нет. Направление можно сохранить вручную.</p>}
     <div className="source-catalog-list">{items.map(group => <article key={group.id} className="surface source-catalog-card">
       <span className="tag">{modes[group.coverage]} · {group.year}</span><h2>{group.title}</h2><p>{group.universityName}{group.parentUniversityId ? ' · филиал' : ' · головной вуз'}</p>
-      <p>{group.studyForm === 'full-time' ? 'Очная форма' : group.studyForm} · {group.funding === 'budget' ? 'Бюджет' : group.funding} · {group.seats === null ? 'Число мест не подтверждено' : `${group.seats} мест в этой группе`}</p>
+      <p>{group.studyForm === 'full-time' ? 'Очная форма' : group.studyForm} · {group.funding === 'budget' ? 'Бюджет' : group.funding === 'contract' ? 'Платное обучение' : group.funding} · {group.seats === null ? 'Число мест не подтверждено' : `${group.seats} мест в этой группе`}</p>
       {(group.dataKind === 'archive' || group.coverage === 'archive') && <p>Архив {group.year} года. Это не текущая приёмная кампания.</p>}
       {group.fetchedAt ? <p>Снимок получен: <time dateTime={group.fetchedAt}>{new Date(group.fetchedAt).toLocaleString('ru-RU')}</time>. Строк: {group.rowCount ?? 'не подтверждено'}.</p> : <p>Проверенный снимок ещё не получен.</p>}
       {group.sourceUpdatedAt === null && <p className="small-copy">Дата обновления самим источником не подтверждена.</p>}

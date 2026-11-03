@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-04",
-  "currentTask": "T031",
-  "nextTask": "T031",
+  "currentTask": "T034",
+  "nextTask": "T034",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S171",
-  "resumeAction": "B12T188done:genericJSONparser handlesSGU573/GUAP581;T031 now attest/register/publish GUAP archive in nativePG and actualruntime;noautoenable/no inferredconsent. Continue MILESTONE_70.",
+  "resumeAction": "B12 first3done:T187/T188/T031;actualGUAPHTTPworker success+idle,owned8090hasSGU573/GUAP581. Implement versioned listed-consent scenario+bounds/diff onlyforreviewedgeneralbudget,explicit refusal forcontract/unknownrules,noofficialprediction;thenT039,replay/events/UI until70rubric.",
   "externalConstraints": [
     "Only one reviewed SGU2026 archive source; second independent adapter and24h observation remain unverified.",
     "HTTPS staging/production host/domain/budget/region not selected or deployed.",

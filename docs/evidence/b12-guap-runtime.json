@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "sourceId": "guap-2026-math-contract",
+  "snapshotId": "28d29840-8a97-468d-bd2c-084b561388d3",
+  "rows": 581,
+  "places": 0,
+  "fetchedAt": "2026-11-03T22:15:28.852436+00:00",
+  "sourceUpdatedAt": null,
+  "scope": "actual private worker capture replay into ownedlocalruntime,noadditionalHTTP"
+}

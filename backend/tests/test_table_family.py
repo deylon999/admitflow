@@ -59,3 +59,17 @@ def test_conflicting_identity_and_html_season_fail_closed(profile):
     with pytest.raises(AdapterError,match='invalid_format'):parse_table(fetch(profile,str(soup).encode()),binding(profile),KEY,profile)
     changed=fetch(profile).body.replace(b'2026',b'2027')
     with pytest.raises(AdapterError,match='invalid_format'):parse_table(fetch(profile,changed),binding(profile),KEY,profile)
+
+
+@pytest.mark.parametrize('kind',['duplicate-code','unknown-status','changed-header','missing-capacity','truncated'])
+def test_guap_negative_genuine_dom_variants(kind):
+    body=fetch(GUAP).body
+    if kind=='duplicate-code':body=body.replace(b'FIXTURE-000002',b'FIXTURE-000001')
+    elif kind=='unknown-status':body=body.replace(b'FIXTURE-000001',('FIXTURE-000001 (Отказ)').encode())
+    elif kind=='truncated':body=body[:len(body)//2]
+    else:
+        soup=BeautifulSoup(body,'html.parser')
+        if kind=='changed-header':soup.select_one('th').string='New schema'
+        else:next(h for h in soup.select('h3') if 'Количество мест' in h.get_text()).decompose()
+        body=str(soup).encode()
+    with pytest.raises(AdapterError,match='invalid_format'):parse_table(fetch(GUAP,body),binding(GUAP),KEY,GUAP)

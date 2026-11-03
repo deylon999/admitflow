@@ -82,7 +82,19 @@
           "Бюджетных мест: 16"
         ]
       ],
-      "proof": null,
+      "proof": {
+        "passport": "docs/sources/table-family.md",
+        "fixture": "backend/tests/fixtures/sgu-2026/sgu-4588-derived.html",
+        "fixture_sha256": "09b86aaf9b6d53b3a51008312569545c61c351405951c4b6a135374050bbcefd",
+        "original_sha256": "e2e8686ed7de4687104aeac64bade4165afd90c354ff2265e869b9cd560906e8",
+        "source_url": "https://www.sgu.ru/svodka/4588",
+        "year": 2026,
+        "kind": "archive",
+        "sample_rows": 573,
+        "checked_rows": 573,
+        "verified_at": "2026-11-03T22:07:00+00:00",
+        "adapter_version": "reviewed-html-table-v1"
+      },
       "cell_labels": [
         "№",
         "Код поступающего",
@@ -99,7 +111,49 @@
       "priority_pattern": "([0-9]{1,4})\\s*/\\s*([01])\\s*/\\s*([01])",
       "public_code_enrolled_suffix": false,
       "kind": "archive",
-      "season_pattern": "^При[её]м\\s+([0-9]{4})$"
+      "season_pattern": "^При[её]м\\s+([0-9]{4})$",
+      "catalog": [
+        [
+          "university_id",
+          "sgu-saratov"
+        ],
+        [
+          "university_name",
+          "СГУ имени Н. Г. Чернышевского"
+        ],
+        [
+          "university_url",
+          "https://www.sgu.ru/"
+        ],
+        [
+          "campaign_id",
+          "sgu-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "4588"
+        ],
+        [
+          "title",
+          "09.03.04 Программная инженерия — общий конкурс"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "budget"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ]
     },
     "guap-2026-math-contract": {
       "source_id": "guap-2026-math-contract",
@@ -167,12 +221,66 @@
           "Количество мест - 0"
         ]
       ],
-      "proof": null,
+      "proof": {
+        "passport": "docs/sources/guap-2026-math.md",
+        "fixture": "backend/tests/fixtures/guap-2026-math/derived.html",
+        "fixture_sha256": "dbaa62b3f92e1375ccba7daa59607464a1e5d50415f2607492a6c825e4f68bec",
+        "original_sha256": "928812c519e98753f4e4813d75ef222550c7582c951d81613a8a8d0f21858891",
+        "source_url": "https://priem.guap.ru/bach/rating/list_1_1_1_3_1_f",
+        "year": 2026,
+        "kind": "archive",
+        "sample_rows": 581,
+        "checked_rows": 581,
+        "verified_at": "2026-11-03T22:07:00+00:00",
+        "adapter_version": "reviewed-html-table-v1"
+      },
       "cell_labels": [],
       "priority_pattern": "([0-9]{1,4})",
       "public_code_enrolled_suffix": true,
       "kind": "archive",
-      "season_pattern": "Приемная кампания\\s+([0-9]{4})"
+      "season_pattern": "Приемная кампания\\s+([0-9]{4})",
+      "catalog": [
+        [
+          "university_id",
+          "guap-spb"
+        ],
+        [
+          "university_name",
+          "Санкт-Петербургский государственный университет аэрокосмического приборостроения"
+        ],
+        [
+          "university_url",
+          "https://guap.ru/"
+        ],
+        [
+          "campaign_id",
+          "guap-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "1-1-1-3-1-f"
+        ],
+        [
+          "title",
+          "01.03.02 Прикладная математика и информатика — платный конкурс"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ]
     }
   }
 }

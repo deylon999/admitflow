@@ -34,6 +34,7 @@ class TableProfile:
     public_code_enrolled_suffix:bool=False
     kind:str='archive'
     season_pattern:str=r'Приемная кампания\s+([0-9]{4})'
+    catalog:tuple[tuple[str,str],...]=()
 
     def __post_init__(self):
         from .fetcher import valid_domains

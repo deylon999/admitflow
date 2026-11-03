@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-03T22:15:29.855773+00:00",
+  "success": true,
+  "sourceId": "guap-2026-math-contract",
+  "url": "https://priem.guap.ru/bach/rating/list_1_1_1_3_1_f",
+  "kind": "archive",
+  "year": 2026,
+  "rows": 581,
+  "places": 0,
+  "fetchedAt": "2026-11-03T22:15:28.852436+00:00",
+  "sourceUpdatedAt": null,
+  "rawBytes": 214338,
+  "rawSha256": "928812c519e98753f4e4813d75ef222550c7582c951d81613a8a8d0f21858891",
+  "outcomes": [
+    "success",
+    "idle"
+  ],
+  "workerProcesses": 2,
+  "externalHttpFetches": 1,
+  "scope": "one actual HTTP/nativePG archive cycle,secondprocessidle;not24h live observation",
+  "cleanup": true
+}
