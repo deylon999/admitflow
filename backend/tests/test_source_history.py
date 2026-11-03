@@ -82,3 +82,19 @@ def test_synthetic_changed_facts_keep_the_confirmation_unchanged(lookup_context,
     history=client.get(path).json()['items']
     assert len(history)==2 and history[0]['candidate']['consent'] is True
     assert history[1]==original and history[1]['candidate']['consent'] is False
+
+
+def test_processing_time_is_separate_from_archive_fetch_and_retry_keeps_it(lookup_context,tmp_path,monkeypatch):
+    from datetime import datetime,timezone
+    client,app=lookup_context;start(client)
+    saved=client.post('/api/v1/subscriptions',json=confirm(client),headers=HEADERS).json()
+    processed=datetime(2026,11,4,0,0,0,tzinfo=timezone.utc)
+    monkeypatch.setattr('app.source_history.assessment_clock',lambda:processed)
+    publish_version(app,tmp_path,1)
+    path=f"/api/v1/subscriptions/{saved['id']}/history"
+    newest=client.get(path).json()['items'][0]
+    assert newest['assessedAt']=='2026-11-04T00:00:00Z'
+    assert newest['group']['fetchedAt']!='2026-11-04T00:00:00Z' and newest['group']['sourceUpdatedAt'] is None
+    monkeypatch.setattr('app.source_history.assessment_clock',lambda:processed+timedelta(hours=1))
+    publish_version(app,tmp_path,1)
+    assert client.get(path).json()['items'][0]==newest

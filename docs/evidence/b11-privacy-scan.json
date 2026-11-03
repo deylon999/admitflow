@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-11-03T21:50:44.487330+00:00",
+  "format": "private-artifact-audit-v1",
+  "sourceCodesCompared": 573,
+  "filesScanned": 357,
+  "privateMatches": 0,
+  "affectedPaths": [],
+  "privateFileModes600": {
+    "original": true,
+    "keyFile": true
+  },
+  "success": true,
+  "scope": "tracked working-tree files + current frontend/dist only;no real codes/key printed;not full Git-history or external-host audit"
+}

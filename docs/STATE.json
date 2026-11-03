@@ -2,15 +2,16 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-04",
   "currentTask": null,
-  "nextTask": "T043",
+  "nextTask": "T031",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S168",
-  "resumeAction": "B11 29/30 complete; next T043.",
+  "lastSession": "S170",
+  "resumeAction": "B11 30/30 complete in30localcommits. Next new assignment: T031 obtain and independently attest a second official source. STU headers-only remains unsupported;release gates stay open.",
   "externalConstraints": [
-    "One reviewed SGU2026 archive adapter; second source/live-soak not verified.",
-    "Production host/domain/budget and release season not selected.",
-    "GitHub remote CI/push not verified; gh has no authenticated hosts."
+    "Only one reviewed SGU2026 archive source; second independent adapter and24h observation remain unverified.",
+    "HTTPS staging/production host/domain/budget/region not selected or deployed.",
+    "Remote CI/push not verified;T006 remains blocked.",
+    "Production source/data-use basis,operator,referencedraw/backup/journalrotation,deletion and abuse policy remain public-release blockers."
   ]
 }

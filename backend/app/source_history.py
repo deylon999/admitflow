@@ -1,10 +1,15 @@
 """Immutable, versioned source facts. This never predicts admission."""
+from datetime import datetime,timezone
 from fastapi import HTTPException
 from sqlalchemy import and_, func, or_, select
 from .admissions import Assessment, CandidateEntry, SourceSnapshot, Subscription
 
 FACT_VERSION = 'source-facts-v1'
 VERSIONS = ('source-confirmation-v1', FACT_VERSION)
+
+
+def assessment_clock():
+    return datetime.now(timezone.utc)
 
 
 def append_snapshot_facts(db, snapshot):
@@ -21,7 +26,7 @@ def append_snapshot_facts(db, snapshot):
         facts = {'present': row is not None, 'sourceId': snapshot.source_id, 'dataKind': snapshot.kind,
                  'candidate': candidate_fact(row).model_dump(mode='json', by_alias=True) if row else None}
         db.add(Assessment(subscription_id=subscription.id, group_id=subscription.group_id, snapshot_id=snapshot.id,
-                          rules_version=FACT_VERSION, assessed_at=snapshot.fetched_at, state='unsupported', facts=facts,
+                          rules_version=FACT_VERSION, assessed_at=assessment_clock(), state='unsupported', facts=facts,
                           assumptions=['Факты архивного снимка; отсутствие строки не подтверждает отзыв или отказ.']))
 
 

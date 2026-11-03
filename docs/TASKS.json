@@ -1472,7 +1472,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T016",
         "T017",
@@ -1493,7 +1493,12 @@
         "Нет критичных утечек и обхода доступа",
         "Retention и удаление проверены, открытые организационные вопросы явно блокируют публичный запуск"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 30/30,finalcurrent:454backend/72nativePG/0skip,102unit,100Chromium+2actualNginx passed;separate processing clock/retry,privacy scan0matches,PG/rawrestore and runtime checks passed;release blockers recorded."
+        }
+      ],
       "blockedReason": null
     },
     {

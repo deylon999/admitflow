@@ -1,21 +1,40 @@
 # Контекст для продолжения
 
-2026-11-04, S164: **B11 — 25/30 завершено**. Пользователь запросил следующие 30 задач; осталось 5. Работать шестью пятёрками, каждую задачу проверять и коммитить. TASKS.json — реестр, STATE.json — точка продолжения.
+2026-11-04, S170. **B11: запрос «следующие 30 задач» выполнен — 30/30, шесть пятёрок и 30 отдельных коммитов.** Следующая работа требует нового поручения. TASKS.json — статусы, STATE.json — точка продолжения, LOG.md — история. Закрыто 154 из 186 карточек; это не процент готовности продукта к выпуску.
 
-Завершены T019, T007, T008, T013, T027, T174, T029, T030, T032, T033, T175, T022, T176, T177, T021. Проверки и ограничения: docs/evidence/b11-progress.md. Также завершены T178, T179, T180, T024, T023. Следующая пятёрка: T035 отказ/восстановление источника; T181 архивный экспорт; T182 SGU backup/restore; T025 ошибки/повторы; T026 доступность. Затем последняя пятёрка до30.
+## Завершено в B11
 
-SGU4588: один аттестованный архив 2026, 573 строки, общий бюджет16. Вероятности/официальный результат не рассчитываются. STU1348 — неподдержанный headers-only оригинал; второй адаптер T031 и автоматические gates остаются открыты. Не отмечать частичные broad-задачи done. Синтетические изменения для тестов явно отделять от настоящего архива.
+| Пятёрка | Карточки | Результат |
+| --- | --- | --- |
+| 1–5 | T019, T007, T008, T013, T027 | Ручная приёмка, локальные шрифты с лицензиями, сверка макетов, настоящие исходники и обезличенные DOM, аттестация |
+| 6–10 | T174, T029, T030, T032, T033 | Ограничение размера, адаптер архива SGU, quarantine/unknown, worker и доменные lease, атомарная публикация на PostgreSQL |
+| 11–15 | T175, T022, T176, T177, T021 | Явная регистрация, каталог групп, поиск, идемпотентные подписки, подтверждение записи в UI |
+| 16–20 | T178, T179, T180, T024, T023 | Удаление и tombstones, история и сравнение фактов, происхождение данных, сохранение ручной модели по версии |
+| 21–25 | T035, T181, T182, T025, T026 | История сбоев и восстановление, экспорт, PG/raw restore, ошибки и повторы, доступность |
+| 26–30 | T183, T184, T185, T186, T043 | Изоляция вкладок, контейнеры, измерение и пакетное чтение, offline audit, проверка безопасности |
 
-Реальные публичные коды только в игнорируемом backend/var/research/sgu4588.original.html; не выводить в логи или browser traces. Derived fixture содержит только FIXTURE-коды и документирован как обезличенная производная DOM. Identity key backend/var/b11-identity.env600 — не печатать/не коммитить/не менять. .dockerignore исключает backend/var.
+Результаты, найденные ошибки и ограничения: docs/evidence/b11-progress.md. Итог: docs/evidence/b11-final-verification.json. Финальная сверка отдельно исправила время обработки новых фактов: assessedAt теперь берётся из часов обработки, а не копируется из fetchedAt. Старые записи не переписаны; повтор сохраняет прежнее assessedAt.
 
-Own Compose admitflow-b11 на localhost8090 с настоящим архивом573 rows; backend пока образ T022/schema0004, требуется rebuild к текущему0006. Override /tmp/admitflow-b11/images.yaml. Только свои containers/volumes, соседний radar не трогать. Последний настоящий SGU HTTP17:45:52Z, не повторять чаще900сек; для тестов private replay или derived fixture. Worker loop не запущен.
+## Проверенное состояние
 
-`scripts/serve_source_e2e.py` держит disposable PG+Uvicorn8013, исключительно обезличенный fixture без HTTP-fetch. Лог /tmp/admitflow-b11/source-e2e.log, процесс родителя проверить перед остановкой; после изменений API перезапустить. E2E API_TARGET=http://127.0.0.1:8013 E2E_API=1 E2E_SOURCE=1 E2E_SOURCE_FIXTURE=1 E2E_SERVER=preview E2E_BASE_URL=http://127.0.0.1:4192. Не направлять FIXTURE-тесты на настоящий архив.
+Один аттестованный источник: SGU4588, архив 2026 года, 09.03.04, 573 строки, 16 мест общего бюджета. Поиск ограничен источником, группой и сезоном; пользователь явно подтверждает запись. Карточки показывают факты и отдельные даты. Вероятность или официальный результат зачисления не рассчитываются. История source-confirmation-v1/source-facts-v1 неизменяема; отсутствие строки не означает отзыв. Общий лимит ручных и архивных направлений — 20, поиск — 30 запросов в минуту на гостя. Ручной manual-v1 закреплён по версии; новая модель не заменяет прошлую. archive-facts-v1 экспортирует текущие датированные факты; ручной JSON и полная DB/raw копия — отдельные форматы.
 
-На15/30:100 frontend unit + отдельный новый контракт101;5 source flow+5 catalog Chromium;4 lookup/API;37 native passed, один старый table-count assertion исправлен и повторно проверен. Full396backend до новых API — исторический baseline. После всех30 нужны полный current backend/native/frontend/browser и runtime rebuild. Последний full B10 332/92/72 — исторический.
+Финальные проверки: **454 backend passed, 0 skipped, включая 72 native PostgreSQL** с require-postgres; 102 Vitest; production build; 100 Chromium passed и 2 nginx-only skipped, причём эти два случая отдельно passed на настоящем Nginx. Проверены клавиатура, контраст, обе темы, длинные названия и 320px. Восстановлены 17 таблиц и два обезличенных снимка по 573 строки; последний отчёт b11-sgu-restore-current.json. В проверенных tracked/build артефактах не найдены реальные коды или стабильный ключ; b11-privacy-scan.json.
 
-Коммиты локальные; gh не авторизован, remoteCI T006 заблокирован. HTTPS staging/live-soak/второй источник не проверены. Продолжать самостоятельные задачи, не выдавая локальный архив за production MVP. Helper /tmp/admitflow_b11.py start/done обновляет карточки/STATE/LOG/render/check.
+Профиль одного архива, 20 подписок и четырёх читателей: p95 после batching — 30.90 мс, до — 202.24 мс; 680 SQL вместо 11 120 на 80 чтений, все ответы 200. Это локальный ASGI/PostgreSQL опыт без TLS и параллельной публикации, а не production SLA.
 
-2026-11-04 runtime recheck: old /tmp logs/helpers and own B11 containers disappeared; neighboring radar/flashcards left untouched. Recreated /tmp/admitflow_b11.py and anonymized fixturePG/API8013. Private key/raw files must be checked for existence, not printed. Native16history/write+1Chromium current checks passed. Old STATE runtime descriptions above are historical until reverified.
+## Runtime и приватные данные
 
-S164:Завершены также T035,T181,T182,T025,T026.Последняя пятёрка:T183 межвкладочная изоляция архива,T184 current local containers,T185573-row/20subscription load measurement,T186 offline integrity/key audit,T043 security acceptance.96Chromium+102unit/current9a11y passed;fullbackend438passed/2stale test assertions,eachcorrected/targetedpass;final fullrun afteraudit stillrequired.SGUrestore exact17tables/1146rows report b11-sgu-restore.json.No secondsource/staging/live claims.
+Свой локальный Compose **admitflow-b11**, http://127.0.0.1:8090: PostgreSQL, API и Nginx healthy, схема 0007. Образы admitflow-b11-backend:latest и admitflow-b11-frontend:latest; актуальные digest — в b11-runtime-security.json. Настоящий архив и snapshot `8bf8bd49-df21-4265-9dc0-ff7e23c69b96` пережили recreate. fetchedAt: 2026-11-03T17:45:52.985785Z; sourceUpdatedAt неизвестно. Финальные проверки не делали внешнего HTTP fetch. Worker loop выключен; случайный запуск может начать новую загрузку, поскольку job уже due.
+
+Override /tmp/admitflow-b11/images.yaml подключает API/worker к backend/var/b11-identity.env: приватный файл 600, ignored. Ключ не печатать, не коммитить и не менять без отдельной миграции идентичностей. .dockerignore исключает backend/var. Настоящий HTML: backend/var/research/sgu4588.original.html; коды не должны попадать в логи, скриншоты или traces. Браузерные тесты используют только FIXTURE-коды.
+
+Из backend `python -m app.sources.audit sgu-2026-4588` проверяет raw, строки, hash и соответствие ключа без HTTP и изменения enabled. Аудит настоящего архива успешен: b11-source-integrity.json. Нужны соответствующие DATABASE_URL, RAW_STORE_PATH и приватный SOURCE_IDENTITY_KEY.
+
+Disposable PostgreSQL, временный четырёхсервисный стенд и fixture API 8013 остановлены/очищены. Тестовый preview 4192 завершён runner. Оставлен постоянный локальный B11. Соседние Docker-проекты не трогать, свои постоянные volumes не удалять. /tmp может исчезнуть; команды и отчёты сохранены в scripts/ и docs/evidence/.
+
+## Следующий шаг и ограничения
+
+**T031: второй независимый источник.** У STU1348 настоящий HTML содержит только заголовки; формат пока неподдержан и не считается подтверждённым пустым конкурсом. При новом поручении выбрать доступный официальный архив, получить оригинал, описать источник и отдельно сверить минимум 50 строк и границу бюджета. Совпадение названий колонок не доказывает совместимость. Держать одну задачу in_progress и выполнять работу пятёрками по AGENTS.md.
+
+Remote CI и push не подтверждены, T006 blocked. Остаются второй адаптер, 24-часовое наблюдение, HTTPS staging, Firefox/WebKit и пользовательская приёмка. T034, T036, T044, T048, T049 и релизные gates не закрывать частичными локальными опытами. Условия источников, основания обработки, оператор и регион, production-ротация referenced raw/backup/journal, удаление из копий и защита от массового создания гостей блокируют публичный запуск. Все B11-коммиты локальные; публикация не выполнена.

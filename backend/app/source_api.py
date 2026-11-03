@@ -188,6 +188,8 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         row=db.get(CandidateEntry,(snapshot.id,candidate_key))
         if row is None:return LookupResult(group=group,found=False)
         now=clock();session=db.get(BrowserSession,owner_hash)
+        if session is None or utc(session.expires_at)<=now:
+            raise HTTPException(401,'Гостевой доступ завершился во время поиска. Подтвердите текущую сессию.')
         expires=min(int(now.timestamp())+300,int(utc(session.expires_at).timestamp()))
         claims=Confirmation(version=1,source_id=source.id,group_id=source.group_id,snapshot_id=snapshot.id,candidate_key=candidate_key,expires=expires)
         return LookupResult(group=group,found=True,candidate=candidate_fact(row),confirmation_token=issue(claims,owner_hash,key),expires_at=datetime.fromtimestamp(expires,timezone.utc))

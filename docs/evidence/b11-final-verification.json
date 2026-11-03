@@ -1,0 +1,47 @@
+{
+  "recordedAt": "2026-11-03T21:50:40.044398+00:00",
+  "batch": "B11",
+  "completedTasks": 30,
+  "backend": {
+    "passed": 454,
+    "skipped": 0,
+    "nativePostgresPassed": 72,
+    "requirePostgres": true,
+    "exitCode": 0,
+    "command": "backend/.venv/bin/python scripts/test_postgres.py --python /home/yurii/projects/admitflow/backend/.venv/bin/python tests"
+  },
+  "frontend": {
+    "unitPassed": 102,
+    "productionBuild": true,
+    "chromiumManaged": {
+      "passed": 100,
+      "skipped": 2,
+      "scope": "nginx-only cases skipped on Vite preview"
+    },
+    "chromiumActualNginx": {
+      "passed": 2,
+      "skipped": 0
+    },
+    "exitCode": 0,
+    "command": "API_TARGET=http://127.0.0.1:8013 E2E_SOURCE_FIXTURE=1 E2E_SOURCE=1 E2E_API=1 E2E_SERVER=preview E2E_BASE_URL=http://127.0.0.1:4192 npm run test:e2e"
+  },
+  "runtime": {
+    "url": "http://127.0.0.1:8090",
+    "schemaRevision": "0007",
+    "archiveRows": 573,
+    "workerLoopRunning": false,
+    "externalFetchesForFinalChecks": 0
+  },
+  "releaseReady": false,
+  "openReleaseConditions": [
+    "second reviewed source",
+    "HTTPS staging",
+    "24-hour source observation",
+    "authenticated remote CI",
+    "production source/data-use and retention/abuse policies",
+    "browser/platform and user acceptance gates"
+  ],
+  "scope": "current local checks only;not a production release",
+  "processingClockSeparateFromFetch": true,
+  "archiveRestoreCurrent": "docs/evidence/b11-sgu-restore-current.json"
+}

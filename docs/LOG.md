@@ -864,3 +864,13 @@ B11 28/30:573rows/20subscriptions/4readers measured;p95 202.24→30.90ms,SQL1112
 ## S168 — 2026-11-04 — B11 29/30 T186
 
 B11 29/30:readonly raw/normalized/key-continuity audit implemented;3nativePG+3SQLite passed;actual private573-row archive audited cleanly withoutHTTP or identifieroutput.
+
+## S169 — 2026-11-04 — B11 30/30 T043
+
+B11 30/30:final452backend/71nativePG/0skip,102unit,100Chromium+2actualNginx passed;privacy scan0matches,actualruntime security and archiveaudit clean;production release blockers recorded.
+
+S169 precommit follow-up: final review found processing-time copy in newly appended archive facts. T043 reopened before its commit;new facts now get actual assessment clock,immutable older records stay intact. Full current backend/native verification repeated,not treated as unchanged452test evidence.
+
+## S170 — 2026-11-04 — B11 final30/30 verification
+
+Reopened precommit audit resolved:source-fact processing time is separate from fetch time without rewriting old records. Current full454backend/72nativePG passed,0skipped;102unit,100Chromium and2actualNginx passed. Repeated real-format archive/rawrestore exact17tables/1146rows. Local currentruntime healthy,private scan0matches,disposable runtimes cleaned. T043done;all30B11tasks complete,nextT031 under a new assignment. Full production/second-source/live/staging requirements remain open.

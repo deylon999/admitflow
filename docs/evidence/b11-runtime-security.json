@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-11-03T21:49:23.539449+00:00",
+  "success": true,
+  "url": "http://127.0.0.1:8090",
+  "schemaRevision": "0007",
+  "archiveRows": 573,
+  "checks": [
+    "ready",
+    "owner-required",
+    "cross-origin-refused",
+    "custom-write-header-required",
+    "HttpOnly-cookie",
+    "explicit-scoped-miss-no-subscription",
+    "no-public-raw-routes",
+    "guest-delete-and-export401"
+  ],
+  "scope": "local development same-origin API;not production HTTPS or legal/retention approval",
+  "backendImage": "sha256:53f98c43aaa64e7f5509f925f14d09a56afe6eb4b1c3f78634ebba36d88581eb",
+  "frontendImage": "sha256:4933128ba24b1c31e7ad1d3bf8136c538fb4e7922d02e29a1d0e3fa03a1d7a48"
+}

@@ -3070,7 +3070,7 @@
 
 ### T043. Проверить безопасность и пользовательские данные
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T016, T017, T028, T033, T085, T095.
 
@@ -3089,7 +3089,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 30/30,finalcurrent:454backend/72nativePG/0skip,102unit,100Chromium+2actualNginx passed;separate processing clock/retry,privacy scan0matches,PG/rawrestore and runtime checks passed;release blockers recorded.
 
 ### T044. Измерить нагрузку и устранить узкие места
 
