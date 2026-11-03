@@ -53,3 +53,9 @@ Checks:3SQLite+same3nativePG cases passed,including template-only/retry,foreign4
 Migration0009 adds safe transactional SourceOperation journal for registration/enable/disable/retry/quarantine/resume/model-enable. Read-only status shows configured/published versions and latest20 bounded operations. Local CLI only,no public control API. Operator quarantine blocks enqueue/claim/publication,invalidates current lease and survives late failures/registration. Explicit resume verifies reviewed binding and respects stored interval;refresh_pending remains until actual worker success. Source clocks/last good pointer untouched.
 
 Checks:6local queue/operator cases and2native operator+23migration cases passed. Verified stale worker token cannot renew,publish held snapshot refused,disabled/unknown version enable atomic refusal,held source cannot silentlyresume,no rate-limit bypass,old snapshot unchanged,no lease tokens/credentials in status. RUNBOOK documents exactcommands and release limits.
+
+## T038 — честное покрытие
+
+Coverage now counts actual DB registrations,enabled exact reviewed scopes,complete current published imports/dedupedgroups/universities/rows,archive imports andeligibleconditionalgroups separately from accepted automatic/live policy. No registration/proof-only inflation;legacy/common proofs do not doublecountscope;GUAPpaid not conditionalnumeric. Latestimportdate comes from originalfetchedAt,reportdate separate;nationalTotalnull. UI/docs/DATA_RULES explain semantics.
+
+Checks:8local coverage/status cases,1nativePG two-source case andstrictTScoveragecontract negatives passed;productionbuild passed. Native genuine-derived2archives count1154rows/2universities/2groups,1conditional/0automatic/0fresh;registeredbutunpublished0imports,heldlastgoodarchive unchanged,disabled/corruptsnapshot excluded. PrimaryDocker stillT031 until finalT189 deployment;do not claim currentUIbeforethat.

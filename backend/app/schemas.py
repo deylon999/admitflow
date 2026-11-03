@@ -118,6 +118,15 @@ class ImportResult(CamelModel):
 
 
 class CoverageRead(CamelModel):
+    registered_sources: int = Field(ge=0)
+    reviewed_sources: int = Field(ge=0)
+    imported_sources: int = Field(ge=0)
+    imported_groups: int = Field(ge=0)
+    imported_universities: int = Field(ge=0)
+    imported_rows: int = Field(ge=0)
+    archive_imported_groups: int = Field(ge=0)
+    conditional_groups: int = Field(ge=0)
+    last_imported_at: datetime | None
     catalog_universities: int = Field(ge=0)
     automatic_sources: int = Field(ge=0)
     published_groups: int = Field(ge=0)
