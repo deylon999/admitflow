@@ -792,3 +792,7 @@ B11 10/30:nativePG573-row retries/rollback/crash/raw provenance/retention passed
 ## S150 — 2026-11-03 — B11 11/30 T175
 
 B11 11/30:explicit disabled/idempotent registration and keyed enable verified in actual Compose;conflicts refused,private key excluded from image context;full396backend/0skip passed.
+
+## S151 — 2026-11-03 — B11 12/30 T022
+
+B11 12/30:real group catalog filters/branch/season/cursor and archive/manual/unsupported UI done;6backend+8contract+10browser+3header/mobile checks passed,currentPGarchive573rows.

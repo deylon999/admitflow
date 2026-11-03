@@ -818,14 +818,16 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T012",
         "T018"
       ],
       "deliverables": [
-        "frontend/src/pages/",
-        "backend/app/catalog/"
+        "backend/app/source_catalog.py",
+        "frontend/src/pages/SourcesPage.tsx",
+        "frontend/tests/e2e/source-catalog.spec.ts",
+        "backend/tests/test_group_catalog.py"
       ],
       "steps": [
         "Сделать поиск/фильтры/пагинацию по вузу, филиалу, сезону и группе",
@@ -839,6 +841,10 @@
         {
           "path": "docs/LOG.md",
           "note": "S015: выбор вузов и manual fallback проходят E2E; группы/фильтры пока не готовы."
+        },
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 12/30:real group catalog filters/branch/season/cursor and archive/manual/unsupported UI done;6backend+8contract+10browser+3header/mobile checks passed,currentPGarchive573rows."
         }
       ],
       "blockedReason": null

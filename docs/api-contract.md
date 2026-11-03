@@ -77,3 +77,6 @@ POST snapshots принимает необязательный X-Expected-Snapsh
 
 
 B11 source-adapter contract: DTO unknown/null,HMAC scope(source/group/year),official row order and immutable snapshot semantics сохранены. Adapter.attested=true теперь требует frozen Attestation:passport/fixture paths,derived/original SHA256,exact URL/season/kind/version,date и verified sample size>=min(50,total). Runtime registry не читает произвольные пути и не скачивает manifests; declaration проходит code review и CI проверку файлов/хешей. Different URL/year/kind отвергаются даже при allow_unattested. Наличие proof metadata само по себе не включает source/group и не делает source assessmentAvailable. Synthetic attestation существует только в tests fixtures; PRODUCTION_REGISTRY пока пуст.
+
+
+B11 `GET /api/v1/groups`: q/universityId/branchId(илиmain)/year/after/limit1–50. Возвращает только метаданные,не candidate rows/keys/raw. Cursor по opaque group ID,фильтры сбрасывают pagination вUI. coverage(manual/archive/automatic/unsupported) отдельно от dataKind(archive/live),snapshot fetch time отдельно от nullable sourceUpdatedAt;lookupAvailable не означает assessmentAvailable. Root university включает свои филиалы,branchId уточняет подразделение. Неподключённый вуз имеет честныйempty/manual fallback и отдельную ссылкупредложенияисточника.

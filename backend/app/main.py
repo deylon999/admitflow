@@ -210,6 +210,13 @@ def create_app(settings: Settings | None = None):
     def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
         return search_universities(db, q)
 
+    from .source_catalog import GroupCatalog,groups as search_groups
+    @app.get('/api/v1/groups',response_model=GroupCatalog)
+    def groups(q:str=Query('',max_length=120),university_id:str=Query('',alias='universityId',max_length=80),
+               branch_id:str=Query('',alias='branchId',max_length=80),year:int|None=Query(None,ge=2000,le=2100),
+               after:str|None=Query(None,max_length=36),limit:int=Query(20,ge=1,le=50),db:Session=Depends(database)):
+        return search_groups(db,q=q,university_id=university_id,branch_id=branch_id,year=year,after=after,limit=limit,registry=source_registry)
+
     @app.get('/api/v1/sources/{source_id}/status', response_model=SourceStatus)
     def get_source_status(source_id: str, db: Session = Depends(database)):
         result = source_status(db,source_id,registry=source_registry)

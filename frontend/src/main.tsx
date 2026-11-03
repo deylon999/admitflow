@@ -14,11 +14,12 @@ import './styles.css';
 import './tracker.css';
 
 const TrackerPage = lazy(() => import('./pages/TrackerPage'));
+const SourcesPage = lazy(() => import('./pages/SourcesPage'));
 const queryClient = createQueryClient();
 function PagePosition() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    document.title = pathname === '/tracker' ? 'Мои направления — Абитуриент' : pathname === '/' ? 'Абитуриент — ручные сценарии поступления' : 'Страница не найдена — Абитуриент';
+    document.title = pathname.startsWith('/sources') ? 'Источники и группы — Абитуриент' : pathname === '/tracker' ? 'Мои направления — Абитуриент' : pathname === '/' ? 'Абитуриент — ручные сценарии поступления' : 'Страница не найдена — Абитуриент';
     const observer = new MutationObserver(position);
     function position() {
       const target = hash ? document.getElementById(hash.slice(1)) : document.querySelector<HTMLElement>('main h1');
@@ -51,6 +52,7 @@ function App() {
 const router = createBrowserRouter([{ element: <PageErrorBoundary><App /></PageErrorBoundary>, children: [
   { index: true, element: <LandingPage /> },
   { path: 'tracker', element: <TrackerPage /> },
+  { path: 'sources', element: <SourcesPage /> },
   { path: '*', element: <main id="top" className="container tracker-page"><h1>Страница не найдена</h1><Link className="button button-primary" to="/">На главную</Link></main> },
 ] }]);
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><QueryClientProvider client={queryClient}><RouterProvider router={router} /></QueryClientProvider></React.StrictMode>);

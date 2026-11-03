@@ -1861,11 +1861,11 @@
 
 ### T022. Добавить поиск вузов и групп с coverage
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T012, T018.
 
-**Результаты/файлы:** `frontend/src/pages/`; `backend/app/catalog/`.
+**Результаты/файлы:** `backend/app/source_catalog.py`; `frontend/src/pages/SourcesPage.tsx`; `frontend/tests/e2e/source-catalog.spec.ts`; `backend/tests/test_group_catalog.py`.
 
 **Шаги:**
 
@@ -1881,6 +1881,7 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S015: выбор вузов и manual fallback проходят E2E; группы/фильтры пока не готовы.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 12/30:real group catalog filters/branch/season/cursor and archive/manual/unsupported UI done;6backend+8contract+10browser+3header/mobile checks passed,currentPGarchive573rows.
 
 ### T024. Показывать provenance и отдельные времена
 

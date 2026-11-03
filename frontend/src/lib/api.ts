@@ -2,6 +2,7 @@ import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
 import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
+import { parseGroupCatalog } from './source-contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -15,7 +16,7 @@ class ApiError extends Error {
 }
 async function request(path: string, init: RequestInit = {}): Promise<unknown> {
   const epoch = sessionEpoch;
-  const privateRequest = !path.startsWith('/universities') && path !== '/coverage';
+  const privateRequest = !path.startsWith('/universities') && !path.startsWith('/groups') && path !== '/coverage';
   const checkAccess = () => { if (privateRequest && epoch !== sessionEpoch) throw new SessionChangedError(); };
   return withRequestTimeout(async signal => {
   let response: Response;
@@ -111,6 +112,11 @@ export const api = {
     });
   },
   universities: async (query: string, signal?: AbortSignal) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`, { signal })),
+  groups: async (filters: { q: string; universityId: string; branchId: string; year: string }, after: string | null = null, signal?: AbortSignal) => {
+    const params = new URLSearchParams(Object.entries(filters).filter(([,value]) => value !== ''));
+    if (after) params.set('after', after);
+    return parseGroupCatalog(await request(`/groups?${params}`, { signal }));
+  },
   coverage: async () => parseCoverage(await request('/coverage')),
   exportData: () => read('/export', parseExport),
   async importData(bundle: DataExport, key: string) {
