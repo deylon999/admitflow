@@ -6,7 +6,7 @@ from typing import Literal
 
 from fastapi import Depends,HTTPException,Path,Query
 from pydantic import Field,field_validator
-from sqlalchemy import func,select
+from sqlalchemy import func,select,tuple_
 from sqlalchemy.orm import Session
 
 from .admissions import Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University
@@ -98,19 +98,36 @@ def subscription_fingerprint(group_id,candidate_key):
     return hashlib.sha256(f'archive-subscription-v1:{group_id}:{candidate_key}'.encode()).hexdigest()
 
 
-def archive_direction(db,subscription,registry):
-    group=db.get(CompetitionGroup,subscription.group_id);campaign=db.get(Campaign,group.campaign_id);university=db.get(University,campaign.university_id)
-    first=db.scalar(select(Assessment).where(Assessment.subscription_id==subscription.id,Assessment.rules_version=='source-confirmation-v1').order_by(Assessment.assessed_at,Assessment.id).limit(1))
-    confirmed=db.get(SourceSnapshot,first.snapshot_id) if first else None
-    source=db.get(Source,confirmed.source_id) if confirmed else None
-    if source is None:
-        sources=db.scalars(select(Source).where(Source.group_id==group.id).limit(2)).all()
-        source=sources[0] if len(sources)==1 else None
-    meta=group_read(db,group,campaign,university,source,registry=registry)
-    row=db.get(CandidateEntry,(meta.snapshot_id,subscription.candidate_key)) if meta.snapshot_id else None
-    return ArchiveDirection(id=subscription.id,created_at=utc(subscription.created_at),group=meta,
-                            candidate=candidate_fact(row) if row else None,confirmed_snapshot_id=confirmed.id if confirmed else None,
-                            notice=None if row else 'Запись отсутствует в доступном снимке. Это не подтверждает отзыв заявления или отказ в зачислении.')
+def archive_directions(db,values,registry):
+    """Bounded batch reads; resolve each source pointer once per response."""
+    if not values:return []
+    identities={value.id for value in values};group_ids={value.group_id for value in values}
+    confirmations=db.execute(select(Assessment,SourceSnapshot).join(SourceSnapshot,Assessment.snapshot_id==SourceSnapshot.id).where(
+        Assessment.subscription_id.in_(identities),Assessment.rules_version=='source-confirmation-v1').order_by(Assessment.assessed_at,Assessment.id)).all()
+    initial={}
+    for assessment,snapshot in confirmations:initial.setdefault(assessment.subscription_id,snapshot)
+    groups={g.id:(g,c,u) for g,c,u in db.execute(select(CompetitionGroup,Campaign,University).join(Campaign,CompetitionGroup.campaign_id==Campaign.id)
+             .join(University,Campaign.university_id==University.id).where(CompetitionGroup.id.in_(group_ids))).all()}
+    sources=db.scalars(select(Source).where(Source.group_id.in_(group_ids))).all()
+    by_source={source.id:source for source in sources};by_group={}
+    for source in sources:by_group.setdefault(source.group_id,[]).append(source)
+    metadata={};selected={}
+    for value in values:
+        confirmed=initial.get(value.id);source=by_source.get(confirmed.source_id) if confirmed else None
+        fallback=by_group.get(value.group_id,[])
+        if source is None and len(fallback)==1:source=fallback[0]
+        identity=(value.group_id,source.id if source else None)
+        if identity not in metadata:metadata[identity]=group_read(db,*groups[value.group_id],source,registry=registry)
+        selected[value.id]=metadata[identity]
+    pairs={(selected[value.id].snapshot_id,value.candidate_key) for value in values if selected[value.id].snapshot_id}
+    entries=db.scalars(select(CandidateEntry).where(tuple_(CandidateEntry.snapshot_id,CandidateEntry.candidate_key).in_(pairs))).all() if pairs else []
+    rows={(row.snapshot_id,row.candidate_key):row for row in entries};result=[]
+    for value in values:
+        meta=selected[value.id];row=rows.get((meta.snapshot_id,value.candidate_key));confirmed=initial.get(value.id)
+        result.append(ArchiveDirection(id=value.id,created_at=utc(value.created_at),group=meta,candidate=candidate_fact(row) if row else None,
+            confirmed_snapshot_id=confirmed.id if confirmed else None,
+            notice=None if row else 'Запись отсутствует в доступном снимке. Это не подтверждает отзыв заявления или отказ в зачислении.'))
+    return result
 
 
 def available_source(db,source_id,registry):
@@ -146,13 +163,13 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
     def subscriptions(owner_hash:str=Depends(owner),db:Session=Depends(database)):
         values=db.scalars(select(Subscription).where(Subscription.owner_hash==owner_hash).order_by(Subscription.created_at,Subscription.id).limit(21)).all()
         if len(values)>20:raise HTTPException(409,'Превышен лимит сохранённых направлений; требуется проверка данных.')
-        return [archive_direction(db,value,registry) for value in values]
+        return archive_directions(db,values,registry)
 
     @app.get('/api/v1/archive-export',response_model=ArchiveExport)
     def export_archive(owner_hash:str=Depends(owner),db:Session=Depends(database)):
         values=db.scalars(select(Subscription).where(Subscription.owner_hash==owner_hash).order_by(Subscription.created_at,Subscription.id).limit(21)).all()
         if len(values)>20:raise HTTPException(409,'Превышен лимит архивных направлений.')
-        return ArchiveExport(exported_at=clock(),directions=[archive_direction(db,value,registry) for value in values])
+        return ArchiveExport(exported_at=clock(),directions=archive_directions(db,values,registry))
 
     @app.post('/api/v1/sources/{source_id}/lookup',response_model=LookupResult)
     def lookup(body:LookupInput,source_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(write_owner),db:Session=Depends(database)):

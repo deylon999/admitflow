@@ -96,3 +96,23 @@ def test_expiry_hides_private_rows_and_cleanup_keeps_shared_archive(lookup_conte
     with Session(app.state.engine) as db:
         for model in (Subscription,Assessment,OperationRecord):assert db.scalar(select(func.count()).select_from(model))==0
         assert db.scalar(select(func.count()).select_from(SourceSnapshot))==1
+
+
+def test_batch_archive_cards_keep_twenty_identities_and_explicit_missing_row(lookup_context,tmp_path):
+    client,app=lookup_context;start(client)
+    for index in range(1,21):
+        assert client.post('/api/v1/subscriptions',json=confirm(client,index),headers=HEADERS).status_code==201
+    before=client.get('/api/v1/subscriptions').json()
+    assert sorted(x['candidate']['officialRank'] for x in before)==list(range(1,21))
+    raw=response();body=b'<!-- synthetic replacement of one fixture code,not observed event -->\n'+raw.body.replace(b'FIXTURE-000001',b'FIXTURE-999999')
+    changed=replace(raw,body=body,payload_hash=hashlib.sha256(body).hexdigest(),fetched_at=raw.fetched_at+timedelta(minutes=1))
+    registry=app.state.source_registry
+    publish(app.state.engine,BINDING.source_id,registry.resolve(BINDING).parse(changed,BINDING),changed,RawStore(tmp_path/'raw'),registry=registry)
+    after=client.get('/api/v1/subscriptions').json()
+    assert len(after)==20 and len({x['group']['snapshotId'] for x in after})==1
+    missing=next(x for x in after if x['id']==before[0]['id'])
+    assert missing['candidate'] is None and 'не подтверждает' in missing['notice']
+    assert sorted(x['candidate']['officialRank'] for x in after if x['candidate'])==list(range(2,21))
+    history=client.get(f"/api/v1/subscriptions/{missing['id']}/history").json()
+    assert history['total']==2 and history['items'][0]['present'] is False and history['items'][0]['candidate'] is None
+    assert history['items'][1]['candidate']['officialRank']==1

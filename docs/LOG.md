@@ -856,3 +856,7 @@ B11 26/30:2nativeAPI/Chromium multi-tab archive privacy cases passed;old facts/h
 ## S166 — 2026-11-04 — B11 27/30 T184
 
 B11 27/30:current0007 containers preserve actual573-row archive acrossrecreate,noexternalfetch;2nginxchecks andowned4service worker/raw/persistence rehearsal passed.
+
+## S167 — 2026-11-04 — B11 28/30 T185
+
+B11 28/30:573rows/20subscriptions/4readers measured;p95 202.24→30.90ms,SQL11120→680,80x200;23+1nativePG cases passed;localonly.

@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-11-03T21:35:53.965235+00:00",
+  "profile": {
+    "rows": 573,
+    "subscriptions": 20,
+    "concurrentReaders": 4,
+    "listRequests": 60,
+    "historyRequests": 20,
+    "externalFetches": 0,
+    "transport": "FastAPI TestClient/ASGI + native disposable PostgreSQL17,no nginx/TLS"
+  },
+  "host": {
+    "python": "3.14.8",
+    "system": "Linux",
+    "cpuCount": 12
+  },
+  "durationSeconds": 0.507,
+  "p50Ms": 24.32,
+  "p95Ms": 30.9,
+  "maxMs": 42.47,
+  "statuses": {
+    "200": 80
+  },
+  "sqlStatements": 680,
+  "meanSqlPerRead": 8.5,
+  "processPeakRssMiB": 128.51,
+  "localTargetP95Ms": 500,
+  "localTargetMet": true,
+  "unexpected5xx": 0,
+  "scope": "one anonymized archive group;no simultaneous publication or source fetch;not T044 broad staging/load/soak gate",
+  "cleanup": true
+}

@@ -5702,7 +5702,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T177",
         "T179"
@@ -5719,7 +5719,12 @@
         "Есть реальные размеры/стенд/измерения,не пустаяБД",
         "Узкие места измерены;результат не выдан за broadstaging нагрузку"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 28/30:573rows/20subscriptions/4readers measured;p95 202.24→30.90ms,SQL11120→680,80x200;23+1nativePG cases passed;localonly."
+        }
+      ],
       "blockedReason": null
     },
     {
