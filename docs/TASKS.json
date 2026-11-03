@@ -1291,7 +1291,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T013",
         "T031",
@@ -1309,7 +1309,16 @@
         "Повтор replay даёт те же outcomes",
         "Архив в UI постоянно отличим от текущей кампании"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-replay.json",
+          "note": "B12:two complete nativePG replay runs/6stages produce identical semantic outcomes;failure/recovery/repeat/absence and dates verified,0HTTP,cleanup."
+        },
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "Syntheticchanges explicitly separated from genuine-derived baselines;not24h live observation."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1406,7 +1415,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T023",
         "T034",

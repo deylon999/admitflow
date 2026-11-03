@@ -1,3 +1,13 @@
+# B12 — активная работа до рубежа70%
+
+Поручение2026-11-04:не останавливаться до выполнения docs/MILESTONE_70.md. Goal active. Завершены T187,T188,T031,T034,T039,T036;текущая T040,затем T037,T038,T189. JSONparser общий для двух вузов,1154originalrows независимо сверены;GUAPплатный0мест/unknownconsent остаётсянеподдержанным для числового сценария. Conditionalmodel/diff/explanations/UI и2run/6stage replay работают вnativePG. Первые5закрепленыкоммитами. Не считать70достигнутыми доchangefeed/ops/coverage/currentlocalacceptance.
+
+Runtime8090 пока образT031:оба настоящихархива опубликованы,ноновыйmodel/UI ещё не развёрнуты. OwnfixtureAPI8013(E2E_TWO_SOURCES=1) содержит толькообезличенныеDOMиconditionalmodels;traces толькоFIXTUREкоды. Backend source timestamps/processing clock раздельны. Finalcurrent build/test/deploy запланированT189. PrivateSOURCE_IDENTITY_KEY/оригиналы сохранять какниже,непечатать.
+
+Evidence:docs/evidence/b12-progress.md,b12-replay.json,b12-*-family-audit.json,b12-guap-worker.json,b12-guap-runtime.json. Currentguardedtests:3nativePGstorage/model,3browser320light/dark/refusal,17TScontracts,16localmodel/storage/template,plusregistry/decodernegativecases. FullB11baseline ниже исторический.
+
+---
+
 # Контекст для продолжения
 
 2026-11-04, S170. **B11: запрос «следующие 30 задач» выполнен — 30/30, шесть пятёрок и 30 отдельных коммитов.** Следующая работа требует нового поручения. TASKS.json — статусы, STATE.json — точка продолжения, LOG.md — история. Закрыто 154 из 186 карточек; это не процент готовности продукта к выпуску.

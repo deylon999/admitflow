@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-04",
-  "currentTask": "T036",
-  "nextTask": "T036",
+  "currentTask": "T040",
+  "nextTask": "T040",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S172",
-  "resumeAction": "B12first5done:T187,T188,T031,T034,T039.Nextfive:T036deterministicreplay,T040changefeed,T037auditedops,T038coverage,T189currentlocalacceptance. Continue untilallMILESTONE_70criteria,notjusttaskcount.",
+  "resumeAction": "B12sixdone incldeterministic2source replay. Implement per-owner changefeed dedup/seen-state from immutableassessmentdiff,T037auditedops,T038honestcoverage,T189currentlocalfullacceptance until70rubric.",
   "externalConstraints": [
     "Only one reviewed SGU2026 archive source; second independent adapter and24h observation remain unverified.",
     "HTTPS staging/production host/domain/budget/region not selected or deployed.",

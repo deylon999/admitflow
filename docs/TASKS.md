@@ -1382,7 +1382,7 @@
 
 ### T036. Сделать детерминированный replay архивов
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T013, T031, T034.
 
@@ -1401,7 +1401,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-replay.json](../docs/evidence/b12-replay.json) — B12:two complete nativePG replay runs/6stages produce identical semantic outcomes;failure/recovery/repeat/absence and dates verified,0HTTP,cleanup.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — Syntheticchanges explicitly separated from genuine-derived baselines;not24h live observation.
 
 ### T037. Добавить эксплуатационное управление источниками
 
@@ -2023,7 +2024,7 @@
 
 ### T040. Показать изменения внутри приложения
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T023, T034, T039.
 
