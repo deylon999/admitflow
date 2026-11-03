@@ -65,7 +65,7 @@ def group_read(db,group,campaign,university,source,*,registry=PRODUCTION_REGISTR
     lookup=bool(available and snapshot and snapshot.complete and snapshot.normalized_hash and snapshot.adapter_version==source.adapter_version)
     return GroupRead(id=group.id,university_id=university.id,university_name=university.name,parent_university_id=university.parent_id,
                      year=campaign.year,level=campaign.level,title=group.title,study_form=group.study_form,funding=group.funding,
-                     category=group.category,seats=group.seats,coverage=mode,source_id=source.id if source else None,
+                     category=group.category,seats=snapshot.seats if snapshot else group.seats,coverage=mode,source_id=source.id if source else None,
                      source_url=status['sourceUrl'] if status else None,source_state=status['state'] if status else None,
                      data_kind=status['dataKind'] if status else None,
                      snapshot_id=snapshot.id if snapshot else None,fetched_at=status['fetchedAt'] if status else None,

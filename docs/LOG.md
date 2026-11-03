@@ -804,3 +804,7 @@ B11 13/30:scoped authenticated lookup and owner/snapshot-bound300s confirmation 
 ## S153 — 2026-11-03 — B11 14/30 T177
 
 B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;native37cases passed,including data-preserving0005cascade fix,guest reset/expiry and cache replay safety.
+
+## S154 — 2026-11-03 — B11 15/30 T021
+
+B11 15/30:explicit archive lookup/confirmation UI,shared20limit and session cache isolation;5newChromium+5catalog,101unit,currentbuild,4lookup tests and37native cases passed;0006rate budget added.

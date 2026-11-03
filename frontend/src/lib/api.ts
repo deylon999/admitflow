@@ -2,7 +2,7 @@ import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
 import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
 import { InvalidResponseError, parseCatalog, parseCoverage, parseDetail, parseExport, parseHistoryPage, parseImportResult, parseSession, parseSnapshot, parseWatch, parseWatches } from './contracts';
-import { parseGroupCatalog } from './source-contracts';
+import { parseArchiveDirections, parseDirectionBudget, parseGroupCatalog, parseLookup, parseSubscriptionSaved } from './source-contracts';
 export type { Snapshot, Watch, WatchDetail, WatchCreate, SessionInfo, University, Catalog } from './contracts';
 export class SessionExpiredError extends Error {
   constructor() { super('Срок доступа истёк или данные браузера были удалены. Начните новую сессию, чтобы сохранять направления снова.'); }
@@ -117,6 +117,18 @@ export const api = {
     if (after) params.set('after', after);
     return parseGroupCatalog(await request(`/groups?${params}`, { signal }));
   },
+  async lookup(sourceId: string, publicCode: string) {
+    await ensureSession();
+    const value = parseLookup(await request(`/sources/${encodeURIComponent(sourceId)}/lookup`, { method: 'POST', body: JSON.stringify({ publicCode }) }));
+    if (value.group.sourceId !== sourceId) throw new InvalidResponseError();
+    return value;
+  },
+  async subscribe(confirmationToken: string) {
+    await ensureSession();
+    return parseSubscriptionSaved(await request('/subscriptions', { method: 'POST', body: JSON.stringify({ confirmationToken }) }));
+  },
+  subscriptions: (signal?: AbortSignal) => read('/subscriptions', parseArchiveDirections, signal),
+  directionBudget: (signal?: AbortSignal) => read('/direction-budget', parseDirectionBudget, signal),
   coverage: async () => parseCoverage(await request('/coverage')),
   exportData: () => read('/export', parseExport),
   async importData(bundle: DataExport, key: string) {

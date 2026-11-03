@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from .admissions import Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University
 from .calculation import CamelModel
-from .database import BrowserSession,OperationRecord
+from .database import BrowserSession,LookupBudget,OperationRecord
 from .direction_budget import DirectionBudget,direction_budget
 from .operations import remember_operation
 from .source_catalog import GroupRead,group_read
@@ -113,7 +113,16 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         return [archive_direction(db,value,registry) for value in values]
 
     @app.post('/api/v1/sources/{source_id}/lookup',response_model=LookupResult)
-    def lookup(body:LookupInput,source_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(owner),db:Session=Depends(database)):
+    def lookup(body:LookupInput,source_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(write_owner),db:Session=Depends(database)):
+        # write_owner serializes all API processes on this guest's row.
+        now=clock(); budget=db.get(LookupBudget,owner_hash)
+        if budget is None:
+            budget=LookupBudget(owner_hash=owner_hash,window_start=now,used=0);db.add(budget)
+        elapsed=(now-utc(budget.window_start)).total_seconds()
+        if elapsed>=60:budget.window_start=now;budget.used=0
+        if budget.used>=30:
+            raise HTTPException(429,'Слишком много поисков. Подождите минуту.',headers={'Retry-After':str(max(1,60-int(elapsed)))})
+        budget.used+=1;db.commit()
         if key is None:raise HTTPException(409,'Поиск источника не настроен.')
         source,binding,snapshot,group=available_source(db,source_id,registry)
         candidate_key=scoped_candidate_key(binding,body.public_code,key)

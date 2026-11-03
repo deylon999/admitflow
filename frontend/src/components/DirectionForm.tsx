@@ -67,6 +67,7 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
       clearDraft();
       await queryClient.invalidateQueries({ queryKey: ['watches'] });
       await queryClient.invalidateQueries({ queryKey: ['history'] });
+    await queryClient.invalidateQueries({ queryKey: ['direction-budget'] });
       onDone();
     },
   });

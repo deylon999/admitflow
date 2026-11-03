@@ -134,3 +134,5 @@ def test_raw_retention_keeps_all_referenced_archive_versions(source_engine,tmp_p
     result=cleanup_raw(source_engine,store,now=raw.fetched_at,apply=True)
     assert result['deleted']==1 and not (store.root/orphan).exists()
     assert store.read(raw.payload_hash)==raw.body and store.read(second.payload_hash)==second.body
+
+from test_source_lookup import test_lookup_budget_is_shared_by_requests_resets_and_does_not_store_codes

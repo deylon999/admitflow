@@ -158,3 +158,11 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 .source-catalog-card h2 { font-size: 22px; line-height: 1.3; letter-spacing: -.5px; margin: 14px 0; }
 .source-catalog-card p { margin: 12px 0; line-height: 1.5; }
 @media (max-width: 600px) { .source-catalog-filters { grid-template-columns: minmax(0,1fr); padding: 16px; } .source-catalog-card { padding: 16px; } }
+
+.source-lookup { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+.source-lookup input:not([type="checkbox"]) { display: block; width: 100%; margin: .5rem 0; }
+.source-candidate-preview { margin-top: 1rem; padding: 1rem; }
+.source-ack { display: flex; gap: .7rem; align-items: flex-start; margin: 1rem 0; }
+.source-ack input { flex: 0 0 auto; width: 1.2rem; height: 1.2rem; }
+.archive-directions { margin: 2rem 0; }
+@media print { .archive-directions { display: none !important; } }

@@ -16,6 +16,7 @@ export function ImportData({ count, disabled, onDone }: { count: number; disable
   const mutation = useMutation({ mutationFn: () => api.importData(prepared!.bundle, prepared!.key), onSuccess: async result => {
     await client.invalidateQueries({ queryKey: ['watches'] });
     await client.invalidateQueries({ queryKey: ['history'] });
+    await client.invalidateQueries({ queryKey: ['direction-budget'] });
     clear();
     onDone(result);
     summary.current?.focus();

@@ -3,6 +3,10 @@ import { instantMicros } from './time';
 
 export type SourceGroup = { id: string; universityId: string; universityName: string; parentUniversityId: string | null; year: number; level: string; title: string; studyForm: string; funding: string; category: string; seats: number | null; coverage: 'manual' | 'archive' | 'automatic' | 'unsupported'; dataKind: 'archive' | 'live' | null; sourceId: string | null; sourceUrl: string | null; sourceState: string | null; snapshotId: string | null; fetchedAt: string | null; sourceUpdatedAt: string | null; lastCheckedAt: string | null; rowCount: number | null; lookupAvailable: boolean; assessmentAvailable: false };
 export type GroupCatalog = { items: SourceGroup[]; total: number; nextCursor: string | null; facets: { branches: { id: string; name: string }[]; years: number[] } };
+export type CandidateFact = { rowRef: string; officialRank: number; score: string | null; consent: boolean | null; priority: number | null; participation: 'unknown' | 'active' | 'withdrawn' | 'enrolled' };
+export type LookupResult = { group: SourceGroup; found: boolean; candidate: CandidateFact | null; confirmationToken: string | null; expiresAt: string | null };
+export type ArchiveDirection = { id: string; createdAt: string; group: SourceGroup; candidate: CandidateFact | null; confirmedSnapshotId: string | null; notice: string | null };
+export type DirectionBudget = { limit: 20; total: number; manualCount: number; archiveCount: number };
 export function sourceObject(v: unknown): Record<string, unknown> { if (!v || typeof v !== 'object' || Array.isArray(v)) throw new InvalidResponseError(); return v as Record<string, unknown>; }
 export function sourceText(v: unknown, max = 300): string { if (typeof v !== 'string' || !v.trim() || Array.from(v).length > max || /[\u0000-\u001f\u007f]/.test(v)) throw new InvalidResponseError(); return v; }
 export function sourceInt(v: unknown, min = 0, max = 1_000_000): number { if (typeof v !== 'number' || !Number.isSafeInteger(v) || v < min || v > max) throw new InvalidResponseError(); return v; }
@@ -30,4 +34,33 @@ export function parseGroupCatalog(value: unknown): GroupCatalog {
   const o = sourceObject(value), facets = sourceObject(o.facets);
   if (!Array.isArray(o.items) || o.items.length > 50 || !Array.isArray(facets.branches) || facets.branches.length > 100 || !Array.isArray(facets.years) || facets.years.length > 101) throw new InvalidResponseError();
   return { items: o.items.map(parseSourceGroup), total: sourceInt(o.total), nextCursor: nullableText(o.nextCursor, 36), facets: { branches: facets.branches.map(value => { const item = sourceObject(value); return { id: sourceText(item.id, 80), name: sourceText(item.name) }; }), years: facets.years.map(value => sourceInt(value, 2000, 2100)) } };
+}
+
+export function parseCandidate(value: unknown): CandidateFact {
+  const o = sourceObject(value);
+  if ((o.consent !== null && typeof o.consent !== 'boolean') || !['unknown', 'active', 'withdrawn', 'enrolled'].includes(String(o.participation))) throw new InvalidResponseError();
+  const score = o.score === null ? null : sourceText(o.score, 10);
+  if (score !== null && (!/^[0-9]{1,4}(?:\.[0-9]{1,2})?$/.test(score) || Number(score) > 1000)) throw new InvalidResponseError();
+  return { rowRef: sourceText(o.rowRef, 100), officialRank: sourceInt(o.officialRank, 1), score, consent: o.consent as boolean | null, priority: o.priority === null ? null : sourceInt(o.priority, 1, 1000), participation: o.participation as CandidateFact['participation'] };
+}
+export function parseLookup(value: unknown): LookupResult {
+  const o = sourceObject(value), group = parseSourceGroup(o.group);
+  if (typeof o.found !== 'boolean') throw new InvalidResponseError();
+  const candidate = o.candidate === null ? null : parseCandidate(o.candidate);
+  const token = nullableText(o.confirmationToken, 2048), expiresAt = nullableTime(o.expiresAt);
+  if (o.found !== Boolean(candidate && token && expiresAt) || (!o.found && (candidate || token || expiresAt)) || (candidate && group.rowCount !== null && candidate.officialRank > group.rowCount)) throw new InvalidResponseError();
+  return { group, found: o.found, candidate, confirmationToken: token, expiresAt };
+}
+export function parseSubscriptionSaved(value: unknown) {
+  const o = sourceObject(value);
+  return { id: sourceText(o.id, 36), groupId: sourceText(o.groupId, 36), sourceId: sourceText(o.sourceId, 36), createdAt: sourceTime(o.createdAt) };
+}
+export function parseArchiveDirections(value: unknown): ArchiveDirection[] {
+  if (!Array.isArray(value) || value.length > 20) throw new InvalidResponseError();
+  return value.map(value => { const o = sourceObject(value); return { id: sourceText(o.id, 36), createdAt: sourceTime(o.createdAt), group: parseSourceGroup(o.group), candidate: o.candidate === null ? null : parseCandidate(o.candidate), confirmedSnapshotId: nullableText(o.confirmedSnapshotId, 36), notice: nullableText(o.notice, 500) }; });
+}
+export function parseDirectionBudget(value: unknown): DirectionBudget {
+  const o = sourceObject(value), total = sourceInt(o.total), manualCount = sourceInt(o.manualCount), archiveCount = sourceInt(o.archiveCount);
+  if (o.limit !== 20 || manualCount + archiveCount !== total) throw new InvalidResponseError();
+  return { limit: 20, total, manualCount, archiveCount };
 }

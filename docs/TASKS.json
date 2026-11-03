@@ -790,7 +790,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018",
         "T029",
@@ -809,7 +809,12 @@
         "Нет склейки людей по ФИО или чужому ID другого источника",
         "Пользователь подтверждает правильную группу и запись до сохранения"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 15/30:explicit archive lookup/confirmation UI,shared20limit and session cache isolation;5newChromium+5catalog,101unit,currentbuild,4lookup tests and37native cases passed;0006rate budget added."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5446,6 +5451,84 @@
           "note": "B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;native37cases passed,including data-preserving0005cascade fix,guest reset/expiry and cache replay safety."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T178",
+      "title": "Удалять отдельную архивную запись без её восстановления повтором",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T177",
+        "T021"
+      ],
+      "deliverables": [
+        "backend/app/source_api.py",
+        "frontend/src/components/ArchiveDirections.tsx"
+      ],
+      "steps": [
+        "Проверить ownership и каскад истории",
+        "Обезвредить повторы старых подтверждений и вернуть общий лимит"
+      ],
+      "acceptance": [
+        "Чужое удаление возвращает404",
+        "Удалённая запись не воскресает при replay подтверждения"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T179",
+      "title": "Сохранять и читать неизменяемую историю фактов одного архивного источника",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T177",
+        "T033"
+      ],
+      "deliverables": [
+        "backend/app/source_history.py",
+        "backend/tests/test_source_history.py"
+      ],
+      "steps": [
+        "Добавить фактические версии без числового прогноза",
+        "Стабильная пагинация и изоляция владельца"
+      ],
+      "acceptance": [
+        "Повтор не создаёт дубли и не меняет прежние факты",
+        "Cursor не теряет записи при одинаковом времени"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T180",
+      "title": "Показывать историю и сравнение подтверждённых архивных фактов",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T179",
+        "T021"
+      ],
+      "deliverables": [
+        "frontend/src/components/ArchiveHistory.tsx",
+        "frontend/tests/e2e/source-history.spec.ts"
+      ],
+      "steps": [
+        "Вывести датированные факты и сравнение полей",
+        "Отделить неизвестное от отсутствия записи и отзыва"
+      ],
+      "acceptance": [
+        "Виден источник и снимок каждой версии",
+        "Сравнение не выдаёт изменение строки за прогноз зачисления"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

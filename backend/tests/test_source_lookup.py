@@ -64,3 +64,22 @@ def test_confirmation_is_owner_scoped_tamper_evident_and_expires():
         with pytest.raises(ConfirmationError,match='invalid'):verify(changed,owner,key,100)
     with pytest.raises(ConfirmationError,match='expired'):verify(token,'owner-a',KEY,110)
     with pytest.raises(ConfirmationError,match='invalid'):verify('x'*2049,'owner-a',KEY,100)
+
+
+def test_lookup_budget_is_shared_by_requests_resets_and_does_not_store_codes(lookup_context,monkeypatch):
+    from datetime import timedelta
+    from app.main import utcnow
+    from app.database import LookupBudget
+    client,app=lookup_context;start(client)
+    path=f'/api/v1/sources/{BINDING.source_id}/lookup'
+    now=utcnow();monkeypatch.setattr('app.main.utcnow',lambda:now)
+    for _ in range(30):assert client.post(path,json={'publicCode':'not-present'},headers=HEADERS).status_code==200
+    limited=client.post(path,json={'publicCode':'FIXTURE-000001'},headers=HEADERS)
+    assert limited.status_code==429 and limited.headers['retry-after']=='60'
+    with Session(app.state.engine) as db:
+        assert db.scalar(select(LookupBudget)).used==30
+        assert set(LookupBudget.__table__.columns.keys())=={'owner_hash','window_start','used'}
+    monkeypatch.setattr('app.main.utcnow',lambda:now+timedelta(seconds=60))
+    assert client.post(path,json={'publicCode':'FIXTURE-000001'},headers=HEADERS).status_code==200
+    assert client.delete('/api/v1/session',headers=HEADERS).status_code==204
+    with Session(app.state.engine) as db:assert db.scalar(select(func.count()).select_from(LookupBudget))==0

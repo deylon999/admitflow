@@ -27,6 +27,13 @@ class Watch(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
 
+class LookupBudget(Base):
+    __tablename__ = 'lookup_budgets'
+    owner_hash: Mapped[str] = mapped_column(ForeignKey('browser_sessions.token_hash', ondelete='CASCADE'), primary_key=True)
+    window_start: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    used: Mapped[int] = mapped_column(Integer)
+
+
 class Snapshot(Base):
     __tablename__ = 'snapshots'
     __table_args__ = (

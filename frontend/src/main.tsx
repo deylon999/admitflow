@@ -42,7 +42,7 @@ function App() {
       clearDraft();
       api.forgetSession();
       queryClient.setQueryData(sessionAccessKey, 'changed');
-      for (const key of ['watches', 'history', 'session-info']) void queryClient.cancelQueries({ queryKey: [key] });
+      for (const key of ['watches', 'history', 'session-info', 'archive-directions', 'direction-budget']) void queryClient.cancelQueries({ queryKey: [key] });
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
