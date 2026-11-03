@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
-from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Index, Integer, String, and_, or_, select, text
-from sqlalchemy.orm import Mapped, Session, mapped_column
+from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Index, Integer, String, and_, exists, or_, select, text
+from sqlalchemy.orm import Mapped, Session, aliased, mapped_column
 
 from .admissions import Source
 from .database import Base
@@ -77,9 +77,22 @@ def claim(engine,*,now=None,lease_seconds=120):
     with Session(engine) as db:
         if engine.dialect.name=='sqlite':
             db.execute(text('BEGIN IMMEDIATE'))
-        query=(select(SourceJob).join(Source).where(Source.enabled.is_(True),or_(and_(SourceJob.state.in_(('queued','idle')),SourceJob.next_run_at<=now),and_(SourceJob.state=='running',SourceJob.lease_until<=now))).order_by(SourceJob.next_run_at,SourceJob.source_id).with_for_update(skip_locked=True,of=SourceJob))
+        other_job,other_source=aliased(SourceJob),aliased(Source)
+        occupied=exists(select(other_job.source_id).join(other_source,other_source.id==other_job.source_id).where(
+            other_source.domain==Source.domain,other_job.source_id!=SourceJob.source_id,
+            other_job.state=='running',other_job.lease_until>now))
+        query=(select(SourceJob).join(Source).where(Source.enabled.is_(True),~occupied,or_(and_(SourceJob.state.in_(('queued','idle')),SourceJob.next_run_at<=now),and_(SourceJob.state=='running',SourceJob.lease_until<=now))).order_by(SourceJob.next_run_at,SourceJob.source_id).with_for_update(skip_locked=True,of=SourceJob))
         # Expired final attempts are retired instead of reclaimed forever.
         for job in db.scalars(query.limit(100)).all():
+            domain=db.scalar(select(Source.domain).where(Source.id==job.source_id))
+            if engine.dialect.name=='postgresql' and not db.scalar(text('SELECT pg_try_advisory_xact_lock(hashtextextended(:domain,173))'),{'domain':domain}):
+                continue
+            # Recheck after the domain mutex: another claimant may have committed
+            # since this transaction selected the due jobs.
+            running=db.scalar(select(SourceJob.source_id).join(Source).where(Source.domain==domain,
+                SourceJob.source_id!=job.source_id,SourceJob.state=='running',SourceJob.lease_until>now).limit(1))
+            if running:
+                continue
             if job.attempts>=job.max_attempts:
                 job.state='failed'
                 job.token=job.lease_until=None
@@ -103,6 +116,20 @@ def guard_lease(db,lease,*,now=None):
     if not job or job.state!='running' or job.token!=lease.token or utc(job.lease_until)<=now:
         raise LostLease('lease_lost')
     return job
+
+
+def renew(engine,lease,*,now=None,lease_seconds=120):
+    """Progress heartbeat; expired/stolen/disabled work cannot extend a lease."""
+    now=now or clock()
+    if type(lease_seconds) is not int or not 30 <= lease_seconds <= 900:
+        raise ValueError('invalid_lease_duration')
+    with Session(engine) as db:
+        source=lock_source(db,engine,lease.source_id)
+        if not source.enabled:
+            raise LostLease('lease_lost')
+        job=guard_lease(db,lease,now=now)
+        job.lease_until=now+timedelta(seconds=lease_seconds)
+        db.commit()
 
 
 def complete(engine,lease,*,now=None):

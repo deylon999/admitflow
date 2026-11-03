@@ -780,3 +780,7 @@ B11 7/30:archive-only SGU adapter attested;all573 original rows independently ma
 ## S147 — 2026-11-03 — B11 8/30 T030
 
 B11 8/30:25 real-source/quarantine/publishing/size checks passed;bad normalization retains573-row last-good snapshot,unknowns remainnull,publication enforces adapter cap.
+
+## S148 — 2026-11-03 — B11 9/30 T032
+
+B11 9/30:actual SGUHTTPS/573rows/PG worker cycle+idle passed,current replay passed;16 local+11nativequeue+2nativeSGU/API checks verify heartbeat/domain limits and API isolation.

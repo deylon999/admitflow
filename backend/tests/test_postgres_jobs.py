@@ -20,6 +20,11 @@ from test_worker import (
     test_worker_lost_lease_cannot_publish,
     test_disable_during_fetch_prevents_publication,
 )
+from test_domain_queue import (
+    test_same_domain_is_serialized_but_other_domains_are_not,
+    test_progress_heartbeat_cannot_revive_expired_or_disabled_owner,
+    test_different_domains_can_run_at_once,
+)
 
 pytestmark = pytest.mark.postgres
 

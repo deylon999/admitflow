@@ -11,7 +11,7 @@ from ..database import make_engine
 from ..jobs import SourceJob, disable, enqueue
 from .contracts import AdapterError
 from .publishing import binding_from_db
-from .registry import PRODUCTION_REGISTRY
+from .registry import PRODUCTION_REGISTRY, runtime_registry
 from .status import source_status
 
 
@@ -50,7 +50,7 @@ def main(argv=None):
                 result['truncated']=len(result['items'])>100
                 result['items']=result['items'][:100]
         else:
-            result=operate(engine,args.action,args.source_id)
+            result=operate(engine,args.action,args.source_id,registry=runtime_registry())
         print(json.dumps(result,default=lambda value:value.isoformat()),flush=True)
         return 0
     except AdapterError as error:

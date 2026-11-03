@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-03T17:25:40.965076+00:00",
+  "success": true,
+  "actualWorkerProcesses": 2,
+  "transport": "private original replay",
+  "outcomes": [
+    "success",
+    "idle"
+  ],
+  "sourceId": "sgu-2026-4588",
+  "kind": "archive",
+  "rows": 573,
+  "seats": 16,
+  "sourceUpdatedAt": null,
+  "rawBytes": 5851174,
+  "rawSha256": "e2e8686ed7de4687104aeac64bade4165afd90c354ff2265e869b9cd560906e8",
+  "intervalSeconds": 900,
+  "sourceSnapshots": 1,
+  "fetchedAt": "2026-11-03T17:25:39.251042+00:00",
+  "scope": "private original replay,no HTTP;second process idle;not24h live-soak or automated admission assessment",
+  "cleanup": true
+}

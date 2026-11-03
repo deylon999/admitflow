@@ -1115,7 +1115,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T027",
@@ -1123,8 +1123,11 @@
         "T081"
       ],
       "deliverables": [
-        "backend/app/worker/",
-        "backend/tests/integration/"
+        "backend/app/worker.py",
+        "backend/app/jobs.py",
+        "backend/tests/test_postgres_jobs.py",
+        "backend/tests/test_postgres_sgu.py",
+        "scripts/rehearse_sgu_worker.py"
       ],
       "steps": [
         "Сделать PostgreSQL jobs, атомарный lease, heartbeat, max retries и лимиты домена",
@@ -1134,7 +1137,12 @@
         "Одно задание не публикуется дважды",
         "Worker не блокирует API и не создаёт шторм запросов"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 9/30:actual SGUHTTPS/573rows/PG worker cycle+idle passed,current replay passed;16 local+11nativequeue+2nativeSGU/API checks verify heartbeat/domain limits and API isolation."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -1290,11 +1290,11 @@
 
 ### T032. Реализовать планировщик и отдельный worker
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T014, T027, T028, T081.
 
-**Результаты/файлы:** `backend/app/worker/`; `backend/tests/integration/`.
+**Результаты/файлы:** `backend/app/worker.py`; `backend/app/jobs.py`; `backend/tests/test_postgres_jobs.py`; `backend/tests/test_postgres_sgu.py`; `scripts/rehearse_sgu_worker.py`.
 
 **Шаги:**
 
@@ -1309,7 +1309,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 9/30:actual SGUHTTPS/573rows/PG worker cycle+idle passed,current replay passed;16 local+11nativequeue+2nativeSGU/API checks verify heartbeat/domain limits and API isolation.
 
 ### T033. Сохранять и публиковать снимки атомарно
 

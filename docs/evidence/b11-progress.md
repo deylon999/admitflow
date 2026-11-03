@@ -39,3 +39,7 @@ Archive-only SGU4588 adapter с exactURL/group/year/layout/573row scope и8MiB p
 ## 8/30 T030
 
 Real SGU573-row DTO проходит existing normalization;quarantine suite verified incomplete/wrong-group/duplicate/order/count/revalidation failures and immutable last-good pointer/573entries. Unknown consent/priority/score остаютсяnull. Publication теперь отдельно проверяет declared adapter byte cap перед raw write,чтобы internal injection не обходил transport policy;large backup test explicitly declares8MiB. Current real-source/publishing/validation/size suite25passed,exit0,2.45s. Formula/season/consent meaning не менялись;failed pages не освежают published snapshot.
+
+## 9/30 T032
+
+Actual separate app.worker once fetched SGU viaHTTPS,published573rows/16seats inownedPG17;secondprocessidle/onesnapshot/900s,noHTTPstorm(report b11-sgu-worker.json). После этого добавлены progress heartbeats междуphases иPGdomain concurrency mutex+running-jobfilter:expired/stolen/disabled token нельзяrevive,onedomain serialized,otherdomains parallel.16 local worker/queue checks,11nativePGqueuechecks и2nativePGreal-format/API-isolationchecks passed. While genuine-formatfetchgated,manualhealth/session/list/catalog доступнычерезsamePG. Currentcode separately replayed private original in2workerprocesses(noHTTP),573rows/success+idle,cleanuptrue(b11-sgu-worker-replay.json);externalfetchnotrepeatedwithin900s. Fixedlease/boundedfetch fencing andB10processdeath proofs retained. 24h/live/secondsource не заявлены.

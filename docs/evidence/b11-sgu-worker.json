@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-11-03T17:22:33.888660+00:00",
+  "success": true,
+  "actualWorkerProcesses": 2,
+  "outcomes": [
+    "success",
+    "idle"
+  ],
+  "sourceId": "sgu-2026-4588",
+  "kind": "archive",
+  "rows": 573,
+  "seats": 16,
+  "sourceUpdatedAt": null,
+  "rawBytes": 5851174,
+  "rawSha256": "309968faf6ab11f172589adfe7f4a5fb43797b14c18c515055b206387dca4e9a",
+  "intervalSeconds": 900,
+  "sourceSnapshots": 1,
+  "fetchedAt": "2026-11-03T17:22:31.229554+00:00",
+  "scope": "one actual archive HTTP cycle;second process idle;not24h live-soak or automated admission assessment",
+  "cleanup": true
+}
