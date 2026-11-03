@@ -961,7 +961,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T008",
         "T022",
@@ -981,7 +981,12 @@
         "Основной путь выполним клавиатурой",
         "Нет скрытых кнопок/обрезанных чисел и потери смысловых меток"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 25/30:manual/archive keyboard and focus recovery,320px/longnames/million values,8contrastpairs/both themes andactualPDF passed;9currentChromium."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5627,6 +5632,111 @@
           "note": "B11 23/30:actual SGU573x2 PostgreSQL/raw restore exact across17tables;ownership,history,key continuity,replay/tombstones and corruption refusal passed,measured localtimings."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T183",
+      "title": "Проверить архивные данные при смене гостя между вкладками",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T025",
+        "T021"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/source-session.spec.ts"
+      ],
+      "steps": [
+        "Проверить скрытие карточек/истории и поздних ответов",
+        "Явная синхронизация показывает только нового владельца"
+      ],
+      "acceptance": [
+        "Старые факты не появляются после reset в другой вкладке",
+        "Нет скрытого POSTsession при смене гостя"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T184",
+      "title": "Проверить текущий архивный контур в локальных контейнерах",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T035",
+        "T181",
+        "T023"
+      ],
+      "deliverables": [
+        "docs/evidence/b11-container.json",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Собрать текущие образы и применить миграции в owned Compose",
+        "Проверить API/UI,nginx,перезапуск и сохранность архива без нового HTTPfetch"
+      ],
+      "acceptance": [
+        "Фактическая схема/снимок сохранены после recreate",
+        "БД/worker не выставлены наружу;версия и ограничения записаны"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T185",
+      "title": "Измерить чтение573-строчного архива с20подписками",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T177",
+        "T179"
+      ],
+      "deliverables": [
+        "scripts/measure_archive.py",
+        "docs/evidence/b11-archive-performance.json"
+      ],
+      "steps": [
+        "Задать локальный профиль до измерения",
+        "Замерить p95,ошибки иSQLзапросы при параллельных чтениях"
+      ],
+      "acceptance": [
+        "Есть реальные размеры/стенд/измерения,не пустаяБД",
+        "Узкие места измерены;результат не выдан за broadstaging нагрузку"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T186",
+      "title": "Добавить offline аудит целостности архива и ключа сопоставления",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T029",
+        "T033",
+        "T179"
+      ],
+      "deliverables": [
+        "backend/app/sources/audit.py",
+        "backend/tests/test_source_audit.py"
+      ],
+      "steps": [
+        "Сверить rawSHA256,normalizedhash,строки/места/адаптер безHTTP",
+        "Отвергать повреждение или другой identitykey безопасным кодом"
+      ],
+      "acceptance": [
+        "Аудит не меняет БД,историю илиsourceenabled",
+        "Коды кандидатов/ключ/raw не попадают в отчёт"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

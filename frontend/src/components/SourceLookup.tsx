@@ -11,6 +11,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
   const [code, setCode] = useState(''), [preview, setPreview] = useState<LookupResult | null>(null), [acknowledged, setAcknowledged] = useState(false), [attempted, setAttempted] = useState(false), [expired, setExpired] = useState(false), [saved, setSaved] = useState(false);
   const heading = useRef<HTMLHeadingElement>(null), queryClient = useQueryClient();
   const input = useRef<HTMLInputElement>(null);
+  const savedLink = useRef<HTMLAnchorElement>(null);
   useEffect(() => { input.current?.focus(); }, []);
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
   const lookup = useMutation({ mutationFn: async () => {
@@ -22,6 +23,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
     setCode(''); setPreview(null); setSaved(true);
     await queryClient.invalidateQueries({ queryKey: ['archive-directions'] });
     await queryClient.invalidateQueries({ queryKey: ['direction-budget'] });
+    requestAnimationFrame(() => savedLink.current?.focus());
   } });
   useEffect(() => { if (access.data !== 'active') { setCode(''); setPreview(null); setAcknowledged(false); } }, [access.data]);
   useEffect(() => {
@@ -58,6 +60,6 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
       {!preview.found && <p>Сверьте код, сезон и группу на официальном сайте. Отсутствие записи не означает отказ или отзыв заявления.</p>}
     </div>}
     {save.isError && <p role="alert">{save.error.message}</p>}
-    {saved && <p role="status">Архивное направление сохранено. <Link data-router-link to="/tracker">Открыть мои направления →</Link></p>}
+    {saved && <p role="status">Архивное направление сохранено. <Link ref={savedLink} data-router-link to="/tracker">Открыть мои направления →</Link></p>}
   </div>;
 }

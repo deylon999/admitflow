@@ -12,9 +12,10 @@ export function ArchiveDirections() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const client = useQueryClient();
   const refresh = useRef<HTMLButtonElement>(null);
+  const focusAfterDelete = () => requestAnimationFrame(() => (refresh.current ?? document.querySelector<HTMLElement>('main h1'))?.focus());
   const download = useMutation({ mutationFn: api.exportArchive, onSuccess: value => downloadJson(value, `admitflow-archive-${value.exportedAt.slice(0,10)}.json`) });
   const remove = useMutation({ mutationFn: (id: string) => api.removeSubscription(id), onSuccess: async () => {
-    setDeleting(null); client.removeQueries({ queryKey: ['archive-history'] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); refresh.current?.focus();
+    setDeleting(null); client.removeQueries({ queryKey: ['archive-history'] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); focusAfterDelete();
   }, onError: async (_error, id) => {
     // DELETE may have committed before its response was lost. Reconcile by read;
     // do not automatically repeat a mutation with an unknown outcome.
@@ -22,6 +23,7 @@ export function ArchiveDirections() {
     if (current && !current.some(item => item.id === id)) {
       setDeleting(null); client.removeQueries({ queryKey: ['archive-history', id] });
       await client.invalidateQueries({ queryKey: ['direction-budget'] });
+      focusAfterDelete();
     }
   } });
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });

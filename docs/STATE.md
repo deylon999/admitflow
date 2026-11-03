@@ -1,6 +1,6 @@
 # Контекст для продолжения
 
-2026-11-04, S159: **B11 — 20/30 завершено**. Пользователь запросил следующие 30 задач; осталось 10. Работать шестью пятёрками, каждую задачу проверять и коммитить. TASKS.json — реестр, STATE.json — точка продолжения.
+2026-11-04, S164: **B11 — 25/30 завершено**. Пользователь запросил следующие 30 задач; осталось 5. Работать шестью пятёрками, каждую задачу проверять и коммитить. TASKS.json — реестр, STATE.json — точка продолжения.
 
 Завершены T019, T007, T008, T013, T027, T174, T029, T030, T032, T033, T175, T022, T176, T177, T021. Проверки и ограничения: docs/evidence/b11-progress.md. Также завершены T178, T179, T180, T024, T023. Следующая пятёрка: T035 отказ/восстановление источника; T181 архивный экспорт; T182 SGU backup/restore; T025 ошибки/повторы; T026 доступность. Затем последняя пятёрка до30.
 
@@ -17,3 +17,5 @@ Own Compose admitflow-b11 на localhost8090 с настоящим архиво�
 Коммиты локальные; gh не авторизован, remoteCI T006 заблокирован. HTTPS staging/live-soak/второй источник не проверены. Продолжать самостоятельные задачи, не выдавая локальный архив за production MVP. Helper /tmp/admitflow_b11.py start/done обновляет карточки/STATE/LOG/render/check.
 
 2026-11-04 runtime recheck: old /tmp logs/helpers and own B11 containers disappeared; neighboring radar/flashcards left untouched. Recreated /tmp/admitflow_b11.py and anonymized fixturePG/API8013. Private key/raw files must be checked for existence, not printed. Native16history/write+1Chromium current checks passed. Old STATE runtime descriptions above are historical until reverified.
+
+S164:Завершены также T035,T181,T182,T025,T026.Последняя пятёрка:T183 межвкладочная изоляция архива,T184 current local containers,T185573-row/20subscription load measurement,T186 offline integrity/key audit,T043 security acceptance.96Chromium+102unit/current9a11y passed;fullbackend438passed/2stale test assertions,eachcorrected/targetedpass;final fullrun afteraudit stillrequired.SGUrestore exact17tables/1146rows report b11-sgu-restore.json.No secondsource/staging/live claims.
