@@ -235,3 +235,9 @@ CI запускает backend с `python -m pytest -q --require-postgres --junit
 Worker использует тот же backend image, напрямую запускает app.worker loop, ждёт здоровые db/backend и не запускает миграцию параллельно API. Backend/worker разделяют raw_data:/app/var/raw; этот каталог подготовлен в image для пользователя app. Worker не публикует портов. Пустой production registry и выключенные источники сохраняются: профиль сам не подключает вуз и не подтверждает автоматизацию. Health API не доказывает продвижение worker.
 
 Если в прежнем контейнере уже были raw-файлы вне volume, сохранить и проверить их до пересоздания: новое монтирование скрывает старый каталог слоя контейнера. Не удалять postgres_data/raw_data и не переносить приватные raw в Git. В этой среде проверена только конфигурация профилей; сборка image, права volume, перезапуск worker и настоящие циклы PG/source ещё не приняты. T047/T067 и релизные gates остаются открыты.
+
+### Воспроизводимая локальная PostgreSQL-проверка (B10)
+
+Из корня на Linux: `backend/.venv/bin/python scripts/test_postgres.py --python "$PWD/backend/.venv/bin/python"`. Нужны Docker Engine и установленные backend requirements-dev. Скрипт создаёт собственный PostgreSQL17 контейнер со случайным именем/localhost-портом и disposable database, ждёт TCP готовность (временный initdb socket не достаточен), запускает migrations с `--require-postgres`, останавливает только свой контейнер в finally. Рабочие volumes не используются. Позиционными аргументами можно передать другие native test files; набор без native cases отказывается считаться успешным. Ctrl-C завершает контейнер штатно; после kill -9 проверить `docker ps -a --filter name=admitflow-test-` вручную.
+
+B10: все21 migration-теста выполнены, включая7 actual PostgreSQL cases, на PG17.11; legacy adoption/неподходящие CHECK, fresh upgrade/downgrade/repeat и Alembic model alignment проверены. Это локальная проверка, remote CI и миграция production данных отдельно.

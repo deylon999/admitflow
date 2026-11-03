@@ -424,7 +424,7 @@
 
 ### T014. Ввести Alembic и PostgreSQL-проверки
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T004, T015.
 
@@ -444,6 +444,7 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S012: SQLite migration suite и PG offline SQL проходят, реальный PG skipped; CI подготовлен.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10: disposable Docker runner passed all21 migration cases including7 actual PostgreSQL checks; no-native selection fails exit1 and owned container is cleaned up.
 
 ### T015. Утвердить идентичность и каноническую модель данных
 

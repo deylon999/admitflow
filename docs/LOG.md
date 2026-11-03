@@ -710,3 +710,7 @@ docker compose config --quiet and --profile automation config --quiet exit0 desp
 ## S130 — 2026-11-03 — B10 T103
 
 B10: native PostgreSQL17.11 legacy adoption/refusal: 6 passed, exit0; old IDs/history preserved, incompatible CHECK rejected. See runtime evidence; initial startup-readiness race recorded.
+
+## S131 — 2026-11-03 — B10 T014
+
+B10: disposable Docker runner passed all21 migration cases including7 actual PostgreSQL checks; no-native selection fails exit1 and owned container is cleaned up.

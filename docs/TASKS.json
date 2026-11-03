@@ -543,7 +543,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "L",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T004",
         "T015"
@@ -565,6 +565,10 @@
         {
           "path": "docs/LOG.md",
           "note": "S012: SQLite migration suite и PG offline SQL проходят, реальный PG skipped; CI подготовлен."
+        },
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10: disposable Docker runner passed all21 migration cases including7 actual PostgreSQL checks; no-native selection fails exit1 and owned container is cleaned up."
         }
       ],
       "blockedReason": null
