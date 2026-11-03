@@ -1327,7 +1327,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T031",
         "T032",
@@ -1415,7 +1415,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T023",
         "T034",
@@ -1433,7 +1433,20 @@
         "Повтор worker не создаёт повторных сообщений",
         "Чужие события недоступны, прочтение идемпотентно"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
+        },
+        {
+          "path": "backend/tests/test_changes.py",
+          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
+        },
+        {
+          "path": "frontend/tests/e2e/changes.spec.ts",
+          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
+        }
+      ],
       "blockedReason": null
     },
     {

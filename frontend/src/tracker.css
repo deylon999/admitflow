@@ -183,3 +183,4 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 .archive-scenario details, .scenario-changes { margin-top: 1rem; }
 .scenario-history ol { padding-left: 1.2rem; }
 .scenario-history li { margin-block: 1rem; }
+.change-feed,.scenario-comparison{overflow-wrap:anywhere}.change-feed{margin-block:1.5rem;padding:1.25rem}.change-feed>ol{padding-left:1.25rem}.change-feed>ol>li{margin-block:1.25rem}.scenario-comparison{border:1px solid var(--border);padding:1rem;margin-block:1rem}

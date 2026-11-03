@@ -1,3 +1,4 @@
+import { ScenarioComparison } from './ScenarioComparison';
 import { useState } from 'react';
 import { useInfiniteQuery, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
@@ -18,7 +19,7 @@ export function ArchiveScenario({ id, group }: { id: string; group: SourceGroup 
     select: data => { const items = data.pages.flatMap(page => page.items); assertScenarioOrder(items); return { ...data, items }; } });
   const value = current.data, result = value?.result, explanation = value?.explanation;
   return <section className="archive-scenario" aria-label="Условный сценарий по списку">
-    <h4>Условный сценарий по согласиям</h4>
+    <h4>Условный сценарий по согласиям</h4><ScenarioComparison id={id} group={group} />
     {current.isPending && <p role="status">Загружаем сохранённый сценарий…</p>}
     {current.isError && <p role="alert">Не удалось перечитать сценарий. {value ? 'Ниже показан ранее загруженный результат с его датой.' : ''} <button className="text-button" type="button" onClick={() => void current.refetch()}>Повторить сценарий</button></p>}
     {value && !value.available && <p>{value.notice}</p>}

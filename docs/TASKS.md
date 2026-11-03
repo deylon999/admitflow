@@ -1406,7 +1406,7 @@
 
 ### T037. Добавить эксплуатационное управление источниками
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T031, T032, T035, T082.
 
@@ -2024,7 +2024,7 @@
 
 ### T040. Показать изменения внутри приложения
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T023, T034, T039.
 
@@ -2043,7 +2043,9 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
+- [backend/tests/test_changes.py](../backend/tests/test_changes.py) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
+- [frontend/tests/e2e/changes.spec.ts](../frontend/tests/e2e/changes.spec.ts) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
 
 ### T075. Сравнение сохранённых ручных направлений
 

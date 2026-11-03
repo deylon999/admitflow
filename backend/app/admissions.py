@@ -160,3 +160,11 @@ class Assessment(Base):
     state: Mapped[str] = mapped_column(String(32))
     facts: Mapped[dict] = mapped_column(JSON)
     assumptions: Mapped[list] = mapped_column(JSON)
+
+
+class ChangeEvent(Base):
+    __tablename__='change_events'
+    id: Mapped[str]=mapped_column(String(36),primary_key=True,default=new_id)
+    assessment_id: Mapped[str]=mapped_column(ForeignKey('assessments.id',ondelete='CASCADE'),unique=True,index=True)
+    created_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))
+    seen_at: Mapped[datetime | None]=mapped_column(DateTime(timezone=True))

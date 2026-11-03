@@ -41,6 +41,13 @@ def main():
                 for source_id in (BINDING.source_id,GUAP.source_id):enable_scenarios(engine,source_id,registry=registry)
         finally:
             engine.dispose()
+        control = os.getenv('E2E_SOURCE_CONTROL')
+        if control:
+            import json
+            path=Path(control)
+            if path.parent!=Path('/tmp'):raise ValueError('Fixture control must be under /tmp')
+            fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o600)
+            with os.fdopen(fd,'w') as stream:json.dump({'url':runtime.url(),'raw':str(Path(folder)/'raw'),'fixtureOnly':True},stream)
         env = {**os.environ, 'DATABASE_URL': runtime.url(), 'AUTO_CREATE_SCHEMA': 'false', 'RAW_STORE_PATH': str(Path(folder)/'raw')}
         child = subprocess.Popen([sys.executable, '-m', 'uvicorn', 'app.main:app', '--host', '127.0.0.1', '--port', '8013', '--no-access-log'], cwd=ROOT/'backend', env=env)
         def stop(*_):
@@ -50,6 +57,7 @@ def main():
         try:
             child.wait()
         finally:
+            if control:Path(control).unlink(missing_ok=True)
             if child.poll() is None:
                 child.terminate()
                 child.wait(timeout=10)

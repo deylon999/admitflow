@@ -59,6 +59,12 @@ def install(app,database,owner,registry):
         assessment=db.scalar(select(Assessment).where(Assessment.subscription_id==value.id,Assessment.snapshot_id==record.group.snapshot_id,Assessment.rules_version==VERSION))
         if assessment is None:return ScenarioRead(subscription_id=value.id,group_id=value.group_id,source_id=record.group.source_id,available=False,snapshot_id=record.group.snapshot_id,notice='Для этого снимка ещё нет проверенного условного сценария.')
         return read(assessment,db.get(SourceSnapshot,assessment.snapshot_id))
+    @app.get('/api/v1/subscriptions/{subscription_id}/scenarios/{assessment_id}',response_model=ScenarioRead)
+    def detail(subscription_id:str=Path(max_length=36),assessment_id:str=Path(max_length=36),owner_hash:str=Depends(owner),db:Session=Depends(database)):
+        value=own(db,subscription_id,owner_hash)
+        assessment=db.scalar(select(Assessment).where(Assessment.subscription_id==value.id,Assessment.id==assessment_id,Assessment.rules_version==VERSION))
+        if assessment is None:raise HTTPException(404,'Версия сценария не найдена.')
+        return read(assessment,db.get(SourceSnapshot,assessment.snapshot_id))
     @app.get('/api/v1/subscriptions/{subscription_id}/scenario-history',response_model=ScenarioPage)
     def history(subscription_id:str=Path(max_length=36),before:str|None=Query(None,max_length=36),limit:int=Query(20,ge=1,le=100),owner_hash:str=Depends(owner),db:Session=Depends(database)):
         value=own(db,subscription_id,owner_hash)

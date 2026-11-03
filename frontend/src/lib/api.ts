@@ -1,3 +1,4 @@
+import { parseChange, parseChanges } from './change-contracts';
 import { parseScenario, parseScenarioPage } from './scenario-contracts';
 import type { CalculationValues } from './calculator';
 import type { DataExport, SessionInfo, WatchCreate } from './contracts';
@@ -131,6 +132,9 @@ export const api = {
   },
   subscriptions: (signal?: AbortSignal) => read('/subscriptions', parseArchiveDirections, signal),
   scenario: (id: string, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/scenario`, parseScenario, signal),
+  scenarioDetail: (id: string, assessment: string, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/scenarios/${encodeURIComponent(assessment)}`, parseScenario, signal),
+  changes: (before: string | null, signal?: AbortSignal) => read(`/changes?limit=20${before ? `&before=${encodeURIComponent(before)}` : ''}`, parseChanges, signal),
+  async seeChange(id: string) { await ensureSession(); return parseChange(await request(`/changes/${encodeURIComponent(id)}/seen`, { method: 'POST' })); },
   scenarioHistory: (id: string, before: string | null, signal?: AbortSignal) => read(`/subscriptions/${encodeURIComponent(id)}/scenario-history?limit=20${before ? `&before=${encodeURIComponent(before)}` : ''}`, parseScenarioPage, signal),
   exportArchive: () => read('/archive-export', parseArchiveExport),
   sourceChecks: async (id: string, signal?: AbortSignal) => parseSourceChecks(await request(`/sources/${encodeURIComponent(id)}/checks`, { signal })),

@@ -16,13 +16,13 @@ export function ArchiveDirections() {
   const focusAfterDelete = () => requestAnimationFrame(() => (refresh.current ?? document.querySelector<HTMLElement>('main h1'))?.focus());
   const download = useMutation({ mutationFn: api.exportArchive, onSuccess: value => downloadJson(value, `admitflow-archive-${value.exportedAt.slice(0,10)}.json`) });
   const remove = useMutation({ mutationFn: (id: string) => api.removeSubscription(id), onSuccess: async () => {
-    setDeleting(null); for (const key of ['archive-history', 'scenario', 'scenario-history']) client.removeQueries({ queryKey: [key] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); focusAfterDelete();
+    setDeleting(null); await client.invalidateQueries({ queryKey: ['changes'] }); for (const key of ['archive-history', 'scenario', 'scenario-history', 'scenario-detail']) client.removeQueries({ queryKey: [key] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); focusAfterDelete();
   }, onError: async (_error, id) => {
     // DELETE may have committed before its response was lost. Reconcile by read;
     // do not automatically repeat a mutation with an unknown outcome.
     const current = await client.fetchQuery({ queryKey: ['archive-directions'], queryFn: ({ signal }) => api.subscriptions(signal), staleTime: 0 }).catch(() => null);
     if (current && !current.some(item => item.id === id)) {
-      setDeleting(null); for (const key of ['archive-history', 'scenario', 'scenario-history']) client.removeQueries({ queryKey: [key, id] });
+      setDeleting(null); await client.invalidateQueries({ queryKey: ['changes'] }); for (const key of ['archive-history', 'scenario', 'scenario-history', 'scenario-detail']) client.removeQueries({ queryKey: [key, id] });
       await client.invalidateQueries({ queryKey: ['direction-budget'] });
       focusAfterDelete();
     }

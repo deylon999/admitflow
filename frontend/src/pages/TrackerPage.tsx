@@ -1,3 +1,4 @@
+import { ChangeFeed } from '../components/ChangeFeed';
 import { ArchiveDirections } from '../components/ArchiveDirections';
 import { DirectionForm } from '../components/DirectionForm';
 import { Link } from 'react-router';
@@ -158,7 +159,7 @@ export default function TrackerPage() {
     return info;
   }, onSuccess: info => {
     queryClient.setQueryData(['session-info'], info);
-    for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) queryClient.removeQueries({ queryKey: [key] });
+    for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes']) queryClient.removeQueries({ queryKey: [key] });
     queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
     download.reset();
     requestAnimationFrame(() => addButton.current?.focus());
@@ -168,13 +169,13 @@ export default function TrackerPage() {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
       await queryClient.cancelQueries({ queryKey: ['history'] });
       await queryClient.cancelQueries({ queryKey: ['session-info'] });
-      for (const key of ['archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) await queryClient.cancelQueries({ queryKey: [key] });
+      for (const key of ['archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes']) await queryClient.cancelQueries({ queryKey: [key] });
       clearDraft(); setRecovery(null); setRestored(null); draftDirty.current = false; setForm(null);
       return api.resetSession();
     },
     onSuccess: async info => {
       queryClient.setQueryData(['session-info'], info);
-      for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history']) queryClient.removeQueries({ queryKey: [key] });
+      for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes']) queryClient.removeQueries({ queryKey: [key] });
       setForm(null);
       setConfirmReset(false);
       setNotice('Создана новая гостевая сессия.');
@@ -210,7 +211,7 @@ export default function TrackerPage() {
     }} />}
     {!expired && watches.isError && watches.data && <div className="surface stale-warning" role="alert"><p>Не удалось обновить направления. Показаны последние загруженные сохранения с их исходными датами.</p><p>{errorText(watches.error)}</p><button className="text-button" type="button" disabled={watches.isFetching} onClick={() => void watches.refetch()}>Повторить обновление</button></div>}
     <CoverageSummary />
-    {!expired && <ArchiveDirections />}
+    {!expired && <><ChangeFeed /><ArchiveDirections /></>}
     {!expired && <p className="small-copy">Всего направлений: {directionTotal} из 20 (ручные и архивные вместе). JSON, сравнение и печать ниже включают только ручные направления.</p>}
     {!expired && <ImportData count={directionTotal} disabled={busy || watches.isPending || watches.isError || budget.isPending || budget.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
     {!expired && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}

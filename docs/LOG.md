@@ -892,3 +892,5 @@ S171/T034done:versionedconditional list-consentbounds/diff with immutableAssessm
 T187/T188/T031/T034/T039done:sharedJSONdecoder,two independently auditedofficialsources,actualGUAPworkerHTTP,immutableconditionalmodel/diff,storedexplanations/UI.3scenarioChromium,17TScontracts,16localmodel/storage/template and3nativePGchecks passed. Exactremainingrubric:replay/changefeed/auditedops/coverage/currentlocalacceptance. Nextfive:T036,T040,T037,T038,T189;T036inprogress. Do notfinishatfive orrelabelfrom60to70withoutfunctionalproof.
 
 S172/T036done:two nativePG replayruns,6stages,identicalsemanticoutcomes/0HTTP/cleanuptrue. Genuine-derived baselines+explicitlysyntheticconsent/template/failure/recovery/absence,no live-soakclaim. T040inprogress:ownerchangefeed/seen-state;continue to70rubric.
+
+S172/T040done:private deduped changes,stable seen/cursors,exact storedversioncomparison.3local+3nativePG+23migration+6TScontracts+4actualAPIChromium passed. T037inprogress;remainingops/coverage/finalacceptance.

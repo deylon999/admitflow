@@ -1,6 +1,6 @@
 """Append immutable scenario versions within publication/confirmation transactions."""
 from sqlalchemy import select
-from .admissions import Assessment,Campaign,CandidateEntry,CompetitionGroup,Source,SourceSnapshot,Subscription
+from .admissions import Assessment,Campaign,CandidateEntry,ChangeEvent,CompetitionGroup,Source,SourceSnapshot,Subscription
 from .scenarios import VERSION,assess,ScenarioResult,ASSUMPTIONS
 
 
@@ -43,7 +43,9 @@ def append_one(db,subscription,snapshot,*,previous=None,rows=None,at=None):
         from .source_history import assessment_clock
         at=assessment_clock()
     value=Assessment(subscription_id=subscription.id,group_id=group.id,snapshot_id=snapshot.id,rules_version=VERSION,assessed_at=at,state=result.state,facts=facts,assumptions=result.assumptions)
-    db.add(value);return value
+    db.add(value);db.flush()
+    if facts['diff'] and old is not None:db.add(ChangeEvent(assessment_id=value.id,created_at=at))
+    return value
 
 
 def append_source(db,snapshot,*,previous=None):
