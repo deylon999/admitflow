@@ -848,3 +848,7 @@ B11 24/30:96Chromium+102unit passed;explicit source error recovery/401privacy/lo
 ## S164 — 2026-11-04 — B11 25/30 T026
 
 B11 25/30:manual/archive keyboard and focus recovery,320px/longnames/million values,8contrastpairs/both themes andactualPDF passed;9currentChromium.
+
+## S165 — 2026-11-04 — B11 26/30 T183
+
+B11 26/30:2nativeAPI/Chromium multi-tab archive privacy cases passed;old facts/history and delayed replies hidden,newowneronly after explicitsync,no automaticbootstrap.

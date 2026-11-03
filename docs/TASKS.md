@@ -3859,7 +3859,7 @@
 
 ### T183. Проверить архивные данные при смене гостя между вкладками
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T025, T021.
 
@@ -3878,7 +3878,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 26/30:2nativeAPI/Chromium multi-tab archive privacy cases passed;old facts/history and delayed replies hidden,newowneronly after explicitsync,no automaticbootstrap.
 
 ### T184. Проверить текущий архивный контур в локальных контейнерах
 

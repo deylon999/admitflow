@@ -5640,7 +5640,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T025",
         "T021"
@@ -5656,7 +5656,12 @@
         "Старые факты не появляются после reset в другой вкладке",
         "Нет скрытого POSTsession при смене гостя"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 26/30:2nativeAPI/Chromium multi-tab archive privacy cases passed;old facts/history and delayed replies hidden,newowneronly after explicitsync,no automaticbootstrap."
+        }
+      ],
       "blockedReason": null
     },
     {

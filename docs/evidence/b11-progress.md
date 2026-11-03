@@ -119,3 +119,7 @@ Full backend/native run438passed/2failed,0skip: stale diagnostics revision liter
 ### T026 — 25/30 — keyboard, mobile and contrast
 
 Fixed focus loss when an archive save unmounts its confirmation (focus goes to saved-record link) and when final archive deletion removes its entire section (focus returns to main heading). Cancel/Escape returns to original delete button. Current production-build9Chromium checks passed: complete archive keyboard save/cancel/delete at320px in both themes;8semantic palette pairs each≥4.5;manual keyboard390/1440;20direction focus fallback;pending Escape protection;long160/200character titles and1000000numbers at320px;filtered actualPDF with provenance. Existing full96Chromium includes live errors,labels,mobile historyscroll. This is tested Chromium behavior,not a full assistive-technology certification or Firefox/WebKit support claim;T045 remains open.
+
+### T183 — 26/30 — archive owner changes across tabs
+
+Two actual Chromium/multi-tab cases passed on current production build+native fixtureAPI. Existing archive facts/history disappear after reset in another tab without an automatic sessionPOST;explicit sync reveals only replacement guest's distinctrank2. A delayed previous-owner history response arriving after reset/sync cannot repopulate the old DOM. Existing query cancellation/epoch guard required no weakening or extra data storage. Test uses only fakeFIXTURE IDs,not real applicant identifiers.
