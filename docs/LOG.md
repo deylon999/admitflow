@@ -742,3 +742,9 @@ B10:actual pg_dump/raw restoration passed;15 tables exact, ownership/history/rep
 ## S138 — 2026-11-03 — B10 T172
 
 B10: reproduced missing JS as HTML200, fixed nginx404/nosniff/cache policy;3 actual nginx/chunk-recovery checks passed after fresh image rebuild.
+
+## S139 — 2026-11-03 — B10 T173
+
+B10 complete10/10:owned4-service Compose recreation preserved history/ownership/retries/raw and actual worker resumed safely. Final332 backend/0skip,92 frontend/build,72 Chromium passed; temporary resources cleaned,preview8089 retained.
+
+S139 final checkpoint: B10 ten tasks finished in two groups of five; 124done/173total,3blocked/1review/45todo, no active task, nextT019. Backend332 passed/0skipped with required33 native cases; frontend92 passed/build successful; all72 Chromium passed on current production nginx/PG API. Roadmap --render/--check valid173;6 invalid-state self-tests rejected; git diff --check clean. Updated STATE/PROGRESS/DECISIONS/RUNBOOK and concrete evidence/commands. Preview8089 retained, test PG55439 and all random rehearsal resources removed. Native PG and local Compose no longer blocked; GitHub read-only reachable but gh unauthenticated, remote push/CI unconfirmed. Real source/fonts/staging/release gates remain open. All10 task commits use existing configured author; no published history rewritten.

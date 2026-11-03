@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 123 из 173 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 124 из 173 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -184,7 +184,7 @@
 - [x] T170 Verify atomic PostgreSQL snapshot publication
 - [x] T171 Rehearse PostgreSQL and raw backup restoration
 - [x] T172 Serve production assets without SPA fallback on missing chunks
-- [ ] T173 Verify Compose recreation persistence and worker recovery
+- [x] T173 Verify Compose recreation persistence and worker recovery
 
 ## Резерв и выпуск
 

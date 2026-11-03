@@ -551,7 +551,8 @@
       "deliverables": [
         "backend/alembic/",
         "backend/alembic.ini",
-        "backend/tests/integration/"
+        "backend/tests/test_migrations.py",
+        "scripts/test_postgres.py"
       ],
       "steps": [
         "Создать миграции текущих и целевых сущностей без потери ручных данных",
@@ -648,8 +649,10 @@
         "T068"
       ],
       "deliverables": [
-        "backend/app/services/",
-        "backend/tests/integration/"
+        "backend/app/operations.py",
+        "backend/app/main.py",
+        "backend/tests/test_writes.py",
+        "backend/tests/test_postgres_writes.py"
       ],
       "steps": [
         "Добавить транзакционные гарантии и идемпотентность создающих операций",
@@ -5094,7 +5097,12 @@
         "T163"
       ],
       "deliverables": [
-        "frontend/playwright.config.ts"
+        "frontend/playwright.config.ts",
+        "frontend/tests/e2e/tracker-tools.spec.ts",
+        "frontend/tests/e2e/keyboard.spec.ts",
+        "frontend/src/components/UniversityPicker.tsx",
+        "frontend/src/pages/TrackerPage.tsx",
+        ".github/workflows/ci.yml"
       ],
       "steps": [
         "Verify the compiled React application in the browser",
@@ -5236,7 +5244,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T067",
         "T169",
@@ -5255,7 +5263,12 @@
       "acceptance": [
         "Recreating all owned Compose services preserves exact guest/history/retry state and raw bytes in volumes; actual worker processes a queued unsupported source after recreation without fetch/publication; ports and permissions remain correct; final checks and handoff are current."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10 complete10/10:owned4-service Compose recreation preserved history/ownership/retries/raw and actual worker resumed safely. Final332 backend/0skip,92 frontend/build,72 Chromium passed; temporary resources cleaned,preview8089 retained."
+        }
+      ],
       "blockedReason": null
     }
   ]

@@ -6,7 +6,7 @@
 
 Это инженерная оценка, не процент пройденных тестов. B10 снимает локальные блокеры PostgreSQL и Compose; реальные источники и remote CI ещё не подтверждены. Все7 release gates открыты. Текущие статусы — в TASKS.json, точка продолжения — STATE.json; исторические результаты ниже относятся к своим датам.
 
-B10, первая пятёрка:
+B10 завершён10/10,124 из173 карточек done. Итог:332 backend passed/0 skipped,92 frontend passed/build exit0,72 Chromium passed на actual nginx/PostgreSQL. Первая пятёрка:
 
 - [x] T103 — принятие старой схемы PostgreSQL с сохранением истории.
 - [x] T014 — настоящие миграции и воспроизводимый Docker runner.
@@ -14,7 +14,15 @@ B10, первая пятёрка:
 - [x] T067 — fresh Compose/nginx/API/PostgreSQL,15 HTTP checks.
 - [x] T168 —70 Chromium cases на production assets прошли; исправлены2 focus defects, CI выбирает свежую сборку.
 
-Следующие5: T169 queue/fencing, T170 atomic publish, T171 pg_dump/raw restoration, T172 production asset serving, T173 Compose recreation/worker recovery. Evidence: [B10 runtime](evidence/b10-runtime.md). Доступный локальный стенд: [кабинет8089](http://127.0.0.1:8089/tracker).
+Вторая пятёрка:
+
+- [x] T169 — native PG queue/fencing,2 независимых worker-процесса и SKIP LOCKED.
+- [x] T170 — native atomic publication,rollback и concurrent-reader visibility.
+- [x] T171 — actual pg_dump/raw restoration,exact tables/ownership/history и corruption refusals.
+- [x] T172 — production JS/CSS404,nosniff,HTML revalidation и immutable hashed resources.
+- [x] T173 — все4 Compose сервиса пересозданы с сохранением volumes/данных; actual worker возобновил persisted job.
+
+ Evidence: [B10 runtime](evidence/b10-runtime.md). Доступный локальный стенд: [кабинет8089](http://127.0.0.1:8089/tracker).
 
 | Часть проекта | Сейчас |
 | --- | --- |

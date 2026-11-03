@@ -429,7 +429,7 @@
 
 **Зависимости:** T004, T015.
 
-**Результаты/файлы:** `backend/alembic/`; `backend/alembic.ini`; `backend/tests/integration/`.
+**Результаты/файлы:** `backend/alembic/`; `backend/alembic.ini`; `backend/tests/test_migrations.py`; `scripts/test_postgres.py`.
 
 **Шаги:**
 
@@ -499,7 +499,7 @@
 
 **Зависимости:** T014, T016, T068.
 
-**Результаты/файлы:** `backend/app/services/`; `backend/tests/integration/`.
+**Результаты/файлы:** `backend/app/operations.py`; `backend/app/main.py`; `backend/tests/test_writes.py`; `backend/tests/test_postgres_writes.py`.
 
 **Шаги:**
 
@@ -3530,7 +3530,7 @@
 
 **Зависимости:** T163.
 
-**Результаты/файлы:** `frontend/playwright.config.ts`.
+**Результаты/файлы:** `frontend/playwright.config.ts`; `frontend/tests/e2e/tracker-tools.spec.ts`; `frontend/tests/e2e/keyboard.spec.ts`; `frontend/src/components/UniversityPicker.tsx`; `frontend/src/pages/TrackerPage.tsx`; `.github/workflows/ci.yml`.
 
 **Шаги:**
 
@@ -3636,7 +3636,7 @@
 
 ### T173. Verify Compose recreation persistence and worker recovery
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T067, T169, T170, T171, T172.
 
@@ -3654,7 +3654,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10 complete10/10:owned4-service Compose recreation preserved history/ownership/retries/raw and actual worker resumed safely. Final332 backend/0skip,92 frontend/build,72 Chromium passed; temporary resources cleaned,preview8089 retained.
 
 ## E6. Резерв и выпуск
 
