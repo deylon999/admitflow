@@ -37,8 +37,8 @@ def thread_lock(state, deadline):
 
 
 class RawStore:
-    def __init__(self, root: str | Path, max_bytes=5*1024*1024):
-        if max_bytes < 1:
+    def __init__(self, root: str | Path, max_bytes=8*1024*1024):
+        if type(max_bytes) is not int or not 1 <= max_bytes <= 8*1024*1024:
             raise ValueError('invalid_storage_limit')
         self.root = Path(root).resolve()
         self.root.mkdir(parents=True, exist_ok=True, mode=0o700)

@@ -7,7 +7,7 @@ from typing import Callable
 from urllib.parse import urlsplit
 
 from .contracts import AdapterError, ParsedList, SourceBinding
-from .fetcher import FetchResult, valid_domains
+from .fetcher import DEFAULT_SOURCE_BYTES, MAX_SOURCE_BYTES, FetchResult, valid_domains
 
 
 @dataclass(frozen=True)
@@ -55,10 +55,12 @@ class Adapter:
     parse: Callable[[FetchResult, SourceBinding], ParsedList]
     attested: bool = False
     attestation: Attestation | None = None
+    max_bytes: int = DEFAULT_SOURCE_BYTES
 
     def __post_init__(self):
         if (not isinstance(self.version,str) or not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:+-]{0,79}',self.version)
-                or not valid_domains(self.domains) or not callable(self.parse) or type(self.attested) is not bool):
+                or not valid_domains(self.domains) or not callable(self.parse) or type(self.attested) is not bool
+                or type(self.max_bytes) is not int or not 1 <= self.max_bytes <= MAX_SOURCE_BYTES):
             raise ValueError('invalid_adapter_declaration')
         if self.attested and (not isinstance(self.attestation, Attestation)
                               or self.attestation.adapter_version != self.version

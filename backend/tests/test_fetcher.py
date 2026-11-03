@@ -180,7 +180,7 @@ def test_bad_redirect_is_a_safe_fetch_error(location):
 
 @pytest.mark.parametrize('changes',[
     {'timeout':float('nan')},{'timeout':float('inf')},{'timeout':True},{'timeout':10**1000},
-    {'max_bytes':1.5},{'max_bytes':True},{'max_bytes':6*1024*1024},
+    {'max_bytes':1.5},{'max_bytes':True},{'max_bytes':8*1024*1024+1},
     {'max_redirects':True},{'domains':{'lists.example.org'}},
     {'domains':frozenset({'*.example.org'})},{'domains':frozenset({'127.0.0.1'})},
     {'content_types':frozenset({'application/octet-stream'})},

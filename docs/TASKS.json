@@ -5303,7 +5303,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T027"
       ],
@@ -5319,7 +5319,12 @@
       "acceptance": [
         "A5851174byte genuine response fits an explicitly declared8MiB policy; default remains5MiB,exchange validates selected policy and raw/backup retain hashes;8MiB+1 is rejected."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 targeted checks passed and actual bounded SGU5851174byte fetch succeeded with pinned TLS."
+        }
+      ],
       "blockedReason": null
     }
   ]

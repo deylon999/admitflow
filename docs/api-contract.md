@@ -72,3 +72,8 @@ GET session дополнительно возвращает draftScope:64 lowerc
 POST snapshots принимает необязательный X-Expected-Snapshot с ID базового снимка. Новый UI передаёт его всегда. Для новой операции несовпадение latest возвращает409 без записи, плохой/неоднозначный заголовок400; кешированный replay возвращает прежний ответ без добавления истории. Старые клиенты без заголовка сохраняют прежний контракт. Владелец блокируется существующей транзакцией; native PostgreSQL-конкуренция пока не проверена.
 
 Блокировщик data router теперь защищает SPA back/forward в пределах документа; dirty departure подтверждается один раз, pending save не разрешает уход. Полная загрузка документа/другой origin по-прежнему защищены beforeunload/document guard. Восстановление после аварии браузера не гарантировано: оно зависит от сохранности sessionStorage вкладки.
+
+## Аттестация источников B11
+
+
+B11 source-adapter contract: DTO unknown/null,HMAC scope(source/group/year),official row order and immutable snapshot semantics сохранены. Adapter.attested=true теперь требует frozen Attestation:passport/fixture paths,derived/original SHA256,exact URL/season/kind/version,date и verified sample size>=min(50,total). Runtime registry не читает произвольные пути и не скачивает manifests; declaration проходит code review и CI проверку файлов/хешей. Different URL/year/kind отвергаются даже при allow_unattested. Наличие proof metadata само по себе не включает source/group и не делает source assessmentAvailable. Synthetic attestation существует только в tests fixtures; PRODUCTION_REGISTRY пока пуст.

@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 129 из 174 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 130 из 174 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -97,7 +97,7 @@
 - [x] T132 Preserve fetch outcome when spool cleanup fails
 - [x] T133 Validate adapter declarations before registry use
 - [x] T134 Apply queue policies on explicit eligible reenqueue
-- [ ] T174 Bound larger verified source responses by explicit adapter policy
+- [x] T174 Bound larger verified source responses by explicit adapter policy
 
 ## Объяснения и UX
 

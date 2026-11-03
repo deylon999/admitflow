@@ -768,3 +768,7 @@ B11 4/30:genuine SGU573-row original inspected,DOM-derived anonymized fixture re
 ## S144 — 2026-11-03 — B11 5/30 T027
 
 B11 5/30:explicit passport/fixture attestation gates implemented;33 contract/registry/coverage/fixture tests passed,unknown/null/HMAC scope preserved.
+
+## S145 — 2026-11-03 — B11 6/30 T174
+
+B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 targeted checks passed and actual bounded SGU5851174byte fetch succeeded with pinned TLS.

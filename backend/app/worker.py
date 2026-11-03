@@ -34,7 +34,7 @@ class FetchMetadata(BaseModel):
     payload_hash: str = Field(pattern='^[a-f0-9]{64}$')
     fetched_at: AwareDatetime
     charset: str | None = Field(max_length=100)
-    byte_count: int = Field(strict=True,ge=1,le=5*1024*1024)
+    byte_count: int = Field(strict=True,ge=1,le=8*1024*1024)
 
 
 def _private_write(path,body):
@@ -42,10 +42,10 @@ def _private_write(path,body):
         file.write(body)
 
 
-def _fetch_child(folder,binding,domains):
+def _fetch_child(folder,binding,domains,max_bytes=5*1024*1024):
     folder=Path(folder)
     try:
-        result=Fetcher(FetchPolicy(domains=domains)).fetch(binding.url)
+        result=Fetcher(FetchPolicy(domains=domains,max_bytes=max_bytes)).fetch(binding.url)
         metadata=FetchMetadata(state='ok',url=result.url,content_type=result.content_type,payload_hash=result.payload_hash,fetched_at=result.fetched_at,charset=result.charset,byte_count=len(result.body))
         _private_write(folder/'payload.bin',result.body)
         message=metadata.model_dump(mode='json')
@@ -61,7 +61,7 @@ def _fetch_child(folder,binding,domains):
         return
 
 
-def _read_fetch_result(folder):
+def _read_fetch_result(folder,max_bytes=5*1024*1024):
     try:
         with (folder/'result.json').open('rb') as file:
             payload=file.read(16385)
@@ -78,8 +78,10 @@ def _read_fetch_result(folder):
                 raise ValueError()
             raise FetchError(message['code'],retry_after=delay)
         metadata=FetchMetadata.model_validate(message)
+        if metadata.byte_count > max_bytes:
+            raise ValueError()
         with (folder/'payload.bin').open('rb') as file:
-            body=file.read(5*1024*1024+1)
+            body=file.read(max_bytes+1)
         if len(body)!=metadata.byte_count or hashlib.sha256(body).hexdigest()!=metadata.payload_hash:
             raise ValueError()
         return FetchResult(metadata.url,body,metadata.content_type,metadata.payload_hash,metadata.fetched_at,metadata.charset)
@@ -104,14 +106,15 @@ def cleanup_fetch_folder(folder):
         logging.getLogger('admitflow.worker').warning('fetch_cleanup_incomplete')
 
 
-def bounded_fetch(binding,domains,*,timeout=50):
+def bounded_fetch(binding,domains,*,timeout=50,max_bytes=5*1024*1024):
     # Wait for process exit, not a pipe prefix followed by an unbounded recv.
     if not isinstance(timeout,(int,float)) or not math.isfinite(timeout) or timeout<=0:
         raise ValueError('invalid_fetch_timeout')
+    FetchPolicy(domains=domains,max_bytes=max_bytes)  # Validate before spawning a process.
     deadline=time.monotonic()+timeout
     ctx=multiprocessing.get_context('spawn')
     folder=Path(tempfile.mkdtemp(prefix='admitflow-fetch-')).resolve()
-    process=ctx.Process(target=_fetch_child,args=(str(folder),binding,domains),daemon=True)
+    process=ctx.Process(target=_fetch_child,args=(str(folder),binding,domains,max_bytes),daemon=True)
     try:
         process.start()
         process.join(max(0,deadline-time.monotonic()))
@@ -119,7 +122,7 @@ def bounded_fetch(binding,domains,*,timeout=50):
             raise FetchError('timeout',retry_after=60)
         if process.exitcode!=0:
             raise FetchError('network_error',retry_after=60)
-        return _read_fetch_result(folder)
+        return _read_fetch_result(folder,max_bytes=max_bytes)
     finally:
         try:
             if process.pid is not None:
@@ -149,7 +152,7 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
             source=db.get(Source,lease.source_id)
             binding=binding_from_db(db,source)
             adapter=registry.resolve(binding,allow_unattested=allow_unattested)
-        raw=fetch(binding,adapter.domains)
+        raw=fetch(binding,adapter.domains,**({'max_bytes':adapter.max_bytes} if adapter.max_bytes != 5*1024*1024 else {}))
         store.put(raw.body,raw.payload_hash)
         parsed=adapter.parse(raw,binding)
         publish(engine,lease.source_id,parsed,raw,store,registry=registry,allow_unattested=allow_unattested,expected_binding=binding,lease_guard=lambda db:guard_lease(db,lease,now=now()))

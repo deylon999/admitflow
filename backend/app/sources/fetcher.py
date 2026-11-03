@@ -13,6 +13,8 @@ from email.utils import parsedate_to_datetime
 from email.message import Message
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
+DEFAULT_SOURCE_BYTES = 5 * 1024 * 1024
+MAX_SOURCE_BYTES = 8 * 1024 * 1024
 
 class FetchError(Exception):
     def __init__(self, code, *, retry_after=None):
@@ -66,14 +68,14 @@ def valid_domains(domains):
 @dataclass(frozen=True)
 class FetchPolicy:
     domains: frozenset[str]
-    max_bytes: int = 5 * 1024 * 1024
+    max_bytes: int = DEFAULT_SOURCE_BYTES
     timeout: float = 10
     max_redirects: int = 3
     content_types: frozenset[str] = frozenset({'text/html', 'application/json', 'text/csv', 'text/plain'})
 
     def __post_init__(self):
         supported = frozenset({'text/html','application/json','text/csv','text/plain'})
-        if (not valid_domains(self.domains) or type(self.max_bytes) is not int or not 1<=self.max_bytes<=5*1024*1024
+        if (not valid_domains(self.domains) or type(self.max_bytes) is not int or not 1<=self.max_bytes<=MAX_SOURCE_BYTES
                 or type(self.timeout) not in (int,float) or not 0<self.timeout<=30 or not math.isfinite(self.timeout)
                 or type(self.max_redirects) is not int or not 0<=self.max_redirects<=5
                 or not isinstance(self.content_types,frozenset) or not self.content_types or not self.content_types<=supported):
