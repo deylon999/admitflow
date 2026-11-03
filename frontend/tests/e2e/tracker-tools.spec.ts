@@ -3,6 +3,8 @@ import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 import { calculatePlace } from '../../src/lib/calculator';
 
 test.beforeEach(async ({ page }) => {
+  await page.route('**/api/v1/subscriptions', route => route.fulfill({ json: [] }));
+  await page.route('**/api/v1/direction-budget', route => route.fulfill({ json: { limit: 20, total: 0, manualCount: 0, archiveCount: 0 } }));
   await page.route('**/api/v1/session', route => route.request().method() === 'GET' ? route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } }) : route.fulfill({ status: 204 }));
 });
 

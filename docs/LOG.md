@@ -824,3 +824,7 @@ B11 18/30:archive history and factual comparison UI verified;2Chromium+10contrac
 ## S158 — 2026-11-03 — B11 19/30 T024
 
 B11 19/30:every archive number has snapshot/source/separate fetched/source-updated/checked times;6backend+9Chromium passed,failed check preserves old dates;manual model/capture clarified.
+
+## S159 — 2026-11-04 — B11 20/30 T023
+
+B11 20/30:manual-v1 calculation pinned to stored version;16nativePG write/history cases and1Chromium comparison passed,500boundary/equal-time/cursor/version refusal verified.

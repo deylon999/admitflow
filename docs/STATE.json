@@ -1,17 +1,16 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-03",
+  "updatedAt": "2026-11-04",
   "currentTask": null,
-  "nextTask": "T023",
+  "nextTask": "T035",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S158",
-  "resumeAction": "B11 19/30 complete; next T023.",
+  "lastSession": "S159",
+  "resumeAction": "B11 20/30 complete; next T035.",
   "externalConstraints": [
-    "Original HTML fixtures for pilot candidates unavailable; no real adapter attestation.",
-    "Local Inter/JetBrains Mono and licences not acquired.",
+    "One reviewed SGU2026 archive adapter; second source/live-soak not verified.",
     "Production host/domain/budget and release season not selected.",
-    "GitHub reachable via git ls-remote; gh has no authenticated hosts, remote push/CI unconfirmed."
+    "GitHub remote CI/push not verified; gh has no authenticated hosts."
   ]
 }

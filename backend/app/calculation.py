@@ -1,4 +1,5 @@
 from typing import Literal
+from types import MappingProxyType
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from pydantic.alias_generators import to_camel
@@ -41,7 +42,7 @@ class ScenarioAssessment(CamelModel):
     reason: str | None = None
 
 
-def calculate(values: CalculationInput) -> CalculationResult:
+def calculate_manual_v1(values: CalculationInput) -> CalculationResult:
     place = values.rank - values.excluded - values.no_consent
     worst = values.rank - values.excluded
     state = 'safe' if worst <= values.seats else 'conditional' if place <= values.seats else 'out'
@@ -51,6 +52,20 @@ def calculate(values: CalculationInput) -> CalculationResult:
         'out': 'За границей мест по введённым данным',
     }[state]
     return CalculationResult(place=place, worst_place=worst, seats=values.seats, state=state, status=status)
+
+
+# New calculation versions must be added, never replace the historical callable.
+MANUAL_CALCULATORS = MappingProxyType({'manual-v1': calculate_manual_v1})
+
+
+def calculate_versioned(values: CalculationInput, version: str) -> CalculationResult:
+    if version not in MANUAL_CALCULATORS:
+        raise ValueError('unsupported_manual_version')
+    return MANUAL_CALCULATORS[version](values)
+
+
+def calculate(values: CalculationInput) -> CalculationResult:
+    return calculate_versioned(values, 'manual-v1')
 
 
 def assess_scenario(body: AssessmentInput) -> ScenarioAssessment:

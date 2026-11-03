@@ -1,8 +1,8 @@
 # Контекст для продолжения
 
-2026-11-03, S154: **B11 — 15/30 завершено**. Пользователь запросил следующие 30 задач; осталось 15. Работать шестью пятёрками, каждую задачу проверять и коммитить. TASKS.json — реестр, STATE.json — точка продолжения.
+2026-11-04, S159: **B11 — 20/30 завершено**. Пользователь запросил следующие 30 задач; осталось 10. Работать шестью пятёрками, каждую задачу проверять и коммитить. TASKS.json — реестр, STATE.json — точка продолжения.
 
-Завершены T019, T007, T008, T013, T027, T174, T029, T030, T032, T033, T175, T022, T176, T177, T021. Проверки и ограничения: docs/evidence/b11-progress.md. Следующая пятёрка: T178 удаление архивной записи; T179 immutable factual history; T180 UI сравнения фактов; T024 provenance; T023 история ручного режима. Затем продолжить ещё две пятёрки до 30.
+Завершены T019, T007, T008, T013, T027, T174, T029, T030, T032, T033, T175, T022, T176, T177, T021. Проверки и ограничения: docs/evidence/b11-progress.md. Также завершены T178, T179, T180, T024, T023. Следующая пятёрка: T035 отказ/восстановление источника; T181 архивный экспорт; T182 SGU backup/restore; T025 ошибки/повторы; T026 доступность. Затем последняя пятёрка до30.
 
 SGU4588: один аттестованный архив 2026, 573 строки, общий бюджет16. Вероятности/официальный результат не рассчитываются. STU1348 — неподдержанный headers-only оригинал; второй адаптер T031 и автоматические gates остаются открыты. Не отмечать частичные broad-задачи done. Синтетические изменения для тестов явно отделять от настоящего архива.
 
@@ -15,3 +15,5 @@ Own Compose admitflow-b11 на localhost8090 с настоящим архиво�
 На15/30:100 frontend unit + отдельный новый контракт101;5 source flow+5 catalog Chromium;4 lookup/API;37 native passed, один старый table-count assertion исправлен и повторно проверен. Full396backend до новых API — исторический baseline. После всех30 нужны полный current backend/native/frontend/browser и runtime rebuild. Последний full B10 332/92/72 — исторический.
 
 Коммиты локальные; gh не авторизован, remoteCI T006 заблокирован. HTTPS staging/live-soak/второй источник не проверены. Продолжать самостоятельные задачи, не выдавая локальный архив за production MVP. Helper /tmp/admitflow_b11.py start/done обновляет карточки/STATE/LOG/render/check.
+
+2026-11-04 runtime recheck: old /tmp logs/helpers and own B11 containers disappeared; neighboring radar/flashcards left untouched. Recreated /tmp/admitflow_b11.py and anonymized fixturePG/API8013. Private key/raw files must be checked for existence, not printed. Native16history/write+1Chromium current checks passed. Old STATE runtime descriptions above are historical until reverified.

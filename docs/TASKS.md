@@ -584,7 +584,7 @@
 
 ### T023. Довести неизменяемую историю и сравнение снимков
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T014, T018, T019, T070, T074.
 
@@ -603,7 +603,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 20/30:manual-v1 calculation pinned to stored version;16nativePG write/history cases and1Chromium comparison passed,500boundary/equal-time/cursor/version refusal verified.
 
 ### T068. Реализовать атомарные ручные записи и идемпотентность
 
@@ -3810,6 +3810,52 @@
 **Доказательства:**
 
 - [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10 complete10/10:owned4-service Compose recreation preserved history/ownership/retries/raw and actual worker resumed safely. Final332 backend/0skip,92 frontend/build,72 Chromium passed; temporary resources cleaned,preview8089 retained.
+
+### T181. Экспортировать архивные факты отдельно от ручных расчётов
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T179, T180.
+
+**Результаты/файлы:** `backend/app/source_api.py`; `frontend/src/components/ArchiveDirections.tsx`.
+
+**Шаги:**
+
+1. Версионировать owner-only архивный экспорт с provenance.
+2. Не включать публичный код,HMAC или cookie в файл.
+
+**Критерии закрытия:**
+
+- Файл воспроизводит сохранённые факты и их снимки.
+- Чужие записи и идентификаторы отсутствуют;ручной JSON не меняется.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T182. Восстановить SGU-архив и подписки из PostgreSQL/raw backup
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T179, T178, T033.
+
+**Результаты/файлы:** `scripts/rehearse_postgres_restore.py`; `docs/evidence/restore.md`.
+
+**Шаги:**
+
+1. Сделать quiesced dump реального формата с обезличенными строками.
+2. Сверить все таблицы,историю,ownership,HMAC-key continuity и raw hashes.
+
+**Критерии закрытия:**
+
+- Восстановление проверено чтением и повтором операций.
+- Повреждённый backup отвергается;время и границы локального опыта записаны.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

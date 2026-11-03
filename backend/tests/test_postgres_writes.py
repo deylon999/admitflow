@@ -23,6 +23,9 @@ from test_expected_snapshot import (
     test_stale_expected_snapshot_refuses_atomically_and_cached_replay_still_works,
     test_malformed_expected_snapshot_is_not_a_write,
 )
+from test_history_pages import test_all_500_with_equal_timestamps_and_new_insert, test_cursor_is_scoped_and_invalid_limits_rejected
+from test_history_totals import test_history_total_is_all_records_not_page_size_and_is_owner_scoped
+from test_history_versions import test_new_calculator_does_not_rewrite_saved_v1, test_unknown_history_version_refuses_instead_of_silent_recalculation
 
 pytestmark = pytest.mark.postgres
 

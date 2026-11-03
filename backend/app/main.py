@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate
+from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate, calculate_versioned
 from .config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
@@ -137,7 +137,9 @@ def create_app(settings: Settings | None = None):
 
     def snapshot_read(snapshot):
         values = CalculationInput(rank=snapshot.rank, seats=snapshot.seats, excluded=snapshot.excluded, no_consent=snapshot.no_consent)
-        return SnapshotRead(id=snapshot.id, captured_at=utc(snapshot.captured_at), source_kind=snapshot.source_kind, model_version=snapshot.model_version, values=values, calculation=calculate(values))
+        try:result=calculate_versioned(values,snapshot.model_version)
+        except ValueError:raise HTTPException(409,'Версия сохранённого ручного расчёта не поддержана. Старые данные не пересчитаны новой моделью.') from None
+        return SnapshotRead(id=snapshot.id, captured_at=utc(snapshot.captured_at), source_kind=snapshot.source_kind, model_version=snapshot.model_version, values=values, calculation=result)
 
     def watch_read(watch, db, latest=None):
         latest = latest or db.scalar(select(Snapshot).where(Snapshot.watch_id == watch.id).order_by(Snapshot.captured_at.desc(), Snapshot.id.desc()).limit(1))

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-03",
+  "updatedAt": "2026-11-04",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -860,7 +860,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T018",
@@ -880,7 +880,12 @@
         "История не теряет и не повторяет записи при перелистывании",
         "Пересчёт новой версией не переписывает старый результат"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 20/30:manual-v1 calculation pinned to stored version;16nativePG write/history cases and1Chromium comparison passed,500boundary/equal-time/cursor/version refusal verified."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5549,6 +5554,59 @@
           "note": "B11 18/30:archive history and factual comparison UI verified;2Chromium+10contract checks/currentbuild passed,source/season/cursor validation and session cleanup."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T181",
+      "title": "Экспортировать архивные факты отдельно от ручных расчётов",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T179",
+        "T180"
+      ],
+      "deliverables": [
+        "backend/app/source_api.py",
+        "frontend/src/components/ArchiveDirections.tsx"
+      ],
+      "steps": [
+        "Версионировать owner-only архивный экспорт с provenance",
+        "Не включать публичный код,HMAC или cookie в файл"
+      ],
+      "acceptance": [
+        "Файл воспроизводит сохранённые факты и их снимки",
+        "Чужие записи и идентификаторы отсутствуют;ручной JSON не меняется"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T182",
+      "title": "Восстановить SGU-архив и подписки из PostgreSQL/raw backup",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T179",
+        "T178",
+        "T033"
+      ],
+      "deliverables": [
+        "scripts/rehearse_postgres_restore.py",
+        "docs/evidence/restore.md"
+      ],
+      "steps": [
+        "Сделать quiesced dump реального формата с обезличенными строками",
+        "Сверить все таблицы,историю,ownership,HMAC-key continuity и raw hashes"
+      ],
+      "acceptance": [
+        "Восстановление проверено чтением и повтором операций",
+        "Повреждённый backup отвергается;время и границы локального опыта записаны"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
