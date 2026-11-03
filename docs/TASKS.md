@@ -176,7 +176,7 @@
 
 ### T008. Сверить React-лендинг с исходными макетами
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T002, T007.
 
@@ -195,7 +195,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 3/30:four real-font screenshots compared to original PNGs,palette tokens match;documented functional copy/focus differences,6 responsive/font tests passed including1024.
 
 ### T066. Разделить frontend/backend и очистить структуру
 
@@ -371,7 +371,7 @@
 
 ### T013. Подготовить реальные и негативные fixtures
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T010, T011, T083.
 
@@ -391,8 +391,6 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S036/S046: external prerequisite rechecked; concrete resumption condition recorded.
-
-**Причина блокировки/переноса:** Original pilot list bytes unavailable: real capture returned network_error, SGU page timed out and SGUPS profile cache missed. Resume after verified original capture bundles and anonymized real fixtures; capture CLI alone is not a fixture.
 
 ### T083. Получать проверяемый пакет исходных страниц пилота
 

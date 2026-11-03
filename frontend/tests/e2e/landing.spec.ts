@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-for (const width of [320, 390, 768, 1440]) {
+for (const width of [320, 390, 768, 1024, 1440]) {
   test(`лендинг: калькулятор, темы и ширина ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     const errors: string[] = [];

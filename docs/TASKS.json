@@ -370,7 +370,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T002",
         "T007"
@@ -387,7 +387,12 @@
         "Нет переполнения и потери текста",
         "Существенные визуальные расхождения исправлены или отдельно предъявлены приёмке"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 3/30:four real-font screenshots compared to original PNGs,palette tokens match;documented functional copy/focus differences,6 responsive/font tests passed including1024."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -516,7 +521,7 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "todo",
       "dependsOn": [
         "T010",
         "T011",
@@ -540,7 +545,7 @@
           "note": "S036/S046: external prerequisite rechecked; concrete resumption condition recorded."
         }
       ],
-      "blockedReason": "Original pilot list bytes unavailable: real capture returned network_error, SGU page timed out and SGUPS profile cache missed. Resume after verified original capture bundles and anonymized real fixtures; capture CLI alone is not a fixture."
+      "blockedReason": null
     },
     {
       "id": "T014",

@@ -13,3 +13,7 @@
 Локально vendored13 variable normal WOFF2 subsets Inter/JetBrains Mono из Fontsource5.3.0,304756bytes, обе OFL лицензии, provenance и SHA256 manifest. Внешний Google CSS import удалён. Actual FontFace Latin/Cyrillic600 загружаются со своего origin с запретом всех внешних запросов; тест проверяет loaded,2+faces/family,manifest/лицензии200. Fresh preview build + fonts/landing:5 passed,exit0,7.5s. Четыре исходных PNG визуально прочитаны; tokens в styles.css используют правильные families и light/dark hierarchy. Визуальные расхождения/размеры подробно относятся к T008.
 
 При завершении T019 validator поймал nextTask=T007 со старым blocked status. Устранён уже неактуальный font-network blocker, T007 назначена in_progress; приватный незапубликованный T019 commit исправлен до реализации fonts,render/check снова валидны. Опубликованная история не менялась.
+
+## 3/30 T008
+
+Все4 original/current PNG просмотрены, основные6 цветов каждой темы совпадают с измеренными пикселями originals.4 screenshots с actual local fonts сохранены; visual.md перечисляет отличия принятого copy/manual states/дополнительной высоты/видимого focus cue. Добавлена1024px проверка; landing+fonts6 passed,exit0,320–1440/две темы. Pixel-identical или вся T026/T045 не заявлены.
