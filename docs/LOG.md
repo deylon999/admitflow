@@ -706,3 +706,7 @@ Database diagnostic regressions5 passed: actual SQLite counts/read-only rejectio
 ## S128 - 2026-11-01 - B09 4/5 (T167)
 
 docker compose config --quiet and --profile automation config --quiet exit0 despite Docker config ACL warning. Default services db/backend/frontend; automation adds worker. Shared raw_data path and app-owned image directory, no worker ports or parallel migrations. RUNBOOK includes raw-layer preservation and explicit Engine/image/permissions/runtime limitations; no container started or user volume changed.
+
+## S130 — 2026-11-03 — B10 T103
+
+B10: native PostgreSQL17.11 legacy adoption/refusal: 6 passed, exit0; old IDs/history preserved, incompatible CHECK rejected. See runtime evidence; initial startup-readiness race recorded.

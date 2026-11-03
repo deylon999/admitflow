@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-01",
+  "updatedAt": "2026-11-03",
   "currentTask": null,
-  "nextTask": "T168",
+  "nextTask": "T014",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S128",
-  "resumeAction": "B09 4/5 verified; native PG/Compose/CI/source gates unchanged.",
+  "lastSession": "S130",
+  "resumeAction": "B10: T103 verified. Continue T014; see docs/evidence/b10-runtime.md.",
   "externalConstraints": [
     "Original HTML fixtures for pilot candidates unavailable; no real adapter attestation.",
     "PostgreSQL unavailable; Docker Engine/config ACL prevents runtime checks.",

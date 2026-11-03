@@ -249,7 +249,7 @@
 
 ### T103. Fix PostgreSQL legacy CHECK reflection during migration adoption
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T004, T015.
 
@@ -272,6 +272,7 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S058: fix implemented; migration regressions14 passed/7 real PG skipped, full backend200 passed/7 skipped. Docker runtime blocked by Engine ACL; preserve existing volume, validate real PG before done.
 - [docs/evidence/t103-docker-smoke.json](../docs/evidence/t103-docker-smoke.json) — S059: 15 real local HTTP checks passed on8080, two new guest sessions deleted204. Not evidence of image SHA, DB engine/revision or legacy migration; T103 remains review.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10: native PostgreSQL17.11 legacy adoption/refusal: 6 passed, exit0; old IDs/history preserved, incompatible CHECK rejected. See runtime evidence; initial startup-readiness race recorded.
 
 ## E1. Источники и правила
 

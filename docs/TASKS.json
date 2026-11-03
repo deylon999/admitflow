@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-01",
+  "updatedAt": "2026-11-03",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -3123,7 +3123,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T004",
         "T015"
@@ -3154,6 +3154,10 @@
         {
           "path": "docs/evidence/t103-docker-smoke.json",
           "note": "S059: 15 real local HTTP checks passed on8080, two new guest sessions deleted204. Not evidence of image SHA, DB engine/revision or legacy migration; T103 remains review."
+        },
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10: native PostgreSQL17.11 legacy adoption/refusal: 6 passed, exit0; old IDs/history preserved, incompatible CHECK rejected. See runtime evidence; initial startup-readiness race recorded."
         }
       ],
       "blockedReason": null
