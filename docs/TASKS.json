@@ -925,7 +925,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T019",
         "T021",
@@ -947,7 +947,12 @@
         "Интерфейс не зависает в бесконечном pending",
         "Повтор после неизвестного исхода записи безопасен"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 24/30:96Chromium+102unit passed;explicit source error recovery/401privacy/lostDELETE reconciliation;two backend test assumptions corrected and targeted reruns passed."
+        }
+      ],
       "blockedReason": null
     },
     {

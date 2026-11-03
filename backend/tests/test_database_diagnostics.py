@@ -17,7 +17,7 @@ def test_current_database_report_is_readonly_redacted_and_preserves_file(client,
     database=application.state.engine.url.database
     before=hashlib.sha256(open(database,'rb').read()).hexdigest()
     report=diagnose(application.state.engine.url.render_as_string(hide_password=False))
-    assert report['status']=='revision_current' and report['observedRevisions']==['0005']
+    assert report['status']=='revision_current' and report['observedRevisions']==['0007']
     assert report['manualCounts']=={'browser_sessions':1,'watches':1,'snapshots':1,'operation_records':0}
     assert client.cookies.get(COOKIE) not in json.dumps(report)
     assert watch['title'] not in json.dumps(report) and watch['id'] not in json.dumps(report)

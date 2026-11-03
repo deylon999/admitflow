@@ -61,7 +61,9 @@ def test_gc_waits_until_publication_commit(source_engine,tmp_path,monkeypatch):
     entered,release=threading.Event(),threading.Event()
     original=Session.commit
     def paused(db):
-        if any(isinstance(item,PublishedSnapshot) for item in db.new):
+        # Fact-history queries can flush and release the pointer object before
+        # commit. Read the uncommitted pointer in this transaction explicitly.
+        if db.get(PublishedSnapshot,'source-1') is not None:
             entered.set()
             assert release.wait(3)
         return original(db)

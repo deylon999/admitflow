@@ -1908,7 +1908,7 @@
 
 ### T025. Закрыть ошибки загрузки и повторных действий
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T019, T021, T024, T072, T073, T098.
 
@@ -1927,7 +1927,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 24/30:96Chromium+102unit passed;explicit source error recovery/401privacy/lostDELETE reconciliation;two backend test assumptions corrected and targeted reruns passed.
 
 ### T026. Проверить доступность кабинета и мобильный UX
 

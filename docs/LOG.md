@@ -840,3 +840,7 @@ B11 22/30:separate owner-only archive-facts-v1 export and actual JSON download v
 ## S162 — 2026-11-04 — B11 23/30 T182
 
 B11 23/30:actual SGU573x2 PostgreSQL/raw restore exact across17tables;ownership,history,key continuity,replay/tombstones and corruption refusal passed,measured localtimings.
+
+## S163 — 2026-11-04 — B11 24/30 T025
+
+B11 24/30:96Chromium+102unit passed;explicit source error recovery/401privacy/lostDELETE reconciliation;two backend test assumptions corrected and targeted reruns passed.

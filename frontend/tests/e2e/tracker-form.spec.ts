@@ -1,4 +1,9 @@
 import { expect, test } from '@playwright/test';
+
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/v1/subscriptions', route => route.fulfill({ json: [] }));
+  await page.route('**/api/v1/direction-budget', route => route.fulfill({ json: { limit: 20, total: 0, manualCount: 0, archiveCount: 0 } }));
+});
 import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 
 test('форма показывает корректный расчёт и отклоняет невозможные группы', async ({ page }) => {

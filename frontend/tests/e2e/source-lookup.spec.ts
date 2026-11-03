@@ -73,3 +73,31 @@ test('individual delete confirms and releases slot while preserving the source',
   await expect(page.locator('.archive-direction-card')).toHaveCount(0);
   expect((await (await page.request.get('/api/v1/groups')).json()).items[0].rowCount).toBe(573);
 });
+
+test('lost DELETE response reconciles by read without resurrecting or repeating mutation', async ({ page }) => {
+  await find(page); await page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись').check();
+  await page.getByRole('button',{name:'Сохранить эту запись'}).click();
+  await page.getByRole('link',{name:/Открыть мои направления/}).click();
+  let deletes=0;
+  await page.route('**/api/v1/subscriptions/*',async route=>{
+    if(route.request().method()==='DELETE'){deletes++;await route.fetch();await route.abort();}else await route.continue();
+  });
+  await page.getByRole('button',{name:'Удалить архивную запись',exact:true}).click();
+  await page.getByRole('button',{name:'Да, удалить архивную запись',exact:true}).click();
+  await expect(page.locator('.archive-direction-card')).toHaveCount(0);
+  expect(deletes).toBe(1);
+});
+for(const status of [403,404,409,422,429,503])test(`lookup ${status} leaves explicit retry and creates no subscription`,async({page})=>{
+  let saves=0;page.on('request',r=>{if(r.method()==='POST'&&r.url().endsWith('/subscriptions'))saves++;});
+  await page.route('**/api/v1/sources/*/lookup',route=>route.fulfill({status,json:{detail:'Проверка недоступна. Повторите позже.'}}));
+  await find(page);
+  await expect(page.getByRole('alert')).toContainText('Проверка недоступна');
+  await expect(page.getByRole('button',{name:'Найти запись',exact:true})).toBeEnabled();
+  await expect(page.getByRole('button',{name:'Сохранить эту запись'})).toHaveCount(0);expect(saves).toBe(0);
+});
+test('lookup401 hides code and confirmation until explicit session recovery',async({page})=>{
+  await page.route('**/api/v1/sources/*/lookup',route=>route.fulfill({status:401,json:{detail:'Expired'}}));
+  await find(page);
+  await expect(page.getByText('Доступ изменился или закончился.',{exact:false})).toBeVisible();
+  await expect(page.getByLabel('Код поступающего')).toHaveCount(0);
+});

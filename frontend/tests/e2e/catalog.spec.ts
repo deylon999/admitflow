@@ -1,5 +1,10 @@
 import { expect, test } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.route('**/api/v1/subscriptions', route => route.fulfill({ json: [] }));
+  await page.route('**/api/v1/direction-budget', route => route.fulfill({ json: { limit: 20, total: 0, manualCount: 0, archiveCount: 0 } }));
+});
+
 test('university choices support arrows, Escape and Enter without losing the form', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
