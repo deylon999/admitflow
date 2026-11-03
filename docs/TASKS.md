@@ -1244,7 +1244,7 @@
 
 ### T030. Ввести нормализацию и карантин
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T029, T077.
 
@@ -1263,7 +1263,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 8/30:25 real-source/quarantine/publishing/size checks passed;bad normalization retains573-row last-good snapshot,unknowns remainnull,publication enforces adapter cap.
 
 ### T031. Подключить второй независимый источник
 

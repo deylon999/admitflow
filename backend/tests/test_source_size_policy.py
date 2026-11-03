@@ -63,7 +63,8 @@ def test_large_referenced_raw_survives_backup_verify_and_restore(client,applicat
     seed_source(engine)
     store=RawStore(tmp_path/'raw')
     response=raw(b'x'*SGU_SIZE)
-    publish(engine,'source-1',parsed(),response,store,registry=registry(),allow_unattested=True)
+    declared=Registry((replace(registry()._adapters['synthetic-v1'],max_bytes=8*1024*1024),))
+    publish(engine,'source-1',parsed(),response,store,registry=declared,allow_unattested=True)
     backup=create_backup(engine,store,tmp_path/'backups')
     assert verify_backup(backup).raw_hashes == [response.payload_hash]
     restored=restore_backup(backup,tmp_path/'new-recovery')

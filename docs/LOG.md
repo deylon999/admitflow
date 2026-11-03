@@ -776,3 +776,7 @@ B11 6/30:trusted8MiB policy/default5MiB verified through child/raw/backup;71+4 t
 ## S146 — 2026-11-03 — B11 7/30 T029
 
 B11 7/30:archive-only SGU adapter attested;all573 original rows independently matched,including16/17boundary and119tie-score groups;35 adapter/fixture/attestation regressions passed.
+
+## S147 — 2026-11-03 — B11 8/30 T030
+
+B11 8/30:25 real-source/quarantine/publishing/size checks passed;bad normalization retains573-row last-good snapshot,unknowns remainnull,publication enforces adapter cap.

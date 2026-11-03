@@ -63,14 +63,16 @@ def publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store:
 
 def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store: RawStore, *, registry=PRODUCTION_REGISTRY, allow_unattested=False, policy=QualityPolicy(), expected_binding=None, lease_guard=None) -> str:
     # Raw can be orphaned after a rejected/rolled-back import; retention handles it.
-    store.put(raw.body,raw.payload_hash)
     checked_at = raw.fetched_at
     with Session(engine) as db:
         source = lock_source(db,engine,source_id)
         binding = binding_from_db(db,source)
         if expected_binding is not None and binding != expected_binding:
             raise AdapterError('invalid_binding')
-        registry.resolve(binding,allow_unattested=allow_unattested)
+        adapter = registry.resolve(binding,allow_unattested=allow_unattested)
+        if len(raw.body) > adapter.max_bytes:
+            raise AdapterError('invalid_format')
+        store.put(raw.body,raw.payload_hash)
         if lease_guard is not None:
             lease_guard(db)
         pointer = db.get(PublishedSnapshot,source_id)

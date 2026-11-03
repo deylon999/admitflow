@@ -1058,7 +1058,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T029",
         "T077"
@@ -1075,7 +1075,12 @@
         "Повреждённый/неполный ответ не заменяет valid snapshot",
         "Неизвестное значение не становится нулём"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 8/30:25 real-source/quarantine/publishing/size checks passed;bad normalization retains573-row last-good snapshot,unknowns remainnull,publication enforces adapter cap."
+        }
+      ],
       "blockedReason": null
     },
     {
