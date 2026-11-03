@@ -17,6 +17,9 @@ def require(condition):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--base-url', default='http://127.0.0.1:8080')
+    parser.add_argument('--output', type=Path,
+                        default=Path(__file__).resolve().parents[2] / 'docs/evidence/t103-docker-smoke.json',
+                        help='Report path; use a new path to preserve historical evidence')
     args = parser.parse_args()
     target = urlsplit(args.base_url)
     if (target.scheme != 'http' or target.hostname not in ('127.0.0.1', 'localhost')
@@ -90,7 +93,7 @@ def main():
                 connection.close()
         report['cleanupStatuses'] = cleanup
         report['success'] = report['success'] and cleanup == [204, 204]
-        evidence = Path(__file__).resolve().parents[2] / 'docs/evidence/t103-docker-smoke.json'
+        evidence = args.output
         evidence.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
         print(json.dumps(dict(success=report['success'], checks=len(report['checks']), cleanupStatuses=cleanup)))
     require(report['success'])

@@ -2038,7 +2038,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T066"
       ],
@@ -2062,6 +2062,10 @@
         {
           "path": "docs/LOG.md",
           "note": "S008: Compose config exit 0; build заблокирован доступом среды; запуск не подтверждён."
+        },
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10: isolated Compose fresh images healthy;15 HTTP smoke checks passed through nginx to native PostgreSQL0004, sessions cleaned204/204; build host-network workaround documented."
         }
       ],
       "blockedReason": null

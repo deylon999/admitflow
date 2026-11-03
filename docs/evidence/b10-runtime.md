@@ -23,3 +23,11 @@ PostgreSQL **17.11**, image `postgres:17-alpine`, digest `sha256:266d3c257594e19
 Из backend: `TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_writes.py tests/test_writes.py tests/test_expected_snapshot.py --tb=short` → **21 passed, exit0**, 4.94s, включая11 native PG. Общие assertions сохранены:12 параллельных повторов дают одну запись;30 создающих запросов дают20 успехов/10 конфликтов; при499 снимках конкурентные добавления дают ровно500. Delete tombstone, key collision/owner isolation и replay проверены также на PG. Два независимых app connection pools с одним X-Expected-Snapshot дают один201/один409 и ровно один новый снимок. Первый запуск нового теста обнаружил ошибку самого теста (несуществующий state.settings); исправлено создание второго app из фактического engine URL, assertions не ослаблены.
 
 Это проверка транзакций на реальном PG, не нагрузочное измерение staging и не20/500-квота автоматических списков.
+
+## T067 — реальный Compose
+
+Fresh build backend/frontend завершился exit0 после применения host network **только для build**. Обычный build ранее завершился exit1 (`Network is unreachable` в pip); Compose build host override отвергнут buildx entitlement, затем использованы явные `docker build --network host --allow network.host` (команды в RUNBOOK). Runtime сеть по-прежнему приватная, host runtime не используется.
+
+`WEB_PORT=8089 docker compose -p admitflow-b10 up -d --no-build --wait` → exit0, db/backend/frontend healthy. Actual images: backend `827fe4200a378a0927cd3269fb56371e85ce75d3e6f3d3ae34a1756abfe4ecf7`, frontend `10a409031a11eb6cdaa6def0e1ce2d4b2c4b25eb151362131bc69f80a62e99f6`, PG digest выше. Inspect: backend/db bindings `{}`, frontend только127.0.0.1:8089.
+
+`runtime_smoke.py --base-url http://127.0.0.1:8089 --output docs/evidence/b10-compose-smoke.json` → **15 checks, success:true, cleanup204/204, exit0**. CRUD/history/export/replay/ownership через реальный nginx и PostgreSQL. `/`, `/tracker`, unknown SPA route дают index200. Actual database diagnostics: postgresql/readOnly/revision_current/0004, zero manual counts после cleanup; прямой SELECT revision подтверждает0004. Пересоздание всего проекта и worker recovery — отдельная T173. Existing radar containers/volumes не менялись.

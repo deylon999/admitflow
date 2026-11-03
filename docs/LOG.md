@@ -718,3 +718,7 @@ B10: disposable Docker runner passed all21 migration cases including7 actual Pos
 ## S132 — 2026-11-03 — B10 T017
 
 B10: 21 write/optimistic tests passed, including11 native PostgreSQL; concurrency enforces20 watches/500 snapshots, retries do not duplicate, two app pools yield201/409.
+
+## S133 — 2026-11-03 — B10 T067
+
+B10: isolated Compose fresh images healthy;15 HTTP smoke checks passed through nginx to native PostgreSQL0004, sessions cleaned204/204; build host-network workaround documented.

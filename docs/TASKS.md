@@ -225,7 +225,7 @@
 
 ### T067. Добавить локальный запуск через Docker Compose
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T066.
 
@@ -246,6 +246,7 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S008: Compose config exit 0; build заблокирован доступом среды; запуск не подтверждён.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10: isolated Compose fresh images healthy;15 HTTP smoke checks passed through nginx to native PostgreSQL0004, sessions cleaned204/204; build host-network workaround documented.
 
 ### T103. Fix PostgreSQL legacy CHECK reflection during migration adoption
 

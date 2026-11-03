@@ -1,0 +1,103 @@
+{
+  "recordedAt": "2026-11-03T07:01:36.929114+00:00",
+  "baseUrl": "http://127.0.0.1:8089",
+  "scope": "isolated HTTP smoke; database engine, image SHA, schema revision and legacy upgrade not attested",
+  "checks": [
+    {
+      "method": "GET",
+      "path": "/api/ready",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/openapi.json",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/session",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/watches",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/watches",
+      "status": 201,
+      "expected": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/watches",
+      "status": 201,
+      "expected": 201
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/watches/{watchId}/snapshots",
+      "status": 201,
+      "expected": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/watches/{watchId}",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/export",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/session",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/watches/{watchId}",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/watches/{watchId}/snapshots",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "DELETE",
+      "path": "/api/v1/watches/{watchId}",
+      "status": 404,
+      "expected": 404
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/watches",
+      "status": 200,
+      "expected": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/watches",
+      "status": 200,
+      "expected": 200
+    }
+  ],
+  "success": true,
+  "reverseProxy": "nginx/1.28.3",
+  "cleanupStatuses": [
+    204,
+    204
+  ]
+}
