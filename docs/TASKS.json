@@ -641,7 +641,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T016",
@@ -659,7 +659,12 @@
         "Повтор запроса не дублирует запись в предусмотренном контракте",
         "Параллельные операции не обходят установленные лимиты"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10: 21 write/optimistic tests passed, including11 native PostgreSQL; concurrency enforces20 watches/500 snapshots, retries do not duplicate, two app pools yield201/409."
+        }
+      ],
       "blockedReason": null
     },
     {

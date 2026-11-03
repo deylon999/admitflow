@@ -17,3 +17,9 @@ PostgreSQL **17.11**, image `postgres:17-alpine`, digest `sha256:266d3c257594e19
 `backend/.venv/bin/python scripts/test_postgres.py --python "$PWD/backend/.venv/bin/python"` → **21 passed, exit0**, 3.71s (7 native PG, 14 SQLite/offline). Fresh upgrade, repeat, model alignment, downgrade/base/upgrade и legacy проверены на отдельной schema. Production не создаёт схему автоматически: существующие strict settings/readiness проверки сохранены.
 
 Отказ: та же команда с `tests/test_calculation.py` проходит доменные assertions, но итоговый **exit1**: Required PostgreSQL checks were absent. Контейнер останавливается и удаляется и при отказе. Runner ждёт TCP readiness и выбирает свободный localhost port, устраняя наблюдённую startup race. Production backup/rollout этим не подтверждены; обратимые downgrade выполняются исключительно на disposable schema.
+
+## T017 — записи и конкурентные лимиты PostgreSQL
+
+Из backend: `TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_writes.py tests/test_writes.py tests/test_expected_snapshot.py --tb=short` → **21 passed, exit0**, 4.94s, включая11 native PG. Общие assertions сохранены:12 параллельных повторов дают одну запись;30 создающих запросов дают20 успехов/10 конфликтов; при499 снимках конкурентные добавления дают ровно500. Delete tombstone, key collision/owner isolation и replay проверены также на PG. Два независимых app connection pools с одним X-Expected-Snapshot дают один201/один409 и ровно один новый снимок. Первый запуск нового теста обнаружил ошибку самого теста (несуществующий state.settings); исправлено создание второго app из фактического engine URL, assertions не ослаблены.
+
+Это проверка транзакций на реальном PG, не нагрузочное измерение staging и не20/500-квота автоматических списков.

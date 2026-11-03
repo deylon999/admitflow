@@ -494,7 +494,7 @@
 
 ### T017. Сделать записи и лимиты устойчивыми к повторам
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T014, T016, T068.
 
@@ -513,7 +513,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10: 21 write/optimistic tests passed, including11 native PostgreSQL; concurrency enforces20 watches/500 snapshots, retries do not duplicate, two app pools yield201/409.
 
 ### T018. Согласовать API-контракты и frontend types
 

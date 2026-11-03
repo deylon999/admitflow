@@ -714,3 +714,7 @@ B10: native PostgreSQL17.11 legacy adoption/refusal: 6 passed, exit0; old IDs/hi
 ## S131 — 2026-11-03 — B10 T014
 
 B10: disposable Docker runner passed all21 migration cases including7 actual PostgreSQL checks; no-native selection fails exit1 and owned container is cleaned up.
+
+## S132 — 2026-11-03 — B10 T017
+
+B10: 21 write/optimistic tests passed, including11 native PostgreSQL; concurrency enforces20 watches/500 snapshots, retries do not duplicate, two app pools yield201/409.
