@@ -722,3 +722,7 @@ B10: 21 write/optimistic tests passed, including11 native PostgreSQL; concurrenc
 ## S133 — 2026-11-03 — B10 T067
 
 B10: isolated Compose fresh images healthy;15 HTTP smoke checks passed through nginx to native PostgreSQL0004, sessions cleaned204/204; build host-network workaround documented.
+
+## S134 — 2026-11-03 — B10 T168
+
+B10 first5/5:92 frontend tests/build,12 repeated keyboard checks,70/70 full Chromium passed on actual production assets/PostgreSQL API. Fixed stale catalog options and save focus race; CI preview configured, remote unrun.

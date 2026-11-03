@@ -31,3 +31,16 @@ Fresh build backend/frontend завершился exit0 после примен�
 `WEB_PORT=8089 docker compose -p admitflow-b10 up -d --no-build --wait` → exit0, db/backend/frontend healthy. Actual images: backend `827fe4200a378a0927cd3269fb56371e85ce75d3e6f3d3ae34a1756abfe4ecf7`, frontend `10a409031a11eb6cdaa6def0e1ce2d4b2c4b25eb151362131bc69f80a62e99f6`, PG digest выше. Inspect: backend/db bindings `{}`, frontend только127.0.0.1:8089.
 
 `runtime_smoke.py --base-url http://127.0.0.1:8089 --output docs/evidence/b10-compose-smoke.json` → **15 checks, success:true, cleanup204/204, exit0**. CRUD/history/export/replay/ownership через реальный nginx и PostgreSQL. `/`, `/tracker`, unknown SPA route дают index200. Actual database diagnostics: postgresql/readOnly/revision_current/0004, zero manual counts после cleanup; прямой SELECT revision подтверждает0004. Пересоздание всего проекта и worker recovery — отдельная T173. Existing radar containers/volumes не менялись.
+
+## T168 — built assets и найденные focus defects
+
+Добавлены E2E_SERVER=dev/preview/external, отказ на неизвестном значении. Preview всегда делает fresh build и не переиспользует сервер; CI выбирает preview. External full suite идёт через freshly rebuilt nginx image и текущий PostgreSQL API. Chunk-recovery test перехватывает и dev.tsx, и emitted TrackerPage-*.js. Отдельный preview+fresh build chunk-failure test: **1 passed, exit0**; invalid mode: **exit1**.
+
+Первые два полных прогона завершились68/69, каждый дефект сохранён и исправлен:
+
+1. Deferred catalog мог показывать focusable options старого запроса, исчезающие при Tab; устаревшие варианты теперь скрыты до совпадения query/search. Добавлены явные focus assertions при третьем открытии формы. Одного ожидания заголовка оказалось недостаточно: повтор9 дал5 failures до исправления UI; после исправления9/9.
+2. После save requestAnimationFrame иногда фокусировал ещё disabled кнопку, а повтор не происходил. Возврат теперь выполняется после commit с busy=false; при исчерпанном лимите фокусируется h1. Новый real API boundary case создаёт19 направлений и сохраняет20-е через форму. После обоих исправлений **12/12 Chromium**,3 повтора четырёх keyboard cases,30.7s.
+
+Текущие unit/build: **92 passed, build exit0**. Последний compiled TrackerPage `TrackerPage-B-WM742y.js`; финальный полный suite ниже. Remote workflow не запущен: GitHub теперь доступен read-only (remote HEAD33a962b), `gh auth status` не находит авторизованного host. Старый сетевой blockedReason T006 уточнён; CI результат не придуман.
+
+T168 final: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 npm run test:e2e -- --reporter=line` → **70/70 Chromium passed, exit0**,2.4m. Actual nginx assets перечислены из контейнера и совпадают с текущей сборкой: TrackerPage-B-WM742y.js/index-KCx9tssS.js. До этого12 repeated keyboard cases passed. Успех не получен скрытыми retries или ослаблением assertions. Firefox/WebKit и exact-font/Figma приёмка этим не подтверждаются.

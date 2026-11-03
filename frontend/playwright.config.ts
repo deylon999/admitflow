@@ -1,6 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const baseURL = process.env.E2E_BASE_URL ?? 'http://127.0.0.1:5173';
+const serverMode = process.env.E2E_SERVER ?? 'dev';
+if (!['dev', 'preview', 'external'].includes(serverMode)) {
+  throw new Error('E2E_SERVER must be dev, preview or external');
+}
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -13,9 +17,11 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
-  webServer: {
-    command: `npm run dev -- --port ${new URL(baseURL).port || '5173'}`,
+  webServer: serverMode === 'external' ? undefined : {
+    command: serverMode === 'preview'
+      ? `npm run build && npm run preview -- --port ${new URL(baseURL).port || '5173'}`
+      : `npm run dev -- --port ${new URL(baseURL).port || '5173'}`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: serverMode === 'dev' && !process.env.CI,
   },
 });

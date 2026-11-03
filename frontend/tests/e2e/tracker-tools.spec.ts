@@ -183,7 +183,7 @@ test('ошибка загрузки страницы показывает вос
   let failed = true;
   let starts = 0;
   page.on('request', request => { if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++; });
-  await page.route('**/src/pages/TrackerPage.tsx*', route => failed ? route.abort('failed') : route.continue());
+  await page.route(/\/(?:src\/pages\/TrackerPage\.tsx|assets\/TrackerPage-[^/?]+\.js)(?:\?.*)?$/, route => failed ? route.abort('failed') : route.continue());
   await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
   await page.goto('/tracker');
   await expect(page.getByRole('heading', { name: 'Не удалось открыть страницу' })).toBeFocused();

@@ -332,7 +332,7 @@
           "note": "S036/S046: external prerequisite rechecked; concrete resumption condition recorded."
         }
       ],
-      "blockedReason": "GitHub:443 remains unreachable in B03 (git ls-remote failed). Resume after repository access and a successful remote workflow for the tested SHA."
+      "blockedReason": "B10 2026-11-03: GitHub reachable via read-only ls-remote, but gh has no authenticated hosts and no remote workflow run for current commits is verified. Resume with authenticated repository access and an actual passing run; local configuration alone is insufficient."
     },
     {
       "id": "T007",
@@ -5089,7 +5089,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T163"
       ],
@@ -5102,6 +5102,138 @@
       ],
       "acceptance": [
         "Manual browser suite runs against a fresh production build with current API; lazy error recovery works for emitted chunks; CI requests built-asset checks without claiming an unrun remote result."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10 first5/5:92 frontend tests/build,12 repeated keyboard checks,70/70 full Chromium passed on actual production assets/PostgreSQL API. Fixed stale catalog options and save focus race; CI preview configured, remote unrun."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T169",
+      "title": "Verify PostgreSQL queue concurrency and worker fencing",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T082"
+      ],
+      "deliverables": [
+        "backend/tests/test_postgres_jobs.py"
+      ],
+      "steps": [
+        "Verify PostgreSQL queue concurrency and worker fencing",
+        "Record successful, boundary and refusal cases on an isolated runtime"
+      ],
+      "acceptance": [
+        "Concurrent enqueue/claim and SKIP LOCKED work on migrated PostgreSQL; expired owners and disabled jobs cannot publish; independent worker processes cannot claim one source twice."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T170",
+      "title": "Verify atomic PostgreSQL snapshot publication",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T079",
+        "T169"
+      ],
+      "deliverables": [
+        "backend/tests/test_postgres_publishing.py"
+      ],
+      "steps": [
+        "Verify atomic PostgreSQL snapshot publication",
+        "Record successful, boundary and refusal cases on an isolated runtime"
+      ],
+      "acceptance": [
+        "Concurrent imports deduplicate on PostgreSQL; row-write failures and quarantine retain the previous pointer/history; old parser versions and raw hashes remain readable."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T171",
+      "title": "Rehearse PostgreSQL and raw backup restoration",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T014",
+        "T089"
+      ],
+      "deliverables": [
+        "scripts/rehearse_postgres_restore.py",
+        "docs/evidence/b10-restore.json"
+      ],
+      "steps": [
+        "Rehearse PostgreSQL and raw backup restoration",
+        "Record successful, boundary and refusal cases on an isolated runtime"
+      ],
+      "acceptance": [
+        "A disposable PostgreSQL dump and referenced raw data restore into a new database/directory; exact manual history, ownership, idempotency, snapshot rows and raw hashes match; corrupt archives/raw fail; measured timing and quiesced-write limitation are recorded."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T172",
+      "title": "Serve production assets without SPA fallback on missing chunks",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T067",
+        "T168"
+      ],
+      "deliverables": [
+        "frontend/nginx.conf",
+        "frontend/tests/e2e/assets.spec.ts"
+      ],
+      "steps": [
+        "Serve production assets without SPA fallback on missing chunks",
+        "Record successful, boundary and refusal cases on an isolated runtime"
+      ],
+      "acceptance": [
+        "Missing emitted JS/CSS return404 rather than index HTML; hashed resources are immutable while HTML revalidates; deep links and real chunk-error recovery work through nginx."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T173",
+      "title": "Verify Compose recreation persistence and worker recovery",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T067",
+        "T169",
+        "T170",
+        "T171",
+        "T172"
+      ],
+      "deliverables": [
+        "scripts/rehearse_compose.py",
+        "docs/evidence/b10-compose-restart.json"
+      ],
+      "steps": [
+        "Verify Compose recreation persistence and worker recovery",
+        "Record successful, boundary and refusal cases on an isolated runtime"
+      ],
+      "acceptance": [
+        "Recreating all owned Compose services preserves exact guest/history/retry state and raw bytes in volumes; actual worker processes a queued unsupported source after recreation without fetch/publication; ports and permissions remain correct; final checks and handoff are current."
       ],
       "evidence": [],
       "blockedReason": null

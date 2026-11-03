@@ -2,17 +2,16 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-03",
   "currentTask": null,
-  "nextTask": "T168",
+  "nextTask": "T169",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S133",
-  "resumeAction": "B10: T067 verified. Continue T168; see docs/evidence/b10-runtime.md.",
+  "lastSession": "S134",
+  "resumeAction": "B10: T168 verified. Continue T169; see docs/evidence/b10-runtime.md.",
   "externalConstraints": [
     "Original HTML fixtures for pilot candidates unavailable; no real adapter attestation.",
-    "PostgreSQL unavailable; Docker Engine/config ACL prevents runtime checks.",
     "Local Inter/JetBrains Mono and licences not acquired.",
-    "GitHub:443 unavailable; remote push/CI unconfirmed.",
-    "Production host/domain/budget and release season not selected."
+    "Production host/domain/budget and release season not selected.",
+    "GitHub reachable via git ls-remote; gh has no authenticated hosts, remote push/CI unconfirmed."
   ]
 }

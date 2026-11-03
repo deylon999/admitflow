@@ -12,7 +12,8 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
 }) {
   const [open, setOpen] = useState(false);
   const input = useRef<HTMLInputElement>(null);
-  const query = useDeferredValue(limitCodePoints(value, 120));
+  const search = limitCodePoints(value, 120);
+  const query = useDeferredValue(search);
   const catalog = useQuery({ queryKey: ['universities', query], queryFn: ({ signal }) => api.universities(query, signal), enabled: open, staleTime: 300_000 });
   return <div className="field university-picker" onKeyDown={event => {
     if (event.key === 'Escape' && open) { event.preventDefault(); event.stopPropagation(); input.current?.focus(); setOpen(false); }
@@ -37,7 +38,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
     <p className="form-note" id="catalog-note">Можно выбрать из небольшого справочника или ввести любой вуз вручную. Стрелки ↑ и ↓ переходят к вариантам, Escape закрывает их.</p>
     {error && <p className="form-error" id="university-error" role="alert">{error}</p>}
     {open && <div className="catalog-results">
-      {catalog.isPending ? <p className="small-copy" role="status">Ищем вуз…</p>
+      {query !== search || catalog.isPending ? <p className="small-copy" role="status">Ищем вуз…</p>
         : catalog.isError ? <p className="small-copy">Справочник недоступен. Название можно ввести вручную.</p>
           : catalog.data.items.length === 0 ? <p className="small-copy">Вуз пока не добавлен в справочник. Продолжайте с ручным вводом.</p>
             : <ul>{catalog.data.items.map(university => <li key={university.id}>

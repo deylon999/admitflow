@@ -1,5 +1,25 @@
 import { expect, test } from '@playwright/test';
 
+test('saving the twentieth direction returns focus to the page heading when add is disabled', async ({ page }) => {
+  test.skip(process.env.E2E_API !== '1', 'Requires API');
+  await page.goto('/tracker');
+  await expect(page.getByRole('button', { name: 'Добавить первое направление' })).toBeVisible();
+  const body = { university: 'Keyboard limit example', title: 'Manual example', sourceUrl: 'https://example.org/list', values: { rank: 10, seats: 20, excluded: 0, noConsent: 0 } };
+  for (let i = 0; i < 19; i++) {
+    expect((await page.request.post('/api/v1/watches', { data: body, headers: { 'X-Requested-With': 'abiturient' } })).status()).toBe(201);
+  }
+  await page.reload();
+  await page.getByRole('button', { name: 'Добавить направление', exact: true }).click();
+  await page.getByLabel('Вуз', { exact: true }).fill(body.university);
+  await page.getByLabel('Направление и конкурсная группа').fill(body.title);
+  await page.getByLabel('Ссылка на конкурсный список').fill(body.sourceUrl);
+  await page.getByLabel('Ваш номер в списке').fill('10');
+  await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
+  await page.getByRole('button', { name: 'Сохранить направление' }).click();
+  await expect(page.getByRole('button', { name: 'Добавить направление', exact: true })).toBeDisabled();
+  await expect(page.getByRole('heading', { name: 'Мои направления', exact: true })).toBeFocused();
+});
+
 for (const width of [390, 1440]) {
   test(`клавиатура: форма, справочник, сохранение и возврат фокуса (${width})`, async ({ page }) => {
     test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
@@ -32,8 +52,10 @@ for (const width of [390, 1440]) {
     await expect(first).toBeFocused();
 
     await page.keyboard.press('Enter');
+    await expect(heading).toBeFocused();
     await page.keyboard.press('Tab');
     await page.keyboard.press('Tab');
+    await expect(university).toBeFocused();
     await page.keyboard.type('Keyboard University');
     await page.keyboard.press('Tab');
     await expect(page.getByLabel('Направление и конкурсная группа')).toBeFocused();

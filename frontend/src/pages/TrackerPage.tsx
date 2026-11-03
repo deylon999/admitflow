@@ -68,8 +68,10 @@ export default function TrackerPage() {
   const [recovery, setRecovery] = useState<StoredDraft | null>(null);
   const [restored, setRestored] = useState<StoredDraft | null>(null);
   const [focusRequest, setFocusRequest] = useState(0);
+  const [returnFocus, setReturnFocus] = useState(false);
   const formOpener = useRef<HTMLButtonElement | null>(null);
   const addButton = useRef<HTMLButtonElement>(null);
+  const pageHeading = useRef<HTMLHeadingElement>(null);
   const draftDirty = useRef(false);
   const setDraftDirty = useCallback((dirty: boolean) => { draftDirty.current = dirty; }, []);
   const canDiscard = () => !draftDirty.current || window.confirm('Удалить несохранённые изменения формы?');
@@ -79,6 +81,7 @@ export default function TrackerPage() {
     if (!form && recovery && !window.confirm('Заменить сохранённый черновик новой формой?')) return;
     if (!sameForm) { clearDraft(); setRecovery(null); setRestored(null); }
     formOpener.current = button;
+    setReturnFocus(false);
     setNotice('');
     setForm(value);
     setFocusRequest(request => request + 1);
@@ -90,10 +93,7 @@ export default function TrackerPage() {
     setRecovery(null);
     setRestored(null);
     setForm(null);
-    requestAnimationFrame(() => {
-      const target = formOpener.current?.isConnected ? formOpener.current : addButton.current;
-      target?.focus();
-    });
+    setReturnFocus(true);
   }
   const [notice, setNotice] = useState('');
   const [confirmReset, setConfirmReset] = useState(false);
@@ -103,6 +103,14 @@ export default function TrackerPage() {
   const changed = access.data === 'changed';
   const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), enabled: !changed, staleTime: 0, refetchOnWindowFocus: true });
   const expired = changed || access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  useEffect(() => {
+    if (!returnFocus || busy || form || expired) return;
+    const opener = formOpener.current;
+    const target = opener?.isConnected && !opener.disabled ? opener
+      : addButton.current && !addButton.current.disabled ? addButton.current : pageHeading.current;
+    target?.focus();
+    setReturnFocus(false);
+  }, [returnFocus, busy, form, expired]);
   const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: !expired, staleTime: Infinity });
   useEffect(() => {
     if (!expired && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
@@ -178,7 +186,7 @@ export default function TrackerPage() {
   const recoveryBlocked = recovery?.watchId && !recoveryWatch ? 'Направление уже удалено.'
     : recoveryWatch && recoveryWatch.latest.id !== recovery?.baseSnapshotId && !recovery?.intent ? 'На сервере есть более новое сохранение.' : undefined;
   return <main className="container tracker-page" id="top">
-    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
+    <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1 ref={pageHeading} tabIndex={-1}>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || count >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
     {!expired && sessionInfo.data && <p className="small-copy session-deadline">Гостевой доступ до <time dateTime={sessionInfo.data.expiresAt} title={sessionInfo.data.expiresAt}>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(sessionInfo.data.expiresAt))}</time>. Открытие страницы не продлевает срок.</p>}
     {!expired && sessionInfo.isError && <p className="small-copy">Не удалось проверить точную дату окончания доступа.</p>}

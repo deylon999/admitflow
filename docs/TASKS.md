@@ -149,7 +149,7 @@
 - [.github/workflows/ci.yml](../.github/workflows/ci.yml) — Конфигурация подготовлена; удалённого запуска нет, задача не закрыта.
 - [docs/LOG.md](../docs/LOG.md) — S036/S046: external prerequisite rechecked; concrete resumption condition recorded.
 
-**Причина блокировки/переноса:** GitHub:443 remains unreachable in B03 (git ls-remote failed). Resume after repository access and a successful remote workflow for the tested SHA.
+**Причина блокировки/переноса:** B10 2026-11-03: GitHub reachable via read-only ls-remote, but gh has no authenticated hosts and no remote workflow run for current commits is verified. Resume with authenticated repository access and an actual passing run; local configuration alone is insufficient.
 
 ### T007. Закрепить шрифты и дизайн-токены
 
@@ -3526,7 +3526,7 @@
 
 ### T168. Verify the compiled React application in the browser
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T163.
 
@@ -3540,6 +3540,116 @@
 **Критерии закрытия:**
 
 - Manual browser suite runs against a fresh production build with current API; lazy error recovery works for emitted chunks; CI requests built-asset checks without claiming an unrun remote result..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10 first5/5:92 frontend tests/build,12 repeated keyboard checks,70/70 full Chromium passed on actual production assets/PostgreSQL API. Fixed stale catalog options and save focus race; CI preview configured, remote unrun.
+
+### T169. Verify PostgreSQL queue concurrency and worker fencing
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T014, T082.
+
+**Результаты/файлы:** `backend/tests/test_postgres_jobs.py`.
+
+**Шаги:**
+
+1. Verify PostgreSQL queue concurrency and worker fencing.
+2. Record successful, boundary and refusal cases on an isolated runtime.
+
+**Критерии закрытия:**
+
+- Concurrent enqueue/claim and SKIP LOCKED work on migrated PostgreSQL; expired owners and disabled jobs cannot publish; independent worker processes cannot claim one source twice..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T170. Verify atomic PostgreSQL snapshot publication
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T014, T079, T169.
+
+**Результаты/файлы:** `backend/tests/test_postgres_publishing.py`.
+
+**Шаги:**
+
+1. Verify atomic PostgreSQL snapshot publication.
+2. Record successful, boundary and refusal cases on an isolated runtime.
+
+**Критерии закрытия:**
+
+- Concurrent imports deduplicate on PostgreSQL; row-write failures and quarantine retain the previous pointer/history; old parser versions and raw hashes remain readable..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T171. Rehearse PostgreSQL and raw backup restoration
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T014, T089.
+
+**Результаты/файлы:** `scripts/rehearse_postgres_restore.py`; `docs/evidence/b10-restore.json`.
+
+**Шаги:**
+
+1. Rehearse PostgreSQL and raw backup restoration.
+2. Record successful, boundary and refusal cases on an isolated runtime.
+
+**Критерии закрытия:**
+
+- A disposable PostgreSQL dump and referenced raw data restore into a new database/directory; exact manual history, ownership, idempotency, snapshot rows and raw hashes match; corrupt archives/raw fail; measured timing and quiesced-write limitation are recorded..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T172. Serve production assets without SPA fallback on missing chunks
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T067, T168.
+
+**Результаты/файлы:** `frontend/nginx.conf`; `frontend/tests/e2e/assets.spec.ts`.
+
+**Шаги:**
+
+1. Serve production assets without SPA fallback on missing chunks.
+2. Record successful, boundary and refusal cases on an isolated runtime.
+
+**Критерии закрытия:**
+
+- Missing emitted JS/CSS return404 rather than index HTML; hashed resources are immutable while HTML revalidates; deep links and real chunk-error recovery work through nginx..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T173. Verify Compose recreation persistence and worker recovery
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T067, T169, T170, T171, T172.
+
+**Результаты/файлы:** `scripts/rehearse_compose.py`; `docs/evidence/b10-compose-restart.json`.
+
+**Шаги:**
+
+1. Verify Compose recreation persistence and worker recovery.
+2. Record successful, boundary and refusal cases on an isolated runtime.
+
+**Критерии закрытия:**
+
+- Recreating all owned Compose services preserves exact guest/history/retry state and raw bytes in volumes; actual worker processes a queued unsupported source after recreation without fetch/publication; ports and permissions remain correct; final checks and handoff are current..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
