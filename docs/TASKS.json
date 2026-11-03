@@ -5176,7 +5176,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T089"
@@ -5192,7 +5192,12 @@
       "acceptance": [
         "A disposable PostgreSQL dump and referenced raw data restore into a new database/directory; exact manual history, ownership, idempotency, snapshot rows and raw hashes match; corrupt archives/raw fail; measured timing and quiesced-write limitation are recorded."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10:actual pg_dump/raw restoration passed;15 tables exact, ownership/history/replay/tombstone and2 raw versions preserved; corrupt archive rolls back, corrupt raw rejected. Timings and quiesced-only RPO recorded."
+        }
+      ],
       "blockedReason": null
     },
     {

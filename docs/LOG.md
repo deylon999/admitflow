@@ -734,3 +734,7 @@ B10:8 native PostgreSQL queue/fencing cases passed; independent spawn workers cl
 ## S136 — 2026-11-03 — B10 T170
 
 B10:7 native PostgreSQL publication cases passed; uncommitted rows remain invisible to another reader, rollback/quarantine preserve last good pointer and crash replay deduplicates.
+
+## S137 — 2026-11-03 — B10 T171
+
+B10:actual pg_dump/raw restoration passed;15 tables exact, ownership/history/replay/tombstone and2 raw versions preserved; corrupt archive rolls back, corrupt raw rejected. Timings and quiesced-only RPO recorded.

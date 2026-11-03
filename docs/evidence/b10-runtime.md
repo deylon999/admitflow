@@ -54,3 +54,11 @@ T168 final: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 np
 `TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_publishing.py --tb=short` → **7 native PG passed, exit0**,1.95s. Concurrent repeat/parser-version tests, quarantine, injected row-write failure, crash-after-commit replay и safe parser error cases применяют общие assertions на настоящем PG.
 
 Новый gated writer уже flush-нул snapshot/rows в PostgreSQL, но не commit-нул. Параллельное соединение видит только прежний pointer/1 snapshot/3 rows; после release — новый pointer/2 immutable snapshots/6 rows. Оба исходных raw читаются с проверкой SHA256. Это доказательство transaction visibility на synthetic archive, не реальный список, нагрузка или uptime24h.
+
+## T171 — pg_dump/raw restore rehearsal
+
+`backend/.venv/bin/python scripts/rehearse_postgres_restore.py --output docs/evidence/b10-restore.json` → **exit0, success:true, cleanup:true**. Новый owned PG container,15 таблиц,2 owners/1 watch/2 manual snapshots/3 operation records,2 source snapshots/6 candidate entries/1 queue job. Exact contents всех таблиц совпали; actual API проверил exact history/deadline/scope, чужой404, create/update replay и tombstone410.2 referenced raw восстановлены с точным содержимым/SHA256; orphan не включён.
+
+Truncated archive с `--single-transaction --exit-on-error` дал nonzero и оставил0 таблиц в отдельной refusal DB. Corrupt raw дал raw_hash_mismatch. Dump39268bytes/0.118s; restore+copy+validation0.422s. RPO0 относится только к quiesced synthetic writes; production RPO/RTO и внешний backup не доказаны. Dump/cookies/owner hashes не сохранены в Git, приватная временная папка и контейнер удалены. Полный отчёт b10-restore.json.
+
+Общий owned runtime вынесен в scripts/postgres_runtime.py; после refactor повторён migration runner:21 passed, включая7 actual PG, exit0. Это проверка свежей реализации runner, не ссылка на старый результат.

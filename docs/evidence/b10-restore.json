@@ -1,0 +1,38 @@
+{
+  "success": true,
+  "tables": 15,
+  "counts": {
+    "alembic_version": 1,
+    "universities": 3,
+    "campaigns": 1,
+    "browser_sessions": 2,
+    "watches": 1,
+    "competition_groups": 1,
+    "snapshots": 2,
+    "subscriptions": 0,
+    "assessments": 0,
+    "published_snapshots": 1,
+    "operation_records": 3,
+    "sources": 1,
+    "candidate_entries": 6,
+    "source_snapshots": 2,
+    "source_jobs": 1
+  },
+  "referencedRawFiles": 2,
+  "dumpBytes": 39268,
+  "dumpSha256": "75032cd253663b109b96a392409fcde1db216a80e7940f1eff3e2402ebdb16c3",
+  "backupSeconds": 0.118,
+  "restoreAndValidationSeconds": 0.422,
+  "corruptionChecks": [
+    "truncated archive rolls back all tables",
+    "raw SHA256 mismatch refused"
+  ],
+  "ownership": true,
+  "exactHistory": true,
+  "exactTableContents": true,
+  "retryAndTombstone": true,
+  "rpo": "0 writes during quiesced rehearsal only; production RPO not measured",
+  "recordedAt": "2026-11-03T07:19:27.038353+00:00",
+  "cleanup": true,
+  "scope": "disposable PostgreSQL17 synthetic/quiesced rehearsal, no production backup guarantee"
+}
