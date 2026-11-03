@@ -5206,7 +5206,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T067",
         "T168"
@@ -5222,7 +5222,12 @@
       "acceptance": [
         "Missing emitted JS/CSS return404 rather than index HTML; hashed resources are immutable while HTML revalidates; deep links and real chunk-error recovery work through nginx."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10: reproduced missing JS as HTML200, fixed nginx404/nosniff/cache policy;3 actual nginx/chunk-recovery checks passed after fresh image rebuild."
+        }
+      ],
       "blockedReason": null
     },
     {

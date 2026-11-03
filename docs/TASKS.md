@@ -3614,7 +3614,7 @@
 
 ### T172. Serve production assets without SPA fallback on missing chunks
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T067, T168.
 
@@ -3632,7 +3632,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10: reproduced missing JS as HTML200, fixed nginx404/nosniff/cache policy;3 actual nginx/chunk-recovery checks passed after fresh image rebuild.
 
 ### T173. Verify Compose recreation persistence and worker recovery
 

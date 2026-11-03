@@ -738,3 +738,7 @@ B10:7 native PostgreSQL publication cases passed; uncommitted rows remain invisi
 ## S137 — 2026-11-03 — B10 T171
 
 B10:actual pg_dump/raw restoration passed;15 tables exact, ownership/history/replay/tombstone and2 raw versions preserved; corrupt archive rolls back, corrupt raw rejected. Timings and quiesced-only RPO recorded.
+
+## S138 — 2026-11-03 — B10 T172
+
+B10: reproduced missing JS as HTML200, fixed nginx404/nosniff/cache policy;3 actual nginx/chunk-recovery checks passed after fresh image rebuild.

@@ -62,3 +62,9 @@ T168 final: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 np
 Truncated archive с `--single-transaction --exit-on-error` дал nonzero и оставил0 таблиц в отдельной refusal DB. Corrupt raw дал raw_hash_mismatch. Dump39268bytes/0.118s; restore+copy+validation0.422s. RPO0 относится только к quiesced synthetic writes; production RPO/RTO и внешний backup не доказаны. Dump/cookies/owner hashes не сохранены в Git, приватная временная папка и контейнер удалены. Полный отчёт b10-restore.json.
 
 Общий owned runtime вынесен в scripts/postgres_runtime.py; после refactor повторён migration runner:21 passed, включая7 actual PG, exit0. Это проверка свежей реализации runner, не ссылка на старый результат.
+
+## T172 — production asset serving
+
+До исправления actual nginx `/assets/missing-build-chunk.js` отдавал **200 text/html с SPA root**, подтверждено HTTP-запросом. Теперь /assets/ использует try_files=404 и nosniff. Существующие emitted JS/CSS получают public/max-age31536000/immutable; отсутствие ресурса не получает immutable. HTML/deep links — no-cache; private API сохраняет no-store.
+
+Пересобран nginx image и пересоздан только свой frontend. `E2E_API=1 E2E_NGINX=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 npm run test:e2e -- tests/e2e/assets.spec.ts tests/e2e/tracker-tools.spec.ts -g 'missing build|HTML revalidates|ошибка загрузки страницы' --reporter=line` → **3 passed, exit0**. Проверены JS/CSS404 без SPA root и immutable, JS/CSS MIME/nosniff/cache policy,4 HTML routes, private API no-store и actual chunk-failure/reload recovery. E2E_NGINX обязателен для nginx-only cases; preview/dev явно их skip-ают. Это не гарантия zero-downtime deploy/сохранения старых chunks после смены image.
