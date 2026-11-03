@@ -2974,7 +2974,7 @@
 
 ### T179. Сохранять и читать неизменяемую историю фактов одного архивного источника
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T177, T033.
 
@@ -2993,7 +2993,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 17/30:immutable atomic source-facts history with keyset/owner/version provenance;3nativePG cases passed,including synthetic consent change and rollback.
 
 ### T180. Показывать историю и сравнение подтверждённых архивных фактов
 

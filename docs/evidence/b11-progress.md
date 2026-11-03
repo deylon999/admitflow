@@ -77,3 +77,9 @@ Current production UI: group/year/source-bound lookup, no save before checkbox, 
 ### T178 — 16/30 — remove one archive direction
 
 Owner-locked DELETE removes a subscription/its assessments, retains shared573-row source snapshot, and turns all consumed archive confirmations for that subscription fingerprint into payload-free410 tombstones. Replayed successful confirmations cannot resurrect a deleted record. New explicit lookup can start a fresh save; deletion is not permanent suppression of the applicant. Total quota released. UI requires confirmation; Escape/cancel restores focus. Native PostgreSQL2 cases passed (including concurrent DELETE/replay); one new Chromium deletion case passed, five earlier lookup cases passed on rebuiltUI; production build passed.
+
+### T179 — 17/30 — immutable factual archive history
+
+Publication now appends source-facts-v1 assessments only for subscriptions confirmed in that exact source; repeat publication is a no-op for history. Confirmation serializes with publication source lock. Endpoint returns owner-only stable keyset history (fetchedAt+ID), snapshot seats/URL/times, explicit nullable candidate, separate model version. History is fact-only/unsupported, not T034 automated numerical assessment or T036 second-source replay.
+
+Native PostgreSQL3 cases passed: five same-time snapshots across two-row pages with no duplicates/omissions, unchanged original confirmation, duplicate publication, foreign ownership/cursor, synthetic consent toggle (clearly not a real observed event), and injected history failure rolling back snapshot/pointer/rows. First run exposed500 from validating confirmation extras as CandidateFact; fixed by selecting explicit candidate fields. Historical current-check fields removed to keep old responses stable. Command scripts/test_postgres.py selectors test_postgres_sgu::{history cases};exit0.

@@ -812,3 +812,7 @@ B11 15/30:explicit archive lookup/confirmation UI,shared20limit and session cach
 ## S155 — 2026-11-03 — B11 16/30 T178
 
 B11 16/30:individual archive deletion,owner isolation,cascading personal history and410replay tombstones verified;2nativePG+1newChromium passed,currentbuild.
+
+## S156 — 2026-11-03 — B11 17/30 T179
+
+B11 17/30:immutable atomic source-facts history with keyset/owner/version provenance;3nativePG cases passed,including synthetic consent change and rollback.

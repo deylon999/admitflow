@@ -5490,7 +5490,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T177",
         "T033"
@@ -5507,7 +5507,12 @@
         "Повтор не создаёт дубли и не меняет прежние факты",
         "Cursor не теряет записи при одинаковом времени"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 17/30:immutable atomic source-facts history with keyset/owner/version provenance;3nativePG cases passed,including synthetic consent change and rollback."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -102,5 +102,7 @@ def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store
         source.last_checked_at = checked_at
         source.last_success_at = checked_at
         source.last_error_code = None
+        from ..source_history import append_snapshot_facts
+        append_snapshot_facts(db,db.get(SourceSnapshot,snapshot_id))
         db.commit()
         return snapshot_id

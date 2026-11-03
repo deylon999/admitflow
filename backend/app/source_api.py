@@ -4,7 +4,7 @@ from decimal import Decimal
 import hashlib
 from typing import Literal
 
-from fastapi import Depends,HTTPException,Path
+from fastapi import Depends,HTTPException,Path,Query
 from pydantic import Field,field_validator
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
@@ -62,6 +62,21 @@ class ArchiveDirection(CamelModel):
     candidate:CandidateFact|None
     confirmed_snapshot_id:str|None
     notice:str|None=None
+
+
+class ArchiveHistoryItem(CamelModel):
+    id:str
+    assessed_at:datetime
+    model_version:str
+    group:GroupRead
+    candidate:CandidateFact|None
+    present:bool
+
+
+class ArchiveHistoryPage(CamelModel):
+    items:list[ArchiveHistoryItem]
+    total:int
+    next_cursor:str|None
 
 
 def subscription_fingerprint(group_id,candidate_key):
@@ -133,6 +148,24 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         claims=Confirmation(version=1,source_id=source.id,group_id=source.group_id,snapshot_id=snapshot.id,candidate_key=candidate_key,expires=expires)
         return LookupResult(group=group,found=True,candidate=candidate_fact(row),confirmation_token=issue(claims,owner_hash,key),expires_at=datetime.fromtimestamp(expires,timezone.utc))
 
+    @app.get('/api/v1/subscriptions/{subscription_id}/history',response_model=ArchiveHistoryPage)
+    def source_history(subscription_id:str=Path(min_length=1,max_length=36),before:str|None=Query(None,max_length=36),limit:int=Query(20,ge=1,le=100),owner_hash:str=Depends(owner),db:Session=Depends(database)):
+        from .source_history import history_rows
+        value,rows,cursor,total=history_rows(db,subscription_id,owner_hash,before,limit)
+        group=db.get(CompetitionGroup,value.group_id);campaign=db.get(Campaign,group.campaign_id);university=db.get(University,campaign.university_id)
+        items=[]
+        for assessment,snapshot in rows:
+            meta=group_read(db,group,campaign,university,db.get(Source,snapshot.source_id),registry=registry).model_copy(update={
+                'snapshot_id':snapshot.id,'fetched_at':utc(snapshot.fetched_at),'source_updated_at':utc(snapshot.source_updated_at) if snapshot.source_updated_at else None,
+                'row_count':snapshot.row_count,'seats':snapshot.seats,'data_kind':snapshot.kind,'coverage':'archive' if snapshot.kind=='archive' else 'unsupported',
+                'source_url':snapshot.fetched_url,'lookup_available':False,'last_checked_at':None,
+                'source_state':'archived' if snapshot.kind=='archive' else 'unknown'})
+            facts=assessment.facts
+            candidate_data={name:facts[name] for name in ('rowRef','officialRank','score','consent','priority','participation')} if assessment.rules_version=='source-confirmation-v1' else facts['candidate']
+            candidate=CandidateFact.model_validate(candidate_data) if candidate_data is not None else None
+            items.append(ArchiveHistoryItem(id=assessment.id,assessed_at=utc(assessment.assessed_at),model_version=assessment.rules_version,group=meta,candidate=candidate,present=candidate is not None))
+        return ArchiveHistoryPage(items=items,total=total,next_cursor=cursor)
+
     @app.delete('/api/v1/subscriptions/{subscription_id}',status_code=204)
     def remove_subscription(subscription_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(write_owner),db:Session=Depends(database)):
         value=db.scalar(select(Subscription).where(Subscription.id==subscription_id,Subscription.owner_hash==owner_hash))
@@ -162,6 +195,8 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         if int(now.timestamp())>=claims.expires:raise HTTPException(410,'Срок подтверждения истёк. Найдите запись снова.')
         existing=db.scalar(select(Subscription).where(Subscription.owner_hash==owner_hash,Subscription.group_id==claims.group_id,Subscription.candidate_key==claims.candidate_key))
         if existing is None:
+            # Serialize confirmation with a publication selecting subscriptions.
+            db.scalar(select(Source).where(Source.id==claims.source_id).with_for_update())
             source,binding,snapshot,group=available_source(db,claims.source_id,registry)
             if source.group_id!=claims.group_id or snapshot.id!=claims.snapshot_id:raise HTTPException(409,'На сервере другой снимок. Найдите запись ещё раз перед сохранением.')
             row=db.get(CandidateEntry,(snapshot.id,claims.candidate_key))
