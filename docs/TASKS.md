@@ -1267,7 +1267,7 @@
 
 ### T031. Подключить второй независимый источник
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T029, T030, T187, T188.
 
@@ -1880,7 +1880,7 @@
 
 ### T188. Доказать переиспользование общего parser на настоящих конкурсных группах
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T187, T029.
 
@@ -1899,7 +1899,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:one JSON-configured parser independently verified on573SGU+581GUAPoriginal rows;22targetedchecks,privateIDsremoved,legacy preserved.
 
 ## E4. Объяснения и UX
 

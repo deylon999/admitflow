@@ -880,3 +880,5 @@ Reopened precommit audit resolved:source-fact processing time is separate from f
 Новое поручение продолжать до70%. Зафиксирован функциональный рубеж,без пересмотра releasegates. Первая пятёрка:T187,T188,T031,T034,T039. ТекущаяT187;исследуется официальный GUAP как независимый источник,STUheaders-only не считается рабочим. Старые454backend/102unit/100+2browser — проверенный baseline B11.
 
 S171/T187done: multi-scope proof registry,legacy compatibility and refusal gates;38tests passed. T188inprogress. Genuine GUAPcontract profile captured privately581candidate rows,14headers;not yet attested or enabled. SGU second group4576 capture in progress;no coverage claim until independent audit.
+
+S171/T188done: one config-driven parser verified against all573SGU+581GUAPoriginal rows through independentstdlibaudits. JSONconfig replaces university-specific algorithms. GUAPcontract0places/unknownconsent preserved. T031nowinprogress:formal scoped proof/registration/native worker/API path. Header-only otherprofiles remain unconnected.

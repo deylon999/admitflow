@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-03T22:08:50.285935+00:00",
+  "success": true,
+  "sourceUrl": "https://priem.guap.ru/bach/rating/list_1_1_1_3_1_f",
+  "adapterVersion": "reviewed-html-table-v1",
+  "year": 2026,
+  "kind": "archive",
+  "checkedRows": 581,
+  "places": 0,
+  "consentUnknown": 581,
+  "consentYes": 0,
+  "enrolled": 92,
+  "ties": 112,
+  "boundaryChecked": [
+    0,
+    1
+  ],
+  "originalSha256": "928812c519e98753f4e4813d75ef222550c7582c951d81613a8a8d0f21858891",
+  "sourceUpdatedAt": null,
+  "identifiersEmitted": false,
+  "method": "Independent stdlib HTMLParser vs one config-driven BeautifulSoup decoder;all original rows"
+}

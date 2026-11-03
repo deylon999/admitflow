@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-11-03T22:08:49.741856+00:00",
+  "success": true,
+  "sourceUrl": "https://www.sgu.ru/svodka/4588",
+  "adapterVersion": "reviewed-html-table-v1",
+  "year": 2026,
+  "kind": "archive",
+  "checkedRows": 573,
+  "places": 16,
+  "consentUnknown": 0,
+  "consentYes": 165,
+  "enrolled": 16,
+  "ties": 119,
+  "boundaryChecked": [
+    16,
+    17
+  ],
+  "originalSha256": "e2e8686ed7de4687104aeac64bade4165afd90c354ff2265e869b9cd560906e8",
+  "sourceUpdatedAt": null,
+  "identifiersEmitted": false,
+  "method": "Independent stdlib HTMLParser vs one config-driven BeautifulSoup decoder;all original rows"
+}

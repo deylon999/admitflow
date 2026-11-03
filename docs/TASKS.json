@@ -1122,7 +1122,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T029",
         "T030",
@@ -5802,7 +5802,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T187",
         "T029"
@@ -5820,7 +5820,12 @@
         "Один parser обслуживает два реальных профиля без копирования алгоритма",
         "Различия схемы или неизвестная полнота отвергаются;национальное покрытие не заявлено"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b12-progress.md",
+          "note": "B12:one JSON-configured parser independently verified on573SGU+581GUAPoriginal rows;22targetedchecks,privateIDsremoved,legacy preserved."
+        }
+      ],
       "blockedReason": null
     }
   ]
