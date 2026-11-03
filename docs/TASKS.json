@@ -340,7 +340,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T002"
       ],
@@ -356,7 +356,12 @@
         "При отсутствии внешней сети шрифты доступны локально",
         "Скриншоты используют реальные шрифты, а не fallback"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 2/30:13 licensed variable font subsets vendored with hashes/OFL;actual Latin/Cyrillic FontFace loads pass with external requests blocked,fresh build+5 browser cases passed."
+        }
+      ],
       "blockedReason": null
     },
     {

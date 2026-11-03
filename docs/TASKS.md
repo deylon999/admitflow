@@ -153,7 +153,7 @@
 
 ### T007. Закрепить шрифты и дизайн-токены
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T002.
 
@@ -172,7 +172,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 2/30:13 licensed variable font subsets vendored with hashes/OFL;actual Latin/Cyrillic FontFace loads pass with external requests blocked,fresh build+5 browser cases passed.
 
 ### T008. Сверить React-лендинг с исходными макетами
 
