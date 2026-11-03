@@ -21,7 +21,8 @@ def test_public_catalog_does_not_imply_automatic_coverage(client):
 
 def test_only_attested_enabled_groups_with_rules_count_as_automatic(source_engine,tmp_path):
     seed_source(source_engine)
-    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True),))
+    from source_helpers import synthetic_attestation
+    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True,attestation=synthetic_attestation()),))
     published=publish(source_engine,'source-1',parsed(),raw(),RawStore(tmp_path/'raw'),registry=attested)
     with Session(source_engine) as db:
         assert coverage(db,registry=attested,now=NOW)['automaticSources']==0

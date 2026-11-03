@@ -962,7 +962,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T010",
         "T013",
@@ -981,7 +981,12 @@
         "Unknown/null сохраняются",
         "Подключение адаптера требует паспорта и fixtures"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 5/30:explicit passport/fixture attestation gates implemented;33 contract/registry/coverage/fixture tests passed,unknown/null/HMAC scope preserved."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -5290,6 +5295,31 @@
           "note": "B10 complete10/10:owned4-service Compose recreation preserved history/ownership/retries/raw and actual worker resumed safely. Final332 backend/0skip,92 frontend/build,72 Chromium passed; temporary resources cleaned,preview8089 retained."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T174",
+      "title": "Bound larger verified source responses by explicit adapter policy",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T027"
+      ],
+      "deliverables": [
+        "backend/app/sources/fetcher.py",
+        "backend/app/worker.py",
+        "backend/app/sources/storage.py"
+      ],
+      "steps": [
+        "Keep5MiB default and require an explicit trusted adapter limit up to8MiB for observed SGU response",
+        "Carry policy through subprocess exchange/raw storage and prove oversize refusal"
+      ],
+      "acceptance": [
+        "A5851174byte genuine response fits an explicitly declared8MiB policy; default remains5MiB,exchange validates selected policy and raw/backup retain hashes;8MiB+1 is rejected."
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

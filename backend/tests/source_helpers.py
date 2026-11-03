@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.admissions import Campaign, CompetitionGroup, Source, University
 from app.sources.contracts import CandidateRow, ParsedList, SourceBinding
 from app.sources.fetcher import FetchResult
-from app.sources.registry import Adapter, Registry
+from app.sources.registry import Adapter, Attestation, Registry
 
 NOW = datetime(2026,11,1,tzinfo=timezone.utc)
 BINDING = SourceBinding('source-1','group-1',2026,'https://example.org/list','example.org','synthetic-v1','archive',True)
@@ -35,3 +35,9 @@ def raw(body=b'synthetic sample', at=NOW):
 
 def registry(*versions):
     return Registry(tuple(Adapter(version,frozenset({'example.org'}),lambda response,binding: parsed(version=binding.adapter_version)) for version in (versions or ('synthetic-v1',))))
+
+
+def synthetic_attestation():
+    return Attestation(passport='backend/tests/fixtures/synthetic-passport.md',fixture='backend/tests/fixtures/synthetic-source.txt',
+                       fixture_sha256=raw().payload_hash,original_sha256=raw().payload_hash,source_url=BINDING.url,
+                       year=2026,kind='archive',sample_rows=3,checked_rows=3,verified_at=NOW,adapter_version='synthetic-v1')

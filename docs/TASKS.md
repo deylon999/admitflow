@@ -1175,7 +1175,7 @@
 
 ### T027. Определить интерфейс адаптера и registry
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T010, T013, T015, T076.
 
@@ -1194,7 +1194,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 5/30:explicit passport/fixture attestation gates implemented;33 contract/registry/coverage/fixture tests passed,unknown/null/HMAC scope preserved.
 
 ### T028. Реализовать ограниченный безопасный fetcher
 
@@ -1810,6 +1810,28 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S092: Explicit eligible reenqueue applies requested interval/max attempts and resets due time; running and backoff jobs are not modified. Strict integer queue settings reject bool coercion. Queue/worker13 passed.
+
+### T174. Bound larger verified source responses by explicit adapter policy
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T027.
+
+**Результаты/файлы:** `backend/app/sources/fetcher.py`; `backend/app/worker.py`; `backend/app/sources/storage.py`.
+
+**Шаги:**
+
+1. Keep5MiB default and require an explicit trusted adapter limit up to8MiB for observed SGU response.
+2. Carry policy through subprocess exchange/raw storage and prove oversize refusal.
+
+**Критерии закрытия:**
+
+- A5851174byte genuine response fits an explicitly declared8MiB policy; default remains5MiB,exchange validates selected policy and raw/backup retain hashes;8MiB+1 is rejected..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E4. Объяснения и UX
 

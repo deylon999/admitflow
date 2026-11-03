@@ -764,3 +764,7 @@ B11 3/30:four real-font screenshots compared to original PNGs,palette tokens mat
 ## S143 — 2026-11-03 — B11 4/30 T013
 
 B11 4/30:genuine SGU573-row original inspected,DOM-derived anonymized fixture retains exact facts;9 fixture/capture tests passed. STU header-only remains unsupported;source originals private.
+
+## S144 — 2026-11-03 — B11 5/30 T027
+
+B11 5/30:explicit passport/fixture attestation gates implemented;33 contract/registry/coverage/fixture tests passed,unknown/null/HMAC scope preserved.

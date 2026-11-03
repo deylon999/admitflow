@@ -21,3 +21,9 @@
 ## 4/30 T013
 
 Получены genuine SGU/STU originals. Derived SGU573-row DOM fixture с manifest,SHA256/OFL-neutral provenance и privacy transform; оригинальныеIDs не остались. Sanitizer сохранил все573retained non-identifier rows точно,deterministic rerun unchanged. Missing/login/header/encoding/oversize/capture corruption cases:9passed,exit0. Ошибка sanitizer при удалённом active ancestor исправлена до создания fixture; первичный test missing fixture зафиксирован как setup failure,после исправления9/9. Original dirs700/files600,raw не вGit. STU headers-only не выдан за confirmed-empty; registry остаётся пуст. Source passport обновлён. Offline8MiB inspection не меняет production5MiB limit.
+
+## 5/30 T027
+
+Контракт закрыт на genuine fixtures: frozen explicit Attestation привязывает паспорт/fixture+original hashes,exact URL/year/kind/version,date и минимум50проверенных строк(либо весь меньший непустой sample). Голый attested=true отвергается; test-only synthetic proof явно отделён от production. Unknown/null и HMAC scope сохраняются; scope mismatch не обходится allow_unattested. Registry/DTO/coverage/fixture/attestation regressions ниже; production пока не включает адаптер. Не добавлены выдуманные original pages или unsupported empty-STU.
+
+T027 validation:33passed,exit0,0.80s (attestation,registry,DTO,coverage and real derived fixture). Первые5 завершены. Следующая пятёрка: T174 explicit8MiB policy,T029 real SGU adapter,T030 real-source quarantine,T032 actual worker,T033 actual atomic publication. Второй источник/STU и live-soak не будут отмечены done без данных.
