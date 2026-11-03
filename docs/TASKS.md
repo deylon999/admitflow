@@ -3548,7 +3548,7 @@
 
 ### T169. Verify PostgreSQL queue concurrency and worker fencing
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T014, T082.
 
@@ -3566,7 +3566,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b10-runtime.md](../docs/evidence/b10-runtime.md) — B10:8 native PostgreSQL queue/fencing cases passed; independent spawn workers claim once and SKIP LOCKED completes while another transaction owns the row.
 
 ### T170. Verify atomic PostgreSQL snapshot publication
 

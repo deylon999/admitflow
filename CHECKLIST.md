@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 119 из 173 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 120 из 173 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -180,7 +180,7 @@
 - [x] T166 Provide read-only redacted database diagnostics
 - [x] T167 Prepare the Compose worker and shared raw volume
 - [x] T168 Verify the compiled React application in the browser
-- [ ] T169 Verify PostgreSQL queue concurrency and worker fencing
+- [x] T169 Verify PostgreSQL queue concurrency and worker fencing
 - [ ] T170 Verify atomic PostgreSQL snapshot publication
 - [ ] T171 Rehearse PostgreSQL and raw backup restoration
 - [ ] T172 Serve production assets without SPA fallback on missing chunks

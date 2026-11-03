@@ -5117,7 +5117,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T014",
         "T082"
@@ -5132,7 +5132,12 @@
       "acceptance": [
         "Concurrent enqueue/claim and SKIP LOCKED work on migrated PostgreSQL; expired owners and disabled jobs cannot publish; independent worker processes cannot claim one source twice."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b10-runtime.md",
+          "note": "B10:8 native PostgreSQL queue/fencing cases passed; independent spawn workers claim once and SKIP LOCKED completes while another transaction owns the row."
+        }
+      ],
       "blockedReason": null
     },
     {

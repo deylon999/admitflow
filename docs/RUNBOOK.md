@@ -253,3 +253,5 @@ Native manual concurrency: `backend/.venv/bin/python scripts/test_postgres.py --
 ### Браузерная проверка собранного приложения
 
 Из frontend: `API_TARGET=http://127.0.0.1:8000 E2E_API=1 E2E_SERVER=preview E2E_BASE_URL=http://127.0.0.1:4189 npm run test:e2e`. Preview mode каждый раз выполняет build, затем поднимает vite preview без reuse старого сервера. CI выбирает этот режим. Для уже собранного Compose: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 npm run test:e2e`. External mode намеренно не запускает сервер; актуальность image проверяется отдельно. Неизвестный E2E_SERVER даёт exit1; обычный dev mode остаётся значением по умолчанию. Регрессия lazy-load перехватывает как dev TrackerPage.tsx, так и emitted assets/TrackerPage-*.js.
+
+Native queue/fencing: добавьте `tests/test_postgres_jobs.py` к disposable runner. Проверены16 конкурентных enqueue/claim, отдельные spawn-процессы, фактический SKIP LOCKED при удерживаемой другой transaction, expiry/disable fencing. Ни native тест, ни Compose automation не регистрируют synthetic adapter в production.

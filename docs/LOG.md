@@ -726,3 +726,7 @@ B10: isolated Compose fresh images healthy;15 HTTP smoke checks passed through n
 ## S134 — 2026-11-03 — B10 T168
 
 B10 first5/5:92 frontend tests/build,12 repeated keyboard checks,70/70 full Chromium passed on actual production assets/PostgreSQL API. Fixed stale catalog options and save focus race; CI preview configured, remote unrun.
+
+## S135 — 2026-11-03 — B10 T169
+
+B10:8 native PostgreSQL queue/fencing cases passed; independent spawn workers claim once and SKIP LOCKED completes while another transaction owns the row.

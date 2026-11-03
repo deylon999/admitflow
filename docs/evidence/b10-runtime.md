@@ -44,3 +44,7 @@ Fresh build backend/frontend завершился exit0 после примен�
 Текущие unit/build: **92 passed, build exit0**. Последний compiled TrackerPage `TrackerPage-B-WM742y.js`; финальный полный suite ниже. Remote workflow не запущен: GitHub теперь доступен read-only (remote HEAD33a962b), `gh auth status` не находит авторизованного host. Старый сетевой blockedReason T006 уточнён; CI результат не придуман.
 
 T168 final: `E2E_API=1 E2E_SERVER=external E2E_BASE_URL=http://127.0.0.1:8089 npm run test:e2e -- --reporter=line` → **70/70 Chromium passed, exit0**,2.4m. Actual nginx assets перечислены из контейнера и совпадают с текущей сборкой: TrackerPage-B-WM742y.js/index-KCx9tssS.js. До этого12 repeated keyboard cases passed. Успех не получен скрытыми retries или ослаблением assertions. Firefox/WebKit и exact-font/Figma приёмка этим не подтверждаются.
+
+## T169 — PostgreSQL queue/fencing
+
+`TEST_DATABASE_URL=<local disposable PG> .venv/bin/python -m pytest -q --require-postgres tests/test_postgres_jobs.py --tb=short` → **8 native PG passed, exit0** (повтор после улучшения cleanup порядка locks).16 concurrent enqueue/claim дают ровно одну job/lease; два отдельных spawn-процесса с независимыми engines также дают одного победителя/attempt1. SKIP LOCKED возвращает None в другом соединении, пока первая transaction удерживает lock; после release job доступна. Expiry/retry/backoff/disable и отказ старого worker до publication сохранены. Все дочерние процессы завершаются в finally; это synthetic source, не аттестация реального адаптера.
