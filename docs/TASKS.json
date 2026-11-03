@@ -5359,7 +5359,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T029",
         "T033"
@@ -5375,7 +5375,12 @@
       "acceptance": [
         "Default install creates no enabled source;explicit idempotent registration validates fixed group metadata,requires stable operator key before enable and never accepts arbitrary URL;existing conflicting records are refused."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 11/30:explicit disabled/idempotent registration and keyed enable verified in actual Compose;conflicts refused,private key excluded from image context;full396backend/0skip passed."
+        }
+      ],
       "blockedReason": null
     },
     {

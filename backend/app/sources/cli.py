@@ -37,14 +37,20 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['list','status','enqueue','disable'])
+    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu'])
     parser.add_argument('source_id',nargs='?')
+    parser.add_argument('--enable',action='store_true',help='Only with register-sgu; requires configured reviewed adapter key')
     args=parser.parse_args(argv)
-    if args.action!='list' and not args.source_id:
+    if args.action not in ('list','register-sgu') and not args.source_id:
         parser.error('source_id is required')
+    if args.enable and args.action!='register-sgu':parser.error('--enable requires register-sgu')
+    if args.action=='register-sgu' and args.source_id:parser.error('register-sgu does not accept a user source/URL')
     engine=make_engine(Settings.from_env().database_url)
     try:
-        if args.action=='list':
+        if args.action=='register-sgu':
+            from .pilots import register_sgu
+            result=register_sgu(engine,enable=args.enable,registry=runtime_registry())
+        elif args.action=='list':
             with Session(engine) as db:
                 result={'items':list(db.scalars(select(Source.id).order_by(Source.id).limit(101)))}
                 result['truncated']=len(result['items'])>100

@@ -1835,7 +1835,7 @@
 
 ### T175. Register the reviewed archive group through an explicit operator command
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T029, T033.
 
@@ -1853,7 +1853,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 11/30:explicit disabled/idempotent registration and keyed enable verified in actual Compose;conflicts refused,private key excluded from image context;full396backend/0skip passed.
 
 ## E4. Объяснения и UX
 

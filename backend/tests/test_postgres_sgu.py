@@ -21,6 +21,10 @@ from sgu_helpers import seed_sgu
 from test_api import HEADERS
 from test_sgu_adapter import BINDING,KEY,make_adapter,response
 from test_sgu_worker import test_real_format_worker_success_then_bad_page_retains_last_good
+from test_pilot_registration import (
+    test_registration_is_explicit_disabled_and_idempotent,
+    test_enable_requires_attested_key_and_conflicting_metadata_is_not_overwritten,
+)
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 

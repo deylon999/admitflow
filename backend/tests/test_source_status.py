@@ -11,7 +11,7 @@ from app.sources.publishing import publish, record_failure
 from app.sources.registry import Registry
 from app.sources.status import source_status
 from app.sources.storage import RawStore
-from source_helpers import NOW, parsed, raw, registry, seed_source
+from source_helpers import NOW, parsed, raw, registry, seed_source, synthetic_attestation
 
 
 def test_archive_and_failures_never_look_fresh(source_engine,tmp_path):
@@ -37,7 +37,7 @@ def test_archive_and_failures_never_look_fresh(source_engine,tmp_path):
 
 def test_live_fresh_stale_unsupported_and_old_season(source_engine,tmp_path):
     seed_source(source_engine,snapshot_kind='live')
-    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True),))
+    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True,attestation=replace(synthetic_attestation(),kind='live')),))
     publish(source_engine,'source-1',parsed().model_copy(update={'kind':'live'}),raw(),RawStore(tmp_path/'raw'),registry=attested)
     with Session(source_engine) as db:
         assert source_status(db,'source-1',now=NOW,registry=attested)['state']=='fresh'
@@ -69,7 +69,7 @@ def test_public_status_is_bounded_and_does_not_return_rows(client,application):
 @pytest.mark.parametrize('kind',['live','archive'])
 def test_expired_and_exhausted_job_cannot_hide_behind_last_success(source_engine,tmp_path,kind):
     seed_source(source_engine,snapshot_kind=kind)
-    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True),))
+    attested=Registry((replace(registry()._adapters['synthetic-v1'],attested=True,attestation=replace(synthetic_attestation(),kind=kind)),))
     snapshot=publish(source_engine,'source-1',parsed().model_copy(update={'kind':kind}),raw(),RawStore(tmp_path/'raw'),registry=attested)
     with Session(source_engine) as db:
         group=db.get(CompetitionGroup,'group-1')

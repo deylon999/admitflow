@@ -788,3 +788,7 @@ B11 9/30:actual SGUHTTPS/573rows/PG worker cycle+idle passed,current replay pass
 ## S149 — 2026-11-03 — B11 10/30 T033
 
 B11 10/30:nativePG573-row retries/rollback/crash/raw provenance/retention passed,11+5 cases;onlyexpiredorphanpurged,productionretention explicitly stillopen.
+
+## S150 — 2026-11-03 — B11 11/30 T175
+
+B11 11/30:explicit disabled/idempotent registration and keyed enable verified in actual Compose;conflicts refused,private key excluded from image context;full396backend/0skip passed.

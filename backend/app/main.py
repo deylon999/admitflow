@@ -47,6 +47,8 @@ def token_hash(token):
 
 def create_app(settings: Settings | None = None):
     config = settings or Settings.from_env()
+    from .sources.registry import runtime_registry
+    source_registry=runtime_registry()
     engine = make_engine(config.database_url)
 
     @asynccontextmanager
@@ -75,6 +77,7 @@ def create_app(settings: Settings | None = None):
 
     app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None, responses={422: {'model': ValidationProblem}})
     app.state.engine = engine
+    app.state.source_registry = source_registry
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(_, error):
@@ -209,14 +212,14 @@ def create_app(settings: Settings | None = None):
 
     @app.get('/api/v1/sources/{source_id}/status', response_model=SourceStatus)
     def get_source_status(source_id: str, db: Session = Depends(database)):
-        result = source_status(db,source_id)
+        result = source_status(db,source_id,registry=source_registry)
         if result is None:
             raise HTTPException(404,'Источник не найден.')
         return result
 
     @app.get('/api/v1/coverage', response_model=CoverageRead)
     def get_coverage(db: Session = Depends(database)):
-        return coverage(db)
+        return coverage(db,registry=source_registry)
 
     @app.get('/api/v1/export', response_model=DataExport)
     def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
