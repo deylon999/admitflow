@@ -79,6 +79,14 @@ class ArchiveHistoryPage(CamelModel):
     next_cursor:str|None
 
 
+class SourceCheckRead(CamelModel):
+    id:str
+    checked_at:datetime
+    outcome:Literal['success','failed']
+    error_code:str|None
+    snapshot_id:str|None
+
+
 def subscription_fingerprint(group_id,candidate_key):
     return hashlib.sha256(f'archive-subscription-v1:{group_id}:{candidate_key}'.encode()).hexdigest()
 
@@ -117,6 +125,12 @@ def candidate_fact(row):
 
 
 def install_source_routes(app,database,owner,write_owner,registry,key,clock):
+    @app.get('/api/v1/sources/{source_id}/checks',response_model=list[SourceCheckRead])
+    def checks(source_id:str=Path(min_length=1,max_length=36),db:Session=Depends(database)):
+        from .jobs import SourceCheck
+        if db.get(Source,source_id) is None:raise HTTPException(404,'Источник не найден.')
+        rows=db.scalars(select(SourceCheck).where(SourceCheck.source_id==source_id).order_by(SourceCheck.checked_at.desc(),SourceCheck.id.desc()).limit(20)).all()
+        return [SourceCheckRead(id=row.id,checked_at=utc(row.checked_at),outcome=row.outcome,error_code=row.error_code,snapshot_id=row.snapshot_id) for row in rows]
     @app.get('/api/v1/direction-budget',response_model=DirectionBudget)
     def budget(owner_hash:str=Depends(owner),db:Session=Depends(database)):
         return direction_budget(db,owner_hash)

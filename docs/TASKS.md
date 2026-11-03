@@ -1359,7 +1359,7 @@
 
 ### T035. Обработать отказ и восстановление источника
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T024, T032, T033, T080, T102.
 
@@ -1378,7 +1378,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 21/30:durable source check history and recovery without refreshing old facts;24nativePG+migration,1nativequarantine and1Chromium passed;schema0007.
 
 ### T036. Сделать детерминированный replay архивов
 

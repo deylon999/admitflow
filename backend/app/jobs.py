@@ -6,7 +6,7 @@ from uuid import uuid4
 from sqlalchemy import CheckConstraint, DateTime, ForeignKey, Index, Integer, String, and_, exists, or_, select, text
 from sqlalchemy.orm import Mapped, Session, aliased, mapped_column
 
-from .admissions import Source
+from .admissions import PublishedSnapshot, Source
 from .database import Base
 from .sources.publishing import FETCH_CODES, QUARANTINE_CODES, STORAGE_RETRY_CODES, lock_source, utc
 
@@ -29,6 +29,18 @@ class SourceJob(Base):
     max_attempts: Mapped[int]=mapped_column(Integer,default=5)
     interval_seconds: Mapped[int]=mapped_column(Integer,default=900)
     last_error_code: Mapped[str | None]=mapped_column(String(80))
+
+
+class SourceCheck(Base):
+    __tablename__='source_checks'
+    __table_args__=(CheckConstraint("outcome IN ('success','failed')",name='source_check_outcome'),
+                   Index('ix_source_checks_time','source_id','checked_at'))
+    id: Mapped[str]=mapped_column(String(36),primary_key=True,default=lambda:str(uuid4()))
+    source_id: Mapped[str]=mapped_column(ForeignKey('sources.id',ondelete='CASCADE'))
+    checked_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))
+    outcome: Mapped[str]=mapped_column(String(16))
+    error_code: Mapped[str | None]=mapped_column(String(80))
+    snapshot_id: Mapped[str | None]=mapped_column(ForeignKey('source_snapshots.id',ondelete='RESTRICT'))
 
 
 @dataclass(frozen=True,repr=False)
@@ -142,6 +154,8 @@ def complete(engine,lease,*,now=None):
         job.attempts=0
         job.last_error_code=None
         job.next_run_at=now+timedelta(seconds=job.interval_seconds)
+        pointer=db.get(PublishedSnapshot,lease.source_id)
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='success',snapshot_id=pointer.snapshot_id if pointer else None))
         db.commit()
 
 
@@ -157,6 +171,8 @@ def fail(engine,lease,code,*,retry_after=None,now=None):
         job.token=job.lease_until=None
         job.next_run_at=now+timedelta(seconds=delay)
         job.last_error_code=safe_code
+        pointer=db.get(PublishedSnapshot,lease.source_id)
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='failed',error_code=safe_code,snapshot_id=pointer.snapshot_id if pointer else None))
         if source.last_checked_at is None or utc(source.last_checked_at)<=now:
             source.last_checked_at=now
             source.last_error_code=safe_code

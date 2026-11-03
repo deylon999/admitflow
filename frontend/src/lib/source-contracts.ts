@@ -9,6 +9,12 @@ export type ArchiveDirection = { id: string; createdAt: string; group: SourceGro
 export type DirectionBudget = { limit: 20; total: number; manualCount: number; archiveCount: number };
 export type ArchiveHistoryItem = { id: string; assessedAt: string; modelVersion: string; group: SourceGroup; candidate: CandidateFact | null; present: boolean };
 export type ArchiveHistoryPage = { items: ArchiveHistoryItem[]; total: number; nextCursor: string | null };
+export type SourceCheck = { id: string; checkedAt: string; outcome: 'success' | 'failed'; errorCode: string | null; snapshotId: string | null };
+export function parseSourceChecks(value: unknown): SourceCheck[] {
+  if (!Array.isArray(value) || value.length > 20) throw new InvalidResponseError();
+  return value.map(value => { const o = sourceObject(value); if (!['success', 'failed'].includes(String(o.outcome))) throw new InvalidResponseError();
+    return { id: sourceText(o.id, 36), checkedAt: sourceTime(o.checkedAt), outcome: o.outcome as SourceCheck['outcome'], errorCode: nullableText(o.errorCode, 80), snapshotId: nullableText(o.snapshotId, 36) }; });
+}
 export function sourceObject(v: unknown): Record<string, unknown> { if (!v || typeof v !== 'object' || Array.isArray(v)) throw new InvalidResponseError(); return v as Record<string, unknown>; }
 export function sourceText(v: unknown, max = 300): string { if (typeof v !== 'string' || !v.trim() || Array.from(v).length > max || /[\u0000-\u001f\u007f]/.test(v)) throw new InvalidResponseError(); return v; }
 export function sourceInt(v: unknown, min = 0, max = 1_000_000): number { if (typeof v !== 'number' || !Number.isSafeInteger(v) || v < min || v > max) throw new InvalidResponseError(); return v; }

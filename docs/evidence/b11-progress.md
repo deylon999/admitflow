@@ -95,3 +95,9 @@ Shared source provenance now accompanies catalog/lookup/saved archive numbers: s
 ### T023 — 20/30 — stable history and frozen model dispatch
 
 2026-11-04 current verification (temporary runtime from prior day had disappeared, so re-created):16 native PostgreSQL write/history cases passed, including499 equal-time entries+concurrent500th insert,keyset cursor isolation,total counts,idempotent writes,concurrency limits,unknown-version409 and simulated new calculator leaving savedv1 byte-for-byte unchanged. One Chromium selected-history comparison case passed on current production build. Manual mocked E2E now explicitly mocks the newly introduced source/budget reads; otherwise the fake manual guest made real source calls return401 and correctly hid all cards. No backend isolation weakened. History cells show original capture time and model version; source history rollback/immutability evidence T179 remains separate. No two-source auto-assessment claim.
+
+### T035 — 21/30 — failure, quarantine and recovery
+
+Schema0007 persists fenced completed source-check outcomes in the same transaction as queue complete/fail. Current success clears the current error but retains historical failures. Readonly public metadata latest20 endpoint and lazy UI show old failed checks after recovery without bootstrapping a guest; pre-journal attempts are explicitly unknown. Latest good snapshot/facts and actual fetched/source-updated dates remain intact.
+
+2026-11-04: nativePG24 cases (real-format bad-login response→recovery plus full migration roundtrips/model alignment) passed; separate native synthetic duplicate-candidate injection→quarantine→recovery passed. Browser1 current production-build case passed for recovered+failed history and unchanged snapshot time. Synthetic quality event is not claimed as actual live source failure. Repeated raw preserves original fetchedAt. No24h-soak claimed.

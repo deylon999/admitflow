@@ -828,3 +828,7 @@ B11 19/30:every archive number has snapshot/source/separate fetched/source-updat
 ## S159 — 2026-11-04 — B11 20/30 T023
 
 B11 20/30:manual-v1 calculation pinned to stored version;16nativePG write/history cases and1Chromium comparison passed,500boundary/equal-time/cursor/version refusal verified.
+
+## S160 — 2026-11-04 — B11 21/30 T035
+
+B11 21/30:durable source check history and recovery without refreshing old facts;24nativePG+migration,1nativequarantine and1Chromium passed;schema0007.

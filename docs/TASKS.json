@@ -1235,7 +1235,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T024",
         "T032",
@@ -1255,7 +1255,12 @@
         "Последние корректные данные остаются доступны",
         "Восстановление не скрывает историю неудач"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 21/30:durable source check history and recovery without refreshing old facts;24nativePG+migration,1nativequarantine and1Chromium passed;schema0007."
+        }
+      ],
       "blockedReason": null
     },
     {
