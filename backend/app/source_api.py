@@ -133,6 +133,17 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         claims=Confirmation(version=1,source_id=source.id,group_id=source.group_id,snapshot_id=snapshot.id,candidate_key=candidate_key,expires=expires)
         return LookupResult(group=group,found=True,candidate=candidate_fact(row),confirmation_token=issue(claims,owner_hash,key),expires_at=datetime.fromtimestamp(expires,timezone.utc))
 
+    @app.delete('/api/v1/subscriptions/{subscription_id}',status_code=204)
+    def remove_subscription(subscription_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(write_owner),db:Session=Depends(database)):
+        value=db.scalar(select(Subscription).where(Subscription.id==subscription_id,Subscription.owner_hash==owner_hash))
+        if value is None:raise HTTPException(404,'Архивная запись не найдена.')
+        fingerprint=subscription_fingerprint(value.group_id,value.candidate_key)
+        operations=db.scalars(select(OperationRecord).where(OperationRecord.owner_hash==owner_hash,
+                            OperationRecord.key.startswith('archive-confirm:'),OperationRecord.fingerprint==fingerprint)).all()
+        for operation in operations:
+            operation.response=None;operation.response_status=410
+        db.delete(value);db.commit()
+
     @app.post('/api/v1/subscriptions',response_model=SubscriptionSaved,status_code=201)
     def subscribe(body:ConfirmInput,owner_hash:str=Depends(write_owner),db:Session=Depends(database)):
         if key is None:raise HTTPException(409,'Поиск источника не настроен.')

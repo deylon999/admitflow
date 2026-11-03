@@ -808,3 +808,7 @@ B11 14/30:owner-isolated idempotent subscriptions and combined20-limit done;nati
 ## S154 — 2026-11-03 — B11 15/30 T021
 
 B11 15/30:explicit archive lookup/confirmation UI,shared20limit and session cache isolation;5newChromium+5catalog,101unit,currentbuild,4lookup tests and37native cases passed;0006rate budget added.
+
+## S155 — 2026-11-03 — B11 16/30 T178
+
+B11 16/30:individual archive deletion,owner isolation,cascading personal history and410replay tombstones verified;2nativePG+1newChromium passed,currentbuild.

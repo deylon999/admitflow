@@ -123,6 +123,7 @@ export const api = {
     if (value.group.sourceId !== sourceId) throw new InvalidResponseError();
     return value;
   },
+  async removeSubscription(id: string) { await ensureSession(); await request(`/subscriptions/${encodeURIComponent(id)}`, { method: 'DELETE' }); },
   async subscribe(confirmationToken: string) {
     await ensureSession();
     return parseSubscriptionSaved(await request('/subscriptions', { method: 'POST', body: JSON.stringify({ confirmationToken }) }));

@@ -136,3 +136,5 @@ def test_raw_retention_keeps_all_referenced_archive_versions(source_engine,tmp_p
     assert store.read(raw.payload_hash)==raw.body and store.read(second.payload_hash)==second.body
 
 from test_source_lookup import test_lookup_budget_is_shared_by_requests_resets_and_does_not_store_codes
+
+from test_source_deletion import test_archive_delete_is_private_cascading_and_tombstones_replays, test_delete_racing_with_success_replay_cannot_resurrect

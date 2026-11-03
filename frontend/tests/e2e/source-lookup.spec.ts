@@ -58,3 +58,18 @@ for (const theme of ['light', 'dark']) test(`confirmation keyboard at320px ${the
   await expect(page.getByRole('button', { name: 'Сохранить эту запись' })).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('individual delete confirms and releases slot while preserving the source', async ({ page }) => {
+  await find(page);
+  await page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись').check();
+  await page.getByRole('button', { name: 'Сохранить эту запись' }).click();
+  await page.getByRole('link', { name: /Открыть мои направления/ }).click();
+  await page.getByRole('button', { name: 'Удалить архивную запись', exact: true }).click();
+  await expect(page.getByRole('button', { name: 'Отмена', exact: true })).toBeFocused();
+  await page.keyboard.press('Escape');
+  await expect(page.locator('.archive-direction-card')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Удалить архивную запись', exact: true }).click();
+  await page.getByRole('button', { name: 'Да, удалить архивную запись', exact: true }).click();
+  await expect(page.locator('.archive-direction-card')).toHaveCount(0);
+  expect((await (await page.request.get('/api/v1/groups')).json()).items[0].rowCount).toBe(573);
+});

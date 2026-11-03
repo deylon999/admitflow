@@ -2951,7 +2951,7 @@
 
 ### T178. Удалять отдельную архивную запись без её восстановления повтором
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T177, T021.
 
@@ -2970,7 +2970,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 16/30:individual archive deletion,owner isolation,cascading personal history and410replay tombstones verified;2nativePG+1newChromium passed,currentbuild.
 
 ### T179. Сохранять и читать неизменяемую историю фактов одного архивного источника
 

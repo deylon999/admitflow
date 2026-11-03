@@ -5459,7 +5459,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T177",
         "T021"
@@ -5476,7 +5476,12 @@
         "Чужое удаление возвращает404",
         "Удалённая запись не воскресает при replay подтверждения"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 16/30:individual archive deletion,owner isolation,cascading personal history and410replay tombstones verified;2nativePG+1newChromium passed,currentbuild."
+        }
+      ],
       "blockedReason": null
     },
     {
