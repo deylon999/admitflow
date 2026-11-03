@@ -5567,7 +5567,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T179",
         "T180"
@@ -5584,7 +5584,12 @@
         "Файл воспроизводит сохранённые факты и их снимки",
         "Чужие записи и идентификаторы отсутствуют;ручной JSON не меняется"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 22/30:separate owner-only archive-facts-v1 export and actual JSON download verified;1nativePG+1Chromium passed,currentbuild,no identity/access fields."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import { DeleteConfirmation } from './DeleteConfirmation';
 import { ArchiveHistory } from './ArchiveHistory';
 import { SourceProvenance } from './SourceProvenance';
+import { downloadJson } from '../lib/download';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import { sessionAccessKey } from '../lib/query-client';
@@ -11,6 +12,7 @@ export function ArchiveDirections() {
   const [deleting, setDeleting] = useState<string | null>(null);
   const client = useQueryClient();
   const refresh = useRef<HTMLButtonElement>(null);
+  const download = useMutation({ mutationFn: api.exportArchive, onSuccess: value => downloadJson(value, `admitflow-archive-${value.exportedAt.slice(0,10)}.json`) });
   const remove = useMutation({ mutationFn: (id: string) => api.removeSubscription(id), onSuccess: async () => {
     setDeleting(null); client.removeQueries({ queryKey: ['archive-history'] }); await client.invalidateQueries({ queryKey: ['archive-directions'] }); await client.invalidateQueries({ queryKey: ['direction-budget'] }); refresh.current?.focus();
   } });
@@ -23,6 +25,9 @@ export function ArchiveDirections() {
     <p className="small-copy">Здесь факты архивных списков. Ручной JSON и печатный отчёт ниже относятся только к ручным направлениям.</p>
     {records.isError && <p role="alert">Не удалось перечитать архивные направления. {records.data ? 'Показаны ранее загруженные датированные записи.' : ''}</p>}
     <button ref={refresh} type="button" className="text-button" disabled={records.isFetching} onClick={() => void records.refetch()}>Перечитать сохранённые факты</button>
+    <button type="button" className="text-button" disabled={download.isPending || !records.data?.length} onClick={() => download.mutate()}>Скачать текущие архивные факты (JSON)</button>
+    <p className="small-copy">Архивный файл содержит текущие датированные факты ваших записей. История доступна в карточках. Файл не восстанавливает гостевой доступ и не импортируется как ручной расчёт.</p>
+    {download.isError && <p role="alert">{download.error.message}</p>}
     <div className="source-catalog-list">{records.data?.map(item => <article className="surface source-catalog-card archive-direction-card" key={item.id}>
       <span className="tag">Архив · {item.group.year}</span><h3>{item.group.title}</h3><p>{item.group.universityName}</p>
       {item.candidate ? <><p>Строка официального списка: <strong>{item.candidate.officialRank}</strong> · баллы: {item.candidate.score ?? 'неизвестно'}</p><p>Согласие в источнике: {item.candidate.consent === null ? 'неизвестно' : item.candidate.consent ? 'да' : 'нет'} · приоритет: {item.candidate.priority ?? 'неизвестно'}</p></> : <p>{item.notice}</p>}

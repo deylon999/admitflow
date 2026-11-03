@@ -73,6 +73,12 @@ export function parseDirectionBudget(value: unknown): DirectionBudget {
   return { limit: 20, total, manualCount, archiveCount };
 }
 
+export function parseArchiveExport(value: unknown) {
+  const o = sourceObject(value);
+  if (o.formatVersion !== 'archive-facts-v1' || o.scope !== 'current-published-facts') throw new InvalidResponseError();
+  return { formatVersion: 'archive-facts-v1' as const, scope: 'current-published-facts' as const, exportedAt: sourceTime(o.exportedAt), directions: parseArchiveDirections(o.directions) };
+}
+
 export function assertArchiveOrder(items: ArchiveHistoryItem[]) {
   const ids = new Set<string>();
   items.forEach((item, index) => {

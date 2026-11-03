@@ -3813,7 +3813,7 @@
 
 ### T181. Экспортировать архивные факты отдельно от ручных расчётов
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T179, T180.
 
@@ -3832,7 +3832,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 22/30:separate owner-only archive-facts-v1 export and actual JSON download verified;1nativePG+1Chromium passed,currentbuild,no identity/access fields.
 
 ### T182. Восстановить SGU-архив и подписки из PostgreSQL/raw backup
 

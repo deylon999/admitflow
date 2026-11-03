@@ -832,3 +832,7 @@ B11 20/30:manual-v1 calculation pinned to stored version;16nativePG write/histor
 ## S160 — 2026-11-04 — B11 21/30 T035
 
 B11 21/30:durable source check history and recovery without refreshing old facts;24nativePG+migration,1nativequarantine and1Chromium passed;schema0007.
+
+## S161 — 2026-11-04 — B11 22/30 T181
+
+B11 22/30:separate owner-only archive-facts-v1 export and actual JSON download verified;1nativePG+1Chromium passed,currentbuild,no identity/access fields.

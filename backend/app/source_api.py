@@ -87,6 +87,13 @@ class SourceCheckRead(CamelModel):
     snapshot_id:str|None
 
 
+class ArchiveExport(CamelModel):
+    format_version:Literal['archive-facts-v1']='archive-facts-v1'
+    scope:Literal['current-published-facts']='current-published-facts'
+    exported_at:datetime
+    directions:list[ArchiveDirection]
+
+
 def subscription_fingerprint(group_id,candidate_key):
     return hashlib.sha256(f'archive-subscription-v1:{group_id}:{candidate_key}'.encode()).hexdigest()
 
@@ -140,6 +147,12 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
         values=db.scalars(select(Subscription).where(Subscription.owner_hash==owner_hash).order_by(Subscription.created_at,Subscription.id).limit(21)).all()
         if len(values)>20:raise HTTPException(409,'Превышен лимит сохранённых направлений; требуется проверка данных.')
         return [archive_direction(db,value,registry) for value in values]
+
+    @app.get('/api/v1/archive-export',response_model=ArchiveExport)
+    def export_archive(owner_hash:str=Depends(owner),db:Session=Depends(database)):
+        values=db.scalars(select(Subscription).where(Subscription.owner_hash==owner_hash).order_by(Subscription.created_at,Subscription.id).limit(21)).all()
+        if len(values)>20:raise HTTPException(409,'Превышен лимит архивных направлений.')
+        return ArchiveExport(exported_at=clock(),directions=[archive_direction(db,value,registry) for value in values])
 
     @app.post('/api/v1/sources/{source_id}/lookup',response_model=LookupResult)
     def lookup(body:LookupInput,source_id:str=Path(min_length=1,max_length=36),owner_hash:str=Depends(write_owner),db:Session=Depends(database)):

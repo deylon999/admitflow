@@ -31,3 +31,17 @@ test('synthetic page comparisons show consent changes and absence without inferr
   await page.setViewportSize({width:320,height:1000});
   expect(await page.evaluate(() => document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+
+test('archive JSON download contains current dated facts without applicant or access identifiers', async ({ page }) => {
+  await saved(page);
+  const event=page.waitForEvent('download');
+  await page.getByRole('button',{name:'Скачать текущие архивные факты (JSON)',exact:true}).click();
+  const download=await event;
+  expect(download.suggestedFilename()).toMatch(/^admitflow-archive-\d{4}-\d{2}-\d{2}\.json$/);
+  const stream=await download.createReadStream();let text='';for await(const chunk of stream!)text+=chunk.toString();
+  const value=JSON.parse(text);
+  expect(value.formatVersion).toBe('archive-facts-v1');expect(value.directions).toHaveLength(1);
+  expect(value.directions[0].group.snapshotId).toBeTruthy();
+  expect(value.directions[0].candidate.officialRank).toBe(1);
+  for(const forbidden of ['FIXTURE-','candidateKey','confirmationToken','ownerHash'])expect(text).not.toContain(forbidden);
+});
