@@ -1,0 +1,9 @@
+# Derived SGU2026 fixture
+
+This is **not original HTML** and is **not a synthetic original**. The actual SGU response was retrieved2026-11-03 from https://www.sgu.ru/svodka/4588 into private ignored backend/var/research. Original5851174bytes/SHA256 in manifest. DOM subset copied from that actual document: title/season marker, group metadata, capacity table, full573-row candidate table. Candidate IDs replaced by unrelated FIXTURE-* IDs; other-group popovers omitted; active tags/attributes removed. Official rank, all score cells, consent, enrollment text and priorities are preserved; sanitizer independently compares every retained non-identifier cell to the original before writing.
+
+The full private original is **not** checked in. Reproduce from a genuine private original with `backend/.venv/bin/python scripts/sanitize_pilot.py INPUT --output NEW_FOLDER`. New folder must not already exist. No network/attestation/publication is performed. Anonymization preserves duplicate-ID equivalence. Fixture provenance is verifiable by manifest hashes, not by pretending the redacted document is original bytes.
+
+Negative fixture cases are in test_pilot_fixtures.py and the existing adapter/normalization tests: missing table, login page, changed headers, invalid UTF8/charset, oversize, missing columns/duplicate identities/order, incomplete lists. Source-specific negative row mutations are added with the adapter. The SGU original exceeds the production5MiB policy; offline inspection permits8MiB only, without changing fetch/worker limits.
+
+The STU1348 genuine response is35938bytes/windows-1251, private capture SHA2561eb43d4c8508dcb90a9059a639e5506a74fb83d03b88aa7e91c95b2439d29b00. It contains column headers and no candidate data rows, with no explicit complete/zero count or seats. It remains unsupported; do not fabricate a confirmed-empty fixture or adapter.

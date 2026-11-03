@@ -17,3 +17,7 @@
 ## 3/30 T008
 
 Все4 original/current PNG просмотрены, основные6 цветов каждой темы совпадают с измеренными пикселями originals.4 screenshots с actual local fonts сохранены; visual.md перечисляет отличия принятого copy/manual states/дополнительной высоты/видимого focus cue. Добавлена1024px проверка; landing+fonts6 passed,exit0,320–1440/две темы. Pixel-identical или вся T026/T045 не заявлены.
+
+## 4/30 T013
+
+Получены genuine SGU/STU originals. Derived SGU573-row DOM fixture с manifest,SHA256/OFL-neutral provenance и privacy transform; оригинальныеIDs не остались. Sanitizer сохранил все573retained non-identifier rows точно,deterministic rerun unchanged. Missing/login/header/encoding/oversize/capture corruption cases:9passed,exit0. Ошибка sanitizer при удалённом active ancestor исправлена до создания fixture; первичный test missing fixture зафиксирован как setup failure,после исправления9/9. Original dirs700/files600,raw не вGit. STU headers-only не выдан за confirmed-empty; registry остаётся пуст. Source passport обновлён. Offline8MiB inspection не меняет production5MiB limit.

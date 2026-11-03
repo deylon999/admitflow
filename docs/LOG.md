@@ -760,3 +760,7 @@ B11 2/30:13 licensed variable font subsets vendored with hashes/OFL;actual Latin
 ## S142 — 2026-11-03 — B11 3/30 T008
 
 B11 3/30:four real-font screenshots compared to original PNGs,palette tokens match;documented functional copy/focus differences,6 responsive/font tests passed including1024.
+
+## S143 — 2026-11-03 — B11 4/30 T013
+
+B11 4/30:genuine SGU573-row original inspected,DOM-derived anonymized fixture retains exact facts;9 fixture/capture tests passed. STU header-only remains unsupported;source originals private.

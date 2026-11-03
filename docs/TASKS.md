@@ -371,7 +371,7 @@
 
 ### T013. Подготовить реальные и негативные fixtures
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T010, T011, T083.
 
@@ -391,6 +391,7 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S036/S046: external prerequisite rechecked; concrete resumption condition recorded.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 4/30:genuine SGU573-row original inspected,DOM-derived anonymized fixture retains exact facts;9 fixture/capture tests passed. STU header-only remains unsupported;source originals private.
 
 ### T083. Получать проверяемый пакет исходных страниц пилота
 

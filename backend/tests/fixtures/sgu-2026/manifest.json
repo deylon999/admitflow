@@ -1,0 +1,27 @@
+{
+  "format": "anonymized-pilot-fixture-v1",
+  "sourceUrl": "https://www.sgu.ru/svodka/4588",
+  "sourceHash": "e2e8686ed7de4687104aeac64bade4165afd90c354ff2265e869b9cd560906e8",
+  "originalBytes": 5851174,
+  "derivedHash": "35eb165f97ad37338549c3f7796a2f27c5bb8ea5f04778958f81af701abf797a",
+  "derivedBytes": 764816,
+  "rows": 573,
+  "sourceSeason": 2026,
+  "kind": "archive",
+  "attested": false,
+  "retrievedAt": "2026-11-03T16:53:42.669117+00:00",
+  "transformations": [
+    "DOM subset: actual metadata/budget table/candidate table",
+    "candidate codes replaced with unrelated sequential FIXTURE IDs",
+    "other-group popovers removed; active tags and all non-structural attributes removed"
+  ],
+  "metadata": {
+    "Факультет / Институт:": "Факультет компьютерных наук и информационных технологий",
+    "Код:": "09.03.04",
+    "Направление / Специальность:": "Программная инженерия",
+    "Уровень образования:": "Бакалавр",
+    "Форма обучения:": "Очная",
+    "Конкурсная группа:": "Бюджет/Общие места  / Профиль: Разработка программно-информационных систем",
+    "Бюджетных мест:": "16"
+  }
+}
