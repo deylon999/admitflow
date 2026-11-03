@@ -5,6 +5,7 @@ import { api } from '../lib/api';
 import type { LookupResult, SourceGroup } from '../lib/source-contracts';
 import { sessionAccessKey } from '../lib/query-client';
 import type { SessionAccess } from '../lib/query-client';
+import { SourceProvenance } from './SourceProvenance';
 
 export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: () => void }) {
   const [code, setCode] = useState(''), [preview, setPreview] = useState<LookupResult | null>(null), [acknowledged, setAcknowledged] = useState(false), [attempted, setAttempted] = useState(false), [expired, setExpired] = useState(false), [saved, setSaved] = useState(false);
@@ -45,7 +46,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
         <p>Строка официального списка: <strong>{preview.candidate.officialRank}</strong>. Баллы: {preview.candidate.score ?? 'неизвестно'}.</p>
         <p>Согласие в источнике: {preview.candidate.consent === null ? 'неизвестно' : preview.candidate.consent ? 'да' : 'нет'}. Приоритет: {preview.candidate.priority ?? 'неизвестно'}.</p>
         <p>Статус в снимке: {preview.candidate.participation === 'enrolled' ? 'источник отмечает зачисление' : preview.candidate.participation === 'unknown' ? 'не подтверждён' : preview.candidate.participation}.</p>
-        <p className="small-copy">Снимок получен {preview.group.fetchedAt ? new Date(preview.group.fetchedAt).toLocaleString('ru-RU') : 'в неизвестное время'}. Дата обновления самим источником: {preview.group.sourceUpdatedAt ? new Date(preview.group.sourceUpdatedAt).toLocaleString('ru-RU') : 'неизвестно'}.</p>
+        <SourceProvenance group={preview.group} />
         <label className="source-ack"><input type="checkbox" checked={acknowledged} disabled={busy} onChange={event => setAcknowledged(event.target.checked)} />Подтверждаю: выбраны нужные мне группа и запись</label>
         <p className="small-copy">Подтверждение сохраняет направление для просмотра. Оно не подаёт согласие на зачисление и не меняет данные вуза.</p>
         {expired && <p role="status">Срок подтверждения истёк. {attempted ? 'Если ответ сохранения потерян, можно безопасно повторить ту же попытку.' : 'Найдите запись снова перед сохранением.'}</p>}

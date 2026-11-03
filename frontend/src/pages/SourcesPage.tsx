@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 import { api } from '../lib/api';
 import { limitCodePoints } from '../lib/direction';
 import { SourceLookup } from '../components/SourceLookup';
+import { SourceProvenance } from '../components/SourceProvenance';
 
 const modes = { manual: 'Ручной режим', archive: 'Архив', automatic: 'Сбор данных', unsupported: 'Источник не подключён' };
 export default function SourcesPage() {
@@ -35,7 +36,7 @@ export default function SourcesPage() {
       <p className="small-copy">Числовая оценка зачисления недоступна.</p>
       {group.lookupAvailable && <button id={`lookup-${group.id}`} className="button button-secondary" type="button" aria-expanded={selected === group.id} onClick={() => setSelected(group.id)}>Найти свою запись</button>}
       {selected === group.id && <SourceLookup key={group.id} group={group} onClose={() => { setSelected(null); requestAnimationFrame(() => document.getElementById(`lookup-${group.id}`)?.focus()); }} />}
-      {group.sourceUrl && <a href={group.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный список ↗</a>}
+      <SourceProvenance group={group} />
     </article>)}</div>
     {catalog.hasNextPage && <button type="button" className="button button-secondary" disabled={catalog.isFetchingNextPage} onClick={() => void catalog.fetchNextPage()}>{catalog.isFetchingNextPage ? 'Загружаем…' : 'Загрузить ещё группы'}</button>}
     <div className="direction-actions"><Link data-router-link className="button button-primary" to="/tracker">Сохранить направление вручную</Link><a className="button button-secondary" href="https://github.com/deylon999/admitflow/issues/new" target="_blank" rel="noopener noreferrer">Предложить источник на GitHub ↗</a></div>

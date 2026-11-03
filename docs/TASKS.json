@@ -889,7 +889,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T018",
         "T033"
@@ -906,7 +906,12 @@
         "Ни одно число автоматической карточки не остаётся без источника/снимка",
         "Ошибка обновления не освежает старые данные"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b11-progress.md",
+          "note": "B11 19/30:every archive number has snapshot/source/separate fetched/source-updated/checked times;6backend+9Chromium passed,failed check preserves old dates;manual model/capture clarified."
+        }
+      ],
       "blockedReason": null
     },
     {

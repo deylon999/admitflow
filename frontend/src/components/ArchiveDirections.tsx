@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { DeleteConfirmation } from './DeleteConfirmation';
 import { ArchiveHistory } from './ArchiveHistory';
+import { SourceProvenance } from './SourceProvenance';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import { sessionAccessKey } from '../lib/query-client';
@@ -25,13 +26,12 @@ export function ArchiveDirections() {
     <div className="source-catalog-list">{records.data?.map(item => <article className="surface source-catalog-card archive-direction-card" key={item.id}>
       <span className="tag">Архив · {item.group.year}</span><h3>{item.group.title}</h3><p>{item.group.universityName}</p>
       {item.candidate ? <><p>Строка официального списка: <strong>{item.candidate.officialRank}</strong> · баллы: {item.candidate.score ?? 'неизвестно'}</p><p>Согласие в источнике: {item.candidate.consent === null ? 'неизвестно' : item.candidate.consent ? 'да' : 'нет'} · приоритет: {item.candidate.priority ?? 'неизвестно'}</p></> : <p>{item.notice}</p>}
-      <p>Снимок получен: {item.group.fetchedAt ? new Date(item.group.fetchedAt).toLocaleString('ru-RU') : 'неизвестно'}. Обновление самим источником: {item.group.sourceUpdatedAt ? new Date(item.group.sourceUpdatedAt).toLocaleString('ru-RU') : 'неизвестно'}.</p>
+      <SourceProvenance group={item.group} />
       <p className="small-copy">Архив не является текущей кампанией. Вероятность и официальный результат зачисления не рассчитываются.</p>
       <ArchiveHistory id={item.id} />
       <button id={`delete-archive-${item.id}`} type="button" className="text-button delete-link" disabled={remove.isPending} onClick={() => { remove.reset(); setDeleting(item.id); }}>Удалить архивную запись</button>
       {deleting === item.id && <DeleteConfirmation text="Удалить эту архивную запись и её личную историю? Общий снимок источника останется." label="Да, удалить архивную запись" disabled={remove.isPending} onCancel={() => { setDeleting(null); requestAnimationFrame(() => document.getElementById(`delete-archive-${item.id}`)?.focus()); }} onConfirm={() => remove.mutate(item.id)} />}
       {deleting === item.id && remove.isError && <p role="alert">{remove.error.message}</p>}
-      {item.group.sourceUrl && <a href={item.group.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный список ↗</a>}
     </article>)}</div>
   </section>;
 }

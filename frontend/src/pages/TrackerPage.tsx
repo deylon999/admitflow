@@ -47,6 +47,7 @@ function DirectionCard({ watch, onEdit, disabled, beforeDelete, onRemoved }: { w
     <p className="result-status" data-state={calculation.state}>{calculation.status}</p>
     <p className="direction-worst">Если все выше вас подадут согласие: <b>{calculation.worstPlace}-е место</b>.</p>
     <ScenarioExplanation values={watch.latest.values} />
+    <p className="small-copy">Модель ручного сценария: {watch.latest.modelVersion}. Дата сохранения — время вашего ввода, обновление источника не проверено.</p>
     <div className="direction-source"><a href={watch.sourceUrl} target="_blank" rel="noopener noreferrer">Открыть источник ↗</a><span>Сохранено <time dateTime={watch.latest.capturedAt}>{date(watch.latest.capturedAt)}</time></span></div>
     {old && <p className="stale-note">Цифры сохранены больше суток назад. Проверьте свежий список.</p>}
     <div className="direction-actions"><button className="button button-secondary" type="button" disabled={disabled} onClick={event => onEdit(event.currentTarget)}>Обновить цифры</button><button className="text-button" type="button" aria-expanded={showHistory} onClick={() => setShowHistory(!showHistory)}>История</button><button ref={deleteButton} className="text-button delete-link" type="button" disabled={disabled} onClick={() => setConfirmDelete(!confirmDelete)}>Удалить</button></div>

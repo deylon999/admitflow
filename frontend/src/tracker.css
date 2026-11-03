@@ -170,3 +170,7 @@ select { font: inherit; color: var(--text); background: var(--surface); border: 
 .archive-history select { display: block; max-width: 100%; width: 100%; }
 .archive-fact-list { padding-left: 1.4rem; }
 .archive-fact-list li { margin: 1rem 0; overflow-wrap: anywhere; }
+.source-provenance { margin: 1rem 0; font-size: .85rem; overflow-wrap: anywhere; }
+.source-provenance dl { display: grid; gap: .3rem; }
+.source-provenance dt { font-weight: 600; }
+.source-provenance dd { margin: 0 0 .4rem; }

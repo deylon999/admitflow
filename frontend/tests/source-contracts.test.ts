@@ -14,7 +14,7 @@ describe('source catalog contracts', () => {
 
 it('validates archive version order, snapshot identity, presence and cursors', async () => {
   const { parseArchiveHistory, assertArchiveOrder } = await import('../src/lib/source-contracts');
-  const base = { id: 'z', assessedAt: '2026-11-03T17:00:00Z', modelVersion: 'source-facts-v1', group: { ...group, lookupAvailable: false }, candidate: null, present: false };
+  const base = { id: 'z', assessedAt: '2026-11-03T17:00:00Z', modelVersion: 'source-facts-v1', group: parseSourceGroup({ ...group, lookupAvailable: false }), candidate: null, present: false };
   expect(parseArchiveHistory({ items: [base], total: 1, nextCursor: null }).items[0].present).toBe(false);
   for (const changed of [{ present: true }, { group: { ...base.group, snapshotId: null } }, { group }]) expect(() => parseArchiveHistory({ items: [{ ...base, ...changed }], total: 1, nextCursor: null })).toThrow();
   expect(() => parseArchiveHistory({ items: [base], total: 1, nextCursor: 'other' })).toThrow();

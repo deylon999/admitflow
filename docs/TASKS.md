@@ -1885,7 +1885,7 @@
 
 ### T024. Показывать provenance и отдельные времена
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T018, T033.
 
@@ -1904,7 +1904,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b11-progress.md](../docs/evidence/b11-progress.md) — B11 19/30:every archive number has snapshot/source/separate fetched/source-updated/checked times;6backend+9Chromium passed,failed check preserves old dates;manual model/capture clarified.
 
 ### T025. Закрыть ошибки загрузки и повторных действий
 

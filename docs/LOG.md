@@ -820,3 +820,7 @@ B11 17/30:immutable atomic source-facts history with keyset/owner/version proven
 ## S157 — 2026-11-03 — B11 18/30 T180
 
 B11 18/30:archive history and factual comparison UI verified;2Chromium+10contract checks/currentbuild passed,source/season/cursor validation and session cleanup.
+
+## S158 — 2026-11-03 — B11 19/30 T024
+
+B11 19/30:every archive number has snapshot/source/separate fetched/source-updated/checked times;6backend+9Chromium passed,failed check preserves old dates;manual model/capture clarified.

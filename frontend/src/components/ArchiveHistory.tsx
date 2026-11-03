@@ -33,7 +33,7 @@ export function ArchiveHistory({ id }: { id: string }) {
         <p>Снимок {item.group.snapshotId} · <time dateTime={item.group.fetchedAt!}>{item.group.fetchedAt}</time> · {item.group.year} · архив</p>
         <p>{item.candidate ? fields.map(([key, label]) => `${label}: ${fact(item.candidate![key])}`).join(' · ') : 'Запись отсутствует в снимке; причина не установлена.'}</p>
         <p className="small-copy">Обработка: {item.modelVersion} · сохранение фактов: {item.assessedAt}. Обновление источника: {item.group.sourceUpdatedAt ?? 'неизвестно'}.</p>
-        {item.group.sourceUrl && <a href={item.group.sourceUrl} target="_blank" rel="noopener noreferrer">Оригинал снимка ↗</a>}
+        {item.group.sourceUrl && <a href={item.group.sourceUrl} target="_blank" rel="noopener noreferrer">Официальный список ↗</a>}
       </li>)}</ol>
       {history.hasNextPage && <button className="text-button" type="button" disabled={history.isFetchingNextPage} onClick={() => void history.fetchNextPage()}>Ещё архивные снимки</button>}
     </div>}
