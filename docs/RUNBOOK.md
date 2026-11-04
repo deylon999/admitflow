@@ -329,3 +329,34 @@ docker compose -f compose.prod.yaml exec backend python -m app.observability sta
 Лимиты на IP заданы в `frontend/nginx.conf`: создание гостя 10 в минуту (всплеск 20), поиск 60 в минуту (всплеск 30), импорт 6 в минуту (всплеск 5), весь API 30 запросов в секунду. Тело запроса ограничено 64 КБ, для импорта 8 МБ.
 
 `SOURCE_IDENTITY_KEY` нельзя менять без миграции: от него зависят ключи абитуриентов во всех снимках и подписках.
+
+## Бэкап, сигналы и откат (T049, T050)
+
+Файлы подготовлены и проверены в CI на Compose-контуре. На production они ещё не запускались.
+
+Резервная копия с проверкой восстановления во временную базу и сверкой числа строк во всех таблицах:
+
+```bash
+scripts/backup_production.sh /var/backups/admitflow
+```
+
+Сигнал для cron. Код выхода 1 означает, что нужен человек; с `ALERT_WEBHOOK_URL` тот же JSON уходит на webhook:
+
+```bash
+python3 scripts/ops_check.py --backups /var/backups/admitflow
+```
+
+Пример cron: копия раз в сутки, проверка раз в 5 минут.
+
+```
+15 3 * * * cd /opt/admitflow && scripts/backup_production.sh /var/backups/admitflow
+*/5 * * * * cd /opt/admitflow && ALERT_WEBHOOK_URL=... python3 scripts/ops_check.py --backups /var/backups/admitflow
+```
+
+Откат кода: `git checkout <прошлый тег> && docker compose -f compose.prod.yaml up -d --build --wait`. Миграции 0008–0010 добавляют таблицы и колонку. Для отката базы восстанавливайте проверенную копию в отдельную базу, а не делайте downgrade: downgrade удаляет журнал и heartbeat.
+
+Окно потери данных при суточной копии составляет до 24 часов. Копии не зашифрованы и содержат исходные страницы с настоящими кодами, поэтому каталог должен быть закрыт, а срок хранения нужно утвердить вместе с оператором данных.
+
+## Суточное наблюдение (T046)
+
+На staging включить worker, зарегистрировать источники и 24 часа собирать `docker compose -f compose.prod.yaml logs worker` и `python -m app.observability status` раз в 5 минут. Вне приёмной кампании официальные страницы отдают архивы, поэтому наблюдение подтверждает устойчивость загрузки, но не живые изменения. Изменения проверяются отдельно через replay.

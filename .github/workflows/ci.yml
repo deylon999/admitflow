@@ -142,7 +142,6 @@ jobs:
           E2E_API: '1'
           E2E_SOURCE_FIXTURE: '1'
           E2E_SERVER: preview
-          E2E_BASE_URL: http://127.0.0.1:4190
       - name: Show page state of failed tests
         if: failure()
         run: find test-results -name error-context.md -exec sh -c 'echo "== $1"; head -60 "$1"' _ {} \;
@@ -175,6 +174,11 @@ jobs:
           E2E_NGINX: '1'
           E2E_SERVER: external
           E2E_BASE_URL: http://127.0.0.1:8080
+      - name: Backup is restored and verified
+        env:
+          COMPOSE: docker compose -f compose.yaml -f docs/ci-images.yaml
+          RAW_SERVICE: backend
+        run: scripts/backup_production.sh /tmp/admitflow-backups
       - name: Production configuration renders
         env:
           DOMAIN: example.org
