@@ -160,3 +160,29 @@ def test_regression_map_points_at_existing_tests():
     for filename, name in references:
         assert re.search(rf'^def {name}\(', (tests/filename).read_text(encoding='utf-8'), re.M), f'{filename}::{name}'
     assert all(f'D{index:02}' in document for index in range(1, 13))
+
+
+def naive(rows, key, seats):
+    """Independent restatement of listed-consent-v1 for the prepared implementation."""
+    candidate = next(item for item in rows if item.candidate_key == key)
+    active = [item for item in rows[:candidate.official_rank-1] if item.participation != 'withdrawn']
+    yes = sum(item.consent is True for item in active)
+    unknown = sum(item.consent is None for item in active)
+    return yes+1, yes+unknown+1, len(active)+1
+
+
+def test_prepared_rows_match_independent_calculation_for_every_candidate():
+    from random import Random
+    from app.scenarios import PreparedRows
+    generator = Random(173)
+    for _ in range(30):
+        rows = ranked(*(row(generator.choice([True, False, None]), generator.choice(['unknown', 'active', 'withdrawn', 'enrolled'])) for _ in range(generator.randint(1, 40))))
+        prepared = PreparedRows(rows)
+        seats = generator.randint(1, 20)
+        for item in rows:
+            if item.participation == 'withdrawn':
+                continue
+            result = assess(prepared, item.candidate_key, funding='budget', category='general', seats=seats)
+            numbers = result.numbers
+            assert (numbers.current_lower, numbers.current_upper, numbers.all_consent_place) == naive(rows, item.candidate_key, seats)
+            assert result == assess(rows, item.candidate_key, funding='budget', category='general', seats=seats)
