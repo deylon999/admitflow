@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-05",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -1493,7 +1493,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T020",
         "T034",
@@ -1512,7 +1512,12 @@
         "Нет расхождений с подтверждёнными expected outcomes",
         "Все невычислимые случаи дают явный отказ/ограничение"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/regression.md",
+          "note": "Все 12 доменных случаев QUALITY и Q03 сопоставлены с тестами; карта проверяется тестом. Найден и закрыт ложноположительный статус при завышенном числе мест."
+        }
+      ],
       "blockedReason": null
     },
     {

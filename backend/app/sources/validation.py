@@ -18,9 +18,11 @@ class Quarantined(Exception):
 class QualityPolicy:
     max_drop_fraction: float = 0.5
     drop_check_min_rows: int = 10
+    max_capacity_growth: float = 2.0
+    capacity_growth_min_delta: int = 10
 
     def __post_init__(self):
-        if not 0 <= self.max_drop_fraction < 1 or self.drop_check_min_rows < 1:
+        if not 0 <= self.max_drop_fraction < 1 or self.drop_check_min_rows < 1 or self.max_capacity_growth <= 1 or self.capacity_growth_min_delta < 1:
             raise ValueError('invalid_quality_policy')
 
 
@@ -30,7 +32,7 @@ class ValidatedList:
     normalized_hash: str
 
 
-def validate_list(value: ParsedList, binding: SourceBinding, fetched_at: datetime, *, previous: ParsedList | None = None, policy=QualityPolicy()) -> ValidatedList:
+def validate_list(value: ParsedList, binding: SourceBinding, fetched_at: datetime, *, previous: ParsedList | None = None, policy=QualityPolicy(), reviewed_seats: int | None = None) -> ValidatedList:
     try:
         parsed = ParsedList.model_validate(value)
     except (ValidationError, TypeError):
@@ -53,6 +55,10 @@ def validate_list(value: ParsedList, binding: SourceBinding, fetched_at: datetim
         raise Quarantined('invalid_official_order')
     if parsed.source_updated_at and parsed.source_updated_at > fetched_at + timedelta(minutes=5):
         raise Quarantined('future_source_time')
+    if previous is None and reviewed_seats and parsed.seats is not None:
+        # A first publication has no history, so compare with the human-reviewed group capacity.
+        if parsed.seats > reviewed_seats*policy.max_capacity_growth or parsed.seats < reviewed_seats*(1-policy.max_drop_fraction):
+            raise Quarantined('capacity_mismatch')
     if previous:
         if previous.source_id != parsed.source_id or previous.group_id != parsed.group_id or previous.year != parsed.year:
             raise Quarantined('previous_identity_mismatch')
@@ -62,5 +68,8 @@ def validate_list(value: ParsedList, binding: SourceBinding, fetched_at: datetim
             raise Quarantined('row_count_drop')
         if previous.seats and parsed.seats is not None and parsed.seats < previous.seats * (1-policy.max_drop_fraction):
             raise Quarantined('capacity_drop')
+        if previous.seats and parsed.seats is not None and parsed.seats > previous.seats*policy.max_capacity_growth and parsed.seats-previous.seats >= policy.capacity_growth_min_delta:
+            # An inflated place count would otherwise turn every candidate into a positive status.
+            raise Quarantined('capacity_growth')
     canonical = parsed.model_dump_json()
     return ValidatedList(parsed, hashlib.sha256(canonical.encode()).hexdigest())
