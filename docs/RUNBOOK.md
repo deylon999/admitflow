@@ -313,3 +313,19 @@ python -m app.observability status          # то же, что /api/status, б�
 ```
 
 Worker считается `stale`, если нет heartbeat дольше 180 секунд. Старые записи heartbeat удаляются при старте нового worker спустя 7 дней.
+
+## Production-контур (T047, T048)
+
+`compose.prod.yaml` и `Caddyfile` описывают стек: PostgreSQL, API, worker, nginx и Caddy с автоматическим HTTPS. База и API находятся во внутренней сети без выхода наружу. Выход в интернет есть только у worker и у Caddy, снаружи открыты порты 80 и 443.
+
+```bash
+cp .env.production.example .env   # заполнить; openssl rand -hex 32 для секретов
+docker compose -f compose.prod.yaml up -d --build --wait
+docker compose -f compose.prod.yaml exec backend python -m app.observability status
+```
+
+`/api/status`, `/api/docs` и `/api/openapi.json` снаружи закрыты в nginx. На домене нужна A-запись, иначе Caddy не получит сертификат.
+
+Лимиты на IP заданы в `frontend/nginx.conf`: создание гостя 10 в минуту (всплеск 20), поиск 60 в минуту (всплеск 30), импорт 6 в минуту (всплеск 5), весь API 30 запросов в секунду. Тело запроса ограничено 64 КБ, для импорта 8 МБ.
+
+`SOURCE_IDENTITY_KEY` нельзя менять без миграции: от него зависят ключи абитуриентов во всех снимках и подписках.

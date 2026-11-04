@@ -13,6 +13,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import and_, delete, func, or_, select, text
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import TimeoutError as SQLAlchemyTimeoutError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate, calculate_versioned
@@ -77,9 +78,14 @@ def create_app(settings: Settings | None = None):
                 await cleanup
             engine.dispose()
 
-    app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url='/api/docs', openapi_url='/api/openapi.json', redoc_url=None, responses={422: {'model': ValidationProblem}})
+    app = FastAPI(title='Абитуриент API', version='0.2.0', lifespan=lifespan, docs_url=None if config.environment=='production' else '/api/docs', openapi_url=None if config.environment=='production' else '/api/openapi.json', redoc_url=None, responses={422: {'model': ValidationProblem}})
     app.state.engine = engine
     app.state.source_registry = source_registry
+
+    @app.exception_handler(SQLAlchemyTimeoutError)
+    async def database_busy(request, error):
+        # Connection pool exhaustion is overload, not a defect: ask the client to retry.
+        return JSONResponse({'detail':'Сервис сейчас перегружен. Повторите запрос позже.'},status_code=503,headers={'Retry-After':'5'})
 
     @app.exception_handler(RequestValidationError)
     async def validation_error(_, error):

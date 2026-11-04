@@ -7,6 +7,7 @@ import math
 import multiprocessing
 import os
 from pathlib import Path
+import resource
 import tempfile
 import time
 from typing import Literal
@@ -45,6 +46,9 @@ def _private_write(path,body):
 
 
 def _fetch_child(folder,binding,domains,max_bytes=5*1024*1024):
+    # This process only talks to the network: it must not inherit private settings.
+    for name in ('SOURCE_IDENTITY_KEY','DATABASE_URL'):
+        os.environ.pop(name,None)
     folder=Path(folder)
     try:
         result=Fetcher(FetchPolicy(domains=domains,max_bytes=max_bytes)).fetch(binding.url)
@@ -192,6 +196,14 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
         return {'state':'failed','sourceId':lease.source_id}
 
 
+def limit_memory():
+    # A hostile page can make the HTML parser allocate gigabytes; fail this run, not the host.
+    megabytes=int(os.getenv('WORKER_MEMORY_LIMIT_MB','2048'))
+    if not 256<=megabytes<=65536:
+        raise RuntimeError('WORKER_MEMORY_LIMIT_MB must be between 256 and 65536.')
+    resource.setrlimit(resource.RLIMIT_AS,(megabytes*1024*1024,resource.getrlimit(resource.RLIMIT_AS)[1]))
+
+
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode',choices=['once','loop'])
@@ -232,4 +244,5 @@ def main(argv=None):
 
 
 if __name__=='__main__':
+    limit_memory()
     raise SystemExit(main())

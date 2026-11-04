@@ -1,0 +1,5 @@
+services:
+  backend:
+    image: admitflow-backend:ci
+  frontend:
+    image: admitflow-frontend:ci

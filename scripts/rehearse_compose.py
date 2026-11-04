@@ -119,7 +119,7 @@ engine.dispose()
                     require(after[service]['health'] == 'healthy', 'Healthcheck failed')
                 if service != 'frontend':
                     require(after[service]['ports'] == {}, 'Private service published ports')
-            require(after['frontend']['ports']['80/tcp'] == [{'HostIp': '127.0.0.1', 'HostPort': str(port)}], 'Frontend binding changed')
+            require(after['frontend']['ports']['8080/tcp'] == [{'HostIp': '127.0.0.1', 'HostPort': str(port)}], 'Frontend binding changed')
             with httpx.Client(base_url=f'http://127.0.0.1:{port}', headers=headers, cookies=owner_cookies, timeout=15, trust_env=False) as owner, \
                     httpx.Client(base_url=f'http://127.0.0.1:{port}', headers=headers, cookies=other_cookies, timeout=15, trust_env=False) as other:
                 require(owner.get(path).json() == history, 'History differs after recreation')

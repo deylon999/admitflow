@@ -8,7 +8,8 @@ COPY frontend/ ./
 COPY shared/ ../shared/
 RUN npm run build
 
-FROM nginx:1.28-alpine
+FROM nginxinc/nginx-unprivileged:1.28-alpine
 COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+COPY frontend/nginx/ /etc/nginx/snippets/
 COPY --from=build /app/frontend/dist /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 8080
