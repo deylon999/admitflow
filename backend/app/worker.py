@@ -10,6 +10,7 @@ from pathlib import Path
 import tempfile
 import time
 from typing import Literal
+from uuid import uuid4
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy.orm import Session
@@ -18,6 +19,7 @@ from .admissions import Source
 from .config import Settings
 from .database import make_engine
 from .jobs import LostLease, claim, clock, complete, fail, guard_lease, renew
+from .observability import beat, log_event
 from .sources.contracts import AdapterError
 from .sources.fetcher import FetchError, Fetcher, FetchPolicy, FetchResult
 from .sources.publishing import FETCH_CODES, binding_from_db, publish
@@ -147,6 +149,10 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
     lease=claim(engine,now=now())
     if lease is None:
         return {'state':'idle'}
+    started=time.perf_counter()
+    def finished(state,**fields):
+        log_event('source_run_finished',runId=lease.run_id,sourceId=lease.source_id,attempt=lease.attempt,state=state,durationMs=round((time.perf_counter()-started)*1000),**fields)
+    log_event('source_run_started',runId=lease.run_id,sourceId=lease.source_id,attempt=lease.attempt)
     try:
         with Session(engine) as db:
             source=db.get(Source,lease.source_id)
@@ -158,9 +164,11 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
         parsed=adapter.parse(raw,binding)
         renew(engine,lease,now=now())
         publish(engine,lease.source_id,parsed,raw,store,registry=registry,allow_unattested=allow_unattested,expected_binding=binding,lease_guard=lambda db:guard_lease(db,lease,now=now()))
-        complete(engine,lease,now=now())
+        snapshot_id=complete(engine,lease,now=now())
+        finished('success',snapshotId=snapshot_id,payloadHash=raw.payload_hash,adapterVersion=binding.adapter_version)
         return {'state':'success','sourceId':lease.source_id}
     except LostLease:
+        finished('lost_lease')
         return {'state':'lost_lease','sourceId':lease.source_id}
     except Exception as error:
         if isinstance(error,FetchError):
@@ -177,8 +185,10 @@ def run_once(engine,store,*,registry=PRODUCTION_REGISTRY,fetch=bounded_fetch,now
         try:
             fail(engine,lease,code,retry_after=retry_after,now=now())
         except LostLease:
+            finished('lost_lease',code=code)
             return {'state':'lost_lease','sourceId':lease.source_id}
-        # Do not log exception strings, URLs, raw bodies or public IDs.
+        # Do not log exception strings, URLs, raw bodies or public IDs: stable code and class only.
+        finished('failed',code=code,retryAfter=retry_after,errorType=type(error).__name__)
         return {'state':'failed','sourceId':lease.source_id}
 
 
@@ -191,14 +201,26 @@ def main(argv=None):
         parser.error('poll-seconds must be between 1 and 60')
     engine=make_engine(Settings.from_env().database_url)
     store=RawStore(os.getenv('RAW_STORE_PATH','./var/raw'))
+    worker_id=str(uuid4())
+    started_at=clock()
+    def heartbeat(state):
+        try:
+            beat(engine,worker_id,started_at,state)
+        except Exception as error:
+            # A status write must never stop import work or expose connection details.
+            log_event('worker_heartbeat_failed',workerId=worker_id,errorType=type(error).__name__)
     try:
         registry=runtime_registry()
+        log_event('worker_started',workerId=worker_id,mode=args.mode)
+        heartbeat('started')
         while True:
             try:
                 result=run_once(engine,store,registry=registry)
-            except Exception:
+            except Exception as error:
+                log_event('worker_error',workerId=worker_id,errorType=type(error).__name__)
                 result={'state':'worker_error'}
             print(json.dumps(result),flush=True)
+            heartbeat(result['state'])
             if args.mode=='once':
                 return 1 if result['state'] in ('failed','worker_error') else 0
             # Polling is bounded even after persistent DB/adapter failures.

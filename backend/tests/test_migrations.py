@@ -39,9 +39,9 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.upgrade(config(), 'head')
     command.upgrade(config(), 'head')
     command.check(config())
-    assert len(inspect(migration_db).get_table_names()) == 19  # 18 domain + revision.
+    assert len(inspect(migration_db).get_table_names()) == 20  # 19 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0009'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0010'
 
 
 def seed_legacy(engine):
@@ -185,7 +185,7 @@ def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full
     command.upgrade(config(),'head')
     command.check(config())
     with postgres_legacy_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0009'
+        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0010'
         assert db.scalar(text('SELECT title FROM watches'))=='Test direction'
         assert db.execute(text('SELECT id, watch_id, rank - excluded - no_consent FROM snapshots')).one()==('snapshot-1','watch-1',74)
         assert not db.scalar(text("SELECT count(*) FROM pg_class WHERE relname LIKE '_admitflow_check_%' AND relnamespace=pg_my_temp_schema()"))

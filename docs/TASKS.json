@@ -1465,7 +1465,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T032",
         "T035",
@@ -1484,7 +1484,16 @@
         "По ошибке можно восстановить цепочку source→run→snapshot→assessment",
         "Мёртвый worker и устаревший источник видны отдельно от HTTP health"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "backend/app/observability.py",
+          "note": "Heartbeat worker, /api/status отдельно от /api/health, runId связывает лог с source_checks и snapshot, trace без данных абитуриентов."
+        },
+        {
+          "path": "backend/tests/test_observability.py",
+          "note": "Проверены success и failure цепочки, отсутствие текста исключений в событиях, старение worker, degraded."
+        }
+      ],
       "blockedReason": null
     },
     {

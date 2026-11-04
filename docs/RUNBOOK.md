@@ -298,3 +298,18 @@ Every accepted registration/enable/disable/enqueue/hold/resume/model-enable is j
 B12 schema0008/0009:upgrade creates change_events and source_operations without rewriting old snapshots/assessments. Downgrading drops these new tables;to preserve event seen-state and audit history,restore the verified quiesced DB+referencedraw backup into a separate compatible database instead of treating a destructive downgrade as a lossless rollback. `scripts/rehearse_postgres_restore.py --archive-sgu --output REPORT.json` now checks exact19-table contents,scenario versions/private changefeed/seen,two owners,tombstones and raw corruption refusal. This disposable local rehearsal does not set productionRPO or retention policy.
 
 Run browser fixture batches without overlapping preview builds/output directories:one default single-source fixtureAPI for the baseline,then two-source controlled fixtures separately. `E2E_API_PORT` changes disposable fixtureport;`API_TARGET` points Vite at that API. `E2E_SOURCE_CONTROL=/tmp/NAME.json` is an optional mode600 controlfile limited to the owned test database,never a production/public mutation endpoint. Use a distinct Playwright `--output` directory for separate invocations;do not rebuild shared frontend/dist while another preview batch is running.
+
+## Наблюдаемость (T041)
+
+`GET /api/status` отдаёт агрегаты: состояние worker (`alive`, `stale`, `never_seen`), число источников по состояниям, очередь и просроченные задания. Значение `degraded` не влияет на `/api/health`: API может быть здоров при мёртвом worker, и это разные сигналы. Эндпоинт не содержит данных абитуриентов.
+
+Worker пишет в stdout JSON-события `worker_started`, `source_run_started`, `source_run_finished`. В событиях есть `runId`, `sourceId`, стабильный код ошибки и класс исключения; текста исключения, URL и кодов абитуриентов там нет.
+
+Цепочку попытки можно восстановить по `runId` из лога (из `backend/`):
+
+```bash
+python -m app.observability trace <runId>   # source -> check -> snapshot -> число assessments
+python -m app.observability status          # то же, что /api/status, без HTTP
+```
+
+Worker считается `stale`, если нет heartbeat дольше 180 секунд. Старые записи heartbeat удаляются при старте нового worker спустя 7 дней.
