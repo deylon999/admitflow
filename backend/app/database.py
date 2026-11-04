@@ -82,6 +82,9 @@ def make_engine(url: str):
             raise ValueError('PostgreSQL connect_timeout must be between 1 and 10 seconds.') from None
         options['connect_args'] = {'connect_timeout': timeout}
         options['pool_timeout'] = 5
+        # FastAPI runs sync routes on up to 40 threads; keep waits short and connections bounded.
+        options['pool_size'] = 10
+        options['max_overflow'] = 10
     engine = create_engine(url, **options)
     if url.startswith('sqlite'):
         @event.listens_for(engine, 'connect')

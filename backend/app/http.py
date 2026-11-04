@@ -10,6 +10,8 @@ from uuid import uuid4
 from starlette.responses import JSONResponse
 
 MAX_REQUEST_BYTES = 8*1024*1024
+DEFAULT_REQUEST_BYTES = 64*1024
+LARGE_BODY_PATHS = frozenset({'/api/v1/import'})
 
 
 class BodyTooLarge(Exception):
@@ -71,15 +73,23 @@ def permitted_origin(request, config):
 
 
 class RequestBudgetMiddleware:
-    def __init__(self, app, max_bytes=MAX_REQUEST_BYTES, timeout=10):
+    def __init__(self, app, max_bytes=MAX_REQUEST_BYTES, timeout=10, default_bytes=DEFAULT_REQUEST_BYTES):
         self.app = app
         self.max_bytes = max_bytes
+        self.default_bytes = default_bytes
         self.timeout = timeout
 
     async def __call__(self, scope, receive, send):
         if scope['type'] != 'http':
             return await self.app(scope, receive, send)
-        headers = dict(scope.get('headers', ()))
+        pairs = scope.get('headers', ())
+        headers = dict(pairs)
+        names = [name.lower() for name,_ in pairs]
+        if names.count(b'content-type') > 1 or names.count(b'content-length') > 1:
+            # Middleware and framework could otherwise read different values of the same header.
+            return await self.reject(scope, receive, send, 400, 'Запрос содержит неоднозначные заголовки.')
+        limit = self.max_bytes if scope.get('path') in LARGE_BODY_PATHS else min(self.max_bytes, self.default_bytes)
+        too_large = f'Размер запроса превышает {limit//(1024*1024)} МБ.' if limit >= 1024*1024 else f'Размер запроса превышает {limit//1024} КБ.'
         if b'content-length' in headers:
             try:
                 size = int(headers[b'content-length'])
@@ -87,8 +97,8 @@ class RequestBudgetMiddleware:
                     raise ValueError()
             except ValueError:
                 return await self.reject(scope, receive, send, 400, 'Некорректная длина запроса.')
-            if size > self.max_bytes:
-                return await self.reject(scope, receive, send, 413, 'Размер запроса превышает 8 МБ.')
+            if size > limit:
+                return await self.reject(scope, receive, send, 413, too_large)
         body = bytearray()
         try:
             async with asyncio.timeout(self.timeout):
@@ -97,7 +107,7 @@ class RequestBudgetMiddleware:
                     if message['type'] == 'http.disconnect':
                         return
                     chunk = message.get('body', b'')
-                    if len(body) + len(chunk) > self.max_bytes:
+                    if len(body) + len(chunk) > limit:
                         raise BodyTooLarge()
                     body.extend(chunk)
                     if not message.get('more_body', False):
@@ -105,12 +115,16 @@ class RequestBudgetMiddleware:
         except TimeoutError:
             return await self.reject(scope, receive, send, 408, 'Время приёма запроса истекло.')
         except BodyTooLarge:
-            return await self.reject(scope, receive, send, 413, 'Размер запроса превышает 8 МБ.')
+            return await self.reject(scope, receive, send, 413, too_large)
         content_type = headers.get(b'content-type', b'').split(b';')[0].strip().lower()
         json_body = not content_type or content_type == b'application/json' or (content_type.startswith(b'application/') and content_type.endswith(b'+json'))
         if body and json_body:
             try:
-                validate_json_document(body)
+                if len(body) > self.default_bytes:
+                    # A large document must not stall every other request on the event loop.
+                    await asyncio.to_thread(validate_json_document, bytes(body))
+                else:
+                    validate_json_document(body)
             except (ValueError, RecursionError):
                 return await self.reject(scope, receive, send, 400, 'JSON содержит неоднозначные значения или превышает допустимую вложенность.')
         sent = False

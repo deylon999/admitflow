@@ -135,3 +135,28 @@ def test_parser_exception_text_is_not_saved_or_returned(source_engine,tmp_path):
     with Session(source_engine) as db:
         assert db.get(Source,'source-1').last_error_code=='internal_error'
         assert db.get(SourceJob,'source-1').last_error_code=='internal_error'
+
+
+def test_fetch_child_does_not_keep_private_settings(monkeypatch,tmp_path):
+    import os
+    from app.worker import _fetch_child
+    monkeypatch.setenv('SOURCE_IDENTITY_KEY','private-key')
+    monkeypatch.setenv('DATABASE_URL','postgresql://private')
+    seen={}
+    class Stop:
+        def __init__(self,*_):pass
+        def fetch(self,url):
+            seen['key']=os.environ.get('SOURCE_IDENTITY_KEY');seen['db']=os.environ.get('DATABASE_URL')
+            raise FetchError('timeout',retry_after=60)
+    monkeypatch.setattr('app.worker.Fetcher',Stop)
+    monkeypatch.setattr('app.worker.FetchPolicy',lambda **_:None)
+    binding=type('B',(),{'url':'https://example.org/list'})
+    _fetch_child(str(tmp_path),binding,frozenset({'example.org'}))
+    assert seen=={'key':None,'db':None}
+
+
+def test_worker_memory_limit_setting_is_validated(monkeypatch):
+    from app.worker import limit_memory
+    monkeypatch.setenv('WORKER_MEMORY_LIMIT_MB','1')
+    with pytest.raises(RuntimeError):
+        limit_memory()

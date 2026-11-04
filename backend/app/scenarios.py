@@ -33,27 +33,47 @@ class ScenarioResult(CamelModel):
     official_result_available:Literal[False]=False
 
 
+class PreparedRows:
+    """One O(n) pass over an ordered list, then O(1) per candidate during publication."""
+    def __init__(self,rows):
+        rows=list(rows)
+        self.count=len(rows)
+        self.by_key={row.candidate_key:row for row in rows}
+        self.ordered=bool(rows) and len(self.by_key)==len(rows) and all(row.official_rank==index for index,row in enumerate(rows,1))
+        # Counters of rows strictly above each official rank; explicit withdrawals are excluded once.
+        self.above=[(0,0,0,0,0)]
+        yes=no=unknown=withdrawn=unknown_participation=0
+        for row in rows:
+            if row.participation=='withdrawn':
+                withdrawn+=1
+            else:
+                yes+=row.consent is True
+                no+=row.consent is False
+                unknown+=row.consent is None
+                unknown_participation+=row.participation=='unknown'
+            self.above.append((yes,no,unknown,withdrawn,unknown_participation))
+
+
 def assess_v1(rows,candidate_key,*,funding,category,seats):
     def refused(code,state='unsupported'):
         return ScenarioResult(state=state,reason_codes=[code],assumptions=list(ASSUMPTIONS))
     if funding!='budget':return refused('unsupported_funding')
     if category!='general':return refused('unsupported_category')
     if seats is None or seats<=0:return refused('missing_or_zero_capacity','insufficient_data')
-    if not rows or any(row.official_rank!=index for index,row in enumerate(rows,1)) or len({row.candidate_key for row in rows})!=len(rows):return refused('incomplete_official_order','insufficient_data')
-    candidate=next((row for row in rows if row.candidate_key==candidate_key),None)
+    prepared=rows if isinstance(rows,PreparedRows) else PreparedRows(rows)
+    if not prepared.ordered:return refused('incomplete_official_order','insufficient_data')
+    candidate=prepared.by_key.get(candidate_key)
     if candidate is None:return refused('candidate_not_in_snapshot','insufficient_data')
     if candidate.participation=='withdrawn':return refused('candidate_withdrawn')
-    above=rows[:candidate.official_rank-1]
-    active=[row for row in above if row.participation!='withdrawn']
-    yes=sum(row.consent is True for row in active);no=sum(row.consent is False for row in active);unknown=sum(row.consent is None for row in active)
-    lower,upper,worst=yes+1,yes+unknown+1,len(active)+1
+    yes,no,unknown,withdrawn,unknown_participation=prepared.above[candidate.official_rank-1]
+    lower,upper,worst=yes+1,yes+unknown+1,yes+no+unknown+1
     state='within' if worst<=seats else 'out' if lower>seats else 'conditional' if upper<=seats else 'insufficient_data'
     reasons=['listed_consent_scenario','priorities_not_applied']
     if candidate.consent is not True:reasons.append('own_consent_assumed')
-    if any(row.participation=='unknown' for row in active):reasons.append('unknown_participation_included')
+    if unknown_participation:reasons.append('unknown_participation_included')
     if unknown:reasons.append('unknown_consent_bounds')
     if state=='insufficient_data':reasons.append('unknown_consent_crosses_capacity')
-    return ScenarioResult(state=state,numbers=ScenarioNumbers(current_lower=lower,current_upper=upper,all_consent_place=worst,seats=seats,consent_yes_above=yes,consent_no_above=no,consent_unknown_above=unknown,withdrawn_above=len(above)-len(active)),reason_codes=reasons,assumptions=list(ASSUMPTIONS))
+    return ScenarioResult(state=state,numbers=ScenarioNumbers(current_lower=lower,current_upper=upper,all_consent_place=worst,seats=seats,consent_yes_above=yes,consent_no_above=no,consent_unknown_above=unknown,withdrawn_above=withdrawn),reason_codes=reasons,assumptions=list(ASSUMPTIONS))
 
 
 MODELS=MappingProxyType({VERSION:assess_v1})

@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('filtered print media exports only selected real manual records to PDF', async ({ page }, info) => {
+test('filtered print media exports only selected real manual records to PDF', async ({ page, browserName }, info) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
+  test.skip(browserName !== 'chromium', 'page.pdf works only in headless Chromium; print CSS is shared');
   await page.goto('/tracker');
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
   for (const title of ['Keep this direction', 'Excluded from print']) {

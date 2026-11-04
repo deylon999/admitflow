@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-04",
+  "updatedAt": "2026-11-05",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -305,7 +305,7 @@
       "phase": "E0",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "done",
       "dependsOn": [
         "T003",
         "T005"
@@ -330,9 +330,13 @@
         {
           "path": "docs/LOG.md",
           "note": "S036/S046: external prerequisite rechecked; concrete resumption condition recorded."
+        },
+        {
+          "path": "docs/evidence/t045-browsers.md",
+          "note": "Удалённый прогон 41928404413 на чистых раннерах успешен: lockfile-установка, сборка, unit, backend с обязательным PostgreSQL, E2E."
         }
       ],
-      "blockedReason": "B10 2026-11-03: GitHub reachable via read-only ls-remote, but gh has no authenticated hosts and no remote workflow run for current commits is verified. Resume with authenticated repository access and an actual passing run; local configuration alone is insufficient."
+      "blockedReason": null
     },
     {
       "id": "T007",
@@ -1465,7 +1469,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T032",
         "T035",
@@ -1484,7 +1488,16 @@
         "По ошибке можно восстановить цепочку source→run→snapshot→assessment",
         "Мёртвый worker и устаревший источник видны отдельно от HTTP health"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "backend/app/observability.py",
+          "note": "Heartbeat worker, /api/status отдельно от /api/health, runId связывает лог с source_checks и snapshot, trace без данных абитуриентов."
+        },
+        {
+          "path": "backend/tests/test_observability.py",
+          "note": "Проверены success и failure цепочки, отсутствие текста исключений в событиях, старение worker, degraded."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1493,7 +1506,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T020",
         "T034",
@@ -1512,7 +1525,12 @@
         "Нет расхождений с подтверждёнными expected outcomes",
         "Все невычислимые случаи дают явный отказ/ограничение"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/regression.md",
+          "note": "Все 12 доменных случаев QUALITY и Q03 сопоставлены с тестами; карта проверяется тестом. Найден и закрыт ложноположительный статус при завышенном числе мест."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1556,7 +1574,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T034",
         "T041"
@@ -1573,7 +1591,12 @@
         "Порог качества достигнут на именованном стенде",
         "Измерения включают большую группу и параллельное обновление, а не только пустую БД"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/t044-load.md",
+          "note": "Полный профиль 100 сессий, 20 направлений, 10 000 строк и параллельная публикация на стенде dev-container-2cpu. Узкие места устранены. Повтор на staging ожидает T048."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1582,7 +1605,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T026",
         "T039",
@@ -1601,7 +1624,12 @@
         "Существенные расхождения исправлены",
         "Непроверенная платформа явно записана и не считается поддержанной по тестам"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/t045-browsers.md",
+          "note": "Chromium, Firefox, WebKit и два мобильных профиля пройдены в CI; ограничения платформ записаны."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1610,7 +1638,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T035",
         "T038",
@@ -1628,7 +1656,7 @@
         "Успешный архивный replay не выдан за live-soak"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: нужны 24 реальных часа на сервере с разрешённым доступом к источникам; из среды разработки сайты вузов недоступны. Процедура в RUNBOOK. Условие снятия: T048."
     },
     {
       "id": "T047",
@@ -1636,7 +1664,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T006",
         "T014",
@@ -1656,7 +1684,16 @@
         "После restart данные сохранены и worker возвращается в работу",
         "БД и административные порты не открыты наружу"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "compose.prod.yaml",
+          "note": "Production-стек с закрытой внутренней сетью и лимитами."
+        },
+        {
+          "path": "docs/evidence/t045-browsers.md",
+          "note": "Пересоздание с сохранением данных, возврат worker и закрытые порты проверены в CI. Первый запуск prod-конфигурации относится к T048."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -1665,7 +1702,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T047"
       ],
@@ -1682,7 +1719,7 @@
         "Статический frontend без работающего API не считается staging MVP"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: не выбраны сервер, домен, бюджет и регион; без них нельзя получить URL и TLS. Готовы compose.prod.yaml, Caddyfile и инструкция в RELEASE_GATES.md. Условие снятия: решение владельца и доступ к серверу."
     },
     {
       "id": "T049",
@@ -1690,7 +1727,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T043",
         "T048",
@@ -1711,7 +1748,7 @@
         "Результаты времени и известное окно потери записаны"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: скрипт и проверка восстановления работают в CI, но acceptance требует staging и утверждённых сроков хранения. Условие снятия: T048 и решение оператора данных."
     },
     {
       "id": "T050",
@@ -1719,7 +1756,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T041",
         "T048"
@@ -1737,7 +1774,7 @@
         "Секреты и персональные данные не попадают в сигналы"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: scripts/ops_check.py и порядок отката готовы, но сигнал надо проверить на настоящем сервере. Условие снятия: T048."
     },
     {
       "id": "T051",
@@ -1745,7 +1782,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T021",
         "T022",
@@ -1767,7 +1804,7 @@
         "Внешний fetch при тестах не зависит от недетерминированной случайной выдачи"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: acceptance требует staging с настоящим API. Условие снятия: T048."
     },
     {
       "id": "T052",
@@ -1775,7 +1812,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T039",
         "T045",
@@ -1793,7 +1830,7 @@
         "Нет придуманных отзывов и смешения сценария с гарантией"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "2026-11-05: нужны живые тестеры; отзывы нельзя выдумывать. Условие снятия: тестеры и T051."
     },
     {
       "id": "T053",

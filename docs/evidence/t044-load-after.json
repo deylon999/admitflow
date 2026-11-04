@@ -1,0 +1,131 @@
+{
+  "recordedAt": "2026-11-04T22:19:59.389619+00:00",
+  "stand": {
+    "name": "dev-container-2cpu",
+    "python": "3.13.18",
+    "cpuCount": 2,
+    "apiProcesses": 1,
+    "database": "PostgreSQL",
+    "tls": false,
+    "clientOnSameHost": true
+  },
+  "profile": {
+    "sessions": 100,
+    "directionsPerSession": 20,
+    "rows": 10000,
+    "seats": 1000,
+    "readSeconds": 60,
+    "pacePerSessionSeconds": 5.0,
+    "externalFetches": 0
+  },
+  "firstPublicationSeconds": 1.16,
+  "prepare": {
+    "requests": 3100,
+    "p50Ms": 111.26,
+    "p95Ms": 1225.37,
+    "p99Ms": 1357.71,
+    "maxMs": 1721.37,
+    "statuses": {
+      "204": 100,
+      "200": 1000,
+      "201": 2000
+    },
+    "unexpected5xxShare": 0.0,
+    "seconds": 123.2
+  },
+  "subscriptions": 1000,
+  "readsWithoutPublication": {
+    "requests": 1195,
+    "p50Ms": 16.1,
+    "p95Ms": 29.02,
+    "p99Ms": 38.42,
+    "maxMs": 48.84,
+    "statuses": {
+      "200": 1195
+    },
+    "unexpected5xxShare": 0.0
+  },
+  "routesWithoutPublication": {
+    "budget": {
+      "requests": 198,
+      "p50Ms": 10.91,
+      "p95Ms": 20.65,
+      "p99Ms": 26.51,
+      "maxMs": 31.79,
+      "statuses": {
+        "200": 198
+      },
+      "unexpected5xxShare": 0.0
+    },
+    "groups": {
+      "requests": 199,
+      "p50Ms": 15.18,
+      "p95Ms": 26.85,
+      "p99Ms": 38.42,
+      "maxMs": 48.84,
+      "statuses": {
+        "200": 199
+      },
+      "unexpected5xxShare": 0.0
+    },
+    "scenario": {
+      "requests": 198,
+      "p50Ms": 20.22,
+      "p95Ms": 37.36,
+      "p99Ms": 42.3,
+      "maxMs": 48.48,
+      "statuses": {
+        "200": 198
+      },
+      "unexpected5xxShare": 0.0
+    },
+    "status": {
+      "requests": 200,
+      "p50Ms": 14.49,
+      "p95Ms": 25.8,
+      "p99Ms": 32.36,
+      "maxMs": 40.15,
+      "statuses": {
+        "200": 200
+      },
+      "unexpected5xxShare": 0.0
+    },
+    "subscriptions": {
+      "requests": 200,
+      "p50Ms": 19.78,
+      "p95Ms": 31.99,
+      "p99Ms": 39.87,
+      "maxMs": 42.85,
+      "statuses": {
+        "200": 200
+      },
+      "unexpected5xxShare": 0.0
+    },
+    "watches": {
+      "requests": 200,
+      "p50Ms": 13.56,
+      "p95Ms": 24.86,
+      "p99Ms": 29.35,
+      "maxMs": 34.1,
+      "statuses": {
+        "200": 200
+      },
+      "unexpected5xxShare": 0.0
+    }
+  },
+  "readsDuringPublication": {
+    "requests": 258,
+    "p50Ms": 26.62,
+    "p95Ms": 168.0,
+    "p99Ms": 321.49,
+    "maxMs": 390.07,
+    "statuses": {
+      "200": 258
+    },
+    "unexpected5xxShare": 0.0
+  },
+  "publicationWithSubscriptionsSeconds": 7.51,
+  "apiPeakRss": "141064 kB",
+  "targetMet": true,
+  "scope": "Synthetic rows on the named stand. QUALITY target for staging is measured separately after deployment."
+}

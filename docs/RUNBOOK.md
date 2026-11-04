@@ -298,3 +298,65 @@ Every accepted registration/enable/disable/enqueue/hold/resume/model-enable is j
 B12 schema0008/0009:upgrade creates change_events and source_operations without rewriting old snapshots/assessments. Downgrading drops these new tables;to preserve event seen-state and audit history,restore the verified quiesced DB+referencedraw backup into a separate compatible database instead of treating a destructive downgrade as a lossless rollback. `scripts/rehearse_postgres_restore.py --archive-sgu --output REPORT.json` now checks exact19-table contents,scenario versions/private changefeed/seen,two owners,tombstones and raw corruption refusal. This disposable local rehearsal does not set productionRPO or retention policy.
 
 Run browser fixture batches without overlapping preview builds/output directories:one default single-source fixtureAPI for the baseline,then two-source controlled fixtures separately. `E2E_API_PORT` changes disposable fixtureport;`API_TARGET` points Vite at that API. `E2E_SOURCE_CONTROL=/tmp/NAME.json` is an optional mode600 controlfile limited to the owned test database,never a production/public mutation endpoint. Use a distinct Playwright `--output` directory for separate invocations;do not rebuild shared frontend/dist while another preview batch is running.
+
+## Наблюдаемость (T041)
+
+`GET /api/status` отдаёт агрегаты: состояние worker (`alive`, `stale`, `never_seen`), число источников по состояниям, очередь и просроченные задания. Значение `degraded` не влияет на `/api/health`: API может быть здоров при мёртвом worker, и это разные сигналы. Эндпоинт не содержит данных абитуриентов.
+
+Worker пишет в stdout JSON-события `worker_started`, `source_run_started`, `source_run_finished`. В событиях есть `runId`, `sourceId`, стабильный код ошибки и класс исключения; текста исключения, URL и кодов абитуриентов там нет.
+
+Цепочку попытки можно восстановить по `runId` из лога (из `backend/`):
+
+```bash
+python -m app.observability trace <runId>   # source -> check -> snapshot -> число assessments
+python -m app.observability status          # то же, что /api/status, без HTTP
+```
+
+Worker считается `stale`, если нет heartbeat дольше 180 секунд. Старые записи heartbeat удаляются при старте нового worker спустя 7 дней.
+
+## Production-контур (T047, T048)
+
+`compose.prod.yaml` и `Caddyfile` описывают стек: PostgreSQL, API, worker, nginx и Caddy с автоматическим HTTPS. База и API находятся во внутренней сети без выхода наружу. Выход в интернет есть только у worker и у Caddy, снаружи открыты порты 80 и 443.
+
+```bash
+cp .env.production.example .env   # заполнить; openssl rand -hex 32 для секретов
+docker compose -f compose.prod.yaml up -d --build --wait
+docker compose -f compose.prod.yaml exec backend python -m app.observability status
+```
+
+`/api/status`, `/api/docs` и `/api/openapi.json` снаружи закрыты в nginx. На домене нужна A-запись, иначе Caddy не получит сертификат.
+
+Лимиты на IP заданы в `frontend/nginx.conf`: создание гостя 10 в минуту (всплеск 20), поиск 60 в минуту (всплеск 30), импорт 6 в минуту (всплеск 5), весь API 30 запросов в секунду. Тело запроса ограничено 64 КБ, для импорта 8 МБ.
+
+`SOURCE_IDENTITY_KEY` нельзя менять без миграции: от него зависят ключи абитуриентов во всех снимках и подписках.
+
+## Бэкап, сигналы и откат (T049, T050)
+
+Файлы подготовлены и проверены в CI на Compose-контуре. На production они ещё не запускались.
+
+Резервная копия с проверкой восстановления во временную базу и сверкой числа строк во всех таблицах:
+
+```bash
+scripts/backup_production.sh /var/backups/admitflow
+```
+
+Сигнал для cron. Код выхода 1 означает, что нужен человек; с `ALERT_WEBHOOK_URL` тот же JSON уходит на webhook:
+
+```bash
+python3 scripts/ops_check.py --backups /var/backups/admitflow
+```
+
+Пример cron: копия раз в сутки, проверка раз в 5 минут.
+
+```
+15 3 * * * cd /opt/admitflow && scripts/backup_production.sh /var/backups/admitflow
+*/5 * * * * cd /opt/admitflow && ALERT_WEBHOOK_URL=... python3 scripts/ops_check.py --backups /var/backups/admitflow
+```
+
+Откат кода: `git checkout <прошлый тег> && docker compose -f compose.prod.yaml up -d --build --wait`. Миграции 0008–0010 добавляют таблицы и колонку. Для отката базы восстанавливайте проверенную копию в отдельную базу, а не делайте downgrade: downgrade удаляет журнал и heartbeat.
+
+Окно потери данных при суточной копии составляет до 24 часов. Копии не зашифрованы и содержат исходные страницы с настоящими кодами, поэтому каталог должен быть закрыт, а срок хранения нужно утвердить вместе с оператором данных.
+
+## Суточное наблюдение (T046)
+
+На staging включить worker, зарегистрировать источники и 24 часа собирать `docker compose -f compose.prod.yaml logs worker` и `python -m app.observability status` раз в 5 минут. Вне приёмной кампании официальные страницы отдают архивы, поэтому наблюдение подтверждает устойчивость загрузки, но не живые изменения. Изменения проверяются отдельно через replay.

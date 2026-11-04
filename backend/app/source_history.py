@@ -18,6 +18,8 @@ def append_snapshot_facts(db, snapshot):
         Assessment.rules_version == 'source-confirmation-v1', SourceSnapshot.source_id == snapshot.source_id)
     subscriptions = db.scalars(select(Subscription).where(Subscription.id.in_(confirmed)).with_for_update()).all()
     from .source_api import candidate_fact
+    entries = db.scalars(select(CandidateEntry).where(CandidateEntry.snapshot_id == snapshot.id,
+                                                      CandidateEntry.candidate_key.in_([value.candidate_key for value in subscriptions]))).all() if subscriptions else []
     for subscription in subscriptions:
         if db.scalar(select(Assessment.id).where(Assessment.subscription_id == subscription.id, Assessment.snapshot_id == snapshot.id,
                                                 Assessment.rules_version.in_(VERSIONS))):
@@ -28,6 +30,7 @@ def append_snapshot_facts(db, snapshot):
         db.add(Assessment(subscription_id=subscription.id, group_id=subscription.group_id, snapshot_id=snapshot.id,
                           rules_version=FACT_VERSION, assessed_at=assessment_clock(), state='unsupported', facts=facts,
                           assumptions=['Факты архивного снимка; отсутствие строки не подтверждает отзыв или отказ.']))
+    del entries
 
 
 def history_rows(db, subscription_id, owner_hash, before=None, limit=20):

@@ -1,0 +1,134 @@
+# Production-like stack. Required variables are listed in .env.production.example.
+name: admitflow-prod
+
+x-hardening: &hardening
+  restart: unless-stopped
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: [ALL]
+  logging:
+    driver: json-file
+    options: {max-size: 10m, max-file: "5"}
+
+x-app-env: &app-env
+  ENVIRONMENT: production
+  DATABASE_URL: postgresql+psycopg://admitflow:${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD}@db:5432/admitflow
+  SECURE_COOKIE: "true"
+  AUTO_CREATE_SCHEMA: "false"
+  ALLOWED_HOSTS: ${DOMAIN:?set DOMAIN},127.0.0.1
+  PUBLIC_ORIGIN: https://${DOMAIN}
+  SOURCE_IDENTITY_KEY: ${SOURCE_IDENTITY_KEY:?set SOURCE_IDENTITY_KEY}
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 1g
+    environment:
+      POSTGRES_DB: admitflow
+      POSTGRES_USER: admitflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admitflow -d admitflow"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  backend:
+    <<: *hardening
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 1g
+    environment:
+      <<: *app-env
+      WEB_CONCURRENCY: "2"
+    networks: [internal]
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 6
+      start_period: 15s
+
+  worker:
+    <<: *hardening
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    command: ["python", "-m", "app.worker", "loop", "--poll-seconds", "5"]
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 2500m
+    environment:
+      <<: *app-env
+      RAW_STORE_PATH: /app/var/raw
+      WORKER_MEMORY_LIMIT_MB: "2048"
+    volumes:
+      - raw_data:/app/var/raw
+    networks: [internal, egress]
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  frontend:
+    <<: *hardening
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 256m
+    networks: [internal, edge]
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  caddy:
+    image: caddy:2.10-alpine
+    restart: unless-stopped
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    mem_limit: 256m
+    environment:
+      DOMAIN: ${DOMAIN}
+      ACME_EMAIL: ${ACME_EMAIL:?set ACME_EMAIL}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    networks: [edge]
+    depends_on:
+      frontend:
+        condition: service_healthy
+
+networks:
+  internal:
+    internal: true
+  edge: {}
+  egress: {}
+
+volumes:
+  postgres_data:
+  raw_data:
+  caddy_data:
+  caddy_config:

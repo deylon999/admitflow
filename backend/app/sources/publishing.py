@@ -11,7 +11,7 @@ from .registry import PRODUCTION_REGISTRY
 from .storage import RawStore
 from .validation import QualityPolicy, Quarantined, validate_list
 
-QUARANTINE_CODES = frozenset({'operator_quarantine','invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
+QUARANTINE_CODES = frozenset({'operator_quarantine','invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','capacity_growth','capacity_mismatch','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
 STORAGE_RETRY_CODES = frozenset({'raw_lock_timeout','raw_write_failed'})
 FETCH_CODES = frozenset({'refresh_pending','invalid_url','domain_not_allowed','non_public_address','dns_unavailable','timeout','tls_error','network_error','too_many_redirects','invalid_redirect','access_denied','rate_limited','http_error','access_challenge','unsupported_encoding','unsupported_content_type','empty_response','incomplete_response','response_too_large','invalid_headers','raw_unavailable','raw_hash_mismatch','raw_size_invalid','raw_write_failed','adapter_unavailable','source_disabled','unattested_adapter','invalid_binding','invalid_format'})
 
@@ -79,7 +79,8 @@ def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store
         pointer = db.get(PublishedSnapshot,source_id)
         previous = db.get(SourceSnapshot,pointer.snapshot_id) if pointer else None
         previous_list = stored_list(db,previous,binding.year) if previous else None
-        valid = validate_list(parsed,binding,raw.fetched_at,previous=previous_list,policy=policy)
+        group = db.get(CompetitionGroup,binding.group_id)
+        valid = validate_list(parsed,binding,raw.fetched_at,previous=previous_list,policy=policy,reviewed_seats=group.seats if group else None)
         if previous and utc(previous.fetched_at) > raw.fetched_at:
             raise Quarantined('older_fetch')
         existing = db.scalar(select(SourceSnapshot).where(SourceSnapshot.source_id==source_id,SourceSnapshot.payload_hash==raw.payload_hash,SourceSnapshot.adapter_version==binding.adapter_version))

@@ -1,5 +1,5 @@
 """Database queue: one row per source, expiring leases and fencing tokens."""
-from dataclasses import dataclass
+from dataclasses import dataclass,field
 from datetime import datetime, timedelta, timezone
 from uuid import uuid4
 
@@ -35,13 +35,14 @@ class SourceJob(Base):
 class SourceCheck(Base):
     __tablename__='source_checks'
     __table_args__=(CheckConstraint("outcome IN ('success','failed')",name='source_check_outcome'),
-                   Index('ix_source_checks_time','source_id','checked_at'))
+                   Index('ix_source_checks_time','source_id','checked_at'),Index('ix_source_checks_run','run_id'))
     id: Mapped[str]=mapped_column(String(36),primary_key=True,default=lambda:str(uuid4()))
     source_id: Mapped[str]=mapped_column(ForeignKey('sources.id',ondelete='CASCADE'))
     checked_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))
     outcome: Mapped[str]=mapped_column(String(16))
     error_code: Mapped[str | None]=mapped_column(String(80))
     snapshot_id: Mapped[str | None]=mapped_column(ForeignKey('source_snapshots.id',ondelete='RESTRICT'))
+    run_id: Mapped[str | None]=mapped_column(String(36))
 
 
 @dataclass(frozen=True,repr=False)
@@ -49,6 +50,7 @@ class Lease:
     source_id: str
     token: str
     attempt: int
+    run_id: str=field(default_factory=lambda:str(uuid4()))
 
 
 class LostLease(Exception):
@@ -157,8 +159,9 @@ def complete(engine,lease,*,now=None):
         job.last_error_code=None
         job.next_run_at=now+timedelta(seconds=job.interval_seconds)
         pointer=db.get(PublishedSnapshot,lease.source_id)
-        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='success',snapshot_id=pointer.snapshot_id if pointer else None))
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='success',snapshot_id=pointer.snapshot_id if pointer else None,run_id=lease.run_id))
         db.commit()
+        return pointer.snapshot_id if pointer else None
 
 
 def fail(engine,lease,code,*,retry_after=None,now=None):
@@ -174,7 +177,7 @@ def fail(engine,lease,code,*,retry_after=None,now=None):
         job.next_run_at=now+timedelta(seconds=delay)
         job.last_error_code=safe_code
         pointer=db.get(PublishedSnapshot,lease.source_id)
-        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='failed',error_code=safe_code,snapshot_id=pointer.snapshot_id if pointer else None))
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='failed',error_code=safe_code,snapshot_id=pointer.snapshot_id if pointer else None,run_id=lease.run_id))
         if source.last_checked_at is None or utc(source.last_checked_at)<=now:
             source.last_checked_at=now
             source.last_error_code=safe_code

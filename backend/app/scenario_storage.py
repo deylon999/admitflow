@@ -1,7 +1,7 @@
 """Append immutable scenario versions within publication/confirmation transactions."""
 from sqlalchemy import select
 from .admissions import Assessment,Campaign,CandidateEntry,ChangeEvent,CompetitionGroup,Source,SourceSnapshot,Subscription
-from .scenarios import VERSION,assess,ScenarioResult,ASSUMPTIONS
+from .scenarios import VERSION,PreparedRows,assess,ScenarioResult,ASSUMPTIONS
 
 
 def candidate_values(row):
@@ -23,15 +23,21 @@ def difference(before,after):
     return changes
 
 
+def scenario_rows(db,snapshot):
+    # Only the columns the model reads: confirming one direction must not hydrate a whole list.
+    return PreparedRows(db.execute(select(CandidateEntry.candidate_key,CandidateEntry.official_rank,CandidateEntry.consent,CandidateEntry.participation)
+                                   .where(CandidateEntry.snapshot_id==snapshot.id).order_by(CandidateEntry.official_rank)).all())
+
+
 def append_one(db,subscription,snapshot,*,previous=None,rows=None,at=None):
     group=db.get(CompetitionGroup,subscription.group_id)
     if group.rules_version!=VERSION:return None
     existing=db.scalar(select(Assessment).where(Assessment.subscription_id==subscription.id,Assessment.snapshot_id==snapshot.id,Assessment.rules_version==VERSION))
     if existing is not None:return existing
-    if rows is None:rows=db.scalars(select(CandidateEntry).where(CandidateEntry.snapshot_id==snapshot.id).order_by(CandidateEntry.official_rank)).all()
-    row=next((r for r in rows if r.candidate_key==subscription.candidate_key),None)
+    if rows is None:rows=scenario_rows(db,snapshot)
+    row=db.get(CandidateEntry,(snapshot.id,subscription.candidate_key))
     result=assess(rows,subscription.candidate_key,funding=group.funding,category=group.category,seats=snapshot.seats)
-    if not snapshot.complete or not snapshot.normalized_hash or len(rows)!=snapshot.row_count:
+    if not snapshot.complete or not snapshot.normalized_hash or rows.count!=snapshot.row_count:
         result=ScenarioResult(state='insufficient_data',reason_codes=['incomplete_snapshot'],assumptions=list(ASSUMPTIONS))
     facts={'result':result.model_dump(mode='json',by_alias=True),'candidate':candidate_values(row),'sourceId':snapshot.source_id,'dataKind':snapshot.kind,'funding':group.funding,'category':group.category,'diff':[]}
     old=db.scalar(select(Assessment).where(Assessment.subscription_id==subscription.id,Assessment.snapshot_id==previous.id,Assessment.rules_version==VERSION)) if previous and previous.id!=snapshot.id else None
@@ -54,8 +60,11 @@ def append_source(db,snapshot,*,previous=None):
     confirmed=select(Assessment.subscription_id).join(SourceSnapshot,Assessment.snapshot_id==SourceSnapshot.id).where(Assessment.rules_version=='source-confirmation-v1',SourceSnapshot.source_id==snapshot.source_id)
     subscriptions=db.scalars(select(Subscription).where(Subscription.id.in_(confirmed)).with_for_update()).all()
     if not subscriptions:return
-    rows=db.scalars(select(CandidateEntry).where(CandidateEntry.snapshot_id==snapshot.id).order_by(CandidateEntry.official_rank)).all()
+    rows=scenario_rows(db,snapshot)
+    # Keep this list referenced so db.get in append_one is served from the identity map.
+    entries=db.scalars(select(CandidateEntry).where(CandidateEntry.snapshot_id==snapshot.id,CandidateEntry.candidate_key.in_([value.candidate_key for value in subscriptions]))).all()
     for subscription in subscriptions:append_one(db,subscription,snapshot,previous=previous,rows=rows)
+    del entries
 
 
 def enable_scenarios(engine,source_id,*,registry):

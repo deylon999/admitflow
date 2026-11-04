@@ -62,3 +62,13 @@ def test_missing_revision_table_is_not_ready_and_not_created(client,application)
     assert client.get('/api/live').status_code==200
     with application.state.engine.connect() as db:
         assert not db.execute(text("SELECT 1 FROM sqlite_master WHERE name='alembic_version'")).first()
+
+
+def test_connection_pool_exhaustion_is_retryable_not_internal_error(client,monkeypatch):
+    from sqlalchemy.exc import TimeoutError as PoolTimeout
+    def busy(*args,**kwargs):
+        raise PoolTimeout('QueuePool limit reached, private pool detail')
+    monkeypatch.setattr('sqlalchemy.orm.Session.scalar',busy)
+    monkeypatch.setattr('sqlalchemy.orm.Session.execute',busy)
+    response=client.get('/api/v1/watches',headers={'Cookie':'abiturient_session=x'})
+    assert response.status_code==503 and response.headers['retry-after']=='5' and 'private' not in response.text
