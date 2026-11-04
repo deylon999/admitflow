@@ -2,16 +2,16 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
   "currentTask": null,
-  "nextTask": "T045",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S173",
-  "resumeAction": "B12 milestone70 achieved and locally verified. Next independent step T042:map every QUALITY domain case to approved expected outcomes and remaining unknowns;then T041 observability/T045 browsers. HTTPS/live24h/remoteCI/source-use production conditions remain open. Current local runtime8090 schema0009;fixture processes stopped. Preserve private key/raw originals;no need repeat passed checks absent new changes.",
+  "lastSession": "S174",
+  "resumeAction": "B13: код, CI, браузеры, контейнеры, нагрузка на dev-стенде и аудит завершены на ветке mvp-readiness. Дальше нужны решения людей: docs/RELEASE_GATES.md. После выбора сервера начать T048, затем T046, T049, T050, T051, повторить T044.",
   "externalConstraints": [
-    "Two independently audited official archive sources published; live/currentseason automation and24h observation remain unverified.",
-    "HTTPS staging/production host/domain/budget/region not selected or deployed.",
-    "Remote CI/push not verified;T006 remains blocked.",
-    "Production source/data-use basis,operator,referencedraw/backup/journalrotation,deletion and abuse policy remain public-release blockers."
+    "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
+    "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",
+    "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
+    "Нужны живые тестеры для T052."
   ]
 }

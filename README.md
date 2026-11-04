@@ -25,3 +25,5 @@ docker compose up --build
 [Готовность проекта и скриншоты](docs/PROGRESS.md)
 
 [Чек-лист: сделано / осталось](CHECKLIST.md)
+
+[Что осталось до выпуска](docs/RELEASE_GATES.md)
