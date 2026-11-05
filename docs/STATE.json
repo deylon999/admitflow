@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": null,
-  "nextTask": "T056",
+  "currentTask": "T191",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S175",
-  "resumeAction": "S175: приоритет — вся Россия. T056: официальный датированный реестр, состав организаций/филиалов/уровней и воспроизводимый национальный каталог. Затем T057: форматы и массовое проверенное подключение. Не ждать T055. План пяти результатов docs/NATIONAL_COVERAGE.md; условия публичного выпуска сохраняются.",
+  "lastSession": "S176",
+  "resumeAction": "B14: T190 complete. Current T191. National coverage remains incomplete; see docs/NATIONAL_COVERAGE.md and docs/catalog-coverage.md.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",

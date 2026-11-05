@@ -396,7 +396,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T012, T038.
+**Зависимости:** T012, T038, T192.
 
 **Результаты/файлы:** `backend/app/catalog/`; `docs/catalog-coverage.md`.
 
@@ -437,6 +437,52 @@
 **Доказательства:**
 
 - [docs/LOG.md](../docs/LOG.md) — S037 / B03 1/10: Closed pilot capture CLI stores original bytes plus bounded manifest/hash in private folder, verifies binding and tampering, never attests/enables a source. pytest tests/test_capture.py: 3 passed / exit 0. Real capture command failed with network_error/captured=false/exit 1; no original fixture obtained and T013 stays open. Official indices only support candidate URLs, not parser structure. Commands and handoff documented in sources/pilot.md.
+
+### T190. Сохранить официальный опорный перечень вузов и границы охвата
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T012, T038.
+
+**Результаты/файлы:** `scripts/capture_catalog.py`; `docs/catalog-coverage.md`.
+
+**Шаги:**
+
+1. Сохранить официальные страницы, даты, hashes и исключения.
+2. Сверить региональные перечни и число организаций.
+
+**Критерии закрытия:**
+
+- Есть проверяемый snapshot и воспроизводимая команда.
+- Мониторинг не объявлен полным реестром лицензированных вузов.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — 1257 unique institutions, 521 branches, 89 regional pages; headline total matched; offline replay identical; 3 parser checks passed. Monitoring exclusions retained.
+
+### T191. Импортировать национальный опорный каталог без дублей
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T190.
+
+**Результаты/файлы:** `backend/app/national_catalog.py`; `backend/tests/test_national_catalog.py`.
+
+**Шаги:**
+
+1. Валидировать snapshot и provenance до транзакции.
+2. Сохранить идентичности существующих вузов, филиалы и отчёт импорта.
+
+**Критерии закрытия:**
+
+- Повтор не создаёт дубли и не меняет подписки.
+- Повреждённый импорт отклоняется целиком; неизвестные сайты не выдумываются.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E2. Ядро продукта
 
@@ -1168,6 +1214,29 @@
 
 - [docs/LOG.md](../docs/LOG.md) — S112: test_restart.py:2 passed: three fresh Uvicorn processes on one temporary SQLite file preserve exact history, owner deadline, create/update replay and deleted-operation410; separate expired-owner lifespan check passes. Initial test-cookie Domain mismatch corrected to real host semantics. Final backend276 passed/7 actual PostgreSQL skipped; frontend87 passed and production build exit0; all53 Chromium passed on final API8006/session26232/PID5096. No PostgreSQL/Compose success claimed.
 
+### T192. Показать национальный каталог и статусы подключения в поиске
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T191.
+
+**Результаты/файлы:** `backend/app/catalog.py`; `frontend/src/components/UniversityPicker.tsx`.
+
+**Шаги:**
+
+1. Добавить ограниченную выдачу и поиск по региону/названию.
+2. Разделить наличие в каталоге и автоматическое подключение.
+
+**Критерии закрытия:**
+
+- Поиск работает на реальном опорном каталоге.
+- Контракт, русский поиск и интерфейс проверены; нет ложной автоматизации.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E3. Автоматический сбор
 
 Плановый интервал: D8–D17.
@@ -1476,7 +1545,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
 
-**Зависимости:** T031, T037, T056.
+**Зависимости:** T031, T037, T056, T194.
 
 **Результаты/файлы:** `backend/app/sources/adapters/`; `docs/sources/`.
 
@@ -1946,6 +2015,52 @@
 **Доказательства:**
 
 - [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — B12:one JSON-configured parser independently verified on573SGU+581GUAPoriginal rows;22targetedchecks,privateIDsremoved,legacy preserved.
+
+### T193. Составить воспроизводимую инвентаризацию страниц приёма и форматов
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T190.
+
+**Результаты/файлы:** `scripts/source_inventory.py`; `docs/sources/national-inventory.json`.
+
+**Шаги:**
+
+1. Проверять только официальные сайты из опорного каталога с лимитами.
+2. Сохранять факты о ссылках, HTTP и формате без данных абитуриентов.
+
+**Критерии закрытия:**
+
+- Есть датированный машиночитаемый отчёт и явные неизвестные.
+- Обнаружение страницы не регистрирует и не включает источник.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T194. Проверить следующее семейство или новый scope на реальном источнике
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T193.
+
+**Результаты/файлы:** `backend/app/sources/profiles/reviewed.json`; `docs/sources/`.
+
+**Шаги:**
+
+1. Получить оригинал и определить поддержанный scope/сезон.
+2. Независимо сверить строки, места и отказы перед регистрацией.
+
+**Критерии закрытия:**
+
+- Совместимость доказана оригинальными данными и тестами.
+- Неполный или недоступный источник не закрывает задачу; нет заявления национального охвата.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E4. Объяснения и UX
 

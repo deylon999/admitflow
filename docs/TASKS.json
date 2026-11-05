@@ -1925,7 +1925,8 @@
       "status": "todo",
       "dependsOn": [
         "T012",
-        "T038"
+        "T038",
+        "T192"
       ],
       "deliverables": [
         "backend/app/catalog/",
@@ -1952,7 +1953,8 @@
       "dependsOn": [
         "T031",
         "T037",
-        "T056"
+        "T056",
+        "T194"
       ],
       "deliverables": [
         "backend/app/sources/adapters/",
@@ -5942,6 +5944,137 @@
           "note": "All six predeclared functional criteria met;current full tests/nativePG/local Docker,two-source browser path,exact restore/private audit verified. Production/live gates remain open."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T190",
+      "title": "Сохранить официальный опорный перечень вузов и границы охвата",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T012",
+        "T038"
+      ],
+      "deliverables": [
+        "scripts/capture_catalog.py",
+        "docs/catalog-coverage.md"
+      ],
+      "steps": [
+        "Сохранить официальные страницы, даты, hashes и исключения",
+        "Сверить региональные перечни и число организаций"
+      ],
+      "acceptance": [
+        "Есть проверяемый snapshot и воспроизводимая команда",
+        "Мониторинг не объявлен полным реестром лицензированных вузов"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b14-national-catalog.md",
+          "note": "1257 unique institutions, 521 branches, 89 regional pages; headline total matched; offline replay identical; 3 parser checks passed. Monitoring exclusions retained."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T191",
+      "title": "Импортировать национальный опорный каталог без дублей",
+      "phase": "E1",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T190"
+      ],
+      "deliverables": [
+        "backend/app/national_catalog.py",
+        "backend/tests/test_national_catalog.py"
+      ],
+      "steps": [
+        "Валидировать snapshot и provenance до транзакции",
+        "Сохранить идентичности существующих вузов, филиалы и отчёт импорта"
+      ],
+      "acceptance": [
+        "Повтор не создаёт дубли и не меняет подписки",
+        "Повреждённый импорт отклоняется целиком; неизвестные сайты не выдумываются"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T192",
+      "title": "Показать национальный каталог и статусы подключения в поиске",
+      "phase": "E2",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T191"
+      ],
+      "deliverables": [
+        "backend/app/catalog.py",
+        "frontend/src/components/UniversityPicker.tsx"
+      ],
+      "steps": [
+        "Добавить ограниченную выдачу и поиск по региону/названию",
+        "Разделить наличие в каталоге и автоматическое подключение"
+      ],
+      "acceptance": [
+        "Поиск работает на реальном опорном каталоге",
+        "Контракт, русский поиск и интерфейс проверены; нет ложной автоматизации"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T193",
+      "title": "Составить воспроизводимую инвентаризацию страниц приёма и форматов",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T190"
+      ],
+      "deliverables": [
+        "scripts/source_inventory.py",
+        "docs/sources/national-inventory.json"
+      ],
+      "steps": [
+        "Проверять только официальные сайты из опорного каталога с лимитами",
+        "Сохранять факты о ссылках, HTTP и формате без данных абитуриентов"
+      ],
+      "acceptance": [
+        "Есть датированный машиночитаемый отчёт и явные неизвестные",
+        "Обнаружение страницы не регистрирует и не включает источник"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T194",
+      "title": "Проверить следующее семейство или новый scope на реальном источнике",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T193"
+      ],
+      "deliverables": [
+        "backend/app/sources/profiles/reviewed.json",
+        "docs/sources/"
+      ],
+      "steps": [
+        "Получить оригинал и определить поддержанный scope/сезон",
+        "Независимо сверить строки, места и отказы перед регистрацией"
+      ],
+      "acceptance": [
+        "Совместимость доказана оригинальными данными и тестами",
+        "Неполный или недоступный источник не закрывает задачу; нет заявления национального охвата"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
