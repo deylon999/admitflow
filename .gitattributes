@@ -1,0 +1,5 @@
+# Attestation hashes refer to exact archived fixture bytes on every platform.
+backend/tests/fixtures/** -text
+# Reference/inventory hashes must also survive a Windows checkout unchanged.
+backend/app/data/*.json text eol=lf
+docs/sources/*inventory*.json text eol=lf

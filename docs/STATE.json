@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": "T193",
+  "currentTask": "T194",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S176",
-  "resumeAction": "B14: T192 complete. Current T193. National coverage remains incomplete; see docs/NATIONAL_COVERAGE.md and docs/catalog-coverage.md.",
+  "resumeAction": "B14: T193 complete. Current T194. National coverage remains incomplete; see docs/NATIONAL_COVERAGE.md and docs/catalog-coverage.md.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",

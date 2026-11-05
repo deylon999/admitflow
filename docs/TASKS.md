@@ -2018,7 +2018,7 @@
 
 ### T193. Составить воспроизводимую инвентаризацию страниц приёма и форматов
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T190.
 
@@ -2037,11 +2037,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — All 1257 reference institutions inventoried, 1083 unique HTTPS pages, 641 with candidate links; all unknown/errors explicit; 3 tests passed and offline replay identical. No automatic source enabled.
 
 ### T194. Проверить следующее семейство или новый scope на реальном источнике
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T193.
 

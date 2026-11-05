@@ -6043,7 +6043,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T190"
       ],
@@ -6059,7 +6059,12 @@
         "Есть датированный машиночитаемый отчёт и явные неизвестные",
         "Обнаружение страницы не регистрирует и не включает источник"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b14-national-catalog.md",
+          "note": "All 1257 reference institutions inventoried, 1083 unique HTTPS pages, 641 with candidate links; all unknown/errors explicit; 3 tests passed and offline replay identical. No automatic source enabled."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6068,7 +6073,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T193"
       ],
