@@ -925,3 +925,11 @@ S176/T192: 1257 directory entries searchable with region/branch and pagination; 
 S176/T193: All 1257 reference institutions inventoried, 1083 unique HTTPS pages, 641 with candidate links; all unknown/errors explicit; 3 tests passed and offline replay identical. No automatic source enabled. Evidence: docs/evidence/b14-national-catalog.md. Next: T194.
 
 S176/T194/B14 final 5/5: новый scope SGU4576, 453 original rows/24 места, независимая сверка и синтетический fixture. Фактический HTTPS выявил перестановку альтернатив экзаменов: добавлена отдельно аттестованная v2 общего parser, v1/старые профили не переписаны. Реальный bounded HTTPS→worker→native PG→stored audit прошёл; schema удалена. Final571 backend passed/0 skipped с require-postgres,116 Vitest/build,77 compiled Chromium passed/32 scoped skips. Все 5 задач отдельными Conventional Commits; T056/T057 не закрыты, национальная автоматизация не объявлена. Next T057: реальные страницы списков и массовые семейства; полный лицензированный реестр T056 отдельно недоступен. Итог docs/evidence/b14-final-verification.json.
+
+## S177 — 2026-11-05 — B15: продолжение национального подключения
+
+Пользователь поручил доделывать. Первая пятёрка этого подхода T195–T199: проверка страниц приёма; повторяемые структуры; масштабируемый реестр профилей; аттестация новых настоящих источников; многоисточниковая очередь/покрытие. Одна active T195, проверки до реализации: offline replay, bounded HTTPS provenance и отсутствие ложной аттестации. B14 baseline571 native backend/116 Vitest/77 Chromium+32scopedskips сохранён, лишний раз не повторяется. T056/T057 остаются широкими открытыми задачами.
+
+S177: T195 review — код и6unit checks готовы, финальный bounded crawl ещё выполняется. Чтобы не ждать сеть, активирована независимая T197 (dependsT194done). Одна in_progress соблюдается; исходные статусы/история B14 не меняются. Проверка T197:1001synthetic profiles, immutable hashes/legacy equivalence и негативные manifest cases.
+
+S177/T197: Immutable manifest/shards preserve all 3 old scopes; 1001 synthetic profiles loaded in 11 shards; 48 native-PG targeted tests passed, 0 skipped. No real coverage added. Evidence: docs/evidence/b15-profile-catalog.md. Next T195.

@@ -2,4 +2,6 @@
 backend/tests/fixtures/** -text
 # Reference/inventory hashes must also survive a Windows checkout unchanged.
 backend/app/data/*.json text eol=lf
+backend/app/sources/profiles/**/*.json text eol=lf
+backend/app/sources/profiles/*.json text eol=lf
 docs/sources/*inventory*.json text eol=lf

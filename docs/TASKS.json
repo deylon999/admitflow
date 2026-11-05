@@ -6107,6 +6107,140 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T195",
+      "title": "Проверить найденные страницы приёма и признаки списков",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T193"
+      ],
+      "deliverables": [
+        "scripts/admissions_inventory.py",
+        "docs/sources/admissions-inventory.json"
+      ],
+      "steps": [
+        "Выбрать кандидатные страницы по прозрачным правилам, исключая новости/работу",
+        "Выполнить ограниченный HTTPS обход с robots, provenance, кэшем и явными отказами"
+      ],
+      "acceptance": [
+        "Есть воспроизводимый отчёт по всем исходным учреждениям",
+        "Структурные признаки не выданы за аттестацию или полный импорт"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T196",
+      "title": "Сгруппировать реальные структуры списков для повторного использования",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T195"
+      ],
+      "deliverables": [
+        "scripts/group_source_formats.py",
+        "docs/sources/format-families.json"
+      ],
+      "steps": [
+        "Сравнить реальные заголовки/структуру и источники форматов",
+        "Выделить группы кандидатов для независимой проверки"
+      ],
+      "acceptance": [
+        "Повторяемость подкреплена оригинальными страницами из разных scope",
+        "CMS и одинаковое расширение файла сами по себе не означают совместимость"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T197",
+      "title": "Масштабировать реестр профилей без одного ограниченного файла",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T194"
+      ],
+      "deliverables": [
+        "backend/app/sources/table_profiles.py",
+        "backend/app/sources/profiles/",
+        "backend/tests/test_profile_catalog.py"
+      ],
+      "steps": [
+        "Разнести проверенные профили по версионированным manifest/shards с hashes",
+        "Сохранить прежние bindings/proofs и ограничить память/число/размер файлов"
+      ],
+      "acceptance": [
+        "Более 100 профилей загружаются без снятия валидации и безопасных ограничений",
+        "Дубликаты, escape paths, повреждение и несовместимые версии отвергаются; legacy replay сохранён"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b15-profile-catalog.md",
+          "note": "Immutable manifest/shards preserve all 3 old scopes; 1001 synthetic profiles loaded in 11 shards; 48 native-PG targeted tests passed, 0 skipped. No real coverage added."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T198",
+      "title": "Аттестовать повторяемое семейство на новых настоящих источниках",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T196",
+        "T197"
+      ],
+      "deliverables": [
+        "backend/app/sources/",
+        "docs/sources/",
+        "backend/tests/fixtures/"
+      ],
+      "steps": [
+        "Получить официальные оригиналы и независимо сверить поддержанные поля",
+        "Добавить общую реализацию/конфигурации, негативные случаи и native публикацию"
+      ],
+      "acceptance": [
+        "Есть проверяемое расширение scope/вузов на реальных данных",
+        "Неполные/закрытые/неизвестные источники не считаются подключёнными; новые fixture синтетические"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T199",
+      "title": "Проверить массовую очередь и отчёт расширенного покрытия",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T198"
+      ],
+      "deliverables": [
+        "backend/tests/",
+        "scripts/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Проверить многоисточниковый планировщик и domain leases на native PG",
+        "Сверить source/group/archive/fresh/unsupported метрики и оформить evidence"
+      ],
+      "acceptance": [
+        "Массовые задания не обходят per-domain лимиты и не дублируются",
+        "Фактическое покрытие и ограничения не подменены синтетическим нагрузочным набором"
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

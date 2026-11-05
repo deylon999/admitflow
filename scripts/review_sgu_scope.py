@@ -24,6 +24,7 @@ from app.sources.contracts import SourceBinding
 from app.sources.fetcher import FetchResult
 from app.sources.registry import Attestation
 from app.sources.table_family import TableProfile,SCHEMA_SET_VERSION,parse_table
+from app.sources.profile_catalog import active_catalog,read_profile_data,publish_profile_data
 
 VERSION=SCHEMA_SET_VERSION
 
@@ -86,8 +87,8 @@ def main():
     seat_match=re.search(r'Бюджетных мест:\s*(\d+)',' '.join(independent.text))
     if not seat_match or int(seat_match[1])!=24:raise ValueError('unverified capacity')
     document=BeautifulSoup(body.decode('utf-8'),'html.parser');table=document.select_one('table.svodka-table')
-    all_profiles=ROOT/'backend/app/sources/profiles/reviewed.json'
-    data=json.loads(all_profiles.read_text(encoding='utf-8'));profile=copy.deepcopy(data['profiles']['sgu-2026-4588'])
+    profile_root=ROOT/'backend/app/sources/profiles'
+    data=read_profile_data(active_catalog(profile_root));profile=copy.deepcopy(data['profiles']['sgu-2026-4588'])
     profile.update(source_id=source,group_id=source,url=url,rows=453,seats=24,
         version=VERSION,unordered_label_groups=[['Элементарная математика','Математика'],['Основы физики','Основы алгоритмизации и программирование','Физика','Информатика и ИКТ']],
         cell_labels=[td.get('data-label') for td in table.select_one('tr:has(td[data-label="Код поступающего"])').find_all('td',recursive=False)],
@@ -126,7 +127,7 @@ def main():
         originalCandidateValuesExported=False,success=True)
     target=ROOT/profile['proof']['fixture'];target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(fixture)
     (ROOT/'docs/evidence/b14-sgu4576-audit.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-    data['profiles'][source]=profile;all_profiles.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    data['profiles'][source]=profile;publish_profile_data(data['profiles'],profile_root)
     print(json.dumps(report))
 
 

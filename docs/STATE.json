@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": null,
-  "nextTask": "T057",
+  "currentTask": "T195",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S176",
-  "resumeAction": "B14 T190–T194 завершены 5/5. Следующая работа T057: из national-inventory выбрать и проверить повторяющиеся форматы на настоящих страницах списков; расширить профильный реестр для масштаба. Не ждать полного T056: сверка недостающих организаций с реестром лицензий идёт отдельно, сейчас официальный endpoint недоступен. 1257 записей каталога не означают 1257 автоисточников. Native backend571/0skip, frontend116/build, Chromium77/32 scoped skips. См. docs/evidence/b14-final-verification.json.",
+  "lastSession": "S177",
+  "resumeAction": "B15: T197 завершена; текущая T195. См. evidence docs/evidence/b15-profile-catalog.md. Национальный охват пока не завершён; T056/T057 остаются открытыми.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
