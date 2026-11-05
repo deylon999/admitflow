@@ -1,5 +1,9 @@
 # S178 — B16
 
+T203 done; current T204. 5official pages/3institutions, verified linked BGU bachelor with109visible rows; stateful/dynamic/level gaps explicit.3synthetic tests and network-forbidden identical offline replay passed;0sources attested. Evidence: docs/evidence/b16-stateful-research.md. Demo8091/key/volumes retained; broad T056/T057 open.
+
+# S178 — B16
+
 T202 done; current T203. Atomic1-100 exact manifest IDs, shared catalog mutex, late-conflict/quarantine rollback and legacy preservation;41targeted+14expanded native checks passed,0skip. Evidence: docs/evidence/b16-profile-batch.md. Demo8091/key/volumes retained; broad T056/T057 open.
 
 # S178 — B16

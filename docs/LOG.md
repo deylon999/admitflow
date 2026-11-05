@@ -951,3 +951,5 @@ S178/T200: Full directory search/pagination, retained selection and next-page re
 S178/T201: SQL filters/count/cursor/limit preserve Unicode and literals;10001 synthetic groups hydrate<=8 for page7. Migration0011 backfill/reversal/offline PG passed;34 targeted+4 expanded native checks,0skipped. Evidence: docs/evidence/b16-sql-catalog.md. Next T202.
 
 S178/T202: Atomic1-100 exact manifest IDs, shared catalog mutex, late-conflict/quarantine rollback and legacy preservation;41targeted+14expanded native checks passed,0skip. Evidence: docs/evidence/b16-profile-batch.md. Next T203.
+
+S178/T203: 5official pages/3institutions, verified linked BGU bachelor with109visible rows; stateful/dynamic/level gaps explicit.3synthetic tests and network-forbidden identical offline replay passed;0sources attested. Evidence: docs/evidence/b16-stateful-research.md. Next T204.

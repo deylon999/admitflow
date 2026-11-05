@@ -1,0 +1,8 @@
+{
+  "format": "admitflow-stateful-discovery-v1",
+  "parents": [
+    {"registryId": "12", "url": "https://bgu.ru/abitur/asp/rating.aspx", "children": ["https://bgu.ru/abitur/bach/rating.aspx", "https://bgu.ru/abitur/mag/rating.aspx"]},
+    {"registryId": "83", "url": "https://isu.ru/Abitur/rating/main/", "children": []},
+    {"registryId": "1960", "url": "https://mspi.moscow/abitur/konkursnye_spiski/", "children": []}
+  ]
+}

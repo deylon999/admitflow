@@ -1,0 +1,437 @@
+{
+  "format": "admitflow-stateful-format-research-v1",
+  "seedsSha256": "fe906e81f015b5cd15e4644cdd66eb8aafe4c96c3fb228122e7c5fa7a75ff115",
+  "inventorySha256": "20aeb887bba7dfe935c032b7219edc7f54f27be8581dd486e4d2e08c89ca2b17",
+  "pages": [
+    {
+      "requestedUrl": "https://bgu.ru/abitur/asp/rating.aspx",
+      "finalUrl": "https://bgu.ru/abitur/asp/rating.aspx",
+      "checkedAt": "2026-11-05T18:36:50.547583+00:00",
+      "state": "discovered",
+      "error": null,
+      "robotsState": "allowed",
+      "contentType": "text/html",
+      "payloadHash": "0cd2858a4753f48fb205b19284bfda9393a458de379c3405739eb1d908ade1f5",
+      "registryId": "12",
+      "parent": null,
+      "listEvidence": [
+        {
+          "headerHash": "c94d5c0d97d124498b280f409beca5472478541800b72d41ff19f12fcdcc6f5a",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "consent",
+            "priority",
+            "priority",
+            "other",
+            "other"
+          ],
+          "headerCount": 12,
+          "observedRows": 10,
+          "primaryHeaderHash": "c94d5c0d97d124498b280f409beca5472478541800b72d41ff19f12fcdcc6f5a",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "consent",
+            "priority",
+            "priority",
+            "other",
+            "other"
+          ],
+          "hierarchicalHeader": false,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "complete": false,
+      "structure": {
+        "code": "stateful_html_candidate",
+        "webFormsState": true,
+        "selectCount": 3,
+        "selectOptionCounts": [
+          3,
+          1,
+          4
+        ],
+        "selectPostbackCount": 0,
+        "postbackPagingLinks": 0,
+        "headingYearEvidence": [
+          2026
+        ],
+        "visiblePostgraduateColumns": false,
+        "complete": false,
+        "supported": false,
+        "remainingChecks": [
+          "capacity_and_scope_not_independently_verified",
+          "webforms_state_not_replayed",
+          "filter_selection_not_replayed"
+        ]
+      }
+    },
+    {
+      "requestedUrl": "https://bgu.ru/abitur/bach/rating.aspx",
+      "finalUrl": "https://bgu.ru/abitur/bach/rating.aspx",
+      "checkedAt": "2026-11-05T18:36:53.081838+00:00",
+      "state": "discovered",
+      "error": null,
+      "robotsState": "allowed",
+      "contentType": "text/html",
+      "payloadHash": "b4e83e4f288fd639656d199935c30ecb658d302e2d7c0be2bc66f3637cf12b57",
+      "registryId": "12",
+      "parent": {
+        "url": "https://bgu.ru/abitur/asp/rating.aspx",
+        "payloadHash": "0cd2858a4753f48fb205b19284bfda9393a458de379c3405739eb1d908ade1f5"
+      },
+      "listEvidence": [
+        {
+          "headerHash": "4c4ac020e126382b137ab8cb7015755aeff2afee9c34229aa34ed0ff3abbd50e",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 17,
+          "observedRows": 109,
+          "primaryHeaderHash": "33befc5bd534459c5f5be6af9ca1c125e6ef96750d493d9b9bd87569789c17b6",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            17
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "complete": false,
+      "structure": {
+        "code": "stateful_html_candidate",
+        "webFormsState": true,
+        "selectCount": 5,
+        "selectOptionCounts": [
+          2,
+          5,
+          3,
+          1,
+          21
+        ],
+        "selectPostbackCount": 0,
+        "postbackPagingLinks": 0,
+        "headingYearEvidence": [
+          2026
+        ],
+        "visiblePostgraduateColumns": false,
+        "complete": false,
+        "supported": false,
+        "remainingChecks": [
+          "capacity_and_scope_not_independently_verified",
+          "webforms_state_not_replayed",
+          "filter_selection_not_replayed"
+        ]
+      }
+    },
+    {
+      "requestedUrl": "https://bgu.ru/abitur/mag/rating.aspx",
+      "finalUrl": "https://bgu.ru/abitur/mag/rating.aspx",
+      "checkedAt": "2026-11-05T18:36:55.936005+00:00",
+      "state": "discovered",
+      "error": null,
+      "robotsState": "allowed",
+      "contentType": "text/html",
+      "payloadHash": "6cff4c6a64e4c4bb1a3c97cd13de4cf012ea7cbea1a7c8205655964a71d6560a",
+      "registryId": "12",
+      "parent": {
+        "url": "https://bgu.ru/abitur/asp/rating.aspx",
+        "payloadHash": "0cd2858a4753f48fb205b19284bfda9393a458de379c3405739eb1d908ade1f5"
+      },
+      "listEvidence": [
+        {
+          "headerHash": "a0876b0cf267627fcf0c0c27d6d015d16c7edad3aa10d39cce24eab62290d848",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "consent",
+            "priority",
+            "priority",
+            "other",
+            "other"
+          ],
+          "headerCount": 12,
+          "observedRows": 50,
+          "primaryHeaderHash": "a0876b0cf267627fcf0c0c27d6d015d16c7edad3aa10d39cce24eab62290d848",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "other",
+            "score",
+            "other",
+            "other",
+            "other",
+            "consent",
+            "priority",
+            "priority",
+            "other",
+            "other"
+          ],
+          "hierarchicalHeader": false,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "complete": false,
+      "structure": {
+        "code": "stateful_html_candidate",
+        "webFormsState": true,
+        "selectCount": 3,
+        "selectOptionCounts": [
+          3,
+          2,
+          8
+        ],
+        "selectPostbackCount": 0,
+        "postbackPagingLinks": 0,
+        "headingYearEvidence": [
+          2026
+        ],
+        "visiblePostgraduateColumns": false,
+        "complete": false,
+        "supported": false,
+        "remainingChecks": [
+          "capacity_and_scope_not_independently_verified",
+          "webforms_state_not_replayed",
+          "filter_selection_not_replayed"
+        ]
+      }
+    },
+    {
+      "requestedUrl": "https://isu.ru/Abitur/rating/main/",
+      "finalUrl": "https://isu.ru/Abitur/rating/main/",
+      "checkedAt": "2026-11-05T18:36:58.725887+00:00",
+      "state": "discovered",
+      "error": null,
+      "robotsState": "allowed",
+      "contentType": "text/html",
+      "payloadHash": "732dd09dc880832e90fe090c8fe78d41303e27cafd22df426d0aded45058273c",
+      "registryId": "83",
+      "parent": null,
+      "listEvidence": [
+        {
+          "headerHash": "de294fb7fd753156369d5268b7256a22acb4171f85aee504ba3545db191f2762",
+          "columns": [
+            "rank",
+            "other",
+            "priority",
+            "candidate-code",
+            "other",
+            "other",
+            "consent",
+            "consent",
+            "consent",
+            "other",
+            "other",
+            "other",
+            "score",
+            "other"
+          ],
+          "headerCount": 14,
+          "observedRows": 0,
+          "primaryHeaderHash": "de294fb7fd753156369d5268b7256a22acb4171f85aee504ba3545db191f2762",
+          "primaryColumns": [
+            "rank",
+            "other",
+            "priority",
+            "candidate-code",
+            "other",
+            "other",
+            "consent",
+            "consent",
+            "consent",
+            "other",
+            "other",
+            "other",
+            "score",
+            "other"
+          ],
+          "hierarchicalHeader": false,
+          "cellCounts": [],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "complete": false,
+      "structure": {
+        "code": "dynamic_filter_candidate",
+        "webFormsState": false,
+        "selectCount": 5,
+        "selectOptionCounts": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "selectPostbackCount": 0,
+        "postbackPagingLinks": 0,
+        "headingYearEvidence": [],
+        "visiblePostgraduateColumns": false,
+        "complete": false,
+        "supported": false,
+        "remainingChecks": [
+          "capacity_and_scope_not_independently_verified",
+          "filter_selection_not_replayed",
+          "empty_selectors_need_dynamic_data"
+        ]
+      }
+    },
+    {
+      "requestedUrl": "https://mspi.moscow/abitur/konkursnye_spiski/",
+      "finalUrl": "https://mspi.moscow/abitur/konkursnye_spiski/",
+      "checkedAt": "2026-11-05T18:37:01.294970+00:00",
+      "state": "discovered",
+      "error": null,
+      "robotsState": "allowed",
+      "contentType": "text/html",
+      "payloadHash": "3099968fc13866e93bf9cbf99f676a3664ad2b72b91e6a28a5b26b419ad7cb59",
+      "registryId": "1960",
+      "parent": null,
+      "listEvidence": [
+        {
+          "headerHash": "7d29bed5cb5311930e56a6a9672dadfd7a4eca84a148c720c5ab185ef4dcbc8d",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "score",
+            "score",
+            "other",
+            "consent",
+            "other",
+            "other",
+            "other",
+            "enrollment",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 38,
+          "primaryHeaderHash": "7d29bed5cb5311930e56a6a9672dadfd7a4eca84a148c720c5ab185ef4dcbc8d",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "score",
+            "score",
+            "other",
+            "consent",
+            "other",
+            "other",
+            "other",
+            "enrollment",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "hierarchicalHeader": false,
+          "cellCounts": [
+            15
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "complete": false,
+      "structure": {
+        "code": "unattested_table_candidate",
+        "webFormsState": false,
+        "selectCount": 0,
+        "selectOptionCounts": [],
+        "selectPostbackCount": 0,
+        "postbackPagingLinks": 0,
+        "headingYearEvidence": [
+          2026,
+          2027
+        ],
+        "visiblePostgraduateColumns": true,
+        "complete": false,
+        "supported": false,
+        "remainingChecks": [
+          "capacity_and_scope_not_independently_verified",
+          "visible_postgraduate_columns_need_separate_level_review"
+        ]
+      }
+    }
+  ],
+  "refusedLinks": [],
+  "checkedPages": 5,
+  "institutions": 3,
+  "states": {
+    "discovered": 5
+  },
+  "limits": {
+    "maxParents": 10,
+    "maxChildrenPerParent": 4,
+    "maxBytes": 2097152,
+    "timeoutSeconds": 5,
+    "workers": 1,
+    "postRequests": 0
+  },
+  "supportedSourcesAdded": 0,
+  "realCandidateValuesExported": false,
+  "hiddenValuesExported": false,
+  "nextStep": "Review exact GET/POST filter selection, paging, campaign and competition capacity before any attestation"
+}

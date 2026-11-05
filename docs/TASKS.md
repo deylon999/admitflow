@@ -2254,7 +2254,7 @@
 
 ### T203. Исследовать следующий подтверждаемый формат списков
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T196.
 
@@ -2273,11 +2273,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b16-stateful-research.md](../docs/evidence/b16-stateful-research.md) — 5official pages/3institutions, verified linked BGU bachelor with109visible rows; stateful/dynamic/level gaps explicit.3synthetic tests and network-forbidden identical offline replay passed;0sources attested.
 
 ### T204. Проверить масштабирование каталога и итог покрытия B16
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T202, T203.
 

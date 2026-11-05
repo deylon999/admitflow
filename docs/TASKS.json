@@ -6363,7 +6363,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T196"
       ],
@@ -6380,7 +6380,12 @@
         "Есть датированные оригиналы/происхождение или точные причины отказа",
         "Исследование не считается аттестацией или дополнительным покрытием без независимой проверки"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b16-stateful-research.md",
+          "note": "5official pages/3institutions, verified linked BGU bachelor with109visible rows; stateful/dynamic/level gaps explicit.3synthetic tests and network-forbidden identical offline replay passed;0sources attested."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6389,7 +6394,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T202",
         "T203"
