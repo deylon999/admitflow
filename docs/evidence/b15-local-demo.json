@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-11-05T18:15:02.005774+00:00",
+  "project": "admitflow-b15-demo",
+  "url": "http://127.0.0.1:8091/sources",
+  "developmentOnly": true,
+  "services": [
+    {
+      "name": "db",
+      "imageId": "sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "backend",
+      "imageId": "sha256:84b1f9f197a62b8cb7ba105ecf4da0173984fe5204b067d396d7f4bed67e57bc",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "frontend",
+      "imageId": "sha256:3ee43ce14301ec1d9f8be524d370f0d0f12d955b03f0c5d90e111f06428ef3c4",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "worker",
+      "imageId": "sha256:84b1f9f197a62b8cb7ba105ecf4da0173984fe5204b067d396d7f4bed67e57bc",
+      "state": "running",
+      "health": null
+    }
+  ],
+  "coverage": {
+    "registeredSources": 14,
+    "reviewedSources": 14,
+    "importedSources": 14,
+    "importedGroups": 14,
+    "importedUniversities": 4,
+    "importedRows": 1775,
+    "archiveImportedGroups": 14,
+    "conditionalGroups": 2,
+    "lastImportedAt": "2026-11-05T18:08:32.221308Z",
+    "catalogUniversities": 1257,
+    "registryTotal": 1257,
+    "registryEdition": 2025,
+    "automaticSources": 0,
+    "publishedGroups": 0,
+    "freshGroups": 0,
+    "archiveGroups": 0,
+    "nationalTotal": null,
+    "generatedAt": "2026-11-05T18:15:01.590551Z"
+  },
+  "compiledAssetsMatchLocalBuild": true,
+  "assetSha256": {
+    "/assets/index-D04WcXTB.js": "cfe36e8ce5a14e496d6d3b6689dab330cd1d2c1d454153f97bf67b8cc76272bb",
+    "/assets/index-NlM5aZs2.css": "9b0ff3d8eb144fbcb27f8311fcfb4ca68d57d10bfabdd545bb424272648fc131"
+  },
+  "ownPersistentVolumes": true,
+  "userDatabaseChanged": false,
+  "archiveRecheckSeconds": 86400,
+  "keyPrinted": false,
+  "postgresPublicPort": false,
+  "webHost": "127.0.0.1",
+  "apiLoopbackPort": 8092,
+  "screenshot": "docs/evidence/b15-section-groups.png"
+}

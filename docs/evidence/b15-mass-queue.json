@@ -1,0 +1,17 @@
+{
+  "synthetic": true,
+  "realCoverageAdded": 0,
+  "sourceCount": 1000,
+  "domains": 100,
+  "claimThreads": 12,
+  "simultaneousDomains": 100,
+  "maxActivePerDomain": 1,
+  "recoveredLeases": 100,
+  "rejectedOldRenewals": 100,
+  "rejectedOldCompletions": 100,
+  "successfulUniqueCompletions": 1000,
+  "concurrentEnqueueCalls": 24,
+  "insertedEnqueueJobs": 1,
+  "duplicateCompletions": 0,
+  "seconds": 20.57
+}

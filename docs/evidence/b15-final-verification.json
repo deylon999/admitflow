@@ -1,0 +1,115 @@
+{
+  "date": "2026-11-05",
+  "session": "S177",
+  "batch": "B15",
+  "completedTasks": [
+    "T195",
+    "T196",
+    "T197",
+    "T198",
+    "T199"
+  ],
+  "backend": {
+    "command": "python -m pytest --require-postgres -q",
+    "environment": "Owned Linux filesystem runner and disposable native PostgreSQL schemas",
+    "passed": 627,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 431.66,
+    "exitCode": 0
+  },
+  "frontend": {
+    "vitestPassed": 116,
+    "buildExitCode": 0
+  },
+  "chromiumCompiledPreview": {
+    "baseUrl": "http://127.0.0.1:5271",
+    "api": "Same owned demo PostgreSQL/API, via loopback port 8092",
+    "passed": 79,
+    "skipped": 32,
+    "failed": 0,
+    "duration": "2.2m",
+    "exitCode": 0,
+    "skipReason": "Separate anonymized source/change/scenario fixture DTOs and nginx-only cases were not enabled; no claim they passed."
+  },
+  "chromiumActualNginx": {
+    "baseUrl": "http://127.0.0.1:8091",
+    "files": [
+      "assets.spec.ts",
+      "section-family.spec.ts"
+    ],
+    "passed": 5,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 4.1,
+    "exitCode": 0
+  },
+  "earlierNginxBroadRun": {
+    "passed": 72,
+    "skipped": 32,
+    "failed": 7,
+    "explanation": "Six failures hit the expected per-IP session rate limit under rapid sequential simulated clients; logs and page errors confirmed 429. One new test used a substring matching both Russian study forms; corrected to anchored labels. Full preview and targeted actual-nginx reruns passed without weakening nginx limits."
+  },
+  "realHttpsImport": {
+    "evidence": "docs/evidence/b15-coverage-runtime.json",
+    "externalFetches": 13,
+    "cacheHits": 1,
+    "scopes": 14,
+    "universities": 4,
+    "rows": 1775,
+    "archiveGroups": 14,
+    "conditionalGroups": 2,
+    "freshGroups": 0,
+    "automaticEligibility": 0,
+    "storedAuditsPassed": 14,
+    "independentlyRecheckedNewRows": 168,
+    "disposableSchemaRemoved": true
+  },
+  "massQueueEvidence": "docs/evidence/b15-mass-queue.json",
+  "localDemo": {
+    "evidence": "docs/evidence/b15-local-demo.json",
+    "url": "http://127.0.0.1:8091/sources",
+    "services": [
+      "PostgreSQL",
+      "API",
+      "Nginx with compiled React",
+      "worker"
+    ],
+    "afterApiRecreationStoredAuditsPassed": 14,
+    "afterApiRecreationCheckedRows": 1775,
+    "identityKeyContinuityConfirmed": true,
+    "rawAndDatabaseVolumesRetained": true,
+    "developmentOnly": true
+  },
+  "offlineProfileReviewReplay": "Identical manifest, all profile shards, fixtures and aggregate audit after rerunning scripts/review_section_family.py",
+  "historicalEvidencePreserved": true,
+  "nationalCatalogEntries": 1257,
+  "nationalTotal": null,
+  "nationalAutomationComplete": false,
+  "openBroadTasks": [
+    "T056",
+    "T057"
+  ],
+  "notClaimed": [
+    "fresh live campaign",
+    "full national automation",
+    "official admission result",
+    "admission probability",
+    "fresh Firefox/WebKit validation",
+    "HTTPS staging/production",
+    "24-hour observation",
+    "remote CI of these local commits"
+  ],
+  "userDatabaseChanged": false,
+  "secretsOrNewRealCandidateValuesExported": false,
+  "cleanup": {
+    "remainingDisposableSchemas": 0,
+    "testContainersRemoved": [
+      "admitflow-b15-linux",
+      "admitflow-b15-pg"
+    ],
+    "testNetworkRemoved": "admitflow-b15-test",
+    "temporaryPreview5271Stopped": true,
+    "demoRetained": true
+  }
+}

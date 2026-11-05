@@ -24,6 +24,7 @@ from app.jobs import enqueue
 from app.migrations import upgrade_schema
 from app.sources.audit import audit_source
 from app.sources.profile_registration import register_profile
+from app.sources.page_cache import PageFetchCache
 from app.sources.registry import runtime_registry
 from app.sources.storage import RawStore
 from app.sources.table_family import SECTION_VERSION
@@ -35,16 +36,24 @@ from review_section_family import compare_rows
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,default=ROOT/'docs/evidence/b15-section-family-runtime.json')
-    args=parser.parse_args();scopes=[p for p in PROFILES.values() if p.version==SECTION_VERSION]
+    parser.add_argument('--all-profiles',action='store_true')
+    parser.add_argument('--page-cache',action='store_true')
+    args=parser.parse_args();scopes=[p for p in PROFILES.values() if args.all_profiles or p.version==SECTION_VERSION]
     secret=secrets.token_bytes(32);os.environ['SOURCE_IDENTITY_KEY']=secret.hex();registry=runtime_registry()
-    originals={};checked=[]
+    originals={};checked=[];external=[]
+    def transport(binding,domains,**kwargs):
+        raw=bounded_fetch(binding,domains,**kwargs);external.append(binding.url);return raw
+    cache=PageFetchCache(transport)
     def fetch(binding,domains,**kwargs):
-        # Evidence runner obtains each immutable original once; production queue
-        # caching is tested separately. Preserve the actual transport timestamp.
-        if binding.url not in originals:originals[binding.url]=bounded_fetch(binding,domains,**kwargs)
-        raw=originals[binding.url];p=PROFILES[binding.source_id]
+        # Without --page-cache the evidence runner shares each original itself;
+        # with it, exercise the production worker cache and its original clock.
+        if args.page_cache:raw=cache(binding,domains,**kwargs)
+        else:
+            if binding.url not in originals:originals[binding.url]=transport(binding,domains,**kwargs)
+            raw=originals[binding.url]
+        p=PROFILES[binding.source_id]
         parsed=registry.resolve(binding).parse(raw,binding)
-        compare_rows(raw.body,p,parsed,secret)
+        if p.version==SECTION_VERSION:compare_rows(raw.body,p,parsed,secret)
         checked.append(dict(sourceId=p.source_id,rows=p.rows,payloadHash=raw.payload_hash,
             originalAuditHashMatched=raw.payload_hash==p.proof.original_sha256))
         return raw
@@ -52,6 +61,9 @@ def main():
         upgrade_schema(engine);store=RawStore(Path(folder)/'raw')
         for p in scopes:
             register_profile(engine,p,enable=True,registry=registry)
+            if args.all_profiles and dict(p.catalog)['funding']=='budget':
+                from app.scenario_storage import enable_scenarios
+                enable_scenarios(engine,p.source_id,registry=registry)
             assert enqueue(engine,p.source_id)
         for _ in scopes:
             if run_once(engine,store,registry=registry,fetch=fetch)['state']!='success':raise RuntimeError('section worker failed')
@@ -60,13 +72,19 @@ def main():
         with Session(engine) as db:
             rows=db.scalar(select(func.count()).select_from(CandidateEntry));snapshots=db.scalar(select(func.count()).select_from(SourceSnapshot))
             counts=coverage(db,registry=registry);catalog=catalog_size(db)
-        assert rows==168 and snapshots==11 and len(originals)==10 and len(checked)==11
-        assert catalog==1257 and counts['importedUniversities']==2 and counts['archiveImportedGroups']==11
-        assert counts['automaticSources']==counts['freshGroups']==counts['conditionalGroups']==0
-        result=dict(checkedAt=datetime.now(timezone.utc).isoformat(),version=SECTION_VERSION,externalHttpsFetches=len(originals),
-            scopes=len(checked),rows=rows,snapshots=snapshots,kind='archive',independentOriginalRowsChecked=rows,
-            storedAuditsPassed=True,catalogUniversities=catalog,importedUniversities=2,archiveImportedGroups=11,
-            freshGroups=0,automaticSources=0,conditionalGroups=0,nationalTotal=None,checks=checked,
+        expected_rows=sum(p.rows for p in scopes);expected_pages=len({p.url for p in scopes})
+        expected_universities=len({dict(p.catalog)['university_id'] for p in scopes})
+        assert rows==expected_rows and snapshots==len(scopes) and len(external)==expected_pages and len(checked)==len(scopes)
+        assert catalog==1257 and counts['importedUniversities']==expected_universities and counts['archiveImportedGroups']==len(scopes)
+        assert counts['automaticSources']==counts['freshGroups']==0
+        assert counts['conditionalGroups']==(2 if args.all_profiles else 0)
+        if args.page_cache:assert cache.hits==len(scopes)-expected_pages
+        result=dict(checkedAt=datetime.now(timezone.utc).isoformat(),versions=sorted({p.version for p in scopes}),externalHttpsFetches=len(external),
+            scopes=len(checked),rows=rows,snapshots=snapshots,kind='archive',independentOriginalRowsChecked=sum(p.rows for p in scopes if p.version==SECTION_VERSION),
+            independentlyRecheckedSectionRows=sum(p.rows for p in scopes if p.version==SECTION_VERSION),
+            storedAuditsPassed=True,catalogUniversities=catalog,importedUniversities=expected_universities,archiveImportedGroups=len(scopes),
+            freshGroups=0,automaticSources=0,conditionalGroups=counts['conditionalGroups'],nationalTotal=None,checks=checked,
+            processLocalCacheEnabled=args.page_cache,cacheHits=cache.hits,cacheMisses=cache.misses,
             disposableSchemaRemoved=True,userDatabaseChanged=False)
     args.output.parent.mkdir(parents=True,exist_ok=True)
     args.output.write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')

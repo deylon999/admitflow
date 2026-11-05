@@ -330,6 +330,37 @@ docker compose -f compose.prod.yaml exec backend python -m app.observability sta
 
 `SOURCE_IDENTITY_KEY` нельзя менять без миграции: от него зависят ключи абитуриентов во всех снимках и подписках.
 
+### B15: секции, общий URL и локальный стенд
+
+Закрытый manifest содержит14профилей: прежние3 и11секций МИЭПП/УИФР.
+`register-reviewed section-1881-55-0-2026 --enable` и
+`register-reviewed section-1881-55-1-2026 --enable` — две самостоятельные
+группы на одном URL. Enqueue/worker выполняются отдельно, без публичной
+регистрации URL. Общий page proof не объединяет кандидатов разных групп.
+Для платных групп бюджетный сценарий недоступен; архив не становится fresh.
+
+Worker loop повторно использует проверенный ответ для соседних scopes
+до60секунд в пределах одного процесса (64страницы/32MiB). Original fetchedAt
+сохраняется. Allowlist и byte cap входят в ключ; ошибки не сохраняются.
+Распределённого HTTP cache между worker нет; domain lease остаётся в PG.
+
+Локальный стенд S177: http://127.0.0.1:8091/sources, Compose project
+`admitflow-b15-demo`, volumes `admitflow-b15-demo_postgres_data` и
+`admitflow-b15-demo_raw_data`. Собственный стабильный ключ лежит в ignored
+`backend/var/b15-demo.env`, override — `backend/var/b15-demo.compose.yaml`.
+Не печатать env, не удалять volumes, не создавать новый ключ поверх него.
+Повторный запуск из корня без пересоздания данных:
+
+```powershell
+docker compose --env-file backend/var/b15-demo.env -p admitflow-b15-demo -f compose.yaml -f backend/var/b15-demo.compose.yaml --profile automation up -d
+```
+
+Это отдельный development стенд с14архивными группами/4вузами и ежедневной
+перепроверкой, не production/staging и не национальная автоматизация.
+У существующих пользовательских окружений свои БД и ключи; их не подменять
+данными/ключом демо. Disposable tests `admitflow-b15-linux/pg` к этому стенду
+не относятся и могут быть удалены после завершения проверки.
+
 ## Бэкап, сигналы и откат (T049, T050)
 
 Файлы подготовлены и проверены в CI на Compose-контуре. На production они ещё не запускались.

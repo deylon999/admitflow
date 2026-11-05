@@ -223,11 +223,13 @@ def main(argv=None):
             log_event('worker_heartbeat_failed',workerId=worker_id,errorType=type(error).__name__)
     try:
         registry=runtime_registry()
+        from .sources.page_cache import PageFetchCache
+        fetch=PageFetchCache(bounded_fetch)
         log_event('worker_started',workerId=worker_id,mode=args.mode)
         heartbeat('started')
         while True:
             try:
-                result=run_once(engine,store,registry=registry)
+                result=run_once(engine,store,registry=registry,fetch=fetch)
             except Exception as error:
                 log_event('worker_error',workerId=worker_id,errorType=type(error).__name__)
                 result={'state':'worker_error'}

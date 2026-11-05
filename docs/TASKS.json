@@ -6237,7 +6237,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T198"
       ],
@@ -6254,7 +6254,16 @@
         "Массовые задания не обходят per-domain лимиты и не дублируются",
         "Фактическое покрытие и ограничения не подменены синтетическим нагрузочным набором"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b15-mass-queue.md",
+          "note": "Native PG queue:1000 synthetic jobs/100 domains,12 claim threads,100 fenced recoveries,no duplicate completions. Real HTTPS:14 archive scopes/4 institutions/1775 rows,13 fetches/1 cache hit. Final627 backend/0skip,116Vitest/build,79compiled Chromium/32scopedskips,5actual-nginx checks passed."
+        },
+        {
+          "path": "docs/evidence/b15-final-verification.json",
+          "note": "Full native regression, current compiled UI, actual nginx and separate persistent local demo; limits and release gaps explicit."
+        }
+      ],
       "blockedReason": null
     }
   ]

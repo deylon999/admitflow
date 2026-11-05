@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": "T199",
-  "nextTask": null,
+  "currentTask": null,
+  "nextTask": "T057",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S177",
-  "resumeAction": "B15: T198 завершена; текущая T199. См. evidence docs/evidence/b15-section-family.md. Национальный охват пока не завершён; T056/T057 остаются открытыми.",
+  "resumeAction": "B15 завершён 5/5: каталог1257,14 архивных групп/4вуза/1775строк,0fresh. Следующий T057: другие реальные семейства и точные scopes из инвентаризации, затем ограничения массовой регистрации/фильтра. Рабочий стенд http://127.0.0.1:8091/sources, отдельные volumes и стабильный ключ в ignored backend/var/b15-demo.env. T056/полный национальный знаменатель и release gates открыты.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

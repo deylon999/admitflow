@@ -151,7 +151,7 @@ def main():
                 cell_count=section['cell_count'],headers=section['headers'],cell_labels=[],identity=[[GROUP_SELECTOR,group_text],[DATE_SELECTOR,date_text]],
                 proof=proof,kind='archive',season_pattern=r'\b([0-9]{4})\s*г\.',season_selector=DATE_SELECTOR,
                 version=SECTION_VERSION,section_selector='tr.tr-table-applicant',section_index=section['index'],section_count=len(nodes),
-                section_metadata=section['metadata'],zero_priority_unknown=True,header_spans=section['header_spans'],
+                section_metadata=section['metadata'],zero_priority_unknown=True,header_spans=[list(pair) for pair in section['header_spans']],
                 catalog=[['university_id','miccedu-'+ident],['university_name',INSTITUTIONS[ident][0]],['university_url','https://'+INSTITUTIONS[ident][1]+'/'],
                          ['campaign_id',f'miccedu-{ident}-2026-bachelor'],['level','bachelor'],['official_id',official_id+'-'+str(section['index'])],
                          ['title',(group_text.removeprefix('Название группы конкурсов:').strip()+' · '+section['study_form'])[:290]],['study_form',section['study_form']],['funding','contract'],['category','general']])

@@ -1,5 +1,34 @@
 # S177 — B15: масштабирование подключения
 
+**Финал B15, T195–T199 5/5.** 179done/199total; T056/T057 открыты.
+Проверки:627native backend passed/0skip(431.66s),116Vitest/build,79compiled
+Chromium passed/32scopedskips(2.2m),5targetedactual-nginx passed(4.1s).
+Первый nginx broad run72pass/7fail/32skip:6per-IP429,1ошибка селектора теста;
+после исправления селектора fullpreview иtargetednginx прошли, лимиты не менялись.
+См. docs/evidence/b15-final-verification.json.
+
+Рабочий локальный стенд: **http://127.0.0.1:8091/sources**, Compose project
+admitflow-b15-demo,4services.14реальных архивных групп/4вуза/1775строк,
+2условных бюджетных сценария,0fresh/automaticeligibility,nationalTotal=null.
+Ключ private/ignored backend/var/b15-demo.env сохранён; override рядом,
+два собственных постоянных volumes (postgres_data/raw_data). API8092
+опубликован только на127.0.0.1 для локальных проверок; PostgreSQL не опубликован.
+Все14storedaudits/1775rows прошли после пересоздания API, ключ согласован.
+Worker loop перепроверяет архивы раз в86400секунд; свежей кампании это не даёт.
+Native test containers/network удалены, demo/его volumes сохранены.
+B14preview5270/API8027 уже остановлены средой; temporarypreview5271 остановлен
+после browser checks. Соседние radar-контейнеры/пользовательские БД не менять.
+
+Следующий шаг T057: брать другие семейства из admissions-inventory/format-families,
+получать официальные originals, независимо проверять точные scopes и расширять
+manifest. Не считать no-table/robots/TLS-error поддержкой. Текущий каталог
+SourcesPage берёт50вузов для фильтра, а backend group catalog пока загружает
+все группы перед фильтром: это следующие ограничения массового подключения,
+не объявлять их устранёнными. Полный лицензированный реестр T056 всё ещё
+требует доступной официальной выгрузки; live2027/сутки/staging/release gates открыты.
+
+Ниже — промежуточные checkpoints S177; актуально резюме выше.
+
 T198 done: два новых вуза,11 групп/10 страниц/168 реальных строк архивного платного приёма; независимый stdlib audit и настоящий bounded HTTPS→worker→PG→offline audit прошли, disposable schema удалена. 68 targeted native passed, после усиления page-proof completeness ещё23passed. Старые3profiles/proofs не менялись. Текущая T199: native массовая очередь/domain leases, краткий process-local page cache для общих URL, метрики фактического покрытия и финальная регрессия. Не выдавать эти архивы за fresh или национальное покрытие. Docker Desktop перезапущен после остановки среды; собственные admitflow-b15-linux/pg вновь запущены, соседние radar не менялись. B14preview процессы проверить перед сообщением URL.
 
 T196 завершена:14реальных child pages по verifiedparentlinks на3сайтах,1структурный межвузовский кандидат МИЭПП/УИФР. У НИБ ответы безтаблиц,неподключён;8целевыхtests/offline replay. ТекущаяT198 — аудит/decoder для конкретных секций этого шаблона. Нужно учитывать несколько форм/конкурсов на одномURL, не смешивать договор с согласием,0priority с известным положительным приоритетом; новые fixtures только synthetic. T197done/48nativepassed;T195done/1073URL. T199послеаттестации остаётсяtodo. Подробности docs/evidence/b15-format-families.md.

@@ -2161,7 +2161,7 @@
 
 ### T199. Проверить массовую очередь и отчёт расширенного покрытия
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T198.
 
@@ -2180,7 +2180,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b15-mass-queue.md](../docs/evidence/b15-mass-queue.md) — Native PG queue:1000 synthetic jobs/100 domains,12 claim threads,100 fenced recoveries,no duplicate completions. Real HTTPS:14 archive scopes/4 institutions/1775 rows,13 fetches/1 cache hit. Final627 backend/0skip,116Vitest/build,79compiled Chromium/32scopedskips,5actual-nginx checks passed.
+- [docs/evidence/b15-final-verification.json](../docs/evidence/b15-final-verification.json) — Full native regression, current compiled UI, actual nginx and separate persistent local demo; limits and release gaps explicit.
 
 ## E4. Объяснения и UX
 
