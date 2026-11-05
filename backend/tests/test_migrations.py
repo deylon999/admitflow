@@ -41,7 +41,7 @@ def test_empty_database_upgrade_repeat_and_model_alignment(migration_db):
     command.check(config())
     assert len(inspect(migration_db).get_table_names()) == 20  # 19 domain + revision.
     with migration_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0010'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0011'
 
 
 def seed_legacy(engine):
@@ -185,7 +185,7 @@ def test_postgres_adopts_legacy_schema_and_keeps_history(postgres_legacy_db,full
     command.upgrade(config(),'head')
     command.check(config())
     with postgres_legacy_db.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0010'
+        assert db.scalar(text('SELECT version_num FROM alembic_version'))=='0011'
         assert db.scalar(text('SELECT title FROM watches'))=='Test direction'
         assert db.execute(text('SELECT id, watch_id, rank - excluded - no_consent FROM snapshots')).one()==('snapshot-1','watch-1',74)
         assert not db.scalar(text("SELECT count(*) FROM pg_class WHERE relname LIKE '_admitflow_check_%' AND relnamespace=pg_my_temp_schema()"))
@@ -247,9 +247,10 @@ def assert_assessment_cascade_upgrade_keeps_data(engine):
     now=datetime(2026,11,3,tzinfo=timezone.utc)
     with Session(engine) as db:
         db.add(BrowserSession(token_hash='b'*64,expires_at=now));db.flush()
-        db.add(University(id='cascade-u',name='Synthetic migration only',official_url='https://example.org',provenance_url='https://example.org',verified_at=now));db.flush()
+        # Seed the historical schema using its columns, not the current mapper.
+        db.execute(text("INSERT INTO universities (id,name,official_url,provenance_url,verified_at) VALUES ('cascade-u','Synthetic migration only','https://example.org','https://example.org',:now)"),{'now':now})
         db.add(Campaign(id='cascade-c',university_id='cascade-u',year=2026,level='bachelor'));db.flush()
-        db.add(CompetitionGroup(id='cascade-g',campaign_id='cascade-c',official_id='test',title='Synthetic migration',study_form='full-time',funding='budget',category='general',seats=1,coverage='candidate'));db.flush()
+        db.execute(text("INSERT INTO competition_groups (id,campaign_id,official_id,title,study_form,funding,category,seats,coverage) VALUES ('cascade-g','cascade-c','test','Synthetic migration','full-time','budget','general',1,'candidate')"))
         db.add(Source(id='cascade-source',group_id='cascade-g',url='https://example.org/list',domain='example.org',enabled=False));db.flush()
         db.add(SourceSnapshot(id='cascade-snapshot',source_id='cascade-source',group_id='cascade-g',payload_hash='a'*64,fetched_at=now,kind='archive',row_count=0,complete=False));db.flush()
         db.add(Subscription(id='cascade-sub',owner_hash='b'*64,group_id='cascade-g',candidate_key='c'*64,created_at=now));db.flush()

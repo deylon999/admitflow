@@ -32,7 +32,8 @@ INITIAL_UNIVERSITIES = [
 def seed_catalog(engine):
     insert = postgres_insert if engine.dialect.name == 'postgresql' else sqlite_insert
     with Session(engine) as db:
-        db.execute(insert(University).values(INITIAL_UNIVERSITIES).on_conflict_do_nothing(index_elements=['id']))
+        rows=[{**row,'search_name':row['name'].casefold()} for row in INITIAL_UNIVERSITIES]
+        db.execute(insert(University.__table__).values(rows).on_conflict_do_nothing(index_elements=['id']))
         db.commit()
 
 

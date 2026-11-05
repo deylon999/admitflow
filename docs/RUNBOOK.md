@@ -361,6 +361,18 @@ docker compose --env-file backend/var/b15-demo.env -p admitflow-b15-demo -f comp
 данными/ключом демо. Disposable tests `admitflow-b15-linux/pg` к этому стенду
 не относятся и могут быть удалены после завершения проверки.
 
+### B16: поиск каталога и миграция0011
+
+0011 добавляет только производные поля Unicode поиска публичных названий.
+Миграция online заполняет их пакетами по200строк, downgrade удаляет только
+эти поля. Снимки, HMAC, ключи и исходные названия не меняются. Для PostgreSQL
+offlineSQL включает полную Unicode casefold mapping; SQLite выполнять online.
+Обычные ORM insert/update и Core inserts поддерживают поисковые значения.
+Если оператор меняет name/title/official_id прямым SQL, он обязан обновить
+search_name=name.casefold() или search_text=(title+' '+official_id).casefold()
+в той же транзакции. PostgreSQL lower() не является заменой casefold.
+Публичный API не разрешает такие изменения метаданных.
+
 ## Бэкап, сигналы и откат (T049, T050)
 
 Файлы подготовлены и проверены в CI на Compose-контуре. На production они ещё не запускались.

@@ -2208,7 +2208,7 @@
 
 ### T201. Фильтровать и ограничивать группы на стороне БД
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T200.
 
@@ -2227,11 +2227,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b16-sql-catalog.md](../docs/evidence/b16-sql-catalog.md) — SQL filters/count/cursor/limit preserve Unicode and literals;10001 synthetic groups hydrate<=8 for page7. Migration0011 backfill/reversal/offline PG passed;34 targeted+4 expanded native checks,0skipped.
 
 ### T202. Подключать набор проверенных профилей атомарно
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T201.
 

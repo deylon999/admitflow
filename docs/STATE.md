@@ -1,5 +1,9 @@
 # S178 — B16
 
+T201 done; current T202. SQL filters/count/cursor/limit preserve Unicode and literals;10001 synthetic groups hydrate<=8 for page7. Migration0011 backfill/reversal/offline PG passed;34 targeted+4 expanded native checks,0skipped. Evidence: docs/evidence/b16-sql-catalog.md. Demo8091/key/volumes retained; broad T056/T057 open.
+
+# S178 — B16
+
 T200 done; current T201. Full directory search/pagination, retained selection and next-page retry at320px;116Vitest/build and4compiledChromium passed. Evidence: docs/evidence/b16-university-filter.md. Demo8091/key/volumes retained; broad T056/T057 open.
 
 # S177 — B15: масштабирование подключения

@@ -3,10 +3,11 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import uuid4
 
-from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, ForeignKeyConstraint, Integer, JSON, Numeric, String, UniqueConstraint
+from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, ForeignKeyConstraint, Integer, JSON, Numeric, String, UniqueConstraint, event
 from sqlalchemy.orm import Mapped, mapped_column
 
 from .database import Base
+from .catalog_search import university_search,group_search
 
 
 def new_id():
@@ -17,6 +18,7 @@ class University(Base):
     __tablename__ = 'universities'
     id: Mapped[str] = mapped_column(String(80), primary_key=True)
     name: Mapped[str] = mapped_column(String(300))
+    search_name: Mapped[str] = mapped_column(String(1000),default=university_search,server_default='')
     region: Mapped[str | None] = mapped_column(String(120))
     parent_id: Mapped[str | None] = mapped_column(ForeignKey('universities.id', ondelete='RESTRICT'))
     official_url: Mapped[str] = mapped_column(String(2048))
@@ -49,6 +51,7 @@ class CompetitionGroup(Base):
     campaign_id: Mapped[str] = mapped_column(ForeignKey('campaigns.id', ondelete='RESTRICT'))
     official_id: Mapped[str] = mapped_column(String(160))
     title: Mapped[str] = mapped_column(String(300))
+    search_text: Mapped[str] = mapped_column(String(1500),default=group_search,server_default='')
     study_form: Mapped[str] = mapped_column(String(40))
     funding: Mapped[str] = mapped_column(String(40))
     category: Mapped[str] = mapped_column(String(80))
@@ -178,3 +181,15 @@ class SourceOperation(Base):
     outcome: Mapped[str]=mapped_column(String(24))
     adapter_version: Mapped[str | None]=mapped_column(String(80))
     created_at: Mapped[datetime]=mapped_column(DateTime(timezone=True))
+
+
+@event.listens_for(University,'before_insert')
+@event.listens_for(University,'before_update')
+def normalize_university_search(_mapper,_connection,row):
+    row.search_name=row.name.casefold()
+
+
+@event.listens_for(CompetitionGroup,'before_insert')
+@event.listens_for(CompetitionGroup,'before_update')
+def normalize_group_search(_mapper,_connection,row):
+    row.search_text=f'{row.title} {row.official_id}'.casefold()

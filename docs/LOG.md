@@ -947,3 +947,5 @@ S177/T199/B15 final5/5: Native PG queue:1000 synthetic jobs/100 domains,12 claim
 Пользователь поручил продолжать. Пятёрка T200–T204: полный выбор вузов, SQL фильтры групп, atomic batch профилей, исследование следующего формата и итоговая проверка. Одна activeT200, проверки сформулированы до реализации. B15baseline сохранён; demo8091/key/volumes не пересоздавать. T056/T057 открыты.
 
 S178/T200: Full directory search/pagination, retained selection and next-page retry at320px;116Vitest/build and4compiledChromium passed. Evidence: docs/evidence/b16-university-filter.md. Next T201.
+
+S178/T201: SQL filters/count/cursor/limit preserve Unicode and literals;10001 synthetic groups hydrate<=8 for page7. Migration0011 backfill/reversal/offline PG passed;34 targeted+4 expanded native checks,0skipped. Evidence: docs/evidence/b16-sql-catalog.md. Next T202.

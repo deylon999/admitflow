@@ -25,7 +25,8 @@ def register_sgu(engine,*,enable=False,registry=PRODUCTION_REGISTRY):
     with Session(engine) as db:
         if engine.dialect.name=='sqlite':db.execute(text('BEGIN IMMEDIATE'))
         else:db.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('pilot:sgu2026',173))"))
-        db.execute(insert(University).values(INITIAL_UNIVERSITIES).on_conflict_do_nothing(index_elements=['id']))
+        rows=[{**row,'search_name':row['name'].casefold()} for row in INITIAL_UNIVERSITIES]
+        db.execute(insert(University.__table__).values(rows).on_conflict_do_nothing(index_elements=['id']))
         campaign=db.get(Campaign,CAMPAIGN_ID)
         if campaign is None:
             campaign=Campaign(id=CAMPAIGN_ID,university_id='sgu-saratov',year=2026,level='bachelor');db.add(campaign);db.flush()
