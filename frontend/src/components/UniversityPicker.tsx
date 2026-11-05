@@ -48,7 +48,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
               </button>
               <a href={university.provenanceUrl} target="_blank" rel="noopener noreferrer">{university.catalogOrigin === 'monitoring' ? 'Карточка в официальном перечне ↗' : 'Официальный источник ↗'}</a>
               {university.catalogOrigin === 'monitoring' && <small>Списки и автоматическое обновление ещё не подключены; ссылку на список нужно указать самостоятельно.</small>}
-            </li>)}</ul>{catalog.hasNextPage && <button type="button" className="text-button" disabled={catalog.isFetchingNextPage} onClick={() => void catalog.fetchNextPage()}>{catalog.isFetchingNextPage ? 'Загружаем…' : 'Показать ещё вузы'}</button>}</>}
+            </li>)}</ul>{catalog.hasNextPage && <button type="button" className="text-button" disabled={catalog.isFetchingNextPage} onClick={() => { input.current?.focus(); void catalog.fetchNextPage(); }}>{catalog.isFetchingNextPage ? 'Загружаем…' : 'Показать ещё вузы'}</button>}</>}
     </div>}
   </div>;
 }

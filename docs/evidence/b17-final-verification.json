@@ -1,0 +1,196 @@
+{
+  "date": "2026-11-05",
+  "checkedAt": "2026-11-05T19:25:06.579635+00:00",
+  "session": "S179",
+  "batch": "B17",
+  "completedTasks": [
+    "T205",
+    "T206",
+    "T207",
+    "T208",
+    "T209"
+  ],
+  "backend": {
+    "command": "python -m pytest --require-postgres -q",
+    "environment": "Owned Linux filesystem runner and isolated native PostgreSQL17 schemas",
+    "passed": 666,
+    "skipped": 0,
+    "failed": 0,
+    "warnings": 4,
+    "seconds": 428.96,
+    "exitCode": 0
+  },
+  "frontend": {
+    "vitestPassed": 116,
+    "buildExitCode": 0,
+    "rerunAfterFinalPickerFix": true,
+    "commands": [
+      "npm test -- --run",
+      "npm run build"
+    ]
+  },
+  "chromiumCompiledPreview": {
+    "baseUrl": "http://127.0.0.1:5274",
+    "api": "Current API8092/schema0011 and owned demo PostgreSQL",
+    "passed": 84,
+    "skipped": 31,
+    "failed": 0,
+    "duration": "2.3m",
+    "exitCode": 0,
+    "skipReason": "Dedicated anonymized source fixture APIs (including separate BGU synthetic API) and nginx-only tests are not enabled in this broad run; their skips are not counted as passes.",
+    "command": "npx playwright test --project=chromium --reporter=line",
+    "environmentFlags": {
+      "E2E_SERVER": "external",
+      "E2E_API": "1",
+      "E2E_SOURCE": "1",
+      "E2E_SECTION_FAMILY": "1",
+      "E2E_BGU": "1"
+    },
+    "apiTarget": "http://127.0.0.1:8092",
+    "npmWorkingDirectory": "frontend"
+  },
+  "chromiumSyntheticBguLookup": {
+    "baseUrl": "http://127.0.0.1:5273",
+    "api": "Separate synthetic fixture API8028, no real applicant values",
+    "passed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 4.2,
+    "exitCode": 0,
+    "firstFiveDigitsOnly": true,
+    "confirmationReplayAndStorageChecked": true,
+    "command": "npx playwright test tests/e2e/bgu-lookup.spec.ts --project=chromium --reporter=line",
+    "environmentFlags": {
+      "E2E_SERVER": "external",
+      "E2E_BGU_FIXTURE": "1"
+    }
+  },
+  "chromiumActualNginx": {
+    "baseUrl": "http://127.0.0.1:8091",
+    "passed": 18,
+    "skipped": 0,
+    "failed": 0,
+    "exitCode": 0,
+    "runs": [
+      {
+        "files": [
+          "catalog.spec.ts",
+          "national-catalog.spec.ts"
+        ],
+        "passed": 5,
+        "seconds": 9.6
+      },
+      {
+        "files": [
+          "assets.spec.ts",
+          "source-catalog.spec.ts",
+          "source-university-filter.spec.ts",
+          "section-family.spec.ts",
+          "bgu-catalog.spec.ts"
+        ],
+        "passed": 13,
+        "seconds": 13.4
+      }
+    ],
+    "rateLimitsPreserved": true,
+    "realApplicantLookupsPerformed": 0,
+    "command": "npx playwright test <listed files> --project=chromium --reporter=line",
+    "environmentFlags": {
+      "E2E_SERVER": "external",
+      "E2E_API": "1",
+      "E2E_SOURCE": "1",
+      "E2E_SECTION_FAMILY": "1",
+      "E2E_BGU": "1",
+      "E2E_NGINX": "1"
+    }
+  },
+  "initialBrowserFailure": {
+    "passed": 83,
+    "skipped": 31,
+    "failed": 1,
+    "duration": "2.4m",
+    "problem": "Disabling the focused next-page button could blur and close the university picker",
+    "fix": "Focus the search input before starting the next-page request",
+    "regression": "Hold the real offset50 response; verify loading, input focus and fifty visible options, then release and verify one hundred options"
+  },
+  "filteredFamily": {
+    "version": "reviewed-filtered-table-v1",
+    "newExactProfiles": 1,
+    "oldExactProfilesPreserved": 14,
+    "scope": "BGU2026 bachelor/full-time/contract/08.03.01 Construction/primary intake, default GET only",
+    "otherFilterStatesOrPostSupported": false,
+    "independentOriginalRows": 109,
+    "seats": 20,
+    "explicitEnrolled": 14,
+    "unknownConsentAndPriority": true,
+    "lookupIdentity": "Unique first five digits, scoped to source/group/year",
+    "discardedPersonalSegmentsRequested": false,
+    "oldProofsAndIdentityNamespacePreserved": true
+  },
+  "runtimeEvidence": [
+    "docs/evidence/b17-bgu-runtime.json",
+    "docs/evidence/b17-demo-import.json",
+    "docs/evidence/b17-local-demo.json"
+  ],
+  "localDemo": {
+    "url": "http://127.0.0.1:8091/sources",
+    "project": "admitflow-b15-demo",
+    "schemaRevision": "0011",
+    "catalogEntries": 1257,
+    "importedGroups": 15,
+    "importedUniversities": 5,
+    "importedRows": 1884,
+    "archiveGroups": 15,
+    "conditionalGroups": 2,
+    "freshGroups": 0,
+    "nationalTotal": null,
+    "storedSourceAuditsPassed": 15,
+    "oldSnapshotsRetained": 14,
+    "oldCandidateRowsRetained": 1775,
+    "originalIdentityKeyAndVolumesRetained": true,
+    "dailyArchiveRecheckSeconds": 86400,
+    "compiledAssetsMatchLocalBuild": true,
+    "developmentOnly": true
+  },
+  "openBroadTasks": [
+    "T056",
+    "T057"
+  ],
+  "notClaimed": [
+    "full national automation",
+    "known national denominator",
+    "fresh live campaign",
+    "all BGU contests",
+    "official admission outcome",
+    "admission probability",
+    "fresh Firefox/WebKit validation",
+    "24-hour observation",
+    "public HTTPS staging/production",
+    "remote CI of local commits"
+  ],
+  "existingExternalUserDatabasesChanged": false,
+  "ownedDemoSchemaChanged": false,
+  "ownedDemoOldSourceFactsRewritten": false,
+  "privacy": {
+    "evidence": "docs/evidence/b17-privacy-scan.json",
+    "scope": "Changed/new B17 files and current frontend/dist",
+    "initialDiagnosticOutputIncidentRecordedInLog": true,
+    "newFixturesSynthetic": true,
+    "rawOriginalsPrivateAndIgnored": true
+  },
+  "cleanup": {
+    "remainingDisposableSchemas": 0,
+    "testContainersRemoved": [
+      "admitflow-b17-linux",
+      "admitflow-b17-pg"
+    ],
+    "testNetworkRemoved": "admitflow-b17-test",
+    "temporaryPortsStopped": [
+      8028,
+      5273,
+      5274
+    ],
+    "demoAndPrivateBackupRetained": true,
+    "historicalScreenshotRestored": true
+  }
+}

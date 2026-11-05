@@ -1,5 +1,40 @@
 # Возобновление и эксплуатация
 
+## Локальный стенд B17 — 5 ноября 2026
+
+Адрес: http://127.0.0.1:8091/sources. Существующий Compose project
+`admitflow-b15-demo`, прежние `backend/var/b15-demo.env` и
+`backend/var/b15-demo.compose.yaml`, два прежних volumes. Не генерировать
+новый SOURCE_IDENTITY_KEY: сохранённые снимки проверяются прежним ключом.
+PostgreSQL наружу не опубликован, API доступен только на loopback8092.
+
+Схема0011,15 архивных групп пяти вузов/1884 строки;1257 записей опорного
+каталога,2 условных бюджетных сценария,0 fresh. Worker перепроверяет15 архивов
+раз в86400 секунд. Перед новым импортом сохранена private/ignored копия
+`backend/var/b17-before-bgu.dump`; исходные14 снимков/1775 строк не переписаны.
+
+БГУ: только default GET `https://bgu.ru/abitur/bach/rating.aspx`,2026,
+08.03.01 «Организация строительного производства», платная очная группа,
+20 мест/109 строк. Другие настройки/POST не подключены. В поиске нужны только
+первые5 цифр до `/`; составной код и его персональные части вводить не нужно.
+Реальный поиск абитуриентов не использовать для smoke/screenshots; приватный
+lookup/save проверен на отдельном синтетическом API. Паспорт:
+[bgu2026.md](sources/bgu2026.md), независимая сверка:
+`scripts/review_bgu_scope.py`. При смене defaults/count/структуры parser
+отклоняет ответ. Новая аттестация не заменяет прежние proofs.
+
+Проверка существующих контейнеров из корня:
+
+```powershell
+docker compose --env-file backend/var/b15-demo.env -p admitflow-b15-demo -f compose.yaml -f backend/var/b15-demo.compose.yaml --profile automation ps
+```
+
+Не запускать старые bootstrap/research helpers повторно как обычный healthcheck:
+они могут регистрировать/включать источник и инициировать HTTPS. Для отдельного
+stored audit без загрузки: `docker compose` с теми же аргументами, затем
+`exec -T backend python -m app.sources.audit bgu-2026-080301-contract`.
+Подключение всей России и живая кампания остаются задачами T056/T057.
+
 ## Начало каждой сессии
 
 1. Прочитать корневой AGENTS.md и STATE.md.

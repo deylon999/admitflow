@@ -1,0 +1,55 @@
+{
+  "coverage": {
+    "catalogUniversities": 1257,
+    "registryTotal": 1257,
+    "registryEdition": 2025,
+    "registeredSources": 15,
+    "reviewedSources": 15,
+    "importedSources": 15,
+    "importedGroups": 15,
+    "importedUniversities": 5,
+    "importedRows": 1884,
+    "archiveImportedGroups": 15,
+    "conditionalGroups": 2,
+    "lastImportedAt": "2026-11-05 19:16:49.764558+00:00",
+    "automaticSources": 0,
+    "publishedGroups": 0,
+    "freshGroups": 0,
+    "archiveGroups": 0,
+    "nationalTotal": null,
+    "generatedAt": "2026-11-05 19:16:56.810362+00:00"
+  },
+  "registered": {
+    "atomic": true,
+    "items": [
+      {
+        "sourceId": "bgu-2026-080301-contract",
+        "groupId": "bgu-2026-080301-contract",
+        "created": true,
+        "enabled": true,
+        "year": 2026,
+        "kind": "archive",
+        "adapterVersion": "reviewed-filtered-table-v1"
+      }
+    ],
+    "created": 1,
+    "count": 1
+  },
+  "worker": {
+    "state": "success",
+    "sourceId": "bgu-2026-080301-contract"
+  },
+  "actualHttpsFetches": 1,
+  "payloadHashes": [
+    "5960eb29225e693f9570b0bed9b690f4ec50e48dfa14f50e6993af900dd37eba"
+  ],
+  "oldFacts": {
+    "snapshots": 14,
+    "rows": 1775,
+    "sha256": "a5df3c91a5ed4e246eb93978355e32d68ccb0bd7216a5326cc57379ff8bfc438"
+  },
+  "oldSnapshotsAndRowsUnchanged": true,
+  "storedAuditsPassed": 15,
+  "originalKeyRetained": true,
+  "candidateValuesOrKeysExported": false
+}

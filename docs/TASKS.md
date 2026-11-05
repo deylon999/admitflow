@@ -2393,7 +2393,7 @@
 
 ### T209. Обновить стенд и сверить покрытие B17
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T208.
 
@@ -2412,7 +2412,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b17-integration.md](../docs/evidence/b17-integration.md) — Final666backend/0skip,116Vitest/build,84compiledChromium/31scopedskips,1syntheticBGUlookup and18actual-nginx checks passed. Actual demo15archivegroups/5universities/1884rows, old14snapshots/1775rows unchanged and15stored audits passed. Same key/volumes/schema0011; pagination-focus defect fixed and verified with held real response.
+- [docs/evidence/b17-final-verification.json](../docs/evidence/b17-final-verification.json) — Current mandatory-PG regression, exact compiled lazy assets, real new source import, old facts preserved, daily archive jobs and explicit national/live/release limits.
 
 ## E4. Объяснения и UX
 

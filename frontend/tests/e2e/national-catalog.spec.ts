@@ -2,12 +2,25 @@ import { expect, test } from '@playwright/test';
 
 for (const width of [390, 1440]) test(`national directory pages through real API without substituting registry card for a list (${width})`, async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires real API and packaged national directory');
+  let releasePage!: () => void;
+  const pendingPage = new Promise<void>(resolve => { releasePage = resolve; });
+  await page.route('**/api/v1/universities?*', async route => {
+    if (new URL(route.request().url()).searchParams.get('offset') === '50') await pendingPage;
+    await route.continue();
+  });
   await page.setViewportSize({ width, height: 900 });
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Добавить первое направление' }).click();
   await page.getByLabel('Вуз', { exact: true }).focus();
   await expect(page.locator('.catalog-option')).toHaveCount(50);
-  await page.getByRole('button', { name: 'Показать ещё вузы' }).click();
+  try {
+    await page.getByRole('button', { name: 'Показать ещё вузы' }).click();
+    await expect(page.getByRole('button', { name: 'Загружаем…', exact: true })).toBeDisabled();
+    await expect(page.getByLabel('Вуз', { exact: true })).toBeFocused();
+    await expect(page.locator('.catalog-option')).toHaveCount(50);
+  } finally {
+    releasePage();
+  }
   await expect(page.locator('.catalog-option')).toHaveCount(100);
   await page.getByLabel('Вуз', { exact: true }).fill('Саратовская Чернышевского');
   await expect(page.locator('.catalog-results')).toContainText('Филиал');

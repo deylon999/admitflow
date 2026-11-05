@@ -1,3 +1,38 @@
+# S179 — B17: финальный checkpoint
+
+T205–T209 завершены5/5;189done/209total. БГУ стал пятым вузом с импортом:
+default GET08.03.01 «Организация строительного производства»,платно/очно,
+архив2026,20мест/109строк. Независимый parser сверил все строки; новый общий
+reviewed-filtered-table-v1 проверяет форму, count, программу и роли ячеек.
+Lookup/HMAC берут только первые5цифр до `/`; персональные части отбрасываются,
+согласия/приоритеты остаютсяunknown. Прежние14профилей/proofs не изменены.
+
+Проверки:666native backend/0skip(428.96s),116Vitest/build,
+84compiledChromium/31scopedskips(2.3m),1syntheticBGUlookup,
+18actual-nginx checks. Исправлена потеря фокуса при пагинации справочника;
+проверка задерживает реальный ответ offset50 и сохраняет открытые варианты.
+Evidence: docs/evidence/b17-final-verification.json.
+
+Стенд: http://127.0.0.1:8091/sources, тот же projectadmitflow-b15-demo,
+schema0011,четыре сервиса/APIloopback8092. Все15stored audits прошли;
+hash/count прежних14снимков/1775строк совпали до/после. Env/key и оба volumes
+сохранены, private backup backend/var/b17-before-bgu.dump не публиковать.
+Worker перепроверяет15архивов каждые86400секунд. Native B17schemas0,
+контейнеры admitflow-b17-linux/pg и сеть удалены, preview5273/5274 и
+syntheticAPI8028 остановлены. Соседние radar/внешние пользовательские БД не менялись.
+
+Покрытие:1257catalog/15archivegroups/5universities/1884rows,
+2conditionalbudget/0fresh/nationalTotal=null. T056/T057 открыты.
+Следующий T057: другой официальный GET scope из admissions-inventory.json/
+format-families.json, полный scope/план/строки и независимая сверка. БГУ
+другие настройки формы и POST не поддержаны этой аттестацией. Исходный
+proofhash не заменять хэшем новой загрузки; новый ответ проверять отдельно.
+Для UI lookup использовать syntheticfixture, не реальные коды. Приватные
+оригиналы содержат персональные сегменты; в tracked reports только агрегаты.
+Полный лицензированный знаменатель,live2027,сутки,staging/release gates открыты.
+
+Ниже — промежуточные и прежние checkpoints; актуально резюме выше.
+
 # S179 — B17
 
 T208 done; current T209. Actual bounded HTTPS->worker->native PG->independent/current/stored audit109rows/20seats passed.7native owner/API tests,116Vitest/build and1synthetic browser lookup/privacy/save passed. Evidence: docs/evidence/b17-worker-lookup.md. Same demo8091/key/volumes; T056/T057 open.

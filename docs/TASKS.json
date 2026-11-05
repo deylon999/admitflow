@@ -6553,7 +6553,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T208"
       ],
@@ -6570,7 +6570,16 @@
         "Прирост покрытия основан на реальном импорте, архив/fresh разделены",
         "T056/T057 не закрываются частично; процессы/ограничения и следующий шаг переданы"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b17-integration.md",
+          "note": "Final666backend/0skip,116Vitest/build,84compiledChromium/31scopedskips,1syntheticBGUlookup and18actual-nginx checks passed. Actual demo15archivegroups/5universities/1884rows, old14snapshots/1775rows unchanged and15stored audits passed. Same key/volumes/schema0011; pagination-focus defect fixed and verified with held real response."
+        },
+        {
+          "path": "docs/evidence/b17-final-verification.json",
+          "note": "Current mandatory-PG regression, exact compiled lazy assets, real new source import, old facts preserved, daily archive jobs and explicit national/live/release limits."
+        }
+      ],
       "blockedReason": null
     }
   ]

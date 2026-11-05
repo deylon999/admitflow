@@ -1,0 +1,10 @@
+{
+  "scope": "All B17 changed/new tracked candidates since B16 plus current frontend/dist",
+  "filesChecked": 72,
+  "originalRowsCompared": 109,
+  "compositeIdentifierMatches": 0,
+  "discardedPersonalSegmentMatches": 0,
+  "quotedRealLookupIdentifierMatches": 0,
+  "realCandidateValuesFoundInScannedArtifacts": false,
+  "rawOriginalReadOnlyAndIgnored": true
+}
