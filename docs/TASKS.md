@@ -463,7 +463,7 @@
 
 ### T191. Импортировать национальный опорный каталог без дублей
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T190.
 
@@ -482,7 +482,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — Validated atomic read-only artifact import, 1257 identities and 521 branches, legacy aliases preserved; 12 targeted checks passed; no Source or user DB mutation.
 
 ## E2. Ядро продукта
 
@@ -1216,7 +1216,7 @@
 
 ### T192. Показать национальный каталог и статусы подключения в поиске
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T191.
 

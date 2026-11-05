@@ -5983,7 +5983,7 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T190"
       ],
@@ -5999,7 +5999,12 @@
         "Повтор не создаёт дубли и не меняет подписки",
         "Повреждённый импорт отклоняется целиком; неизвестные сайты не выдумываются"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b14-national-catalog.md",
+          "note": "Validated atomic read-only artifact import, 1257 identities and 521 branches, legacy aliases preserved; 12 targeted checks passed; no Source or user DB mutation."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6008,7 +6013,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T191"
       ],
