@@ -2347,7 +2347,7 @@
 
 ### T207. Независимо сверить и аттестовать архивную группу БГУ
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T206.
 
@@ -2366,11 +2366,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b17-attestation.md](../docs/evidence/b17-attestation.md) — All109original rows independently matched,20seats/14explicit enrolled; immutable exact BGU profile added,old14unchanged.46native targeted passed/0skip; Source not enabled by attestation.
 
 ### T208. Проверить worker и сохранение записи новой группы
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T207.
 

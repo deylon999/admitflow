@@ -24,7 +24,7 @@ def verify_batch(engine,monkeypatch):
         assert db.scalar(select(func.count()).select_from(Source))==0
         assert db.scalar(select(func.count()).select_from(University))==0
     result=register_profiles(engine,IDS,registry=registry)
-    assert result['atomic'] and result['count']==result['created']==14
+    assert result['atomic'] and result['count']==result['created']==len(IDS)
     assert not any(row['enabled'] for row in result['items'])
     replay=register_profiles(engine,tuple(reversed(IDS)),enable=True,registry=registry)
     assert replay['created']==0 and all(row['enabled'] for row in replay['items'])
@@ -36,7 +36,7 @@ def verify_batch(engine,monkeypatch):
     with pytest.raises(AdapterError,match='invalid_binding'):register_profiles(engine,IDS,enable=True,registry=registry)
     with Session(engine) as db:
         assert db.scalar(select(func.count()).select_from(SourceOperation))==journal_before
-        assert db.scalar(select(func.count()).select_from(Source))==14
+        assert db.scalar(select(func.count()).select_from(Source))==len(IDS)
     return registry
 
 
@@ -60,7 +60,7 @@ def test_plan_lists_closed_scope_metadata_without_database_or_key(monkeypatch,ca
     monkeypatch.setattr('app.sources.batch.make_engine',lambda *_:pytest.fail('plan must not connect'))
     assert main(['--plan','--enable',*IDS])==0
     data=json.loads(capsys.readouterr().out)
-    assert data['readOnly'] and data['count']==14 and data['databaseChecked'] is False
+    assert data['readOnly'] and data['count']==len(IDS) and data['databaseChecked'] is False
     assert all(set(item)=={'sourceId','groupId','year','kind','adapterVersion'} for item in data['items'])
 
 

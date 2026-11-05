@@ -1,5 +1,9 @@
 # S179 — B17
 
+T207 done; current T208. All109original rows independently matched,20seats/14explicit enrolled; immutable exact BGU profile added,old14unchanged.46native targeted passed/0skip; Source not enabled by attestation. Evidence: docs/evidence/b17-attestation.md. Same demo8091/key/volumes; T056/T057 open.
+
+# S179 — B17
+
 T206 done; current T207. Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet. Evidence: docs/evidence/b17-filtered-family.md. Same demo8091/key/volumes; T056/T057 open.
 
 # S179 — B17

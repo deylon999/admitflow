@@ -1,0 +1,30 @@
+{
+  "sourceId": "bgu-2026-080301-contract",
+  "url": "https://bgu.ru/abitur/bach/rating.aspx",
+  "originalSha256": "36416d3102baebbcc022e51925e21c85de9804e7f44982e1fd3335c31bfe985d",
+  "fixtureSha256": "cbb4d20336ba2a1928adf1999c4e96fd71257aa9e1f210ea4c425ebea1b49257",
+  "reviewedAt": "2026-11-05T18:56:31.730353+00:00",
+  "version": "reviewed-filtered-table-v1",
+  "independentParser": "stdlib.HTMLParser",
+  "checkedRows": 109,
+  "uniqueMinimalIds": 109,
+  "explicitEnrolled": 14,
+  "seats": 20,
+  "fields": [
+    "official_order",
+    "minimal_scoped_identity",
+    "total_score",
+    "unknown_consent",
+    "unknown_priority",
+    "explicit_enrollment_or_unknown",
+    "public_program"
+  ],
+  "allFieldsMatched": true,
+  "kind": "archive",
+  "minimalIdRule": "first5digits before first slash; other parts discarded",
+  "realCandidateValuesInTrackedFixture": false,
+  "candidateKeysExported": false,
+  "sourceTimestamp": "unknown_timezone",
+  "publishedToManifest": true,
+  "sourceEnabled": false
+}

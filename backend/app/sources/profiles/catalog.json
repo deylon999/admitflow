@@ -1,7 +1,12 @@
 {
   "format": "reviewed-profile-catalog-v1",
-  "profileCount": 14,
+  "profileCount": 15,
   "shards": [
+    {
+      "file": "shards/d1872522f2a54ca10561f76d2647a51090ca33b4b23ed9309cd869c7c17c51a9.json",
+      "sha256": "d1872522f2a54ca10561f76d2647a51090ca33b4b23ed9309cd869c7c17c51a9",
+      "count": 1
+    },
     {
       "file": "shards/09ce8f5546d2a636806e65f644838726d14e1fc036eaea97394982a549fa8e3f.json",
       "sha256": "09ce8f5546d2a636806e65f644838726d14e1fc036eaea97394982a549fa8e3f",

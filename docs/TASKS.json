@@ -6490,7 +6490,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T206"
       ],
@@ -6507,7 +6507,12 @@
         "Все строки и места подтверждены, новые candidate fixtures полностью синтетические",
         "Новая аттестация точная, не разрешает другие настройки/URL автоматически"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b17-attestation.md",
+          "note": "All109original rows independently matched,20seats/14explicit enrolled; immutable exact BGU profile added,old14unchanged.46native targeted passed/0skip; Source not enabled by attestation."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6516,7 +6521,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T207"
       ],
