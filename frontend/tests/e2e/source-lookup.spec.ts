@@ -53,8 +53,14 @@ for (const theme of ['light', 'dark']) test(`confirmation keyboard at320px ${the
   await page.addInitScript(value => localStorage.setItem('abiturient-theme', value), theme);
   await page.setViewportSize({ width: 320, height: 1100 });
   await find(page);
-  await page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись').focus();
-  await page.keyboard.press('Space'); await page.keyboard.press('Tab');
+  // The heading takes focus one frame after the response renders; moving earlier would lose it.
+  await expect(page.getByRole('heading', { name: 'Проверьте выбранную запись' })).toBeFocused();
+  const confirmation = page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись');
+  await confirmation.focus();
+  await expect(confirmation).toBeFocused();
+  await page.keyboard.press('Space');
+  await expect(confirmation).toBeChecked();
+  await page.keyboard.press('Tab');
   await expect(page.getByRole('button', { name: 'Сохранить эту запись' })).toBeFocused();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
