@@ -1,3 +1,7 @@
+# S179 — B17
+
+T205 done; current T206. Fresh official exact contract/full-time construction scope:20seats/109rows/109unique minimal lookup IDs,14explicit enrolled; controls/count/order reviewed,0attestations yet. Evidence: docs/evidence/b17-bgu-scope.md. Same demo8091/key/volumes; T056/T057 open.
+
 # S178 — B16: финальный checkpoint
 
 T200–T204 завершены 5/5;184 done/204 total. Каталог вузов доступен целиком в

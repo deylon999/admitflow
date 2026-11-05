@@ -1,0 +1,297 @@
+{
+  "format": "admitflow-unattested-filtered-scope-v1",
+  "url": "https://bgu.ru/abitur/bach/rating.aspx",
+  "checkedAt": "2026-11-05T18:56:31.730353+00:00",
+  "originalSha256": "36416d3102baebbcc022e51925e21c85de9804e7f44982e1fd3335c31bfe985d",
+  "robotsState": "allowed",
+  "controls": [
+    {
+      "id": "DDLedu",
+      "value": "3",
+      "label": "Бакалавриат"
+    },
+    {
+      "id": "DDLtypeKonkurs",
+      "value": "5",
+      "label": "С оплатой обучения"
+    },
+    {
+      "id": "DDLformStudy",
+      "value": "1",
+      "label": "Очная"
+    },
+    {
+      "id": "DDLCampaigns",
+      "value": "21",
+      "label": "Основной прием"
+    },
+    {
+      "id": "DDLspecList",
+      "value": "14629#20# \"Организация строительного производства\"",
+      "label": "08.03.01 Строительство"
+    }
+  ],
+  "declaredRows": 109,
+  "seats": 20,
+  "minimalLookupCodesUnique": 109,
+  "explicitEnrolled": 14,
+  "consent": "unknown",
+  "priority": "unknown",
+  "sourceTimestamp": "unknown_timezone",
+  "normalizesOnlyFirstCodeSegment": true,
+  "otherIdentifierPartsExported": false,
+  "attested": false,
+  "automaticEnable": false,
+  "profile": {
+    "source_id": "bgu-2026-080301-contract",
+    "group_id": "bgu-2026-080301-contract",
+    "url": "https://bgu.ru/abitur/bach/rating.aspx",
+    "year": 2026,
+    "rows": 109,
+    "seats": 20,
+    "table_selector": "#rating",
+    "row_selector": "tr:has(td)",
+    "columns": [
+      [
+        "rank",
+        4
+      ],
+      [
+        "code",
+        3
+      ],
+      [
+        "score",
+        6
+      ]
+    ],
+    "cell_count": 17,
+    "headers": [
+      "№",
+      "Уникальный код",
+      "Место в рейтинге",
+      "Основание приема без ВИ/ЕГЭ",
+      "Сумма конкурсных баллов",
+      "Баллы вступительных испытаний / ЕГЭ",
+      "Баллы за индиви-дуальные достижения",
+      "Средний балл документа об образовании",
+      "Преиму-щественное право",
+      "Фотография",
+      "Образовательная программа",
+      "Договор оплачен",
+      "Сумма баллов за ВИ/ЕГЭ",
+      "Экзамен №1 (Обязательный)",
+      "Экзамен №2 (на выбор)",
+      "Экзамен №3 (Обязательный)",
+      ""
+    ],
+    "cell_labels": [],
+    "identity": [
+      [
+        "title",
+        "БГУ: Списки поступающих на программы бакалавриата и специалитета в 2026 году"
+      ],
+      [
+        "#DDLedu option[selected]",
+        "Бакалавриат"
+      ],
+      [
+        "#DDLedu option[selected][value=\"3\"]",
+        "Бакалавриат"
+      ],
+      [
+        "#DDLtypeKonkurs option[selected]",
+        "С оплатой обучения"
+      ],
+      [
+        "#DDLtypeKonkurs option[selected][value=\"5\"]",
+        "С оплатой обучения"
+      ],
+      [
+        "#DDLformStudy option[selected]",
+        "Очная"
+      ],
+      [
+        "#DDLformStudy option[selected][value=\"1\"]",
+        "Очная"
+      ],
+      [
+        "#DDLCampaigns option[selected]",
+        "Основной прием"
+      ],
+      [
+        "#DDLCampaigns option[selected][value=\"21\"]",
+        "Основной прием"
+      ],
+      [
+        "#DDLspecList option[selected]",
+        "08.03.01 Строительство"
+      ],
+      [
+        "#DDLspecList option[selected][value=\"14629#20# \\\"Организация строительного производства\\\"\"]",
+        "08.03.01 Строительство"
+      ],
+      [
+        "#MainContent_divListHeader",
+        "Бакалавриат: С оплатой обучения Очная форма обучения (Основной прием)"
+      ],
+      [
+        "#MainContent_divListSpec",
+        "Программы направления 08.03.01 Строительство \"Организация строительного производства\""
+      ],
+      [
+        "#MainContent_divPlanPriem",
+        "План приема (количество мест) - 20"
+      ],
+      [
+        "#cbdogpaid[type=\"checkbox\"]:not([checked])",
+        ""
+      ]
+    ],
+    "proof": null,
+    "kind": "archive",
+    "season_pattern": "в ([0-9]{4}) году",
+    "season_selector": "title",
+    "version": "reviewed-filtered-table-v1",
+    "header_spans": [
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        4
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        15
+      ]
+    ],
+    "cell_classes": [
+      "text-right text-nowrap ncommon",
+      "text-right text-nowrap norig",
+      "text-right text-nowrap ndog",
+      "text-left text-nowrap",
+      "text-right text-info font-weight-bold h5 d-none1",
+      "text-right",
+      "text-right text-secondary font-weight-bold",
+      "text-right",
+      "text-right text-dark",
+      "text-right text-dark",
+      "text-right text-dark",
+      "text-right",
+      "text-right d-none",
+      "text-center",
+      "text-center",
+      "text-left",
+      "text-center"
+    ],
+    "code_selector": "span.text-secondary",
+    "public_code_pattern": "([0-9]{5})/[0-9]{11}/[0-9]{6,7}",
+    "enrolled_selector": "span.text-success",
+    "enrolled_pattern": "Зачислен \\(Приказ № [0-9]{1,4}-[0-9А-Яа-яA-Za-zЁё-]{1,12} от [0-9]{2}\\.[0-9]{2}\\.2026\\)",
+    "declared_count": [
+      "#MainContent_divCountPeaple",
+      "Количество заявлений - ([0-9]{1,6}) \\(данные на .+\\)"
+    ],
+    "lookup_code_hint": "Введите первые 5 цифр уникального кода до первого «/». Остальную часть кода вводить не нужно.",
+    "catalog": [
+      [
+        "university_id",
+        "miccedu-12"
+      ],
+      [
+        "university_name",
+        "БГУ — Байкальский государственный университет"
+      ],
+      [
+        "university_url",
+        "https://bgu.ru/"
+      ],
+      [
+        "campaign_id",
+        "miccedu-12-2026-bachelor"
+      ],
+      [
+        "level",
+        "bachelor"
+      ],
+      [
+        "official_id",
+        "14629-contract-full-time"
+      ],
+      [
+        "title",
+        "08.03.01 Строительство — Организация строительного производства, платный конкурс"
+      ],
+      [
+        "study_form",
+        "full-time"
+      ],
+      [
+        "funding",
+        "contract"
+      ],
+      [
+        "category",
+        "general"
+      ]
+    ]
+  }
+}

@@ -6423,6 +6423,140 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T205",
+      "title": "Проверить точный GET scope БГУ и места конкурса",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T203"
+      ],
+      "deliverables": [
+        "docs/sources/",
+        "scripts/"
+      ],
+      "steps": [
+        "Получить свежий официальный оригинал и сверить выбранные фильтры/план/число строк",
+        "Определить порядок, публичный lookup ID и неизвестные поля без вывода строк"
+      ],
+      "acceptance": [
+        "Доказан точный сезон/форма/финансирование/конкурс и план мест",
+        "GET по умолчанию не выдан за все21направление; персональные части ID не попадают в отчёты"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b17-bgu-scope.md",
+          "note": "Fresh official exact contract/full-time construction scope:20seats/109rows/109unique minimal lookup IDs,14explicit enrolled; controls/count/order reviewed,0attestations yet."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T206",
+      "title": "Добавить общий decoder для таблиц с проверенными фильтрами",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T205"
+      ],
+      "deliverables": [
+        "backend/app/sources/",
+        "backend/tests/fixtures/"
+      ],
+      "steps": [
+        "Ввести отдельную версию общего parser с закрытой декларативной конфигурацией",
+        "Проверить синтетические fixtures и отказы при изменении фильтра/ID/разметки"
+      ],
+      "acceptance": [
+        "Старые версии/proofs не меняются",
+        "Порядок и только проверенные поля сохраняются; чужой scope/неполный список отклоняется"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T207",
+      "title": "Независимо сверить и аттестовать архивную группу БГУ",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T206"
+      ],
+      "deliverables": [
+        "scripts/",
+        "backend/app/sources/profiles/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Сравнить все оригинальные строки независимым parser",
+        "Опубликовать immutable профиль и паспорт после полной сверки"
+      ],
+      "acceptance": [
+        "Все строки и места подтверждены, новые candidate fixtures полностью синтетические",
+        "Новая аттестация точная, не разрешает другие настройки/URL автоматически"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T208",
+      "title": "Проверить worker и сохранение записи новой группы",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T207"
+      ],
+      "deliverables": [
+        "backend/tests/",
+        "frontend/src/",
+        "frontend/tests/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Пройти настоящий HTTPS→worker→PG→offline audit",
+        "Проверить приватный scoped lookup по минимальному коду без СНИЛС и повтор сохранения"
+      ],
+      "acceptance": [
+        "Есть настоящий полный импорт нового вуза и proof его сохранения",
+        "Код не сохраняется в браузере/экспорте/ответах ошибок, платная группа не даёт бюджетный сценарий"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T209",
+      "title": "Обновить стенд и сверить покрытие B17",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T208"
+      ],
+      "deliverables": [
+        "docs/",
+        "scripts/",
+        "frontend/tests/"
+      ],
+      "steps": [
+        "Обновить прежний demo с тем же ключом/volumes",
+        "Выполнить актуальную регрессию, аудит старых/нового источников и отчёт"
+      ],
+      "acceptance": [
+        "Прирост покрытия основан на реальном импорте, архив/fresh разделены",
+        "T056/T057 не закрываются частично; процессы/ограничения и следующий шаг переданы"
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

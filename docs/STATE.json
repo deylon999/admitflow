@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": null,
-  "nextTask": "T057",
+  "currentTask": "T206",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S178",
-  "resumeAction": "B16 завершён 5/5. Следующий T057: официальный БГУ bachelor https://bgu.ru/abitur/bach/rating.aspx —109 видимых строк/5select, WebForms state; проверить точный конкурс, выбранные фильтры, места/полноту и смысл полей, затем независимая сверка/аттестация. Исследование docs/evidence/b16-stateful-research.md, пока0новых источников. Demo8091 schema0011 с прежними key/volumes,14архивных групп/4вуза/1775строк; private backup backend/var/b16-before-0011.dump сохранён. T056/T057/release gates открыты.",
+  "lastSession": "S179",
+  "resumeAction": "B17: T205 завершена, текущая T206. Evidence: docs/evidence/b17-bgu-scope.md. БГУ только exact GET/первые5цифр lookup; старые key/volumes/proofs сохранить.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
