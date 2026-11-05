@@ -1,0 +1,2058 @@
+{
+  "format": "reviewed-table-profiles-v1",
+  "profiles": {
+    "section-110420-10-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "10-0"
+        ],
+        [
+          "title",
+          "Экономика · mixed"
+        ],
+        [
+          "study_form",
+          "mixed"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-10-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Информационные технологии в профессиональной деятельности/Математика",
+        "География/Иностранный язык/Информатика/История/Обществознание/Финансы, денежное обращение и кредит"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Экономика"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 40,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-10.html",
+        "fixture_sha256": "498ea25301effb8e94dd786b9ee1aaf02dce6c8ce78f998dd0802f2426bbf1a6",
+        "kind": "archive",
+        "original_sha256": "d6002b18939e40ff72256c5b1f9b255814dd377df420c9751801c05a47922996",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 40,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+        "verified_at": "2026-11-05T11:13:16.427660+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 40,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 40,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очно-заочная Источник финансирования: С оплатой обучения Количество мест на прием: 40",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-10-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-11-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "11-0"
+        ],
+        [
+          "title",
+          "Менеджмент · mixed"
+        ],
+        [
+          "study_form",
+          "mixed"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-11-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Информационные технологии в профессиональной деятельности/Математика",
+        "Иностранный язык/Информатика/История/Менеджмент/Обществознание"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Менеджмент"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 85,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-11.html",
+        "fixture_sha256": "b4ce8c7ec0f75160f98fad0511864b86e1830b7c11ebdd77fcaeeb49ceace2f5",
+        "kind": "archive",
+        "original_sha256": "ef253d216e6fd5db82660e0dcf07338de16ece8156403a2700678639cb4f51d9",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 85,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+        "verified_at": "2026-11-05T11:13:16.326035+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 85,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 85,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очно-заочная Источник финансирования: С оплатой обучения Количество мест на прием: 85",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-11-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-12-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "12-0"
+        ],
+        [
+          "title",
+          "Управление персоналом · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-12-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Информационные технологии в профессиональной деятельности/Математика",
+        "Иностранный язык/Информатика/История/Менеджмент/Обществознание"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Управление персоналом"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 4,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-12.html",
+        "fixture_sha256": "0044c76287ef8cb2f3cb448f2eeec582edb3d84ff5f0037f65c5a684dfdfb16f",
+        "kind": "archive",
+        "original_sha256": "d48d6cb1f14fff9c197cad5a34f577d9f44c8c290252fdad4f8dc1161046ab5a",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 4,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+        "verified_at": "2026-11-05T11:13:17.542081+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 4,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-12-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-13-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "13-0"
+        ],
+        [
+          "title",
+          "Жилищное хозяйство и коммунальная инфраструктура · mixed"
+        ],
+        [
+          "study_form",
+          "mixed"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-13-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Информатика/Информационные технологии в профессиональной деятельности",
+        "Математика/Менеджмент/Обществознание/Физика"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Жилищное хозяйство и коммунальная инфраструктура"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 2,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-13.html",
+        "fixture_sha256": "6d4bbd19b4c60db21d47e15d11e014a759d45db037217715ea6fde6bb96147ff",
+        "kind": "archive",
+        "original_sha256": "739721aa4cd914a8cadc1d55a3a3cc3965cf9ae6dbfb8f5dd6896801779b59ee",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 2,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+        "verified_at": "2026-11-05T11:13:17.947783+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 2,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очно-заочная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-13-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-14-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "14-0"
+        ],
+        [
+          "title",
+          "Реклама и связи с общественностью · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-14-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Обществознание/Обществознание в профессиональной деятельности",
+        "Иностранный язык/Информатика/История/Литература/Маркетинг"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Реклама и связи с общественностью"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 7,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-14.html",
+        "fixture_sha256": "7196a3ae6a3cece19471518fa0941e0bd243f287ea43273d87983156573a6d13",
+        "kind": "archive",
+        "original_sha256": "336627dfe1e046193385c80faa04cd22cc139357f998e653c11e3540d265074f",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 7,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+        "verified_at": "2026-11-05T11:13:19.300459+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 7,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 15,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 15",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-14-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-15-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "15-0"
+        ],
+        [
+          "title",
+          "Туризм · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-15-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Обществознание/Обществознание в профессиональной деятельности",
+        "География/Иностранный язык/История/Организация туристской деятельности"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Туризм"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 6,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-15.html",
+        "fixture_sha256": "86e4b8851a7743ef7adeb3eefe3d8f5187b47c1b093ef9c1ceded7cdaa2c17e5",
+        "kind": "archive",
+        "original_sha256": "16aa9b0cc5f9b233a2117fc231e82b5ff5c34a01a5c14af8d8c08012e7b031e1",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 6,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+        "verified_at": "2026-11-05T11:13:20.590093+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 6,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 10,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 10",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-15-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-110420-9-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-110420"
+        ],
+        [
+          "university_name",
+          "Уральский институт фондового рынка"
+        ],
+        [
+          "university_url",
+          "https://uifr.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-110420-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "9-0"
+        ],
+        [
+          "title",
+          "Управление качеством · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 13,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          11
+        ]
+      ],
+      "group_id": "section-110420-9-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Русский язык/Современный русский язык",
+        "Информационные технологии в профессиональной деятельности/Математика",
+        "Информатика/Менеджмент/Физика/Химия"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: Управление качеством"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 01 сентября 2026 г. 10:44"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 5,
+        "fixture": "backend/tests/fixtures/sectioned-competition/110420-9.html",
+        "fixture_sha256": "c8c9de344e9775c96508556fe5cfac72f09d8a9c8aad5956253490aa54f3cb2c",
+        "kind": "archive",
+        "original_sha256": "5ddcd46f2e70fd13975f084f52d7cfa45a850458f5ad0fcf0a59d34a1d03d0ff",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 5,
+        "source_url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+        "verified_at": "2026-11-05T11:13:15.091304+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 5,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 10,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 10",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-110420-9-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-1881-52-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-1881"
+        ],
+        [
+          "university_name",
+          "МИЭПП — Московский институт экономики, политики и права"
+        ],
+        [
+          "university_url",
+          "https://www.miepl.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-1881-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "52-0"
+        ],
+        [
+          "title",
+          "37.03.01 Психология образовательная программа Психологическое консультирование · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 15,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          13
+        ]
+      ],
+      "group_id": "section-1881-52-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Биология",
+        "Математика/Обществознание",
+        "Русский язык",
+        "Основы педагогики и психологии",
+        "Основы анатомии и физиологии человека"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: 37.03.01 Психология образовательная программа Психологическое консультирование"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 29 сентября 2026 г. 16:51"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 2,
+        "fixture": "backend/tests/fixtures/sectioned-competition/1881-52.html",
+        "fixture_sha256": "19751d1debe464bee669d8be743739ca2f37aab6357b31fab90d719d7e1aeace",
+        "kind": "archive",
+        "original_sha256": "eb1ec496a5df0d968acb16c40255f383ac8e9f9b103165a8c7ba878079de220c",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 2,
+        "source_url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+        "verified_at": "2026-11-05T11:13:12.658484+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 2,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-1881-52-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-1881-54-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-1881"
+        ],
+        [
+          "university_name",
+          "МИЭПП — Московский институт экономики, политики и права"
+        ],
+        [
+          "university_url",
+          "https://www.miepl.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-1881-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "54-0"
+        ],
+        [
+          "title",
+          "38.03.02 Менеджмент образовательные программы Управление организацией; Государственное и муниципальное управление · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 15,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          13
+        ]
+      ],
+      "group_id": "section-1881-54-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "Математика",
+        "Иностранный язык/Информатика/История/Обществознание",
+        "Русский язык",
+        "Основы экономики",
+        "Математика в экономике"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: 38.03.02 Менеджмент образовательные программы Управление организацией; Государственное и муниципальное управление"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 29 сентября 2026 г. 16:51"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 2,
+        "fixture": "backend/tests/fixtures/sectioned-competition/1881-54.html",
+        "fixture_sha256": "ab12ce03b6bfe38d62765eb9d654096b5c653412c175df5067898496caa43eb1",
+        "kind": "archive",
+        "original_sha256": "997d57c65bdc6de9764413d7f5d948092d73656459c7b48b5429aedf2cdf173f",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 2,
+        "source_url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+        "verified_at": "2026-11-05T11:13:12.659488+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 2,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 1,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-1881-54-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-1881-55-0-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-1881"
+        ],
+        [
+          "university_name",
+          "МИЭПП — Московский институт экономики, политики и права"
+        ],
+        [
+          "university_url",
+          "https://www.miepl.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-1881-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "55-0"
+        ],
+        [
+          "title",
+          "40.03.01 Юриспруденция образовательная программа Гражданское право и процесс · full-time"
+        ],
+        [
+          "study_form",
+          "full-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 15,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          13
+        ]
+      ],
+      "group_id": "section-1881-55-0-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "История/Обществознание",
+        "Иностранный язык/Информатика/История/Математика/Обществознание",
+        "Русский язык",
+        "Основы государства и права",
+        "История России"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: 40.03.01 Юриспруденция образовательная программа Гражданское право и процесс"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 29 сентября 2026 г. 16:51"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 15,
+        "fixture": "backend/tests/fixtures/sectioned-competition/1881-55.html",
+        "fixture_sha256": "717f6006966593beab4855ded9a9fc823218e0442e25787c43277c9f981bf27d",
+        "kind": "archive",
+        "original_sha256": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 15,
+        "source_url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+        "verified_at": "2026-11-05T11:13:13.881852+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 2,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 2,
+      "section_index": 0,
+      "section_metadata": "Форма обучения: Очная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-1881-55-0-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    },
+    "section-1881-55-1-2026": {
+      "catalog": [
+        [
+          "university_id",
+          "miccedu-1881"
+        ],
+        [
+          "university_name",
+          "МИЭПП — Московский институт экономики, политики и права"
+        ],
+        [
+          "university_url",
+          "https://www.miepl.ru/"
+        ],
+        [
+          "campaign_id",
+          "miccedu-1881-2026-bachelor"
+        ],
+        [
+          "level",
+          "bachelor"
+        ],
+        [
+          "official_id",
+          "55-1"
+        ],
+        [
+          "title",
+          "40.03.01 Юриспруденция образовательная программа Гражданское право и процесс · part-time"
+        ],
+        [
+          "study_form",
+          "part-time"
+        ],
+        [
+          "funding",
+          "contract"
+        ],
+        [
+          "category",
+          "general"
+        ]
+      ],
+      "cell_count": 15,
+      "cell_labels": [],
+      "columns": [
+        [
+          "rank",
+          0
+        ],
+        [
+          "code",
+          1
+        ],
+        [
+          "score",
+          2
+        ],
+        [
+          "priority",
+          13
+        ]
+      ],
+      "group_id": "section-1881-55-1-2026",
+      "header_spans": [
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          1,
+          5
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "headers": [
+        "№",
+        "Уникальный код поступающего",
+        "Конкурсные баллы",
+        "Баллы ВИ",
+        "Особое право",
+        "Перечень ИД",
+        "Наличие договора об оказании платных образовательных услуг",
+        "Приоритет зачисления",
+        "Приоритет зачисления является высшим приоритетом",
+        "Всего",
+        "Сумма баллов за ВИ",
+        "Сумма баллов за ИД",
+        "История/Обществознание",
+        "Иностранный язык/Информатика/История/Математика/Обществознание",
+        "Русский язык",
+        "Основы государства и права",
+        "История России"
+      ],
+      "identity": [
+        [
+          "#vikon-content-abitur p:-soup-contains(\"Название группы конкурсов:\")",
+          "Название группы конкурсов: 40.03.01 Юриспруденция образовательная программа Гражданское право и процесс"
+        ],
+        [
+          "#vikon-content-abitur .actual-date-count-students",
+          "Дата публикации информации: 29 сентября 2026 г. 16:51"
+        ]
+      ],
+      "kind": "archive",
+      "proof": {
+        "adapter_version": "reviewed-section-table-v1",
+        "checked_rows": 15,
+        "fixture": "backend/tests/fixtures/sectioned-competition/1881-55.html",
+        "fixture_sha256": "717f6006966593beab4855ded9a9fc823218e0442e25787c43277c9f981bf27d",
+        "kind": "archive",
+        "original_sha256": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+        "passport": "docs/sources/sectioned-competition.md",
+        "sample_rows": 15,
+        "source_url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+        "verified_at": "2026-11-05T11:13:13.881852+00:00",
+        "year": 2026
+      },
+      "row_selector": "tr:has(td)",
+      "rows": 13,
+      "season_pattern": "\\b([0-9]{4})\\s*г\\.",
+      "season_selector": "#vikon-content-abitur .actual-date-count-students",
+      "seats": 20,
+      "section_count": 2,
+      "section_index": 1,
+      "section_metadata": "Форма обучения: Заочная Источник финансирования: С оплатой обучения Количество мест на прием: 20",
+      "section_selector": "tr.tr-table-applicant",
+      "source_id": "section-1881-55-1-2026",
+      "table_selector": "table.table-scroll-thead",
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+      "version": "reviewed-section-table-v1",
+      "year": 2026,
+      "zero_priority_unknown": true
+    }
+  }
+}

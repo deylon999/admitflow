@@ -2138,7 +2138,7 @@
 
 ### T198. Аттестовать повторяемое семейство на новых настоящих источниках
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T196, T197.
 
@@ -2157,11 +2157,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b15-section-family.md](../docs/evidence/b15-section-family.md) — 11 reviewed archive scopes across 2 new institutions, 168 independently audited rows; actual bounded HTTPS to worker/PG and 11 stored audits passed. Native targeted 68 passed, completeness follow-up 23 passed, 0 skipped.
 
 ### T199. Проверить массовую очередь и отчёт расширенного покрытия
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T198.
 

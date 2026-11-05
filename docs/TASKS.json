@@ -6205,7 +6205,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T196",
         "T197"
@@ -6223,7 +6223,12 @@
         "Есть проверяемое расширение scope/вузов на реальных данных",
         "Неполные/закрытые/неизвестные источники не считаются подключёнными; новые fixture синтетические"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b15-section-family.md",
+          "note": "11 reviewed archive scopes across 2 new institutions, 168 independently audited rows; actual bounded HTTPS to worker/PG and 11 stored audits passed. Native targeted 68 passed, completeness follow-up 23 passed, 0 skipped."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6232,7 +6237,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T198"
       ],

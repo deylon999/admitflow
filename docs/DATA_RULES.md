@@ -134,3 +134,16 @@ B12 reviewedtablefamily: one decoder+closedJSONprofiles for independently audite
 B12/listed-consent-v1 (conditional scenario,not officialadmission): server uses exactimmutableordered generalbudget snapshot and assumes applicant's ownconsent,fixedcomposition/capacity,no cross-grouppriorities. Explicitwithdrawn rows above are excluded once;unknownparticipation remains included. Amongotherincludedrows,counttrue/false/nullconsent separately. Currentbound=[1+true,1+true+unknown];all-consentplace=1+allincludedabove. No second quota deduction because sourcealreadyrepresentsonecompetitiongroup. Officialorder resolves ties;never re-sort byscore. Within means all-consentplace<=seats;out means evenlowercurrentbound>seats;conditional means uppercurrentbound<=seats<worst;unknownbounds crossingcapacity givesinsufficient_data. Contract/non-general/unknownrule/zero-or-missingcapacity/missingcandidate refuse decision withreasoncodes. Ownfalse/nullconsent is an explicit assumption,not submitted action. Versioned result/diff is appended,oldresult unchanged. Models do not compute an officialresult/probability;allUIexplanations mustretaintheseconditions.
 
 B12 coverage rule:registration/catalog/proof definitions do not imply a published import or live automation. A counted import requires enabled exact reviewed scope,complete current published snapshot,normalized hash andmatching parser version. Imported rows are a sum across snapshots,not unique people;archive/conditional/automatic counters remain distinct. Operator hold retains lastgood datedarchive,does not refresh fetchedAt. National denominator remains unknown. See catalog-coverage.md and test_coverage.py for reproducible definitions.
+
+B15 sectioned-competition-v1: 11 reviewed archive2026 contract groups on 10 official
+MIEPP/UIFR pages. Each section is identified by exact program, index/count and
+preceding study-form/funding/capacity metadata. Hierarchical header labels and
+rowspan/colspan are validated. The page attestation counts all reviewed sections;
+each group publishes only its own rows. A shared URL never merges scoped HMAC
+identities. Contract/payment is not admission consent: consent=null throughout.
+Priority 0 means unknown/null only in this new version; positive values remain.
+Color legends and highest-priority flags do not prove participation or admission:
+participation=unknown. Publication text without a timezone leaves sourceUpdatedAt
+null; archive never becomes fresh after a new fetch. Contract groups cannot enable
+the general-budget scenario. Unknown/empty sections are unsupported until reviewed.
+Old V1/V2 decoders and proofs retain their original interpretation.

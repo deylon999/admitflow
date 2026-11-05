@@ -937,3 +937,5 @@ S177/T197: Immutable manifest/shards preserve all 3 old scopes; 1001 synthetic p
 S177/T195: 1257 reference entries reconciled; 633 institutions/1073 URLs selected and observed; 6 unit checks and identical offline replay passed. Candidate table evidence remains incomplete/unattested; no sources enabled. Evidence: docs/evidence/b15-admissions-inventory.md. Next T196.
 
 S177/T196: 14 verified official child pages; 1 cross-institution structural candidate (MIEPP/UIFR), not automatic eligibility; 8 targeted tests and identical offline replay passed. Empty/header-only pages remain unsupported. Evidence: docs/evidence/b15-format-families.md. Next T198.
+
+S177/T198: 11 reviewed archive scopes across 2 new institutions, 168 independently audited rows; actual bounded HTTPS to worker/PG and 11 stored audits passed. Native targeted 68 passed, completeness follow-up 23 passed, 0 skipped. Evidence: docs/evidence/b15-section-family.md. Next T199.

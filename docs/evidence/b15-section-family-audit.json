@@ -1,0 +1,285 @@
+{
+  "format": "sectioned-family-audit-v1",
+  "version": "reviewed-section-table-v1",
+  "universities": 2,
+  "reviewedPages": 10,
+  "reviewedScopes": 11,
+  "checkedRows": 168,
+  "pages": [
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+      "registryId": "110420",
+      "originalSha256": "d6002b18939e40ff72256c5b1f9b255814dd377df420c9751801c05a47922996",
+      "checkedRows": 40,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-10-0-2026",
+          "rows": 40,
+          "seats": 40,
+          "studyForm": "mixed"
+        }
+      ],
+      "fixtureSha256": "498ea25301effb8e94dd786b9ee1aaf02dce6c8ce78f998dd0802f2426bbf1a6",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+      "registryId": "110420",
+      "originalSha256": "739721aa4cd914a8cadc1d55a3a3cc3965cf9ae6dbfb8f5dd6896801779b59ee",
+      "checkedRows": 2,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-13-0-2026",
+          "rows": 2,
+          "seats": 20,
+          "studyForm": "mixed"
+        }
+      ],
+      "fixtureSha256": "6d4bbd19b4c60db21d47e15d11e014a759d45db037217715ea6fde6bb96147ff",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+      "registryId": "110420",
+      "originalSha256": "ef253d216e6fd5db82660e0dcf07338de16ece8156403a2700678639cb4f51d9",
+      "checkedRows": 85,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-11-0-2026",
+          "rows": 85,
+          "seats": 85,
+          "studyForm": "mixed"
+        }
+      ],
+      "fixtureSha256": "b4ce8c7ec0f75160f98fad0511864b86e1830b7c11ebdd77fcaeeb49ceace2f5",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+      "registryId": "110420",
+      "originalSha256": "336627dfe1e046193385c80faa04cd22cc139357f998e653c11e3540d265074f",
+      "checkedRows": 7,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-14-0-2026",
+          "rows": 7,
+          "seats": 15,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "7196a3ae6a3cece19471518fa0941e0bd243f287ea43273d87983156573a6d13",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+      "registryId": "110420",
+      "originalSha256": "16aa9b0cc5f9b233a2117fc231e82b5ff5c34a01a5c14af8d8c08012e7b031e1",
+      "checkedRows": 6,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-15-0-2026",
+          "rows": 6,
+          "seats": 10,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "86e4b8851a7743ef7adeb3eefe3d8f5187b47c1b093ef9c1ceded7cdaa2c17e5",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+      "registryId": "110420",
+      "originalSha256": "5ddcd46f2e70fd13975f084f52d7cfa45a850458f5ad0fcf0a59d34a1d03d0ff",
+      "checkedRows": 5,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-9-0-2026",
+          "rows": 5,
+          "seats": 10,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "c8c9de344e9775c96508556fe5cfac72f09d8a9c8aad5956253490aa54f3cb2c",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+      "registryId": "110420",
+      "originalSha256": "d48d6cb1f14fff9c197cad5a34f577d9f44c8c290252fdad4f8dc1161046ab5a",
+      "checkedRows": 4,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-110420-12-0-2026",
+          "rows": 4,
+          "seats": 20,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "0044c76287ef8cb2f3cb448f2eeec582edb3d84ff5f0037f65c5a684dfdfb16f",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+      "registryId": "1881",
+      "originalSha256": "eb1ec496a5df0d968acb16c40255f383ac8e9f9b103165a8c7ba878079de220c",
+      "checkedRows": 2,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-1881-52-0-2026",
+          "rows": 2,
+          "seats": 20,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "19751d1debe464bee669d8be743739ca2f37aab6357b31fab90d719d7e1aeace",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+      "registryId": "1881",
+      "originalSha256": "997d57c65bdc6de9764413d7f5d948092d73656459c7b48b5429aedf2cdf173f",
+      "checkedRows": 2,
+      "sectionCount": 1,
+      "scopes": [
+        {
+          "sourceId": "section-1881-54-0-2026",
+          "rows": 2,
+          "seats": 20,
+          "studyForm": "full-time"
+        }
+      ],
+      "fixtureSha256": "ab12ce03b6bfe38d62765eb9d654096b5c653412c175df5067898496caa43eb1",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    },
+    {
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+      "registryId": "1881",
+      "originalSha256": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+      "checkedRows": 15,
+      "sectionCount": 2,
+      "scopes": [
+        {
+          "sourceId": "section-1881-55-0-2026",
+          "rows": 2,
+          "seats": 20,
+          "studyForm": "full-time"
+        },
+        {
+          "sourceId": "section-1881-55-1-2026",
+          "rows": 13,
+          "seats": 20,
+          "studyForm": "part-time"
+        }
+      ],
+      "fixtureSha256": "717f6006966593beab4855ded9a9fc823218e0442e25787c43277c9f981bf27d",
+      "allCandidateValuesSynthetic": true,
+      "independentParser": "stdlib.HTMLParser",
+      "comparedFields": [
+        "rank",
+        "scoped_identity",
+        "score",
+        "unknown_consent",
+        "priority_or_null",
+        "unknown_participation"
+      ]
+    }
+  ],
+  "unsupported": [
+    {
+      "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.01-ekonomika---obrazovatelynaya-programma--finansy-i-kredit_53.html",
+      "code": "no_section_table"
+    }
+  ],
+  "realSourceRowsExported": false,
+  "automaticEnable": false,
+  "kind": "archive"
+}

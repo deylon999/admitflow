@@ -24,7 +24,8 @@ def test_legacy_profiles_and_history_proofs_survive_sharding_exactly(tmp_path):
     legacy=load_profiles(LEGACY)
     manifest=publish_profile_data(data(),tmp_path)
     assert manifest['profileCount']==3 and len(manifest['shards'])==2
-    assert load_profiles(tmp_path/'catalog.json')==legacy==PROFILES
+    assert load_profiles(tmp_path/'catalog.json')==legacy
+    assert all(PROFILES[name]==profile for name,profile in legacy.items())
     first=(tmp_path/'catalog.json').read_bytes()
     publish_profile_data(data(),tmp_path)
     assert (tmp_path/'catalog.json').read_bytes()==first

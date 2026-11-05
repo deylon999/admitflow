@@ -4,7 +4,7 @@ import re
 from pathlib import Path
 from types import MappingProxyType
 from .registry import Attestation
-from .table_family import TableProfile
+from .table_family import TableProfile,SECTION_VERSION
 from .profile_catalog import active_catalog,read_profile_data
 
 
@@ -17,6 +17,7 @@ def build_profiles(data):
                 or name!=fields.get('source_id') or not isinstance(fields.get('group_id'),str) or not 1<=len(fields['group_id'])<=36):raise ValueError()
             fields=dict(fields)
             for key in ('columns','identity','catalog'):fields[key]=tuple(tuple(pair) for pair in fields.get(key,[]))
+            if 'header_spans' in fields:fields['header_spans']=tuple(tuple(pair) for pair in fields['header_spans'])
             for key in ('headers','cell_labels'):fields[key]=tuple(fields[key])
             if 'unordered_label_groups' in fields:fields['unordered_label_groups']=tuple(tuple(group) for group in fields['unordered_label_groups'])
             if fields['proof'] is not None:
@@ -24,8 +25,9 @@ def build_profiles(data):
             profiles[name]=TableProfile(**fields)
             profile=profiles[name]
             if (profile.proof is None or profile.proof.source_url!=profile.url or profile.proof.year!=profile.year
-                or profile.proof.kind!=profile.kind or profile.proof.adapter_version!=profile.version or profile.proof.sample_rows!=profile.rows):raise ValueError()
-            scope=(profile.version,profile.url)
+                or profile.proof.kind!=profile.kind or profile.proof.adapter_version!=profile.version
+                or (profile.proof.sample_rows<profile.rows if profile.version==SECTION_VERSION else profile.proof.sample_rows!=profile.rows)):raise ValueError()
+            scope=(profile.version,profile.url,profile.section_index) if profile.version==SECTION_VERSION else (profile.version,profile.url)
             if scope in scopes:raise ValueError()
             scopes.add(scope)
         return MappingProxyType(profiles)

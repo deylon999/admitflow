@@ -10,6 +10,7 @@ from .registry import Adapter,Attestation
 
 VERSION='reviewed-html-table-v1'
 SCHEMA_SET_VERSION='reviewed-html-table-v2'
+SECTION_VERSION='reviewed-section-table-v1'
 
 
 def clean(value):return ' '.join(value.replace(r'\xa0',' ').split())
@@ -38,6 +39,13 @@ class TableProfile:
     catalog:tuple[tuple[str,str],...]=()
     version:str=VERSION
     unordered_label_groups:tuple[tuple[str,...],...]=()
+    season_selector:str|None=None
+    section_selector:str|None=None
+    section_index:int|None=None
+    section_count:int|None=None
+    section_metadata:str|None=None
+    zero_priority_unknown:bool=False
+    header_spans:tuple[tuple[int,int],...]=()
 
     def __post_init__(self):
         from .fetcher import valid_domains
@@ -49,10 +57,19 @@ class TableProfile:
             and isinstance(self.headers,tuple) and bool(self.headers) and isinstance(self.identity,tuple) and bool(self.identity)
             and len({name for name,_ in self.columns})==len(self.columns) and {'rank','code','score'}<={name for name,_ in self.columns}
             and all(name in ('rank','code','score','consent','priority','status') and ((type(column) is int and 0<=column<self.cell_count) or (isinstance(column,str) and column in self.cell_labels)) for name,column in self.columns))
-        if (not valid or self.version not in (VERSION,SCHEMA_SET_VERSION)
+        if (not valid or self.version not in (VERSION,SCHEMA_SET_VERSION,SECTION_VERSION)
             or self.version==VERSION and self.unordered_label_groups
             or any(len(group)<2 or len(set(group))!=len(group) or any(not isinstance(x,str) or not x for x in group) for group in self.unordered_label_groups)):
             raise ValueError('invalid_table_profile')
+        if self.version==SECTION_VERSION:
+            if (not isinstance(self.season_selector,str) or not self.season_selector or not isinstance(self.section_selector,str)
+                or not self.section_selector or type(self.section_index) is not int or type(self.section_count) is not int
+                or not 0<=self.section_index<self.section_count<=100 or not isinstance(self.section_metadata,str) or not self.section_metadata
+                or type(self.zero_priority_unknown) is not bool or len(self.header_spans)!=len(self.headers)
+                or any(len(pair)!=2 or any(type(n) is not int or not 1<=n<=100 for n in pair) for pair in self.header_spans)):
+                raise ValueError('invalid_section_profile')
+        elif any(v is not None for v in (self.season_selector,self.section_selector,self.section_index,self.section_count,self.section_metadata)) or self.zero_priority_unknown or self.header_spans:
+            raise ValueError('section_options_require_new_version')
         re.compile(self.season_pattern);re.compile(self.priority_pattern)
 
     def binding_matches(self,binding):
@@ -71,6 +88,10 @@ def schema_label(value,profile):
     return value
 
 
+def section_metadata(node):
+    return re.sub(r'^(?:Показать|Скрыть)\s*','',clean(node.get_text(' ',strip=True)))
+
+
 def parse_table(response,binding,secret,profile):
     if not profile.binding_matches(binding) or response.url!=profile.url:raise AdapterError('invalid_binding')
     if not binding.enabled:raise AdapterError('source_disabled')
@@ -78,16 +99,24 @@ def parse_table(response,binding,secret,profile):
         if response.content_type!='text/html' or (response.charset or 'utf-8').lower() not in ('utf-8','utf8') or hashlib.sha256(response.body).hexdigest()!=response.payload_hash or not response.body.rstrip().endswith(b'</html>'):raise ValueError()
         soup=document(response.body)
         if soup.select('.pagination,.pager,a[rel="next"]'):raise ValueError()
-        seasons={int(match[1]) for text in soup.find_all(string=True) if (match:=re.search(profile.season_pattern,text.strip()))}
+        season_texts=(node.get_text(' ',strip=True) for node in soup.select(profile.season_selector)) if profile.season_selector else soup.find_all(string=True)
+        seasons={int(match[1]) for text in season_texts if (match:=re.search(profile.season_pattern,text.strip()))}
         if seasons!={profile.year}:raise ValueError()
         identity={}
         for selector,expected in profile.identity:identity.setdefault(selector,[]).append(expected)
         for selector,expected in identity.items():
             if sorted(clean(node.get_text(' ',strip=True)) for node in soup.select(selector))!=sorted(expected):raise ValueError()
-        tables=soup.select(profile.table_selector)
+        context=soup
+        if profile.version==SECTION_VERSION:
+            sections=soup.select(profile.section_selector)
+            if len(sections)!=profile.section_count:raise ValueError()
+            context=sections[profile.section_index];previous=context.find_previous_sibling('tr')
+            if previous is None or 'tr-accordion' not in previous.get('class',[]) or section_metadata(previous)!=profile.section_metadata:raise ValueError()
+        tables=context.select(profile.table_selector)
         if len(tables)!=1:raise ValueError()
         table=tables[0];headers=tuple(clean(h.get_text(' ',strip=True)) for h in table.select('th'))
         if tuple(schema_label(h,profile) for h in headers)!=tuple(schema_label(h,profile) for h in profile.headers):raise ValueError()
+        if profile.header_spans and tuple((int(h.get('rowspan',1)),int(h.get('colspan',1))) for h in table.select('th'))!=profile.header_spans:raise ValueError()
         rows=[row for row in table.select(profile.row_selector) if row.find_all('td',recursive=False)]
         if len(rows)!=profile.rows:raise ValueError()
         entries=[];seen=set()
@@ -119,6 +148,7 @@ def parse_table(response,binding,secret,profile):
                 match=re.fullmatch(profile.priority_pattern,priority_text)
                 if match is None:raise ValueError()
                 priority=int(match[1])
+                if priority==0 and profile.zero_priority_unknown:priority=None
             status=fields.get('status')
             if status not in (None,'','---','Зачислен'):raise ValueError()
             enrolled=enrolled or status=='Зачислен'
@@ -134,10 +164,25 @@ def parse_table(response,binding,secret,profile):
 def make_table_adapter(secret,profiles,*,version=VERSION):
     if not isinstance(secret,bytes) or len(secret)<32:raise ValueError('source_identity_key_required')
     profiles=tuple(profiles)
-    if not profiles or len({p.url for p in profiles})!=len(profiles) or any(p.proof is None or p.version!=version for p in profiles):raise ValueError('reviewed_profiles_required')
+    if not profiles or any(p.proof is None or p.version!=version for p in profiles):raise ValueError('reviewed_profiles_required')
+    if version!=SECTION_VERSION and len({p.url for p in profiles})!=len(profiles):raise ValueError('reviewed_profiles_required')
     by_url={profile.url:profile for profile in profiles}
+    by_scope={(p.source_id,p.group_id,p.url,p.year,p.kind):p for p in profiles}
+    if len(by_scope)!=len(profiles):raise ValueError('duplicate_reviewed_scope')
+    if version==SECTION_VERSION:
+        for url in by_url:
+            sections=[p for p in profiles if p.url==url]
+            if (len({p.section_count for p in sections})!=1
+                or sorted(p.section_index for p in sections)!=list(range(sections[0].section_count))
+                or sum(p.rows for p in sections)!=sections[0].proof.sample_rows):
+                raise ValueError('incomplete_page_attestation')
+    proofs={}
+    for p in profiles:
+        key=(p.url,p.year,p.kind)
+        if key in proofs and proofs[key]!=p.proof:raise ValueError('conflicting_page_attestation')
+        proofs[key]=p.proof
     def decode(response,binding):
-        profile=by_url.get(binding.url)
+        profile=by_scope.get((binding.source_id,binding.group_id,binding.url,binding.year,binding.kind)) if version==SECTION_VERSION else by_url.get(binding.url)
         if profile is None:raise AdapterError('invalid_binding')
         return parse_table(response,binding,secret,profile)
-    return Adapter(version,frozenset(urlsplit(p.url).hostname for p in profiles),decode,attested=True,attestations=tuple(p.proof for p in profiles),max_bytes=8*1024*1024)
+    return Adapter(version,frozenset(urlsplit(p.url).hostname for p in profiles),decode,attested=True,attestations=tuple(proofs.values()),max_bytes=8*1024*1024)
