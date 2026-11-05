@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { api } from '../lib/api';
 import { limitCodePoints } from '../lib/direction';
 import { SourceLookup } from '../components/SourceLookup';
 import { SourceProvenance } from '../components/SourceProvenance';
+import { SourceUniversityFilter } from '../components/SourceUniversityFilter';
 
 const modes = { manual: 'Ручной режим', archive: 'Архив', automatic: 'Сбор данных', unsupported: 'Источник не подключён' };
 const studyForms: Record<string, string> = { 'full-time': 'Очная форма', 'part-time': 'Заочная форма', mixed: 'Очно-заочная форма' };
@@ -12,7 +13,6 @@ export default function SourcesPage() {
   const [filters, setFilters] = useState({ q: '', universityId: '', branchId: '', year: '' });
   const [selected, setSelected] = useState<string | null>(null);
   const catalog = useInfiniteQuery({ queryKey: ['group-catalog', filters], queryFn: ({ pageParam, signal }) => api.groups(filters, pageParam, signal), initialPageParam: null as string | null, getNextPageParam: page => page.nextCursor ?? undefined });
-  const universities = useQuery({ queryKey: ['universities', ''], queryFn: ({ signal }) => api.universities('', signal) });
   const items = [...new Map(catalog.data?.pages.flatMap(page => page.items).map(item => [item.id, item]) ?? []).values()];
   const facets = catalog.data?.pages[0].facets;
   return <main id="top" className="container tracker-page">
@@ -20,7 +20,7 @@ export default function SourcesPage() {
     <p className="section-description">Каталог и автоматический сбор — разные вещи. Архив сохраняет свой сезон. По данным источника не рассчитывается вероятность или гарантия зачисления.</p>
     <div className="source-catalog-filters surface">
       <label>Группа или направление<input value={filters.q} onChange={event => setFilters({ ...filters, q: limitCodePoints(event.target.value, 120) })} placeholder="Название или код направления" /></label>
-      <label>Вуз<select aria-label="Вуз" value={filters.universityId} onChange={event => setFilters({ ...filters, universityId: event.target.value, branchId: '' })}><option value="">Все вузы каталога</option>{universities.data?.items.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+      <SourceUniversityFilter value={filters.universityId} onChange={universityId => setFilters({ ...filters, universityId, branchId: '' })} />
       <label>Подразделение<select aria-label="Подразделение" value={filters.branchId} onChange={event => setFilters({ ...filters, branchId: event.target.value })}><option value="">Все подразделения</option><option value="main">Головной вуз</option>{facets?.branches.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
       <label>Сезон<select aria-label="Сезон" value={filters.year} onChange={event => setFilters({ ...filters, year: event.target.value })}><option value="">Все сезоны</option>{facets?.years.map(year => <option key={year}>{year}</option>)}</select></label>
     </div>

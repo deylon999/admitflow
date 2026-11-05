@@ -6265,6 +6265,140 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T200",
+      "title": "Выбирать вузы во всём каталоге конкурсных групп",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T199"
+      ],
+      "deliverables": [
+        "frontend/src/",
+        "frontend/tests/e2e/"
+      ],
+      "steps": [
+        "Добавить поиск и страницы вузов в фильтр источников",
+        "Сохранять выбранный вуз при смене запроса и ошибке следующей страницы"
+      ],
+      "acceptance": [
+        "Доступен вуз за первыми50записями с клавиатуры",
+        "Ошибка не превращается в пустой результат; нет переполнения320px"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b16-university-filter.md",
+          "note": "Full directory search/pagination, retained selection and next-page retry at320px;116Vitest/build and4compiledChromium passed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T201",
+      "title": "Фильтровать и ограничивать группы на стороне БД",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T200"
+      ],
+      "deliverables": [
+        "backend/app/source_catalog.py",
+        "backend/tests/"
+      ],
+      "steps": [
+        "Перенести фильтры/count/cursor/limit и facets в SQL",
+        "Сохранить Unicode-поиск и неизменность курсора на SQLite/PG"
+      ],
+      "acceptance": [
+        "Не загружаются все ORM группы до ограничения страницы",
+        "Порядок/count/фильтры/буквальные спецсимволы и Unicode совпадают с контрактом"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T202",
+      "title": "Подключать набор проверенных профилей атомарно",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T201"
+      ],
+      "deliverables": [
+        "backend/app/sources/",
+        "backend/tests/",
+        "docs/RUNBOOK.md"
+      ],
+      "steps": [
+        "Добавить операторский batch с точными ID из закрытого manifest",
+        "Проверить откат конфликтующего набора, повтор и конкуренцию на PG"
+      ],
+      "acceptance": [
+        "Нельзя регистрировать URL или неизвестные профили",
+        "Конфликт не оставляет частично подключённый набор; ключ/карантин/история сохраняются"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T203",
+      "title": "Исследовать следующий подтверждаемый формат списков",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T196"
+      ],
+      "deliverables": [
+        "scripts/",
+        "docs/sources/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Выбрать следующие официальные страницы из инвентаризации",
+        "Сохранить ограниченный replayable аудит структуры и неизвестных полей"
+      ],
+      "acceptance": [
+        "Есть датированные оригиналы/происхождение или точные причины отказа",
+        "Исследование не считается аттестацией или дополнительным покрытием без независимой проверки"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T204",
+      "title": "Проверить масштабирование каталога и итог покрытия B16",
+      "phase": "E3",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T202",
+        "T203"
+      ],
+      "deliverables": [
+        "backend/tests/",
+        "frontend/tests/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Проверить native PG, актуальную сборку и реальные фильтры",
+        "Обновить отдельный локальный стенд с прежними ключом/volumes и сверить покрытие"
+      ],
+      "acceptance": [
+        "Проверки относятся к текущим файлам и новой схеме при её изменении",
+        "Архив/fresh/unsupported и синтетическая нагрузка различаются; T056/T057 не закрыты частично"
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

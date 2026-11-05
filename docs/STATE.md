@@ -1,3 +1,7 @@
+# S178 — B16
+
+T200 done; current T201. Full directory search/pagination, retained selection and next-page retry at320px;116Vitest/build and4compiledChromium passed. Evidence: docs/evidence/b16-university-filter.md. Demo8091/key/volumes retained; broad T056/T057 open.
+
 # S177 — B15: масштабирование подключения
 
 **Финал B15, T195–T199 5/5.** 179done/199total; T056/T057 открыты.

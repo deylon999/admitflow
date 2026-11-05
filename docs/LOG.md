@@ -941,3 +941,9 @@ S177/T196: 14 verified official child pages; 1 cross-institution structural cand
 S177/T198: 11 reviewed archive scopes across 2 new institutions, 168 independently audited rows; actual bounded HTTPS to worker/PG and 11 stored audits passed. Native targeted 68 passed, completeness follow-up 23 passed, 0 skipped. Evidence: docs/evidence/b15-section-family.md. Next T199.
 
 S177/T199/B15 final5/5: Native PG queue:1000 synthetic jobs/100 domains,12 claim threads,100 fenced recoveries,no duplicate completions. Real HTTPS:14 archive scopes/4 institutions/1775 rows,13 fetches/1 cache hit. Final627 backend/0skip,116Vitest/build,79compiled Chromium/32scopedskips,5actual-nginx checks passed. Evidence: docs/evidence/b15-final-verification.json. Owned disposable PG schemas removed; test containers/network removed. Persistent local demo8091 retained with4services and daily archive rechecks. After API recreation all14stored audits/1775rows passed with same key. Initial broad nginx browser run hit six expected429 and one test-selector error; corrected selector, fullcompiledpreview79pass/32skip and targetednginx5pass without lowering limits. Old artifacts/proofs preserved. NextT057: other exact source families and scale limits; T056/T057 remain open, nationalTotal=null, no full-country or live-release claim.
+
+## S178 — 2026-11-05 — B16
+
+Пользователь поручил продолжать. Пятёрка T200–T204: полный выбор вузов, SQL фильтры групп, atomic batch профилей, исследование следующего формата и итоговая проверка. Одна activeT200, проверки сформулированы до реализации. B15baseline сохранён; demo8091/key/volumes не пересоздавать. T056/T057 открыты.
+
+S178/T200: Full directory search/pagination, retained selection and next-page retry at320px;116Vitest/build and4compiledChromium passed. Evidence: docs/evidence/b16-university-filter.md. Next T201.

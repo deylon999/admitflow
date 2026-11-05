@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": null,
-  "nextTask": "T057",
+  "currentTask": "T201",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S177",
-  "resumeAction": "B15 завершён 5/5: каталог1257,14 архивных групп/4вуза/1775строк,0fresh. Следующий T057: другие реальные семейства и точные scopes из инвентаризации, затем ограничения массовой регистрации/фильтра. Рабочий стенд http://127.0.0.1:8091/sources, отдельные volumes и стабильный ключ в ignored backend/var/b15-demo.env. T056/полный национальный знаменатель и release gates открыты.",
+  "lastSession": "S178",
+  "resumeAction": "B16: T200 завершена, текущая T201. Evidence: docs/evidence/b16-university-filter.md. Demo8091/key/volumes сохранить; национальное покрытие ещё не завершено.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
