@@ -29,6 +29,6 @@ def test_missing_index_or_detail_is_rejected_and_unknown_site_remains_unknown():
         capture.regions(b'<html>Maintenance</html>')
     with pytest.raises(ValueError,match='missing'):
         capture.detail(b'<html>Maintenance</html>')
-    for site in ['unknown', 'javascript:alert(1)', 'https://one.example https://two.example']:
+    for site in ['unknown', 'javascript:alert(1)', 'https://one.example https://two.example', 'http://someone@mail.example', 'http://example.org:bad']:
         record=capture.detail(f'<table id="info"><tr><td>web-site</td><td>{site}</td></tr></table>'.encode())
         assert record['officialUrl'] is None

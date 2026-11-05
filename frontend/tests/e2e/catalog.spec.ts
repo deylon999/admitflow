@@ -12,7 +12,7 @@ test('university choices support arrows, Escape and Enter without losing the for
   const input = page.getByLabel('Вуз', { exact: true });
   await input.focus();
   const options = page.locator('.catalog-option');
-  await expect(options).toHaveCount(2);
+  await expect(options).toHaveCount(50);
   await input.press('ArrowDown');
   await expect(options.nth(0)).toBeFocused();
   await page.keyboard.press('ArrowDown');
@@ -25,10 +25,14 @@ test('university choices support arrows, Escape and Enter without losing the for
   await expect(page.locator('.direction-form')).toBeVisible();
   await input.press('Tab');
   await input.focus();
-  await expect(options).toHaveCount(2);
+  await expect(options).toHaveCount(50);
   await input.press('ArrowUp');
-  await expect(options.nth(1)).toBeFocused();
-  const name = await options.nth(1).locator('span').innerText();
+  await expect(options.nth(49)).toBeFocused();
+  await page.keyboard.press('Escape');
+  await input.fill('СГУПС');
+  await expect(options).toHaveCount(1);
+  await options.first().focus();
+  const name = await options.first().locator('span').innerText();
   await page.keyboard.press('Enter');
   await expect(input).toHaveValue(name);
   await expect(input).toBeFocused();
@@ -42,7 +46,7 @@ test('каталог выбирает вуз с честной пометкой 
   await page.getByLabel('Вуз', { exact: true }).fill('ЧЕРНЫШЕВСКОГО');
   const choice = page.getByRole('button', { name: /СГУ имени.*Ручной режим/ });
   await expect(choice).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Официальный список' })).toHaveAttribute('href', 'https://www.sgu.ru/svodka');
+  await expect(page.getByRole('link', { name: 'Официальный источник' })).toHaveAttribute('href', 'https://www.sgu.ru/svodka');
   await choice.click();
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('СГУ имени Н. Г. Чернышевского');
   await expect(page.getByLabel('Ссылка на конкурсный список')).toHaveValue('https://www.sgu.ru/svodka');

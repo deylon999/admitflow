@@ -113,7 +113,7 @@ export const api = {
     return info;
     });
   },
-  universities: async (query: string, signal?: AbortSignal) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}`, { signal })),
+  universities: async (query: string, signal?: AbortSignal, offset = 0) => parseCatalog(await request(`/universities?q=${encodeURIComponent(query)}&offset=${offset}`, { signal })),
   groups: async (filters: { q: string; universityId: string; branchId: string; year: string }, after: string | null = null, signal?: AbortSignal) => {
     const params = new URLSearchParams(Object.entries(filters).filter(([,value]) => value !== ''));
     if (after) params.set('after', after);

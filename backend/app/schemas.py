@@ -68,15 +68,22 @@ class SessionRead(CamelModel):
 class UniversityRead(CamelModel):
     id: str
     name: str
-    official_url: str
+    official_url: str | None
     provenance_url: str
     verified_at: datetime
     coverage: Literal['manual']
+    legal_name: str | None = None
+    region: str | None = None
+    is_branch: bool | None = None
+    catalog_origin: Literal['operator','monitoring'] = 'operator'
 
 
 class CatalogRead(CamelModel):
     items: list[UniversityRead]
     total: int
+    next_offset: int | None = None
+    registry_total: int | None = None
+    registry_edition: int | None = None
 
 
 class SnapshotRead(CamelModel):
@@ -128,6 +135,8 @@ class CoverageRead(CamelModel):
     conditional_groups: int = Field(ge=0)
     last_imported_at: datetime | None
     catalog_universities: int = Field(ge=0)
+    registry_total: int = Field(ge=0)
+    registry_edition: int
     automatic_sources: int = Field(ge=0)
     published_groups: int = Field(ge=0)
     fresh_groups: int = Field(ge=0)

@@ -72,8 +72,14 @@ def detail(body):
         if len(cells) == 2 and cells[0].get_text(' ',strip=True).lower().startswith('web-'):
             value = cells[1].get_text(' ', strip=True)
             # Some official records have no site or list several: retain unknown.
-            if re.fullmatch(r'https?://[^\s<>]+', value) and urlsplit(value).hostname:
-                site = value
+            if re.fullmatch(r'https?://[^\s<>\\]+', value):
+                try:
+                    parts=urlsplit(value)
+                    if parts.hostname and not parts.username and not parts.password and len(re.findall(r'https?://',value))==1:
+                        parts.port
+                        site=value
+                except ValueError:
+                    pass
     parents = []
     for label in doc.find_all(string=re.compile('Сведения о головной образовательной организации')):
         node = label.parent
@@ -143,7 +149,9 @@ def main():
         exclusions=['defence-and-security','outside-russia','non-reporting-institutions'],unlinkedInstitutions=unlinked,captures=sorted(captures,key=lambda c:c['file']),
         institutions=sorted(records,key=lambda r:r['registryId']))
     args.output.parent.mkdir(parents=True,exist_ok=True)
-    args.output.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    temporary=args.output.with_suffix('.json.tmp')
+    temporary.write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    temporary.replace(args.output)
     print(json.dumps({k:v for k,v in manifest.items() if k not in ('captures','institutions','unlinkedInstitutions')},ensure_ascii=True),flush=True)
 
 

@@ -919,3 +919,5 @@ T189done: все6заранее объявленных критериев вып
 S176/T190: 1257 unique institutions, 521 branches, 89 regional pages; headline total matched; offline replay identical; 3 parser checks passed. Monitoring exclusions retained. Evidence: docs/evidence/b14-national-catalog.md. Next: T191.
 
 S176/T191: Validated atomic read-only artifact import, 1257 identities and 521 branches, legacy aliases preserved; 12 targeted checks passed; no Source or user DB mutation. Evidence: docs/evidence/b14-national-catalog.md. Next: T192.
+
+S176/T192: 1257 directory entries searchable with region/branch and pagination; 1166 site URLs, 91 unknown; 21 backend, 116 Vitest/build, compiled Chromium 12 passed/2 fixture-only skips. Screenshot inspected. Evidence: docs/evidence/b14-national-catalog.md. Next: T193.

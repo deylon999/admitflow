@@ -6,11 +6,13 @@ from .sources.contracts import AdapterError
 from .sources.publishing import binding_from_db,utc
 from .sources.registry import PRODUCTION_REGISTRY
 from .sources.status import source_status
+from .catalog import catalog_size
+from .national_catalog import load_catalog
 
 
 def coverage(db,*,registry=PRODUCTION_REGISTRY,now=None):
     now=now or datetime.now(timezone.utc)
-    result=dict(catalogUniversities=db.scalar(select(func.count()).select_from(University)),registeredSources=db.scalar(select(func.count()).select_from(Source)),
+    result=dict(catalogUniversities=catalog_size(db),registryTotal=len(load_catalog().institutions),registryEdition=load_catalog().edition,registeredSources=db.scalar(select(func.count()).select_from(Source)),
         reviewedSources=0,importedSources=0,importedGroups=0,importedUniversities=0,importedRows=0,archiveImportedGroups=0,conditionalGroups=0,lastImportedAt=None,
         automaticSources=0,publishedGroups=0,freshGroups=0,archiveGroups=0,nationalTotal=None,generatedAt=now)
     imported={};universities=set();conditional=set();automatic={}

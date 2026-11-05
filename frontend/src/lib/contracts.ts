@@ -7,8 +7,8 @@ export type Watch = { id: string; university: string; title: string; sourceUrl: 
 export type WatchDetail = Watch & { history: Snapshot[] };
 export type WatchCreate = { university: string; title: string; sourceUrl: string; values: CalculationValues };
 export type SessionInfo = { expiresAt: string; draftScope?: string };
-export type University = { id: string; name: string; officialUrl: string; provenanceUrl: string; verifiedAt: string; coverage: 'manual' };
-export type Catalog = { items: University[]; total: number };
+export type University = { id: string; name: string; officialUrl: string | null; provenanceUrl: string; verifiedAt: string; coverage: 'manual'; legalName?: string; region?: string; isBranch?: boolean; catalogOrigin?: 'operator' | 'monitoring' };
+export type Catalog = { items: University[]; total: number; nextOffset: number | null; registryTotal?: number; registryEdition?: number };
 export type DataExport = { formatVersion: 'manual-export-v1'; exportedAt: string; watches: WatchDetail[] };
 export type HistoryPage = { items: Snapshot[]; nextCursor: string | null; total: number | null };
 export type ImportResult = { importedCount: number; snapshotCount: number; replayed: boolean };
@@ -152,9 +152,15 @@ export function parseCatalog(value: unknown): Catalog {
   const items = array(row.items, value => {
     const item = object(value);
     if (item.coverage !== 'manual') throw new InvalidResponseError();
-    return { id: text(item.id, 80), name: text(item.name, 300), officialUrl: url(item.officialUrl), provenanceUrl: url(item.provenanceUrl), verifiedAt: timestamp(item.verifiedAt), coverage: 'manual' as const };
+    if (item.isBranch != null && typeof item.isBranch !== 'boolean' || item.catalogOrigin != null && !['operator', 'monitoring'].includes(String(item.catalogOrigin))) throw new InvalidResponseError();
+    return { id: text(item.id, 80), name: text(item.name, 300), officialUrl: item.officialUrl === null ? null : url(item.officialUrl), provenanceUrl: url(item.provenanceUrl), verifiedAt: timestamp(item.verifiedAt), coverage: 'manual' as const,
+      legalName: item.legalName == null ? undefined : text(item.legalName, 1500), region: item.region == null ? undefined : text(item.region, 120),
+      isBranch: item.isBranch == null ? undefined : item.isBranch as boolean, catalogOrigin: item.catalogOrigin as University['catalogOrigin'] };
   }, 50);
   if (typeof row.total !== 'number' || !Number.isSafeInteger(row.total) || row.total < items.length
     || new Set(items.map(item => item.id)).size !== items.length) throw new InvalidResponseError();
-  return { items, total: row.total };
+  const nextOffset = row.nextOffset ?? null;
+  if (nextOffset !== null && (typeof nextOffset !== 'number' || !Number.isSafeInteger(nextOffset) || nextOffset < items.length || nextOffset < 1 || nextOffset >= row.total || !items.length)) throw new InvalidResponseError();
+  for (const key of ['registryTotal', 'registryEdition']) if (row[key] != null && (typeof row[key] !== 'number' || !Number.isSafeInteger(row[key]) || Number(row[key]) < 1)) throw new InvalidResponseError();
+  return { items, total: row.total, nextOffset, ...(row.registryTotal != null ? { registryTotal: row.registryTotal as number } : {}), ...(row.registryEdition != null ? { registryEdition: row.registryEdition as number } : {}) };
 }

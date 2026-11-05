@@ -1216,7 +1216,7 @@
 
 ### T192. Показать национальный каталог и статусы подключения в поиске
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T191.
 
@@ -1235,7 +1235,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — 1257 directory entries searchable with region/branch and pagination; 1166 site URLs, 91 unknown; 21 backend, 116 Vitest/build, compiled Chromium 12 passed/2 fixture-only skips. Screenshot inspected.
 
 ## E3. Автоматический сбор
 
@@ -2018,7 +2018,7 @@
 
 ### T193. Составить воспроизводимую инвентаризацию страниц приёма и форматов
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T190.
 

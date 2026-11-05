@@ -14,7 +14,8 @@ def test_public_catalog_does_not_imply_automatic_coverage(client):
     response=client.get('/api/v1/coverage')
     assert response.status_code==200 and 'set-cookie' not in response.headers
     data=response.json()
-    assert data['catalogUniversities']==2
+    assert data['catalogUniversities']==1257
+    assert data['registryTotal']==1257 and data['registryEdition']==2025
     assert data['automaticSources']==data['publishedGroups']==data['freshGroups']==0
     assert data['nationalTotal'] is None
 

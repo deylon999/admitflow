@@ -17,7 +17,7 @@ it('cancels an abandoned catalog request while a subsequent search succeeds', as
   expect(oldSignal?.aborted).toBe(false);
   unsubscribe();
   expect(oldSignal?.aborted).toBe(true);
-  expect(await client.fetchQuery({ queryKey: ['universities', 'new'], queryFn: ({ signal }) => api.universities('new', signal) })).toEqual({ items: [], total: 0 });
+  expect(await client.fetchQuery({ queryKey: ['universities', 'new'], queryFn: ({ signal }) => api.universities('new', signal) })).toEqual({ items: [], total: 0, nextOffset: null });
   expect(fetch).toHaveBeenCalledTimes(2);
   client.clear();
 });

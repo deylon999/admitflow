@@ -232,8 +232,8 @@ def create_app(settings: Settings | None = None):
         return assess_scenario(body)
 
     @app.get('/api/v1/universities', response_model=CatalogRead)
-    def universities(q: str = Query('', max_length=120), db: Session = Depends(database)):
-        return search_universities(db, q)
+    def universities(q: str = Query('', max_length=120), offset: int = Query(0,ge=0,le=100000), db: Session = Depends(database)):
+        return search_universities(db, q, offset)
 
     from .source_catalog import GroupCatalog,groups as search_groups
     @app.get('/api/v1/groups',response_model=GroupCatalog)

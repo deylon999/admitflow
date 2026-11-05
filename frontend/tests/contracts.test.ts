@@ -34,4 +34,12 @@ describe('shared manual API contract', () => {
     expect(() => parseCatalog({ items: [{ ...item, coverage: 'automatic' }], total: 1 })).toThrow(InvalidResponseError);
     expect(() => parseCatalog({ items: [item], total: 0 })).toThrow(InvalidResponseError);
   });
+  it('accepts registry metadata without inventing a missing site and rejects bad pagination', () => {
+    const item = { id: 'miccedu-123', name: 'University', legalName: 'Full legal name', region: 'Region', isBranch: true, officialUrl: null, provenanceUrl: 'https://monitoring.miccedu.ru/iam/2025/_vpo/inst.php?id=123', verifiedAt: '2026-11-05T00:00:00Z', coverage: 'manual', catalogOrigin: 'monitoring' };
+    const data = parseCatalog({ items: [item], total: 51, nextOffset: 50, registryTotal: 1257, registryEdition: 2025 });
+    expect(data.items[0].officialUrl).toBeNull();
+    expect(data.items[0].isBranch).toBe(true);
+    expect(data.nextOffset).toBe(50);
+    for (const nextOffset of [-1, 0, 51, '50']) expect(() => parseCatalog({ items: [item], total: 51, nextOffset })).toThrow(InvalidResponseError);
+  });
 });

@@ -6013,7 +6013,7 @@
       "phase": "E2",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T191"
       ],
@@ -6029,7 +6029,12 @@
         "Поиск работает на реальном опорном каталоге",
         "Контракт, русский поиск и интерфейс проверены; нет ложной автоматизации"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b14-national-catalog.md",
+          "note": "1257 directory entries searchable with region/branch and pagination; 1166 site URLs, 91 unknown; 21 backend, 116 Vitest/build, compiled Chromium 12 passed/2 fixture-only skips. Screenshot inspected."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6038,7 +6043,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T190"
       ],
