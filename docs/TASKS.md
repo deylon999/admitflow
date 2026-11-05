@@ -4638,7 +4638,7 @@
 
 ### T214. Проверить зелёный удалённый запуск и передать состояние
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T213.
 
@@ -4656,7 +4656,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b18-remote-ci.json](../docs/evidence/b18-remote-ci.json) — All6hosted CI jobs passed;666backend nativePG, all4browser projects broad+source stages andcontainer/backup checks verified from10JUnit reports/6artifacts. Original mobile confirmation/FirefoxTab failures fixed; slow Azure apt mirror removed. Local116Vitest/build,63source+27keyboard+4CI-mode+6actualNginx cases passed;demo frontend updated without key/volumes/API changes.
+- [docs/evidence/b18-integration.md](../docs/evidence/b18-integration.md) — Exact original/fixed run IDs, local regression, installed browser durations, separate reports, unchanged coverage and cleanup.
 
 ## E6. Резерв и выпуск
 

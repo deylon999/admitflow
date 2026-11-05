@@ -1,0 +1,224 @@
+{
+  "checkedAt": "2026-11-05T21:47:01.494513+00:00",
+  "runId": 42114005067,
+  "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067",
+  "commit": "ba429768899320ab28f8396fb3822106e1650d97",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 127548680461,
+      "name": "containers",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548680461",
+      "browserInstall": [
+        {
+          "name": "Install Chromium and system dependencies",
+          "seconds": 24.0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 127548680658,
+      "name": "checks",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548680658",
+      "browserInstall": [
+        {
+          "name": "Install Chromium and system dependencies",
+          "seconds": 26.0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 127548680738,
+      "name": "browsers (webkit, webkit)",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548680738",
+      "browserInstall": [
+        {
+          "name": "Install browser and system dependencies",
+          "seconds": 44.0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 127548680902,
+      "name": "browsers (mobile-webkit, webkit)",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548680902",
+      "browserInstall": [
+        {
+          "name": "Install browser and system dependencies",
+          "seconds": 37.0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 127548681080,
+      "name": "browsers (firefox, firefox)",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548681080",
+      "browserInstall": [
+        {
+          "name": "Install browser and system dependencies",
+          "seconds": 24.0,
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 127548681510,
+      "name": "browsers (mobile-chromium, chromium)",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/42114005067/job/127548681510",
+      "browserInstall": [
+        {
+          "name": "Install browser and system dependencies",
+          "seconds": 22.0,
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 13456200444,
+      "name": "chromium-results-1",
+      "bytes": 194572,
+      "expired": false
+    },
+    {
+      "id": 13455705936,
+      "name": "browser-results-firefox-1",
+      "bytes": 152654,
+      "expired": false
+    },
+    {
+      "id": 13455517469,
+      "name": "browser-results-webkit-1",
+      "bytes": 372793,
+      "expired": false
+    },
+    {
+      "id": 13455512749,
+      "name": "backend-results-1",
+      "bytes": 14023,
+      "expired": false
+    },
+    {
+      "id": 13454739665,
+      "name": "browser-results-mobile-webkit-1",
+      "bytes": 576003,
+      "expired": false
+    },
+    {
+      "id": 13453939628,
+      "name": "browser-results-mobile-chromium-1",
+      "bytes": 528769,
+      "expired": false
+    }
+  ],
+  "junitReports": [
+    {
+      "artifact": "chromium-results-1",
+      "file": "broad.xml",
+      "tests": 115,
+      "passed": 79,
+      "skipped": 36,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-firefox-1",
+      "file": "broad.xml",
+      "tests": 115,
+      "passed": 78,
+      "skipped": 37,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-firefox-1",
+      "file": "source.xml",
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-webkit-1",
+      "file": "broad.xml",
+      "tests": 115,
+      "passed": 78,
+      "skipped": 37,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-webkit-1",
+      "file": "source.xml",
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "backend-results-1",
+      "file": "backend.xml",
+      "tests": 666,
+      "passed": 666,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-mobile-webkit-1",
+      "file": "broad.xml",
+      "tests": 115,
+      "passed": 78,
+      "skipped": 37,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-mobile-webkit-1",
+      "file": "source.xml",
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-mobile-chromium-1",
+      "file": "broad.xml",
+      "tests": 115,
+      "passed": 79,
+      "skipped": 36,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "artifact": "browser-results-mobile-chromium-1",
+      "file": "source.xml",
+      "tests": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0
+    }
+  ],
+  "backendPassed": 666,
+  "noFailuresOrCancellations": true,
+  "actualSourceFixtureStageRanInAllFourProjects": true,
+  "originalFailedRun": 42095492218,
+  "coverageUnchanged": true,
+  "scope": "Current source/workflow commit verified on hosted Ubuntu24.04; archive coverage and public production gates unchanged"
+}

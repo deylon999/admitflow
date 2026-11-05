@@ -1,5 +1,18 @@
 # Национальный охват — текущий приоритет
 
+## B18: восстановлена проверка CI, 2026-11-06
+
+- [x] T210: реальные логи/annotations исходного run42095492218, отмены отделены от ошибок.
+- [x] T211: фокус подтверждения после commit; 63 source cases/3 projects прошли.
+- [x] T212: Firefox Tab исправлен, 27 keyboard/catalog cases; Ubuntu24.04, официальный mirror, ограниченная установка.
+- [x] T213: раздельные JUnit/outputs, backend artifact до browser install, сохранение обоих отчётов проверено.
+- [x] T214: [hosted run](https://github.com/deylon999/admitflow/actions/runs/42114005067) 6/6 success, 666 backend, четыре browser projects с обоими stages и containers; demo обновлён.
+
+Это исправление надёжности, **0 новых источников**. Покрытие прежнее:
+1257 catalog/15 archive groups/5 вузов/1884 строки/2 conditional/0 fresh,
+nationalTotal=null. T056/T057 открыты. Следующий шаг — новый точный scope
+из инвентаризации с независимой сверкой.
+
 ## B17: пятый вуз и новый проверенный формат, 2026-11-05
 
 - [x] T205: точный default GET БГУ2026,платно/очно08.03.01;20мест/109строк, выбранные фильтры и полнота проверены.

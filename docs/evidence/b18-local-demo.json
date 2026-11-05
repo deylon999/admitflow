@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-11-05T21:37:25.872455+00:00",
+  "url": "http://127.0.0.1:8091/sources",
+  "coverage": {
+    "registeredSources": 15,
+    "reviewedSources": 15,
+    "importedSources": 15,
+    "importedGroups": 15,
+    "importedUniversities": 5,
+    "importedRows": 1884,
+    "archiveImportedGroups": 15,
+    "conditionalGroups": 2,
+    "lastImportedAt": "2026-11-05T19:16:49.764558Z",
+    "catalogUniversities": 1257,
+    "registryTotal": 1257,
+    "registryEdition": 2025,
+    "automaticSources": 0,
+    "publishedGroups": 0,
+    "freshGroups": 0,
+    "archiveGroups": 0,
+    "nationalTotal": null,
+    "generatedAt": "2026-11-05T21:37:25.212328Z"
+  },
+  "services": [
+    {
+      "name": "db",
+      "imageId": "sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+      "state": "running"
+    },
+    {
+      "name": "backend",
+      "imageId": "sha256:1b8d783a7c3c2b803b6d972bbe6d21314f6588c4d5ec8194a5babe1eac4a4ca7",
+      "state": "running"
+    },
+    {
+      "name": "frontend",
+      "imageId": "sha256:8a5097baaca91ca724ef909b154940ff4eed5a604ba2dc9b99d42d0f209a44cd",
+      "state": "running"
+    },
+    {
+      "name": "worker",
+      "imageId": "sha256:1b8d783a7c3c2b803b6d972bbe6d21314f6588c4d5ec8194a5babe1eac4a4ca7",
+      "state": "running"
+    }
+  ],
+  "compiledAssetsMatchCurrentBuild": true,
+  "assetSha256": {
+    "index-5Vu7l4UT.css": "5d6ec13056f72c4e3decd93fc27c54b8c787ead1bd72d267deea3213956b757a",
+    "index-BoRvyq6B.js": "b0bff57e655f73157b3c158eea9de95c6f1daccb1540aeb6b6e5867c0c1bd7ed",
+    "SourceProvenance-CHZca7jg.js": "82eaaf8084e9307cb710db76e40ee47464adf0cc25571af5aa87996453c2181c",
+    "SourcesPage-UcHhatR5.js": "86600246dad33f23359eb857c2d0860ba366c30da8c40a9da0befa753c9bb7d2",
+    "TrackerPage-BY2uEcl8.js": "d85002532a32c380915de0c10695e02c527f2fbeb0555a03ddc085ba63a5418c"
+  },
+  "unchangedIdentityKeyAndDatabaseRawVolumes": true,
+  "backendWorkerAndDatabaseNotRecreated": true,
+  "frontendRebuilt": true,
+  "realApplicantLookupsPerformed": 0,
+  "privateBackupFilesUntouched": true,
+  "developmentOnly": true
+}

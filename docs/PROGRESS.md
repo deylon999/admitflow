@@ -1,5 +1,22 @@
 # AdmitFlow — состояние MVP
 
+**6 ноября 2026, B18: T210–T214 завершены 5/5.** Исправлен CI после
+сообщения пользователя «2 cancelled/3 successful/1 failing». Новый
+[hosted run 42114005067](https://github.com/deylon999/admitflow/actions/runs/42114005067) прошёл 6/6: backend666/nativePG,
+Chromium, Firefox, WebKit, обе mobile матрицы, container/recreation/backup.
+Исправлены потеря фокуса подтверждения и дополнительная Tab остановка
+Firefox; медленный Azure mirror заменён официальным Ubuntu archive.
+Отчёты обоих browser stages сохраняются;
+[доказательства](evidence/b18-remote-ci.json).
+
+Локально прошли 116 Vitest/build, 63 source+27 keyboard+4 CI-mode+
+6 actual-nginx checks. [Сайт](http://127.0.0.1:8091/sources) обновлён с
+прежними key/volumes/API. Покрытие прежнее: 1257 catalog/15 archive groups/
+5 вузов/1884 строки, 0 fresh. Национальное подключение T056/T057 остаётся
+следующим приоритетом.
+
+Ниже — история предыдущих подходов.
+
 **5 ноября 2026,B17:T205–T209 завершены5/5.** Подключён один проверенный
 архивный конкурс БГУ:08.03.01,платно/очно,20мест/109строк. Общий decoder
 проверяет точное состояние формы и полноту; независимая сверка охватила все

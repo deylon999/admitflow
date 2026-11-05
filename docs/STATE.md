@@ -1,3 +1,37 @@
+# S180 — B18: CI исправлен, финальный checkpoint
+
+T210–T214 завершены 5/5; 194 done/214 total. Hosted GitHub Actions
+run 42114005067@ba42976: 6/6 success. Прошли 666 backend
+тестов с обязательным native PostgreSQL, четыре browser projects (broad и
+source), container build/recreation/backup. Проверены 10 JUnit отчётов в
+шести артефактах, failures/errors=0. Доказательства:
+docs/evidence/b18-remote-ci.json и docs/evidence/b18-integration.md.
+
+Исходный run42095492218: mobile Chromium confirmation focus failure, две
+Firefox Tab failures и две отмены по лимиту 15/25 минут из-за Azure mirror.
+Preview получает фокус в layout effect после React commit; tabindex=-1 на
+scroll-container убирает дополнительную остановку Tab перед кнопками вузов.
+CI: Ubuntu24.04, официальный HTTPS Ubuntu archive, установка browser<=5мин;
+общие timeouts и assertions сохранены. Broad/source outputs и JUnit
+раздельны; backend XML загружается до установки браузера.
+
+Локально прошли 116 Vitest/build, 63 source и 27 keyboard cases в трёх
+browser projects, 2+2 cases с CI=1/two workers и шесть actual-nginx checks.
+Frontend demo8091 обновлён; все пять JS/CSS равны текущему dist. Прежние
+API/worker/db/key/volumes не пересоздавались; схема0011. Private backups
+не менялись. Временные API8029/preview5280 остановлены, свой disposable PG
+удалён родительским helper. Соседние radar и внешние БД не менялись;
+исторический screenshot восстановлен.
+
+Покрытие не выросло: 1257 catalog/15 archive groups/5 universities/1884 rows,
+2 conditional/0 fresh/nationalTotal=null. Следующий T057: другой официальный
+GET scope из admissions-inventory.json/format-families.json; полнота, конкурс,
+места, все строки и независимая аттестация. T056/T057/live/staging/release
+gates открыты. Свежая browser CI проверка теперь есть; пользовательская
+приёмка и живая кампания остаются отдельными проверками.
+
+Ниже — прежние checkpoints с их исходными датами и ограничениями.
+
 # S180 — B18 CI repair
 
 T213done;currentT214. Separate broad/source JUnit outputs preserved;2+2CI-mode browser cases passed with2workers.116Vitest,current build,63source+27keyboard checks passed;YAML/bash validation passed. Backend artifact uploaded before browser install; unique project/attempt artifacts always retained. Evidence: docs/evidence/b18-ci-reports.md. Same demo8091/key/volumes; national coverage unchanged.

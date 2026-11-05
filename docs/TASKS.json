@@ -6708,7 +6708,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T213"
       ],
@@ -6724,7 +6724,16 @@
         "Исправления отправлены, все шесть заданий текущего CI проверены по фактическому результату",
         "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b18-remote-ci.json",
+          "note": "All6hosted CI jobs passed;666backend nativePG, all4browser projects broad+source stages andcontainer/backup checks verified from10JUnit reports/6artifacts. Original mobile confirmation/FirefoxTab failures fixed; slow Azure apt mirror removed. Local116Vitest/build,63source+27keyboard+4CI-mode+6actualNginx cases passed;demo frontend updated without key/volumes/API changes."
+        },
+        {
+          "path": "docs/evidence/b18-integration.md",
+          "note": "Exact original/fixed run IDs, local regression, installed browser durations, separate reports, unchanged coverage and cleanup."
+        }
+      ],
       "blockedReason": null
     }
   ]

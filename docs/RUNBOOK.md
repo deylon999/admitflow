@@ -1,5 +1,24 @@
 # Возобновление и эксплуатация
 
+## CI после исправлений B18 — 6 ноября 2026
+
+Workflow использует Ubuntu24.04. `scripts/install_playwright_ci.sh` заменяет
+Azure mirror в `/etc/apt/apt-mirrors.txt` на официальный HTTPS Ubuntu archive
+перед прежней установкой Playwright с системными зависимостями. Установка
+ограничена пятью минутами; общие job timeouts сохранены. Если вновь красный
+CI, сначала определить упавший step и скачать его логи/артефакт.
+
+В Actions доступны `backend-results-<attempt>`, `chromium-results-<attempt>`
+и `browser-results-<project>-<attempt>`. Общий и source прогоны сохраняют
+раздельные `broad.xml`/`source.xml` и output directories. Backend XML
+публикуется до browser install, поэтому сетевой сбой не скрывает его результат.
+Полный download/auth log не коммитить; в evidence сохранять агрегаты и SHA.
+Пример подтверждённого запуска: [b18-remote-ci.json](evidence/b18-remote-ci.json).
+
+Frontend постоянного demo8091 обновлён. Прежние API/worker/db/schema0011,
+identity key и volumes сохраняются. Временные B18 API8029/preview5280 и
+disposable PG закрыты. Покрытие источников не выросло; следующий T057.
+
 ## Локальный стенд B17 — 5 ноября 2026
 
 Адрес: http://127.0.0.1:8091/sources. Существующий Compose project
