@@ -2277,7 +2277,7 @@
 
 ### T204. Проверить масштабирование каталога и итог покрытия B16
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T202, T203.
 
@@ -2296,7 +2296,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b16-integration.md](../docs/evidence/b16-integration.md) — Final648backend/0skip,116Vitest/build,83compiledChromium/30scopedskips and12finalactual-nginx checks passed. Restored-copy0010->0011 preserved19tables; actual demo14stored audits/1775rows passed with original key/volumes. Real coverage unchanged14archivegroups/4universities; research0newattestations.
+- [docs/evidence/b16-final-verification.json](../docs/evidence/b16-final-verification.json) — Current native regression, exact compiled assets, restored-copy migration rehearsal and actual local nginx checks; national/release limits explicit.
 
 ## E4. Объяснения и UX
 

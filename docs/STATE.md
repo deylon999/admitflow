@@ -1,3 +1,37 @@
+# S178 — B16: финальный checkpoint
+
+T200–T204 завершены 5/5;184 done/204 total. Каталог вузов доступен целиком в
+фильтре источников; SQL count/filter/cursor/limit групп сохраняют Unicode casefold;
+миграция0011 добавила только производные поля. Batch1–100профилей атомарный,
+с общим catalog mutex; конфликт/карантин/legacy version не обходятся.
+
+Проверки:648native backend passed/0skip(412.15s),116Vitest/build,
+83compiledChromium passed/30scopedskips(2.4m). После финальной CSS правки
+выравнивания rebuilt image и12affectedactual-nginx passed(13.3s).
+Исторический screenshotB14 восстановлен, новые desktop/mobileB16 просмотрены.
+Evidence: docs/evidence/b16-final-verification.json.
+
+Рабочий стенд прежний: http://127.0.0.1:8091/sources, Compose project
+admitflow-b15-demo,4services, schema0011, APIloopback8092. Env/key и оба volumes
+сохранены;14sourceaudits/1775rows прошли после миграции. Перед ней pg_dump
+сохранён private/ignored backend/var/b16-before-0011.dump; копия восстановлена
+в disposable DB, все прежние столбцы19таблиц сохранили hash/count. Ключ не
+печатать/не регенерировать. Архивы проверяются каждые86400секунд, не fresh.
+Native containers admitflow-b16-linux/pg/rehearsal и сеть удалены;preview5272
+остановлен. Соседние radar и внешние пользовательские БД не менялись.
+
+Покрытие прежнее:1257catalog/14archivegroups/4universities/1775rows,
+2conditionalbudgetgroups/0fresh/nationalTotal=null. T056/T057 открыты.
+Следующий конкретный T057: БГУ bachelor https://bgu.ru/abitur/bach/rating.aspx,
+109видимых строк/5select/WebForms state. Проверить точное состояние формы,
+конкурс/места/полноту/смысл полей и независимо сверить до аттестации.
+Пять исследованных страниц docs/sources/stateful-format-research.json пока
+не поддержаны; ИГУ dynamic/header-only не является полным пустым списком,
+МСПИ содержит postgraduate columns и требует отдельной проверки уровня.
+Полный лицензионный знаменатель,live2027,сутки,staging и release gates открыты.
+
+Ниже — промежуточные и прежние checkpoints; актуально резюме выше.
+
 # S178 — B16
 
 T203 done; current T204. 5official pages/3institutions, verified linked BGU bachelor with109visible rows; stateful/dynamic/level gaps explicit.3synthetic tests and network-forbidden identical offline replay passed;0sources attested. Evidence: docs/evidence/b16-stateful-research.md. Demo8091/key/volumes retained; broad T056/T057 open.

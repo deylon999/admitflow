@@ -1,0 +1,91 @@
+{
+  "checkedAt": "2026-11-05T18:40:36.494370+00:00",
+  "fromRevision": "0010",
+  "toRevision": "0011",
+  "restoredDisposableCopy": true,
+  "allOriginalColumnsPreserved": true,
+  "tables": {
+    "source_snapshots": {
+      "rows": 14,
+      "sha256": "3b58e446d932d245de33eb8219e5f7a9799d0e473567baba28f86d5e176bab84"
+    },
+    "sources": {
+      "rows": 14,
+      "sha256": "42febbee969319ca1c238347c26ea2ec1b0fa32d2be8a3f33983af55600752b4"
+    },
+    "competition_groups": {
+      "rows": 14,
+      "sha256": "9fc93e6da9a196e516b46e5437af169bf8f915c183b2ea67eaff6f22e52aae14"
+    },
+    "campaigns": {
+      "rows": 4,
+      "sha256": "8a3d6ea921d488d95cd1fec196187cac508d0e52329e3bcc044fb981552a2d9f"
+    },
+    "universities": {
+      "rows": 5,
+      "sha256": "51a8809a8af03437c0157932dca41426c0505cfe6b3a8e3fdcbf6a148d585f4e"
+    },
+    "candidate_entries": {
+      "rows": 1775,
+      "sha256": "6599f275b72b15416930d3241f96a2117668d802b2f4c42aafd9727ebd2b6e47"
+    },
+    "change_events": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "assessments": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "subscriptions": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "browser_sessions": {
+      "rows": 111,
+      "sha256": "86dc3b09c6590e65649498481e950cdd7d842f085a5c1da9168582803d6abea9"
+    },
+    "watches": {
+      "rows": 119,
+      "sha256": "c5a501d904439c2bb4081369c744c00591183b39814426f0e493a12f920c62a5"
+    },
+    "source_checks": {
+      "rows": 16,
+      "sha256": "189f32ef3943380b495dcc88cc5a4f633d1a4d3a786069268721b963d81a3e83"
+    },
+    "source_jobs": {
+      "rows": 14,
+      "sha256": "be13bab0c616fe047fd4f0fe09060bcc4a0dc0acbddba5c402171e6019c3ab34"
+    },
+    "source_operations": {
+      "rows": 90,
+      "sha256": "ad6a6892a6e3c980a30d55ad71ba014dc5ea6f71ec33e6ee0295f12bb9ead6bf"
+    },
+    "published_snapshots": {
+      "rows": 14,
+      "sha256": "865b911f1a36ffb575cf32dd9bd121ae49ae4c28bcf80943a0555a0c13dfb99c"
+    },
+    "snapshots": {
+      "rows": 132,
+      "sha256": "86513509cb8b04cfdc127569fbdfc4b317189ea8393e4582ebe3b8fd2971c90f"
+    },
+    "worker_heartbeats": {
+      "rows": 1,
+      "sha256": "ca9f64100f1fd6df1ad5908554b1655a81d164f90b3238f2272711518769663c"
+    },
+    "lookup_budgets": {
+      "rows": 0,
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    "operation_records": {
+      "rows": 34,
+      "sha256": "618bb9ad17705e14cdaf2056da433683d96345cca41b1fd6389dbb56530c70a0"
+    }
+  },
+  "addedSearchColumnsPopulated": true,
+  "sourceSnapshots": 14,
+  "candidateRows": 1775,
+  "seconds": 0.407,
+  "candidateValuesExported": false,
+  "userDatabaseChanged": false
+}

@@ -1,0 +1,82 @@
+{
+  "checkedAt": "2026-11-05T18:45:31.619610+00:00",
+  "url": "http://127.0.0.1:8091/sources",
+  "project": "admitflow-b15-demo",
+  "developmentOnly": true,
+  "schema": {
+    "revision": "0011",
+    "queueJobs": 14,
+    "dailyIntervalSeconds": 86400
+  },
+  "coverage": {
+    "registeredSources": 14,
+    "reviewedSources": 14,
+    "importedSources": 14,
+    "importedGroups": 14,
+    "importedUniversities": 4,
+    "importedRows": 1775,
+    "archiveImportedGroups": 14,
+    "conditionalGroups": 2,
+    "lastImportedAt": "2026-11-05T18:08:32.221308Z",
+    "catalogUniversities": 1257,
+    "registryTotal": 1257,
+    "registryEdition": 2025,
+    "automaticSources": 0,
+    "publishedGroups": 0,
+    "freshGroups": 0,
+    "archiveGroups": 0,
+    "nationalTotal": null,
+    "generatedAt": "2026-11-05T18:45:29.699052Z"
+  },
+  "services": [
+    {
+      "name": "db",
+      "imageId": "sha256:266d3c257594e195b309ae9d1805e54c788f1d7b375f56bf6c367aac6c917e7b",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "backend",
+      "imageId": "sha256:4bd7a64c34a389328cdf76ab05f66c1c4b38f729e6e2cd9623b7cba4edc30056",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "frontend",
+      "imageId": "sha256:f85896470047213ace27ff9d17b4d2d2a8ab46d672904ceaeec7ede9bcadf6f0",
+      "state": "running",
+      "health": "healthy"
+    },
+    {
+      "name": "worker",
+      "imageId": "sha256:4bd7a64c34a389328cdf76ab05f66c1c4b38f729e6e2cd9623b7cba4edc30056",
+      "state": "running",
+      "health": null
+    }
+  ],
+  "compiledAssetsMatchLocalBuild": true,
+  "assetSha256": {
+    "/assets/index-BjnFHdgB.js": "7bcd6d849d5d08a59bbd6792225e254e854a2e39db10eba48af23ae3e80d7d22",
+    "/assets/index-5Vu7l4UT.css": "5d6ec13056f72c4e3decd93fc27c54b8c787ead1bd72d267deea3213956b757a"
+  },
+  "backupSha256": "d29f7fbdaa1675e3370f19096abf745a81ff8b7982b87509d7fb319d234fb4d4",
+  "privateBackupRetained": true,
+  "migrationRehearsal": "docs/evidence/b16-migration-rehearsal.json",
+  "storedSourceAuditsPassed": 14,
+  "storedRowsAudited": 1775,
+  "originalIdentityKeyRetained": true,
+  "originalRawAndDatabaseVolumesRetained": true,
+  "newAttestedSources": 0,
+  "nationalTotal": null,
+  "secretsOrCandidateValuesExported": false,
+  "postgresPublicPort": false,
+  "webHost": "127.0.0.1",
+  "apiLoopbackPort": 8092,
+  "screenshots": [
+    "docs/evidence/b16-university-filter-desktop.png",
+    "docs/evidence/b16-university-filter-mobile.png"
+  ],
+  "existingExternalUserDatabasesChanged": false,
+  "ownedDemoSchemaChanged": true,
+  "ownedDemoSourceFactsRewritten": false
+}

@@ -6394,7 +6394,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T202",
         "T203"
@@ -6412,7 +6412,16 @@
         "Проверки относятся к текущим файлам и новой схеме при её изменении",
         "Архив/fresh/unsupported и синтетическая нагрузка различаются; T056/T057 не закрыты частично"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b16-integration.md",
+          "note": "Final648backend/0skip,116Vitest/build,83compiledChromium/30scopedskips and12finalactual-nginx checks passed. Restored-copy0010->0011 preserved19tables; actual demo14stored audits/1775rows passed with original key/volumes. Real coverage unchanged14archivegroups/4universities; research0newattestations."
+        },
+        {
+          "path": "docs/evidence/b16-final-verification.json",
+          "note": "Current native regression, exact compiled assets, restored-copy migration rehearsal and actual local nginx checks; national/release limits explicit."
+        }
+      ],
       "blockedReason": null
     }
   ]

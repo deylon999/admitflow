@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-05",
+  "session": "S178",
+  "batch": "B16",
+  "completedTasks": [
+    "T200",
+    "T201",
+    "T202",
+    "T203",
+    "T204"
+  ],
+  "backend": {
+    "command": "python -m pytest --require-postgres -q",
+    "environment": "Owned Linux filesystem runner and isolated native PostgreSQL17 schemas",
+    "passed": 648,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 412.15,
+    "exitCode": 0
+  },
+  "frontend": {
+    "vitestPassed": 116,
+    "buildExitCode": 0
+  },
+  "chromiumCompiledPreview": {
+    "baseUrl": "http://127.0.0.1:5272",
+    "api": "Current schema0011 API8092 and owned demo PostgreSQL",
+    "passed": 83,
+    "skipped": 30,
+    "failed": 0,
+    "duration": "2.4m",
+    "exitCode": 0,
+    "skipReason": "Dedicated anonymized lookup/history/change/scenario fixture APIs and nginx-only tests not enabled; no claim that skipped cases passed.",
+    "finalLayoutFollowup": "After visual inspection, aligned filter fields at the top to avoid stretching the direction input. Rebuilt frontend and reran all12affected catalog/section/edge tests on the actual nginx image."
+  },
+  "chromiumFinalActualNginx": {
+    "baseUrl": "http://127.0.0.1:8091",
+    "files": [
+      "assets.spec.ts",
+      "source-catalog.spec.ts",
+      "source-university-filter.spec.ts",
+      "section-family.spec.ts"
+    ],
+    "passed": 12,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 13.3,
+    "exitCode": 0
+  },
+  "sqlCatalog": {
+    "syntheticGroups": 10001,
+    "pageSize": 7,
+    "maximumHydratedGroupObjects": 8,
+    "sqliteAndNativePostgresVerified": true,
+    "unicodeCasefoldPreserved": true,
+    "literalWildcardSearchVerified": true,
+    "databaseFiltersCountCursorLimit": true,
+    "throughputBenchmarkClaimed": false
+  },
+  "profileBatch": {
+    "maximumBatchSize": 100,
+    "fullReviewedManifestTested": 14,
+    "concurrentOverlappingCalls": 8,
+    "lateConflictRollbackVerified": true,
+    "quarantinePreserved": true,
+    "legacyParserPreserved": true,
+    "realDemoReplayCount": 2,
+    "realDemoReplayCreatedSources": 0,
+    "performsFetchOrEnqueue": false
+  },
+  "research": {
+    "evidence": "docs/evidence/b16-stateful-research.md",
+    "officialPages": 5,
+    "institutions": 3,
+    "newReviewedSources": 0,
+    "postRequests": 0,
+    "offlineReplayNetworkForbidden": true,
+    "artifactSha256": "587481eaf68bcf76235d6d5ee57680a6a650c23a5ed93e72c48542138a7d3a0f"
+  },
+  "migration": {
+    "fromRevision": "0010",
+    "toRevision": "0011",
+    "restoredCopyEvidence": "docs/evidence/b16-migration-rehearsal.json",
+    "allOriginalColumnsPreservedInRehearsal": true,
+    "privateDevelopmentBackupRetained": true,
+    "sourceSnapshotsRetained": 14,
+    "candidateRowsRetained": 1775,
+    "newSearchColumnsPopulated": true,
+    "onlineUpgradeDowngradeAndOfflinePostgresSqlTested": true
+  },
+  "localDemo": {
+    "evidence": "docs/evidence/b16-local-demo.json",
+    "url": "http://127.0.0.1:8091/sources",
+    "project": "admitflow-b15-demo",
+    "schemaRevision": "0011",
+    "catalogEntries": 1257,
+    "importedGroups": 14,
+    "importedUniversities": 4,
+    "importedRows": 1775,
+    "archiveGroups": 14,
+    "conditionalGroups": 2,
+    "freshGroups": 0,
+    "nationalTotal": null,
+    "storedAuditsPassedAfterMigration": 14,
+    "originalIdentityKeyAndVolumesRetained": true,
+    "dailyArchiveRecheckSeconds": 86400,
+    "compiledAssetsMatchLocalBuild": true,
+    "developmentOnly": true
+  },
+  "openBroadTasks": [
+    "T056",
+    "T057"
+  ],
+  "notClaimed": [
+    "new real-source attestation in B16",
+    "full national automation",
+    "known national denominator",
+    "fresh live campaign",
+    "official admission outcome",
+    "admission probability",
+    "fresh Firefox/WebKit validation",
+    "24-hour observation",
+    "public HTTPS staging/production",
+    "remote CI of local commits"
+  ],
+  "existingExternalUserDatabasesChanged": false,
+  "ownedDemoSchemaChanged": true,
+  "ownedDemoSourceFactsRewritten": false,
+  "secretsOrNewRealCandidateValuesExported": false,
+  "cleanup": {
+    "remainingDisposableSchemas": 0,
+    "testContainersRemoved": [
+      "admitflow-b16-linux",
+      "admitflow-b16-rehearsal",
+      "admitflow-b16-pg"
+    ],
+    "testNetworkRemoved": "admitflow-b16-test",
+    "temporaryPreview5272Stopped": true,
+    "demoAndPrivateBackupRetained": true
+  }
+}

@@ -7,10 +7,11 @@ test('real catalog is readonly, filters season/university and keeps a manual fal
   await page.goto('/sources');
   await expect(page.getByRole('heading', { name: 'Вузы и конкурсные группы' })).toBeFocused();
   await expect(page.getByRole('link', { name: 'Калькулятор', exact: true })).toHaveAttribute('href', '/#calculator');
-  await expect(page.locator('.source-catalog-card').first()).toContainText('09.03.04');
-  await expect(page.locator('.source-catalog-card').first()).toContainText('Архив 2026 года');
+  await page.getByLabel('Вуз', { exact: true }).selectOption('sgu-saratov');
   await page.getByLabel('Группа или направление', { exact: true }).fill('ПРОГРАММНАЯ');
   await expect(page.locator('.source-catalog-card')).toHaveCount(1);
+  await expect(page.locator('.source-catalog-card').first()).toContainText('09.03.04');
+  await expect(page.locator('.source-catalog-card').first()).toContainText('Архив 2026 года');
   await page.getByLabel('Сезон', { exact: true }).selectOption('2026');
   await page.getByLabel('Подразделение', { exact: true }).selectOption('main');
   await page.getByLabel('Вуз', { exact: true }).selectOption('sgups-novosibirsk');

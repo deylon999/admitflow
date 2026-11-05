@@ -18,6 +18,12 @@ test('source university filter loads beyond fifty, searches the full directory a
   await expect(page.getByText('Найдено вузов: 1. Показано: 1.', { exact: true })).toBeVisible();
   await expect(select).toHaveValue(target.id);
   await expect(select.locator('option')).toHaveCount(2);
+  await select.selectOption('');
+  await select.focus();
+  await page.keyboard.press('ArrowDown');
+  await page.keyboard.press('Enter');
+  await expect(select).toHaveValue(target.id);
+  await expect(select).toBeFocused();
 });
 
 test('failed next directory page keeps the selection and retries at320px', async ({ page }) => {
