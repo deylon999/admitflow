@@ -34,6 +34,7 @@ class GroupRead(CamelModel):
     last_checked_at:datetime|None=None
     row_count:int|None=None
     lookup_available:bool=False
+    lookup_code_hint:str|None=Field(default=None,max_length=300)
     assessment_available:bool=False
     scenario_available:bool=False
 
@@ -64,6 +65,11 @@ def group_read(db,group,campaign,university,source,*,registry=PRODUCTION_REGISTR
     from .admissions import SourceSnapshot
     snapshot=db.get(SourceSnapshot,status['publishedSnapshotId']) if status and status['publishedSnapshotId'] else None
     lookup=bool(available and snapshot and snapshot.complete and snapshot.normalized_hash and snapshot.adapter_version==source.adapter_version)
+    hint=None
+    if source and available:
+        from .sources.table_profiles import PROFILES
+        profile=PROFILES.get(source.id)
+        if profile and (profile.group_id,profile.year,profile.version)==(group.id,campaign.year,source.adapter_version):hint=profile.lookup_code_hint
     return GroupRead(id=group.id,university_id=university.id,university_name=university.name,parent_university_id=university.parent_id,
                      year=campaign.year,level=campaign.level,title=group.title,study_form=group.study_form,funding=group.funding,
                      category=group.category,seats=snapshot.seats if snapshot else group.seats,coverage=mode,source_id=source.id if source else None,
@@ -72,6 +78,7 @@ def group_read(db,group,campaign,university,source,*,registry=PRODUCTION_REGISTR
                      snapshot_id=snapshot.id if snapshot else None,fetched_at=status['fetchedAt'] if status else None,
                      source_updated_at=status['sourceUpdatedAt'] if status else None,last_checked_at=status['lastCheckedAt'] if status else None,
                      row_count=snapshot.row_count if snapshot else None,lookup_available=lookup,
+                     lookup_code_hint=hint,
                      scenario_available=bool(lookup and group.rules_version=='listed-consent-v1' and group.funding=='budget' and group.category=='general' and snapshot.seats and snapshot.seats>0))
 
 

@@ -965,3 +965,5 @@ S179/T205: Fresh official exact contract/full-time construction scope:20seats/10
 S179/T206: Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet. Evidence: docs/evidence/b17-filtered-family.md. Next T207.
 
 S179/T207: All109original rows independently matched,20seats/14explicit enrolled; immutable exact BGU profile added,old14unchanged.46native targeted passed/0skip; Source not enabled by attestation. Evidence: docs/evidence/b17-attestation.md. Next T208.
+
+S179/T208: Actual bounded HTTPS->worker->native PG->independent/current/stored audit109rows/20seats passed.7native owner/API tests,116Vitest/build and1synthetic browser lookup/privacy/save passed. Evidence: docs/evidence/b17-worker-lookup.md. Next T209.

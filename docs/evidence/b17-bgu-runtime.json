@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-11-05T19:10:29.703909+00:00",
+  "sourceId": "bgu-2026-080301-contract",
+  "version": "reviewed-filtered-table-v1",
+  "externalHttpsFetches": 1,
+  "workerState": "success",
+  "rows": 109,
+  "snapshots": 1,
+  "seats": 20,
+  "kind": "archive",
+  "independentCurrentOriginalAudit": {
+    "payloadHash": "857ace44a17e2fc75be1a5d20496070eb8be4806094cc76547609238ac175135",
+    "originalAuditHashMatched": false,
+    "checkedRows": 109,
+    "uniqueMinimalIds": 109,
+    "explicitEnrolled": 14,
+    "seats": 20,
+    "fields": [
+      "official_order",
+      "minimal_scoped_identity",
+      "total_score",
+      "unknown_consent",
+      "unknown_priority",
+      "explicit_enrollment_or_unknown",
+      "public_program"
+    ],
+    "allFieldsMatched": true
+  },
+  "storedAuditSuccess": true,
+  "archiveImportedGroups": 1,
+  "importedUniversities": 1,
+  "freshGroups": 0,
+  "conditionalGroups": 0,
+  "nationalTotal": null,
+  "ownerPathUsesSyntheticFixtureOnly": true,
+  "candidateValuesOrKeysExported": false,
+  "disposableSchemaRemoved": true,
+  "userDatabaseChanged": false
+}

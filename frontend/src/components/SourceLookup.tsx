@@ -34,7 +34,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
   const busy = lookup.isPending || save.isPending;
   if (access.data !== 'active') return <div role="alert"><p>Доступ изменился или закончился. Старое подтверждение скрыто.</p><Link data-router-link to="/tracker">Управление гостевым доступом</Link></div>;
   return <div className="source-lookup">
-    <h3>Найти запись в этой группе</h3><p className="small-copy">Введите публичный код из выбранного списка. ФИО, паспорт и СНИЛС не нужны. Код не сохраняется в браузере или в карточке направления.</p>
+    <h3>Найти запись в этой группе</h3><p className="small-copy">{group.lookupCodeHint ?? 'Введите публичный код из выбранного списка.'} ФИО, паспорт и СНИЛС не нужны. Код не сохраняется в браузере или в карточке направления.</p>
     <form onSubmit={event => { event.preventDefault(); if (!busy && /^[A-Za-z0-9-]{1,64}$/.test(code.trim())) { setSaved(false); setPreview(null); lookup.mutate(); } }}>
       <label>Код поступающего<input ref={input} autoComplete="off" spellCheck={false} maxLength={64} disabled={busy} value={code} onChange={event => { setCode(event.target.value); setPreview(null); setAcknowledged(false); save.reset(); }} /></label>
       <div className="direction-actions"><button className="button button-primary" type="submit" disabled={busy || !/^[A-Za-z0-9-]{1,64}$/.test(code.trim())}>{lookup.isPending ? 'Ищем…' : 'Найти запись'}</button><button className="text-button" type="button" disabled={busy} onClick={onClose}>Закрыть поиск</button></div>

@@ -1,5 +1,9 @@
 # S179 — B17
 
+T208 done; current T209. Actual bounded HTTPS->worker->native PG->independent/current/stored audit109rows/20seats passed.7native owner/API tests,116Vitest/build and1synthetic browser lookup/privacy/save passed. Evidence: docs/evidence/b17-worker-lookup.md. Same demo8091/key/volumes; T056/T057 open.
+
+# S179 — B17
+
 T207 done; current T208. All109original rows independently matched,20seats/14explicit enrolled; immutable exact BGU profile added,old14unchanged.46native targeted passed/0skip; Source not enabled by attestation. Evidence: docs/evidence/b17-attestation.md. Same demo8091/key/volumes; T056/T057 open.
 
 # S179 — B17

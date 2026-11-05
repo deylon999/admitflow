@@ -6521,7 +6521,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T207"
       ],
@@ -6539,7 +6539,12 @@
         "Есть настоящий полный импорт нового вуза и proof его сохранения",
         "Код не сохраняется в браузере/экспорте/ответах ошибок, платная группа не даёт бюджетный сценарий"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b17-worker-lookup.md",
+          "note": "Actual bounded HTTPS->worker->native PG->independent/current/stored audit109rows/20seats passed.7native owner/API tests,116Vitest/build and1synthetic browser lookup/privacy/save passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6548,7 +6553,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T208"
       ],

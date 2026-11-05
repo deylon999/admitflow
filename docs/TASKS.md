@@ -2370,7 +2370,7 @@
 
 ### T208. Проверить worker и сохранение записи новой группы
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T207.
 
@@ -2389,11 +2389,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b17-worker-lookup.md](../docs/evidence/b17-worker-lookup.md) — Actual bounded HTTPS->worker->native PG->independent/current/stored audit109rows/20seats passed.7native owner/API tests,116Vitest/build and1synthetic browser lookup/privacy/save passed.
 
 ### T209. Обновить стенд и сверить покрытие B17
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T208.
 
