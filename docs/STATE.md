@@ -1,3 +1,7 @@
+# S180 — B18 CI repair
+
+T210done;currentT211. Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed. Evidence: docs/evidence/b18-ci-diagnosis.md. Same demo8091/key/volumes; national coverage unchanged.
+
 # S179 — B17: финальный checkpoint
 
 T205–T209 завершены5/5;189done/209total. БГУ стал пятым вузом с импортом:

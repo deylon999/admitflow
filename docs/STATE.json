@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-05",
-  "currentTask": null,
-  "nextTask": "T057",
+  "updatedAt": "2026-11-06",
+  "currentTask": "T211",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S179",
-  "resumeAction": "B17 завершён5/5. Следующий T057: выбрать другой доступный официальный GET scope из docs/sources/admissions-inventory.json и format-families.json, проверить полноту/конкурс/места и все строки до новой аттестации. Общий reviewed-filtered-table-v1 готов, но БГУ поддерживает только exact defaultGET08.03.01/платно/очно; другие фильтры/POST не подключены. Demo8091:15архивных групп/5вузов/1884строки,1257catalog/2conditional/0fresh/nationalTotal=null. Те же key/volumes/schema0011; private backup backend/var/b17-before-bgu.dump. Временные8028/5273/5274 иB17testcontainers остановлены/удалены; четыреdemoсервиса работают,86400sec archive rechecks. T056/T057/release gates открыты.",
+  "lastSession": "S180",
+  "resumeAction": "B18: T210 done; current T211. Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed. Evidence: docs/evidence/b18-ci-diagnosis.md. Demo/key/volumes unchanged; T056/T057 remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

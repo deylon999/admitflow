@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-06",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -6580,6 +6580,136 @@
           "note": "Current mandatory-PG regression, exact compiled lazy assets, real new source import, old facts preserved, daily archive jobs and explicit national/live/release limits."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T210",
+      "title": "Установить причины ошибок и отмен GitHub Actions",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T209"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Логи/annotations реального run сопоставлены с точным commit; ошибки и timeout различимы"
+      ],
+      "acceptance": [
+        "Логи/annotations реального run сопоставлены с точным commit; ошибки и timeout различимы",
+        "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b18-ci-diagnosis.md",
+          "note": "Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T211",
+      "title": "Исправить сбой мобильного браузерного сценария",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T210"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Ошибка воспроизведена и затронутые проверки проходят с прежними гарантиями продукта"
+      ],
+      "acceptance": [
+        "Ошибка воспроизведена и затронутые проверки проходят с прежними гарантиями продукта",
+        "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T212",
+      "title": "Устранить причины зависаний CI и Firefox",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T211"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Runner/установка/браузерные зависания исправлены на основании логов без скрытия ошибок"
+      ],
+      "acceptance": [
+        "Runner/установка/браузерные зависания исправлены на основании логов без скрытия ошибок",
+        "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T213",
+      "title": "Проверить исправленный workflow и диагностику",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T212"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Сохраняются результаты обоих browser stages; локальные затронутые проверки и config checks проходят"
+      ],
+      "acceptance": [
+        "Сохраняются результаты обоих browser stages; локальные затронутые проверки и config checks проходят",
+        "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T214",
+      "title": "Проверить зелёный удалённый запуск и передать состояние",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T213"
+      ],
+      "deliverables": [
+        ".github/workflows/ci.yml",
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Исправления отправлены, все шесть заданий текущего CI проверены по фактическому результату"
+      ],
+      "acceptance": [
+        "Исправления отправлены, все шесть заданий текущего CI проверены по фактическому результату",
+        "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
