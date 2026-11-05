@@ -48,7 +48,7 @@
     },
     {
       "id": "E7",
-      "title": "После MVP: вся Россия, аккаунты, ИИ",
+      "title": "После MVP: аккаунты, уведомления, ИИ и следующий сезон",
       "window": "После G6; сроки после оценки данных и нагрузки"
     }
   ],
@@ -1919,14 +1919,13 @@
     {
       "id": "T056",
       "title": "Расширить проверенный каталог до национального охвата",
-      "phase": "E7",
-      "priority": "P2",
+      "phase": "E1",
+      "priority": "P0",
       "size": "M",
       "status": "todo",
       "dependsOn": [
         "T012",
-        "T038",
-        "T055"
+        "T038"
       ],
       "deliverables": [
         "backend/app/catalog/",
@@ -1946,15 +1945,14 @@
     {
       "id": "T057",
       "title": "Масштабировать адаптеры по платформам вузов",
-      "phase": "E7",
-      "priority": "P2",
+      "phase": "E3",
+      "priority": "P0",
       "size": "L",
       "status": "todo",
       "dependsOn": [
         "T031",
         "T037",
-        "T046",
-        "T055"
+        "T056"
       ],
       "deliverables": [
         "backend/app/sources/adapters/",
