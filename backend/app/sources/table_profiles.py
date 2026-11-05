@@ -18,6 +18,9 @@ def build_profiles(data):
             fields=dict(fields)
             for key in ('columns','identity','catalog'):fields[key]=tuple(tuple(pair) for pair in fields.get(key,[]))
             if 'header_spans' in fields:fields['header_spans']=tuple(tuple(pair) for pair in fields['header_spans'])
+            if 'cell_classes' in fields:fields['cell_classes']=tuple(fields['cell_classes'])
+            if 'cell_identity' in fields:fields['cell_identity']=tuple(tuple(pair) for pair in fields['cell_identity'])
+            if fields.get('declared_count') is not None:fields['declared_count']=tuple(fields['declared_count'])
             for key in ('headers','cell_labels'):fields[key]=tuple(fields[key])
             if 'unordered_label_groups' in fields:fields['unordered_label_groups']=tuple(tuple(group) for group in fields['unordered_label_groups'])
             if fields['proof'] is not None:

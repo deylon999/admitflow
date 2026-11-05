@@ -60,11 +60,13 @@ def main():
     headers=[clean(h.get_text(' ',strip=True)) for h in table.select('th')]
     classes=[' '.join(c.get('class',[])) for c in rows[0]]
     if any([' '.join(c.get('class',[])) for c in row]!=classes for row in rows):raise ValueError('varying cell roles')
+    program='Организация строительного производства'
+    if any(clean(row[15].get_text(' ',strip=True))!=program for row in rows):raise ValueError('mixed program rows')
     profile=dict(source_id='bgu-2026-080301-contract',group_id='bgu-2026-080301-contract',url=URL,year=2026,rows=109,seats=20,
         table_selector='#rating',row_selector='tr:has(td)',columns=[['rank',4],['code',3],['score',6]],cell_count=17,
         headers=headers,cell_labels=[],identity=identity,proof=None,kind='archive',season_pattern=r'в ([0-9]{4}) году',season_selector='title',
         version='reviewed-filtered-table-v1',header_spans=[[int(h.get('rowspan',1)),int(h.get('colspan',1))] for h in table.select('th')],
-        cell_classes=classes,code_selector='span.text-secondary',public_code_pattern=CODE_PATTERN,enrolled_selector='span.text-success',
+        cell_classes=classes,cell_identity=[[15,program]],code_selector='span.text-secondary',public_code_pattern=CODE_PATTERN,enrolled_selector='span.text-success',
         enrolled_pattern=ENROLLED_PATTERN,declared_count=['#MainContent_divCountPeaple',count_pattern],lookup_code_hint=LOOKUP_HINT,
         catalog=[['university_id','miccedu-12'],['university_name','БГУ — Байкальский государственный университет'],['university_url','https://bgu.ru/'],
             ['campaign_id','miccedu-12-2026-bachelor'],['level','bachelor'],['official_id','14629-contract-full-time'],

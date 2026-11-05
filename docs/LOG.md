@@ -961,3 +961,5 @@ S178/T204/B16 final5/5: Final648backend/0skip,116Vitest/build,83compiledChromium
 Пользователь поручил идти дальше. Пятёрка T205–T209: точный scope БГУ, общий filtered decoder, независимая аттестация, native worker/lookup, стенд/регрессия. Одна activeT205. В подготовительной диагностике ancestor span захватил строки списка в одном выводе; фильтр исправлен на leaf/no-table, реальные строки не пишутся в tracked reports/fixtures. Далее только агрегаты/public metadata. Минимальный lookup ID должен обходиться без СНИЛС/трёхчастного кода. B16baseline648native/116Vitest/83Chromium+30skip/12edge сохранён, demo8091/key/volumes не заменять.
 
 S179/T205: Fresh official exact contract/full-time construction scope:20seats/109rows/109unique minimal lookup IDs,14explicit enrolled; controls/count/order reviewed,0attestations yet. Evidence: docs/evidence/b17-bgu-scope.md. Next T206.
+
+S179/T206: Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet. Evidence: docs/evidence/b17-filtered-family.md. Next T207.

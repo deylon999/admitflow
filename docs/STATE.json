@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": "T206",
+  "currentTask": "T207",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S179",
-  "resumeAction": "B17: T205 завершена, текущая T206. Evidence: docs/evidence/b17-bgu-scope.md. БГУ только exact GET/первые5цифр lookup; старые key/volumes/proofs сохранить.",
+  "resumeAction": "B17: T206 завершена, текущая T207. Evidence: docs/evidence/b17-filtered-family.md. БГУ только exact GET/первые5цифр lookup; старые key/volumes/proofs сохранить.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

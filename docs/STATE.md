@@ -1,5 +1,9 @@
 # S179 — B17
 
+T206 done; current T207. Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet. Evidence: docs/evidence/b17-filtered-family.md. Same demo8091/key/volumes; T056/T057 open.
+
+# S179 — B17
+
 T205 done; current T206. Fresh official exact contract/full-time construction scope:20seats/109rows/109unique minimal lookup IDs,14explicit enrolled; controls/count/order reviewed,0attestations yet. Evidence: docs/evidence/b17-bgu-scope.md. Same demo8091/key/volumes; T056/T057 open.
 
 # S178 — B16: финальный checkpoint

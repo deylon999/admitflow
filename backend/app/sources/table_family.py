@@ -11,6 +11,7 @@ from .registry import Adapter,Attestation
 VERSION='reviewed-html-table-v1'
 SCHEMA_SET_VERSION='reviewed-html-table-v2'
 SECTION_VERSION='reviewed-section-table-v1'
+FILTERED_VERSION='reviewed-filtered-table-v1'
 
 
 def clean(value):return ' '.join(value.replace(r'\xa0',' ').split())
@@ -46,6 +47,14 @@ class TableProfile:
     section_metadata:str|None=None
     zero_priority_unknown:bool=False
     header_spans:tuple[tuple[int,int],...]=()
+    cell_classes:tuple[str,...]=()
+    cell_identity:tuple[tuple[int,str],...]=()
+    code_selector:str|None=None
+    public_code_pattern:str|None=None
+    enrolled_selector:str|None=None
+    enrolled_pattern:str|None=None
+    declared_count:tuple[str,str]|None=None
+    lookup_code_hint:str|None=None
 
     def __post_init__(self):
         from .fetcher import valid_domains
@@ -57,7 +66,7 @@ class TableProfile:
             and isinstance(self.headers,tuple) and bool(self.headers) and isinstance(self.identity,tuple) and bool(self.identity)
             and len({name for name,_ in self.columns})==len(self.columns) and {'rank','code','score'}<={name for name,_ in self.columns}
             and all(name in ('rank','code','score','consent','priority','status') and ((type(column) is int and 0<=column<self.cell_count) or (isinstance(column,str) and column in self.cell_labels)) for name,column in self.columns))
-        if (not valid or self.version not in (VERSION,SCHEMA_SET_VERSION,SECTION_VERSION)
+        if (not valid or self.version not in (VERSION,SCHEMA_SET_VERSION,SECTION_VERSION,FILTERED_VERSION)
             or self.version==VERSION and self.unordered_label_groups
             or any(len(group)<2 or len(set(group))!=len(group) or any(not isinstance(x,str) or not x for x in group) for group in self.unordered_label_groups)):
             raise ValueError('invalid_table_profile')
@@ -68,8 +77,24 @@ class TableProfile:
                 or type(self.zero_priority_unknown) is not bool or len(self.header_spans)!=len(self.headers)
                 or any(len(pair)!=2 or any(type(n) is not int or not 1<=n<=100 for n in pair) for pair in self.header_spans)):
                 raise ValueError('invalid_section_profile')
+        elif self.version==FILTERED_VERSION:
+            if (any(v is not None for v in (self.section_selector,self.section_index,self.section_count,self.section_metadata))
+                or self.zero_priority_unknown or self.public_code_enrolled_suffix or not isinstance(self.season_selector,str) or not self.season_selector
+                or len(self.header_spans)!=len(self.headers) or any(len(pair)!=2 or any(type(n) is not int or not 1<=n<=100 for n in pair) for pair in self.header_spans)
+                or not isinstance(self.cell_classes,tuple) or not isinstance(self.cell_identity,tuple)
+                or len(self.cell_classes)!=self.cell_count or any(not isinstance(c,str) for c in self.cell_classes)
+                or any(len(pair)!=2 or type(pair[0]) is not int or not 0<=pair[0]<self.cell_count or not isinstance(pair[1],str) for pair in self.cell_identity)
+                or any(not isinstance(s,str) or not s for s in (self.code_selector,self.public_code_pattern,self.enrolled_selector,self.enrolled_pattern,self.lookup_code_hint))
+                or len(self.lookup_code_hint)>300 or any(ord(c)<32 or ord(c)==127 for c in self.lookup_code_hint)
+                or not isinstance(self.declared_count,tuple) or len(self.declared_count)!=2
+                or any(not isinstance(s,str) or not s for s in self.declared_count)
+                or re.compile(self.public_code_pattern).groups!=1 or re.compile(self.declared_count[1]).groups!=1):
+                raise ValueError('invalid_filtered_profile')
+            re.compile(self.enrolled_pattern)
         elif any(v is not None for v in (self.season_selector,self.section_selector,self.section_index,self.section_count,self.section_metadata)) or self.zero_priority_unknown or self.header_spans:
             raise ValueError('section_options_require_new_version')
+        if self.version!=FILTERED_VERSION and (self.cell_classes or self.cell_identity or any(v is not None for v in (self.code_selector,self.public_code_pattern,self.enrolled_selector,self.enrolled_pattern,self.declared_count,self.lookup_code_hint))):
+            raise ValueError('filtered_options_require_new_version')
         re.compile(self.season_pattern);re.compile(self.priority_pattern)
 
     def binding_matches(self,binding):
@@ -102,6 +127,11 @@ def parse_table(response,binding,secret,profile):
         season_texts=(node.get_text(' ',strip=True) for node in soup.select(profile.season_selector)) if profile.season_selector else soup.find_all(string=True)
         seasons={int(match[1]) for text in season_texts if (match:=re.search(profile.season_pattern,text.strip()))}
         if seasons!={profile.year}:raise ValueError()
+        if profile.declared_count:
+            nodes=soup.select(profile.declared_count[0])
+            if len(nodes)!=1 or nodes[0].find('table') is not None:raise ValueError()
+            match=re.fullmatch(profile.declared_count[1],clean(nodes[0].get_text(' ',strip=True)))
+            if match is None or int(match[1])!=profile.rows:raise ValueError()
         identity={}
         for selector,expected in profile.identity:identity.setdefault(selector,[]).append(expected)
         for selector,expected in identity.items():
@@ -123,12 +153,24 @@ def parse_table(response,binding,secret,profile):
         for index,row in enumerate(rows,1):
             cells=row.find_all('td',recursive=False)
             if len(cells)!=profile.cell_count:raise ValueError()
+            if profile.cell_classes and tuple(' '.join(td.get('class',[])) for td in cells)!=profile.cell_classes:raise ValueError()
+            if any(clean(cells[column].get_text(' ',strip=True))!=expected for column,expected in profile.cell_identity):raise ValueError()
             labels=[td.get('data-label') for td in cells]
             if profile.cell_labels and tuple(schema_label(label,profile) for label in labels)!=tuple(schema_label(label,profile) for label in profile.cell_labels):raise ValueError()
             by_label={td.get('data-label'):td for td in cells}
             fields={name:clean((cells[column] if isinstance(column,int) else by_label[column]).get_text(' ',strip=True)) for name,column in profile.columns}
             if fields['rank']!=str(index):raise ValueError()
             code=fields['code'];enrolled=False
+            if profile.version==FILTERED_VERSION:
+                column=dict(profile.columns)['code'];cell=cells[column] if isinstance(column,int) else by_label[column]
+                nodes=cell.select(profile.code_selector)
+                if len(nodes)!=1:raise ValueError()
+                match=re.fullmatch(profile.public_code_pattern,clean(nodes[0].get_text(' ',strip=True)))
+                if match is None:raise ValueError()
+                code=match[1]  # Reviewed minimal identifier; discard other public-code components.
+                markers=cell.select(profile.enrolled_selector)
+                if len(markers)>1 or any(re.fullmatch(profile.enrolled_pattern,clean(n.get_text(' ',strip=True))) is None for n in markers):raise ValueError()
+                enrolled=bool(markers)
             if profile.public_code_enrolled_suffix:
                 match=re.fullmatch(r'([A-Za-z0-9-]{1,64})(?:\s*\((Зачислен)\))?',code)
                 if match is None:raise ValueError()

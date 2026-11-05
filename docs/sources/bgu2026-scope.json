@@ -242,6 +242,12 @@
       "text-left",
       "text-center"
     ],
+    "cell_identity": [
+      [
+        15,
+        "Организация строительного производства"
+      ]
+    ],
     "code_selector": "span.text-secondary",
     "public_code_pattern": "([0-9]{5})/[0-9]{11}/[0-9]{6,7}",
     "enrolled_selector": "span.text-success",

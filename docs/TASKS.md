@@ -2324,7 +2324,7 @@
 
 ### T206. Добавить общий decoder для таблиц с проверенными фильтрами
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T205.
 
@@ -2343,11 +2343,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b17-filtered-family.md](../docs/evidence/b17-filtered-family.md) — Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet.
 
 ### T207. Независимо сверить и аттестовать архивную группу БГУ
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T206.
 

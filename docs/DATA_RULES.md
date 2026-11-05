@@ -147,3 +147,17 @@ participation=unknown. Publication text without a timezone leaves sourceUpdatedA
 null; archive never becomes fresh after a new fetch. Contract groups cannot enable
 the general-budget scenario. Unknown/empty sections are unsupported until reviewed.
 Old V1/V2 decoders and proofs retain their original interpretation.
+
+B17 reviewed-filtered-table-v1: exact selected values/labels, unchecked partial
+view, source-declared count, header spans, cell roles and per-row public program
+identity are checked. BGU's minimal lookup identity is only the first5digits of
+its composite public code; all109are independently unique in this exact scope.
+Other parts are discarded before HMAC and never requested for lookup. Duplicate
+minimal IDs fail closed even if full composite codes differ. Source/group/year
+scoping remains unchanged; old versions keep their previous identity rules.
+The full official order uses column4, total score column6, code block column3;
+auxiliary paid ranking is not priority. Consent/priority are null, contract payment
+is not consent. Only the explicit reviewed enrollment text is enrolled; absence
+is unknown. Contract capacity20 is not a budget quota and enables no budget model.
+Date text without timezone leaves sourceUpdatedAt null. This archive is never
+fresh; exact default GET support does not attest other selections or POST states.

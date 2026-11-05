@@ -6460,7 +6460,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T205"
       ],
@@ -6476,7 +6476,12 @@
         "Старые версии/proofs не меняются",
         "Порядок и только проверенные поля сохраняются; чужой scope/неполный список отклоняется"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b17-filtered-family.md",
+          "note": "Generic filtered version,109synthetic rows, closed scope/count/roles/minimal-ID/enrollment checks;65native targeted passed,0skip. Legacy profiles/proofs unchanged; no runtime attestation yet."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6485,7 +6490,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T206"
       ],
