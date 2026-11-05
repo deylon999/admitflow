@@ -1,5 +1,7 @@
 # S177 — B15: масштабирование подключения
 
+T195 теперь завершена:1073URL/633учреждения,624безвыбранной ссылки с исходной причиной; offline replay идентичен,6unitpassed. ТекущаяT196: реальные структуры и общие семейства. Ручное исследование официальных bachelor страниц нашло одинаковый `/abitur/.../competition/` шаблон на www.miepl.ru (4ссылки),uifr.ru (7),nibmoscow.ru (3); это пока кандидаты, не аттестация. Приватные parent bodies в backend/var/research/b15-family. www.mrsei.ru TLSerror, проверка сертификатов не отключалась. T197уже done(48nativepassed),T198/T199ещё todo.
+
 T197 завершена первой из независимых задач: активный manifest/immutable shards вместо одного JSON, старые3profiles/proofs сохранены;1001synthetic profiles/11shards проверены, native targeted48passed/0skip. ТекущаяT195: bounded admissions crawl выполнен по1073URL/633учреждениям, завершается offline replay/evidence. ЗатемT196 реальные структуры, T198 новое семейство, T199 массовая очередь. T056/T057 открыты. Соседние проекты и пользовательские БД не менять; собственные test PG/runner/network admitflow-b15-* работают для проверок. B14 preview5270/API8027 пока сохранены.
 
 # S176 — B14: национальный каталог

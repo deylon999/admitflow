@@ -22,6 +22,7 @@ sys.path.insert(0,str(ROOT/'backend'))
 from bs4 import BeautifulSoup
 from app.national_catalog import load_catalog,valid_url
 from app.sources.fetcher import Fetcher,FetchPolicy,FetchError
+from app.sources.navigation import admissions_link_score
 
 KEYWORDS=re.compile(r'абитур|поступ|при[её]м|конкурс|списк|admission|abitur|priem|postup|rating',re.I)
 LOCKS={};GUARD=threading.Lock()
@@ -52,7 +53,7 @@ def discover(body,url,charset=None):
         # Navigation links only; never export per-person query parameters.
         if re.search(r'(snils|passport|candidate|person|code|token|email)=',urlsplit(href).query,re.I):continue
         links[href]=dict(url=href,label=label[:180],external=urlsplit(href).hostname!=urlsplit(url).hostname)
-    ordered=sorted(links.values(),key=lambda item:(not bool(re.search(r'конкурс|списк|rating',item['label']+' '+item['url'],re.I)),item['url']))[:40]
+    ordered=sorted(links.values(),key=lambda item:(-admissions_link_score(item['url'],item['label']),not bool(re.search(r'конкурс|списк|rating',item['label']+' '+item['url'],re.I)),item['url']))[:40]
     hints=[]
     if doc.select('script[src*="/bitrix/"] , link[href*="/bitrix/"]'):hints.append('bitrix-assets')
     if doc.select('#__next, script#__NEXT_DATA__, #app, #root'):hints.append('javascript-shell')
@@ -61,7 +62,7 @@ def discover(body,url,charset=None):
     return dict(links=ordered,formatHints=hints or ['unknown'])
 
 
-def observe(url,cache):
+def observe(url,cache,*,retain_body=False):
     key=hashlib.sha256(url.encode()).hexdigest()
     path=cache/(key+'.json')
     if path.exists():
@@ -80,14 +81,18 @@ def observe(url,cache):
         with lock:
             try:
                 robots=fetcher.fetch(urlunsplit(('https',host,'/robots.txt','','')))
-                rules=RobotFileParser();rules.parse(robots.body.decode('utf-8',errors='replace').splitlines())
-                result['robotsState']='allowed' if rules.can_fetch('AdmitFlow/0.2',url) else 'disallowed'
+                if robots.content_type=='text/plain':
+                    rules=RobotFileParser();rules.parse(robots.body.decode('utf-8',errors='replace').splitlines())
+                    result['robotsState']='allowed' if rules.can_fetch('AdmitFlow/0.2',url) else 'disallowed'
             except FetchError:pass
             if result['robotsState']=='disallowed':
                 result.update(state='robots_disallowed',error='robots_disallowed')
             else:
                 time.sleep(1)
                 response=fetcher.fetch(url)
+                if retain_body:
+                    (cache/(response.payload_hash+'.body')).write_bytes(response.body)
+                    result.update(bodyFile=response.payload_hash+'.body',charset=response.charset)
                 result.update(state='discovered' if response.content_type=='text/html' else 'not_html',finalUrl=response.url,
                     payloadHash=response.payload_hash,contentType=response.content_type,
                     **(discover(response.body,response.url,response.charset) if response.content_type=='text/html' else {}))

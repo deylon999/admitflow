@@ -2069,7 +2069,7 @@
 
 ### T195. Проверить найденные страницы приёма и признаки списков
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T193.
 
@@ -2088,11 +2088,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b15-admissions-inventory.md](../docs/evidence/b15-admissions-inventory.md) — 1257 reference entries reconciled; 633 institutions/1073 URLs selected and observed; 6 unit checks and identical offline replay passed. Candidate table evidence remains incomplete/unattested; no sources enabled.
 
 ### T196. Сгруппировать реальные структуры списков для повторного использования
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T195.
 

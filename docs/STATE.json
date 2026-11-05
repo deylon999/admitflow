@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": "T195",
+  "currentTask": "T196",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S177",
-  "resumeAction": "B15: T197 завершена; текущая T195. См. evidence docs/evidence/b15-profile-catalog.md. Национальный охват пока не завершён; T056/T057 остаются открытыми.",
+  "resumeAction": "B15: T195 завершена; текущая T196. См. evidence docs/evidence/b15-admissions-inventory.md. Национальный охват пока не завершён; T056/T057 остаются открытыми.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

@@ -933,3 +933,5 @@ S176/T194/B14 final 5/5: новый scope SGU4576, 453 original rows/24 мест
 S177: T195 review — код и6unit checks готовы, финальный bounded crawl ещё выполняется. Чтобы не ждать сеть, активирована независимая T197 (dependsT194done). Одна in_progress соблюдается; исходные статусы/история B14 не меняются. Проверка T197:1001synthetic profiles, immutable hashes/legacy equivalence и негативные manifest cases.
 
 S177/T197: Immutable manifest/shards preserve all 3 old scopes; 1001 synthetic profiles loaded in 11 shards; 48 native-PG targeted tests passed, 0 skipped. No real coverage added. Evidence: docs/evidence/b15-profile-catalog.md. Next T195.
+
+S177/T195: 1257 reference entries reconciled; 633 institutions/1073 URLs selected and observed; 6 unit checks and identical offline replay passed. Candidate table evidence remains incomplete/unattested; no sources enabled. Evidence: docs/evidence/b15-admissions-inventory.md. Next T196.

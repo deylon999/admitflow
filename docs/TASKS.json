@@ -6114,7 +6114,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T193"
       ],
@@ -6130,7 +6130,12 @@
         "Есть воспроизводимый отчёт по всем исходным учреждениям",
         "Структурные признаки не выданы за аттестацию или полный импорт"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b15-admissions-inventory.md",
+          "note": "1257 reference entries reconciled; 633 institutions/1073 URLs selected and observed; 6 unit checks and identical offline replay passed. Candidate table evidence remains incomplete/unattested; no sources enabled."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6139,7 +6144,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T195"
       ],
