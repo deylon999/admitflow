@@ -6332,7 +6332,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T201"
       ],
@@ -6349,7 +6349,12 @@
         "Нельзя регистрировать URL или неизвестные профили",
         "Конфликт не оставляет частично подключённый набор; ключ/карантин/история сохраняются"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b16-profile-batch.md",
+          "note": "Atomic1-100 exact manifest IDs, shared catalog mutex, late-conflict/quarantine rollback and legacy preservation;41targeted+14expanded native checks passed,0skip."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6358,7 +6363,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T196"
       ],

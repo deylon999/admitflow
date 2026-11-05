@@ -373,6 +373,24 @@ search_name=name.casefold() или search_text=(title+' '+official_id).casefold(
 в той же транзакции. PostgreSQL lower() не является заменой casefold.
 Публичный API не разрешает такие изменения метаданных.
 
+### B16: пакет проверенных профилей
+
+Из backend, со своими DATABASE_URL и прежним SOURCE_IDENTITY_KEY:
+
+```powershell
+python -m app.sources.batch section-1881-55-0-2026 section-1881-55-1-2026 --plan
+python -m app.sources.batch section-1881-55-0-2026 section-1881-55-1-2026 --enable
+```
+
+`--plan` не подключается к БД и не проверяет конфликты/ключ. Фактическая команда
+регистрирует1–100точных ID из manifest одной транзакцией; неизвестные ID/URL/
+дубли запрещены. Без--enable новые записи disabled; прежние enabled сохраняются.
+Конфликт/карантин/недоступный reviewed registry откатывает весь набор и журнал
+этой попытки. Старые parser versions, timestamps и snapshots не заменяются.
+Общий catalog mutex сериализует seed/pilot/single/batch metadata writes.
+Команда не ставит задания в очередь, не выполняет HTTP и не включает сценарии;
+enqueue и worker остаются отдельными действиями. Ключ не регенерировать.
+
 ## Бэкап, сигналы и откат (T049, T050)
 
 Файлы подготовлены и проверены в CI на Compose-контуре. На production они ещё не запускались.

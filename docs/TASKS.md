@@ -2231,7 +2231,7 @@
 
 ### T202. Подключать набор проверенных профилей атомарно
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T201.
 
@@ -2250,11 +2250,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b16-profile-batch.md](../docs/evidence/b16-profile-batch.md) — Atomic1-100 exact manifest IDs, shared catalog mutex, late-conflict/quarantine rollback and legacy preservation;41targeted+14expanded native checks passed,0skip.
 
 ### T203. Исследовать следующий подтверждаемый формат списков
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T196.
 

@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..admissions import Campaign,CompetitionGroup,Source,University
 from ..catalog import INITIAL_UNIVERSITIES
+from ..catalog_lock import lock_catalog
 from .adapters.sgu2026 import GROUP_ID,SOURCE_ID,URL,VERSION
 from .contracts import AdapterError
 from .publishing import binding_from_db
@@ -23,8 +24,7 @@ def register_sgu(engine,*,enable=False,registry=PRODUCTION_REGISTRY):
     if type(enable) is not bool:raise ValueError('invalid_enable_flag')
     insert=pg_insert if engine.dialect.name=='postgresql' else sqlite_insert
     with Session(engine) as db:
-        if engine.dialect.name=='sqlite':db.execute(text('BEGIN IMMEDIATE'))
-        else:db.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('pilot:sgu2026',173))"))
+        lock_catalog(db,engine)
         rows=[{**row,'search_name':row['name'].casefold()} for row in INITIAL_UNIVERSITIES]
         db.execute(insert(University.__table__).values(rows).on_conflict_do_nothing(index_elements=['id']))
         campaign=db.get(Campaign,CAMPAIGN_ID)

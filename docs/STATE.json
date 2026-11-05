@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-05",
-  "currentTask": "T202",
+  "currentTask": "T203",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S178",
-  "resumeAction": "B16: T201 завершена, текущая T202. Evidence: docs/evidence/b16-sql-catalog.md. Demo8091/key/volumes сохранить; национальное покрытие ещё не завершено.",
+  "resumeAction": "B16: T202 завершена, текущая T203. Evidence: docs/evidence/b16-profile-batch.md. Demo8091/key/volumes сохранить; национальное покрытие ещё не завершено.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
