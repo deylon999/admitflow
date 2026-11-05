@@ -6618,7 +6618,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T210"
       ],
@@ -6634,7 +6634,12 @@
         "Ошибка воспроизведена и затронутые проверки проходят с прежними гарантиями продукта",
         "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b18-confirmation-focus.md",
+          "note": "Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6643,7 +6648,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T211"
       ],

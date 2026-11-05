@@ -4572,7 +4572,7 @@
 
 ### T211. Исправить сбой мобильного браузерного сценария
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T210.
 
@@ -4590,11 +4590,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b18-confirmation-focus.md](../docs/evidence/b18-confirmation-focus.md) — Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed.
 
 ### T212. Устранить причины зависаний CI и Firefox
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T211.
 

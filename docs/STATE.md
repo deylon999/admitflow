@@ -1,5 +1,9 @@
 # S180 — B18 CI repair
 
+T211done;currentT212. Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed. Evidence: docs/evidence/b18-confirmation-focus.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S180 — B18 CI repair
+
 T210done;currentT211. Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed. Evidence: docs/evidence/b18-ci-diagnosis.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S179 — B17: финальный checkpoint

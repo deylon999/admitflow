@@ -53,7 +53,7 @@ for (const theme of ['light', 'dark']) test(`confirmation keyboard at320px ${the
   await page.addInitScript(value => localStorage.setItem('abiturient-theme', value), theme);
   await page.setViewportSize({ width: 320, height: 1100 });
   await find(page);
-  // The heading takes focus one frame after the response renders; moving earlier would lose it.
+  // The committed preview must receive focus before keyboard navigation continues.
   await expect(page.getByRole('heading', { name: 'Проверьте выбранную запись' })).toBeFocused();
   const confirmation = page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись');
   await confirmation.focus();

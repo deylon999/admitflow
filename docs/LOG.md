@@ -975,3 +975,5 @@ S179/T209/B17 final5/5: Final666backend/0skip,116Vitest/build,84compiledChromium
 Пользователь сообщил2cancelled/3success/1failure и поручил продолжать. Приоритет временно изменён с T057 на пятёрку T210–T214: реальные логи, mobile failure, timeout/Firefox, workflow diagnostics/local checks, push/зелёный remote run. Одна activeT210. Git clean at c44c21c, обычный push разрешён предыдущим указанием. Demo и данные не менять.
 
 S180/T210: Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed. Evidence: docs/evidence/b18-ci-diagnosis.md. Next T211.
+
+S180/T211: Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed. Evidence: docs/evidence/b18-confirmation-focus.md. Next T212.
