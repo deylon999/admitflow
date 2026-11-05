@@ -1,0 +1,16 @@
+{
+  "sourceId": "sgu-2026-4576",
+  "checkedAt": "2026-11-05T10:36:45.795785+00:00",
+  "externalHttpsFetches": 1,
+  "workerState": "success",
+  "rows": 453,
+  "seats": 24,
+  "snapshots": 1,
+  "kind": "archive",
+  "independentOriginalRowsChecked": 453,
+  "storedAuditSuccess": true,
+  "payloadHash": "46b9a37c956b646e7ee60df021116e15cc11b505f5ab1547d9391112447b0a4b",
+  "originalAuditHashMatched": false,
+  "disposableSchemaRemoved": true,
+  "userDatabaseChanged": false
+}

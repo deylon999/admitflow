@@ -1,0 +1,73 @@
+{
+  "session": "S176",
+  "batch": "B14",
+  "completedTasks": [
+    "T190",
+    "T191",
+    "T192",
+    "T193",
+    "T194"
+  ],
+  "nationalCoverageComplete": false,
+  "nationalTotal": null,
+  "referenceCatalog": {
+    "institutions": 1257,
+    "branches": 521,
+    "regions": 89,
+    "edition": 2025,
+    "sites": 1166,
+    "unknownSites": 91
+  },
+  "inventory": {
+    "checkedEntries": 1257,
+    "uniquePages": 1083,
+    "counts": {
+      "unknown_site": 91,
+      "discovered": 641,
+      "unavailable": 435,
+      "no_links_found": 55,
+      "robots_disallowed": 35
+    },
+    "supportedSourcesAdded": 0
+  },
+  "newReviewedScope": {
+    "sourceId": "sgu-2026-4576",
+    "kind": "archive",
+    "rows": 453,
+    "seats": 24,
+    "version": "reviewed-html-table-v2",
+    "universitiesAdded": 0
+  },
+  "verification": {
+    "backend": {
+      "passed": 571,
+      "skipped": 0,
+      "requiredPostgres": true,
+      "seconds": 325.04,
+      "platform": "Linux-container-filesystem"
+    },
+    "vitest": {
+      "passed": 116
+    },
+    "productionBuild": true,
+    "chromium": {
+      "passed": 77,
+      "skipped": 32,
+      "seconds": 126,
+      "mode": "compiled-preview",
+      "api": "isolated SQLite"
+    },
+    "actualHttpsWorkerPostgres": true,
+    "offlineCatalogReplayIdentical": true,
+    "offlineInventoryReplayIdentical": true
+  },
+  "limits": [
+    "Мониторинг имеет исключения; полного национального знаменателя нет",
+    "Три проверенных scope в двух вузах; не национальная автоматизация",
+    "Новая группа проверена в disposable PG, пользовательская БД не менялась",
+    "32 Chromium skips требуют managed source fixture/nginx; Firefox/WebKit в B14 не повторялись",
+    "Staging/HTTPS/24h/production gates не закрыты",
+    "Старые fixtures/history privacy decisions остаются открытыми",
+    "Коммиты локальные, push и новый remote CI не выполнялись"
+  ]
+}

@@ -1953,7 +1953,7 @@
       "dependsOn": [
         "T031",
         "T037",
-        "T056",
+        "T192",
         "T194"
       ],
       "deliverables": [
@@ -1961,8 +1961,11 @@
         "docs/sources/"
       ],
       "steps": [
-        "Сгруппировать новые сайты по реальным шаблонам и приоритету",
-        "Для каждой интеграции пройти passport/fixtures/сверку/наблюдение до включения"
+        "Использовать national-inventory.json как список кандидатов, сохраняя unknown/error/robots статусы",
+        "Проверить страницы приёма и сгруппировать реальные форматы списков, не выводить совместимость из CMS",
+        "Расширить хранение профилей по семействам без текущего предела одного JSON и с сохранением старых версий",
+        "Для каждого нового источника пройти паспорт, оригинал, независимую сверку и явную регистрацию",
+        "Проверить массовую очередь, per-domain лимиты и свежесть до объявления национальной автоматизации"
       ],
       "acceptance": [
         "Каждая добавленная группа имеет доказательство совместимости",
@@ -6073,7 +6076,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T193"
       ],
@@ -6089,7 +6092,20 @@
         "Совместимость доказана оригинальными данными и тестами",
         "Неполный или недоступный источник не закрывает задачу; нет заявления национального охвата"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b14-sgu4576-audit.json",
+          "note": "453 original rows independently checked; new fixture uses synthetic candidate values."
+        },
+        {
+          "path": "docs/evidence/b14-sgu4576-runtime.json",
+          "note": "Actual bounded HTTPS -> worker -> isolated PostgreSQL -> stored audit; 453 rows/24 seats; schema removed."
+        },
+        {
+          "path": "docs/evidence/b14-final-verification.json",
+          "note": "Final current code: 571 mandatory-PG backend passed/0 skipped; 116 Vitest/build; compiled Chromium 77 passed/32 explicitly scoped skips."
+        }
+      ],
       "blockedReason": null
     }
   ]

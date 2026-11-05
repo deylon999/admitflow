@@ -1545,14 +1545,17 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
 
-**Зависимости:** T031, T037, T056, T194.
+**Зависимости:** T031, T037, T192, T194.
 
 **Результаты/файлы:** `backend/app/sources/adapters/`; `docs/sources/`.
 
 **Шаги:**
 
-1. Сгруппировать новые сайты по реальным шаблонам и приоритету.
-2. Для каждой интеграции пройти passport/fixtures/сверку/наблюдение до включения.
+1. Использовать national-inventory.json как список кандидатов, сохраняя unknown/error/robots статусы.
+2. Проверить страницы приёма и сгруппировать реальные форматы списков, не выводить совместимость из CMS.
+3. Расширить хранение профилей по семействам без текущего предела одного JSON и с сохранением старых версий.
+4. Для каждого нового источника пройти паспорт, оригинал, независимую сверку и явную регистрацию.
+5. Проверить массовую очередь, per-domain лимиты и свежесть до объявления национальной автоматизации.
 
 **Критерии закрытия:**
 
@@ -2041,7 +2044,7 @@
 
 ### T194. Проверить следующее семейство или новый scope на реальном источнике
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T193.
 
@@ -2060,7 +2063,9 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b14-sgu4576-audit.json](../docs/evidence/b14-sgu4576-audit.json) — 453 original rows independently checked; new fixture uses synthetic candidate values.
+- [docs/evidence/b14-sgu4576-runtime.json](../docs/evidence/b14-sgu4576-runtime.json) — Actual bounded HTTPS -> worker -> isolated PostgreSQL -> stored audit; 453 rows/24 seats; schema removed.
+- [docs/evidence/b14-final-verification.json](../docs/evidence/b14-final-verification.json) — Final current code: 571 mandatory-PG backend passed/0 skipped; 116 Vitest/build; compiled Chromium 77 passed/32 explicitly scoped skips.
 
 ## E4. Объяснения и UX
 

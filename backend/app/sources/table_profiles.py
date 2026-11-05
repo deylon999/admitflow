@@ -19,6 +19,7 @@ def load_profiles():
             fields=dict(fields)
             for key in ('columns','identity','catalog'):fields[key]=tuple(tuple(pair) for pair in fields.get(key,[]))
             for key in ('headers','cell_labels'):fields[key]=tuple(fields[key])
+            if 'unordered_label_groups' in fields:fields['unordered_label_groups']=tuple(tuple(group) for group in fields['unordered_label_groups'])
             if fields['proof'] is not None:
                 proof=dict(fields['proof']);proof['verified_at']=datetime.fromisoformat(proof['verified_at']);fields['proof']=Attestation(**proof)
             profiles[name]=TableProfile(**fields)

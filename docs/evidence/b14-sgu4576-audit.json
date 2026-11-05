@@ -1,0 +1,23 @@
+{
+  "sourceId": "sgu-2026-4576",
+  "sourceUrl": "https://www.sgu.ru/svodka/4576",
+  "kind": "archive",
+  "year": 2026,
+  "originalSha256": "bf8467fc8097eb14a3b436505307ba79e796e1e5951a00c410e161d22090b09c",
+  "originalBytes": 4637847,
+  "checkedRows": 453,
+  "seats": 24,
+  "independentParser": "stdlib.HTMLParser",
+  "comparedFields": [
+    "official_rank",
+    "score",
+    "consent",
+    "priority",
+    "participation",
+    "scoped_identity"
+  ],
+  "fixtureKind": "synthetic-candidate-values-with-reviewed-public-metadata",
+  "fixtureSha256": "95959697f27d4f3300040555f070d7b01b4562b8fb77dd01ceccdf600c464190",
+  "originalCandidateValuesExported": false,
+  "success": true
+}

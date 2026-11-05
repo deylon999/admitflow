@@ -1,5 +1,21 @@
 # B14 — национальный каталог
 
+## Финальные проверки текущей V2
+
+Linux container filesystem, `python -m pytest -q --require-postgres --junitxml=/tmp/b14-final-backend.xml`: **571 passed,0skipped,325.04s,exit0**. JUnit сохранён локально в ignored backend/.pytest_cache/b14-final-backend.xml. Предыдущие failed runs и их исправления сохранены ниже. Starlette/httpx deprecation и старый SQLAlchemy warning при тесте NOT VALID остаются предупреждениями.
+
+Frontend116Vitest/build exit0; полный compiled-preview Chromium **77passed/32scopedskips,2.1m,exit0**. Skips требуют nginx/управляемых source fixtures, не являются проверкой этих сценариев. Изменённый текст coverage assertion обновлён вместе с интерфейсом, смысл проверки отсутствия полного автоматического охвата сохранён. Мобильный screenshot просмотрен. Отдельный preview5270 проверен по exact dist HTML/entry SHA256 и API catalog1257/firstpage50. Свои тестовые контейнеры/PG volume/network удалены, preview/API оставлены для просмотра; пользовательские БД и соседние проекты не менялись. Пять task commits локальные; новый remote CI/push не выполнялись.
+
+## T194: третий проверенный scope общего parser
+
+SGU4576, архив 2026, 02.03.03 общий бюджет: 453 строки, 24 места. scripts/review_sgu_scope.py независимо сопоставил все оригинальные строки по 6 полям через stdlib.HTMLParser против рабочего decoder; кандидатные значения не экспортированы. Новый tracked fixture полностью синтетический, сохраняет только публичные метаданные/форму. Отчёт b14-sgu4576-audit.json и паспорт docs/sources/sgu-4576.md.
+
+Первый настоящий HTTPS worker дал invalid_format: источник переставляет альтернативы экзаменов в заголовке/data-label. Сделан общий reviewed-html-table-v2 только для нового scope с двумя явно проверенными множествами альтернатив. V1 остаётся строгим; прежние source bindings, normalized histories, профили и hashes не переписаны. Проверки перестановки, неизвестного экзамена, v1 refusal и повреждённого checksum добавлены.
+
+Настоящий повтор: b14-sgu4576-runtime.json — 1 HTTPS fetch в ограниченном дочернем процессе, worker success, 453 строки/24 места в отдельной native PG schema, 1 snapshot, все текущие оригинальные строки независимо сверены ещё раз, stored offline audit success. Hash нового HTTP ответа отличается от первого оригинала, что отражено originalAuditHashMatched=false; повторная независимая сверка проверила именно новый ответ. Schema удалена после проверки, пользовательская БД не менялась. Это третий scope в двух вузах, без заявления нового вуза, live-источника, суточной стабильности или национальной автоматизации.
+
+До V2 полный native Linux прогон 570 passed/0 skipped. После V2 целевые unit/parser/attestation 29 passed/1 actual PG skip на Windows; финальная Linux mandatory-PG регрессия повторяется с новой версией, поэтому старые числа не выдаются за финальные.
+
 ## T193: полная инвентаризация опорного набора
 
 Все 1257 записей сопоставлены с наблюдениями: 1083 уникальных страниц; 641 запись с кандидатными ссылками, 435 отказов безопасного запроса, 55 без ссылок, 35 robots_disallowed, 91 unknown_site. Отчёт docs/sources/national-inventory.json содержит источник каталога, даты, hashes, ограничения и supported=false; автоматических источников добавлено 0. Offline repeat из кэша идентичен. 3 inventory unit tests passed; подробнее docs/sources/national-inventory.md.

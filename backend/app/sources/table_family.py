@@ -9,6 +9,7 @@ from .html_inspection import document
 from .registry import Adapter,Attestation
 
 VERSION='reviewed-html-table-v1'
+SCHEMA_SET_VERSION='reviewed-html-table-v2'
 
 
 def clean(value):return ' '.join(value.replace(r'\xa0',' ').split())
@@ -35,6 +36,8 @@ class TableProfile:
     kind:str='archive'
     season_pattern:str=r'Приемная кампания\s+([0-9]{4})'
     catalog:tuple[tuple[str,str],...]=()
+    version:str=VERSION
+    unordered_label_groups:tuple[tuple[str,...],...]=()
 
     def __post_init__(self):
         from .fetcher import valid_domains
@@ -46,12 +49,26 @@ class TableProfile:
             and isinstance(self.headers,tuple) and bool(self.headers) and isinstance(self.identity,tuple) and bool(self.identity)
             and len({name for name,_ in self.columns})==len(self.columns) and {'rank','code','score'}<={name for name,_ in self.columns}
             and all(name in ('rank','code','score','consent','priority','status') and ((type(column) is int and 0<=column<self.cell_count) or (isinstance(column,str) and column in self.cell_labels)) for name,column in self.columns))
-        if not valid:raise ValueError('invalid_table_profile')
+        if (not valid or self.version not in (VERSION,SCHEMA_SET_VERSION)
+            or self.version==VERSION and self.unordered_label_groups
+            or any(len(group)<2 or len(set(group))!=len(group) or any(not isinstance(x,str) or not x for x in group) for group in self.unordered_label_groups)):
+            raise ValueError('invalid_table_profile')
         re.compile(self.season_pattern);re.compile(self.priority_pattern)
 
     def binding_matches(self,binding):
         return (binding.source_id,binding.group_id,binding.url,binding.domain,binding.year,binding.kind,binding.adapter_version)==(
-            self.source_id,self.group_id,self.url,urlsplit(self.url).hostname,self.year,self.kind,VERSION)
+            self.source_id,self.group_id,self.url,urlsplit(self.url).hostname,self.year,self.kind,self.version)
+
+
+def schema_label(value,profile):
+    if profile.version==VERSION:return value
+    prefix=re.match(r'^(Экз\.\s+[0-9]+\s+)(.*)$',value)
+    content=prefix[2] if prefix else value
+    parts=tuple(part.strip() for part in content.split('/'))
+    for group in profile.unordered_label_groups:
+        if len(parts)==len(group) and set(parts)==set(group):
+            return (prefix[1] if prefix else '')+' / '.join(sorted(group))
+    return value
 
 
 def parse_table(response,binding,secret,profile):
@@ -70,7 +87,7 @@ def parse_table(response,binding,secret,profile):
         tables=soup.select(profile.table_selector)
         if len(tables)!=1:raise ValueError()
         table=tables[0];headers=tuple(clean(h.get_text(' ',strip=True)) for h in table.select('th'))
-        if headers!=profile.headers:raise ValueError()
+        if tuple(schema_label(h,profile) for h in headers)!=tuple(schema_label(h,profile) for h in profile.headers):raise ValueError()
         rows=[row for row in table.select(profile.row_selector) if row.find_all('td',recursive=False)]
         if len(rows)!=profile.rows:raise ValueError()
         entries=[];seen=set()
@@ -78,7 +95,7 @@ def parse_table(response,binding,secret,profile):
             cells=row.find_all('td',recursive=False)
             if len(cells)!=profile.cell_count:raise ValueError()
             labels=[td.get('data-label') for td in cells]
-            if profile.cell_labels and tuple(labels)!=profile.cell_labels:raise ValueError()
+            if profile.cell_labels and tuple(schema_label(label,profile) for label in labels)!=tuple(schema_label(label,profile) for label in profile.cell_labels):raise ValueError()
             by_label={td.get('data-label'):td for td in cells}
             fields={name:clean((cells[column] if isinstance(column,int) else by_label[column]).get_text(' ',strip=True)) for name,column in profile.columns}
             if fields['rank']!=str(index):raise ValueError()
@@ -109,18 +126,18 @@ def parse_table(response,binding,secret,profile):
         warnings=['no_source_timestamp']
         if any(row.consent is None for row in entries):warnings.append('unknown_consent')
         if any(row.priority is None for row in entries):warnings.append('unknown_priority')
-        return ParsedList(source_id=binding.source_id,group_id=binding.group_id,year=profile.year,adapter_version=VERSION,kind=profile.kind,complete=True,expected_rows=profile.rows,seats=profile.seats,source_updated_at=None,entries=tuple(entries),warnings=tuple(warnings))
+        return ParsedList(source_id=binding.source_id,group_id=binding.group_id,year=profile.year,adapter_version=profile.version,kind=profile.kind,complete=True,expected_rows=profile.rows,seats=profile.seats,source_updated_at=None,entries=tuple(entries),warnings=tuple(warnings))
     except AdapterError:raise
     except (ValueError,TypeError,KeyError,IndexError,InvalidOperation):raise AdapterError('invalid_format') from None
 
 
-def make_table_adapter(secret,profiles):
+def make_table_adapter(secret,profiles,*,version=VERSION):
     if not isinstance(secret,bytes) or len(secret)<32:raise ValueError('source_identity_key_required')
     profiles=tuple(profiles)
-    if not profiles or len({p.url for p in profiles})!=len(profiles) or any(p.proof is None for p in profiles):raise ValueError('reviewed_profiles_required')
+    if not profiles or len({p.url for p in profiles})!=len(profiles) or any(p.proof is None or p.version!=version for p in profiles):raise ValueError('reviewed_profiles_required')
     by_url={profile.url:profile for profile in profiles}
     def decode(response,binding):
         profile=by_url.get(binding.url)
         if profile is None:raise AdapterError('invalid_binding')
         return parse_table(response,binding,secret,profile)
-    return Adapter(VERSION,frozenset(urlsplit(p.url).hostname for p in profiles),decode,attested=True,attestations=tuple(p.proof for p in profiles),max_bytes=8*1024*1024)
+    return Adapter(version,frozenset(urlsplit(p.url).hostname for p in profiles),decode,attested=True,attestations=tuple(p.proof for p in profiles),max_bytes=8*1024*1024)

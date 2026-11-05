@@ -7,7 +7,7 @@ test('справочник не выдаётся за автоматически
   const coverage=await (await page.request.get('/api/v1/coverage')).json();
   await expect(section.locator('dd')).toHaveText(['catalogUniversities','automaticSources','publishedGroups','reviewedSources','importedGroups','importedUniversities','conditionalGroups'].map(key=>String(coverage[key])));
   await expect(section).toContainText('Последний импорт получен');
-  await expect(section).toContainText('Это не полный охват');
+  await expect(section).toContainText('Это не полный автоматический охват');
 });
 
 test('ошибка проверки покрытия не заменяется ложным нулём', async ({ page }) => {
