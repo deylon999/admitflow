@@ -60,13 +60,24 @@ def inspect_page(body,charset=None):
         except UnicodeError:return dict(listEvidence=[],pageKind='unknown-encoding')
     doc=BeautifulSoup(text,'html.parser');evidence=[]
     for table in doc.select('table')[:100]:
-        headers=[' '.join(cell.get_text(' ',strip=True).casefold().split()) for cell in table.select('th')]
+        header_cells=[cell for cell in table.select('th') if cell.find_parent('table') is table]
+        headers=[' '.join(cell.get_text(' ',strip=True).casefold().split()) for cell in header_cells]
         if not headers:continue
         kinds=[column_kind(label) for label in headers]
         if not {'candidate-code','snils'}.intersection(kinds) or 'score' not in kinds:continue
-        rows=[row for row in table.select('tr') if row.find_all('td',recursive=False)]
+        rows=[row for row in table.select('tr') if row.find_parent('table') is table and row.find_all('td',recursive=False)]
+        first_header=header_cells[0].find_parent('tr')
+        primary=[' '.join(cell.get_text(' ',strip=True).casefold().split()) for cell in first_header.find_all('th',recursive=False)]
+        spans=[]
+        for cell in header_cells:
+            for key in ('rowspan','colspan'):
+                value=cell.get(key,'1')
+                spans.append(int(value) if isinstance(value,str) and value.isascii() and value.isdigit() and 1<=int(value)<=100 else None)
         evidence.append(dict(headerHash=hashlib.sha256(json.dumps(headers,ensure_ascii=False,separators=(',',':')).encode()).hexdigest(),
             columns=kinds,headerCount=len(headers),observedRows=len(rows),
+            primaryHeaderHash=hashlib.sha256(json.dumps(primary,ensure_ascii=False,separators=(',',':')).encode()).hexdigest(),
+            primaryColumns=[column_kind(label) for label in primary],
+            hierarchicalHeader=all(v is not None for v in spans) and any(v>1 for v in spans),
             cellCounts=sorted({len(row.find_all('td',recursive=False)) for row in rows}),
             paginationDetected=bool(doc.select('.pagination,.pager,a[rel="next"]')),complete=False))
     return dict(listEvidence=evidence,pageKind='candidate-table' if evidence else 'javascript-shell' if doc.select('#app,#root,#__next,script#__NEXT_DATA__') else 'navigation-or-unknown')

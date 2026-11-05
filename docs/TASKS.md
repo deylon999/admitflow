@@ -2092,7 +2092,7 @@
 
 ### T196. Сгруппировать реальные структуры списков для повторного использования
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T195.
 
@@ -2111,7 +2111,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b15-format-families.md](../docs/evidence/b15-format-families.md) — 14 verified official child pages; 1 cross-institution structural candidate (MIEPP/UIFR), not automatic eligibility; 8 targeted tests and identical offline replay passed. Empty/header-only pages remain unsupported.
 
 ### T197. Масштабировать реестр профилей без одного ограниченного файла
 
@@ -2138,7 +2138,7 @@
 
 ### T198. Аттестовать повторяемое семейство на новых настоящих источниках
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T196, T197.
 

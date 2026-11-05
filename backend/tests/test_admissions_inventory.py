@@ -30,3 +30,9 @@ def test_cache_path_escape_and_body_tampering_are_refused(tmp_path,monkeypatch):
     name='0'*64+'.body';(tmp_path/name).write_bytes(b'tampered')
     monkeypatch.setattr(inventory,'observe',lambda *_args,**_kwargs:dict(bodyFile=name,payloadHash='0'*64))
     with pytest.raises(ValueError,match='hash mismatch'):inventory.inspect_observation('https://example.edu/',tmp_path)
+
+
+def test_nested_layout_table_does_not_duplicate_real_candidate_tables():
+    inner='<table><tr><th>№</th><th>Уникальный код поступающего</th><th>Конкурсные баллы</th></tr><tr><td>1</td><td>FIXTURE-1</td><td>200</td></tr></table>'
+    result=inventory.inspect_page(('<table><tr><td>'+inner+'</td></tr></table>').encode())
+    assert len(result['listEvidence'])==1 and result['listEvidence'][0]['observedRows']==1

@@ -935,3 +935,5 @@ S177: T195 review — код и6unit checks готовы, финальный bou
 S177/T197: Immutable manifest/shards preserve all 3 old scopes; 1001 synthetic profiles loaded in 11 shards; 48 native-PG targeted tests passed, 0 skipped. No real coverage added. Evidence: docs/evidence/b15-profile-catalog.md. Next T195.
 
 S177/T195: 1257 reference entries reconciled; 633 institutions/1073 URLs selected and observed; 6 unit checks and identical offline replay passed. Candidate table evidence remains incomplete/unattested; no sources enabled. Evidence: docs/evidence/b15-admissions-inventory.md. Next T196.
+
+S177/T196: 14 verified official child pages; 1 cross-institution structural candidate (MIEPP/UIFR), not automatic eligibility; 8 targeted tests and identical offline replay passed. Empty/header-only pages remain unsupported. Evidence: docs/evidence/b15-format-families.md. Next T198.

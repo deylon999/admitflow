@@ -1,0 +1,8 @@
+{
+  "format": "admitflow-reviewed-discovery-seeds-v1",
+  "parents": [
+    {"registryId": "1881", "url": "https://www.miepl.ru/abitur/bachelor/", "childPathMarker": "/competition/"},
+    {"registryId": "110420", "url": "https://uifr.ru/abitur/bachelor/", "childPathMarker": "/competition/"},
+    {"registryId": "110341", "url": "https://nibmoscow.ru/abitur/bachelor/", "childPathMarker": "/competition/"}
+  ]
+}

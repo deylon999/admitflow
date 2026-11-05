@@ -1,0 +1,1356 @@
+{
+  "format": "admitflow-format-families-v1",
+  "admissionsInventorySha256": "20aeb887bba7dfe935c032b7219edc7f54f27be8581dd486e4d2e08c89ca2b17",
+  "discoverySeedsSha256": "c890620480f1badaaadd91983084f71ec725289ae3a86db1a619d6e09d71a1eb",
+  "parents": [
+    {
+      "registryId": "1881",
+      "parentUrl": "https://www.miepl.ru/abitur/bachelor/",
+      "parentPayloadHash": "a7794d1cc8f71b21d80b62770190334ee0b26bfe1203bc4cfade57b39d3df19a",
+      "parentState": "discovered",
+      "children": [
+        "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+        "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.01-ekonomika---obrazovatelynaya-programma--finansy-i-kredit_53.html",
+        "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+        "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html"
+      ]
+    },
+    {
+      "registryId": "110420",
+      "parentUrl": "https://uifr.ru/abitur/bachelor/",
+      "parentPayloadHash": "16c554f44a3ac9c095de6730f18bb505d177425d472a36f974f800d69a603a77",
+      "parentState": "discovered",
+      "children": [
+        "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+        "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+        "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+        "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+        "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+        "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+        "https://uifr.ru/abitur/bachelor/competition/turizm_15.html"
+      ]
+    },
+    {
+      "registryId": "110341",
+      "parentUrl": "https://nibmoscow.ru/abitur/bachelor/",
+      "parentPayloadHash": "e5ec7480c145c7a1d415eb0aee2f7a36f51ee6b4a0652a4810df5b341a352061",
+      "parentState": "discovered",
+      "children": [
+        "https://nibmoscow.ru/abitur/bachelor/competition/38.03.01-ekonomika_34.html",
+        "https://nibmoscow.ru/abitur/bachelor/competition/38.03.02-menedghment_35.html",
+        "https://nibmoscow.ru/abitur/bachelor/competition/40.03.01-yurisprudenciya_36.html"
+      ]
+    }
+  ],
+  "supplementPages": [
+    {
+      "requestedUrl": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.01-ekonomika_34.html",
+      "checkedAt": "2026-11-05T11:13:21.893398+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.01-ekonomika_34.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "7707528b841d8139c7d747adc07fe5c914c6714da3664b81b2624750a3798032.body",
+      "charset": null,
+      "finalUrl": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.01-ekonomika_34.html",
+      "payloadHash": "7707528b841d8139c7d747adc07fe5c914c6714da3664b81b2624750a3798032",
+      "contentType": "text/html",
+      "listEvidence": [],
+      "pageKind": "navigation-or-unknown",
+      "registryIds": [
+        "110341"
+      ]
+    },
+    {
+      "requestedUrl": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.02-menedghment_35.html",
+      "checkedAt": "2026-11-05T11:13:23.215355+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.02-menedghment_35.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "d94cbd536b74c095bdcfdaed509d92f6417286b9586b92317ead9ce09a09c14c.body",
+      "charset": null,
+      "finalUrl": "https://nibmoscow.ru/abitur/bachelor/competition/38.03.02-menedghment_35.html",
+      "payloadHash": "d94cbd536b74c095bdcfdaed509d92f6417286b9586b92317ead9ce09a09c14c",
+      "contentType": "text/html",
+      "listEvidence": [],
+      "pageKind": "navigation-or-unknown",
+      "registryIds": [
+        "110341"
+      ]
+    },
+    {
+      "requestedUrl": "https://nibmoscow.ru/abitur/bachelor/competition/40.03.01-yurisprudenciya_36.html",
+      "checkedAt": "2026-11-05T11:13:24.510684+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://nibmoscow.ru/abitur/bachelor/competition/40.03.01-yurisprudenciya_36.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "6d63b43de48606a82c952c6932ec0f3aed73ff86476f70315d281661a102d187.body",
+      "charset": null,
+      "finalUrl": "https://nibmoscow.ru/abitur/bachelor/competition/40.03.01-yurisprudenciya_36.html",
+      "payloadHash": "6d63b43de48606a82c952c6932ec0f3aed73ff86476f70315d281661a102d187",
+      "contentType": "text/html",
+      "listEvidence": [],
+      "pageKind": "navigation-or-unknown",
+      "registryIds": [
+        "110341"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+      "checkedAt": "2026-11-05T11:13:16.427660+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "d6002b18939e40ff72256c5b1f9b255814dd377df420c9751801c05a47922996.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+      "payloadHash": "d6002b18939e40ff72256c5b1f9b255814dd377df420c9751801c05a47922996",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "a121bbe7bfd1bfdcf9e6ae07d498ca5b3879faee12e6eddd21d2dff8a9fc239d",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 40,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+      "checkedAt": "2026-11-05T11:13:17.947783+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "739721aa4cd914a8cadc1d55a3a3cc3965cf9ae6dbfb8f5dd6896801779b59ee.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+      "payloadHash": "739721aa4cd914a8cadc1d55a3a3cc3965cf9ae6dbfb8f5dd6896801779b59ee",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "ddb296b82cbdeec7743a5eb2d7210d3eb7a7e073efd4413762ca2a92f36f050a",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 2,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+      "checkedAt": "2026-11-05T11:13:16.326035+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "ef253d216e6fd5db82660e0dcf07338de16ece8156403a2700678639cb4f51d9.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+      "payloadHash": "ef253d216e6fd5db82660e0dcf07338de16ece8156403a2700678639cb4f51d9",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "2265fa88b9afecf143dd5c34e061005b44825993ed6d74ef02d3dbc5660002ed",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 85,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+      "checkedAt": "2026-11-05T11:13:19.300459+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "336627dfe1e046193385c80faa04cd22cc139357f998e653c11e3540d265074f.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+      "payloadHash": "336627dfe1e046193385c80faa04cd22cc139357f998e653c11e3540d265074f",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "7118528bca0a9089acabb5fa07951c25ef948dbd565a863b6492cbf09fb08c9d",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 7,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+      "checkedAt": "2026-11-05T11:13:20.590093+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "16aa9b0cc5f9b233a2117fc231e82b5ff5c34a01a5c14af8d8c08012e7b031e1.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+      "payloadHash": "16aa9b0cc5f9b233a2117fc231e82b5ff5c34a01a5c14af8d8c08012e7b031e1",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "d5facc3810772ae9414117da744569dd4e9f44a666a3926f37c9c044c9afb269",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 6,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+      "checkedAt": "2026-11-05T11:13:15.091304+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "5ddcd46f2e70fd13975f084f52d7cfa45a850458f5ad0fcf0a59d34a1d03d0ff.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+      "payloadHash": "5ddcd46f2e70fd13975f084f52d7cfa45a850458f5ad0fcf0a59d34a1d03d0ff",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "8d12bc1adcec8853fdbdba1916568031c05273dc76bdaff1828e28f2f1ee1417",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 5,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+      "checkedAt": "2026-11-05T11:13:17.542081+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur",
+          "label": "Приемная кампания 2026",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "d48d6cb1f14fff9c197cad5a34f577d9f44c8c290252fdad4f8dc1161046ab5a.body",
+      "charset": "utf-8",
+      "finalUrl": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+      "payloadHash": "d48d6cb1f14fff9c197cad5a34f577d9f44c8c290252fdad4f8dc1161046ab5a",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "2265fa88b9afecf143dd5c34e061005b44825993ed6d74ef02d3dbc5660002ed",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 15,
+          "observedRows": 4,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            13
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "110420"
+      ]
+    },
+    {
+      "requestedUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+      "checkedAt": "2026-11-05T11:13:12.658484+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur",
+          "label": "Приемная кампания на 2026/2027 учебный год",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "eb1ec496a5df0d968acb16c40255f383ac8e9f9b103165a8c7ba878079de220c.body",
+      "charset": null,
+      "finalUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+      "payloadHash": "eb1ec496a5df0d968acb16c40255f383ac8e9f9b103165a8c7ba878079de220c",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "4dc10fc649b236fa7d2046141fda2a5a28d4a2724c8d2a41ecf908b6ef9a5044",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 17,
+          "observedRows": 2,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            15
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "1881"
+      ]
+    },
+    {
+      "requestedUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.01-ekonomika---obrazovatelynaya-programma--finansy-i-kredit_53.html",
+      "checkedAt": "2026-11-05T11:13:12.658985+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur",
+          "label": "Приемная кампания на 2026/2027 учебный год",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.01-ekonomika---obrazovatelynaya-programma--finansy-i-kredit_53.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "b99a875c9e94350c9772c854f771864e3ba2497b05253ed4f8e5ccfb74869045.body",
+      "charset": null,
+      "finalUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.01-ekonomika---obrazovatelynaya-programma--finansy-i-kredit_53.html",
+      "payloadHash": "b99a875c9e94350c9772c854f771864e3ba2497b05253ed4f8e5ccfb74869045",
+      "contentType": "text/html",
+      "listEvidence": [],
+      "pageKind": "navigation-or-unknown",
+      "registryIds": [
+        "1881"
+      ]
+    },
+    {
+      "requestedUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+      "checkedAt": "2026-11-05T11:13:12.659488+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur",
+          "label": "Приемная кампания на 2026/2027 учебный год",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "997d57c65bdc6de9764413d7f5d948092d73656459c7b48b5429aedf2cdf173f.body",
+      "charset": null,
+      "finalUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+      "payloadHash": "997d57c65bdc6de9764413d7f5d948092d73656459c7b48b5429aedf2cdf173f",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "a6ce13a28836d4c0ca5be9db53ead55573f20ff90ea48716924245de38aca724",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 17,
+          "observedRows": 2,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            15
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "1881"
+      ]
+    },
+    {
+      "requestedUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+      "checkedAt": "2026-11-05T11:13:13.881852+00:00",
+      "state": "discovered",
+      "error": null,
+      "links": [
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor#abitur_competitionList",
+          "label": "Списки абитуриентов",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur",
+          "label": "Приемная кампания на 2026/2027 учебный год",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor",
+          "label": "Высшее образование - бакалавриат",
+          "external": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html#vikon-content",
+          "label": "К содержанию",
+          "external": false
+        }
+      ],
+      "formatHints": [
+        "unknown"
+      ],
+      "robotsState": "allowed",
+      "supported": false,
+      "bodyFile": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558.body",
+      "charset": null,
+      "finalUrl": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+      "payloadHash": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+      "contentType": "text/html",
+      "listEvidence": [
+        {
+          "headerHash": "3f152b1406280de081c5e366d59619f3f553f14437d3d05d48a7047254e91059",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 17,
+          "observedRows": 2,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            15
+          ],
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "headerHash": "3f152b1406280de081c5e366d59619f3f553f14437d3d05d48a7047254e91059",
+          "columns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority",
+            "other",
+            "score",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "other"
+          ],
+          "headerCount": 17,
+          "observedRows": 13,
+          "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+          "primaryColumns": [
+            "rank",
+            "candidate-code",
+            "score",
+            "other",
+            "other",
+            "other",
+            "other",
+            "priority",
+            "priority"
+          ],
+          "hierarchicalHeader": true,
+          "cellCounts": [
+            15
+          ],
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "pageKind": "candidate-table",
+      "registryIds": [
+        "1881"
+      ]
+    }
+  ],
+  "supplementCount": 14,
+  "supplementStates": {
+    "discovered": 14
+  },
+  "groups": [
+    {
+      "signatureId": "6299d5d0c4046e5a731a429a1fab579a062499987e790bdf2a77015e104d4f36",
+      "signature": {
+        "kind": "hierarchical-header",
+        "primaryHeaderHash": "fc383a180a9b51765141ba6ac80b0ba16e54dd8b6bdfdbc291ec14caa68cc88e",
+        "primaryColumns": [
+          "rank",
+          "candidate-code",
+          "score",
+          "other",
+          "other",
+          "other",
+          "other",
+          "priority",
+          "priority"
+        ]
+      },
+      "members": [
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/ekonomika_10.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "d6002b18939e40ff72256c5b1f9b255814dd377df420c9751801c05a47922996",
+          "headerHash": "a121bbe7bfd1bfdcf9e6ae07d498ca5b3879faee12e6eddd21d2dff8a9fc239d",
+          "observedRows": 40,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/ghilischnoe-hozyaystvo-i-kommunalynaya-infrastruktura_13.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "739721aa4cd914a8cadc1d55a3a3cc3965cf9ae6dbfb8f5dd6896801779b59ee",
+          "headerHash": "ddb296b82cbdeec7743a5eb2d7210d3eb7a7e073efd4413762ca2a92f36f050a",
+          "observedRows": 2,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/menedghment_11.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "ef253d216e6fd5db82660e0dcf07338de16ece8156403a2700678639cb4f51d9",
+          "headerHash": "2265fa88b9afecf143dd5c34e061005b44825993ed6d74ef02d3dbc5660002ed",
+          "observedRows": 85,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/reklama-i-svyazi-s-obschestvennostyyu_14.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "336627dfe1e046193385c80faa04cd22cc139357f998e653c11e3540d265074f",
+          "headerHash": "7118528bca0a9089acabb5fa07951c25ef948dbd565a863b6492cbf09fb08c9d",
+          "observedRows": 7,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/turizm_15.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "16aa9b0cc5f9b233a2117fc231e82b5ff5c34a01a5c14af8d8c08012e7b031e1",
+          "headerHash": "d5facc3810772ae9414117da744569dd4e9f44a666a3926f37c9c044c9afb269",
+          "observedRows": 6,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-kachestvom_9.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "5ddcd46f2e70fd13975f084f52d7cfa45a850458f5ad0fcf0a59d34a1d03d0ff",
+          "headerHash": "8d12bc1adcec8853fdbdba1916568031c05273dc76bdaff1828e28f2f1ee1417",
+          "observedRows": 5,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://uifr.ru/abitur/bachelor/competition/upravlenie-personalom_12.html",
+          "registryIds": [
+            "110420"
+          ],
+          "payloadHash": "d48d6cb1f14fff9c197cad5a34f577d9f44c8c290252fdad4f8dc1161046ab5a",
+          "headerHash": "2265fa88b9afecf143dd5c34e061005b44825993ed6d74ef02d3dbc5660002ed",
+          "observedRows": 4,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/37.03.01-psihologiya----obrazovatelynaya-programma---psihologicheskoe-konsulytirovanie_52.html",
+          "registryIds": [
+            "1881"
+          ],
+          "payloadHash": "eb1ec496a5df0d968acb16c40255f383ac8e9f9b103165a8c7ba878079de220c",
+          "headerHash": "4dc10fc649b236fa7d2046141fda2a5a28d4a2724c8d2a41ecf908b6ef9a5044",
+          "observedRows": 2,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/38.03.02-menedghment---obrazovatelynye-programmy--upravlenie-organizaciey-gosudarstvennoe-i-municipalynoe-upra_54.html",
+          "registryIds": [
+            "1881"
+          ],
+          "payloadHash": "997d57c65bdc6de9764413d7f5d948092d73656459c7b48b5429aedf2cdf173f",
+          "headerHash": "a6ce13a28836d4c0ca5be9db53ead55573f20ff90ea48716924245de38aca724",
+          "observedRows": 2,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+          "registryIds": [
+            "1881"
+          ],
+          "payloadHash": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+          "headerHash": "3f152b1406280de081c5e366d59619f3f553f14437d3d05d48a7047254e91059",
+          "observedRows": 2,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://www.miepl.ru/abitur/priemnaya-kampaniya-na-2026-2027-uchebnyy-god/bachelor/competition/40.03.01-yurisprudenciya--obrazovatelynaya-programma---graghdanskoe-pravo-i-process_55.html",
+          "registryIds": [
+            "1881"
+          ],
+          "payloadHash": "f4c0af9b4f47f2973fd6783fab103a9994154b57fb2dcc74298b04f2d2513558",
+          "headerHash": "3f152b1406280de081c5e366d59619f3f553f14437d3d05d48a7047254e91059",
+          "observedRows": 13,
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "distinctHosts": 2,
+      "distinctInstitutions": 2,
+      "crossInstitutionCandidate": true
+    },
+    {
+      "signatureId": "47b496e20cabe33551544d80ab26adfb7ebc9695b24536eb09db2d5d1d00b9c1",
+      "signature": {
+        "kind": "flat-header",
+        "columns": [
+          "rank",
+          "candidate-code",
+          "score",
+          "score",
+          "score",
+          "other",
+          "consent",
+          "other",
+          "other",
+          "other",
+          "enrollment",
+          "other",
+          "other",
+          "other",
+          "other"
+        ],
+        "headerCount": 15,
+        "cellCounts": [
+          15
+        ]
+      },
+      "members": [
+        {
+          "url": "https://mspi.moscow/abitur/konkursnye_spiski/",
+          "registryIds": [
+            "1960"
+          ],
+          "payloadHash": "3099968fc13866e93bf9cbf99f676a3664ad2b72b91e6a28a5b26b419ad7cb59",
+          "headerHash": "7d29bed5cb5311930e56a6a9672dadfd7a4eca84a148c720c5ab185ef4dcbc8d",
+          "observedRows": 38,
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "distinctHosts": 1,
+      "distinctInstitutions": 1,
+      "crossInstitutionCandidate": false
+    },
+    {
+      "signatureId": "c21192c6ce13285572981436b500646bf08e258aaec564762e4cedee83f502de",
+      "signature": {
+        "kind": "flat-header",
+        "columns": [
+          "rank",
+          "other",
+          "priority",
+          "candidate-code",
+          "other",
+          "other",
+          "consent",
+          "consent",
+          "consent",
+          "other",
+          "other",
+          "other",
+          "score",
+          "other"
+        ],
+        "headerCount": 14,
+        "cellCounts": []
+      },
+      "members": [
+        {
+          "url": "https://isu.ru/Abitur/rating/main/",
+          "registryIds": [
+            "83"
+          ],
+          "payloadHash": "732dd09dc880832e90fe090c8fe78d41303e27cafd22df426d0aded45058273c",
+          "headerHash": "de294fb7fd753156369d5268b7256a22acb4171f85aee504ba3545db191f2762",
+          "observedRows": 0,
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "distinctHosts": 1,
+      "distinctInstitutions": 1,
+      "crossInstitutionCandidate": false
+    },
+    {
+      "signatureId": "f88dd0318a8dc8f1df9c4e6140e8163ce2fb3d5f8cf4f18e3b966cdb79ba3737",
+      "signature": {
+        "kind": "flat-header",
+        "columns": [
+          "rank",
+          "candidate-code",
+          "other",
+          "score",
+          "other",
+          "other",
+          "other",
+          "consent",
+          "priority",
+          "priority",
+          "other",
+          "other"
+        ],
+        "headerCount": 12,
+        "cellCounts": [
+          13
+        ]
+      },
+      "members": [
+        {
+          "url": "https://bgu.ru/abitur/asp/rating.aspx",
+          "registryIds": [
+            "12"
+          ],
+          "payloadHash": "cc89637c7715021fc41a73a9451b91cc4661e88021776ea904d70fb7ca004a07",
+          "headerHash": "c94d5c0d97d124498b280f409beca5472478541800b72d41ff19f12fcdcc6f5a",
+          "observedRows": 10,
+          "paginationDetected": false,
+          "complete": false
+        },
+        {
+          "url": "https://bgu.ru/abitur/mag/rating.aspx",
+          "registryIds": [
+            "12"
+          ],
+          "payloadHash": "1233767cbeabbac4552b528fe57541dce35656b6dda467bc3ea0258069e225e5",
+          "headerHash": "a0876b0cf267627fcf0c0c27d6d015d16c7edad3aa10d39cce24eab62290d848",
+          "observedRows": 50,
+          "paginationDetected": false,
+          "complete": false
+        }
+      ],
+      "supported": false,
+      "distinctHosts": 1,
+      "distinctInstitutions": 1,
+      "crossInstitutionCandidate": false
+    }
+  ],
+  "crossInstitutionCandidateGroups": 1,
+  "realAttestationsAdded": 0,
+  "limitations": [
+    "Structural candidates only; completeness/season/capacity not yet attested",
+    "CMS and extension similarity do not establish compatibility"
+  ]
+}

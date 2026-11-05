@@ -6144,7 +6144,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T195"
       ],
@@ -6160,7 +6160,12 @@
         "Повторяемость подкреплена оригинальными страницами из разных scope",
         "CMS и одинаковое расширение файла сами по себе не означают совместимость"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b15-format-families.md",
+          "note": "14 verified official child pages; 1 cross-institution structural candidate (MIEPP/UIFR), not automatic eligibility; 8 targeted tests and identical offline replay passed. Empty/header-only pages remain unsupported."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6200,7 +6205,7 @@
       "phase": "E3",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T196",
         "T197"
