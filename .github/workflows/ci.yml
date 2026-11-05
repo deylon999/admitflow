@@ -49,6 +49,12 @@ jobs:
         working-directory: backend
         env:
           TEST_DATABASE_URL: postgresql+psycopg://admitflow:admitflow@localhost:5432/admitflow_test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-results-${{ github.run_attempt }}
+          path: backend/test-results/backend.xml
+          retention-days: 7
       - run: python ../scripts/roadmap.py --check
       - name: Install Chromium and system dependencies
         timeout-minutes: 5
@@ -65,17 +71,16 @@ jobs:
           done
           cat /tmp/abiturient-api.log
           exit 1
-      - run: npm run test:e2e -- --project=chromium
+      - run: npm run test:e2e -- --project=chromium --reporter=line,junit --output=test-results/broad
         env:
           E2E_API: '1'
           E2E_SERVER: preview
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/broad.xml
       - uses: actions/upload-artifact@v4
-        if: failure()
+        if: always()
         with:
-          name: check-failure
-          path: |
-            frontend/test-results/
-            backend/test-results/backend.xml
+          name: chromium-results-${{ github.run_attempt }}
+          path: frontend/test-results/
           retention-days: 7
 
   browsers:
@@ -126,10 +131,11 @@ jobs:
           done
           cat /tmp/abiturient-api.log
           exit 1
-      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line
+      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line,junit --output=test-results/broad
         env:
           E2E_API: '1'
           E2E_SERVER: preview
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/broad.xml
       - name: Start anonymized source fixture API
         run: |
           E2E_API_PORT=8001 nohup python scripts/serve_source_e2e.py > /tmp/source-api.log 2>&1 &
@@ -140,15 +146,19 @@ jobs:
           cat /tmp/source-api.log
           exit 1
         working-directory: .
-      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line tests/e2e/source-failure.spec.ts tests/e2e/source-history.spec.ts tests/e2e/source-lookup.spec.ts tests/e2e/source-provenance.spec.ts tests/e2e/source-session.spec.ts
+      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line,junit --output=test-results/source tests/e2e/source-failure.spec.ts tests/e2e/source-history.spec.ts tests/e2e/source-lookup.spec.ts tests/e2e/source-provenance.spec.ts tests/e2e/source-session.spec.ts
         env:
           API_TARGET: http://127.0.0.1:8001
           E2E_API: '1'
           E2E_SOURCE_FIXTURE: '1'
           E2E_SERVER: preview
-      - name: Show page state of failed tests
-        if: failure()
-        run: find test-results -name error-context.md -exec sh -c 'echo "== $1"; head -60 "$1"' _ {} \;
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/source.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results-${{ matrix.project }}-${{ github.run_attempt }}
+          path: frontend/test-results/
+          retention-days: 7
 
   containers:
     runs-on: ubuntu-24.04

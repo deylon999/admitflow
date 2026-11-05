@@ -979,3 +979,5 @@ S180/T210: Exact remote logs: mobile confirmation focus failure, Firefox2Tab-foc
 S180/T211: Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed. Evidence: docs/evidence/b18-confirmation-focus.md. Next T212.
 
 S180/T212: Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214. Evidence: docs/evidence/b18-runner-and-firefox.md. Next T213.
+
+S180/T213: Separate broad/source JUnit outputs preserved;2+2CI-mode browser cases passed with2workers.116Vitest,current build,63source+27keyboard checks passed;YAML/bash validation passed. Backend artifact uploaded before browser install; unique project/attempt artifacts always retained. Evidence: docs/evidence/b18-ci-reports.md. Next T214.

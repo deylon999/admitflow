@@ -4616,7 +4616,7 @@
 
 ### T213. Проверить исправленный workflow и диагностику
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T212.
 
@@ -4634,11 +4634,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b18-ci-reports.md](../docs/evidence/b18-ci-reports.md) — Separate broad/source JUnit outputs preserved;2+2CI-mode browser cases passed with2workers.116Vitest,current build,63source+27keyboard checks passed;YAML/bash validation passed. Backend artifact uploaded before browser install; unique project/attempt artifacts always retained.
 
 ### T214. Проверить зелёный удалённый запуск и передать состояние
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T213.
 

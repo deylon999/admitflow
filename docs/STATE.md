@@ -1,5 +1,9 @@
 # S180 — B18 CI repair
 
+T213done;currentT214. Separate broad/source JUnit outputs preserved;2+2CI-mode browser cases passed with2workers.116Vitest,current build,63source+27keyboard checks passed;YAML/bash validation passed. Backend artifact uploaded before browser install; unique project/attempt artifacts always retained. Evidence: docs/evidence/b18-ci-reports.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S180 — B18 CI repair
+
 T212done;currentT213. Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214. Evidence: docs/evidence/b18-runner-and-firefox.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S180 — B18 CI repair
