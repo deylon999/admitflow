@@ -38,7 +38,7 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
       onChange={event => { onChange(event.target.value); setOpen(true); }} />
     <p className="form-note" id="catalog-note">Поиск по названию вуза и региону. Можно ввести вуз вручную. Выбор из справочника не подключает автоматическое обновление. Стрелки ↑ и ↓ переходят к вариантам, Escape закрывает их.</p>
     {error && <p className="form-error" id="university-error" role="alert">{error}</p>}
-    {open && <div className="catalog-results">
+    {open && <div className="catalog-results" tabIndex={-1}>
       {query !== search || catalog.isPending ? <p className="small-copy" role="status">Ищем вуз…</p>
         : catalog.isError ? <p className="small-copy">Справочник недоступен. Название можно ввести вручную.</p>
           : universities.length === 0 ? <p className="small-copy">Вуз пока не добавлен в справочник. Продолжайте с ручным вводом.</p>

@@ -4594,7 +4594,7 @@
 
 ### T212. Устранить причины зависаний CI и Firefox
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T211.
 
@@ -4612,11 +4612,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b18-runner-and-firefox.md](../docs/evidence/b18-runner-and-firefox.md) — Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214.
 
 ### T213. Проверить исправленный workflow и диагностику
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T212.
 

@@ -977,3 +977,5 @@ S179/T209/B17 final5/5: Final666backend/0skip,116Vitest/build,84compiledChromium
 S180/T210: Exact remote logs: mobile confirmation focus failure, Firefox2Tab-focus failures, Azure apt mirror22m35s download; checks15m andFirefox25m timeout. Backend666 andcontainers passed. Evidence: docs/evidence/b18-ci-diagnosis.md. Next T211.
 
 S180/T211: Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed. Evidence: docs/evidence/b18-confirmation-focus.md. Next T212.
+
+S180/T212: Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214. Evidence: docs/evidence/b18-runner-and-firefox.md. Next T213.

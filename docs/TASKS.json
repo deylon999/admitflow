@@ -6648,7 +6648,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T211"
       ],
@@ -6664,7 +6664,12 @@
         "Runner/установка/браузерные зависания исправлены на основании логов без скрытия ошибок",
         "Общая Definition of Done выполнена; покрытие России не увеличивается от CI исправления."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b18-runner-and-firefox.md",
+          "note": "Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6673,7 +6678,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T212"
       ],

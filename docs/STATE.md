@@ -1,5 +1,9 @@
 # S180 — B18 CI repair
 
+T212done;currentT213. Firefox scroll-container Tab stop corrected;27keyboard/catalog checks passed across3browser projects,0skip. Ubuntu24.04 pinned; Azure apt mirror replaced with official HTTPS archive; install bounded5min, overalltimeouts unchanged; bash/YAML checks pass. Hosted verification T214. Evidence: docs/evidence/b18-runner-and-firefox.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S180 — B18 CI repair
+
 T211done;currentT212. Confirmation focus moved to committed preview layout effect; old8cases reproduce3failures, fixed63source cases passed acrossChromium/Firefox/mobileChromium,0skip;116Vitest/build passed. Evidence: docs/evidence/b18-confirmation-focus.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S180 — B18 CI repair

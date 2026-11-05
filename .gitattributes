@@ -5,3 +5,4 @@ backend/app/data/*.json text eol=lf
 backend/app/sources/profiles/**/*.json text eol=lf
 backend/app/sources/profiles/*.json text eol=lf
 docs/sources/*inventory*.json text eol=lf
+scripts/install_playwright_ci.sh text eol=lf
