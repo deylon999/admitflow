@@ -1,13 +1,46 @@
 import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+  const [theme, setTheme] = useState(() =>
+    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+  );
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f172a' : '#ffffff');
-    try { localStorage.setItem('abiturient-theme', theme); } catch { /* The theme still works when storage is unavailable. */ }
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', theme === 'dark' ? '#0f172a' : '#ffffff');
+    try {
+      localStorage.setItem('abiturient-theme', theme);
+    } catch {
+      /* The theme still works when storage is unavailable. */
+    }
   }, [theme]);
-  return <button className="theme-toggle" type="button" aria-label={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'} aria-pressed={theme === 'dark'} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18V3Z" fill="currentColor" /><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" /></svg>
-  </button>;
+  return (
+    <button
+      className="theme-toggle"
+      type="button"
+      aria-label={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
+      aria-pressed={theme === 'dark'}
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="18"
+        height="18"
+        aria-hidden="true"
+      >
+        <path
+          d="M12 3a9 9 0 1 0 0 18V3Z"
+          fill="currentColor"
+        />
+        <circle
+          cx="12"
+          cy="12"
+          r="8.5"
+          fill="none"
+          stroke="currentColor"
+        />
+      </svg>
+    </button>
+  );
 }

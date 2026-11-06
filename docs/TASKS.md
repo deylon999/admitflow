@@ -3626,7 +3626,7 @@
 
 ### T217. Сделать JSX компонентов, страниц и стили читаемыми
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T216.
 
@@ -3644,11 +3644,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b19-jsx-format.md](../docs/evidence/b19-jsx-format.md) — 23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation.
 
 ### T218. Привести тесты к тому же стилю и проверить поведение
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T217.
 

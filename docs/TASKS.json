@@ -6800,7 +6800,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T216"
       ],
@@ -6815,7 +6815,12 @@
         "Компоненты/страницы/entrypoint/CSS многострочные, функциональные изменения не внесены",
         "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b19-jsx-format.md",
+          "note": "23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6824,7 +6829,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T217"
       ],

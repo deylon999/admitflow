@@ -1,5 +1,9 @@
 # S181 — B19 audit and readable frontend
 
+T217done;currentT218. 23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation. Evidence: docs/evidence/b19-jsx-format.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S181 — B19 audit and readable frontend
+
 T216done;currentT217. All17library TypeScript files expanded into readable blocks; targeted Prettier check passed. Frontend LF attributes keep formatting stable on Windows. No intentional behavior changes; complete unit/build/equivalence verification T218. Evidence: docs/evidence/b19-library-format.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S181 — B19 audit and readable frontend
