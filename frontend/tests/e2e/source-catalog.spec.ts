@@ -116,6 +116,58 @@ test('failed next catalog page preserves loaded groups and can be retried', asyn
   await expect(page.getByRole('button', { name: 'Загрузить ещё группы' })).toHaveCount(0);
 });
 
+test('101 global branches remain usable across bounded catalog pages and filtering', async ({
+  page,
+}) => {
+  const branches = Array.from({ length: 101 }, (_, index) => ({
+    id: `branch-${String(index).padStart(3, '0')}`,
+    name: `Synthetic branch ${index}`,
+  }));
+  const groups = branches.map((branch, index) => ({
+    ...syntheticGroup,
+    id: `catalog-${String(index).padStart(3, '0')}`,
+    title: `Synthetic group ${index}`,
+    universityId: branch.id,
+    universityName: branch.name,
+    parentUniversityId: 'parent-synthetic',
+  }));
+  await page.route('**/api/v1/universities?*', (route) =>
+    route.fulfill({ json: { items: [], total: 0, nextOffset: null } }),
+  );
+  await page.route('**/api/v1/groups?*', (route) => {
+    const query = new URL(route.request().url()).searchParams;
+    const branch = query.get('branchId');
+    const matching = branch ? groups.filter((item) => item.universityId === branch) : groups;
+    const cursor = query.get('after');
+    const start = cursor ? matching.findIndex((item) => item.id === cursor) + 1 : 0;
+    const items = matching.slice(start, start + 50);
+    return route.fulfill({
+      json: {
+        items,
+        total: matching.length,
+        nextCursor: start + items.length < matching.length ? items[items.length - 1].id : null,
+        facets: { branches, years: [2026] },
+      },
+    });
+  });
+  await page.goto('/sources');
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(50);
+  const branchFilter = page.getByLabel('Подразделение', { exact: true });
+  await expect(branchFilter.locator('option')).toHaveCount(103);
+  await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(100);
+  await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(101);
+  await expect(page.getByRole('button', { name: 'Загрузить ещё группы' })).toHaveCount(0);
+  await branchFilter.selectOption('branch-100');
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', { name: 'Synthetic group 100', exact: true }),
+  ).toBeVisible();
+  await expect(branchFilter.locator('option')).toHaveCount(103);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
 test('catalog pages append once and filter changes clear the old pages', async ({ page }) => {
   test.skip(process.env.E2E_SOURCE !== '1', 'Requires a reviewed group DTO');
   const result = await (await page.request.get('/api/v1/groups')).json();

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": "T225",
+  "currentTask": "T226",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S183",
-  "resumeAction": "B21: T224 done; current T225. Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed. Evidence: docs/evidence/b21-catalog-error.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
+  "resumeAction": "B21: T225 done; current T226. Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed. Evidence: docs/evidence/b21-catalog-scale.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

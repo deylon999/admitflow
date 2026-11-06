@@ -3803,7 +3803,7 @@
 
 ### T225. Согласовать branch facets frontend и backend выше100
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3821,11 +3821,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-catalog-scale.md](../docs/evidence/b21-catalog-scale.md) — Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed.
 
 ### T226. Показывать изменение мест при отсутствии записи
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 

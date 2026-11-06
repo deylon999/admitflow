@@ -1017,3 +1017,5 @@ S183/T222: Reverted drafts cleared; pending retry intent and unchanged recovery 
 S183/T223: Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed. Evidence: docs/evidence/b21-archive-refresh.md. Next T224.
 
 S183/T224: Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed. Evidence: docs/evidence/b21-catalog-error.md. Next T225.
+
+S183/T225: Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed. Evidence: docs/evidence/b21-catalog-scale.md. Next T226.

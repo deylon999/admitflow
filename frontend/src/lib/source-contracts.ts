@@ -201,6 +201,10 @@ export function parseSourceGroup(value: unknown): SourceGroup {
   return group;
 }
 
+// Branch facets cover the full catalog, independently of the current group page.
+// Match MAX_PROFILES in backend/app/sources/profile_catalog.py.
+const MAX_GROUP_CATALOG_BRANCHES = 20_000;
+
 export function parseGroupCatalog(value: unknown): GroupCatalog {
   const o = sourceObject(value),
     facets = sourceObject(o.facets);
@@ -208,7 +212,7 @@ export function parseGroupCatalog(value: unknown): GroupCatalog {
     !Array.isArray(o.items) ||
     o.items.length > 50 ||
     !Array.isArray(facets.branches) ||
-    facets.branches.length > 100 ||
+    facets.branches.length > MAX_GROUP_CATALOG_BRANCHES ||
     !Array.isArray(facets.years) ||
     facets.years.length > 101
   )

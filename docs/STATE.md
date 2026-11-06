@@ -1,5 +1,11 @@
 # S183 — B21 frontend fixes
 
+T225 done; current T226. Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed.
+
+Evidence: docs/evidence/b21-catalog-scale.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
+# S183 — B21 frontend fixes
+
 T224 done; current T225. Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed.
 
 Evidence: docs/evidence/b21-catalog-error.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.

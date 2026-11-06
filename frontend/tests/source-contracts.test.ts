@@ -44,6 +44,58 @@ describe('source catalog contracts', () => {
       }).items,
     ).toHaveLength(1);
   });
+  it.each([101, 20_000])(
+    'accepts %i global branches independently of the filtered page',
+    (count) => {
+      const branches = Array.from({ length: count }, (_, index) => ({
+        id: `branch-${index}`,
+        name: `Synthetic branch ${index}`,
+      }));
+      const result = parseGroupCatalog({
+        items: [group],
+        total: 1,
+        nextCursor: null,
+        facets: { branches, years: [2026] },
+      });
+      expect(result.items).toHaveLength(1);
+      expect(result.facets.branches).toHaveLength(count);
+      expect(result.facets.branches[count - 1]).toEqual(branches[count - 1]);
+    },
+  );
+  it('rejects branch facets beyond the supported source catalog capacity', () => {
+    expect(() =>
+      parseGroupCatalog({
+        items: [],
+        total: 0,
+        nextCursor: null,
+        facets: {
+          branches: Array.from({ length: 20_001 }, (_, index) => ({
+            id: `branch-${index}`,
+            name: `Synthetic branch ${index}`,
+          })),
+          years: [],
+        },
+      }),
+    ).toThrow();
+  });
+  it.each([
+    { branches: null },
+    { branches: {} },
+    { branches: [null] },
+    { branches: [{ id: '', name: 'Synthetic branch' }] },
+    { branches: [{ id: 'branch', name: '' }] },
+    { branches: [{ id: 'x'.repeat(81), name: 'Synthetic branch' }] },
+    { branches: [{ id: 'branch', name: 'x'.repeat(301) }] },
+  ])('still rejects malformed branch facets $branches', ({ branches }) => {
+    expect(() =>
+      parseGroupCatalog({
+        items: [],
+        total: 0,
+        nextCursor: null,
+        facets: { branches, years: [] },
+      }),
+    ).toThrow();
+  });
   it.each([
     { sourceUrl: 'javascript:alert(1)' },
     { snapshotId: null },

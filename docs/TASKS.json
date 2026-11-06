@@ -7036,7 +7036,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -7051,7 +7051,12 @@
         "Сценарий F06 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b21-catalog-scale.md",
+          "note": "Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7060,7 +7065,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T219"
       ],
