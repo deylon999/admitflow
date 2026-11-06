@@ -1,3 +1,30 @@
+# S182 — B20: ошибки1–2 исправлены
+
+T220/T221 завершены2/2 по текущему запросу. Синхронизация ждёт guest lock,
+epoch guards отклоняют устаревшее чтение и queued reset до DELETE. Без
+Web Locks временный401 при changed оставляет безопасный read-only retry;
+обычный active401 по-прежнему означает истечение доступа.
+
+При reset private UI/queries временно выключены. После success/error старые
+query entries удаляются после дополнительной отмены; 503 и late response
+не возвращают прежние карточки/history/print/counters. Failed DELETE не
+удаляет серверную запись: она появляется только после нового authorized GET.
+При DELETE204/POST503 прежняя private копия не появляется даже в ожидании.
+
+126Vitest/format/build,85compiledChromium passed/36scopedskips,
+8targeted race+8cache cases Chromium/Firefox,12final critical cases с
+CI=1/two workers passed. Прогоны не суммируются в уникальное покрытие.
+Evidence docs/evidence/b20-session-synchronization.md,b20-session-cache.md,
+b20-final-verification.json. Backend/schema/source profiles не менялись.
+
+Временные syntheticAPI8032/preview5282 закрыты; ignoredSQLite/probes сохранены.
+Исходный Docker daemon/key/volumes не менялись. Старый screenshot восстановлен.
+Другие8дефектовT222–T229 остаютсяtodo; пользователь разрешил только1–2.
+currentTask=null,nextTask=T222 как кандидат после следующего указания.
+T056/T057 национального охвата остаются открытыми, покрытие не изменилось.
+
+Ниже — checkpoints предыдущих подходов с их исходными ограничениями.
+
 # S181 — B19: читаемый frontend и глубокий аудит
 
 T215–T219 завершены5/5. Только форматирование: formatter/config,17lib files,

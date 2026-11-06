@@ -334,6 +334,7 @@ export default function TrackerPage() {
   const [notice, setNotice] = useState('');
   const [confirmReset, setConfirmReset] = useState(false);
   const busy = useIsMutating() > 0;
+  const resetting = useIsMutating({ mutationKey: ['session-reset'] }) > 0;
   const queryClient = useQueryClient();
   const access = useQuery<SessionAccess>({
     queryKey: sessionAccessKey,
@@ -345,12 +346,13 @@ export default function TrackerPage() {
   const watches = useQuery({
     queryKey: ['watches'],
     queryFn: ({ signal }) => api.list(signal),
-    enabled: !changed,
+    enabled: !changed && !resetting,
     staleTime: 0,
     refetchOnWindowFocus: true,
   });
   const expired =
     changed || access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  const privateVisible = !expired && !resetting;
   useEffect(() => {
     if (!returnFocus || busy || form || expired) return;
     const opener = formOpener.current;
@@ -366,14 +368,14 @@ export default function TrackerPage() {
   const sessionInfo = useQuery({
     queryKey: ['session-info'],
     queryFn: api.session,
-    enabled: !expired,
+    enabled: privateVisible,
     staleTime: Infinity,
   });
   useEffect(() => {
-    if (!expired && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
+    if (privateVisible && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
       setRecovery(readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt));
     }
-  }, [expired, form, watches.isSuccess, watches.data, sessionInfo.data]);
+  }, [privateVisible, form, watches.isSuccess, watches.data, sessionInfo.data]);
   useEffect(() => {
     if (!recovery || form) return;
     const timer = setTimeout(
@@ -469,7 +471,26 @@ export default function TrackerPage() {
       requestAnimationFrame(() => addButton.current?.focus());
     },
   });
+  async function clearPrivateQueries() {
+    const keys = [
+      'watches',
+      'history',
+      'session-info',
+      'archive-directions',
+      'direction-budget',
+      'archive-history',
+      'scenario',
+      'scenario-history',
+      'scenario-detail',
+      'changes',
+    ];
+    await Promise.all(keys.map((key) => queryClient.cancelQueries({ queryKey: [key] })));
+    for (const key of keys) {
+      queryClient.removeQueries({ queryKey: [key] });
+    }
+  }
   const reset = useMutation({
+    mutationKey: ['session-reset'],
     mutationFn: async () => {
       await queryClient.cancelQueries({ queryKey: ['watches'] });
       await queryClient.cancelQueries({ queryKey: ['history'] });
@@ -492,35 +513,38 @@ export default function TrackerPage() {
       return api.resetSession();
     },
     onSuccess: async (info) => {
+      await clearPrivateQueries();
+      download.reset();
+      if (queryClient.getQueryData<SessionAccess>(sessionAccessKey) === 'changed') return;
       queryClient.setQueryData(['session-info'], info);
-      for (const key of [
-        'history',
-        'archive-directions',
-        'direction-budget',
-        'archive-history',
-        'scenario',
-        'scenario-history',
-        'scenario-detail',
-        'changes',
-      ])
-        queryClient.removeQueries({ queryKey: [key] });
       setForm(null);
       setConfirmReset(false);
       setNotice('Создана новая гостевая сессия.');
-      await queryClient.invalidateQueries({ queryKey: ['watches'] });
       queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
-      download.reset();
       requestAnimationFrame(() => addButton.current?.focus());
+    },
+    onError: async () => {
+      await clearPrivateQueries();
+      setConfirmReset(false);
+      setNotice('');
+      download.reset();
     },
   });
   const budget = useQuery({
     queryKey: ['direction-budget'],
     queryFn: ({ signal }) => api.directionBudget(signal),
-    enabled: !expired,
+    enabled: privateVisible,
   });
-  const directionTotal = expired ? 0 : Math.max(budget.data?.total ?? 0, watches.data?.length ?? 0);
-  const count = expired ? 0 : (watches.data?.length ?? 0);
-  const visible = selectWatches(watches.data ?? [], search, scenario, order);
+  const directionTotal = privateVisible
+    ? Math.max(budget.data?.total ?? 0, watches.data?.length ?? 0)
+    : 0;
+  const count = privateVisible ? (watches.data?.length ?? 0) : 0;
+  const visible = selectWatches(
+    privateVisible ? (watches.data ?? []) : [],
+    search,
+    scenario,
+    order,
+  );
   const recoveryWatch = recovery?.watchId
     ? watches.data?.find((item) => item.id === recovery.watchId)
     : undefined;
@@ -571,7 +595,7 @@ export default function TrackerPage() {
           доступ. Автоматическое обновление вузов ещё не подключено.
         </p>
       </div>
-      {!expired && sessionInfo.data && (
+      {privateVisible && sessionInfo.data && (
         <p className="small-copy session-deadline">
           Гостевой доступ до{' '}
           <time
@@ -585,7 +609,7 @@ export default function TrackerPage() {
           . Открытие страницы не продлевает срок.
         </p>
       )}
-      {!expired && sessionInfo.isError && (
+      {privateVisible && sessionInfo.isError && (
         <p className="small-copy">Не удалось проверить точную дату окончания доступа.</p>
       )}
       <div className="tracker-data-actions">
@@ -621,7 +645,7 @@ export default function TrackerPage() {
           </button>
         )}
       </div>
-      {download.isError && (
+      {privateVisible && download.isError && (
         <p
           className="form-error"
           role="alert"
@@ -629,7 +653,7 @@ export default function TrackerPage() {
           {errorText(download.error)}
         </p>
       )}
-      {confirmReset && !expired && (
+      {confirmReset && privateVisible && (
         <DeleteConfirmation
           text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя."
           label="Удалить всё"
@@ -641,7 +665,8 @@ export default function TrackerPage() {
           onConfirm={() => reset.mutate()}
         />
       )}
-      {expired && (
+      {resetting && <p role="status">Обновляем гостевой доступ…</p>}
+      {expired && !resetting && (
         <div className="surface empty-state">
           <h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2>
           <p>
@@ -687,7 +712,7 @@ export default function TrackerPage() {
       >
         {notice}
       </p>
-      {restore.isError && !expired && (
+      {restore.isError && privateVisible && (
         <p
           className="form-error"
           role="alert"
@@ -695,7 +720,7 @@ export default function TrackerPage() {
           Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}
         </p>
       )}
-      {!expired && !form && recovery && (
+      {privateVisible && !form && recovery && (
         <DraftRecovery
           record={recovery}
           blockedReason={recoveryBlocked}
@@ -712,7 +737,7 @@ export default function TrackerPage() {
           }}
         />
       )}
-      {!expired && watches.isError && watches.data && (
+      {privateVisible && watches.isError && watches.data && (
         <div
           className="surface stale-warning"
           role="alert"
@@ -733,19 +758,19 @@ export default function TrackerPage() {
         </div>
       )}
       <CoverageSummary />
-      {!expired && (
+      {privateVisible && (
         <>
           <ChangeFeed />
           <ArchiveDirections />
         </>
       )}
-      {!expired && (
+      {privateVisible && watches.data && budget.data && (
         <p className="small-copy">
           Всего направлений: {directionTotal} из 20 (ручные и архивные вместе). JSON, сравнение и
           печать ниже включают только ручные направления.
         </p>
       )}
-      {!expired && (
+      {privateVisible && (
         <ImportData
           count={directionTotal}
           disabled={
@@ -760,8 +785,10 @@ export default function TrackerPage() {
           }
         />
       )}
-      {!expired && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}
-      {!expired && count > 0 && (
+      {privateVisible && !watches.isError && watches.data && (
+        <WatchComparison watches={watches.data} />
+      )}
+      {privateVisible && count > 0 && (
         <section
           className="watch-filters surface"
           aria-label="Поиск направлений"
@@ -816,9 +843,9 @@ export default function TrackerPage() {
           </button>
         </section>
       )}
-      <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}>
+      <div className={`tracker-layout ${form && privateVisible ? 'with-form' : ''}`}>
         <div className="directions-list">
-          {expired ? null : watches.isPending ? (
+          {!privateVisible ? null : watches.isPending ? (
             <div
               className="empty-state surface"
               role="status"
@@ -889,7 +916,7 @@ export default function TrackerPage() {
             ))
           )}
         </div>
-        {form && !expired && (
+        {form && privateVisible && (
           <aside className="tracker-sidebar">
             <DirectionForm
               restored={restored}
@@ -908,7 +935,7 @@ export default function TrackerPage() {
           </aside>
         )}
       </div>
-      {!expired && count > 0 && (
+      {privateVisible && count > 0 && (
         <button
           className="text-button print-action"
           type="button"
@@ -921,7 +948,7 @@ export default function TrackerPage() {
           Распечатать выбранный список ({visible.length})
         </button>
       )}
-      {!expired && (
+      {privateVisible && (
         <ManualReport
           watches={visible}
           generatedAt={reportDate}

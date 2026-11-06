@@ -3714,7 +3714,7 @@
 
 ### T221. Очищать старые карточки после сброса гостевой сессии
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3732,7 +3732,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b20-session-cache.md](../docs/evidence/b20-session-cache.md) — F02 fixed: private UI/query gate while resetting; cancel/remove owner caches on success and failure.8Chromium/Firefox cache boundary tests passed; final 126Vitest/format/build,85compiledChromium/36scopedskips and12critical CI-mode/two-worker cases passed. Only F01/F02 fixed; other8 remain todo.
+- [docs/evidence/b20-final-verification.json](../docs/evidence/b20-final-verification.json) — Observed red/green regression, epoch guards, cache ownership boundaries and actual final frontend checks; no new coverage or release claim.
 
 ### T222. Не восстанавливать отменённые значения черновика
 

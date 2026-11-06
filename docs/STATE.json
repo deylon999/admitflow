@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": "T221",
-  "nextTask": null,
+  "currentTask": null,
+  "nextTask": "T222",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S182",
-  "resumeAction": "B20: T220/F01 завершена;126Vitest/build и8browsercases passed. Текущая T221/F02: очистить private cache на границе reset, скрыть старые данные во время reset, проверить503/late/error paths. Only defects1–2 authorized; other8 remain todo.",
+  "resumeAction": "B20 завершён: T220/T221, ошибки1–2 исправлены. Resume/reset serialized with epoch guards; fallbackchanged401 remains read-only retry. Private cache/UI cleared across reset success/failure, late old responses rejected. 126Vitest/format/build,85Chromium/36scopedskips и12critical cases сCI=1/two workers прошли. Evidence docs/evidence/b20-session-cache.md иb20-final-verification.json. ВременныеAPI8032/preview5282 закрыты, syntheticSQLite/probes ignored; прежниеDocker/key/volumes не менялись. Другие8ошибокT222–T229 остаютсяtodo; текущий запрос разрешал только1–2. T222 следующий кандидат после нового указания; T056/T057 открыты, покрытие источников не менялось.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

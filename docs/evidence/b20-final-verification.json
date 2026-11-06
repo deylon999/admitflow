@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-06",
+  "session": "S182",
+  "batch": "B20",
+  "authorizedFindings": [
+    "F01",
+    "F02"
+  ],
+  "completedTasks": [
+    "T220",
+    "T221"
+  ],
+  "remainingAuditTasks": [
+    "T222",
+    "T223",
+    "T224",
+    "T225",
+    "T226",
+    "T227",
+    "T228",
+    "T229"
+  ],
+  "frontend": {
+    "vitestPassed": 126,
+    "formatCheckExitCode": 0,
+    "buildExitCode": 0
+  },
+  "beforeFix": {
+    "racesChromiumFailed": 2,
+    "cacheChromiumFailed": 4,
+    "connectionRefusedAttemptExcluded": true
+  },
+  "targetedCrossTab": {
+    "projects": [
+      "chromium",
+      "firefox"
+    ],
+    "passed": 8,
+    "skipped": 0,
+    "seconds": 24.7
+  },
+  "targetedCache": {
+    "projects": [
+      "chromium",
+      "firefox"
+    ],
+    "passed": 8,
+    "skipped": 0,
+    "seconds": 29.4
+  },
+  "finalCriticalParallel": {
+    "projects": [
+      "chromium",
+      "firefox"
+    ],
+    "workers": 2,
+    "ci": true,
+    "passed": 12,
+    "skipped": 0,
+    "failed": 0,
+    "seconds": 24.0
+  },
+  "fullCompiledChromium": {
+    "passed": 85,
+    "skipped": 36,
+    "failed": 0,
+    "duration": "2.4m",
+    "skipReason": "Separate source fixture and actual Nginx modes not enabled in this broad run; skipped cases are not counted as passed."
+  },
+  "securityBoundaries": {
+    "nativeGuestLockVerified": true,
+    "noWebLocksReadOnlyRecoveryVerified": true,
+    "staleResetIntentRejectedBeforeDelete": true,
+    "oldEpochResponsesRejected": true,
+    "realActive401StillExpires": true,
+    "oldPrivatePrintAndCardDataCleared": true,
+    "deleteFailurePreservesServerRecord": true,
+    "postFailureAfterDeleteHidesOldUi": true,
+    "unknownNewListNotInventedAsEmpty": true
+  },
+  "testRuntime": {
+    "preview": "http://127.0.0.1:5282",
+    "api": "http://127.0.0.1:8032",
+    "database": "Owned synthetic SQLite, ignored backend/.pytest_cache/b20-app.db",
+    "realApplicantLookups": 0,
+    "originalIdentityKeyAndVolumesChanged": false,
+    "temporaryProcessesStopped": true,
+    "historicalScreenshotRestored": true
+  },
+  "backendChanged": false,
+  "newSourceCoverage": 0,
+  "notClaimed": [
+    "Fresh hosted CI of this commit",
+    "Fresh WebKit validation",
+    "All simultaneous destructive resets serialized without browser locks or backend CAS"
+  ]
+}

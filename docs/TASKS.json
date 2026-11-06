@@ -6916,7 +6916,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -6931,7 +6931,16 @@
         "Сценарий F02 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b20-session-cache.md",
+          "note": "F02 fixed: private UI/query gate while resetting; cancel/remove owner caches on success and failure.8Chromium/Firefox cache boundary tests passed; final 126Vitest/format/build,85compiledChromium/36scopedskips and12critical CI-mode/two-worker cases passed. Only F01/F02 fixed; other8 remain todo."
+        },
+        {
+          "path": "docs/evidence/b20-final-verification.json",
+          "note": "Observed red/green regression, epoch guards, cache ownership boundaries and actual final frontend checks; no new coverage or release claim."
+        }
+      ],
       "blockedReason": null
     },
     {
