@@ -668,7 +668,9 @@ export default function TrackerPage() {
           className="form-error"
           role="alert"
         >
-          {errorText(synchronize.error)}
+          {changed && synchronize.error instanceof SessionExpiredError
+            ? 'Доступ ещё обновляется или временно недоступен. Повторите синхронизацию.'
+            : errorText(synchronize.error)}
         </p>
       )}
       {reset.isError && (

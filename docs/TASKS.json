@@ -6887,7 +6887,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -6902,7 +6902,12 @@
         "Сценарий F01 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b20-session-synchronization.md",
+          "note": "Native WebLocks and fallback recovery preserve the new guest;126Vitest/build,8Chromium/Firefox cases passed. Queued reset intents and stale responses guarded; no destructive retry after transient401."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6911,7 +6916,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T219"
       ],

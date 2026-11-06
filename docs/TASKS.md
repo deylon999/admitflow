@@ -3692,7 +3692,7 @@
 
 ### T220. Не терять новую сессию при синхронизации вкладок
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3710,11 +3710,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b20-session-synchronization.md](../docs/evidence/b20-session-synchronization.md) — Native WebLocks and fallback recovery preserve the new guest;126Vitest/build,8Chromium/Firefox cases passed. Queued reset intents and stale responses guarded; no destructive retry after transient401.
 
 ### T221. Очищать старые карточки после сброса гостевой сессии
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T219.
 

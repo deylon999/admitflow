@@ -999,3 +999,9 @@ S181/T218: All56TypeScript test files formatted; format check/116Vitest/build pa
 S181/T219/B19 final5/5: 10 frontend defects confirmed, including destructive cross-tab recovery and old-owner cache after reset. Only formatting implemented:100TS/TSX semantic ASTs match baseline,116Vitest/build,79Chromium/36scopedskips passed. Long lines>200 reduced218→2(text literals). Ten fixes T220–T229 remain todo; no functional fixes/push. Evidence: docs/evidence/b19-frontend-audit.md. Two P1 probes repeated by root on current compiled app; all source/form probes use synthetic API or mocks. No backend auth bypass claim.101branch facets is a growth boundary, not current outage. Old historical screenshot restored. Temporary API8031/preview5281 stopped; original Docker volumes/key not touched. Formatting commits local; no push.
 
 S181 Git follow-up: final remote verification found origin/main8e30b43, update-by-push13:55:41MSK; first4formatting commits already published by another process/operator. Commands of this audit did not explicitly push; origin advance is observed, initiator unknown. Final audit documentation commit still local; no published history rewritten.
+
+## S182 — 2026-11-06 — B20
+
+Пользователь разрешил исправить ошибки1–2 (T220/T221). Пять шагов в этом ограниченном объёме: воспроизведение, синхронизация reset/resume, очистка private cache, регрессии вкладок/error/late-response, общая проверка и передача. Одна activeT220; T221 пока независимыйread-onlyreview, затем реализация. Другие восемь дефектов остаютсяtodo. Gitclean@fc9922b.
+
+S182/T220: F01 fixed with native serialization, epoch guards and safe changed401 fallback.126Vitest/build and8Chromium/Firefox cases passed; native/fallback new guest record retained, no extra destructive requests. Evidence docs/evidence/b20-session-synchronization.md. T221 active; no other defects fixed.

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": null,
-  "nextTask": "T220",
+  "currentTask": "T221",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S181",
-  "resumeAction": "B19 завершён5/5: читаемое форматирование frontend и глубокий аудит. Отчёт docs/evidence/b19-frontend-audit.md:10подтверждённых дефектов. T220–T229 todo, функциональные исправления пока не разрешены исходным запросом; T220 следующий кандидат после указания исправлять.100source/test semantic ASTs совпадают5440410;116Vitest/build и79Chromium/36scopedskips passed. Prettier3.9.10, npm format/check, LF;218→2строк>200(текстовые литералы). Старый Docker daemon был выключен после recovery, key/volumes/demo не менялись. Временные API8031/preview5281 закрыты после synthetic проверок, SQLite/probes ignored. При финальной сверке origin/main уже8e30b43(первые4formattingкоммита); итоговыйauditcommit остаётсялокально. Причина внешнего push не установлена. T056/T057 открыты; покрытие не выросло.",
+  "lastSession": "S182",
+  "resumeAction": "B20: T220/F01 завершена;126Vitest/build и8browsercases passed. Текущая T221/F02: очистить private cache на границе reset, скрыть старые данные во время reset, проверить503/late/error paths. Only defects1–2 authorized; other8 remain todo.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
