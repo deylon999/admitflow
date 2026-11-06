@@ -24,8 +24,9 @@
 Отдельно повторены все6 критичных session reset/race cases в Firefox:
 **6 passed**,13.9s. Они также входят в полный Chromium прогон.
 
-Фокусные проверки каждого исправления прошли в Chromium и Firefox;
-их числа не суммируются в уникальное покрытие. Суммарный unit suite:
+Функциональные focus suites прошли в Chromium и Firefox; CSS-границы
+отдельно проверены computed style в Chromium в обеих темах. Числа разных
+прогонов не суммируются в уникальное покрытие. Суммарный unit suite:
 **136/136 в23 файлах**,exit0. Build и общий Prettier check:exit0.
 Backend/schema/source profiles не менялись; новый локальный native PostgreSQL
 прогон не заявлен. OS print dialog не автоматизирован; beforeprint проверен
