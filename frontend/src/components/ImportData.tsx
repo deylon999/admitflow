@@ -44,6 +44,7 @@ export function ImportData({
   });
   function clear() {
     selection.current++;
+    mutation.reset();
     setReading(false);
     setPrepared(null);
     setError('');
@@ -94,7 +95,7 @@ export function ImportData({
           type="file"
           accept="application/json,.json"
           aria-describedby="import-note"
-          disabled={disabled || reading}
+          disabled={disabled || reading || mutation.isPending}
           onChange={(event) => void select(event.target.files?.[0])}
         />
       </div>
@@ -174,7 +175,7 @@ export function ImportData({
             <button
               className="text-button"
               type="button"
-              disabled={disabled}
+              disabled={disabled || mutation.isPending}
               onClick={clear}
             >
               Отменить импорт

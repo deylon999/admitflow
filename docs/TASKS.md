@@ -3847,7 +3847,7 @@
 
 ### T227. Очищать сообщение ошибки при отмене импорта
 
-**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `done` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 
@@ -3865,11 +3865,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-import-cancel.md](../docs/evidence/b21-import-cancel.md) — Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed.
 
 ### T228. Обновлять время отчёта при штатной печати браузера
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 

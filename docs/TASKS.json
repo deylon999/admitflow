@@ -7094,7 +7094,7 @@
       "phase": "E4",
       "priority": "P2",
       "size": "S",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -7109,7 +7109,12 @@
         "Сценарий F08 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b21-import-cancel.md",
+          "note": "Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7118,7 +7123,7 @@
       "phase": "E4",
       "priority": "P2",
       "size": "S",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T219"
       ],

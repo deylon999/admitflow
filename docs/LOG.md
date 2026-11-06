@@ -1021,3 +1021,5 @@ S183/T224: Catalog outages no longer imply empty coverage; failed append retains
 S183/T225: Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed. Evidence: docs/evidence/b21-catalog-scale.md. Next T226.
 
 S183/T226: Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete. Evidence: docs/evidence/b21-archive-capacity.md. Next T227.
+
+S183/T227: Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed. Evidence: docs/evidence/b21-import-cancel.md. Next T228.

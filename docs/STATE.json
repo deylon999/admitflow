@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": "T227",
+  "currentTask": "T228",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S183",
-  "resumeAction": "B21: T226 done; current T227. Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete. Evidence: docs/evidence/b21-archive-capacity.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
+  "resumeAction": "B21: T227 done; current T228. Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed. Evidence: docs/evidence/b21-import-cancel.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

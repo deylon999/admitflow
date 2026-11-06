@@ -1,5 +1,11 @@
 # S183 — B21 frontend fixes
 
+T227 done; current T228. Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed.
+
+Evidence: docs/evidence/b21-import-cancel.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
+# S183 — B21 frontend fixes
+
 T226 done; current T227. Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete.
 
 Evidence: docs/evidence/b21-archive-capacity.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
