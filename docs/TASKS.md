@@ -3781,7 +3781,7 @@
 
 ### T224. Разделить ошибку каталога и подтверждённую пустоту
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3799,11 +3799,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-catalog-error.md](../docs/evidence/b21-catalog-error.md) — Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed.
 
 ### T225. Согласовать branch facets frontend и backend выше100
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 

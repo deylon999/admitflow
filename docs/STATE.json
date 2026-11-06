@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": "T224",
+  "currentTask": "T225",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S183",
-  "resumeAction": "B21: T223 done; current T224. Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed. Evidence: docs/evidence/b21-archive-refresh.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
+  "resumeAction": "B21: T224 done; current T225. Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed. Evidence: docs/evidence/b21-catalog-error.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

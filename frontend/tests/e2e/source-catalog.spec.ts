@@ -1,5 +1,32 @@
 import { expect, test } from '@playwright/test';
 
+const syntheticGroup = {
+  id: 'catalog-a',
+  universityId: 'university-synthetic',
+  universityName: 'Synthetic University',
+  parentUniversityId: null,
+  year: 2026,
+  level: 'bachelor',
+  title: 'Synthetic catalog group',
+  studyForm: 'full-time',
+  funding: 'budget',
+  category: 'general',
+  seats: 2,
+  coverage: 'unsupported',
+  dataKind: null,
+  sourceId: null,
+  sourceUrl: null,
+  sourceState: null,
+  snapshotId: null,
+  fetchedAt: null,
+  sourceUpdatedAt: null,
+  lastCheckedAt: null,
+  rowCount: null,
+  lookupAvailable: false,
+  assessmentAvailable: false,
+  scenarioAvailable: false,
+};
+
 test('real catalog is readonly, filters season/university and keeps a manual fallback', async ({
   page,
 }) => {
@@ -47,9 +74,46 @@ test('catalog errors have retry and do not invent zero coverage', async ({ page 
   );
   await page.goto('/sources');
   await expect(page.getByText('Не удалось загрузить группы.', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Подходящих подключённых групп пока нет.', { exact: false }),
+  ).toHaveCount(0);
   fail = false;
   await page.getByRole('button', { name: 'Повторить загрузку групп' }).click();
   await expect(page.getByRole('button', { name: 'Повторить загрузку групп' })).toHaveCount(0);
+  await expect(
+    page.getByText('Подходящих подключённых групп пока нет.', { exact: false }),
+  ).toBeVisible();
+});
+
+test('failed next catalog page preserves loaded groups and can be retried', async ({ page }) => {
+  let failNext = true;
+  await page.route('**/api/v1/groups?*', (route) => {
+    const second = new URL(route.request().url()).searchParams.has('after');
+    if (second && failNext) {
+      return route.fulfill({ status: 503, json: { detail: 'Synthetic next-page outage' } });
+    }
+    return route.fulfill({
+      json: {
+        items: [{ ...syntheticGroup, id: second ? 'catalog-b' : 'catalog-a' }],
+        total: 2,
+        nextCursor: second ? null : 'catalog-a',
+        facets: { branches: [], years: [2026] },
+      },
+    });
+  });
+  await page.goto('/sources');
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(1);
+  await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
+  await expect(page.getByText('Не удалось загрузить группы.', { exact: true })).toBeVisible();
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(1);
+  await expect(
+    page.getByText('Подходящих подключённых групп пока нет.', { exact: false }),
+  ).toHaveCount(0);
+  failNext = false;
+  await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
+  await expect(page.locator('article.source-catalog-card')).toHaveCount(2);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Загрузить ещё группы' })).toHaveCount(0);
 });
 
 test('catalog pages append once and filter changes clear the old pages', async ({ page }) => {

@@ -1015,3 +1015,5 @@ S182/T221/B20 final2/2: F02 fixed: private UI/query gate while resetting; cancel
 S183/T222: Reverted drafts cleared; pending retry intent and unchanged recovery TTL preserved. 126Vitest/build/format;22Chromium and7Firefox passed. Evidence: docs/evidence/b21-draft-revert.md. Next T223.
 
 S183/T223: Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed. Evidence: docs/evidence/b21-archive-refresh.md. Next T224.
+
+S183/T224: Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed. Evidence: docs/evidence/b21-catalog-error.md. Next T225.

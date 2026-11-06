@@ -1,5 +1,11 @@
 # S183 — B21 frontend fixes
 
+T224 done; current T225. Catalog outages no longer imply empty coverage; failed append retains cards and retry works. Build/format;4Chromium+Firefox passed.
+
+Evidence: docs/evidence/b21-catalog-error.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
+# S183 — B21 frontend fixes
+
 T223 done; current T224. Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed.
 
 Evidence: docs/evidence/b21-archive-refresh.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.

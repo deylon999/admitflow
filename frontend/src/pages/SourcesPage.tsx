@@ -107,7 +107,7 @@ export default function SourcesPage() {
           </button>
         </div>
       )}
-      {!catalog.isPending && items.length === 0 && (
+      {catalog.isSuccess && items.length === 0 && (
         <p className="notice">
           Подходящих подключённых групп пока нет. Направление можно сохранить вручную.
         </p>
