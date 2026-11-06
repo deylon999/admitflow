@@ -23,11 +23,15 @@ export default defineConfig({
     { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
     { name: 'mobile-webkit', use: { ...devices['iPhone 14'] } },
   ],
-  webServer: serverMode === 'external' ? undefined : {
-    command: serverMode === 'preview'
-      ? `npm run build && npm run preview -- --port ${new URL(baseURL).port || '5173'}`
-      : `npm run dev -- --port ${new URL(baseURL).port || '5173'}`,
-    url: baseURL,
-    reuseExistingServer: serverMode === 'dev' && !process.env.CI,
-  },
+  webServer:
+    serverMode === 'external'
+      ? undefined
+      : {
+          command:
+            serverMode === 'preview'
+              ? `npm run build && npm run preview -- --port ${new URL(baseURL).port || '5173'}`
+              : `npm run dev -- --port ${new URL(baseURL).port || '5173'}`,
+          url: baseURL,
+          reuseExistingServer: serverMode === 'dev' && !process.env.CI,
+        },
 });

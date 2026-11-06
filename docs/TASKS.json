@@ -6735,6 +6735,131 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T215",
+      "title": "Закрепить читаемый стиль frontend и команды форматирования",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T214"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Версия formatter закреплена, настройки/команды проверены, базовая сборка зафиксирована"
+      ],
+      "acceptance": [
+        "Версия formatter закреплена, настройки/команды проверены, базовая сборка зафиксирована",
+        "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b19-format-tools.md",
+          "note": "Prettier3.9.10 pinned with LF/100columns/JSX attributes per line; npm format/check commands configured and tooling files formatted. npm install/version/config checks passed; runtime dependencies unchanged."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T216",
+      "title": "Развернуть библиотечный TypeScript в многострочный код",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T215"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Все frontend/src/lib файлы отформатированы без изменений логики"
+      ],
+      "acceptance": [
+        "Все frontend/src/lib файлы отформатированы без изменений логики",
+        "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T217",
+      "title": "Сделать JSX компонентов, страниц и стили читаемыми",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T216"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Компоненты/страницы/entrypoint/CSS многострочные, функциональные изменения не внесены"
+      ],
+      "acceptance": [
+        "Компоненты/страницы/entrypoint/CSS многострочные, функциональные изменения не внесены",
+        "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T218",
+      "title": "Привести тесты к тому же стилю и проверить поведение",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T217"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Тесты/конфиги читаемы, format check/unit/build и проверка семантики пройдены"
+      ],
+      "acceptance": [
+        "Тесты/конфиги читаемы, format check/unit/build и проверка семантики пройдены",
+        "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T219",
+      "title": "Подтвердить и описать найденные ошибки frontend",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T218"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "Отчёт содержит воспроизведение, влияние и точные места; функциональные ошибки не исправлены без запроса"
+      ],
+      "acceptance": [
+        "Отчёт содержит воспроизведение, влияние и точные места; функциональные ошибки не исправлены без запроса",
+        "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

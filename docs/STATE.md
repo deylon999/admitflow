@@ -1,3 +1,7 @@
+# S181 — B19 audit and readable frontend
+
+T215done;currentT216. Prettier3.9.10 pinned with LF/100columns/JSX attributes per line; npm format/check commands configured and tooling files formatted. npm install/version/config checks passed; runtime dependencies unchanged. Evidence: docs/evidence/b19-format-tools.md. Same demo8091/key/volumes; national coverage unchanged.
+
 # S180 — B18: CI исправлен, финальный checkpoint
 
 T210–T214 завершены 5/5; 194 done/214 total. Hosted GitHub Actions
