@@ -1,0 +1,938 @@
+{
+  "formatter": "prettier3.9.10",
+  "filesMeasured": 102,
+  "sourceAndTestTsTsxAstChecked": 100,
+  "normalizedSemanticAstMismatches": 0,
+  "astNormalization": "Formatting, comments, redundant parentheses, JSX text whitespace and adjacent literal text children",
+  "cssBundleByteIdentical": true,
+  "javascriptBundleByteIdentical": false,
+  "formatCheckPassed": true,
+  "vitestPassed": 116,
+  "buildExitCode": 0,
+  "linesOver200Before": 218,
+  "linesOver200After": 2,
+  "maxLineBefore": 1549,
+  "maxLineAfter": 267,
+  "remainingLongLines": "Literal user-facing strings and URLs; no minified JSX or CSS rules",
+  "functionalBugFixes": 0,
+  "files": [
+    {
+      "path": "frontend/src/components/ArchiveDirections.tsx",
+      "beforeLines": 54,
+      "afterLines": 178,
+      "beforeMaxLine": 381,
+      "afterMaxLine": 105,
+      "beforeLinesOver200": 6,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ArchiveHistory.tsx",
+      "beforeLines": 41,
+      "afterLines": 188,
+      "beforeMaxLine": 322,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 4,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ArchiveScenario.tsx",
+      "beforeLines": 42,
+      "afterLines": 208,
+      "beforeMaxLine": 398,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 7,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/Calculator.tsx",
+      "beforeLines": 51,
+      "afterLines": 187,
+      "beforeMaxLine": 372,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 4,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ChangeFeed.tsx",
+      "beforeLines": 31,
+      "afterLines": 115,
+      "beforeMaxLine": 217,
+      "afterMaxLine": 143,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/CoverageSummary.tsx",
+      "beforeLines": 16,
+      "afterLines": 88,
+      "beforeMaxLine": 381,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 6,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/DeleteConfirmation.tsx",
+      "beforeLines": 9,
+      "afterLines": 55,
+      "beforeMaxLine": 298,
+      "afterMaxLine": 50,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/DirectionForm.tsx",
+      "beforeLines": 129,
+      "afterLines": 374,
+      "beforeMaxLine": 491,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 7,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/DraftRecovery.tsx",
+      "beforeLines": 17,
+      "afterLines": 86,
+      "beforeMaxLine": 308,
+      "afterMaxLine": 93,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/HistoryComparison.tsx",
+      "beforeLines": 27,
+      "afterLines": 88,
+      "beforeMaxLine": 417,
+      "afterMaxLine": 110,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ImportData.tsx",
+      "beforeLines": 67,
+      "afterLines": 198,
+      "beforeMaxLine": 484,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 6,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/Layout.tsx",
+      "beforeLines": 20,
+      "afterLines": 98,
+      "beforeMaxLine": 388,
+      "afterMaxLine": 93,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ManualReport.tsx",
+      "beforeLines": 13,
+      "afterLines": 45,
+      "beforeMaxLine": 354,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/PageErrorBoundary.tsx",
+      "beforeLines": 16,
+      "afterLines": 49,
+      "beforeMaxLine": 497,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/RankingDiagram.tsx",
+      "beforeLines": 12,
+      "afterLines": 79,
+      "beforeMaxLine": 280,
+      "afterMaxLine": 171,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ScenarioComparison.tsx",
+      "beforeLines": 34,
+      "afterLines": 110,
+      "beforeMaxLine": 232,
+      "afterMaxLine": 94,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ScenarioExplanation.tsx",
+      "beforeLines": 18,
+      "afterLines": 28,
+      "beforeMaxLine": 206,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/SourceLookup.tsx",
+      "beforeLines": 66,
+      "afterLines": 248,
+      "beforeMaxLine": 320,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 8,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/SourceProvenance.tsx",
+      "beforeLines": 30,
+      "afterLines": 117,
+      "beforeMaxLine": 583,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/SourceUniversityFilter.tsx",
+      "beforeLines": 34,
+      "afterLines": 109,
+      "beforeMaxLine": 309,
+      "afterMaxLine": 94,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/ThemeToggle.tsx",
+      "beforeLines": 13,
+      "afterLines": 46,
+      "beforeMaxLine": 231,
+      "afterMaxLine": 86,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/UniversityPicker.tsx",
+      "beforeLines": 54,
+      "afterLines": 186,
+      "beforeMaxLine": 355,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 6,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/components/WatchComparison.tsx",
+      "beforeLines": 37,
+      "afterLines": 133,
+      "beforeMaxLine": 253,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/api.ts",
+      "beforeLines": 155,
+      "afterLines": 356,
+      "beforeMaxLine": 388,
+      "afterMaxLine": 131,
+      "beforeLinesOver200": 6,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/calculator.ts",
+      "beforeLines": 53,
+      "afterLines": 99,
+      "beforeMaxLine": 190,
+      "afterMaxLine": 112,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/change-contracts.ts",
+      "beforeLines": 26,
+      "afterLines": 49,
+      "beforeMaxLine": 260,
+      "afterMaxLine": 87,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/comparison.ts",
+      "beforeLines": 22,
+      "afterLines": 29,
+      "beforeMaxLine": 107,
+      "afterMaxLine": 83,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/contracts.ts",
+      "beforeLines": 166,
+      "afterLines": 373,
+      "beforeMaxLine": 566,
+      "afterMaxLine": 102,
+      "beforeLinesOver200": 9,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/direction.ts",
+      "beforeLines": 27,
+      "afterLines": 75,
+      "beforeMaxLine": 226,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/download.ts",
+      "beforeLines": 16,
+      "afterLines": 18,
+      "beforeMaxLine": 121,
+      "afterMaxLine": 90,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/draft.ts",
+      "beforeLines": 65,
+      "afterLines": 155,
+      "beforeMaxLine": 177,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/explanation.ts",
+      "beforeLines": 19,
+      "afterLines": 19,
+      "beforeMaxLine": 167,
+      "afterMaxLine": 167,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/import.ts",
+      "beforeLines": 29,
+      "afterLines": 43,
+      "beforeMaxLine": 134,
+      "afterMaxLine": 119,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/json.ts",
+      "beforeLines": 53,
+      "afterLines": 60,
+      "beforeMaxLine": 119,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/query-client.ts",
+      "beforeLines": 22,
+      "afterLines": 32,
+      "beforeMaxLine": 194,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/scenario-contracts.ts",
+      "beforeLines": 48,
+      "afterLines": 228,
+      "beforeMaxLine": 544,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 10,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/source-contracts.ts",
+      "beforeLines": 107,
+      "afterLines": 361,
+      "beforeMaxLine": 674,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 12,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/time.ts",
+      "beforeLines": 32,
+      "afterLines": 47,
+      "beforeMaxLine": 159,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/transport.ts",
+      "beforeLines": 63,
+      "afterLines": 88,
+      "beforeMaxLine": 154,
+      "afterMaxLine": 105,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/lib/watch-list.ts",
+      "beforeLines": 15,
+      "afterLines": 31,
+      "beforeMaxLine": 154,
+      "afterMaxLine": 89,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/main.tsx",
+      "beforeLines": 58,
+      "afterLines": 142,
+      "beforeMaxLine": 366,
+      "afterMaxLine": 94,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/pages/LandingPage.tsx",
+      "beforeLines": 46,
+      "afterLines": 265,
+      "beforeMaxLine": 659,
+      "afterMaxLine": 267,
+      "beforeLinesOver200": 14,
+      "afterLinesOver200": 2
+    },
+    {
+      "path": "frontend/src/pages/SourcesPage.tsx",
+      "beforeLines": 46,
+      "afterLines": 229,
+      "beforeMaxLine": 355,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 13,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/pages/TrackerPage.tsx",
+      "beforeLines": 231,
+      "afterLines": 934,
+      "beforeMaxLine": 1549,
+      "afterMaxLine": 127,
+      "beforeLinesOver200": 30,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/styles.css",
+      "beforeLines": 293,
+      "afterLines": 1243,
+      "beforeMaxLine": 291,
+      "afterMaxLine": 59,
+      "beforeLinesOver200": 4,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/src/tracker.css",
+      "beforeLines": 187,
+      "afterLines": 905,
+      "beforeMaxLine": 266,
+      "afterMaxLine": 61,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/assessment.test.ts",
+      "beforeLines": 16,
+      "afterLines": 16,
+      "beforeMaxLine": 89,
+      "afterMaxLine": 89,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/calculator.test.ts",
+      "beforeLines": 28,
+      "afterLines": 35,
+      "beforeMaxLine": 118,
+      "afterMaxLine": 84,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/catalog-cancel.test.ts",
+      "beforeLines": 23,
+      "afterLines": 36,
+      "beforeMaxLine": 182,
+      "afterMaxLine": 94,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/change-contracts.test.ts",
+      "beforeLines": 9,
+      "afterLines": 33,
+      "beforeMaxLine": 440,
+      "afterMaxLine": 92,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/comparison.test.ts",
+      "beforeLines": 31,
+      "afterLines": 38,
+      "beforeMaxLine": 124,
+      "afterMaxLine": 97,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/contracts.test.ts",
+      "beforeLines": 45,
+      "afterLines": 86,
+      "beforeMaxLine": 305,
+      "afterMaxLine": 101,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/coverage.test.ts",
+      "beforeLines": 8,
+      "afterLines": 37,
+      "beforeMaxLine": 366,
+      "afterMaxLine": 82,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/direction.test.ts",
+      "beforeLines": 29,
+      "afterLines": 51,
+      "beforeMaxLine": 230,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/draft-scope.test.ts",
+      "beforeLines": 9,
+      "afterLines": 10,
+      "beforeMaxLine": 147,
+      "afterMaxLine": 96,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/draft-store.test.ts",
+      "beforeLines": 48,
+      "afterLines": 113,
+      "beforeMaxLine": 268,
+      "afterMaxLine": 94,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/accessibility.spec.ts",
+      "beforeLines": 28,
+      "afterLines": 68,
+      "beforeMaxLine": 331,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/assets.spec.ts",
+      "beforeLines": 63,
+      "afterLines": 86,
+      "beforeMaxLine": 153,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/bgu-catalog.spec.ts",
+      "beforeLines": 20,
+      "afterLines": 27,
+      "beforeMaxLine": 131,
+      "afterMaxLine": 118,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/bgu-lookup.spec.ts",
+      "beforeLines": 29,
+      "afterLines": 38,
+      "beforeMaxLine": 128,
+      "afterMaxLine": 115,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/catalog.spec.ts",
+      "beforeLines": 69,
+      "afterLines": 89,
+      "beforeMaxLine": 141,
+      "afterMaxLine": 92,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/changes.spec.ts",
+      "beforeLines": 27,
+      "afterLines": 60,
+      "beforeMaxLine": 154,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/comparison.spec.ts",
+      "beforeLines": 37,
+      "afterLines": 48,
+      "beforeMaxLine": 162,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/coverage.spec.ts",
+      "beforeLines": 20,
+      "afterLines": 32,
+      "beforeMaxLine": 221,
+      "afterMaxLine": 90,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/draft-navigation.spec.ts",
+      "beforeLines": 36,
+      "afterLines": 41,
+      "beforeMaxLine": 111,
+      "afterMaxLine": 98,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/draft-recovery.spec.ts",
+      "beforeLines": 312,
+      "afterLines": 430,
+      "beforeMaxLine": 285,
+      "afterMaxLine": 105,
+      "beforeLinesOver200": 4,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/draft.spec.ts",
+      "beforeLines": 47,
+      "afterLines": 62,
+      "beforeMaxLine": 254,
+      "afterMaxLine": 93,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/fonts.spec.ts",
+      "beforeLines": 30,
+      "afterLines": 40,
+      "beforeMaxLine": 132,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/import-cancel.spec.ts",
+      "beforeLines": 32,
+      "afterLines": 43,
+      "beforeMaxLine": 264,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/import.spec.ts",
+      "beforeLines": 88,
+      "afterLines": 146,
+      "beforeMaxLine": 237,
+      "afterMaxLine": 101,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/keyboard.spec.ts",
+      "beforeLines": 112,
+      "afterLines": 136,
+      "beforeMaxLine": 180,
+      "afterMaxLine": 102,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/landing.spec.ts",
+      "beforeLines": 36,
+      "afterLines": 46,
+      "beforeMaxLine": 124,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/manual-quality.spec.ts",
+      "beforeLines": 66,
+      "afterLines": 125,
+      "beforeMaxLine": 315,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/national-catalog.spec.ts",
+      "beforeLines": 37,
+      "afterLines": 42,
+      "beforeMaxLine": 161,
+      "afterMaxLine": 117,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/pending-form.spec.ts",
+      "beforeLines": 64,
+      "afterLines": 104,
+      "beforeMaxLine": 285,
+      "afterMaxLine": 92,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/recovery.spec.ts",
+      "beforeLines": 36,
+      "afterLines": 49,
+      "beforeMaxLine": 148,
+      "afterMaxLine": 97,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/scenarios.spec.ts",
+      "beforeLines": 26,
+      "afterLines": 51,
+      "beforeMaxLine": 180,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/section-family.spec.ts",
+      "beforeLines": 26,
+      "afterLines": 38,
+      "beforeMaxLine": 141,
+      "afterMaxLine": 95,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/session-actions.spec.ts",
+      "beforeLines": 38,
+      "afterLines": 65,
+      "beforeMaxLine": 252,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/session-tabs.spec.ts",
+      "beforeLines": 57,
+      "afterLines": 83,
+      "beforeMaxLine": 265,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-catalog.spec.ts",
+      "beforeLines": 59,
+      "afterLines": 90,
+      "beforeMaxLine": 228,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-failure.spec.ts",
+      "beforeLines": 16,
+      "afterLines": 41,
+      "beforeMaxLine": 127,
+      "afterMaxLine": 100,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-history.spec.ts",
+      "beforeLines": 47,
+      "afterLines": 92,
+      "beforeMaxLine": 247,
+      "afterMaxLine": 107,
+      "beforeLinesOver200": 2,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-lookup.spec.ts",
+      "beforeLines": 109,
+      "afterLines": 146,
+      "beforeMaxLine": 143,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-provenance.spec.ts",
+      "beforeLines": 18,
+      "afterLines": 35,
+      "beforeMaxLine": 151,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-session.spec.ts",
+      "beforeLines": 28,
+      "afterLines": 72,
+      "beforeMaxLine": 244,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/source-university-filter.spec.ts",
+      "beforeLines": 50,
+      "afterLines": 56,
+      "beforeMaxLine": 144,
+      "afterMaxLine": 112,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/tracker-api.spec.ts",
+      "beforeLines": 109,
+      "afterLines": 116,
+      "beforeMaxLine": 165,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/tracker-form.spec.ts",
+      "beforeLines": 63,
+      "afterLines": 98,
+      "beforeMaxLine": 183,
+      "afterMaxLine": 98,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/e2e/tracker-tools.spec.ts",
+      "beforeLines": 201,
+      "afterLines": 268,
+      "beforeMaxLine": 184,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/explanation.test.ts",
+      "beforeLines": 21,
+      "afterLines": 21,
+      "beforeMaxLine": 73,
+      "afterMaxLine": 73,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/export.test.ts",
+      "beforeLines": 13,
+      "afterLines": 20,
+      "beforeMaxLine": 139,
+      "afterMaxLine": 97,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/history.test.ts",
+      "beforeLines": 14,
+      "afterLines": 18,
+      "beforeMaxLine": 102,
+      "afterMaxLine": 89,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/import.test.ts",
+      "beforeLines": 50,
+      "afterLines": 97,
+      "beforeMaxLine": 244,
+      "afterMaxLine": 105,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/json.test.ts",
+      "beforeLines": 16,
+      "afterLines": 30,
+      "beforeMaxLine": 184,
+      "afterMaxLine": 106,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/response.test.ts",
+      "beforeLines": 31,
+      "afterLines": 60,
+      "beforeMaxLine": 183,
+      "afterMaxLine": 95,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/scenario-contracts.test.ts",
+      "beforeLines": 18,
+      "afterLines": 31,
+      "beforeMaxLine": 269,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/session-state.test.ts",
+      "beforeLines": 86,
+      "afterLines": 121,
+      "beforeMaxLine": 196,
+      "afterMaxLine": 102,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/source-contracts.test.ts",
+      "beforeLines": 33,
+      "afterLines": 117,
+      "beforeMaxLine": 539,
+      "afterMaxLine": 99,
+      "beforeLinesOver200": 3,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/time.test.ts",
+      "beforeLines": 42,
+      "afterLines": 82,
+      "beforeMaxLine": 220,
+      "afterMaxLine": 97,
+      "beforeLinesOver200": 1,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/transport.test.ts",
+      "beforeLines": 29,
+      "afterLines": 36,
+      "beforeMaxLine": 107,
+      "afterMaxLine": 86,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    },
+    {
+      "path": "frontend/tests/watch-list.test.ts",
+      "beforeLines": 14,
+      "afterLines": 24,
+      "beforeMaxLine": 148,
+      "afterMaxLine": 88,
+      "beforeLinesOver200": 0,
+      "afterLinesOver200": 0
+    }
+  ]
+}

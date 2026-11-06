@@ -3648,7 +3648,7 @@
 
 ### T218. Привести тесты к тому же стилю и проверить поведение
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T217.
 
@@ -3666,11 +3666,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b19-tests-format.md](../docs/evidence/b19-tests-format.md) — All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci.
 
 ### T219. Подтвердить и описать найденные ошибки frontend
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T218.
 

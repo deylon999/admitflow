@@ -12,7 +12,9 @@ test('missing build resources return404 without the SPA document', async ({ requ
   }
 });
 
-test('HTML revalidates, hashed JS and CSS cache immutably, API stays private', async ({ request }) => {
+test('HTML revalidates, hashed JS and CSS cache immutably, API stays private', async ({
+  request,
+}) => {
   for (const path of ['/', '/index.html', '/tracker', '/unknown-deep-link']) {
     const response = await request.get(path);
     expect(response.status()).toBe(200);
@@ -20,15 +22,19 @@ test('HTML revalidates, hashed JS and CSS cache immutably, API stays private', a
     expect(await response.text()).toContain('<div id="root">');
   }
   const html = await (await request.get('/')).text();
-  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^" ]+\.(?:js|css))"/g)].map(match => match[1]);
-  expect(assets.some(path => path.endsWith('.js'))).toBe(true);
-  expect(assets.some(path => path.endsWith('.css'))).toBe(true);
+  const assets = [...html.matchAll(/(?:src|href)="(\/assets\/[^" ]+\.(?:js|css))"/g)].map(
+    (match) => match[1],
+  );
+  expect(assets.some((path) => path.endsWith('.js'))).toBe(true);
+  expect(assets.some((path) => path.endsWith('.css'))).toBe(true);
   for (const path of assets) {
     const response = await request.get(path);
     expect(response.status()).toBe(200);
     expect(response.headers()['cache-control']).toBe('public, max-age=31536000, immutable');
     expect(response.headers()['x-content-type-options']).toBe('nosniff');
-    expect(response.headers()['content-type']).toMatch(path.endsWith('.js') ? /javascript/ : /text\/css/);
+    expect(response.headers()['content-type']).toMatch(
+      path.endsWith('.js') ? /javascript/ : /text\/css/,
+    );
     expect(await response.text()).not.toContain('<div id="root">');
   }
   const health = await request.get('/api/health');
@@ -36,7 +42,10 @@ test('HTML revalidates, hashed JS and CSS cache immutably, API stays private', a
   expect(health.headers()['cache-control']).toBe('no-store');
 });
 
-test('edge sends security headers, hides operations and rate limits guest creation', async ({ request, page }) => {
+test('edge sends security headers, hides operations and rate limits guest creation', async ({
+  request,
+  page,
+}) => {
   for (const path of ['/', '/assets/missing-build-chunk.js', '/api/live']) {
     const headers = (await request.get(path)).headers();
     expect(headers['content-security-policy']).toContain("default-src 'self'");
@@ -45,11 +54,21 @@ test('edge sends security headers, hides operations and rate limits guest creati
     expect(headers['referrer-policy']).toBe('no-referrer');
     expect(headers['server']).not.toMatch(/\d/);
   }
-  for (const path of ['/api/status', '/api/docs', '/api/openapi.json']) expect((await request.get(path)).status()).toBe(404);
-  expect((await request.post('/api/v1/calculate', { data: 'x'.repeat(70 * 1024), headers: { 'content-type': 'application/json' } })).status()).toBe(413);
+  for (const path of ['/api/status', '/api/docs', '/api/openapi.json'])
+    expect((await request.get(path)).status()).toBe(404);
+  expect(
+    (
+      await request.post('/api/v1/calculate', {
+        data: 'x'.repeat(70 * 1024),
+        headers: { 'content-type': 'application/json' },
+      })
+    ).status(),
+  ).toBe(413);
 
   const violations: string[] = [];
-  page.on('console', message => { if (message.text().includes('Content Security Policy')) violations.push(message.text()); });
+  page.on('console', (message) => {
+    if (message.text().includes('Content Security Policy')) violations.push(message.text());
+  });
   for (const path of ['/', '/tracker']) {
     await page.goto(path);
     await expect(page.locator('h1').first()).toBeVisible();
@@ -57,7 +76,11 @@ test('edge sends security headers, hides operations and rate limits guest creati
   expect(violations).toEqual([]);
   const statuses: number[] = [];
   for (let attempt = 0; attempt < 40; attempt++) {
-    statuses.push((await request.post('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } })).status());
+    statuses.push(
+      (
+        await request.post('/api/v1/session', { headers: { 'X-Requested-With': 'abiturient' } })
+      ).status(),
+    );
   }
   expect(statuses).toContain(429);
 });

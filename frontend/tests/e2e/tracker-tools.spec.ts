@@ -3,25 +3,42 @@ import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 import { calculatePlace } from '../../src/lib/calculator';
 
 test.beforeEach(async ({ page }) => {
-  await page.route('**/api/v1/changes*', route => route.fulfill({ json: { items: [], total: 0, unreadCount: 0, nextCursor: null } }));
-  await page.route('**/api/v1/subscriptions', route => route.fulfill({ json: [] }));
-  await page.route('**/api/v1/direction-budget', route => route.fulfill({ json: { limit: 20, total: 0, manualCount: 0, archiveCount: 0 } }));
-  await page.route('**/api/v1/session', route => route.request().method() === 'GET' ? route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } }) : route.fulfill({ status: 204 }));
+  await page.route('**/api/v1/changes*', (route) =>
+    route.fulfill({ json: { items: [], total: 0, unreadCount: 0, nextCursor: null } }),
+  );
+  await page.route('**/api/v1/subscriptions', (route) => route.fulfill({ json: [] }));
+  await page.route('**/api/v1/direction-budget', (route) =>
+    route.fulfill({ json: { limit: 20, total: 0, manualCount: 0, archiveCount: 0 } }),
+  );
+  await page.route('**/api/v1/session', (route) =>
+    route.request().method() === 'GET'
+      ? route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } })
+      : route.fulfill({ status: 204 }),
+  );
 });
 
 test('можно сравнить любые два загруженных сохранения', async ({ page }) => {
-  const items = [120,130,150].map((rank,index) => {
+  const items = [120, 130, 150].map((rank, index) => {
     const values = { ...fixture.latest.values, rank };
-    return { ...fixture.latest, id: `snapshot-${3-index}`, values, calculation: calculatePlace(values) };
+    return {
+      ...fixture.latest,
+      id: `snapshot-${3 - index}`,
+      values,
+      calculation: calculatePlace(values),
+    };
   });
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
-  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items, nextCursor: null, total: 3 } }));
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches/*/history*', (route) =>
+    route.fulfill({ json: { items, nextCursor: null, total: 3 } }),
+  );
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'История', exact: true }).click();
   await expect(page.getByText('Сохранено 3 из 500. Осталось обновлений: 497.')).toBeVisible();
   await expect(page.locator('.direction-history tbody tr').first().locator('td')).toHaveCount(8);
   await expect(page.locator('.direction-history tbody tr').first()).toContainText('manual-v1');
-  await expect(page.locator('.direction-history time').first()).toContainText(fixture.latest.capturedAt);
+  await expect(page.locator('.direction-history time').first()).toContainText(
+    fixture.latest.capturedAt,
+  );
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 84 → 74');
   await page.getByLabel('Более раннее сохранение', { exact: true }).selectOption('snapshot-1');
   await expect(page.locator('.history-comparison strong')).toHaveText('Место: 104 → 74');
@@ -30,7 +47,9 @@ test('можно сравнить любые два загруженных со�
 });
 
 test('поиск, фильтр и порядок не удаляют направления', async ({ page }) => {
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture, { ...fixture, id: 'second', university: 'Другой вуз' }] }));
+  await page.route('**/api/v1/watches', (route) =>
+    route.fulfill({ json: [fixture, { ...fixture, id: 'second', university: 'Другой вуз' }] }),
+  );
   await page.goto('/tracker');
   await expect(page.locator('.direction-card')).toHaveCount(2);
   await page.locator('#watch-search').fill('другой');
@@ -44,9 +63,11 @@ test('поиск, фильтр и порядок не удаляют напра�
 });
 
 test('печатный отчёт содержит источник и допущения, без кнопок', async ({ page }) => {
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [fixture] }));
   await page.goto('/tracker');
-  await page.evaluate(() => { window.print = () => {}; });
+  await page.evaluate(() => {
+    window.print = () => {};
+  });
   await page.getByRole('button', { name: /Распечатать выбранный/ }).click();
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('.print-report')).toBeVisible();
@@ -56,19 +77,26 @@ test('печатный отчёт содержит источник и допу�
   await expect(page.locator('.tracker-page-heading')).toBeHidden();
 });
 
-test('удаление редактируемого направления требует подтвердить потерю черновика', async ({ page }) => {
+test('удаление редактируемого направления требует подтвердить потерю черновика', async ({
+  page,
+}) => {
   let deleted = 0;
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: deleted ? [] : [fixture] }));
-  await page.route('**/api/v1/watches/watch-1', route => { deleted++; return route.fulfill({ status: 204 }); });
+  await page.route('**/api/v1/watches', (route) =>
+    route.fulfill({ json: deleted ? [] : [fixture] }),
+  );
+  await page.route('**/api/v1/watches/watch-1', (route) => {
+    deleted++;
+    return route.fulfill({ status: 204 });
+  });
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
   await page.locator('#tracker-rank').fill('125');
   await page.getByRole('button', { name: 'Удалить', exact: true }).click();
-  page.once('dialog', dialog => dialog.dismiss());
+  page.once('dialog', (dialog) => dialog.dismiss());
   await page.getByRole('button', { name: 'Да, удалить', exact: true }).click();
   expect(deleted).toBe(0);
   await expect(page.locator('#tracker-rank')).toHaveValue('125');
-  page.once('dialog', dialog => dialog.accept());
+  page.once('dialog', (dialog) => dialog.accept());
   await page.getByRole('button', { name: 'Да, удалить', exact: true }).click();
   await expect(page.locator('.direction-card')).toHaveCount(0);
   await expect(page.locator('.direction-form')).toHaveCount(0);
@@ -76,7 +104,7 @@ test('удаление редактируемого направления тр�
 });
 
 test('подтверждение удаления получает фокус и закрывается Escape', async ({ page }) => {
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [fixture] }));
   await page.goto('/tracker');
   const trigger = page.getByRole('button', { name: 'Удалить', exact: true });
   await trigger.click();
@@ -91,7 +119,11 @@ test('подтверждение удаления получает фокус и
 
 test('фоновая ошибка сохраняет карточки и открытый черновик', async ({ page }) => {
   let failed = false;
-  await page.route('**/api/v1/watches', route => route.fulfill(failed ? { status: 503, json: { detail: 'Временный отказ' } } : { json: [fixture] }));
+  await page.route('**/api/v1/watches', (route) =>
+    route.fulfill(
+      failed ? { status: 503, json: { detail: 'Временный отказ' } } : { json: [fixture] },
+    ),
+  );
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
   await page.locator('#tracker-rank').fill('125');
@@ -107,15 +139,24 @@ test('фоновая ошибка сохраняет карточки и отк�
 
 test('срок доступа берётся с сервера и не продлевается после reload', async ({ page }) => {
   let starts = 0;
-  await page.route('**/api/v1/session', route => {
-    if (route.request().method() === 'POST') { starts++; return route.fulfill({ status: 204 }); }
+  await page.route('**/api/v1/session', (route) => {
+    if (route.request().method() === 'POST') {
+      starts++;
+      return route.fulfill({ status: 204 });
+    }
     return route.fulfill({ json: { expiresAt: '2026-12-01T00:00:00Z' } });
   });
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));
   await page.goto('/tracker');
-  await expect(page.locator('.session-deadline time')).toHaveAttribute('datetime', '2026-12-01T00:00:00Z');
+  await expect(page.locator('.session-deadline time')).toHaveAttribute(
+    'datetime',
+    '2026-12-01T00:00:00Z',
+  );
   await page.reload();
-  await expect(page.locator('.session-deadline time')).toHaveAttribute('datetime', '2026-12-01T00:00:00Z');
+  await expect(page.locator('.session-deadline time')).toHaveAttribute(
+    'datetime',
+    '2026-12-01T00:00:00Z',
+  );
   expect(starts).toBe(1);
 });
 
@@ -134,8 +175,10 @@ test('переход по сайту и пропуск навигации упр
 
 test('историю на телефоне можно прокрутить с клавиатуры', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [fixture] }));
-  await page.route('**/api/v1/watches/*/history*', route => route.fulfill({ json: { items: [fixture.latest], nextCursor: null, total: 1 } }));
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [fixture] }));
+  await page.route('**/api/v1/watches/*/history*', (route) =>
+    route.fulfill({ json: { items: [fixture.latest], nextCursor: null, total: 1 } }),
+  );
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'История', exact: true }).click();
   const region = page.getByRole('region', { name: `История ${fixture.title}`, exact: true });
@@ -143,17 +186,23 @@ test('историю на телефоне можно прокрутить с к
   await expect(region).toBeFocused();
   await expect(region.locator('th[scope=col]')).toHaveCount(8);
   await page.keyboard.press('ArrowRight');
-  await expect.poll(() => region.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+  await expect.poll(() => region.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false);
 });
 
 test('ручное обновление списка сохраняет ввод формы и не создаёт сессию', async ({ page }) => {
   let rank = 120;
   let starts = 0;
-  page.on('request', request => { if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++; });
-  await page.route('**/api/v1/watches', route => {
+  page.on('request', (request) => {
+    if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++;
+  });
+  await page.route('**/api/v1/watches', (route) => {
     const values = { ...fixture.latest.values, rank };
-    return route.fulfill({ json: [{ ...fixture, latest: { ...fixture.latest, values, calculation: calculatePlace(values) } }] });
+    return route.fulfill({
+      json: [
+        { ...fixture, latest: { ...fixture.latest, values, calculation: calculatePlace(values) } },
+      ],
+    });
   });
   await page.goto('/tracker');
   await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
@@ -168,12 +217,22 @@ test('ручное обновление списка сохраняет ввод
 
 test('предпросмотр файла показывает названия безопасным текстом до импорта', async ({ page }) => {
   let imports = 0;
-  page.on('request', request => { if (request.url().endsWith('/api/v1/import')) imports++; });
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  page.on('request', (request) => {
+    if (request.url().endsWith('/api/v1/import')) imports++;
+  });
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));
   await page.goto('/tracker');
   await page.getByText('Восстановить из JSON', { exact: true }).click();
-  const bundle = { formatVersion: 'manual-export-v1', exportedAt: '2026-11-01T01:00:00Z', watches: [{ ...fixture, title: '<img src=x onerror=alert(1)>', history: [fixture.latest] }] };
-  await page.getByLabel('Файл выгрузки, до 8 МБ').setInputFiles({ name: 'bundle.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(bundle)) });
+  const bundle = {
+    formatVersion: 'manual-export-v1',
+    exportedAt: '2026-11-01T01:00:00Z',
+    watches: [{ ...fixture, title: '<img src=x onerror=alert(1)>', history: [fixture.latest] }],
+  };
+  await page.getByLabel('Файл выгрузки, до 8 МБ').setInputFiles({
+    name: 'bundle.json',
+    mimeType: 'application/json',
+    buffer: Buffer.from(JSON.stringify(bundle)),
+  });
   await expect(page.locator('.import-preview')).toContainText('<img src=x onerror=alert(1)>');
   await expect(page.locator('.import-preview img')).toHaveCount(0);
   await expect(page.locator('.import-preview')).toContainText(fixture.sourceUrl);
@@ -182,12 +241,20 @@ test('предпросмотр файла показывает названия 
   expect(imports).toBe(0);
 });
 
-test('ошибка загрузки страницы показывает восстановление без автоповтора', async ({ page, browserName }) => {
+test('ошибка загрузки страницы показывает восстановление без автоповтора', async ({
+  page,
+  browserName,
+}) => {
   let failed = true;
   let starts = 0;
-  page.on('request', request => { if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++; });
-  await page.route(/\/(?:src\/pages\/TrackerPage\.tsx|assets\/TrackerPage-[^/?]+\.js)(?:\?.*)?$/, route => failed ? route.abort('failed') : route.continue());
-  await page.route('**/api/v1/watches', route => route.fulfill({ json: [] }));
+  page.on('request', (request) => {
+    if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++;
+  });
+  await page.route(
+    /\/(?:src\/pages\/TrackerPage\.tsx|assets\/TrackerPage-[^/?]+\.js)(?:\?.*)?$/,
+    (route) => (failed ? route.abort('failed') : route.continue()),
+  );
+  await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));
   await page.goto('/tracker');
   await expect(page.getByRole('heading', { name: 'Не удалось открыть страницу' })).toBeFocused();
   expect(starts).toBe(0);

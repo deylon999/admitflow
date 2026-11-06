@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('back and forward preserve a dirty form when rejected and leave once when accepted', async ({ page }) => {
+test('back and forward preserve a dirty form when rejected and leave once when accepted', async ({
+  page,
+}) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/');
   await page.getByRole('link', { name: 'Мои направления →', exact: true }).click();
@@ -8,14 +10,17 @@ test('back and forward preserve a dirty form when rejected and leave once when a
   const input = page.getByLabel('Вуз', { exact: true });
   await input.fill('History draft');
   let dialogs = 0;
-  const reject = (dialog: import('@playwright/test').Dialog) => { dialogs++; void dialog.dismiss(); };
+  const reject = (dialog: import('@playwright/test').Dialog) => {
+    dialogs++;
+    void dialog.dismiss();
+  };
   page.on('dialog', reject);
   await page.evaluate(() => history.back());
   await expect.poll(() => dialogs).toBe(1);
   await expect(input).toHaveValue('History draft');
   await expect(page).toHaveURL(/\/tracker$/);
   page.off('dialog', reject);
-  page.once('dialog', dialog => dialog.accept());
+  page.once('dialog', (dialog) => dialog.accept());
   await page.evaluate(() => history.back());
   await expect(page).toHaveURL(/\/$/);
   await page.evaluate(() => history.forward());

@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-06",
-  "currentTask": "T218",
+  "currentTask": "T219",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S181",
-  "resumeAction": "B19: T217 done; current T218. 23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation. Evidence: docs/evidence/b19-jsx-format.md. Demo/key/volumes unchanged; T056/T057 remain open.",
+  "resumeAction": "B19: T218 done; current T219. All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci. Evidence: docs/evidence/b19-tests-format.md. Demo/key/volumes unchanged; T056/T057 remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

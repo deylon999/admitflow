@@ -993,3 +993,5 @@ S181/T215: Prettier3.9.10 pinned with LF/100columns/JSX attributes per line; npm
 S181/T216: All17library TypeScript files expanded into readable blocks; targeted Prettier check passed. Frontend LF attributes keep formatting stable on Windows. No intentional behavior changes; complete unit/build/equivalence verification T218. Evidence: docs/evidence/b19-library-format.md. Next T217.
 
 S181/T217: 23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation. Evidence: docs/evidence/b19-jsx-format.md. Next T218.
+
+S181/T218: All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci. Evidence: docs/evidence/b19-tests-format.md. Next T219.

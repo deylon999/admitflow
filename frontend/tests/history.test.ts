@@ -9,6 +9,10 @@ it('validates cursor, uniqueness and descending time before showing a page', () 
   for (const row of [
     { items: [item], nextCursor: 'other' },
     { items: [item, item], nextCursor: null },
-    { items: [item, { ...item, id: 'later', capturedAt: '2026-11-02T00:00:00Z' }], nextCursor: null },
-  ]) expect(() => parseHistoryPage(row)).toThrow();
+    {
+      items: [item, { ...item, id: 'later', capturedAt: '2026-11-02T00:00:00Z' }],
+      nextCursor: null,
+    },
+  ])
+    expect(() => parseHistoryPage(row)).toThrow();
 });

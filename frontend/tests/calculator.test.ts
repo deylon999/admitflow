@@ -16,13 +16,20 @@ describe('manual-v1: общие сценарии TS/Python', () => {
 
 describe('значения формы', () => {
   it('преобразует строки в целые числа', () => {
-    expect(calculatePlace({ rank: '120', seats: '90', excluded: '30', noConsent: '16' }))
-      .toMatchObject({ place: 74, worstPlace: 90, state: 'safe' });
+    expect(
+      calculatePlace({ rank: '120', seats: '90', excluded: '30', noConsent: '16' }),
+    ).toMatchObject({ place: 74, worstPlace: 90, state: 'safe' });
   });
-  it.each(['', ' ', 'abc', Infinity, NaN, Number.MAX_SAFE_INTEGER])('отклоняет пустой/нечисловой номер %s', rank => {
-    expect(calculatePlace({ ...exampleValues, rank })).toHaveProperty('error');
-  });
+  it.each(['', ' ', 'abc', Infinity, NaN, Number.MAX_SAFE_INTEGER])(
+    'отклоняет пустой/нечисловой номер %s',
+    (rank) => {
+      expect(calculatePlace({ ...exampleValues, rank })).toHaveProperty('error');
+    },
+  );
   it('не обещает зачисление во всех возможных сценариях', () => {
-    expect(calculatePlace(exampleValues)).toHaveProperty('status', 'В пределах мест в обоих рассмотренных сценариях');
+    expect(calculatePlace(exampleValues)).toHaveProperty(
+      'status',
+      'В пределах мест в обоих рассмотренных сценариях',
+    );
   });
 });

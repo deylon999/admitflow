@@ -5,7 +5,10 @@ afterEach(() => vi.useRealTimers());
 it('limits a stalled response/body and aborts the underlying operation', async () => {
   vi.useFakeTimers();
   let received!: AbortSignal;
-  const result = withRequestTimeout(signal => { received = signal; return new Promise(() => {}); });
+  const result = withRequestTimeout((signal) => {
+    received = signal;
+    return new Promise(() => {});
+  });
   const assertion = expect(result).rejects.toBeInstanceOf(RequestTimeoutError);
   await vi.advanceTimersByTimeAsync(15_000);
   await assertion;
@@ -24,6 +27,10 @@ it('supports cancellation and does not retry writes', async () => {
 it('clears the timer after success or failure', async () => {
   vi.useFakeTimers();
   await expect(withRequestTimeout(async () => 42)).resolves.toBe(42);
-  await expect(withRequestTimeout(async () => { throw new Error('offline'); })).rejects.toThrow('offline');
+  await expect(
+    withRequestTimeout(async () => {
+      throw new Error('offline');
+    }),
+  ).rejects.toThrow('offline');
   expect(vi.getTimerCount()).toBe(0);
 });

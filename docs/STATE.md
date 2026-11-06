@@ -1,5 +1,9 @@
 # S181 — B19 audit and readable frontend
 
+T218done;currentT219. All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci. Evidence: docs/evidence/b19-tests-format.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S181 — B19 audit and readable frontend
+
 T217done;currentT218. 23components/3pages/main and2CSS files expanded. Targeted formatter check/build passed. Normalized semantic AST of44TS/TSX source files matches5440410; no logic fixes. CSS asset remains identical; JSX layout changes bundle representation. Evidence: docs/evidence/b19-jsx-format.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S181 — B19 audit and readable frontend

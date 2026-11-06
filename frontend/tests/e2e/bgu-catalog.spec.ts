@@ -1,9 +1,16 @@
 import { expect, test } from '@playwright/test';
 
-test('real BGU archive exposes one reviewed contract group and a minimal-code hint without applicant access', async ({ page }) => {
-  test.skip(process.env.E2E_BGU !== '1', 'Requires the actual reviewed BGU import in the current demo');
+test('real BGU archive exposes one reviewed contract group and a minimal-code hint without applicant access', async ({
+  page,
+}) => {
+  test.skip(
+    process.env.E2E_BGU !== '1',
+    'Requires the actual reviewed BGU import in the current demo',
+  );
   let posts = 0;
-  page.on('request', request => { if (request.method() === 'POST') posts++; });
+  page.on('request', (request) => {
+    if (request.method() === 'POST') posts++;
+  });
   await page.goto('/sources');
   await page.getByLabel('Вуз', { exact: true }).selectOption('miccedu-12');
   const card = page.locator('.source-catalog-card');

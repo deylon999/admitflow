@@ -1,12 +1,19 @@
 import { expect, test } from '@playwright/test';
 
-test('real catalog is readonly, filters season/university and keeps a manual fallback', async ({ page }) => {
+test('real catalog is readonly, filters season/university and keeps a manual fallback', async ({
+  page,
+}) => {
   test.skip(process.env.E2E_SOURCE !== '1', 'Requires reviewed archive registered in current API');
   let creates = 0;
-  page.on('request', request => { if (request.method() === 'POST') creates++; });
+  page.on('request', (request) => {
+    if (request.method() === 'POST') creates++;
+  });
   await page.goto('/sources');
   await expect(page.getByRole('heading', { name: 'Вузы и конкурсные группы' })).toBeFocused();
-  await expect(page.getByRole('link', { name: 'Калькулятор', exact: true })).toHaveAttribute('href', '/#calculator');
+  await expect(page.getByRole('link', { name: 'Калькулятор', exact: true })).toHaveAttribute(
+    'href',
+    '/#calculator',
+  );
   await page.getByLabel('Вуз', { exact: true }).selectOption('sgu-saratov');
   await page.getByLabel('Группа или направление', { exact: true }).fill('ПРОГРАММНАЯ');
   await expect(page.locator('.source-catalog-card')).toHaveCount(1);
@@ -15,15 +22,29 @@ test('real catalog is readonly, filters season/university and keeps a manual fal
   await page.getByLabel('Сезон', { exact: true }).selectOption('2026');
   await page.getByLabel('Подразделение', { exact: true }).selectOption('main');
   await page.getByLabel('Вуз', { exact: true }).selectOption('sgups-novosibirsk');
-  await expect(page.getByText('Подходящих подключённых групп пока нет.', { exact: false })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Сохранить направление вручную' })).toHaveAttribute('href', '/tracker');
-  await expect(page.getByRole('link', { name: /Предложить источник на GitHub/ })).toHaveAttribute('href', 'https://github.com/deylon999/admitflow/issues/new');
+  await expect(
+    page.getByText('Подходящих подключённых групп пока нет.', { exact: false }),
+  ).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Сохранить направление вручную' })).toHaveAttribute(
+    'href',
+    '/tracker',
+  );
+  await expect(page.getByRole('link', { name: /Предложить источник на GitHub/ })).toHaveAttribute(
+    'href',
+    'https://github.com/deylon999/admitflow/issues/new',
+  );
   expect(creates).toBe(0);
 });
 
 test('catalog errors have retry and do not invent zero coverage', async ({ page }) => {
   let fail = true;
-  await page.route('**/api/v1/groups?*', route => fail ? route.fulfill({ status: 503, json: { detail: 'Unavailable' } }) : route.fulfill({ json: { items: [], total: 0, nextCursor: null, facets: { branches: [], years: [] } } }));
+  await page.route('**/api/v1/groups?*', (route) =>
+    fail
+      ? route.fulfill({ status: 503, json: { detail: 'Unavailable' } })
+      : route.fulfill({
+          json: { items: [], total: 0, nextCursor: null, facets: { branches: [], years: [] } },
+        }),
+  );
   await page.goto('/sources');
   await expect(page.getByText('Не удалось загрузить группы.', { exact: true })).toBeVisible();
   fail = false;
@@ -35,11 +56,18 @@ test('catalog pages append once and filter changes clear the old pages', async (
   test.skip(process.env.E2E_SOURCE !== '1', 'Requires a reviewed group DTO');
   const result = await (await page.request.get('/api/v1/groups')).json();
   const group = result.items[0];
-  await page.route('**/api/v1/groups?*', route => {
+  await page.route('**/api/v1/groups?*', (route) => {
     const query = new URL(route.request().url()).searchParams;
     const empty = query.get('q') === 'Other';
     const second = query.has('after');
-    return route.fulfill({ json: { ...result, items: empty ? [] : [{ ...group, id: second ? 'catalog-b' : 'catalog-a' }], total: empty ? 0 : 2, nextCursor: empty || second ? null : 'catalog-a' } });
+    return route.fulfill({
+      json: {
+        ...result,
+        items: empty ? [] : [{ ...group, id: second ? 'catalog-b' : 'catalog-a' }],
+        total: empty ? 0 : 2,
+        nextCursor: empty || second ? null : 'catalog-a',
+      },
+    });
   });
   await page.goto('/sources');
   await expect(page.locator('.source-catalog-card')).toHaveCount(1);
@@ -50,10 +78,13 @@ test('catalog pages append once and filter changes clear the old pages', async (
   await expect(page.locator('.source-catalog-card')).toHaveCount(0);
 });
 
-for (const theme of ['light', 'dark']) test(`catalog remains usable at320px in ${theme}`, async ({ page }) => {
-  await page.addInitScript(value => localStorage.setItem('abiturient-theme', value), theme);
-  await page.setViewportSize({ width: 320, height: 900 });
-  await page.goto('/sources');
-  await expect(page.getByLabel('Группа или направление', { exact: true })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-});
+for (const theme of ['light', 'dark'])
+  test(`catalog remains usable at320px in ${theme}`, async ({ page }) => {
+    await page.addInitScript((value) => localStorage.setItem('abiturient-theme', value), theme);
+    await page.setViewportSize({ width: 320, height: 900 });
+    await page.goto('/sources');
+    await expect(page.getByLabel('Группа или направление', { exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+  });

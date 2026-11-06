@@ -1,12 +1,26 @@
 import { expect, test } from '@playwright/test';
 
-test('saving the twentieth direction returns focus to the page heading when add is disabled', async ({ page }) => {
+test('saving the twentieth direction returns focus to the page heading when add is disabled', async ({
+  page,
+}) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
   await expect(page.getByRole('button', { name: 'Добавить первое направление' })).toBeVisible();
-  const body = { university: 'Keyboard limit example', title: 'Manual example', sourceUrl: 'https://example.org/list', values: { rank: 10, seats: 20, excluded: 0, noConsent: 0 } };
+  const body = {
+    university: 'Keyboard limit example',
+    title: 'Manual example',
+    sourceUrl: 'https://example.org/list',
+    values: { rank: 10, seats: 20, excluded: 0, noConsent: 0 },
+  };
   for (let i = 0; i < 19; i++) {
-    expect((await page.request.post('/api/v1/watches', { data: body, headers: { 'X-Requested-With': 'abiturient' } })).status()).toBe(201);
+    expect(
+      (
+        await page.request.post('/api/v1/watches', {
+          data: body,
+          headers: { 'X-Requested-With': 'abiturient' },
+        })
+      ).status(),
+    ).toBe(201);
   }
   await page.reload();
   await page.getByRole('button', { name: 'Добавить направление', exact: true }).click();
@@ -16,12 +30,16 @@ test('saving the twentieth direction returns focus to the page heading when add 
   await page.getByLabel('Ваш номер в списке').fill('10');
   await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
   await page.getByRole('button', { name: 'Сохранить направление' }).click();
-  await expect(page.getByRole('button', { name: 'Добавить направление', exact: true })).toBeDisabled();
+  await expect(
+    page.getByRole('button', { name: 'Добавить направление', exact: true }),
+  ).toBeDisabled();
   await expect(page.getByRole('heading', { name: 'Мои направления', exact: true })).toBeFocused();
 });
 
 for (const width of [390, 1440]) {
-  test(`клавиатура: форма, справочник, сохранение и возврат фокуса (${width})`, async ({ page }) => {
+  test(`клавиатура: форма, справочник, сохранение и возврат фокуса (${width})`, async ({
+    page,
+  }) => {
     test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/tracker');
@@ -76,7 +94,9 @@ for (const width of [390, 1440]) {
     await expect(page.getByRole('button', { name: 'Сохранить направление' })).toBeFocused();
     await page.keyboard.press('Enter');
     await expect(page.locator('.direction-result strong')).toHaveText('74');
-    await expect(page.getByRole('button', { name: 'Добавить направление', exact: true })).toBeFocused();
+    await expect(
+      page.getByRole('button', { name: 'Добавить направление', exact: true }),
+    ).toBeFocused();
 
     const edit = page.getByRole('button', { name: 'Обновить цифры', exact: true });
     await edit.focus();
@@ -90,8 +110,10 @@ for (const width of [390, 1440]) {
 test('Escape и закрытие не теряют форму при сохранении', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
   let release!: () => void;
-  const gate = new Promise<void>(resolve => { release = resolve; });
-  await page.route('**/api/v1/watches', async route => {
+  const gate = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  await page.route('**/api/v1/watches', async (route) => {
     if (route.request().method() === 'POST') await gate;
     await route.continue();
   });
@@ -107,6 +129,8 @@ test('Escape и закрытие не теряют форму при сохра�
     await expect(page.getByRole('button', { name: 'Закрыть форму' })).toBeDisabled();
     await page.keyboard.press('Escape');
     await expect(page.getByRole('form', { name: 'Добавить направление' })).toBeVisible();
-  } finally { release(); }
+  } finally {
+    release();
+  }
   await expect(page.locator('.direction-result strong')).toHaveText('10');
 });

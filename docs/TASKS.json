@@ -6829,7 +6829,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T217"
       ],
@@ -6844,7 +6844,12 @@
         "Тесты/конфиги читаемы, format check/unit/build и проверка семантики пройдены",
         "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b19-tests-format.md",
+          "note": "All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6853,7 +6858,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T218"
       ],

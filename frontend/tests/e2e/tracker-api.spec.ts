@@ -27,7 +27,9 @@ test('реальный API: создать, обновить, прочитать
   await expect(page.locator('.direction-result strong')).toHaveText('90');
   await page.getByRole('button', { name: 'История' }).click();
   await expect(page.locator('.direction-history tbody tr')).toHaveCount(2);
-  await expect(page.getByRole('region', { name: 'Сравнение ручных снимков' })).toContainText('Место: 74 → 90');
+  await expect(page.getByRole('region', { name: 'Сравнение ручных снимков' })).toContainText(
+    'Место: 74 → 90',
+  );
   await page.getByRole('button', { name: 'Удалить', exact: true }).click();
   await page.getByRole('button', { name: 'Да, удалить' }).click();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
@@ -36,7 +38,7 @@ test('реальный API: создать, обновить, прочитать
 test('повтор после потерянного ответа не создаёт второе направление', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
   const keys: string[] = [];
-  await page.route('**/api/v1/watches', async route => {
+  await page.route('**/api/v1/watches', async (route) => {
     if (route.request().method() !== 'POST') return route.continue();
     keys.push(route.request().headers()['idempotency-key']);
     if (keys.length === 1) {
@@ -96,7 +98,12 @@ test('удаление всех данных требует подтвержде
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();
   const created = await page.request.post('/api/v1/watches', {
     headers: { 'X-Requested-With': 'abiturient' },
-    data: { university: 'Тестовый вуз', title: 'Удаление данных', sourceUrl: 'https://example.org/list', values: { rank: 10, seats: 5, excluded: 0, noConsent: 0 } },
+    data: {
+      university: 'Тестовый вуз',
+      title: 'Удаление данных',
+      sourceUrl: 'https://example.org/list',
+      values: { rank: 10, seats: 5, excluded: 0, noConsent: 0 },
+    },
   });
   expect(created.status()).toBe(201);
   await page.reload();
