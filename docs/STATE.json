@@ -7,7 +7,7 @@
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S183",
-  "resumeAction": "B21: T229 done; current None. Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows. Evidence: docs/evidence/b21-section-borders.md. Synthetic API8033/preview5283; original database/key/volumes unchanged. T056/T057 remain open.",
+  "resumeAction": "B21 complete: T222–T229 done, all 10 B19 audit defects fixed across B20/B21. 136 unit tests/build/format passed; 105 Chromium passed, 36 scoped skips, 0 failures/flaky; 6 Firefox session regressions passed. Temporary API8033/preview5283 stopped; original key/database/volumes untouched. Evidence docs/evidence/b21-final-verification.md. Next candidate T057: a precise new reviewed source scope; national coverage not achieved.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

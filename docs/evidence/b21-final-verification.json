@@ -1,0 +1,125 @@
+{
+  "date": "2026-11-06",
+  "baseline": "3494ed6",
+  "sourceCommit": "f326dc7",
+  "tasks": [
+    "T222",
+    "T223",
+    "T224",
+    "T225",
+    "T226",
+    "T227",
+    "T228",
+    "T229"
+  ],
+  "fixCommits": [
+    "b2cd2c4",
+    "493cbad",
+    "49f7c16",
+    "b9760d5",
+    "92b8ad3",
+    "00af0c7",
+    "c2f156c",
+    "f326dc7"
+  ],
+  "unit": {
+    "passed": 136,
+    "files": 23,
+    "exitCode": 0
+  },
+  "build": {
+    "exitCode": 0
+  },
+  "format": {
+    "exitCode": 0
+  },
+  "playwright": {
+    "full": {
+      "startTime": "2026-11-06T20:24:20.389Z",
+      "duration": 92441.216,
+      "expected": 105,
+      "skipped": 36,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "session-firefox": {
+      "startTime": "2026-11-06T20:24:20.390Z",
+      "duration": 13923.66,
+      "expected": 6,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "browserConfiguration": {
+    "server": "external",
+    "api": "synthetic SQLite and route mocks",
+    "baseURL": "http://127.0.0.1:5283",
+    "apiURL": "http://127.0.0.1:8033",
+    "ci": true,
+    "workers": 2,
+    "retries": 0
+  },
+  "focusedChecks": {
+    "draft": {
+      "chromiumPassed": 22,
+      "firefoxPassed": 7
+    },
+    "archiveRefresh": {
+      "chromiumPassed": 4,
+      "firefoxPassed": 4
+    },
+    "catalogError": {
+      "chromiumPassed": 2,
+      "firefoxPassed": 2
+    },
+    "catalogScale": {
+      "unitPassed": 20,
+      "chromiumPassed": 1,
+      "firefoxPassed": 1
+    },
+    "archiveCapacity": {
+      "chromiumPassed": 5,
+      "firefoxPassed": 5
+    },
+    "import": {
+      "chromiumPassed": 5,
+      "firefoxPassed": 5
+    },
+    "print": {
+      "chromiumPassed": 4,
+      "firefoxPassed": 3,
+      "firefoxPdfSkipped": 1
+    },
+    "borders": {
+      "light": "1px solid rgb(225, 230, 238)",
+      "dark": "1px solid rgb(38, 50, 77)"
+    },
+    "note": "Overlapping focused and broad runs are not added as unique coverage."
+  },
+  "limits": [
+    "36 broad tests require source fixtures/reviewed source/NGINX and were not run here.",
+    "OS print dialog not automated; synchronous beforeprint and Chromium PDF checked.",
+    "No new local native PostgreSQL or production deployment verification.",
+    "Backend/schema/source profiles and national coverage unchanged."
+  ],
+  "cleanup": {
+    "syntheticApiPid": 2336,
+    "previewPid": 4720,
+    "stopped": true,
+    "historicalScreenshotRestored": true,
+    "originalKeyVolumesUntouched": true
+  },
+  "coverage": {
+    "changed": false,
+    "previouslyVerified": {
+      "catalog": 1257,
+      "archiveGroups": 15,
+      "universities": 5,
+      "rows": 1884,
+      "conditional": 2,
+      "fresh": 0,
+      "nationalTotal": null
+    }
+  }
+}

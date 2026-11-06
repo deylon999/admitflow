@@ -1,3 +1,24 @@
+# S183 — B21: оставшиеся восемь ошибок исправлены
+
+T222–T229 завершены8/8, первая пятёрка и следующие три. Вместе с B20
+исправлены все10 подтверждённых дефектов исходного аудита. Код остаётся
+многострочным; после каждого пункта проверки/evidence/Conventional Commit.
+
+136 unit tests, build и format check прошли. Общий compiled Chromium:
+105 passed/36 scoped skips/0 failed/0 flaky,2 workers,retries0. Отдельно
+6 критичных session cases Firefox passed. Focus suites каждого исправления
+также прошли в Chromium/Firefox; числа разных прогонов не суммируются.
+Подробности: docs/evidence/b21-final-verification.md и одноимённый JSON.
+
+Временные API8033/preview5283 остановлены; ignored база/probes сохранены.
+Исходные Docker/key/volumes не менялись, исторический screenshot восстановлен.
+Backend/schema/source profiles не менялись. Новый nativePG/deployment здесь
+не проверялся. Покрытие1257/15групп/5вузов/1884строки/2conditional/0fresh,
+nationalTotal=null. T056/T057 остаются открытыми; currentTask=null,
+nextTask=T057 — новый точный источник с независимой сверкой.
+
+Ниже — исходные checkpoints и результаты предыдущих подходов.
+
 # S183 — B21 frontend fixes
 
 T229 done; current None. Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows.

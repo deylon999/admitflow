@@ -1027,3 +1027,5 @@ S183/T227: Cancel resets failed import UI; retry key/body survive until explicit
 S183/T228: Browser beforeprint commits current report timestamp synchronously; repeated events, own button and filtered Chromium PDF checked. Build/format;7passed/1FirefoxPDFskip. Evidence: docs/evidence/b21-report-print-time.md. Next T229.
 
 S183/T229: Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows. Evidence: docs/evidence/b21-section-borders.md. Next None.
+
+S183/B21 final: T222–T229 complete8/8, all10 B19 defects fixed with B20. 136Vitest/build/format;105Chromium/36scopedskips,0failed/flaky, retries0; 6Firefox session cases passed. Source commit f326dc7; evidence docs/evidence/b21-final-verification.md/json. Synthetic API8033/preview5283 stopped, historical screenshot restored. Original key/database/volumes unchanged. T056/T057 open; next candidate T057. Preparing ordinary Git push.
