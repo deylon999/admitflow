@@ -3869,7 +3869,7 @@
 
 ### T228. Обновлять время отчёта при штатной печати браузера
 
-**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `done` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 
@@ -3887,11 +3887,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-report-print-time.md](../docs/evidence/b21-report-print-time.md) — Browser beforeprint commits current report timestamp synchronously; repeated events, own button and filtered Chromium PDF checked. Build/format;7passed/1FirefoxPDFskip.
 
 ### T229. Восстановить границы секций поиска и сравнения
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 

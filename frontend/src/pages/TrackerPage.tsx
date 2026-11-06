@@ -6,6 +6,7 @@ import { DraftRecovery } from '../components/DraftRecovery';
 import { clearDraft, readDraft } from '../lib/draft';
 import type { StoredDraft } from '../lib/draft';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import {
   useInfiniteQuery,
   useIsMutating,
@@ -289,6 +290,14 @@ function DirectionCard({
 export default function TrackerPage() {
   const resetButton = useRef<HTMLButtonElement>(null);
   const [reportDate, setReportDate] = useState(() => new Date().toISOString());
+  useEffect(() => {
+    const beforePrint = () => {
+      // The browser captures the report immediately after this event returns.
+      flushSync(() => setReportDate(new Date().toISOString()));
+    };
+    window.addEventListener('beforeprint', beforePrint);
+    return () => window.removeEventListener('beforeprint', beforePrint);
+  }, []);
   const [search, setSearch] = useState('');
   const [scenario, setScenario] = useState('all');
   const [order, setOrder] = useState<WatchOrder>('updated');
