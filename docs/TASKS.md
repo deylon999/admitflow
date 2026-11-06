@@ -3891,7 +3891,7 @@
 
 ### T229. Восстановить границы секций поиска и сравнения
 
-**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `done` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 
@@ -3909,7 +3909,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-section-borders.md](../docs/evidence/b21-section-borders.md) — Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows.
 
 ## E5. Качество и эксплуатация
 

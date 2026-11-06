@@ -1,5 +1,11 @@
 # S183 — B21 frontend fixes
 
+T229 done; current None. Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows.
+
+Evidence: docs/evidence/b21-section-borders.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
+# S183 — B21 frontend fixes
+
 T228 done; current T229. Browser beforeprint commits current report timestamp synchronously; repeated events, own button and filtered Chromium PDF checked. Build/format;7passed/1FirefoxPDFskip.
 
 Evidence: docs/evidence/b21-report-print-time.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.

@@ -1025,3 +1025,5 @@ S183/T226: Capacity changes displayed independently of candidate presence; unkno
 S183/T227: Cancel resets failed import UI; retry key/body survive until explicit cancel, pending controls remain locked, success cleanup verified. Build/format;10Chromium+Firefox passed. Evidence: docs/evidence/b21-import-cancel.md. Next T228.
 
 S183/T228: Browser beforeprint commits current report timestamp synchronously; repeated events, own button and filtered Chromium PDF checked. Build/format;7passed/1FirefoxPDFskip. Evidence: docs/evidence/b21-report-print-time.md. Next T229.
+
+S183/T229: Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows. Evidence: docs/evidence/b21-section-borders.md. Next None.

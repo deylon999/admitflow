@@ -7152,7 +7152,7 @@
       "phase": "E4",
       "priority": "P2",
       "size": "S",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -7167,7 +7167,12 @@
         "Сценарий F10 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b21-section-borders.md",
+          "note": "Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows."
+        }
+      ],
       "blockedReason": null
     }
   ]
