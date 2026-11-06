@@ -3604,7 +3604,7 @@
 
 ### T216. Развернуть библиотечный TypeScript в многострочный код
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T215.
 
@@ -3622,11 +3622,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b19-library-format.md](../docs/evidence/b19-library-format.md) — All17library TypeScript files expanded into readable blocks; targeted Prettier check passed. Frontend LF attributes keep formatting stable on Windows. No intentional behavior changes; complete unit/build/equivalence verification T218.
 
 ### T217. Сделать JSX компонентов, страниц и стили читаемыми
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T216.
 

@@ -1,5 +1,9 @@
 # S181 — B19 audit and readable frontend
 
+T216done;currentT217. All17library TypeScript files expanded into readable blocks; targeted Prettier check passed. Frontend LF attributes keep formatting stable on Windows. No intentional behavior changes; complete unit/build/equivalence verification T218. Evidence: docs/evidence/b19-library-format.md. Same demo8091/key/volumes; national coverage unchanged.
+
+# S181 — B19 audit and readable frontend
+
 T215done;currentT216. Prettier3.9.10 pinned with LF/100columns/JSX attributes per line; npm format/check commands configured and tooling files formatted. npm install/version/config checks passed; runtime dependencies unchanged. Evidence: docs/evidence/b19-format-tools.md. Same demo8091/key/volumes; national coverage unchanged.
 
 # S180 — B18: CI исправлен, финальный checkpoint

@@ -7,10 +7,17 @@ export type SessionAccess = 'active' | 'expired' | 'changed';
 
 export function createQueryClient() {
   const client: QueryClient = new QueryClient({
-    queryCache: new QueryCache({ onError: error => markSessionFailure(client, error) }),
-    mutationCache: new MutationCache({ onError: error => markSessionFailure(client, error) }),
+    queryCache: new QueryCache({ onError: (error) => markSessionFailure(client, error) }),
+    mutationCache: new MutationCache({ onError: (error) => markSessionFailure(client, error) }),
     defaultOptions: {
-      queries: { retry: (failures, error) => !(error instanceof SessionExpiredError) && !(error instanceof SessionChangedError) && failures < 1, staleTime: 30_000, refetchOnWindowFocus: false },
+      queries: {
+        retry: (failures, error) =>
+          !(error instanceof SessionExpiredError) &&
+          !(error instanceof SessionChangedError) &&
+          failures < 1,
+        staleTime: 30_000,
+        refetchOnWindowFocus: false,
+      },
       mutations: { retry: false },
     },
   });
@@ -18,5 +25,8 @@ export function createQueryClient() {
 }
 
 function markSessionFailure(client: QueryClient, error: unknown) {
-  if (error instanceof SessionExpiredError) { clearDraft(); client.setQueryData<SessionAccess>(sessionAccessKey, 'expired'); }
+  if (error instanceof SessionExpiredError) {
+    clearDraft();
+    client.setQueryData<SessionAccess>(sessionAccessKey, 'expired');
+  }
 }

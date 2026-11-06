@@ -1,8 +1,12 @@
 /** Validate structure before JSON.parse can discard duplicate object members. */
 export function parseStrictJson(source: string): unknown {
   let offset = 0;
-  const fail = (): never => { throw new Error('Invalid JSON document'); };
-  function whitespace() { while (/[\x20\t\r\n]/.test(source[offset] ?? '') && offset < source.length) offset++; }
+  const fail = (): never => {
+    throw new Error('Invalid JSON document');
+  };
+  function whitespace() {
+    while (/[\x20\t\r\n]/.test(source[offset] ?? '') && offset < source.length) offset++;
+  }
   function string(): string {
     const start = offset++;
     while (offset < source.length) {
@@ -41,8 +45,11 @@ export function parseStrictJson(source: string): unknown {
       if (source[offset++] !== close) fail();
     } else if (char === '"') string();
     else {
-      const token = /^(?:true|false|null|-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)/.exec(source.slice(offset))?.[0];
-      if (!token || (!['true', 'false', 'null'].includes(token) && !Number.isFinite(Number(token)))) fail();
+      const token = /^(?:true|false|null|-?(?:0|[1-9]\d*)(?:\.\d+)?(?:[eE][+-]?\d+)?)/.exec(
+        source.slice(offset),
+      )?.[0];
+      if (!token || (!['true', 'false', 'null'].includes(token) && !Number.isFinite(Number(token))))
+        fail();
       offset += token!.length;
     }
   }

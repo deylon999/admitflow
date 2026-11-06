@@ -6,3 +6,11 @@ backend/app/sources/profiles/**/*.json text eol=lf
 backend/app/sources/profiles/*.json text eol=lf
 docs/sources/*inventory*.json text eol=lf
 scripts/install_playwright_ci.sh text eol=lf
+# Keep the frontend formatter stable after a Windows checkout.
+frontend/**/*.ts text eol=lf
+frontend/**/*.tsx text eol=lf
+frontend/**/*.css text eol=lf
+frontend/*.html text eol=lf
+frontend/public/*.js text eol=lf
+frontend/package*.json text eol=lf
+frontend/.prettierrc.json text eol=lf

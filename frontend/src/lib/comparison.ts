@@ -2,8 +2,10 @@ import type { CalculationField } from './calculator';
 import type { Snapshot } from './contracts';
 
 const labels: Record<CalculationField, string> = {
-  rank: 'Номер в списке', seats: 'Количество мест',
-  excluded: 'Выше вне этого конкурса', noConsent: 'Выше без согласия',
+  rank: 'Номер в списке',
+  seats: 'Количество мест',
+  excluded: 'Выше вне этого конкурса',
+  noConsent: 'Выше без согласия',
 };
 
 export function compareSnapshots(current: Snapshot, previous?: Snapshot) {
@@ -16,7 +18,12 @@ export function compareSnapshots(current: Snapshot, previous?: Snapshot) {
     distance: Math.abs(movement),
     boundaryChanged: previous.calculation.state !== current.calculation.state,
     changes: (Object.keys(labels) as CalculationField[])
-      .filter(key => current.values[key] !== previous.values[key])
-      .map(key => ({ key, label: labels[key], before: previous.values[key], after: current.values[key] })),
+      .filter((key) => current.values[key] !== previous.values[key])
+      .map((key) => ({
+        key,
+        label: labels[key],
+        before: previous.values[key],
+        after: current.values[key],
+      })),
   };
 }

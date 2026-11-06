@@ -6771,7 +6771,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T215"
       ],
@@ -6786,7 +6786,12 @@
         "Все frontend/src/lib файлы отформатированы без изменений логики",
         "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b19-library-format.md",
+          "note": "All17library TypeScript files expanded into readable blocks; targeted Prettier check passed. Frontend LF attributes keep formatting stable on Windows. No intentional behavior changes; complete unit/build/equivalence verification T218."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -6795,7 +6800,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T216"
       ],
