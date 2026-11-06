@@ -20,37 +20,39 @@ const fields: [keyof CandidateFact, string][] = [
   ['priority', 'Приоритет'],
 ];
 function Difference({ after, before }: { after: ArchiveHistoryItem; before: ArchiveHistoryItem }) {
-  if (!after.candidate || !before.candidate)
-    return (
-      <p>
-        Запись {after.present ? 'присутствует' : 'отсутствует'} в новом снимке;{' '}
-        {before.present ? 'присутствует' : 'отсутствует'} в старом. Отсутствие не доказывает отзыв
-        или отказ.
-      </p>
-    );
-  const changes = fields.filter(([key]) => after.candidate![key] !== before.candidate![key]);
+  const current = after.candidate;
+  const previous = before.candidate;
+  const changes =
+    current && previous ? fields.filter(([key]) => current[key] !== previous[key]) : [];
   return (
     <>
-      {changes.length ? (
-        <ul>
-          {changes.map(([key, label]) => (
-            <li key={key}>
-              {label}: {fact(before.candidate![key])} → {fact(after.candidate![key])}
-            </li>
-          ))}
-        </ul>
+      {current && previous ? (
+        changes.length ? (
+          <ul>
+            {changes.map(([key, label]) => (
+              <li key={key}>
+                {label}: {fact(previous[key])} → {fact(current[key])}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Строка, баллы, согласие и приоритет не изменились.</p>
+        )
       ) : (
-        <p>Строка, баллы, согласие и приоритет не изменились.</p>
+        <p>
+          Запись {after.present ? 'присутствует' : 'отсутствует'} в новом снимке;{' '}
+          {before.present ? 'присутствует' : 'отсутствует'} в старом. Отсутствие не доказывает отзыв
+          или отказ.
+        </p>
       )}
       {before.group.seats !== after.group.seats && (
         <p>
           Мест в группе: {fact(before.group.seats)} → {fact(after.group.seats)}
         </p>
       )}
-      {before.candidate.participation !== after.candidate.participation && (
+      {current && previous && previous.participation !== current.participation && (
         <p>
-          Статус участия в источнике изменился: {before.candidate.participation} →{' '}
-          {after.candidate.participation}.
+          Статус участия в источнике изменился: {previous.participation} → {current.participation}.
         </p>
       )}
     </>

@@ -7065,7 +7065,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -7080,7 +7080,12 @@
         "Сценарий F07 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b21-archive-capacity.md",
+          "note": "Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7089,7 +7094,7 @@
       "phase": "E4",
       "priority": "P2",
       "size": "S",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T219"
       ],

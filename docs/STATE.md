@@ -1,5 +1,11 @@
 # S183 — B21 frontend fixes
 
+T226 done; current T227. Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete.
+
+Evidence: docs/evidence/b21-archive-capacity.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
+# S183 — B21 frontend fixes
+
 T225 done; current T226. Global branch facets accept101 through20000 while preserving validation/resource bounds.136Vitest/build/format;2Chromium+Firefox pagination/filter cases passed.
 
 Evidence: docs/evidence/b21-catalog-scale.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.

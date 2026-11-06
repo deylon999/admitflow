@@ -283,3 +283,83 @@ test('failed refresh labels retained dated history and an explicit retry can rec
   await expect(page.locator('.archive-fact-list > li')).toHaveCount(2);
   await expect(page.locator('.archive-directions [role="alert"]')).toHaveCount(0);
 });
+
+const capacityCases = [
+  {
+    name: 'candidate disappears',
+    beforePresent: true,
+    afterPresent: false,
+    beforeSeats: 2,
+    afterSeats: 5,
+    expected: 'Мест в группе: 2 → 5',
+  },
+  {
+    name: 'candidate appears and capacity becomes known',
+    beforePresent: false,
+    afterPresent: true,
+    beforeSeats: null,
+    afterSeats: 5,
+    expected: 'Мест в группе: неизвестно → 5',
+  },
+  {
+    name: 'candidate stays absent and capacity becomes unknown',
+    beforePresent: false,
+    afterPresent: false,
+    beforeSeats: 5,
+    afterSeats: null,
+    expected: 'Мест в группе: 5 → неизвестно',
+  },
+  {
+    name: 'candidate disappears with unchanged capacity',
+    beforePresent: true,
+    afterPresent: false,
+    beforeSeats: 2,
+    afterSeats: 2,
+    expected: null,
+  },
+  {
+    name: 'candidate remains present with candidate fact changes',
+    beforePresent: true,
+    afterPresent: true,
+    beforeSeats: 2,
+    afterSeats: 5,
+    expected: 'Мест в группе: 2 → 5',
+  },
+];
+
+for (const item of capacityCases) {
+  test(`archive capacity comparison when ${item.name}`, async ({ page }) => {
+    const state = await installArchive(page);
+    const before = historyItem(1);
+    const after = historyItem(2);
+    state.revision = 2;
+    state.historyItems = [
+      {
+        ...after,
+        group: { ...after.group, seats: item.afterSeats },
+        candidate: item.afterPresent ? { ...candidate, consent: true } : null,
+        present: item.afterPresent,
+      },
+      {
+        ...before,
+        group: { ...before.group, seats: item.beforeSeats },
+        candidate: item.beforePresent ? candidate : null,
+        present: item.beforePresent,
+      },
+    ];
+    await page.goto('/tracker');
+    await page.getByRole('button', { name: 'История фактов', exact: true }).click();
+    const comparison = page.getByRole('region', { name: 'Сравнение архивных фактов' });
+    if (item.expected) {
+      await expect(comparison).toContainText(item.expected);
+    } else {
+      await expect(comparison.getByText(/^Мест в группе:/)).toHaveCount(0);
+    }
+    if (item.beforePresent && item.afterPresent) {
+      await expect(comparison).toContainText('Согласие: нет → да');
+    } else {
+      await expect(comparison).toContainText('Отсутствие не доказывает отзыв или отказ');
+      await expect(comparison.getByText(/^Согласие:/)).toHaveCount(0);
+    }
+  });
+}

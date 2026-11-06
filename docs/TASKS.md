@@ -3825,7 +3825,7 @@
 
 ### T226. Показывать изменение мест при отсутствии записи
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3843,11 +3843,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-archive-capacity.md](../docs/evidence/b21-archive-capacity.md) — Capacity changes displayed independently of candidate presence; unknown values and absence warning preserved. Build/format;10Chromium+Firefox passed. First five complete.
 
 ### T227. Очищать сообщение ошибки при отмене импорта
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** S.
+**Статус:** `in_progress` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** T219.
 
