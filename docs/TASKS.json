@@ -6858,7 +6858,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T218"
       ],
@@ -6872,6 +6872,251 @@
       "acceptance": [
         "Отчёт содержит воспроизведение, влияние и точные места; функциональные ошибки не исправлены без запроса",
         "Общая Definition of Done выполнена; только форматирование, поиск и документация дефектов."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/b19-frontend-audit.md",
+          "note": "10 frontend defects confirmed, including destructive cross-tab recovery and old-owner cache after reset. Only formatting implemented:100TS/TSX semantic ASTs match baseline,116Vitest/build,79Chromium/36scopedskips passed. Long lines>200 reduced218→2(text literals). Ten fixes T220–T229 remain todo; no functional fixes/push."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T220",
+      "title": "Не терять новую сессию при синхронизации вкладок",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F01, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F01 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T221",
+      "title": "Очищать старые карточки после сброса гостевой сессии",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F02, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F02 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T222",
+      "title": "Не восстанавливать отменённые значения черновика",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F03, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F03 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T223",
+      "title": "Обновлять открытую историю вместе с архивной карточкой",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F04, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F04 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T224",
+      "title": "Разделить ошибку каталога и подтверждённую пустоту",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F05, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F05 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T225",
+      "title": "Согласовать branch facets frontend и backend выше100",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F06, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F06 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T226",
+      "title": "Показывать изменение мест при отсутствии записи",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F07, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F07 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T227",
+      "title": "Очищать сообщение ошибки при отмене импорта",
+      "phase": "E4",
+      "priority": "P2",
+      "size": "S",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F08, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F08 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T228",
+      "title": "Обновлять время отчёта при штатной печати браузера",
+      "phase": "E4",
+      "priority": "P2",
+      "size": "S",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F09, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F09 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T229",
+      "title": "Восстановить границы секций поиска и сравнения",
+      "phase": "E4",
+      "priority": "P2",
+      "size": "S",
+      "status": "todo",
+      "dependsOn": [
+        "T219"
+      ],
+      "deliverables": [
+        "frontend/",
+        "docs/evidence/"
+      ],
+      "steps": [
+        "После указания исправлять воспроизвести F10, внести минимальное исправление и проверить существенную границу."
+      ],
+      "acceptance": [
+        "Сценарий F10 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
+        "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
       "evidence": [],
       "blockedReason": null

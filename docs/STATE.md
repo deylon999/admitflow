@@ -1,3 +1,32 @@
+# S181 — B19: читаемый frontend и глубокий аудит
+
+T215–T219 завершены5/5. Только форматирование: formatter/config,17lib files,
+23components/3pages/main/2CSS,56test files. Prettier3.9.10 с JSX attributes
+по строкам и LF. npm run format/check; format check входит в основной CI job.
+100 TS/TSX semantic ASTs совпадают5440410 после нормализации форматирования/
+JSX text. CSS byte identical; JS bundles имеют другое представление JSX.
+116Vitest/build,79compiled Chromium passed/36scopedskips. Длинные строки>200:
+218→2, оставшиеся — text literals. Форматирование не устранило найденные баги.
+
+Отчёт: docs/evidence/b19-frontend-audit.md,10подтверждённых дефектов.
+Самые существенные: ранняя синхронизация второй вкладки приводит к удалению
+новой сессии/записи; старые private карточки остаются после успешного reset
+при503refetch. Далее stale draft, stale archive history, false empty catalog,
+101branch facets, скрытые seats changes, cancel-import error, print time,
+undefined CSS variable. Есть точные места/шаги/ограничения и3synthetic screenshots.
+T220–T229 остаются todo. Пользователь сначала просил только найти, затем
+разрешил только читаемое форматирование; функционально ошибки не исправлять
+до нового указания. T220 — следующий кандидат, currentTask=null.
+
+После daemon recovery исходный Docker был выключен. Его project/key/volumes
+не менялись; synthetic API8031/preview5281 использовали только отдельный
+ignored SQLite. Сейчас временные процессы закрыты; probes в .pytest_cache.
+Старый screenshot каталога восстановлен. Финальная Git сверка: origin/main уже8e30b43(первые4коммита), итоговый audit commit локально. Явный push в командах этого прохода не выполнялся; инициатор внешнего push не установлен.
+Оригинальный national coverage:1257catalog/15archivegroups/5universities/
+1884rows/2conditional/0fresh/nationalTotal=null; T056/T057 остаются открытыми.
+
+Ниже — прежние checkpoints.
+
 # S181 — B19 audit and readable frontend
 
 T218done;currentT219. All56TypeScript test files formatted; format check/116Vitest/build passed.79compiledChromium passed/36scopedskips/0fail.100source+test normalized semantic ASTs match5440410; assertions unchanged, CSS identical. CI checks format after npmci. Evidence: docs/evidence/b19-tests-format.md. Same demo8091/key/volumes; national coverage unchanged.
