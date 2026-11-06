@@ -3737,7 +3737,7 @@
 
 ### T222. Не восстанавливать отменённые значения черновика
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3755,11 +3755,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-draft-revert.md](../docs/evidence/b21-draft-revert.md) — Reverted drafts cleared; pending retry intent and unchanged recovery TTL preserved. 126Vitest/build/format;22Chromium and7Firefox passed.
 
 ### T223. Обновлять открытую историю вместе с архивной карточкой
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 

@@ -1,3 +1,9 @@
+# S183 — B21 frontend fixes
+
+T222 done; current T223. Reverted drafts cleared; pending retry intent and unchanged recovery TTL preserved. 126Vitest/build/format;22Chromium and7Firefox passed.
+
+Evidence: docs/evidence/b21-draft-revert.md. Synthetic API8033/preview5283. Original database/key/volumes unchanged; national coverage tasks remain open.
+
 # S182 — B20: ошибки1–2 исправлены
 
 T220/T221 завершены2/2 по текущему запросу. Синхронизация ждёт guest lock,

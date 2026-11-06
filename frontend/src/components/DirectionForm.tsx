@@ -64,10 +64,13 @@ export function DirectionForm({
   }, [dirty, onDirtyChange]);
   const intent = useRef<SaveIntent | null>(restored?.intent ?? null);
   const baseSnapshotId = useRef(restored?.baseSnapshotId ?? watch?.latest.id ?? null);
-  const [localSaved, setLocalSaved] = useState<boolean | null>(restored ? true : null);
+  const [localSaved, setLocalSaved] = useState<boolean | 'clear-failed' | null>(
+    restored ? true : null,
+  );
   const [localExpiry, setLocalExpiry] = useState<number | null>(restored?.expiresAt ?? null);
   const scope = sessionInfo?.draftScope,
     deadline = sessionInfo?.expiresAt;
+  const previousDraft = useRef({ signature: currentDraft, scope, deadline });
   const persist = useCallback(() => {
     const record =
       scope && deadline
@@ -83,9 +86,28 @@ export function DirectionForm({
     return record;
   }, [scope, deadline, university, title, sourceUrl, values, watch?.id]);
   useEffect(() => {
-    if (dirty) persist();
-    // Persist only when fields or access change, never refresh the TTL by rendering.
-  }, [persist, dirty]);
+    // Only field/access changes refresh storage; retain a restored draft's original expiry.
+    const previous = previousDraft.current;
+    previousDraft.current = { signature: currentDraft, scope, deadline };
+    if (
+      previous.signature === currentDraft &&
+      previous.scope === scope &&
+      previous.deadline === deadline
+    )
+      return;
+    if (dirty || intent.current) {
+      persist();
+      return;
+    }
+    if (clearDraft()) {
+      setLocalSaved(null);
+      setLocalExpiry(null);
+    } else {
+      // Replace reverted values if writes still work while removal is unavailable.
+      persist();
+      setLocalSaved('clear-failed');
+    }
+  }, [currentDraft, scope, deadline, persist, dirty]);
   useEffect(() => {
     if (localExpiry === null) return;
     const timer = setTimeout(
@@ -357,6 +379,14 @@ export function DirectionForm({
           role="status"
         >
           Не удалось сохранить черновик в этой вкладке. Сохраните направление перед уходом.
+        </p>
+      )}
+      {localSaved === 'clear-failed' && (
+        <p
+          className="form-error"
+          role="status"
+        >
+          Не удалось удалить черновик в этой вкладке. Сохраните направление перед уходом.
         </p>
       )}
       <button

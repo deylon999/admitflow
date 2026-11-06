@@ -1007,3 +1007,9 @@ S181 Git follow-up: final remote verification found origin/main8e30b43, update-b
 S182/T220: F01 fixed with native serialization, epoch guards and safe changed401 fallback.126Vitest/build and8Chromium/Firefox cases passed; native/fallback new guest record retained, no extra destructive requests. Evidence docs/evidence/b20-session-synchronization.md. T221 active; no other defects fixed.
 
 S182/T221/B20 final2/2: F02 fixed: private UI/query gate while resetting; cancel/remove owner caches on success and failure.8Chromium/Firefox cache boundary tests passed; final 126Vitest/format/build,85compiledChromium/36scopedskips and12critical CI-mode/two-worker cases passed. Only F01/F02 fixed; other8 remain todo. Evidence docs/evidence/b20-final-verification.json. Test runner API/preview had stopped after user steering; initial connection-refused attempt was not treated as a product reproduction. Restored isolated runtime and observed 4actual pre-fix failures; final all pass. No additional approvals needed; Start-Process background launch rejected by tool policy, regular observable exec sessions used successfully instead. Original Docker/key/volumes untouched. Temporary8032/5282 stopped and historical screenshot restored.
+
+## S183 — 2026-11-06 — B21
+
+Пользователь разрешил ошибки3–10/T222–T229. Перваяпятёрка:черновик,архивнаяистория,каталогerror/empty,101branchfacets,изменениеместприотсутствиикандидата. Затемтри:отменаимпорта,печать,CSSграницы. ОднаactiveT222. Остальныеагентыготовятread-onlyанализдоактивациисоответствующейзадачи. RegressionF01/F02 сохраняется.
+
+S183/T222: Reverted drafts cleared; pending retry intent and unchanged recovery TTL preserved. 126Vitest/build/format;22Chromium and7Firefox passed. Evidence: docs/evidence/b21-draft-revert.md. Next T223.
