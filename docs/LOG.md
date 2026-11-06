@@ -1013,3 +1013,5 @@ S182/T221/B20 final2/2: F02 fixed: private UI/query gate while resetting; cancel
 Пользователь разрешил ошибки3–10/T222–T229. Перваяпятёрка:черновик,архивнаяистория,каталогerror/empty,101branchfacets,изменениеместприотсутствиикандидата. Затемтри:отменаимпорта,печать,CSSграницы. ОднаactiveT222. Остальныеагентыготовятread-onlyанализдоактивациисоответствующейзадачи. RegressionF01/F02 сохраняется.
 
 S183/T222: Reverted drafts cleared; pending retry intent and unchanged recovery TTL preserved. 126Vitest/build/format;22Chromium and7Firefox passed. Evidence: docs/evidence/b21-draft-revert.md. Next T223.
+
+S183/T223: Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed. Evidence: docs/evidence/b21-archive-refresh.md. Next T224.

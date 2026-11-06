@@ -4,10 +4,12 @@ import { DeleteConfirmation } from './DeleteConfirmation';
 import { ArchiveHistory } from './ArchiveHistory';
 import { SourceProvenance } from './SourceProvenance';
 import { downloadJson } from '../lib/download';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useIsFetching, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '../lib/api';
 import { sessionAccessKey } from '../lib/query-client';
 import type { SessionAccess } from '../lib/query-client';
+
+const mutableSourceFamilies = ['archive-history', 'scenario', 'scenario-history'];
 
 export function ArchiveDirections() {
   const [deleting, setDeleting] = useState<string | null>(null);
@@ -64,6 +66,35 @@ export function ArchiveDirections() {
     queryFn: ({ signal }) => api.subscriptions(signal),
     enabled: access.data === 'active',
   });
+  const sourceReads = useIsFetching({
+    predicate: ({ queryKey }) =>
+      queryKey[0] === 'archive-directions' ||
+      queryKey[0] === 'changes' ||
+      (typeof queryKey[0] === 'string' &&
+        mutableSourceFamilies.includes(queryKey[0]) &&
+        !!records.data?.some(({ id }) => queryKey[1] === id)),
+  });
+  const refreshFacts = useMutation({
+    mutationFn: async () => {
+      const keys = [
+        ['archive-directions'],
+        ['changes'],
+        ...(records.data ?? []).flatMap(({ id }) => mutableSourceFamilies.map((key) => [key, id])),
+      ];
+      // Saved scenario details identify immutable assessments. Refresh only the
+      // current facts and history indexes, retaining their dated cached data.
+      const results = await Promise.allSettled(
+        keys.map((queryKey) => client.invalidateQueries({ queryKey }, { throwOnError: true })),
+      );
+      const failures = results.filter((result) => result.status === 'rejected');
+      if (failures.length) {
+        throw new AggregateError(
+          failures.map((result) => result.reason),
+          'Some saved source facts could not be refreshed.',
+        );
+      }
+    },
+  });
   if (access.data !== 'active') return null;
   if (records.isPending) return <p role="status">Загружаем архивные направления…</p>;
   if (!records.data?.length && !records.isError) return null;
@@ -87,11 +118,17 @@ export function ArchiveDirections() {
         ref={refresh}
         type="button"
         className="text-button"
-        disabled={records.isFetching}
-        onClick={() => void records.refetch()}
+        disabled={sourceReads > 0 || refreshFacts.isPending}
+        onClick={() => refreshFacts.mutate()}
       >
         Перечитать сохранённые факты
       </button>
+      {refreshFacts.isError && sourceReads === 0 && (
+        <p role="alert">
+          Не удалось перечитать все сохранённые факты. Ранее загруженные записи сохраняют свои даты;
+          повторите обновление.
+        </p>
+      )}
       <button
         type="button"
         className="text-button"

@@ -3759,7 +3759,7 @@
 
 ### T223. Обновлять открытую историю вместе с архивной карточкой
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 
@@ -3777,11 +3777,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/b21-archive-refresh.md](../docs/evidence/b21-archive-refresh.md) — Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed.
 
 ### T224. Разделить ошибку каталога и подтверждённую пустоту
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T219.
 

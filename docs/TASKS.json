@@ -6978,7 +6978,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T219"
       ],
@@ -6993,7 +6993,12 @@
         "Сценарий F04 из docs/evidence/b19-frontend-audit.md проходит без прежней ошибки.",
         "Проверены соседний успешный/error сценарий и отсутствие регрессии; Definition of Done выполнена."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/b21-archive-refresh.md",
+          "note": "Refresh updates mutable archive queries, closed histories and changes; waits for new snapshot reads and retains dated facts on failure. Build/format;8Chromium+Firefox passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7002,7 +7007,7 @@
       "phase": "E4",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T219"
       ],

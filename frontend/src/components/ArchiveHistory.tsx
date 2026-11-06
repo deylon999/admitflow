@@ -97,6 +97,7 @@ export function ArchiveHistory({ id }: { id: string }) {
           {history.isError && (
             <p role="alert">
               Не удалось загрузить историю.{' '}
+              {history.data ? 'Показаны ранее загруженные датированные записи. ' : ''}
               <button
                 type="button"
                 className="text-button"
