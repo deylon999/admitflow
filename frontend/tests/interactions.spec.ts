@@ -11,13 +11,6 @@ test('landing keeps exact heading, forecast values, calculator, tabs and FAQ',as
   const faq=page.locator('.faq-item').nth(1).getByRole('button');await faq.click();await expect(faq).toHaveAttribute('aria-expanded','true');await faq.click();await expect(faq).toHaveAttribute('aria-expanded','false');
 });
 
-test('catalog search and city filter retain original behavior',async({page})=>{
-  await page.goto('/universities');await expect(page.locator('.af-program-card')).toHaveCount(6);
-  await page.locator('.af-search-panel select').selectOption('Санкт-Петербург');await expect(page.locator('.af-program-card')).toHaveCount(1);await expect(page.locator('.af-program-card')).toContainText('ИТМО');
-  await page.locator('.af-search-panel input').fill('несуществующий вуз');await expect(page.locator('.af-empty')).toBeVisible();
-  await page.goto('/programs');await page.locator('.af-search-panel input').fill('Программная инженерия');await expect(page.locator('.af-program-card')).toHaveCount(2);await page.locator('.af-search-panel select').selectOption('Информатика');await expect(page.locator('.af-program-card')).toHaveCount(2);
-});
-
 test('tracking toggles persist in localStorage across page transitions and reload',async({page})=>{
   await page.goto('/app/watchlist');await expect(page.locator('.af-program-card')).toHaveCount(3);
   await page.locator('.af-track-button').first().click();await expect(page.locator('.af-program-card')).toHaveCount(2);await page.reload();await expect(page.locator('.af-program-card')).toHaveCount(2);

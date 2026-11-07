@@ -1,0 +1,18 @@
+{
+  "stats": {
+    "startTime": "2026-11-07T22:41:49.953Z",
+    "duration": 52613.255,
+    "expected": 193,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "errors": [],
+  "standaloneDefault": {
+    "passed": 68,
+    "durationSeconds": 13.4,
+    "gracefulShutdown": true
+  },
+  "scope": "Chromium real API plus 125 reference pixel comparisons; four explicit demo-label normalizations",
+  "ownedServerLifecycle": "scripts/test.mjs gracefully stops Python through owned stdin and closes Vite previews; no Windows taskkill/WMI"
+}

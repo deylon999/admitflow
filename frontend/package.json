@@ -10,11 +10,11 @@
     "offline": "node scripts/build-offline-preview.cjs",
     "screenshots": "python scripts/render-preview.py",
     "typecheck": "tsc --noEmit",
-    "test": "playwright test",
-    "test:e2e": "playwright test",
+    "test": "node scripts/test.mjs",
+    "test:e2e": "node scripts/test.mjs",
     "test:visual": "node scripts/run-visual-tests.mjs",
     "verify:source": "node scripts/verify-source.mjs",
-    "lint": "eslint src"
+    "lint": "eslint src tests scripts/*.mjs *.ts *.mjs"
   },
   "dependencies": {
     "react": "^19.1.0",

@@ -4170,7 +4170,7 @@
 
 ### T246. Verify catalog APIs, flows and unchanged design
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T245.
 
@@ -4187,11 +4187,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/catalog-vertical-slice.md](../docs/evidence/catalog-vertical-slice.md) — Final 193 Chromium passed, no failures/skips/flaky; standalone runner 68 passed and graceful teardown verified. 47 backend passed, 1 PostgreSQL skipped (Docker denied). ESLint source/tests/scripts, TS/build/install passed. 100 raw +25 exact demo-label-normalized pixel comparisons zero diff, 20 catalog PNGs across five widths, source68 unchanged. Real positive API calls and error/empty/late-response cases checked. Two earlier temp DB folder removals denied by approval policy; no workaround.
 
 ### T247. Document product foundation and remaining demo modules
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T246.
 
