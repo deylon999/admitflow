@@ -4233,7 +4233,7 @@
 
 ### T249. Remove confirmed obsolete tooling and calculator endpoints
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T248.
 
@@ -4250,7 +4250,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/foundation-cleanup/deleted-files.json](../docs/evidence/foundation-cleanup/deleted-files.json) — 42 audited files removed; old calculate/assess HTTP wrappers and assessment-only types retired. DTO base isolated; all migration/model data protected. Unused React plugin removed: clean install116 vs162 packages; lint/TS/build passed, browser193 and catalog baseline20 zero pixel diff. Actual protocol validation/origin/budget tests retained and retargeted, 33 passed.
 
 ### T250. Verify Compose PostgreSQL migrations and live catalog
 
@@ -4277,7 +4277,7 @@
 
 ### T251. Run current backend and frontend regression checks
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T249.
 
@@ -4294,11 +4294,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Final portable Windows backend549passed/35native PostgreSQL skips; 12 Linux resource modules explicitly uncollectable on Windows and retained for Linux CI. Browser193passed, 29routes, catalog20 baseline PNG diffs0 +125 reference comparisons; TS/ESLint/build/clean install/source guard passed. Docker startup denied, T250 remains blocked.
 
 ### T252. Align documentation and stop after cleanup
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T251.
 
@@ -4315,7 +4315,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Current v3 architecture/API/product/design/README/runbooks replace stale manual-product instructions; old docs archived with rebased links. Old release/ML tasks deferred, no false done. Removal manifest42, protected hashes, current API inventory31, dependency report and final tests recorded. Cleanup complete, T250 blocked; no new features or main/DB changes.
 
 ## E5. Качество и эксплуатация
 
@@ -4563,7 +4563,7 @@
 
 ### T051. Пройти полный путь автоматизированного MVP
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T021, T022, T024, T034, T040, T048.
 
@@ -4584,11 +4584,11 @@
 
 Пока нет.
 
-**Причина блокировки/переноса:** 2026-11-05: acceptance требует staging с настоящим API. Условие снятия: T048.
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ### T052. Провести продуктовую приёмку
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T039, T045, T051.
 
@@ -4609,7 +4609,7 @@
 
 Пока нет.
 
-**Причина блокировки/переноса:** 2026-11-05: нужны живые тестеры; отзывы нельзя выдумывать. Условие снятия: тестеры и T051.
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ### T084. Ограничить размер и время приёма API-запросов
 
@@ -5456,7 +5456,7 @@
 
 ### T053. Собрать релизный кандидат и отчёт gates
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T042, T043, T044, T045, T046, T049, T050, T051, T052.
 
@@ -5477,9 +5477,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T054. Использовать резерв на исправления и повторную проверку
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T053.
 
@@ -5500,9 +5502,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T055. Выпустить MVP и передать рабочий контекст
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T054.
 
@@ -5522,6 +5526,8 @@
 **Доказательства:**
 
 Пока нет.
+
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ## E7. После MVP: аккаунты, уведомления, ИИ и следующий сезон
 
@@ -5575,7 +5581,7 @@
 
 ### T060. Проверить реализуемость статистического прогноза
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T036, T055.
 
@@ -5596,9 +5602,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T061. Построить baseline на временно разделённых данных
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T060.
 
@@ -5619,9 +5627,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T062. Проверить калибровку и применимость прогноза
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** L.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** L.
 
 **Зависимости:** T061.
 
@@ -5642,9 +5652,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T063. Добавить ИИ-объяснение с контролем фактов
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T039, T043, T055.
 
@@ -5665,9 +5677,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T064. Пересмотреть инфраструктуру по стоимости и нагрузке
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T044, T055, T057.
 
@@ -5688,9 +5702,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T065. Подготовить следующий сезон приёма
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T010, T057.
 
@@ -5710,3 +5726,5 @@
 **Доказательства:**
 
 Пока нет.
+
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.

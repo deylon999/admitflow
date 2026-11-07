@@ -4,7 +4,7 @@ import { routes } from './routes';
 test('the source inventory contains exactly 29 unique routes',()=>{
   expect(routes).toHaveLength(29);expect(new Set(routes).size).toBe(29);
 });
-const runtimeRoutes=routes.map(route=>route==='/universities/mtuci'?'/universities/sgu-saratov':route==='/programs/mtuci-se'?'/programs/sgu-2026-4588':route);
+const runtimeRoutes=routes;
 for(const route of runtimeRoutes)test(`route ${route}: React loads with the appropriate data boundary`,async({page})=>{
   const errors:string[]=[],backend:string[]=[];
   page.on('pageerror',error=>errors.push(error.message));

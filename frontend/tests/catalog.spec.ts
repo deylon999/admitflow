@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
+import { evidenceDirectory } from './routes';
 
 const university = '/universities/sgu-saratov';
 const program = '/programs/sgu-2026-4588';
@@ -131,16 +133,27 @@ test('an HTML fallback is an error, never demo catalog data', async ({ page }) =
 
 for (const width of [390, 768, 1024, 1280, 1440]) {
   for (const [name, path] of [['universities', '/universities'], ['university', university], ['programs', '/programs'], ['program', program]]) {
-    test(`catalog screenshot ${name} ${width}`, async ({ page }) => {
+    test(`catalog screenshot ${name} ${width}`, async ({ page }, info) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);
       await expect(page.locator('.af-program-card, .af-catalog-detail h1').first()).toBeVisible();
       await expect(page.getByRole('status')).toHaveCount(0);
       await page.evaluate(() => document.fonts.ready);
       expect(await page.evaluate(() => Math.max(0, document.documentElement.scrollWidth - innerWidth))).toBe(0);
-      const directory = resolve('../docs/evidence/catalog-vertical-slice', String(width));
+      const directory = resolve(evidenceDirectory, String(width));
       await mkdir(directory, { recursive: true });
-      await page.screenshot({ path: resolve(directory, `${name}.png`), fullPage: true, animations: 'disabled' });
+      const actual = await page.screenshot({ path: resolve(directory, `${name}.png`), fullPage: true, animations: 'disabled' });
+      if (process.env.QA_BASELINE_REF) {
+        const reference = execFileSync('git', ['cat-file', 'blob', `${process.env.QA_BASELINE_REF}:docs/evidence/catalog-vertical-slice/${width}/${name}.png`]);
+        const snapshot = `catalog-${width}-${name}.png`;
+        const baseline = info.snapshotPath(snapshot);
+        await mkdir(resolve(baseline, '..'), { recursive: true });
+        await writeFile(baseline, reference);
+        expect(actual).toMatchSnapshot(snapshot, { threshold: 0, maxDiffPixels: 0 });
+        const metrics = resolve('test-results/catalog-metrics');
+        await mkdir(metrics, { recursive: true });
+        await writeFile(resolve(metrics, `${width}-${name}.json`), JSON.stringify({ name, width, baselineRef: process.env.QA_BASELINE_REF, pixelDiff: 0 }));
+      }
     });
   }
 }

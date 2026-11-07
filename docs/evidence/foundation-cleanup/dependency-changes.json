@@ -1,0 +1,70 @@
+{
+  "removedPackageEntries": [
+    "node_modules/@babel/code-frame",
+    "node_modules/@babel/compat-data",
+    "node_modules/@babel/core",
+    "node_modules/@babel/generator",
+    "node_modules/@babel/helper-compilation-targets",
+    "node_modules/@babel/helper-globals",
+    "node_modules/@babel/helper-module-imports",
+    "node_modules/@babel/helper-module-transforms",
+    "node_modules/@babel/helper-plugin-utils",
+    "node_modules/@babel/helper-string-parser",
+    "node_modules/@babel/helper-validator-identifier",
+    "node_modules/@babel/helper-validator-option",
+    "node_modules/@babel/helpers",
+    "node_modules/@babel/parser",
+    "node_modules/@babel/plugin-transform-react-jsx-self",
+    "node_modules/@babel/plugin-transform-react-jsx-source",
+    "node_modules/@babel/template",
+    "node_modules/@babel/traverse",
+    "node_modules/@babel/types",
+    "node_modules/@jridgewell/gen-mapping",
+    "node_modules/@jridgewell/remapping",
+    "node_modules/@jridgewell/resolve-uri",
+    "node_modules/@jridgewell/sourcemap-codec",
+    "node_modules/@jridgewell/trace-mapping",
+    "node_modules/@rolldown/pluginutils",
+    "node_modules/@types/babel__core",
+    "node_modules/@types/babel__generator",
+    "node_modules/@types/babel__template",
+    "node_modules/@types/babel__traverse",
+    "node_modules/@vitejs/plugin-react",
+    "node_modules/baseline-browser-mapping",
+    "node_modules/browserslist",
+    "node_modules/caniuse-lite",
+    "node_modules/convert-source-map",
+    "node_modules/electron-to-chromium",
+    "node_modules/escalade",
+    "node_modules/gensync",
+    "node_modules/js-tokens",
+    "node_modules/jsesc",
+    "node_modules/json5",
+    "node_modules/lru-cache",
+    "node_modules/node-releases",
+    "node_modules/react-refresh",
+    "node_modules/semver",
+    "node_modules/update-browserslist-db",
+    "node_modules/yallist"
+  ],
+  "runtimeVersions": {
+    "react": {
+      "before": "19.3.1",
+      "after": "19.3.1"
+    },
+    "react-dom": {
+      "before": "19.3.1",
+      "after": "19.3.1"
+    },
+    "vite": {
+      "before": "6.4.5",
+      "after": "6.4.5"
+    },
+    "typescript": {
+      "before": "5.9.3",
+      "after": "5.9.3"
+    }
+  },
+  "installBefore": 162,
+  "installAfter": 116
+}

@@ -1,4 +1,4 @@
-import { readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const manifest=JSON.parse(await readFile('../docs/evidence/frontend-v3-exact/source-manifest.json','utf8'));
 const compared=[];
@@ -17,8 +17,12 @@ for(const entry of manifest.filter(entry=>(entry.path.startsWith('src/')||['inde
     ? original.toString('utf8').replace('  };\r\n  const [title, description, symbol, tone]', '  } as const;\r\n  const [title, description, symbol, tone]').replace('  };\n  const [title, description, symbol, tone]', '  } as const;\n  const [title, description, symbol, tone]')
     : original.toString('utf8');
   if(demoLabels[entry.path]) expected=expected.replace(...demoLabels[entry.path]);
+  // Cleanup removes only the unused offline-export route map, not demo UI data.
+  if(entry.path==='src/data/demo.ts') expected=expected.split('export const routeLabels: Record<string, string> = {')[0].trimEnd()+'\n';
   if(copied.toString('utf8').replaceAll('\r\n','\n')!==expected.replaceAll('\r\n','\n'))throw Error('Unexpected source change: '+entry.path);
-  compared.push({file:entry.path,exactBytes:copied.equals(original),typeOnlyCorrection:entry.path==='src/pages/AppPages.tsx',demoLabelOnly:entry.path in demoLabels,sha256:createHash('sha256').update(copied).digest('hex')});
+  compared.push({file:entry.path,exactBytes:copied.equals(original),typeOnlyCorrection:entry.path==='src/pages/AppPages.tsx',demoLabelOnly:entry.path in demoLabels,deadRouteMapRemoved:entry.path==='src/data/demo.ts',sha256:createHash('sha256').update(copied).digest('hex')});
 }
-await writeFile('../docs/evidence/catalog-vertical-slice/design-preservation.json',JSON.stringify({compared,integrated},null,2)+'\n');
+const directory=process.env.QA_EVIDENCE_DIR ?? 'test-results/evidence';
+await mkdir(directory,{recursive:true});
+await writeFile(directory+'/design-preservation.json',JSON.stringify({compared,integrated},null,2)+'\n');
 console.log(`Verified ${compared.length} UI/config files with four explicit demo labels; three integration compositions excluded.`);

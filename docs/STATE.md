@@ -7,18 +7,18 @@
 
 ## Продолжение
 
-- Текущая задача: T249.
-- Следующая задача: T249.
+- Текущая задача: нет.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-User requested cleanup only. Branch chore/product-foundation-cleanup created from clean catalog state. Audit first; preserve v3 visuals, PostgreSQL data and all applied migrations. No new product features.
+Stop after completed cleanup as requested. Read docs/evidence/foundation-cleanup.md and docs/foundation-cleanup-audit.md. T250 remains blocked: Docker Compose PostgreSQL startup denied docker_engine/config access. Resume only with permitted Docker/PostgreSQL environment and explicit next work; verify native migrations/API/catalog without deleting volumes. No new features or redesign.
 
 ## Последняя завершённая работа
 
-- T243: full 29-route functionality/demo/API/dependency/priority audit and backend reuse/model/API plan in docs/product-functional-audit.md.
-- T244-T245: additive public catalog API + atomic reviewed metadata import and four React API pages. Existing models/DB reused; source scopes: 1257 reference institutions and two SGU archive-2026 contests, no invented cutoff/exams/ML.
-- T246-T247: 47 backend passed/1 native PostgreSQL skipped; 193 Chromium passed including 125 pixel comparisons (100 raw +25 explicit demo labels); standalone default68 passed, 20 catalog screenshots at five widths; lint/TS/build/install passed.
+- T248-T249: dependency audit and KEEP/REFACTOR/DELETE decisions; 42 stale files and two old stateless calculator HTTP endpoints removed; CamelModel isolated; 46 unused lock entries removed (162 ->116 install).
+- T251: frontend TS/ESLint/build/source guard pass; 193 Chromium passed, 29 runtime routes; 20 catalog baseline +125 reference pixel comparisons zero diff. Portable Windows backend549passed/35PG skips; 12 Linux-resource modules retained and uncollectable here.
+- T252: current v3 docs/architecture/API and registry aligned; old release/ML tasks deferred, historical done/evidence retained. Protected UI/migration/local DB hashes verified. T250 native PG/Docker blocked; cleanup stopped without new features.
 
 ## Ограничения
 
@@ -29,10 +29,11 @@ User requested cleanup only. Branch chore/product-foundation-cleanup created fro
 
 ## Проверенное окружение
 
-- Docker API/config permission denied; PostgreSQL unavailable and native test explicitly skipped. Real API E2E used owned temporary SQLite with current migrations; existing legacy user DB read-only inspected, not changed.
-- 23 original UI/config files verified with four exact demo label changes/type-only fix; three integration compositions explicit. Original CSS and all 68 source files unchanged. No new runtime dependencies or product database.
-- Windows Playwright webServer teardown hang fixed with scripts/test.mjs owning Vite previews and Python stdin shutdown. Standalone68 and visual193 finish and close servers. Early temp DB folders xhiql9eb/_wn5xa4d remain: automatic approval rejected outside-workspace deletion (sandbox_approval=false); no bypass.
-- Hosted CI/Docker/Nginx/Firefox/WebKit not verified; full dark theme absent in source. No push/deployment; main, exact-copy and previous redesign branches unchanged.
+- Actual docker compose config --quiet exit0; up -d db exit1 permission denied on docker_engine, Docker config access denied. No permission/config workaround, no volume deletion or working PostgreSQL connection/migration claim.
+- Final portable backend549passed/35native PG skips (182.05s); initial full collection12resource errors on Windows, Linux CI suite remains intact. UTF8 fixture-read test fixed without altering source fixtures.
+- Chromium193passed/0failed/skipped/flaky (54.2s). All29routes; 20 catalog PNGs identical to2a7835f and125 source comparisons under existing demo-label rules. All render files/CSS unchanged except dead routeLabels removed.
+- No frontend static preview/parallel renderer or unused React plugin. npm ci116; lint source/tests/scripts, tsc, Vite build pass. Production asset names/sizes match prior recorded build; initial dist absent, raw byte comparison not claimed.
+- Applied migrations and local legacy DB hashes unchanged; SQL models and source/normalization/history/jobs/backup kept. Hosted CI/native PG/Docker runtime not verified. QA servers stopped cleanly; no push/deployment/main changes.
 
 ## Готовность к выпуску
 

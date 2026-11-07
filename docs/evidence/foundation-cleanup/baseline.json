@@ -46,5 +46,8 @@
     "backend/alembic/versions/0010_observability.py": "546bc00db85d71f2d16add0ce19d225b6b7953a71c0cab51a6abb4b8982680fa",
     "backend/alembic/versions/0011_catalog_search.py": "4895988b4a951e2d5f13b75c6a6ff790e02167558998a016cf0fb5936edf9926",
     "backend/abiturient.db": "760f491f91269eec683fd2d950d5cb118330696d388f37470e0488c2c4a0fbc2"
-  }
+  },
+  "productionAssets": {},
+  "productionAssetsAvailableAtStart": false,
+  "note": "No dist assets existed at baseline capture. Compare protected render sources and committed screenshots; do not infer byte identity against an empty asset baseline."
 }

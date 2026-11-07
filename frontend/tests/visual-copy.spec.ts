@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import { routes, widths, slug } from './routes';
+import { routes, widths, slug, evidenceDirectory } from './routes';
 import { labelReferenceDemos } from './demo-labels';
 
 // Four catalog compositions now intentionally show verified API data. Compare
@@ -30,7 +30,7 @@ for(const width of widths)for(const route of unchanged)test(`exact ${width} ${ro
     const referenceOverflow=await original.evaluate(()=>Math.max(0,document.documentElement.scrollWidth-innerWidth));
     expect(overflow).toBe(referenceOverflow);expect(overflow).toBe(0);expect(errors).toEqual([]);
     if(route==='/'&&width===1440) {
-      const directory=resolve('../docs/evidence/catalog-vertical-slice/unchanged');
+      const directory=resolve(evidenceDirectory,'unchanged');
       await mkdir(directory,{recursive:true});
       await writeFile(resolve(directory,'landing-original.png'),reference);
       await writeFile(resolve(directory,'landing-current.png'),actual);
