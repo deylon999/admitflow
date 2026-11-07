@@ -1084,3 +1084,65 @@ No live backend/full cross-browser validation or gate acceptance claimed.
 All five requested steps complete. No commits or push. Next candidate T057.
 
 S189: User explicitly authorized commits after T232 verification. Created separate UI and regression-test commits; documentation commit follows. Previous no-commit statements describe S188. No push. No application changes or repeated test runs.
+
+S190 — T233 started: clarify frontend request states, focusing on tracker. Acceptance recorded in docs/evidence/frontend-states.md before implementation. No commits.
+
+S190 — T233 complete: loading, confirmed empty, request failure and success
+separated. Tracker waits for manual+archive success before global Empty State;
+one blocking retry;compact local errors;cached cards, comparisons and drafts
+survive background errors. Optional feed/coverage loads on opening. Existing
+parsers/session guards/React Query preserved;no backend/API/formula changes.
+Success reflects actual operations;unavailable limit check explains disabled
+adding/import. Source catalog/pagination/filter feedback also clarified.
+Verification: typecheck/lint/build/format/architecture exit0;150 unit tests;
+compiled Chromium56 passed/2reviewed-source-fixture skips;final14state cases
+passed. Evidence: docs/evidence/frontend-states.md. Initial invalid history
+fixture fixed without weakening its contract;invalid total=0 rejection tested.
+All five steps done. No commits/push. Next candidate T057;read task card first.
+
+S191 — T234 started: direction form UX. Acceptance recorded in docs/evidence/direction-form-ux.md before implementation. Prior uncommitted T233 work retained. No commits.
+
+S191 — T234 complete: one direction form with grouped required fields, human
+labels/examples/contextual help, optional university lookup, field-linked errors,
+read-only edit context/source link, safe save/pending/error/cancel and draft copy.
+Model/validation/formulas/API/storage rules/guards unchanged; prior local T233
+work retained. All five steps complete. typecheck/lint/build/format/architecture
+exit0;150unit;43compiledChromium passed/0skips;12design+4editor checks passed.
+Mobile create/edit in both themes checked for320px overflow,44px controls,
+16px inputs and accessible hint/error targets;final PNGs reviewed and saved.
+Evidence: docs/evidence/direction-form-ux.md. No live API/full cross-browser
+claim or gate acceptance. No commits/push. Next product candidate T057.
+
+S192 — T235 started: audit remaining frontend routes and shell. Acceptance recorded before implementation. Preserve tracker and prior T233/T234; no commits.
+
+S192 — T235 completed: remaining routes and shell audited in both themes on
+320/390/768/1024/1440. Unified global nav with accessible mobile disclosure,
+active states and preserved local anchors;project link targets existing /#about.
+Aligned source hierarchy/cards/metadata/actions, quote surfaces, calculator
+inline error,404/lazy/error recovery. Content/colors retained;no backend,
+business/model/API/FSD changes. SHA-256 of tracker page files and tracker.css
+unchanged from startup. Prior local T233/T234 retained. All five steps complete.
+Checks: typecheck/lint/build/format/architecture exit0;150unit;compiled Chromium
+59passed/2reviewed-source API skips;final37audit cases passed after CSS-layer
+fix;12design+4editor checks passed. Desktop/menu/source/404 PNGs viewed and saved.
+Evidence: docs/evidence/frontend-consistency-audit.md. No live API/full browser
+compatibility or gate acceptance claimed. Preview stopped;no commits/push.
+
+S193 — T236 started: final browser UI quality verification at375/768/1280/1920px in both themes. Acceptance recorded before implementation. Prior local T233-T235 retained; no commits/push or temporary scripts in service directories.
+
+S193 ? T236 completed: production Chromium UI verified at375/768/1280/1920px
+in light/dark;12 actual screenshots viewed and saved. Corrected native summary
+target22.39px to44px;removed overridden theme/CTA/menu/disabled CSS and local
+summary sizing duplicates. No redesign/business/backend/API/FSD changes.
+Checks: typecheck/lint/build/format/architecture exit0;150unit;72matrix+50regression
+Chromium passed/2reviewed-source API skips. No page overflow, broken forms/cards
+or focus/state regressions in checked scenarios. Firefox Target crashed before
+page creation;WebKit absent;live API/devices/full WCAG not verified. Evidence:
+docs/evidence/final-ui-quality.md. Prior T233-T235 retained;no commits/push.
+Next product candidate T057;review cumulative local diff first.
+
+S194 ? User explicitly requested commits after the previous no-commit UI work.
+Committed implementation as2a9da3b and regression tests as16cb145, using configured
+authorship. Evidence/screenshots/session documents committed separately. No
+application changes or repeated build needed;S193 verification retained. Staged
+whitespace checks passed. No push;next product candidate T057.

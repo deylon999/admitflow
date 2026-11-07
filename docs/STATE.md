@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-07. Последняя сессия: S189.
+Дата: 2026-11-07. Последняя сессия: S194.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T232 completed and committed with user authorization in S189. Next product candidate remains T057; get its task card before starting. No push.
+User authorized commits after T236. Frontend committed as 2a9da3b; tests as 16cb145; UI evidence and session state committed separately. No push. Next product candidate T057.
 
 ## Последняя завершённая работа
 
-- T232: tracker information architecture, direction cards, history/comparison and disclosures completed; docs/evidence/tracker-redesign.md.
+- T233-T236 UI changes committed:2a9da3b frontend,16cb145 tests;verification and screenshots in docs/evidence/final-ui-quality.md.
 
 ## Ограничения
 
@@ -27,8 +27,9 @@ T232 completed and committed with user authorization in S189. Next product candi
 
 ## Проверенное окружение
 
-- S188: typecheck/lint/format/build/architecture passed;147 unit tests;38 distinct compiled Chromium checks passed,2 API-dependent skips;12 design+4 editor checks.
-- No backend changes, live API tests, deployment, push. Preview is stopped after verification.
+- S193: typecheck/lint/build/format/architecture passed;150unit;72matrix+50regression Chromium passed/2reviewed-source API skips;12actual screenshots viewed and saved.
+- Chromium production UI checked at375/768/1280/1920 light/dark. Firefox page creation Target crashed;WebKit absent;physical devices/live API/full WCAG not verified. No backend/business/FSD changes. Temporary preview stopped.
+- S194: user requested commits; prior verification retained because application files did not change. git diff --cached --check passed before commits. No push.
 
 ## Готовность к выпуску
 

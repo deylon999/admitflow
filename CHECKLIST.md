@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 212 из 232 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 216 из 236 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -196,6 +196,9 @@
 - [x] T230 Полная миграция frontend AdmitFlow на Feature-Sliced Design
 - [x] T231 Единая визуальная дизайн-система AdmitFlow
 - [x] T232 Redesign tracker information architecture and direction cards
+- [x] T233 Clarify frontend loading, empty, error and success states
+- [x] T234 Simplify direction creation and editing form UX
+- [x] T235 Audit and align remaining frontend pages with the design system
 
 ## Качество и эксплуатация
 
@@ -246,6 +249,7 @@
 - [x] T212 Устранить причины зависаний CI и Firefox
 - [x] T213 Проверить исправленный workflow и диагностику
 - [x] T214 Проверить зелёный удалённый запуск и передать состояние
+- [x] T236 Final UI quality verification at requested viewport widths
 
 ## Резерв и выпуск
 

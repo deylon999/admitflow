@@ -3998,6 +3998,87 @@
 
 - [docs/evidence/tracker-redesign.md](../docs/evidence/tracker-redesign.md) — Tracker IA/cards/tools redesigned. typecheck/lint/build/format/architecture pass;147unit,38 distinct compiled Chromium tests,12design+4editor checks.2API-dependent skips. No backend/API/formula/FSD migration or commits.
 
+### T233. Clarify frontend loading, empty, error and success states
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T232.
+
+**Результаты/файлы:** `frontend/src/pages/tracker/`; `docs/evidence/frontend-states.md`.
+
+**Шаги:**
+
+1. Audit request states.
+2. Separate loading empty and failure.
+3. Deduplicate critical and local errors.
+4. Preserve stale data and acknowledge actions.
+5. Test and document.
+
+**Критерии закрытия:**
+
+- Tracker empty state requires successful manual and archive reads; server/network failure never appears empty.
+- One critical recoverable message; compact local failures; keep cached results and drafts during background updates.
+- Human-readable success and progress; network/empty/retry tests; typecheck/lint/build; no backend/API/architecture changes or commits.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/frontend-states.md](../docs/evidence/frontend-states.md) — Distinct loading/empty/error/success, one blocking tracker failure, compact local feedback, preserved cache/drafts, lazy optional reads and truthful success. typecheck/lint/build/format/architecture pass;150unit,56Chromium passed/2external-fixture skips;final14state cases passed. No backend/contracts/calculations/architecture migration/commits.
+
+### T234. Simplify direction creation and editing form UX
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T233.
+
+**Результаты/файлы:** `frontend/src/features/edit-manual-direction/`; `docs/evidence/direction-form-ux.md`.
+
+**Шаги:**
+
+1. Audit form and data rules.
+2. Group fields and explain inputs.
+3. Unify hints and inline errors.
+4. Clarify save progress failure and success.
+5. Verify mobile and relevant regressions.
+
+**Критерии закрытия:**
+
+- One clear form with field groups, human labels, examples, contextual help and explicit required/optional distinction.
+- Field-linked validation; preserve input on save failure; clear pending/error/success; usable on mobile and keyboard.
+- No business-validation/formula/API/storage changes; typecheck/lint/build and relevant tests pass; no commits.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/direction-form-ux.md](../docs/evidence/direction-form-ux.md) — One guided form; required/optional distinction; field-linked errors and safe save/retry UX. typecheck/lint/build/format/architecture pass;150unit,43compiledChromium/0skips,12design+4editor checks. Mobile screenshots reviewed. Model/validation/API/storage unchanged. Prior local T233 preserved;no commits.
+
+### T235. Audit and align remaining frontend pages with the design system
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T234.
+
+**Результаты/файлы:** `frontend/src/app/`; `frontend/src/pages/landing/`; `frontend/src/pages/sources/`; `docs/evidence/frontend-consistency-audit.md`.
+
+**Шаги:**
+
+1. Audit routes and shell.
+2. Review landing and calculator.
+3. Align sources UI.
+4. Review project content and utility routes.
+5. Verify themes mobile and regression checks.
+
+**Критерии закрытия:**
+
+- Audit all existing routes, shell and embedded calculator/project content in light/dark and mobile; document concrete findings.
+- Fix confirmed typography/controls/spacing/forms/states/navigation inconsistencies using existing tokens and primitives; preserve content and behavior.
+- No tracker page redesign/backend/business/FSD changes; standard checks and relevant tests; no commits.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/frontend-consistency-audit.md](../docs/evidence/frontend-consistency-audit.md) — Remaining routes/shell audited; consistent navigation/mobile menu, surfaces/headings, source states, calculator validation and utility pages. typecheck/lint/build/format/architecture;150unit;59Chromium passed/2API-fixture skips;final37audit cases +12design/4editor checks passed. Viewed PNGs. Tracker hashes unchanged;no backend/business/FSD/commits.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
@@ -5076,6 +5157,33 @@
 
 - [docs/evidence/b18-remote-ci.json](../docs/evidence/b18-remote-ci.json) — All6hosted CI jobs passed;666backend nativePG, all4browser projects broad+source stages andcontainer/backup checks verified from10JUnit reports/6artifacts. Original mobile confirmation/FirefoxTab failures fixed; slow Azure apt mirror removed. Local116Vitest/build,63source+27keyboard+4CI-mode+6actualNginx cases passed;demo frontend updated without key/volumes/API changes.
 - [docs/evidence/b18-integration.md](../docs/evidence/b18-integration.md) — Exact original/fixed run IDs, local regression, installed browser durations, separate reports, unchanged coverage and cleanup.
+
+### T236. Final UI quality verification at requested viewport widths
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T235.
+
+**Результаты/файлы:** `frontend/tests/e2e/final-ui-quality.spec.ts`; `docs/evidence/final-ui-quality.md`.
+
+**Шаги:**
+
+1. Record baseline.
+2. Inspect requested widths and both themes.
+3. Verify states keyboard and CSS.
+4. Fix confirmed defects.
+5. Run checks and report limitations and diff.
+
+**Критерии закрытия:**
+
+- Actual production-browser rendering inspected at375/768/1280/1920 in both themes; no page overflow or broken cards/forms; meaningful focus and state checks.
+- Only evidence-based fixes; audit conflicting/redundant CSS and shared-component regressions; preserve backend/business/FSD and prior work.
+- typecheck/lint/build and relevant tests; report passed/unavailable checks,remaining issues and actual git diff --shortstat; no commits/push or temporary service-directory scripts.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/final-ui-quality.md](../docs/evidence/final-ui-quality.md) — Production Chromium at375/768/1280/1920 light/dark; actual PNGs viewed. Fixed22.39px summary target to44px and redundant control CSS. typecheck/lint/build/format/architecture;150unit;72matrix+50regression Chromium passed/2API-fixture skips. Firefox Target crashed before page;WebKit/live API unavailable. No backend/business/FSD/commits/push.
 
 ## E6. Резерв и выпуск
 
