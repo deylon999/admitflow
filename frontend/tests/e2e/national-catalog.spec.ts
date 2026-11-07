@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 for (const width of [390, 1440])
   test(`national directory pages through real API without substituting registry card for a list (${width})`, async ({
@@ -15,7 +15,10 @@ for (const width of [390, 1440])
     });
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/tracker');
-    await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+    await page
+      .locator('.empty-state')
+      .getByRole('button', { name: 'Добавить направление', exact: true })
+      .click();
     await page.getByLabel('Вуз', { exact: true }).focus();
     await expect(page.locator('.catalog-option')).toHaveCount(50);
     try {

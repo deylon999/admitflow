@@ -1,9 +1,12 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('expiry during a readonly restore check cannot reopen the draft', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Expires during check');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   const expiry = await page.evaluate(
@@ -44,9 +47,12 @@ for (const theme of ['light', 'dark'])
     await page.setViewportSize({ width: 320, height: 780 });
     await page.addInitScript((value) => localStorage.setItem('abiturient-theme', value), theme);
     await page.goto('/tracker');
-    await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+    await page
+      .locator('.empty-state')
+      .getByRole('button', { name: 'Добавить направление', exact: true })
+      .click();
     await page.getByLabel('Вуз', { exact: true }).fill('У'.repeat(160));
-    await page.getByLabel('Направление и конкурсная группа').fill('Н'.repeat(200));
+    await page.getByLabel('Направление', { exact: true }).fill('Н'.repeat(200));
     await page
       .getByLabel('Ссылка на конкурсный список')
       .fill('https://example.org/' + 'a'.repeat(1800));
@@ -96,9 +102,12 @@ for (const failure of ['denied', 'quota'])
       }
     }, failure);
     await page.goto('/tracker');
-    await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+    await page
+      .locator('.empty-state')
+      .getByRole('button', { name: 'Добавить направление', exact: true })
+      .click();
     await page.getByLabel('Вуз', { exact: true }).fill('Storage unavailable');
-    await page.getByLabel('Направление и конкурсная группа').fill('Still usable');
+    await page.getByLabel('Направление', { exact: true }).fill('Still usable');
     await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
     await page.getByLabel('Ваш номер в списке').fill('10');
     await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
@@ -136,9 +145,12 @@ for (const mode of ['create', 'update'])
       await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
       await page.getByLabel('Ваш номер в списке').fill('11');
     } else {
-      await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+      await page
+        .locator('.empty-state')
+        .getByRole('button', { name: 'Добавить направление', exact: true })
+        .click();
       await page.getByLabel('Вуз', { exact: true }).fill('Retry owner');
-      await page.getByLabel('Направление и конкурсная группа').fill('Retry group');
+      await page.getByLabel('Направление', { exact: true }).fill('Retry group');
       await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
       await page.getByLabel('Ваш номер в списке').fill('10');
       await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
@@ -193,7 +205,10 @@ test('a cookie owner replacement without a storage event cannot restore the prev
 }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Previous owner secret');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   const previousScope = await page.evaluate(
@@ -215,7 +230,10 @@ test('a cookie owner replacement without a storage event cannot restore the prev
 test('restore revalidates an owner changed while the preview is already open', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Old active preview');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   page.once('dialog', (dialog) => dialog.accept());
@@ -237,7 +255,10 @@ test('restore revalidates an owner changed while the preview is already open', a
 test('expired local draft disappears without extending its lifetime', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Expiring draft');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   page.once('dialog', (dialog) => dialog.accept());
@@ -261,7 +282,10 @@ test('loss of guest access clears local recovery before explicit reset', async (
 }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Private draft');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   await context.clearCookies();
@@ -360,9 +384,12 @@ test('an already open edit cannot overwrite a newer snapshot', async ({ page }) 
 test('reload offers explicit restore and discard without writing directions', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Reload draft');
-  await page.getByLabel('Направление и конкурсная группа').fill('Restorable title');
+  await page.getByLabel('Направление', { exact: true }).fill('Restorable title');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   page.once('dialog', (dialog) => dialog.accept());
   await page.reload();
@@ -371,7 +398,7 @@ test('reload offers explicit restore and discard without writing directions', as
   await expect(page.locator('.direction-form')).toHaveCount(0);
   await recovery.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Reload draft');
-  await expect(page.getByLabel('Направление и конкурсная группа')).toHaveValue('Restorable title');
+  await expect(page.getByLabel('Направление', { exact: true })).toHaveValue('Restorable title');
   expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
   page.once('dialog', (dialog) => dialog.accept());
   await page.reload();
@@ -389,9 +416,12 @@ test('typing only stores a local draft and saves its retry key before sending', 
 }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Local draft');
-  await page.getByLabel('Направление и конкурсная группа').fill('Incomplete direction');
+  await page.getByLabel('Направление', { exact: true }).fill('Incomplete direction');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   expect(
     await page.evaluate(

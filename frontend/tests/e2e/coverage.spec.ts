@@ -29,7 +29,9 @@ test('ошибка проверки покрытия не заменяется �
   await page.goto('/tracker');
   await openTrackerPanel(page, 'sources');
   const section = page.getByRole('region', { name: 'Покрытие источников' });
-  await expect(section.getByRole('alert')).toContainText('Не удалось проверить покрытие');
+  await expect(section.getByRole('status')).toContainText(
+    'Не удалось загрузить сведения об источниках',
+  );
   await expect(section.locator('dd')).toHaveCount(0);
   await page.unroute('**/api/v1/coverage');
 });

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('back and forward preserve a dirty form when rejected and leave once when accepted', async ({
   page,
@@ -6,7 +6,10 @@ test('back and forward preserve a dirty form when rejected and leave once when a
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/');
   await page.getByRole('link', { name: 'Мои направления →', exact: true }).click();
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   const input = page.getByLabel('Вуз', { exact: true });
   await input.fill('History draft');
   let dialogs = 0;
@@ -30,7 +33,10 @@ test('back and forward preserve a dirty form when rejected and leave once when a
   await page.evaluate(() => history.back());
   await expect(page).toHaveURL(/\/tracker$/);
   await page.getByRole('button', { name: 'Удалить черновик', exact: true }).click();
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await input.fill('Forward draft');
   page.on('dialog', reject);
   await page.evaluate(() => history.forward());

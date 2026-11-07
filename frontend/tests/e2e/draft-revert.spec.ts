@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test.beforeEach(() => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
@@ -6,7 +6,10 @@ test.beforeEach(() => {
 
 test('clearing a new form removes the previously typed draft', async ({ page }) => {
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   const university = page.getByLabel('Вуз', { exact: true });
   await university.fill('Erased university');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
@@ -151,7 +154,10 @@ test('restoring a dirty draft and refocusing its form do not extend the stored e
   page,
 }) => {
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Original expiry');
   await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();
   const expiry = await page.evaluate(
@@ -164,7 +170,10 @@ test('restoring a dirty draft and refocusing its form do not extend the stored e
   await page.getByRole('button', { name: 'Восстановить черновик', exact: true }).click();
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Original expiry');
   await page.clock.fastForward(1000);
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   expect(
     await page.evaluate(() => JSON.parse(sessionStorage.getItem('admitflow-draft-v1')!).expiresAt),
   ).toBe(expiry);
@@ -179,7 +188,10 @@ for (const writesBlocked of [false, true]) {
     page,
   }) => {
     await page.goto('/tracker');
-    await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+    await page
+      .locator('.empty-state')
+      .getByRole('button', { name: 'Добавить направление', exact: true })
+      .click();
     const university = page.getByLabel('Вуз', { exact: true });
     await university.fill('Reverted storage failure');
     await expect(page.getByRole('status').filter({ hasText: 'Черновик сохранён' })).toBeVisible();

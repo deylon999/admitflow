@@ -1,11 +1,13 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('saving the twentieth direction returns focus to the page heading when add is disabled', async ({
   page,
 }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await expect(page.getByRole('button', { name: 'Добавить первое направление' })).toBeVisible();
+  await expect(
+    page.locator('.empty-state').getByRole('button', { name: 'Добавить направление', exact: true }),
+  ).toBeVisible();
   const body = {
     university: 'Keyboard limit example',
     title: 'Manual example',
@@ -25,7 +27,7 @@ test('saving the twentieth direction returns focus to the page heading when add 
   await page.reload();
   await page.getByRole('button', { name: 'Добавить направление', exact: true }).click();
   await page.getByLabel('Вуз', { exact: true }).fill(body.university);
-  await page.getByLabel('Направление и конкурсная группа').fill(body.title);
+  await page.getByLabel('Направление', { exact: true }).fill(body.title);
   await page.getByLabel('Ссылка на конкурсный список').fill(body.sourceUrl);
   await page.getByLabel('Ваш номер в списке').fill('10');
   await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');
@@ -43,7 +45,9 @@ for (const width of [390, 1440]) {
     test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/tracker');
-    const first = page.getByRole('button', { name: 'Добавить первое направление' });
+    const first = page
+      .locator('.empty-state')
+      .getByRole('button', { name: 'Добавить направление', exact: true });
     await first.focus();
     await page.keyboard.press('Enter');
     const heading = page.getByRole('heading', { name: 'Добавить направление', exact: true });
@@ -76,7 +80,7 @@ for (const width of [390, 1440]) {
     await expect(university).toBeFocused();
     await page.keyboard.type('Keyboard University');
     await page.keyboard.press('Tab');
-    await expect(page.getByLabel('Направление и конкурсная группа')).toBeFocused();
+    await expect(page.getByLabel('Направление', { exact: true })).toBeFocused();
     await page.keyboard.type('Keyboard admission group');
     await page.keyboard.press('Tab');
     await page.keyboard.type('https://example.org/list');
@@ -118,9 +122,12 @@ test('Escape и закрытие не теряют форму при сохра�
     await route.continue();
   });
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Pending University');
-  await page.getByLabel('Направление и конкурсная группа').fill('Pending group');
+  await page.getByLabel('Направление', { exact: true }).fill('Pending group');
   await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
   await page.getByLabel('Ваш номер в списке').fill('10');
   await page.getByLabel('Бюджетных мест').fill('20');

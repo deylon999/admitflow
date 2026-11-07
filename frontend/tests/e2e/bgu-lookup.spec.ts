@@ -1,11 +1,13 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('minimal BGU code finds and saves once without persisting code or asking for other identifier parts', async ({
   page,
 }) => {
   test.skip(process.env.E2E_BGU_FIXTURE !== '1', 'Requires the separate synthetic BGU fixture API');
   await page.goto('/tracker');
-  await expect(page.getByRole('button', { name: 'Добавить первое направление' })).toBeVisible();
+  await expect(
+    page.locator('.empty-state').getByRole('button', { name: 'Добавить направление', exact: true }),
+  ).toBeVisible();
   const storageBefore = await page.evaluate(() => ({
     local: { ...localStorage },
     session: { ...sessionStorage },

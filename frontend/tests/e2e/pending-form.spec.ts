@@ -1,12 +1,15 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 
 test('an open form preserves values and cannot submit during import', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Draft during import');
-  await page.getByLabel('Направление и конкурсная группа').fill('Draft group');
+  await page.getByLabel('Направление', { exact: true }).fill('Draft group');
   await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/draft');
   await page.getByLabel('Ваш номер в списке').fill('10');
   await page.getByLabel('Бюджетных мест', { exact: true }).fill('20');

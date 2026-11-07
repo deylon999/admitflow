@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/v1/subscriptions', (route) => route.fulfill({ json: [] }));
@@ -12,7 +12,10 @@ test('university choices support arrows, Escape and Enter without losing the for
 }) => {
   test.skip(process.env.E2E_API !== '1', 'Requires API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   const input = page.getByLabel('Вуз', { exact: true });
   await input.focus();
   const options = page.locator('.catalog-option');
@@ -46,7 +49,10 @@ test('university choices support arrows, Escape and Enter without losing the for
 test('каталог выбирает вуз с честной пометкой ручного режима', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Требуется настоящий API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('ЧЕРНЫШЕВСКОГО');
   const choice = page.getByRole('button', { name: /СГУ имени.*Ручной режим/ });
   await expect(choice).toBeVisible();
@@ -82,7 +88,10 @@ test('ошибка справочника сохраняет возможнос�
     route.fulfill({ status: 503, json: { detail: 'Unavailable' } }),
   );
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Название вручную');
   await expect(page.getByText('Справочник недоступен.', { exact: false })).toBeVisible();
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveValue('Название вручную');

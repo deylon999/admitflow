@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test('отказ от закрытия и смены формы сохраняет черновик, сохранение не спрашивает', async ({
   page,
@@ -48,7 +48,10 @@ test('отказ от закрытия и смены формы сохраняе
 test('ссылка на другую страницу не теряет ввод при отказе', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Требуется API');
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByLabel('Вуз', { exact: true }).fill('Unsaved university');
   const dialog = page.waitForEvent('dialog');
   page.once('dialog', (dialog) => dialog.dismiss());

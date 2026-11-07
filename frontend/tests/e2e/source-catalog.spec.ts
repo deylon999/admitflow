@@ -104,13 +104,15 @@ test('failed next catalog page preserves loaded groups and can be retried', asyn
   await page.goto('/sources');
   await expect(page.locator('article.source-catalog-card')).toHaveCount(1);
   await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
-  await expect(page.getByText('Не удалось загрузить группы.', { exact: true })).toBeVisible();
+  await expect(
+    page.getByText('Не удалось загрузить следующие группы.', { exact: false }),
+  ).toBeVisible();
   await expect(page.locator('article.source-catalog-card')).toHaveCount(1);
   await expect(
     page.getByText('Подходящих подключённых групп пока нет.', { exact: false }),
   ).toHaveCount(0);
   failNext = false;
-  await page.getByRole('button', { name: 'Загрузить ещё группы' }).click();
+  await page.getByRole('button', { name: 'Повторить загрузку групп' }).click();
   await expect(page.locator('article.source-catalog-card')).toHaveCount(2);
   await expect(page.getByRole('alert')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Загрузить ещё группы' })).toHaveCount(0);

@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+﻿import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/v1/changes*', (route) =>
@@ -20,21 +20,24 @@ test('форма показывает корректный расчёт и от�
   );
   await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await expect(page.locator('.tracker-preview')).toHaveCount(0);
   await page.getByLabel('Вуз', { exact: true }).fill('Тестовый вуз');
-  await page.getByLabel('Направление и конкурсная группа').fill('Информатика');
+  await page.getByLabel('Направление', { exact: true }).fill('Информатика');
   await page.getByLabel('Ссылка на конкурсный список').fill('https://example.org/list');
   await page.getByLabel('Ваш номер в списке').fill('120');
   await page.getByLabel('Бюджетных мест').fill('90');
-  await page.getByLabel('Выше вас вне общего конкурса').fill('30');
-  await page.getByLabel('Выше вас без согласия на зачисление').fill('16');
+  await page.getByLabel('Не участвуют в этом конкурсе', { exact: true }).fill('30');
+  await page.getByLabel('Не подали согласие', { exact: true }).fill('16');
   await expect(page.locator('.tracker-preview strong')).toHaveText('74 из 90');
-  await page.getByLabel('Выше вас без согласия на зачисление').fill('90');
+  await page.getByLabel('Не подали согласие', { exact: true }).fill('90');
   await page.getByRole('button', { name: 'Сохранить направление' }).click();
   await expect(page.locator('#tracker-calculation-error')).toContainText('меньше вашего номера');
-  await expect(page.getByLabel('Выше вас вне общего конкурса')).toBeFocused();
-  await expect(page.getByLabel('Выше вас без согласия на зачисление')).toHaveAttribute(
+  await expect(page.getByLabel('Не участвуют в этом конкурсе', { exact: true })).toBeFocused();
+  await expect(page.getByLabel('Не подали согласие', { exact: true })).toHaveAttribute(
     'aria-invalid',
     'true',
   );
@@ -53,7 +56,10 @@ test('невалидные метаданные показываются у по
     if (request.url().endsWith('/api/v1/watches') && request.method() === 'POST') writes++;
   });
   await page.goto('/tracker');
-  await page.getByRole('button', { name: 'Добавить первое направление' }).click();
+  await page
+    .locator('.empty-state')
+    .getByRole('button', { name: 'Добавить направление', exact: true })
+    .click();
   await page.getByRole('button', { name: 'Сохранить направление', exact: true }).click();
   await expect(page.getByLabel('Вуз', { exact: true })).toBeFocused();
   await expect(page.getByLabel('Вуз', { exact: true })).toHaveAttribute(
@@ -61,7 +67,7 @@ test('невалидные метаданные показываются у по
     'catalog-note university-error',
   );
   await page.getByLabel('Вуз', { exact: true }).fill('University');
-  await page.getByLabel('Направление и конкурсная группа').fill('Group');
+  await page.getByLabel('Направление', { exact: true }).fill('Group');
   await page
     .getByLabel('Ссылка на конкурсный список')
     .fill('https://user:password@example.org/list');
@@ -92,7 +98,7 @@ test('некорректный ответ не отображается как �
     page.getByRole('heading', { name: 'Не удалось загрузить направления' }),
   ).toBeVisible();
   await expect(
-    page.getByText('Сервер вернул некорректные данные.', { exact: false }),
+    page.getByText('Не удалось проверить полученные данные.', { exact: false }),
   ).toBeVisible();
   await expect(page.locator('.direction-result')).toHaveCount(0);
 });

@@ -45,7 +45,9 @@ test('failed next directory page keeps the selection and retries at320px', async
   const selected = await select.locator('option').nth(1).getAttribute('value');
   await select.selectOption(selected!);
   await page.getByRole('button', { name: 'Показать ещё вузы' }).click();
-  await expect(page.getByRole('alert')).toContainText('Выбор сохранён');
+  await expect(page.locator('.source-university-filter .request-feedback')).toContainText(
+    'Выбор сохранён',
+  );
   await expect(select).toHaveValue(selected!);
   await expect(select.locator('option')).toHaveCount(51);
   fail = false;
