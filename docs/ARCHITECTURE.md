@@ -1,5 +1,13 @@
 # Frontend AdmitFlow: Feature-Sliced Design
 
+**Актуальное состояние с T242 (2026-11-08):** по прямому запросу пользователя
+frontend полностью заменён исходной структурой v3: `App.tsx`, `app/`,
+`components/`, `pages/`, `shared/UI.tsx`, `data/demo.ts`, два исходных CSS.
+React Router/React Query/FSD и бизнес-логика прежнего frontend удалены из
+активного приложения. Работает оригинальный History API router; backend
+не подключён. Ниже сохранено описание прежней архитектуры как история.
+[Файлы, запуск и доказательства точного копирования](evidence/frontend-v3-exact.md).
+
 Миграция T230 начата с чистого commit `3f8eee8`. Функциональность, DOM,
 дизайн, backend API и правила расчёта сохраняются. Стек React/TypeScript,
 React Query, React Router и обычный CSS остаётся прежним. По указанию

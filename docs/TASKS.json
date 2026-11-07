@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-07",
+  "updatedAt": "2026-11-08",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -1457,8 +1457,8 @@
           "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
         },
         {
-          "path": "frontend/tests/e2e/changes.spec.ts",
-          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
+          "path": "docs/archive/retired-frontend/changes.spec.ts",
+          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified. Historical evidence archived during T242; it targets the retired manual UI."
         }
       ],
       "blockedReason": null
@@ -7455,6 +7455,38 @@
         {
           "path": "docs/evidence/ui-ci-regressions.md",
           "note": "Reproduced exact Firefox detached-button timeout: unmocked history401;corrected five E2E fixtures/selectors/cache freshness expectations without production changes/timeouts/skips. Full Firefox254passed/37existing skips;targeted39Chromium+39Firefox;final4reset cases passed each;150unit and typecheck/lint/build/format/architecture. Fresh Ubuntu CI unverified;no push."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T242",
+      "title": "Replace frontend with an exact copy of the v3 source",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "frontend/src/",
+        "frontend/tests/",
+        "docs/evidence/frontend-v3-exact.md"
+      ],
+      "steps": [
+        "Create clean branch from main preserving previous redesign branch",
+        "Copy original frontend sources directly without old logic/API",
+        "Install and run both React projects",
+        "Compare all 29 routes at five widths and test interactions"
+      ],
+      "acceptance": [
+        "Source UI files remain identical; only documented technical setup changes",
+        "All29routes run with original demo behavior, no old backend/API integration",
+        "Typecheck/build/install and Playwright interactions/routes/console/overflow; paired original-vs-copy screenshots and pixel diff at390/768/1024/1280/1440"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/frontend-v3-exact.md",
+          "note": "Implementation 3e50540: direct copy of all 29 source routes; one type-only fix, identical compiled JS/CSS. Install/typecheck/build/source verification passed. Chromium 187 passed, zero failed/skipped; 145 live pixel comparisons at five widths, zero different pixels and no horizontal overflow. All 290 PNGs and interactive gallery saved. Backend/shared/Compose and main/previous branch unchanged. No API integration, push or deployment."
         }
       ],
       "blockedReason": null

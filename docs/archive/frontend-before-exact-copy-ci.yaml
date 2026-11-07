@@ -1,0 +1,207 @@
+name: Checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: admitflow_test
+          POSTGRES_USER: admitflow
+          POSTGRES_PASSWORD: admitflow
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U admitflow -d admitflow_test"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 20
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+      - run: npm ci
+      - run: npm run format:check
+      - run: python -m pip install -r requirements-dev.txt
+        working-directory: backend
+      - run: npm test
+      - run: npm run build
+      - run: python -m pytest -q --require-postgres --junitxml=test-results/backend.xml
+        working-directory: backend
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://admitflow:admitflow@localhost:5432/admitflow_test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-results-${{ github.run_attempt }}
+          path: backend/test-results/backend.xml
+          retention-days: 7
+      - run: python ../scripts/roadmap.py --check
+      - name: Install Chromium and system dependencies
+        timeout-minutes: 5
+        run: bash ../scripts/install_playwright_ci.sh chromium
+      - name: Start test API
+        working-directory: backend
+        env:
+          DATABASE_URL: sqlite:///./e2e.db
+        run: |
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log > /tmp/abiturient-api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/abiturient-api.log
+          exit 1
+      - run: npm run test:e2e -- --project=chromium --reporter=line,junit --output=test-results/broad
+        env:
+          E2E_API: '1'
+          E2E_SERVER: preview
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/broad.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chromium-results-${{ github.run_attempt }}
+          path: frontend/test-results/
+          retention-days: 7
+
+  browsers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - project: firefox
+            install: firefox
+          - project: webkit
+            install: webkit
+          - project: mobile-chromium
+            install: chromium
+          - project: mobile-webkit
+            install: webkit
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: backend/requirements*.txt
+      - run: npm ci
+      - run: python -m pip install -r requirements-dev.txt
+        working-directory: backend
+      - name: Install browser and system dependencies
+        timeout-minutes: 5
+        run: bash ../scripts/install_playwright_ci.sh ${{ matrix.install }}
+      - name: Start test API
+        working-directory: backend
+        env:
+          DATABASE_URL: sqlite:///./e2e.db
+        run: |
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --no-access-log > /tmp/abiturient-api.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8000/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/abiturient-api.log
+          exit 1
+      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line,junit --output=test-results/broad
+        env:
+          E2E_API: '1'
+          E2E_SERVER: preview
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/broad.xml
+      - name: Start anonymized source fixture API
+        run: |
+          E2E_API_PORT=8001 nohup python scripts/serve_source_e2e.py > /tmp/source-api.log 2>&1 &
+          for attempt in $(seq 1 90); do
+            if curl --fail --silent http://127.0.0.1:8001/api/health; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/source-api.log
+          exit 1
+        working-directory: .
+      - run: npm run test:e2e -- --project=${{ matrix.project }} --reporter=line,junit --output=test-results/source tests/e2e/source-failure.spec.ts tests/e2e/source-history.spec.ts tests/e2e/source-lookup.spec.ts tests/e2e/source-provenance.spec.ts tests/e2e/source-session.spec.ts
+        env:
+          API_TARGET: http://127.0.0.1:8001
+          E2E_API: '1'
+          E2E_SOURCE_FIXTURE: '1'
+          E2E_SERVER: preview
+          PLAYWRIGHT_JUNIT_OUTPUT_FILE: test-results/source.xml
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results-${{ matrix.project }}-${{ github.run_attempt }}
+          path: frontend/test-results/
+          retention-days: 7
+
+  containers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install httpx==0.28.1
+      - run: docker build -t admitflow-backend:ci -f backend/Dockerfile .
+      - run: docker build -t admitflow-frontend:ci -f frontend/Dockerfile .
+      - run: python scripts/rehearse_compose.py --backend-image admitflow-backend:ci --frontend-image admitflow-frontend:ci --output /tmp/compose-report.json
+      - run: cat /tmp/compose-report.json
+        if: always()
+      - run: docker compose -f compose.yaml -f docs/ci-images.yaml up -d --no-build --wait --wait-timeout 90
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - name: Install Chromium and system dependencies
+        timeout-minutes: 5
+        run: bash ../scripts/install_playwright_ci.sh chromium
+        working-directory: frontend
+      - run: npx playwright test --project=chromium --reporter=line tests/e2e/assets.spec.ts
+        working-directory: frontend
+        env:
+          E2E_NGINX: '1'
+          E2E_SERVER: external
+          E2E_BASE_URL: http://127.0.0.1:8080
+      - name: Backup is restored and verified
+        env:
+          COMPOSE: docker compose -f compose.yaml -f docs/ci-images.yaml
+          RAW_SERVICE: backend
+        run: scripts/backup_production.sh /tmp/admitflow-backups
+      - name: Production configuration renders
+        env:
+          DOMAIN: example.org
+          ACME_EMAIL: ops@example.org
+          POSTGRES_PASSWORD: ci-only-not-a-secret
+          SOURCE_IDENTITY_KEY: 0000000000000000000000000000000000000000000000000000000000000000
+        run: docker compose -f compose.prod.yaml config --quiet

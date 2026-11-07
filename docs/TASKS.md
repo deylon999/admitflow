@@ -2558,7 +2558,7 @@
 
 - [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
 - [backend/tests/test_changes.py](../backend/tests/test_changes.py) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
-- [frontend/tests/e2e/changes.spec.ts](../frontend/tests/e2e/changes.spec.ts) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
+- [docs/archive/retired-frontend/changes.spec.ts](../docs/archive/retired-frontend/changes.spec.ts) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified. Historical evidence archived during T242; it targets the retired manual UI.
 
 ### T075. Сравнение сохранённых ручных направлений
 
@@ -4078,6 +4078,32 @@
 **Доказательства:**
 
 - [docs/evidence/frontend-consistency-audit.md](../docs/evidence/frontend-consistency-audit.md) — Remaining routes/shell audited; consistent navigation/mobile menu, surfaces/headings, source states, calculator validation and utility pages. typecheck/lint/build/format/architecture;150unit;59Chromium passed/2API-fixture skips;final37audit cases +12design/4editor checks passed. Viewed PNGs. Tracker hashes unchanged;no backend/business/FSD/commits.
+
+### T242. Replace frontend with an exact copy of the v3 source
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `frontend/src/`; `frontend/tests/`; `docs/evidence/frontend-v3-exact.md`.
+
+**Шаги:**
+
+1. Create clean branch from main preserving previous redesign branch.
+2. Copy original frontend sources directly without old logic/API.
+3. Install and run both React projects.
+4. Compare all 29 routes at five widths and test interactions.
+
+**Критерии закрытия:**
+
+- Source UI files remain identical; only documented technical setup changes.
+- All29routes run with original demo behavior, no old backend/API integration.
+- Typecheck/build/install and Playwright interactions/routes/console/overflow; paired original-vs-copy screenshots and pixel diff at390/768/1024/1280/1440.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/frontend-v3-exact.md](../docs/evidence/frontend-v3-exact.md) — Implementation 3e50540: direct copy of all 29 source routes; one type-only fix, identical compiled JS/CSS. Install/typecheck/build/source verification passed. Chromium 187 passed, zero failed/skipped; 145 live pixel comparisons at five widths, zero different pixels and no horizontal overflow. All 290 PNGs and interactive gallery saved. Backend/shared/Compose and main/previous branch unchanged. No API integration, push or deployment.
 
 ## E5. Качество и эксплуатация
 

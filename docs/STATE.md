@@ -3,21 +3,21 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-07. Последняя сессия: S195.
+Дата: 2026-11-08. Последняя сессия: S199.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T057.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regressions.md. Local commit only;no push or fresh GitHub Actions result. Next product candidate T057.
+T242 exact v3 copy completed and verified. Await user review of paired screenshots. No backend/API/ML integration or redesign unless explicitly requested. Use frontend npm run dev (5173); previous branch preserved.
 
 ## Последняя завершённая работа
 
-- T237: five E2E files corrected after UI updates;full Firefox254passed/37existing skips,all14reported scenarios passed;production code unchanged.
-- T233-T236 UI changes committed:2a9da3b frontend,16cb145 tests;verification and screenshots in docs/evidence/final-ui-quality.md.
+- T242: all 29 v3 routes copied on feat/frontend-v3-exact-copy from main; implementation 3e50540. Original source remains unchanged.
+- 187 Chromium tests passed; 145 original/copy comparisons at five widths: zero different pixels, no overflow. Evidence: docs/evidence/frontend-v3-exact.md.
 
 ## Ограничения
 
@@ -28,8 +28,9 @@ T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regress
 
 ## Проверенное окружение
 
-- S195: typecheck/lint/build/format/architecture passed;150unit;full Firefox254passed/37existing skips;39targetedChromium+39targetedFirefox passed;final4reset cases passed each browser.
-- Actual isolated SQLite/FastAPI+production preview;Firefox works outside sandbox. Two Firefox PNGs viewed. Fresh Ubuntu/GitHub CI,source-fixture suites and reverse-proxy tests not verified this turn. Temporary servers stopped and test DB removed. No push.
+- S199: npm ci offline, typecheck, build and source verification passed. Source/copy production JS and CSS identical. Dev launch smoke passed for landing, forecast, login.
+- Managed Windows Vite optimizer access restrictions bypassed by Vite watch-build/preview launcher (refresh after edits, no HMR). All temporary servers stopped; tools backup removed.
+- Backend, shared fixtures and Compose unchanged; API/PostgreSQL integration deliberately excluded. Docker/Nginx and hosted CI not run. Original has no implemented dark theme. No push/deployment.
 
 ## Готовность к выпуску
 

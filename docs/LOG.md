@@ -1158,3 +1158,22 @@ timeout increases or new skips. Full Firefox254passed/37existing skips;targeted
 lint/build/format/architecture passed. Two actual Firefox PNGs viewed. Evidence:
 docs/evidence/ui-ci-regressions.md. Fresh GitHub/Ubuntu CI not confirmed. Temporary
 API/preview stopped and isolated DB removed;local commit authorized,no push.
+
+S199 - T242 started by explicit strategy replacement. Clean previous branch feat/admitflow-ui-redesign preserved ataf387ad. New feat/frontend-v3-exact-copy created from main. Direct-copy29route v3 source is authoritative;old UI/calculator/FSD no longer frontend requirements. Backend/data/docs/history preserved. Frontend source manifest and retired-file inventory recorded before copy.
+
+S199 - T242 completed. User strategy supersedes previous integration requirements.
+Branch feat/frontend-v3-exact-copy created from main; previous redesign remains
+at af387ad. Implementation 3e50540 copies 68 source files including all 24 src
+files and all 29 routes; only source edit is one type-only as const fix.
+Compiled original/copy JS and CSS are identical. Source 68 checksums unchanged;
+backend/shared/Compose diff empty. Original demo behavior and text preserved.
+Install/typecheck/build/source verification passed. Final Chromium: 187 passed,
+0 failed/skipped/flaky. 145 live pixel comparisons (29 routes x five widths):
+0 different pixels, equal text, no horizontal overflow. 290 PNGs, interactive
+gallery and machine summaries: docs/evidence/frontend-v3-exact.md.
+Dev watch/preview works despite managed Windows optimizer restrictions; no HMR.
+Old frontend tests are historical; new route/interaction/visual suites installed.
+CI updated for new frontend with independent backend PostgreSQL job retained.
+Backend/API/ML integration excluded by instruction. Docker/Nginx/hosted CI not
+run; no claim of cross-OS pixel identity. Temporary servers stopped and tool
+backup removed. No push/deployment; await review of exact-copy screenshots.

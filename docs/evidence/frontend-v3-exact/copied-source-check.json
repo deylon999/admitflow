@@ -1,0 +1,158 @@
+[
+  {
+    "file": "index.html",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "b598b404eed1bcf94a7ddeab94caec0a0f7197d060021bda07d90b610e80eec2"
+  },
+  {
+    "file": "src/app/navigation.ts",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "896c000bcd53db905b213962e1751132cb25916836765454750dde6a138627e7"
+  },
+  {
+    "file": "src/app/RouteLink.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "f59f3211a7326422c58a694d832a077d775db64e8c4104bddd968bf133f1196e"
+  },
+  {
+    "file": "src/app/Shell.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "e6c4fb4675d3ce68743da6e21bcaacc72b5c4ec30850e5bf94e1f0ba2386fac1"
+  },
+  {
+    "file": "src/App.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "9476836787d09a3b736225dd4bb36a4872e93e5c161eae15844ea01b7f409cc3"
+  },
+  {
+    "file": "src/components/Calculator.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "79423deef38bfc248e9ceea753df77ecc73f9a6b9d583b1900865ee957fe7c1c"
+  },
+  {
+    "file": "src/components/Competition.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "42497bb815f26b1a44e2e03fadd5320cfcc5c7d133023172f6bbb1f022bbffee"
+  },
+  {
+    "file": "src/components/FAQ.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "627cda4b601d8878b2a755d464aa465d66d8c0b4b5fae13e741dab1cf9f3dfb5"
+  },
+  {
+    "file": "src/components/Features.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "7c60a5562c94b711cc49e4f3d8d4a3a285914c2c007297616631e23e16dfc022"
+  },
+  {
+    "file": "src/components/FinalCTA.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "aad3c42059bd29e2734e1d7707aa4870bd3afc0e109b196ce80fbcb326ccb825"
+  },
+  {
+    "file": "src/components/ForecastCard.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "8354efe98a04a13c59b3bc78836fa38e25940fc7ca21a8d1da506afdcfa7e0e3"
+  },
+  {
+    "file": "src/components/Header.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "883b98f50ff491202a6487af21463afa891bec5d254799484bab65b1de9c52c7"
+  },
+  {
+    "file": "src/components/Hero.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "9bb9a3146a9a146e916b751a6ee6a17eec79a5860da5666ad28dc83b3fba8de7"
+  },
+  {
+    "file": "src/components/Icons.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "640bee77cceedb7572e37e7ddc94b6c51ba368d0c196e23391d1dc971785445e"
+  },
+  {
+    "file": "src/components/Problems.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "f4d5169b3cdcd3e58dd6476f1b1bfcaec43b96cba9418672f658821759dd6257"
+  },
+  {
+    "file": "src/components/StatsStrip.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "05fc53c1d27c311789494562f80a336509eed22856c4b9d5352e6167ff7faf4b"
+  },
+  {
+    "file": "src/components/Testimonial.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "5ee82884a950e9f0878171d743563a27f90e1700b68a8339e419faf64c80a83c"
+  },
+  {
+    "file": "src/data/demo.ts",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "07f464295254f82b7e3d2585b89cd2e5b388e587c9d525c090a66c3f812850dc"
+  },
+  {
+    "file": "src/internal.css",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "30c3299e160495ddf9a6c5b7ad3bdb4cafb81dbaeefc8eeab89a5cbaf9d65dbc"
+  },
+  {
+    "file": "src/main.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "e3aaa89e7873e87a72b561d4fea163c58efeda5969b3a887fe865c2d3f1a7464"
+  },
+  {
+    "file": "src/pages/AppPages.tsx",
+    "exactBytes": false,
+    "typeOnlyCorrection": true,
+    "sha256": "99f88ff3fa3285846db2bd5817c30bfd654f096500f08fc2c8e513b1c86afcdc"
+  },
+  {
+    "file": "src/pages/AuthPages.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "b48d35c7358330e1198d954e3a50784213ebff863e7cfba382cfb79951f2061b"
+  },
+  {
+    "file": "src/pages/PublicPages.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "132f59810f2f5c047080cee58cec29d7513760a89c878547761a380ce077dbd9"
+  },
+  {
+    "file": "src/shared/UI.tsx",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "013c2465fb50fee4a12342a691bf50f43fff8cd4c7b6b6bb0e1424ac9c743fbd"
+  },
+  {
+    "file": "src/styles.css",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "d639de0885ad8334f85bffb7d66539ed524b85e32b0274cd8737a8a714612639"
+  },
+  {
+    "file": "tsconfig.json",
+    "exactBytes": true,
+    "typeOnlyCorrection": false,
+    "sha256": "1276676696c5a140e9bb241bdb1df479ef38f3758fc3903efc6867c50b758027"
+  }
+]

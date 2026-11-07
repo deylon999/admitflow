@@ -1,0 +1,22 @@
+{
+  "stats": {
+    "startTime": "2026-11-07T21:54:25.717Z",
+    "duration": 52509.126,
+    "expected": 187,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "projects": [
+    {
+      "name": "",
+      "testDir": "frontend/tests"
+    }
+  ],
+  "sourceAndCopy": "Production Vite previews on 5300/5301; same Chromium environment",
+  "devSmoke": [
+    "/",
+    "/app/forecast",
+    "/auth/login"
+  ]
+}

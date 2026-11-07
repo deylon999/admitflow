@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 217 из 237 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 218 из 238 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -199,6 +199,7 @@
 - [x] T233 Clarify frontend loading, empty, error and success states
 - [x] T234 Simplify direction creation and editing form UX
 - [x] T235 Audit and align remaining frontend pages with the design system
+- [x] T242 Replace frontend with an exact copy of the v3 source
 
 ## Качество и эксплуатация
 
