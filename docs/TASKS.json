@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-06",
+  "updatedAt": "2026-11-07",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -7249,6 +7249,40 @@
         {
           "path": "docs/evidence/design-system.md",
           "note": "Unified tokens/type scale/shared UI and both themes. typecheck/lint/build/format/architecture pass;147unit,12page and4editor/state checks. No long E2E/UX/API/model changes/commits/push."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T232",
+      "title": "Redesign tracker information architecture and direction cards",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [
+        "T231"
+      ],
+      "deliverables": [
+        "frontend/src/pages/tracker/",
+        "docs/evidence/tracker-redesign.md"
+      ],
+      "steps": [
+        "Audit existing capabilities",
+        "Prioritize directions",
+        "Unify cards",
+        "Group history and tools",
+        "Verify and document"
+      ],
+      "acceptance": [
+        "Direction list and add action first; clear calculated place, seats, manual date and available position change",
+        "Preserve capabilities, API and calculations; technical tools disclosed below; critical warnings visible",
+        "Responsive keyboard accessible UI using existing design system; typecheck/lint/build verified; no commits"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/tracker-redesign.md",
+          "note": "Tracker IA/cards/tools redesigned. typecheck/lint/build/format/architecture pass;147unit,38 distinct compiled Chromium tests,12design+4editor checks.2API-dependent skips. No backend/API/formula/FSD migration or commits."
         }
       ],
       "blockedReason": null

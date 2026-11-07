@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-07. Последняя сессия: S187.
+Дата: 2026-11-07. Последняя сессия: S189.
 
 ## Продолжение
 
@@ -12,13 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Оптимизация документации завершена; изменения локальные, без коммитов и push. Следующий продуктовый кандидат — T057: получить карточку командой python scripts/roadmap.py --task T057, проверить её зависимости и выбрать конкретный следующий источник/формат. Не начинать новый импорт из архивных инструкций без проверки сезона и аттестации.
+T232 completed and committed with user authorization in S189. Next product candidate remains T057; get its task card before starting. No push.
 
 ## Последняя завершённая работа
 
-- T230: frontend переведён на FSD; [evidence](evidence/fsd-migration.md).
-- T231: единая дизайн-система; [evidence](evidence/design-system.md). Последние проверки приложения записаны там; эта сессия их не повторяет.
-- S187: сокращён стартовый контекст, добавлены адресные команды roadmap, исправлены подтверждённые устаревшие сведения. Результаты проверок инструментов — LOG.md.
+- T232: tracker information architecture, direction cards, history/comparison and disclosures completed; docs/evidence/tracker-redesign.md.
 
 ## Ограничения
 
@@ -29,9 +27,8 @@
 
 ## Проверенное окружение
 
-- В начале S187 рабочее дерево main было чистым; текущие изменения — документация и инструменты её чтения.
-- Состояние Docker/demo8091 и внешнего deployment в S187 не проверялось. Старые адреса в журнале не подтверждают актуальный deployment.
-- Скрипт roadmap использует только стандартную библиотеку Python. Команды выполнять из корня; npm — из frontend/.
+- S188: typecheck/lint/format/build/architecture passed;147 unit tests;38 distinct compiled Chromium checks passed,2 API-dependent skips;12 design+4 editor checks.
+- No backend changes, live API tests, deployment, push. Preview is stopped after verification.
 
 ## Готовность к выпуску
 

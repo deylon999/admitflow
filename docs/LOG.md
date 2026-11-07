@@ -1069,3 +1069,18 @@ UTF-8 bytes (51892 → 8741 characters), excluding task-specific reference docs.
 No application/backend/E2E suite run: application and fixtures unchanged.
 Final gate acceptance and external deployment/retention/tester decisions remain
 unconfirmed; no gate or task status changed. No commits or push.
+
+S188 — T232: tracker redesign. Acceptance recorded before implementation in docs/evidence/tracker-redesign.md. No commits per current user request.
+
+S188 — T232 completed: tracker prioritizes saved directions and calculated place,
+seats, manual date and available history change. Technical information is in
+native disclosures; critical access/data-loss/stale errors remain visible.
+Existing API, formulas, backend and FSD structure preserved. Evidence and viewed
+screenshots: docs/evidence/tracker-redesign.md. typecheck/lint/build/format and
+architecture exit0;147 unit tests;38 distinct compiled Chromium tests passed,
+2 API-dependent skips;12 design-system page/theme/width +4 editor checks passed.
+Initial locator/disclosure fixture failures corrected; final checks passed.
+No live backend/full cross-browser validation or gate acceptance claimed.
+All five requested steps complete. No commits or push. Next candidate T057.
+
+S189: User explicitly authorized commits after T232 verification. Created separate UI and regression-test commits; documentation commit follows. Previous no-commit statements describe S188. No push. No application changes or repeated test runs.

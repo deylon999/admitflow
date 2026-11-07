@@ -3971,6 +3971,33 @@
 
 - [docs/evidence/design-system.md](../docs/evidence/design-system.md) — Unified tokens/type scale/shared UI and both themes. typecheck/lint/build/format/architecture pass;147unit,12page and4editor/state checks. No long E2E/UX/API/model changes/commits/push.
 
+### T232. Redesign tracker information architecture and direction cards
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T231.
+
+**Результаты/файлы:** `frontend/src/pages/tracker/`; `docs/evidence/tracker-redesign.md`.
+
+**Шаги:**
+
+1. Audit existing capabilities.
+2. Prioritize directions.
+3. Unify cards.
+4. Group history and tools.
+5. Verify and document.
+
+**Критерии закрытия:**
+
+- Direction list and add action first; clear calculated place, seats, manual date and available position change.
+- Preserve capabilities, API and calculations; technical tools disclosed below; critical warnings visible.
+- Responsive keyboard accessible UI using existing design system; typecheck/lint/build verified; no commits.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/tracker-redesign.md](../docs/evidence/tracker-redesign.md) — Tracker IA/cards/tools redesigned. typecheck/lint/build/format/architecture pass;147unit,38 distinct compiled Chromium tests,12design+4editor checks.2API-dependent skips. No backend/API/formula/FSD migration or commits.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

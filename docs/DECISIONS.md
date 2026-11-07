@@ -119,3 +119,14 @@ tokens и layers, общие примитивы управления, едина
 длительные E2E не запускаются. Коммиты/push запрещены. Документ DESIGN_SYSTEM.md.
 
 2026-11-07, ADR-038, user-directed: after completing T230/T231, create local logical commits for FSD, design system and documentation. This subsequent authorization supersedes the earlier no-commit instruction; push remains reserved for the user. Preserve configured author and published history.
+
+2026-11-07, ADR-039, user-directed (T232): /tracker становится личным кабинетом
+с приоритетом «Мои направления» → добавление → сохранённые направления →
+расчётное место/бюджет/дата/изменение → история и сравнение → инструменты.
+JSON, покрытие, архивные факты и служебные сведения раскрываются по запросу.
+Риск потери доступа, ошибки основных действий и устаревшие данные остаются
+видимыми. Архивные направления явно отделены от ручного расчёта; формулы,
+API и backend сохранены. Используется T231, без FSD-миграции. Текущее указание
+пользователя запрещает коммиты; оно имеет приоритет над ADR-038.
+
+2026-11-07, ADR-040, user-directed: S189 explicitly authorizes local commits of the completed tracker redesign, tests and documentation, superseding the no-commit instruction for S188. No push requested.
