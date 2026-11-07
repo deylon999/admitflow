@@ -1,0 +1,1 @@
+export function Testimonial(){return <section className="testimonial full-container"><div className="quote-mark">“</div><blockquote>«Я почти пошёл не туда из-за путаницы<br className="desktop-only"/> с конкурсными списками».</blockquote><div className="quote-author"><strong>Из интервью</strong><span>с абитуриентом</span></div></section>}

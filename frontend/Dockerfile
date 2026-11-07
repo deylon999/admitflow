@@ -5,7 +5,6 @@ COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 
 COPY frontend/ ./
-COPY shared/ ../shared/
 RUN npm run build
 
 FROM nginxinc/nginx-unprivileged:1.28-alpine

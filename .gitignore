@@ -14,3 +14,7 @@ test-results/
 *.log
 backend/var/
 !.env.production.example
+
+# Local tooling used for exact frontend verification
+.npm-cache/
+.qa-tools/

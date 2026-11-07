@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.vite/
+*.log
+
+*.tsbuildinfo
+test-results/
+playwright-report/
+
+tests/*-snapshots/
