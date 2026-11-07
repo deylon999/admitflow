@@ -93,7 +93,7 @@ export function ProgramCard({ item, onToggle, tracked = false }: {
         <p>{item.code} · Бюджет · {item.budget} мест</p>
       </div>
       <div className="af-program-card__stats">
-        <span>ОЦЕНКА ШАНСОВ</span>
+        <span>ШАНСЫ · ДЕМО</span>
         <strong>{item.chance}%</strong>
         <small>Проходной: {item.expected[0]}–{item.expected[1]}</small>
       </div>

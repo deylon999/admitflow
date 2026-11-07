@@ -6,7 +6,7 @@ export function ForecastCard({ compact = false }: { compact?: boolean }) {
     <article className={`forecast-card ${compact ? 'forecast-card-compact' : ''}`} aria-label="Демонстрация прогноза">
       <div className="forecast-heading">
         <span className="forecast-icon"><Icon name="cap" size={27}/></span>
-        <div><strong>Прогноз поступления</strong><span>МГУ · Прикладная математика</span></div>
+        <div><strong>Прогноз поступления</strong><span>МГУ · Прикладная математика · демо</span></div>
       </div>
       <div className="forecast-metrics">
         <div className="chance-metric"><span className="metric-label">Шанс поступить</span><strong>74%</strong></div>

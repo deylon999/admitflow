@@ -79,7 +79,7 @@ export function ForecastResult() {
   const item = programs[0];
   return (
     <>
-      <PageTitle kicker="РЕЗУЛЬТАТ ПРОГНОЗА" title="Вот как могут выглядеть твои шансы." description={`${item.university} · ${item.program} · Общий конкурс`} action={<Action to="/app/forecast">Изменить данные ↗</Action>} />
+      <PageTitle kicker="РЕЗУЛЬТАТ ПРОГНОЗА · ДЕМО" title="Вот как могут выглядеть твои шансы." description={`${item.university} · ${item.program} · Общий конкурс`} action={<Action to="/app/forecast">Изменить данные ↗</Action>} />
       <div className="af-split-grid af-split-grid--result">
         <Surface tone="blue" className="af-spotlight">
           <span className="af-eyebrow">ОЦЕНКА ШАНСОВ</span>
