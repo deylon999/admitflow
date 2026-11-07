@@ -96,19 +96,29 @@ export const api = {
   session: ensureSession,
   forgetSession,
   async resumeSession() {
+    const epoch = sessionEpoch;
+    return serializeSession(async () => {
+    if (epoch !== sessionEpoch) throw new SessionChangedError();
     const info = parseSession(await request('/session'));
+    if (epoch !== sessionEpoch) throw new SessionChangedError();
     session = Promise.resolve(info);
     try { localStorage.setItem(sessionMarker, '1'); } catch { /* Cookie still works. */ }
     return info;
+    });
   },
   async resetSession() {
+    const epoch = sessionEpoch;
     return serializeSession(async () => {
+    if (epoch !== sessionEpoch) throw new SessionChangedError();
     forgetSession();
+    const resetEpoch = sessionEpoch;
     await request('/session', { method: 'DELETE' });
+    if (resetEpoch !== sessionEpoch) throw new SessionChangedError();
     try { localStorage.setItem(sessionChangeKey, crypto.randomUUID()); } catch { /* Cross-tab notification unavailable. */ }
     session = undefined;
     try { localStorage.removeItem(sessionMarker); } catch { /* Storage may be disabled. */ }
     const info = await loadSession();
+    if (resetEpoch !== sessionEpoch) throw new SessionChangedError();
     session = Promise.resolve(info);
     return info;
     });

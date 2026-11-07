@@ -28,9 +28,10 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
   useEffect(() => { onDirtyChange(dirty); return () => onDirtyChange(false); }, [dirty, onDirtyChange]);
   const intent = useRef<SaveIntent | null>(restored?.intent ?? null);
   const baseSnapshotId = useRef(restored?.baseSnapshotId ?? watch?.latest.id ?? null);
-  const [localSaved, setLocalSaved] = useState<boolean | null>(restored ? true : null);
+  const [localSaved, setLocalSaved] = useState<boolean | 'clear-failed' | null>(restored ? true : null);
   const [localExpiry, setLocalExpiry] = useState<number | null>(restored?.expiresAt ?? null);
   const scope = sessionInfo?.draftScope, deadline = sessionInfo?.expiresAt;
+  const previousDraft = useRef({ signature: currentDraft, scope, deadline });
   const persist = useCallback(() => {
     const record = scope && deadline ? storeDraft(scope, deadline, {
       draft: { university, title, sourceUrl, values }, watchId: watch?.id ?? null, baseSnapshotId: baseSnapshotId.current, intent: intent.current,
@@ -40,9 +41,21 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
     return record;
   }, [scope, deadline, university, title, sourceUrl, values, watch?.id]);
   useEffect(() => {
-    if (dirty) persist();
-    // Persist only when fields or access change, never refresh the TTL by rendering.
-  }, [persist, dirty]);
+    const previous = previousDraft.current;
+    previousDraft.current = { signature: currentDraft, scope, deadline };
+    if (previous.signature === currentDraft && previous.scope === scope && previous.deadline === deadline) return;
+    if (dirty || intent.current) {
+      persist();
+      return;
+    }
+    if (clearDraft()) {
+      setLocalSaved(null);
+      setLocalExpiry(null);
+    } else {
+      persist();
+      setLocalSaved('clear-failed');
+    }
+  }, [currentDraft, scope, deadline, persist, dirty]);
   useEffect(() => {
     if (localExpiry === null) return;
     const timer = setTimeout(() => { clearDraft(); setLocalSaved(false); setLocalExpiry(null); }, Math.max(0, localExpiry - Date.now()));
@@ -122,6 +135,7 @@ export function DirectionForm({ watch, sessionInfo, restored, focusRequest, disa
     {disabled && !save.isPending && <p role="status">Дождитесь завершения текущей операции. Поля формы сохранены.</p>}
     {localSaved === true && <p className="form-note" role="status">Черновик сохранён в этой вкладке на 30 минут, не дольше гостевого доступа. Это не подтверждение сохранения направления на сервере.</p>}
     {localSaved === false && <p className="form-error" role="status">Не удалось сохранить черновик в этой вкладке. Сохраните направление перед уходом.</p>}
+    {localSaved === 'clear-failed' && <p className="form-error" role="status">Не удалось удалить черновик в этой вкладке. Сохраните направление перед уходом.</p>}
     <button className="button button-primary" type="submit" disabled={save.isPending || disabled}>{save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}</button>
     <p className="form-note">Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.</p>
   </form>;

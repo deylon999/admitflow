@@ -18,5 +18,8 @@ export function createQueryClient() {
 }
 
 function markSessionFailure(client: QueryClient, error: unknown) {
-  if (error instanceof SessionExpiredError) { clearDraft(); client.setQueryData<SessionAccess>(sessionAccessKey, 'expired'); }
+  if (error instanceof SessionExpiredError) {
+    clearDraft();
+    client.setQueryData<SessionAccess>(sessionAccessKey, current => current === 'changed' ? current : 'expired');
+  }
 }

@@ -65,7 +65,7 @@ webhook. При report=None также теряются независимые d
 Исправлено ленивым импортом в limit_memory: тесты и библиотечный API доступны,
 worker CLI на Windows явно требует Docker, лимит не отключён молча.
 
-## AUD-08 — High — отложенный reset удаляет заменившую сессию (Confirmed)
+## AUD-08 — High — отложенный reset удаляет заменившую сессию (Fixed)
 
 `frontend/src/lib/api.ts:117–133`, `lib/query-client.ts:25` (точный поиск: resetSession,
 markSessionFailure). Сброс ждёт Web Lock без проверки исходного sessionEpoch;
@@ -75,7 +75,7 @@ markSessionFailure). Сброс ждёт Web Lock без проверки исх
 5 failed / 10 passed до исправления. Ожидание: устаревшая операция прекращается,
 синхронизация читает сессию под тем же lock и сохраняет changed при позднем 401.
 
-## AUD-09 — High — старые карточки после смены владельца (Confirmed)
+## AUD-09 — High — старые карточки после смены владельца (Fixed)
 
 `frontend/src/pages/TrackerPage.tsx:167–185`. После DELETE+создания новой сессии старый
 watches cache только invalidated. При 503 повторного чтения React Query сохраняет
@@ -84,7 +84,7 @@ watches cache только invalidated. При 503 повторного чтен
 Предшествующий дефект; исправлен в main `3494ed6`. В audit ветке проверяется отдельным
 реальным API/E2E с инъекцией 503 только после reset.
 
-## AUD-10 — Medium — отменённые поля возвращаются из черновика (Confirmed)
+## AUD-10 — Medium — отменённые поля возвращаются из черновика (Fixed)
 
 `frontend/src/components/DirectionForm.tsx:42–45`. Эффект сохраняет только dirty;
 возврат к начальному значению не удаляет предыдущий sessionStorage draft.
@@ -93,3 +93,5 @@ watches cache только invalidated. При 503 повторного чтен
 Предшествующий дефект; main `b2cd2c4`. Подтверждён на ad5b938: 3 E2E fail,
 1 pass; остальные 9 остановлены --max-failures=3. Скриншоты сохранены отдельно.
 Исправление должно сохранять retry key неопределённого сохранения и первоначальный TTL.
+
+AUD-08–10 повторно проверены: 125 Vitest/build и все 13 Chromium API-регрессий passed. Для AUD-09 дополнительно 2 E2E failure до исправления, full-page before/after.

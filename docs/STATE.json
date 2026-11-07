@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-08",
-  "currentTask": "T240",
+  "currentTask": "T241",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S196",
-  "resumeAction": "T238–T239 завершены. T240: подтверждены сессии/cache/draft; перенести проверенные исправления из main, затем browser/final T241–T242. Полный Linux native rerun ещё выполняется.",
+  "resumeAction": "T238–T240 завершены; backend 565 passed/0skip, frontend 125 unit/build/13 API E2E. T241: полная browser matrix и source fixture, затем T242 отчёты. Изолированные API18000/18001 и Compose18080 ещё работают.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",

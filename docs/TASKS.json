@@ -6006,7 +6006,7 @@
       "id": "T240",
       "phase": "E5",
       "title": "Проверить frontend и изоляцию сессий",
-      "status": "in_progress",
+      "status": "done",
       "priority": "P0",
       "size": "L",
       "dependsOn": [
@@ -6022,13 +6022,18 @@
       "deliverables": [
         "audit/FIX_REPORT.md"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "path": "audit/FIX_REPORT.md",
+          "note": "125 unit/build and 13 Chromium API regression tests passed after reproducing failures; source commits attributed."
+        }
+      ]
     },
     {
       "id": "T241",
       "phase": "E5",
       "title": "Проверить браузерные сценарии и интерфейс",
-      "status": "todo",
+      "status": "in_progress",
       "priority": "P0",
       "size": "L",
       "dependsOn": [

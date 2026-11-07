@@ -4081,7 +4081,7 @@
 
 ### T240. Проверить frontend и изоляцию сессий
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T239.
 
@@ -4099,11 +4099,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [audit/FIX_REPORT.md](../audit/FIX_REPORT.md) — 125 unit/build and 13 Chromium API regression tests passed after reproducing failures; source commits attributed.
 
 ### T241. Проверить браузерные сценарии и интерфейс
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T240.
 

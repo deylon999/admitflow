@@ -915,3 +915,5 @@ T189done: все6заранее объявленных критериев вып
 S196/T238: история и диапазон вклада подтверждены; audit/VADIM_CODE_REVIEW.md. npm ci, unit, build прошли. Windows pytest: 12 collection errors из-за resource; переходим к Linux/PostgreSQL. Генератор старой ветки дополнен STATE.md согласно текущему AGENTS.
 
 S196/T239: AUD-01–07 исправлены: безопасные backup/restore/retention, проверка raw SHA-256, надёжный monitoring и перенос Unix import в worker setup. 27 targeted passed; реальный PostgreSQL restore 20 таблиц/1 synthetic raw. Полный Linux bind-mount 564 passed/1 startup-timing failure, все 3 fetch tests прошли native Linux; полный native rerun отнесён к T242. Не менялись правила расчёта и release gates.
+
+S196/T240: AUD-08–10 воспроизведены тестами и исправлены адресным переносом 1c38475/3494ed6/b2cd2c4 из main. 125 unit/build/13 Chromium API passed. Backend native 565 passed/0skip завершён; ограничения bind mount сохранены. T241: полная browser matrix, source fixtures и PNG.

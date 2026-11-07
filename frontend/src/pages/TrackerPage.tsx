@@ -102,11 +102,13 @@ export default function TrackerPage() {
   const [notice, setNotice] = useState('');
   const [confirmReset, setConfirmReset] = useState(false);
   const busy = useIsMutating() > 0;
+  const resetting = useIsMutating({ mutationKey: ['session-reset'] }) > 0;
   const queryClient = useQueryClient();
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
   const changed = access.data === 'changed';
-  const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), enabled: !changed, staleTime: 0, refetchOnWindowFocus: true });
+  const watches = useQuery({ queryKey: ['watches'], queryFn: ({ signal }) => api.list(signal), enabled: !changed && !resetting, staleTime: 0, refetchOnWindowFocus: true });
   const expired = changed || access.data === 'expired' || watches.error instanceof SessionExpiredError;
+  const privateVisible = !expired && !resetting;
   useEffect(() => {
     if (!returnFocus || busy || form || expired) return;
     const opener = formOpener.current;
@@ -115,12 +117,12 @@ export default function TrackerPage() {
     target?.focus();
     setReturnFocus(false);
   }, [returnFocus, busy, form, expired]);
-  const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: !expired, staleTime: Infinity });
+  const sessionInfo = useQuery({ queryKey: ['session-info'], queryFn: api.session, enabled: privateVisible, staleTime: Infinity });
   useEffect(() => {
-    if (!expired && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
+    if (privateVisible && !form && watches.isSuccess && sessionInfo.data?.draftScope) {
       setRecovery(readDraft(sessionInfo.data.draftScope, sessionInfo.data.expiresAt));
     }
-  }, [expired, form, watches.isSuccess, watches.data, sessionInfo.data]);
+  }, [privateVisible, form, watches.isSuccess, watches.data, sessionInfo.data]);
   useEffect(() => {
     if (!recovery || form) return;
     const timer = setTimeout(() => {
@@ -164,68 +166,79 @@ export default function TrackerPage() {
     download.reset();
     requestAnimationFrame(() => addButton.current?.focus());
   } });
+  async function clearPrivateQueries() {
+    const keys = ['watches', 'history', 'session-info', 'archive-directions', 'direction-budget',
+      'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes'];
+    await Promise.all(keys.map(key => queryClient.cancelQueries({ queryKey: [key] })));
+    for (const key of keys) queryClient.removeQueries({ queryKey: [key] });
+  }
   const reset = useMutation({
+    mutationKey: ['session-reset'],
     mutationFn: async () => {
-      await queryClient.cancelQueries({ queryKey: ['watches'] });
-      await queryClient.cancelQueries({ queryKey: ['history'] });
-      await queryClient.cancelQueries({ queryKey: ['session-info'] });
-      for (const key of ['archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes']) await queryClient.cancelQueries({ queryKey: [key] });
+      await clearPrivateQueries();
       clearDraft(); setRecovery(null); setRestored(null); draftDirty.current = false; setForm(null);
       return api.resetSession();
     },
     onSuccess: async info => {
+      await clearPrivateQueries();
+      download.reset();
+      if (queryClient.getQueryData<SessionAccess>(sessionAccessKey) === 'changed') return;
       queryClient.setQueryData(['session-info'], info);
-      for (const key of ['history', 'archive-directions', 'direction-budget', 'archive-history', 'scenario', 'scenario-history', 'scenario-detail', 'changes']) queryClient.removeQueries({ queryKey: [key] });
       setForm(null);
       setConfirmReset(false);
       setNotice('Создана новая гостевая сессия.');
-      await queryClient.invalidateQueries({ queryKey: ['watches'] });
       queryClient.setQueryData<SessionAccess>(sessionAccessKey, 'active');
+      requestAnimationFrame(() => addButton.current?.focus());
+    },
+    onError: async () => {
+      await clearPrivateQueries();
+      setConfirmReset(false);
+      setNotice('');
       download.reset();
-    requestAnimationFrame(() => addButton.current?.focus());
     },
   });
-  const budget = useQuery({ queryKey: ['direction-budget'], queryFn: ({ signal }) => api.directionBudget(signal), enabled: !expired });
-  const directionTotal = expired ? 0 : Math.max(budget.data?.total ?? 0, watches.data?.length ?? 0);
-  const count = expired ? 0 : watches.data?.length ?? 0;
-  const visible = selectWatches(watches.data ?? [], search, scenario, order);
+  const budget = useQuery({ queryKey: ['direction-budget'], queryFn: ({ signal }) => api.directionBudget(signal), enabled: privateVisible });
+  const directionTotal = !privateVisible ? 0 : Math.max(budget.data?.total ?? 0, watches.data?.length ?? 0);
+  const count = !privateVisible ? 0 : watches.data?.length ?? 0;
+  const visible = selectWatches(privateVisible ? watches.data ?? [] : [], search, scenario, order);
   const recoveryWatch = recovery?.watchId ? watches.data?.find(item => item.id === recovery.watchId) : undefined;
   const recoveryBlocked = recovery?.watchId && !recoveryWatch ? 'Направление уже удалено.'
     : recoveryWatch && recoveryWatch.latest.id !== recovery?.baseSnapshotId && !recovery?.intent ? 'На сервере есть более новое сохранение.' : undefined;
   return <main className="container tracker-page" id="top">
     <div className="tracker-page-heading"><div><p className="eyebrow">Ваша приёмная кампания</p><h1 ref={pageHeading} tabIndex={-1}>Мои направления</h1><p className="section-description">Сравнивайте место и сохраняйте изменения в одном окне.</p><Link data-router-link to="/sources">Посмотреть источники и архивные группы →</Link></div><button ref={addButton} className="button button-primary" type="button" disabled={expired || directionTotal >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить направление</button></div>
     <div className="tracker-info"><span className="tag">Ручной режим</span><p>Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит доступ. Автоматическое обновление вузов ещё не подключено.</p></div>
-    {!expired && sessionInfo.data && <p className="small-copy session-deadline">Гостевой доступ до <time dateTime={sessionInfo.data.expiresAt} title={sessionInfo.data.expiresAt}>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(sessionInfo.data.expiresAt))}</time>. Открытие страницы не продлевает срок.</p>}
-    {!expired && sessionInfo.isError && <p className="small-copy">Не удалось проверить точную дату окончания доступа.</p>}
+    {privateVisible && sessionInfo.data && <p className="small-copy session-deadline">Гостевой доступ до <time dateTime={sessionInfo.data.expiresAt} title={sessionInfo.data.expiresAt}>{new Intl.DateTimeFormat('ru-RU', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(sessionInfo.data.expiresAt))}</time>. Открытие страницы не продлевает срок.</p>}
+    {privateVisible && sessionInfo.isError && <p className="small-copy">Не удалось проверить точную дату окончания доступа.</p>}
     <div className="tracker-data-actions"><button className="text-button" type="button" disabled={expired || busy || watches.isFetching} onClick={async () => { const result = await watches.refetch(); if (!result.error) setNotice('Список направлений обновлён. Ручные цифры не загружались из вузов.'); }}>{watches.isFetching ? 'Обновляем…' : 'Обновить направления'}</button><button className="text-button" type="button" disabled={busy || !count} onClick={() => download.mutate()}>{download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}</button>
     {directionTotal > 0 && <button ref={resetButton} className="text-button delete-link" type="button" disabled={busy} onClick={() => setConfirmReset(true)}>Удалить все мои данные</button>}</div>
-    {download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
-    {confirmReset && !expired && <DeleteConfirmation text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя." label="Удалить всё" disabled={busy} onCancel={() => { setConfirmReset(false); requestAnimationFrame(() => resetButton.current?.focus()); }} onConfirm={() => reset.mutate()} />}
-    {expired && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
-    {synchronize.isError && <p className="form-error" role="alert">{errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
+    {privateVisible && download.isError && <p className="form-error" role="alert">{errorText(download.error)}</p>}
+    {confirmReset && privateVisible && <DeleteConfirmation text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя." label="Удалить всё" disabled={busy} onCancel={() => { setConfirmReset(false); requestAnimationFrame(() => resetButton.current?.focus()); }} onConfirm={() => reset.mutate()} />}
+    {resetting && <p role="status">Обновляем гостевой доступ…</p>}
+    {expired && !resetting && <div className="surface empty-state"><h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2><p>{changed ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.' : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}</p><button className="button button-primary" type="button" disabled={reset.isPending || synchronize.isPending} onClick={() => changed ? synchronize.mutate() : reset.mutate()}>{changed ? 'Синхронизировать доступ' : reset.isPending ? 'Создаём…' : 'Начать новую сессию'}</button></div>}
+    {synchronize.isError && <p className="form-error" role="alert">{changed && synchronize.error instanceof SessionExpiredError ? 'Доступ ещё обновляется или временно недоступен. Повторите синхронизацию.' : errorText(synchronize.error)}</p>}{reset.isError && <p className="form-error" role="alert">{errorText(reset.error)}</p>}
     <p className="tracker-notice" role="status">{notice}</p>
-    {restore.isError && !expired && <p className="form-error" role="alert">Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}</p>}
-    {!expired && !form && recovery && <DraftRecovery record={recovery} blockedReason={recoveryBlocked} disabled={busy || watches.isFetching || watches.isError} onRestore={() => restore.mutate()} onDiscard={() => {
+    {restore.isError && privateVisible && <p className="form-error" role="alert">Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}</p>}
+    {privateVisible && !form && recovery && <DraftRecovery record={recovery} blockedReason={recoveryBlocked} disabled={busy || watches.isFetching || watches.isError} onRestore={() => restore.mutate()} onDiscard={() => {
       if (!clearDraft()) { setNotice('Не удалось удалить черновик из хранилища вкладки.'); return; }
       setRecovery(null); setNotice('Черновик удалён. Сохранённые направления не изменены.'); requestAnimationFrame(() => addButton.current?.focus());
     }} />}
-    {!expired && watches.isError && watches.data && <div className="surface stale-warning" role="alert"><p>Не удалось обновить направления. Показаны последние загруженные сохранения с их исходными датами.</p><p>{errorText(watches.error)}</p><button className="text-button" type="button" disabled={watches.isFetching} onClick={() => void watches.refetch()}>Повторить обновление</button></div>}
+    {privateVisible && watches.isError && watches.data && <div className="surface stale-warning" role="alert"><p>Не удалось обновить направления. Показаны последние загруженные сохранения с их исходными датами.</p><p>{errorText(watches.error)}</p><button className="text-button" type="button" disabled={watches.isFetching} onClick={() => void watches.refetch()}>Повторить обновление</button></div>}
     <CoverageSummary />
-    {!expired && <><ChangeFeed /><ArchiveDirections /></>}
-    {!expired && <p className="small-copy">Всего направлений: {directionTotal} из 20 (ручные и архивные вместе). JSON, сравнение и печать ниже включают только ручные направления.</p>}
-    {!expired && <ImportData count={directionTotal} disabled={busy || watches.isPending || watches.isError || budget.isPending || budget.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
-    {!expired && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}
-    {!expired && count > 0 && <section className="watch-filters surface" aria-label="Поиск направлений">
+    {privateVisible && <><ChangeFeed /><ArchiveDirections /></>}
+    {privateVisible && watches.data && budget.data && <p className="small-copy">Всего направлений: {directionTotal} из 20 (ручные и архивные вместе). JSON, сравнение и печать ниже включают только ручные направления.</p>}
+    {privateVisible && <ImportData count={directionTotal} disabled={busy || watches.isPending || watches.isError || budget.isPending || budget.isError} onDone={result => setNotice(result.replayed ? 'Этот файл уже импортирован. Повтор не создаёт копий и не восстанавливает удалённое.' : `Импортировано направлений: ${result.importedCount}; сохранений: ${result.snapshotCount}.`)} />}
+    {privateVisible && !watches.isError && watches.data && <WatchComparison watches={watches.data} />}
+    {privateVisible && count > 0 && <section className="watch-filters surface" aria-label="Поиск направлений">
       <div className="field"><label htmlFor="watch-search">Поиск по вузу и направлению</label><input id="watch-search" type="search" value={search} onChange={event => setSearch(event.target.value)} /></div>
       <div className="field"><label htmlFor="watch-state">Ручной сценарий</label><select id="watch-state" value={scenario} onChange={event => setScenario(event.target.value)}><option value="all">Все сценарии</option><option value="safe">В пределах в обоих сценариях</option><option value="conditional">В пределах только при текущих согласиях</option><option value="out">За границей мест</option></select></div>
       <div className="field"><label htmlFor="watch-order">Порядок направлений</label><select id="watch-order" value={order} onChange={event => setOrder(event.target.value as WatchOrder)}><option value="updated">Недавно сохранённые</option><option value="university">По вузу и названию</option><option value="created">Недавно добавленные</option></select></div>
       <p role="status">Показано {visible.length} из {count}</p><button className="text-button" type="button" onClick={() => { setSearch(''); setScenario('all'); setOrder('updated'); }}>Сбросить поиск и фильтры</button>
     </section>}
-    <div className={`tracker-layout ${form && !expired ? 'with-form' : ''}`}><div className="directions-list">
-      {expired ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError && !watches.data ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>{directionTotal ? 'Ручных направлений пока нет' : 'Направлений пока нет'}</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" disabled={directionTotal >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} beforeDelete={() => form === null || form === 'new' || form.id !== watch.id || canDiscard()} onRemoved={() => { if (form && form !== 'new' && form.id === watch.id) closeForm(true); setNotice('Направление удалено.'); requestAnimationFrame(() => addButton.current?.focus()); }} />)}
-    </div>{form && !expired && <aside className="tracker-sidebar"><DirectionForm restored={restored} sessionInfo={sessionInfo.data} disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
-    {!expired && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
-    {!expired && <ManualReport watches={visible} generatedAt={reportDate} />}
+    <div className={`tracker-layout ${form && privateVisible ? 'with-form' : ''}`}><div className="directions-list">
+      {!privateVisible ? null : watches.isPending ? <div className="empty-state surface" role="status"><h2>Загружаем направления…</h2><p>Проверяем сохранённые данные.</p></div> : watches.isError && !watches.data ? <div className="empty-state surface" role="alert"><h2>Не удалось загрузить направления</h2><p>{errorText(watches.error)}</p><button className="button button-secondary" type="button" onClick={() => void watches.refetch()}>Повторить</button></div> : count === 0 ? <div className="empty-state surface"><span className="empty-mark" aria-hidden="true">＋</span><h2>{directionTotal ? 'Ручных направлений пока нет' : 'Направлений пока нет'}</h2><p>Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис сохранит расчёт и его историю.</p><button className="button button-primary" type="button" disabled={directionTotal >= 20 || busy} onClick={event => openForm('new', event.currentTarget)}>Добавить первое направление</button></div> : visible.length === 0 ? <div className="surface empty-state"><h2>Поиск не дал результатов</h2><p>Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.</p></div> : visible.map(watch => <DirectionCard key={watch.id} watch={watch} disabled={busy} onEdit={button => openForm(watch, button)} beforeDelete={() => form === null || form === 'new' || form.id !== watch.id || canDiscard()} onRemoved={() => { if (form && form !== 'new' && form.id === watch.id) closeForm(true); setNotice('Направление удалено.'); requestAnimationFrame(() => addButton.current?.focus()); }} />)}
+    </div>{form && privateVisible && <aside className="tracker-sidebar"><DirectionForm restored={restored} sessionInfo={sessionInfo.data} disabled={busy} key={form === 'new' ? 'new' : form.id} focusRequest={focusRequest} watch={form === 'new' ? undefined : form} onDirtyChange={setDraftDirty} onCancel={() => closeForm()} onDone={() => { closeForm(true); setNotice('Данные сохранены. Расчёт и история обновлены.'); }} /></aside>}</div>
+    {privateVisible && count > 0 && <button className="text-button print-action" type="button" disabled={visible.length === 0 || busy} onClick={() => { setReportDate(new Date().toISOString()); requestAnimationFrame(() => window.print()); }}>Распечатать выбранный список ({visible.length})</button>}
+    {privateVisible && <ManualReport watches={visible} generatedAt={reportDate} />}
     <p className="tracker-disclaimer">Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает все правила и приоритеты конкретного вуза и не гарантирует зачисление.</p>
   </main>;
 }
