@@ -1,3 +1,4 @@
+import { Input, Alert, Button } from '@/shared/ui';
 import { useRef, useState } from 'react';
 import { useUniversityCatalog } from '../model/useUniversityCatalog';
 import type { University } from '../model/types';
@@ -54,7 +55,7 @@ export function UniversityPicker({
       }}
     >
       <label htmlFor="university">Вуз</label>
-      <input
+      <Input
         ref={input}
         id="university"
         value={value}
@@ -78,13 +79,14 @@ export function UniversityPicker({
         их.
       </p>
       {error && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           id="university-error"
           role="alert"
         >
           {error}
-        </p>
+        </Alert>
       )}
       {open && (
         <div
@@ -118,7 +120,8 @@ export function UniversityPicker({
               <ul>
                 {universities.map((university) => (
                   <li key={university.id}>
-                    <button
+                    <Button
+                      variant="option"
                       className="catalog-option"
                       type="button"
                       onClick={() => {
@@ -136,7 +139,7 @@ export function UniversityPicker({
                         {university.region}
                         {university.isBranch ? ' · Филиал' : ''} · Ручной режим
                       </small>
-                    </button>
+                    </Button>
                     <a
                       href={university.provenanceUrl}
                       target="_blank"
@@ -156,9 +159,10 @@ export function UniversityPicker({
                 ))}
               </ul>
               {catalog.hasNextPage && (
-                <button
+                <Button
+                  variant="ghost"
                   type="button"
-                  className="text-button"
+
                   disabled={catalog.isFetchingNextPage}
                   onClick={() => {
                     input.current?.focus();
@@ -166,7 +170,7 @@ export function UniversityPicker({
                   }}
                 >
                   {catalog.isFetchingNextPage ? 'Загружаем…' : 'Показать ещё вузы'}
-                </button>
+                </Button>
               )}
             </>
           )}

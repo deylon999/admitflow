@@ -1,3 +1,4 @@
+import { Card, Input, Select } from '@/shared/ui';
 import { SourceUniversityFilter } from '@/entities/university';
 import type { GroupCatalog } from '@/entities/admission-source';
 import { limitCodePoints } from '@/shared/lib/text';
@@ -11,10 +12,10 @@ type Props = {
 
 export function SourceCatalogFilters({ filters, onChange, facets }: Props) {
   return (
-    <div className="source-catalog-filters surface">
+    <Card className="source-catalog-filters">
       <label>
         Группа или направление
-        <input
+        <Input
           value={filters.q}
           onChange={(event) =>
             onChange({ ...filters, q: limitCodePoints(event.target.value, 120) })
@@ -28,7 +29,7 @@ export function SourceCatalogFilters({ filters, onChange, facets }: Props) {
       />
       <label>
         Подразделение
-        <select
+        <Select
           aria-label="Подразделение"
           value={filters.branchId}
           onChange={(event) => onChange({ ...filters, branchId: event.target.value })}
@@ -43,11 +44,11 @@ export function SourceCatalogFilters({ filters, onChange, facets }: Props) {
               {item.name}
             </option>
           ))}
-        </select>
+        </Select>
       </label>
       <label>
         Сезон
-        <select
+        <Select
           aria-label="Сезон"
           value={filters.year}
           onChange={(event) => onChange({ ...filters, year: event.target.value })}
@@ -56,8 +57,8 @@ export function SourceCatalogFilters({ filters, onChange, facets }: Props) {
           {facets?.years.map((year) => (
             <option key={year}>{year}</option>
           ))}
-        </select>
+        </Select>
       </label>
-    </div>
+    </Card>
   );
 }

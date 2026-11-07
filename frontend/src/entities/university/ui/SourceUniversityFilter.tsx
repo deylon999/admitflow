@@ -1,3 +1,4 @@
+import { Input, Select, Alert, Button } from '@/shared/ui';
 import { useState } from 'react';
 import { useUniversityCatalog } from '../model/useUniversityCatalog';
 import type { University } from '../model/types';
@@ -24,7 +25,7 @@ export function SourceUniversityFilter({
     <div className="source-university-filter">
       <label>
         Поиск вуза
-        <input
+        <Input
           value={search}
           onChange={(event) => setSearch(limitCodePoints(event.target.value, 120))}
           placeholder="Название или регион"
@@ -32,7 +33,7 @@ export function SourceUniversityFilter({
       </label>
       <label>
         Вуз
-        <select
+        <Select
           aria-label="Вуз"
           value={value}
           onChange={(event) => {
@@ -53,7 +54,7 @@ export function SourceUniversityFilter({
               {item.name}
             </option>
           ))}
-        </select>
+        </Select>
       </label>
       {query !== search || catalog.isPending ? (
         <p
@@ -63,7 +64,7 @@ export function SourceUniversityFilter({
           Ищем вуз…
         </p>
       ) : catalog.isError ? (
-        <div
+        <Alert
           role="alert"
           className="small-copy"
         >
@@ -71,13 +72,14 @@ export function SourceUniversityFilter({
             Не удалось загрузить {items.length ? 'следующие вузы' : 'справочник вузов'}. Выбор
             сохранён.
           </p>
-          <button
+          <Button
+            variant="secondary"
             type="button"
             onClick={() => void (items.length ? catalog.fetchNextPage() : catalog.refetch())}
           >
             Повторить загрузку вузов
-          </button>
-        </div>
+          </Button>
+        </Alert>
       ) : (
         <p
           className="small-copy"
@@ -87,14 +89,15 @@ export function SourceUniversityFilter({
         </p>
       )}
       {catalog.hasNextPage && !catalog.isError && (
-        <button
+        <Button
+          variant="ghost"
           type="button"
-          className="text-button"
+
           disabled={catalog.isFetchingNextPage}
           onClick={() => void catalog.fetchNextPage()}
         >
           {catalog.isFetchingNextPage ? 'Загружаем…' : 'Показать ещё вузы'}
-        </button>
+        </Button>
       )}
     </div>
   );

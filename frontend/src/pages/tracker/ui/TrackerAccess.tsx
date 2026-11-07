@@ -1,4 +1,4 @@
-import { DeleteConfirmation } from '@/shared/ui';
+import { DeleteConfirmation, Button, Alert, Card } from '@/shared/ui';
 import { SessionExpiredError } from '@/shared/api';
 import type { TrackerModel } from '../model/useTrackerModel';
 
@@ -27,41 +27,45 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
   return (
     <>
       <div className="tracker-data-actions">
-        <button
-          className="text-button"
+        <Button
+          variant="ghost"
+
           type="button"
           disabled={expired || busy || watches.isFetching}
           onClick={() => void refreshDirections()}
         >
           {watches.isFetching ? 'Обновляем…' : 'Обновить направления'}
-        </button>
-        <button
-          className="text-button"
+        </Button>
+        <Button
+          variant="ghost"
+
           type="button"
           disabled={busy || !count}
           onClick={() => download.mutate()}
         >
           {download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}
-        </button>
+        </Button>
         {directionTotal > 0 && (
-          <button
+          <Button
+            variant="ghost"
             ref={resetButton}
-            className="text-button delete-link"
+            className="delete-link"
             type="button"
             disabled={busy}
             onClick={() => setConfirmReset(true)}
           >
             Удалить все мои данные
-          </button>
+          </Button>
         )}
       </div>
       {privateVisible && download.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {errorText(download.error)}
-        </p>
+        </Alert>
       )}
       {confirmReset && privateVisible && (
         <DeleteConfirmation
@@ -77,15 +81,16 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
       )}
       {resetting && <p role="status">Обновляем гостевой доступ…</p>}
       {expired && !resetting && (
-        <div className="surface empty-state">
+        <Card className="empty-state">
           <h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2>
           <p>
             {changed
               ? 'Старые карточки и черновик скрыты. Синхронизируйте доступ, чтобы увидеть текущую сессию.'
               : 'Доступ к прежним направлениям завершён или cookies были удалены. Для дальнейшей работы начните новую сессию.'}
           </p>
-          <button
-            className="button button-primary"
+          <Button
+            variant="primary"
+
             type="button"
             disabled={reset.isPending || synchronize.isPending}
             onClick={() => (changed ? synchronize.mutate() : reset.mutate())}
@@ -95,26 +100,28 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
               : reset.isPending
                 ? 'Создаём…'
                 : 'Начать новую сессию'}
-          </button>
-        </div>
+          </Button>
+        </Card>
       )}
       {synchronize.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {changed && synchronize.error instanceof SessionExpiredError
             ? 'Доступ ещё обновляется или временно недоступен. Повторите синхронизацию.'
             : errorText(synchronize.error)}
-        </p>
+        </Alert>
       )}
       {reset.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {errorText(reset.error)}
-        </p>
+        </Alert>
       )}
     </>
   );

@@ -1,3 +1,4 @@
+import { Alert, Input, Button, Card } from '@/shared/ui';
 import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { SourceProvenance } from '@/entities/admission-source';
@@ -33,7 +34,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
   }, [preview]);
   if (access !== 'active')
     return (
-      <div role="alert">
+      <Alert role="alert">
         <p>Доступ изменился или закончился. Старое подтверждение скрыто.</p>
         <Link
           data-router-link
@@ -41,7 +42,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
         >
           Управление гостевым доступом
         </Link>
-      </div>
+      </Alert>
     );
   return (
     <div className="source-lookup">
@@ -58,7 +59,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
       >
         <label>
           Код поступающего
-          <input
+          <Input
             ref={input}
             autoComplete="off"
             spellCheck={false}
@@ -69,26 +70,35 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
           />
         </label>
         <div className="direction-actions">
-          <button
-            className="button button-primary"
+          <Button
+            variant="primary"
+
             type="submit"
             disabled={busy || !validCode}
           >
             {lookup.isPending ? 'Ищем…' : 'Найти запись'}
-          </button>
-          <button
-            className="text-button"
+          </Button>
+          <Button
+            variant="ghost"
+
             type="button"
             disabled={busy}
             onClick={onClose}
           >
             Закрыть поиск
-          </button>
+          </Button>
         </div>
       </form>
-      {lookup.isError && <p role="alert">{lookup.error.message}</p>}
+      {lookup.isError && (
+        <Alert
+          as="p"
+          role="alert"
+        >
+          {lookup.error.message}
+        </Alert>
+      )}
       {preview && (
-        <div className="source-candidate-preview surface">
+        <Card className="source-candidate-preview">
           <h3
             ref={heading}
             tabIndex={-1}
@@ -125,7 +135,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
               </p>
               <SourceProvenance group={preview.group} />
               <label className="source-ack">
-                <input
+                <Input
                   type="checkbox"
                   checked={acknowledged}
                   disabled={busy}
@@ -145,9 +155,10 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
                     : 'Найдите запись снова перед сохранением.'}
                 </p>
               )}
-              <button
+              <Button
+                variant="primary"
                 type="button"
-                className="button button-primary"
+
                 disabled={!acknowledged || busy || (expired && !attempted)}
                 onClick={saveRecord}
               >
@@ -156,7 +167,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
                   : save.isError
                     ? 'Повторить сохранение записи'
                     : 'Сохранить эту запись'}
-              </button>
+              </Button>
             </>
           )}
           {!preview.found && (
@@ -165,9 +176,16 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
               или отзыв заявления.
             </p>
           )}
-        </div>
+        </Card>
       )}
-      {save.isError && <p role="alert">{save.error.message}</p>}
+      {save.isError && (
+        <Alert
+          as="p"
+          role="alert"
+        >
+          {save.error.message}
+        </Alert>
+      )}
       {saved && (
         <p role="status">
           Архивное направление сохранено.{' '}

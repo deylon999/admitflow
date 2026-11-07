@@ -1,3 +1,4 @@
+import { Button, Alert } from '@/shared/ui';
 import type { SourceGroup } from '../model/types';
 import { useId, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
@@ -68,29 +69,34 @@ export function SourceProvenance({ group }: { group: SourceGroup }) {
       </p>
       {group.sourceId && (
         <>
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             aria-expanded={show}
             aria-controls={id}
             onClick={() => setShow((value) => !value)}
           >
             Последние проверки источника
-          </button>
+          </Button>
           {show && (
             <div id={id}>
               {checks.isPending ? (
                 <p role="status">Загружаем проверки…</p>
               ) : checks.isError ? (
-                <p role="alert">
+                <Alert
+                  as="p"
+                  role="alert"
+                >
                   Не удалось загрузить проверки.{' '}
-                  <button
+                  <Button
+                    variant="secondary"
                     type="button"
                     onClick={() => void checks.refetch()}
                   >
                     Повторить проверки
-                  </button>
-                </p>
+                  </Button>
+                </Alert>
               ) : checks.data?.length ? (
                 <ol>
                   {checks.data.map((check) => (

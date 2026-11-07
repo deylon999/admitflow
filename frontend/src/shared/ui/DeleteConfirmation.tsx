@@ -1,3 +1,5 @@
+import { Card } from './Card';
+import { Button } from './Button';
 import { useEffect, useRef } from 'react';
 
 export function DeleteConfirmation({
@@ -18,8 +20,8 @@ export function DeleteConfirmation({
     cancel.current?.focus();
   }, []);
   return (
-    <div
-      className="delete-confirm surface"
+    <Card
+      className="delete-confirm"
       role="region"
       aria-label="Подтверждение удаления"
       onKeyDown={(event) => {
@@ -32,24 +34,26 @@ export function DeleteConfirmation({
     >
       <p>{text}</p>
       <div>
-        <button
+        <Button
+          variant="secondary"
           ref={cancel}
-          className="button button-secondary"
+
           type="button"
           disabled={disabled}
           onClick={onCancel}
         >
           Отмена
-        </button>
-        <button
-          className="button danger-button"
+        </Button>
+        <Button
+          variant="danger"
+
           type="button"
           disabled={disabled}
           onClick={onConfirm}
         >
           {disabled ? 'Подождите…' : label}
-        </button>
+        </Button>
       </div>
-    </div>
+    </Card>
   );
 }

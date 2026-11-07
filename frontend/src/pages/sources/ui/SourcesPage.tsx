@@ -1,3 +1,4 @@
+import { Alert, Button } from '@/shared/ui';
 import { Link } from 'react-router';
 import { useSourceCatalog } from '../model/useSourceCatalog';
 import { SourceCatalogFilters } from './SourceCatalogFilters';
@@ -23,18 +24,19 @@ export function SourcesPage() {
       />
       {catalog.isPending && <p role="status">Загружаем конкурсные группы…</p>}
       {catalog.isError && (
-        <div
+        <Alert
           role="alert"
           className="surface source-catalog-card"
         >
           <p>Не удалось загрузить группы.</p>
-          <button
+          <Button
+            variant="secondary"
             type="button"
             onClick={() => void catalog.refetch()}
           >
             Повторить загрузку групп
-          </button>
-        </div>
+          </Button>
+        </Alert>
       )}
       {catalog.isSuccess && items.length === 0 && (
         <p className="notice">
@@ -56,14 +58,15 @@ export function SourcesPage() {
         ))}
       </div>
       {catalog.hasNextPage && (
-        <button
+        <Button
+          variant="secondary"
           type="button"
-          className="button button-secondary"
+
           disabled={catalog.isFetchingNextPage}
           onClick={() => void catalog.fetchNextPage()}
         >
           {catalog.isFetchingNextPage ? 'Загружаем…' : 'Загрузить ещё группы'}
-        </button>
+        </Button>
       )}
       <div className="direction-actions">
         <Link

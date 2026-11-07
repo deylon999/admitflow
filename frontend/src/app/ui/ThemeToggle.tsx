@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui';
 import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
@@ -6,9 +7,8 @@ export function ThemeToggle() {
   );
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    document
-      .querySelector('meta[name="theme-color"]')
-      ?.setAttribute('content', theme === 'dark' ? '#0f172a' : '#ffffff');
+    const background = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', background);
     try {
       localStorage.setItem('abiturient-theme', theme);
     } catch {
@@ -16,8 +16,9 @@ export function ThemeToggle() {
     }
   }, [theme]);
   return (
-    <button
-      className="theme-toggle"
+    <Button
+      variant="ghost"
+      className="theme-toggle button-icon"
       type="button"
       aria-label={theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему'}
       aria-pressed={theme === 'dark'}
@@ -41,6 +42,6 @@ export function ThemeToggle() {
           stroke="currentColor"
         />
       </svg>
-    </button>
+    </Button>
   );
 }

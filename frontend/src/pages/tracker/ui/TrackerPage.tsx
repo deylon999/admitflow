@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui';
 import { ChangeFeed } from '@/features/review-source-changes';
 import { ImportData } from '@/features/import-manual-directions';
 import { WatchComparison } from '@/features/compare-manual-directions';
@@ -56,14 +57,15 @@ export default function TrackerPage() {
       <TrackerFilters model={model} />
       <ManualDirectionsPanel model={model} />
       {privateVisible && count > 0 && (
-        <button
-          className="text-button print-action"
+        <Button
+          variant="ghost"
+          className="print-action"
           type="button"
           disabled={visible.length === 0 || busy}
           onClick={report.print}
         >
           Распечатать выбранный список ({visible.length})
-        </button>
+        </Button>
       )}
       {privateVisible && (
         <ManualReport

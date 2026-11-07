@@ -1,3 +1,4 @@
+import { Card, Alert, Button } from '@/shared/ui';
 import type { StoredDraft } from '../model/draft-store';
 
 export function DraftRecovery({
@@ -14,8 +15,9 @@ export function DraftRecovery({
   onDiscard: () => void;
 }) {
   return (
-    <section
-      className="draft-recovery surface"
+    <Card
+      as="section"
+      className="draft-recovery"
       aria-labelledby="draft-recovery-heading"
     >
       <h2 id="draft-recovery-heading">Есть несохранённый черновик</h2>
@@ -40,12 +42,13 @@ export function DraftRecovery({
         </p>
       )}
       {blockedReason && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="status"
         >
           {blockedReason} Поля доступны для просмотра ниже.
-        </p>
+        </Alert>
       )}
       <details>
         <summary>Посмотреть поля черновика</summary>
@@ -64,23 +67,25 @@ export function DraftRecovery({
         </dl>
       </details>
       <div className="direction-actions">
-        <button
-          className="button button-primary"
+        <Button
+          variant="primary"
+
           type="button"
           disabled={disabled || Boolean(blockedReason)}
           onClick={onRestore}
         >
           Восстановить черновик
-        </button>
-        <button
-          className="text-button"
+        </Button>
+        <Button
+          variant="ghost"
+
           type="button"
           disabled={disabled}
           onClick={onDiscard}
         >
           Удалить черновик
-        </button>
+        </Button>
       </div>
-    </section>
+    </Card>
   );
 }

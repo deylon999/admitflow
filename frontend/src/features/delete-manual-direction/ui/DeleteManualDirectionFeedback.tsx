@@ -1,4 +1,4 @@
-import { DeleteConfirmation } from '@/shared/ui';
+import { DeleteConfirmation, Alert } from '@/shared/ui';
 import type { ManualDirectionDeletion } from '../model/useDeleteManualDirection';
 
 export function DeleteManualDirectionFeedback({
@@ -20,14 +20,15 @@ export function DeleteManualDirectionFeedback({
         />
       )}
       {deletion.mutation.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {deletion.mutation.error instanceof Error
             ? deletion.mutation.error.message
             : 'Не удалось выполнить действие.'}
-        </p>
+        </Alert>
       )}
     </>
   );

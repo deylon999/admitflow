@@ -1,3 +1,4 @@
+import { Button, Badge } from '@/shared/ui';
 import { Link } from 'react-router';
 import type { TrackerModel } from '../model/useTrackerModel';
 
@@ -25,18 +26,19 @@ export function TrackerHeading({ model }: { model: TrackerModel }) {
             Посмотреть источники и архивные группы →
           </Link>
         </div>
-        <button
+        <Button
+          variant="primary"
           ref={addButton}
-          className="button button-primary"
+
           type="button"
           disabled={expired || directionTotal >= 20 || busy}
           onClick={(event) => openForm('new', event.currentTarget)}
         >
           Добавить направление
-        </button>
+        </Button>
       </div>
       <div className="tracker-info">
-        <span className="tag">Ручной режим</span>
+        <Badge>Ручной режим</Badge>
         <p>
           Направления доступны в этом браузере 30 дней с начала сессии. Очистка cookies удалит
           доступ. Автоматическое обновление вузов ещё не подключено.

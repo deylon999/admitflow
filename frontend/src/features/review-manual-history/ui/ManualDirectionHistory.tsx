@@ -1,3 +1,4 @@
+import { Alert, Button } from '@/shared/ui';
 import type { Watch } from '@/entities/manual-direction';
 import { HistoryComparison } from './HistoryComparison';
 import { useManualHistory } from '../model/useManualHistory';
@@ -31,21 +32,23 @@ export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: bo
       ) : (
         <>
           {history.isError && (
-            <p
+            <Alert
+              as="p"
               className="form-error"
               role="alert"
             >
               {errorText(history.error)}{' '}
-              <button
-                className="text-button"
+              <Button
+                variant="ghost"
+
                 type="button"
                 onClick={() =>
                   void (history.isFetchNextPageError ? history.fetchNextPage() : history.refetch())
                 }
               >
                 Повторить загрузку истории
-              </button>
-            </p>
+              </Button>
+            </Alert>
           )}
           {snapshots.length > 0 && (
             <>
@@ -102,14 +105,15 @@ export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: bo
             </>
           )}
           {history.hasNextPage && (
-            <button
-              className="text-button"
+            <Button
+              variant="ghost"
+
               type="button"
               disabled={history.isFetchingNextPage}
               onClick={() => void history.fetchNextPage()}
             >
               {history.isFetchingNextPage ? 'Загружаем…' : 'Загрузить ещё'}
-            </button>
+            </Button>
           )}
         </>
       )}

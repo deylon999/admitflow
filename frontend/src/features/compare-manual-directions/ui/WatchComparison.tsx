@@ -1,3 +1,4 @@
+import { Card, Input } from '@/shared/ui';
 import { useState } from 'react';
 import type { Watch } from '@/entities/manual-direction';
 
@@ -18,13 +19,16 @@ export function WatchComparison({ watches }: { watches: Watch[] }) {
     });
   }
   return (
-    <details className="watch-comparison surface">
+    <Card
+      as="details"
+      className="watch-comparison"
+    >
       <summary>Сравнить направления</summary>
       <fieldset>
         <legend>Выберите от двух до трёх направлений</legend>
         {watches.map((watch) => (
           <label key={watch.id}>
-            <input
+            <Input
               type="checkbox"
               checked={selected.includes(watch.id)}
               disabled={active.length >= 3 && !selected.includes(watch.id)}
@@ -128,6 +132,6 @@ export function WatchComparison({ watches }: { watches: Watch[] }) {
         Каждое направление — отдельный конкурс. Места в разных списках не образуют общий рейтинг или
         вероятность. Дата — время вашего ввода, а не обновления официального источника.
       </p>
-    </details>
+    </Card>
   );
 }

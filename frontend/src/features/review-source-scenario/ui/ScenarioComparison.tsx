@@ -1,3 +1,4 @@
+import { Alert, Button } from '@/shared/ui';
 import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 import type { SourceGroup } from '@/entities/admission-source';
@@ -31,15 +32,19 @@ export function ScenarioComparison({ id, group }: { id: string; group: SourceGro
         <p role="status">Загружаем выбранные версии…</p>
       )}
       {(detail.isError || previous.isError) && (
-        <p role="alert">
+        <Alert
+          as="p"
+          role="alert"
+        >
           Не удалось загрузить сравнение.{' '}
-          <button
+          <Button
+            variant="secondary"
             type="button"
             onClick={retryComparison}
           >
             Повторить сравнение
-          </button>
-        </p>
+          </Button>
+        </Alert>
       )}
       {detail.data && (
         <>

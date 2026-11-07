@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { ArchiveScenario } from '@/features/review-source-scenario';
 import { ArchiveHistory } from '@/features/review-archive-history';
 import { SourceProvenance } from '@/entities/admission-source';
-import { DeleteConfirmation } from '@/shared/ui';
+import { DeleteConfirmation, Alert, Button, Card, Badge } from '@/shared/ui';
 import { useArchiveDirections } from '../model/useArchiveDirections';
 
 export function ArchiveDirections() {
@@ -27,46 +27,62 @@ export function ArchiveDirections() {
         направлениям.
       </p>
       {records.isError && (
-        <p role="alert">
+        <Alert
+          as="p"
+          role="alert"
+        >
           Не удалось перечитать архивные направления.{' '}
           {records.data ? 'Показаны ранее загруженные датированные записи.' : ''}
-        </p>
+        </Alert>
       )}
-      <button
+      <Button
+        variant="ghost"
         ref={refresh}
         type="button"
-        className="text-button"
+
         disabled={sourceReads > 0 || refreshFacts.isPending}
         onClick={() => refreshFacts.mutate()}
       >
         Перечитать сохранённые факты
-      </button>
+      </Button>
       {refreshFacts.isError && sourceReads === 0 && (
-        <p role="alert">
+        <Alert
+          as="p"
+          role="alert"
+        >
           Не удалось перечитать все сохранённые факты. Ранее загруженные записи сохраняют свои даты;
           повторите обновление.
-        </p>
+        </Alert>
       )}
-      <button
+      <Button
+        variant="ghost"
         type="button"
-        className="text-button"
+
         disabled={download.isPending || !records.data?.length}
         onClick={() => download.mutate()}
       >
         Скачать текущие архивные факты (JSON)
-      </button>
+      </Button>
       <p className="small-copy">
         Архивный файл содержит текущие датированные факты ваших записей. История доступна в
         карточках. Файл не восстанавливает гостевой доступ и не импортируется как ручной расчёт.
       </p>
-      {download.isError && <p role="alert">{download.error.message}</p>}
+      {download.isError && (
+        <Alert
+          as="p"
+          role="alert"
+        >
+          {download.error.message}
+        </Alert>
+      )}
       <div className="source-catalog-list">
         {records.data?.map((item) => (
-          <article
-            className="surface source-catalog-card archive-direction-card"
+          <Card
+            as="article"
+            className="source-catalog-card archive-direction-card"
             key={item.id}
           >
-            <span className="tag">Архив · {item.group.year}</span>
+            <Badge>Архив · {item.group.year}</Badge>
             <h3>{item.group.title}</h3>
             <p>{item.group.universityName}</p>
             {item.candidate ? (
@@ -98,10 +114,11 @@ export function ArchiveDirections() {
               group={item.group}
             />
             <ArchiveHistory id={item.id} />
-            <button
+            <Button
+              variant="ghost"
               id={`delete-archive-${item.id}`}
               type="button"
-              className="text-button delete-link"
+              className="delete-link"
               disabled={remove.isPending}
               onClick={() => {
                 remove.reset();
@@ -109,7 +126,7 @@ export function ArchiveDirections() {
               }}
             >
               Удалить архивную запись
-            </button>
+            </Button>
             {deleting === item.id && (
               <DeleteConfirmation
                 text="Удалить эту архивную запись и её личную историю? Общий снимок источника останется."
@@ -124,8 +141,15 @@ export function ArchiveDirections() {
                 onConfirm={() => remove.mutate(item.id)}
               />
             )}
-            {deleting === item.id && remove.isError && <p role="alert">{remove.error.message}</p>}
-          </article>
+            {deleting === item.id && remove.isError && (
+              <Alert
+                as="p"
+                role="alert"
+              >
+                {remove.error.message}
+              </Alert>
+            )}
+          </Card>
         ))}
       </div>
     </section>

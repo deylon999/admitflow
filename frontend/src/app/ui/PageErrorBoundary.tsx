@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui';
 import { Component, createRef } from 'react';
 import type { ReactNode } from 'react';
 
@@ -29,13 +30,14 @@ export class PageErrorBoundary extends Component<{ children: ReactNode }, { fail
           удаляются.
         </p>
         <div className="direction-actions">
-          <button
-            className="button button-primary"
+          <Button
+            variant="primary"
+
             type="button"
             onClick={() => window.location.reload()}
           >
             Обновить страницу
-          </button>
+          </Button>
           <a
             className="button button-secondary"
             href="/"

@@ -67,7 +67,7 @@ export function Header() {
         <div className="header-actions">
           <ThemeToggle />
           <a
-            className="button button-primary header-cta"
+            className="button button-primary button-compact header-cta"
             href={secondary ? '/#calculator' : '#calculator'}
           >
             <span className="desktop-label">Посчитать место</span>

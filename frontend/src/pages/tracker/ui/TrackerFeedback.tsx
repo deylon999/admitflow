@@ -1,3 +1,4 @@
+import { Alert, Button } from '@/shared/ui';
 import { DraftRecovery } from '@/features/edit-manual-direction';
 import type { TrackerModel } from '../model/useTrackerModel';
 
@@ -17,12 +18,13 @@ export function TrackerFeedback({ model }: { model: TrackerModel }) {
         {notice}
       </p>
       {restore.isError && privateVisible && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}
-        </p>
+        </Alert>
       )}
       {privateVisible && !form && recovery && (
         <DraftRecovery
@@ -34,7 +36,8 @@ export function TrackerFeedback({ model }: { model: TrackerModel }) {
         />
       )}
       {privateVisible && watches.isError && watches.data && (
-        <div
+        <Alert
+          tone="warning"
           className="surface stale-warning"
           role="alert"
         >
@@ -43,15 +46,16 @@ export function TrackerFeedback({ model }: { model: TrackerModel }) {
             исходными датами.
           </p>
           <p>{errorText(watches.error)}</p>
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             disabled={watches.isFetching}
             onClick={() => void watches.refetch()}
           >
             Повторить обновление
-          </button>
-        </div>
+          </Button>
+        </Alert>
       )}
     </>
   );

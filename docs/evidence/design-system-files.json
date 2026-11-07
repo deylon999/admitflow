@@ -1,0 +1,156 @@
+{
+  "date": "2026-11-07",
+  "presentationFiles": [
+    "frontend/scripts/check-design-system.mjs",
+    "frontend/src/app/App.tsx",
+    "frontend/src/app/styles/base.css",
+    "frontend/src/app/styles/print.css",
+    "frontend/src/app/styles/styles.css",
+    "frontend/src/app/styles/tokens.css",
+    "frontend/src/app/styles/tracker.css",
+    "frontend/src/app/ui/Layout.tsx",
+    "frontend/src/app/ui/PageErrorBoundary.tsx",
+    "frontend/src/app/ui/ThemeToggle.tsx",
+    "frontend/src/entities/admission-source/ui/SourceProvenance.tsx",
+    "frontend/src/entities/manual-direction/ui/CalculationInputs.tsx",
+    "frontend/src/entities/manual-direction/ui/CalculationOutput.tsx",
+    "frontend/src/entities/manual-direction/ui/ManualDirectionCard.tsx",
+    "frontend/src/entities/university/ui/SourceUniversityFilter.tsx",
+    "frontend/src/entities/university/ui/UniversityPicker.tsx",
+    "frontend/src/features/calculate-admission/ui/Calculator.tsx",
+    "frontend/src/features/compare-manual-directions/ui/WatchComparison.tsx",
+    "frontend/src/features/delete-manual-direction/ui/DeleteManualDirectionFeedback.tsx",
+    "frontend/src/features/edit-manual-direction/ui/DirectionForm.tsx",
+    "frontend/src/features/edit-manual-direction/ui/DraftRecovery.tsx",
+    "frontend/src/features/import-manual-directions/ui/ImportData.tsx",
+    "frontend/src/features/review-archive-history/ui/ArchiveHistory.tsx",
+    "frontend/src/features/review-manual-history/ui/HistoryComparison.tsx",
+    "frontend/src/features/review-manual-history/ui/ManualDirectionHistory.tsx",
+    "frontend/src/features/review-source-changes/ui/ChangeFeed.tsx",
+    "frontend/src/features/review-source-scenario/ui/ArchiveScenario.tsx",
+    "frontend/src/features/review-source-scenario/ui/ScenarioComparison.tsx",
+    "frontend/src/features/save-source-record/ui/SourceLookup.tsx",
+    "frontend/src/pages/landing/ui/RankingDiagram.tsx",
+    "frontend/src/pages/landing/ui/sections.tsx",
+    "frontend/src/pages/sources/ui/SourceCatalogFilters.tsx",
+    "frontend/src/pages/sources/ui/SourceGroupCard.tsx",
+    "frontend/src/pages/sources/ui/SourcesPage.tsx",
+    "frontend/src/pages/tracker/ui/ArchiveDirections.tsx",
+    "frontend/src/pages/tracker/ui/CoverageSummary.tsx",
+    "frontend/src/pages/tracker/ui/DirectionCard.tsx",
+    "frontend/src/pages/tracker/ui/ManualDirectionsPanel.tsx",
+    "frontend/src/pages/tracker/ui/TrackerAccess.tsx",
+    "frontend/src/pages/tracker/ui/TrackerFeedback.tsx",
+    "frontend/src/pages/tracker/ui/TrackerFilters.tsx",
+    "frontend/src/pages/tracker/ui/TrackerHeading.tsx",
+    "frontend/src/pages/tracker/ui/TrackerPage.tsx",
+    "frontend/src/shared/ui/Alert.tsx",
+    "frontend/src/shared/ui/Badge.tsx",
+    "frontend/src/shared/ui/Button.tsx",
+    "frontend/src/shared/ui/Card.tsx",
+    "frontend/src/shared/ui/DeleteConfirmation.tsx",
+    "frontend/src/shared/ui/Input.tsx",
+    "frontend/src/shared/ui/index.ts",
+    "frontend/src/shared/ui/ui.css"
+  ],
+  "verification": {
+    "pages": [
+      {
+        "theme": "light",
+        "width": 320,
+        "route": "/",
+        "headingSize": "28px",
+        "buttons": 5
+      },
+      {
+        "theme": "light",
+        "width": 320,
+        "route": "/sources",
+        "headingSize": "28px",
+        "buttons": 4
+      },
+      {
+        "theme": "light",
+        "width": 320,
+        "route": "/tracker",
+        "headingSize": "28px",
+        "buttons": 12
+      },
+      {
+        "theme": "light",
+        "width": 1440,
+        "route": "/",
+        "headingSize": "32px",
+        "buttons": 5
+      },
+      {
+        "theme": "light",
+        "width": 1440,
+        "route": "/sources",
+        "headingSize": "32px",
+        "buttons": 4
+      },
+      {
+        "theme": "light",
+        "width": 1440,
+        "route": "/tracker",
+        "headingSize": "32px",
+        "buttons": 12
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "route": "/",
+        "headingSize": "28px",
+        "buttons": 5
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "route": "/sources",
+        "headingSize": "28px",
+        "buttons": 4
+      },
+      {
+        "theme": "dark",
+        "width": 320,
+        "route": "/tracker",
+        "headingSize": "28px",
+        "buttons": 12
+      },
+      {
+        "theme": "dark",
+        "width": 1440,
+        "route": "/",
+        "headingSize": "32px",
+        "buttons": 5
+      },
+      {
+        "theme": "dark",
+        "width": 1440,
+        "route": "/sources",
+        "headingSize": "32px",
+        "buttons": 4
+      },
+      {
+        "theme": "dark",
+        "width": 1440,
+        "route": "/tracker",
+        "headingSize": "32px",
+        "buttons": 12
+      }
+    ],
+    "assertions": "passed"
+  },
+  "checks": {
+    "typecheck": 0,
+    "lint": 0,
+    "build": 0,
+    "format": 0,
+    "architecture": 0,
+    "unitTests": 147
+  },
+  "longE2E": false,
+  "commits": false,
+  "push": false
+}

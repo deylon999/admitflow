@@ -1,3 +1,4 @@
+import { Select } from '@/shared/ui';
 import { compareSnapshots } from '@/entities/manual-direction';
 import type { Snapshot } from '@/entities/manual-direction';
 import { useId, useState } from 'react';
@@ -23,7 +24,7 @@ export function HistoryComparison({ snapshots }: { snapshots: Snapshot[] }) {
       <div className="history-choices">
         <div className="field">
           <label htmlFor={`${prefix}-after`}>Новое сохранение</label>
-          <select
+          <Select
             id={`${prefix}-after`}
             value={after.id}
             onChange={(event) => setAfterId(event.target.value)}
@@ -36,11 +37,11 @@ export function HistoryComparison({ snapshots }: { snapshots: Snapshot[] }) {
                 #{index + 1} · {snapshot.capturedAt} · место {snapshot.calculation.place}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
         <div className="field">
           <label htmlFor={`${prefix}-before`}>Более раннее сохранение</label>
-          <select
+          <Select
             id={`${prefix}-before`}
             value={before.id}
             onChange={(event) => setBeforeId(event.target.value)}
@@ -54,7 +55,7 @@ export function HistoryComparison({ snapshots }: { snapshots: Snapshot[] }) {
                 {snapshot.calculation.place}
               </option>
             ))}
-          </select>
+          </Select>
         </div>
       </div>
       <p>Сравнение выбранных ручных сохранений</p>

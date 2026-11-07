@@ -1,3 +1,4 @@
+import { Card, Badge } from '@/shared/ui';
 import type { ReactNode } from 'react';
 import type { Watch } from '../model/types';
 import { ScenarioExplanation } from './ScenarioExplanation';
@@ -16,10 +17,13 @@ export function ManualDirectionCard({ watch, children }: { watch: Watch; childre
   const { calculation } = watch.latest;
   const old = Date.now() - new Date(watch.latest.capturedAt).getTime() > 86400_000;
   return (
-    <article className="direction-card surface">
+    <Card
+      as="article"
+      className="direction-card"
+    >
       <div className="direction-top">
         <span className="eyebrow">{watch.university}</span>
-        <span className="tag">Ручной ввод</span>
+        <Badge>Ручной ввод</Badge>
       </div>
       <h2>{watch.title}</h2>
       <div className="direction-result">
@@ -60,6 +64,6 @@ export function ManualDirectionCard({ watch, children }: { watch: Watch; childre
         <p className="stale-note">Цифры сохранены больше суток назад. Проверьте свежий список.</p>
       )}
       {children}
-    </article>
+    </Card>
   );
 }

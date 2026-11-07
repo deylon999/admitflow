@@ -1,3 +1,4 @@
+import { Button, Alert, Select } from '@/shared/ui';
 import { useId } from 'react';
 import type { ArchiveHistoryItem, CandidateFact } from '@/entities/admission-source';
 import { useArchiveHistory } from '../model/useArchiveHistory';
@@ -71,15 +72,16 @@ export function ArchiveHistory({ id }: { id: string }) {
   } = useArchiveHistory(id);
   return (
     <div className="archive-history">
-      <button
+      <Button
+        variant="ghost"
         type="button"
-        className="text-button"
+
         aria-expanded={show}
         aria-controls={prefix}
         onClick={toggleHistory}
       >
         История фактов
-      </button>
+      </Button>
       {show && (
         <div id={prefix}>
           <h4>Архивная история источника</h4>
@@ -89,23 +91,27 @@ export function ArchiveHistory({ id }: { id: string }) {
           </p>
           {history.isPending && <p role="status">Загружаем историю фактов…</p>}
           {history.isError && (
-            <p role="alert">
+            <Alert
+              as="p"
+              role="alert"
+            >
               Не удалось загрузить историю.{' '}
               {history.data ? 'Показаны ранее загруженные датированные записи. ' : ''}
-              <button
+              <Button
+                variant="ghost"
                 type="button"
-                className="text-button"
+
                 onClick={retryHistory}
               >
                 Повторить историю фактов
-              </button>
-            </p>
+              </Button>
+            </Alert>
           )}
           {after && before && (
             <section aria-label="Сравнение архивных фактов">
               <label>
                 Ранний архивный снимок
-                <select
+                <Select
                   value={before.id}
                   onChange={(event) => setOlderId(event.target.value)}
                 >
@@ -117,7 +123,7 @@ export function ArchiveHistory({ id }: { id: string }) {
                       {item.group.fetchedAt} · {item.group.snapshotId}
                     </option>
                   ))}
-                </select>
+                </Select>
               </label>
               <p>
                 Новый снимок {after.group.fetchedAt} · {after.group.snapshotId}; ранний{' '}
@@ -165,14 +171,15 @@ export function ArchiveHistory({ id }: { id: string }) {
             ))}
           </ol>
           {history.hasNextPage && (
-            <button
-              className="text-button"
+            <Button
+              variant="ghost"
+
               type="button"
               disabled={history.isFetchingNextPage}
               onClick={loadMoreHistory}
             >
               Ещё архивные снимки
-            </button>
+            </Button>
           )}
         </div>
       )}

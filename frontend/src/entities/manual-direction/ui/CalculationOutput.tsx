@@ -1,3 +1,4 @@
+import { Card, Badge } from '@/shared/ui';
 import type { ScenarioAssessment, CalculationForm } from '../model/calculator';
 import { ScenarioExplanation } from './ScenarioExplanation';
 
@@ -30,12 +31,12 @@ export function CalculationOutput({
     assessment.state === 'ready' ? assessment.result : { error: assessment.reason, fields: [] };
   const valid = !('error' in result);
   return (
-    <div
-      className="result-card surface"
+    <Card
+      className="result-card"
       aria-live="polite"
       aria-atomic="true"
     >
-      <span className="tag">Ручной сценарий</span>
+      <Badge>Ручной сценарий</Badge>
       <div
         className="result-place"
         id="result-place"
@@ -85,6 +86,6 @@ export function CalculationOutput({
       </div>
       <ResultLegend />
       {valid && <ScenarioExplanation values={values} />}
-    </div>
+    </Card>
   );
 }

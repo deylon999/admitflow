@@ -1,11 +1,13 @@
+import { Card, Alert, Button } from '@/shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { sourceApi } from '@/entities/admission-source';
 
 export function CoverageSummary() {
   const query = useQuery({ queryKey: ['coverage'], queryFn: sourceApi.coverage });
   return (
-    <section
-      className="coverage-summary surface"
+    <Card
+      as="section"
+      className="coverage-summary"
       aria-labelledby="coverage-heading"
     >
       <h2 id="coverage-heading">Покрытие источников</h2>
@@ -17,19 +19,21 @@ export function CoverageSummary() {
           Проверяем покрытие…
         </p>
       ) : query.isError ? (
-        <p
+        <Alert
+          as="p"
           className="small-copy"
           role="alert"
         >
           Не удалось проверить покрытие.{' '}
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             onClick={() => void query.refetch()}
           >
             Повторить проверку покрытия
-          </button>
-        </p>
+          </Button>
+        </Alert>
       ) : (
         <>
           <dl className="coverage-numbers">
@@ -83,6 +87,6 @@ export function CoverageSummary() {
           </p>
         </>
       )}
-    </section>
+    </Card>
   );
 }

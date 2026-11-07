@@ -1,0 +1,55 @@
+@layer print {
+  @media print {
+    :root,
+    :root[data-theme='dark'] {
+      --bg: #fff;
+      --text: #000;
+      --muted: #333;
+    }
+    .header,
+    .footer,
+    .skip-link,
+    .tracker-page > :not(.print-report) {
+      display: none !important;
+    }
+    .tracker-page {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .print-report {
+      display: block;
+      font-size: 11pt;
+    }
+    .print-report h1 {
+      font-size: 22pt;
+      margin-bottom: 12pt;
+    }
+    .print-report h2 {
+      font-size: 15pt;
+      margin-bottom: 8pt;
+    }
+    .print-report article {
+      break-inside: avoid;
+      border-top: 1px solid #999;
+      margin-top: 16pt;
+      padding-top: 12pt;
+      overflow-wrap: anywhere;
+    }
+    .print-report p,
+    .print-report dl {
+      margin-bottom: 8pt;
+    }
+    .print-report dt {
+      font-weight: 600;
+    }
+    @page {
+      margin: 15mm;
+    }
+  }
+  @media print {
+    .archive-directions {
+      display: none !important;
+    }
+  }
+}

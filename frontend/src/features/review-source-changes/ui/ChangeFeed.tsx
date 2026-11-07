@@ -1,3 +1,4 @@
+import { Card, Alert, Button } from '@/shared/ui';
 import { Link } from 'react-router';
 import { useChangeFeed } from '../model/useChangeFeed';
 
@@ -5,8 +6,9 @@ export function ChangeFeed() {
   const { access, feed, seen, refreshChanges, loadMoreChanges, markSeen } = useChangeFeed();
   if (access !== 'active') return null;
   return (
-    <section
-      className="surface change-feed"
+    <Card
+      as="section"
+      className="change-feed"
       aria-labelledby="changes-title"
     >
       <h2 id="changes-title">Изменения в ваших списках</h2>
@@ -16,15 +18,19 @@ export function ChangeFeed() {
       </p>
       {feed.isPending && <p role="status">Загружаем изменения…</p>}
       {feed.isError && (
-        <p role="alert">
+        <Alert
+          as="p"
+          role="alert"
+        >
           Не удалось перечитать изменения.{' '}
-          <button
+          <Button
+            variant="secondary"
             type="button"
             onClick={refreshChanges}
           >
             Повторить изменения
-          </button>
-        </p>
+          </Button>
+        </Alert>
       )}
       {feed.data && (
         <p role="status">
@@ -34,15 +40,23 @@ export function ChangeFeed() {
       {feed.data?.items.length === 0 && (
         <p>Новых изменений пока нет. При первом сохранении записи уведомление не создаётся.</p>
       )}
-      <button
+      <Button
+        variant="ghost"
         type="button"
-        className="text-button"
+
         disabled={feed.isFetching}
         onClick={refreshChanges}
       >
         Перечитать изменения
-      </button>
-      {seen.isError && <p role="alert">{seen.error.message} Повторите отметку прочтения явно.</p>}
+      </Button>
+      {seen.isError && (
+        <Alert
+          as="p"
+          role="alert"
+        >
+          {seen.error.message} Повторите отметку прочтения явно.
+        </Alert>
+      )}
       <ol>
         {feed.data?.items.map((item) => (
           <li key={item.id}>
@@ -64,27 +78,29 @@ export function ChangeFeed() {
             {item.seenAt ? (
               <p className="small-copy">Прочитано: {item.seenAt}</p>
             ) : (
-              <button
+              <Button
+                variant="ghost"
                 type="button"
-                className="text-button"
+
                 disabled={seen.isPending}
                 onClick={() => markSeen(item.id)}
               >
                 Отметить прочитанным
-              </button>
+              </Button>
             )}
           </li>
         ))}
       </ol>
       {feed.hasNextPage && (
-        <button
+        <Button
+          variant="secondary"
           type="button"
           disabled={feed.isFetchingNextPage}
           onClick={loadMoreChanges}
         >
           Ещё изменения
-        </button>
+        </Button>
       )}
-    </section>
+    </Card>
   );
 }

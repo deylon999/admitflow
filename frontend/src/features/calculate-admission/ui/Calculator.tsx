@@ -1,3 +1,4 @@
+import { Card, Alert } from '@/shared/ui';
 import { useState } from 'react';
 import {
   assessScenario,
@@ -22,7 +23,8 @@ export function Calculator() {
         Подставьте данные из своего списка. Расчёт идёт по текущим цифрам.
       </p>
       <div className="calculator-grid">
-        <form
+        <Card
+          as="form"
           className="calculator-form"
           id="calculator-form"
           noValidate
@@ -37,15 +39,16 @@ export function Calculator() {
             Значения — пример. Подставьте данные из своего списка. Учитывайте людей в одной
             конкурсной группе, без повторов между двумя вычитаемыми группами.
           </p>
-          <p
+          <Alert
+            as="p"
             className="form-error"
             id="calculation-error"
             role="alert"
             hidden={!error}
           >
             {error?.error}
-          </p>
-        </form>
+          </Alert>
+        </Card>
         <CalculationOutput
           assessment={assessment}
           values={values}

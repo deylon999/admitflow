@@ -1,3 +1,4 @@
+import { Input } from '@/shared/ui';
 import type { CalculationForm, CalculationError } from '../model/calculator';
 
 const calculationFields = [
@@ -26,7 +27,7 @@ export function CalculationInputs({
           key={field.name}
         >
           <label htmlFor={prefix + field.id}>{field.label}</label>
-          <input
+          <Input
             id={prefix + field.id}
             name={field.name}
             type="number"

@@ -1,3 +1,4 @@
+import { Card, Button, Input, Alert } from '@/shared/ui';
 import { CalculationInputs } from '@/entities/manual-direction';
 import { UniversityPicker } from '@/entities/university';
 import { useDirectionForm } from '../model/useDirectionForm';
@@ -28,8 +29,9 @@ export function DirectionForm(props: DirectionFormProps) {
     submit,
   } = useDirectionForm(props);
   return (
-    <form
-      className="direction-form surface"
+    <Card
+      as="form"
+      className="direction-form"
       noValidate
       aria-labelledby="direction-form-heading"
       onKeyDown={(event) => {
@@ -48,15 +50,16 @@ export function DirectionForm(props: DirectionFormProps) {
         >
           {watch ? 'Обновить цифры' : 'Добавить направление'}
         </h2>
-        <button
-          className="text-button"
+        <Button
+          variant="ghost"
+
           type="button"
           onClick={onCancel}
           aria-label="Закрыть форму"
           disabled={save.isPending}
         >
           ✕
-        </button>
+        </Button>
       </div>
       <fieldset
         className="direction-fields"
@@ -80,7 +83,7 @@ export function DirectionForm(props: DirectionFormProps) {
             />
             <div className="field">
               <label htmlFor="direction-title">Направление и конкурсная группа</label>
-              <input
+              <Input
                 id="direction-title"
                 value={title}
                 required
@@ -90,18 +93,19 @@ export function DirectionForm(props: DirectionFormProps) {
                 placeholder="Например: информатика, общий конкурс"
               />
               {metadata.title && (
-                <p
+                <Alert
+                  as="p"
                   id="direction-title-error"
                   className="form-error"
                   role="alert"
                 >
                   {metadata.title}
-                </p>
+                </Alert>
               )}
             </div>
             <div className="field">
               <label htmlFor="source-url">Ссылка на конкурсный список</label>
-              <input
+              <Input
                 id="source-url"
                 type="url"
                 value={sourceUrl}
@@ -113,13 +117,14 @@ export function DirectionForm(props: DirectionFormProps) {
                 placeholder="https://…"
               />
               {metadata.sourceUrl && (
-                <p
+                <Alert
+                  as="p"
                   id="source-url-error"
                   className="form-error"
                   role="alert"
                 >
                   {metadata.sourceUrl}
-                </p>
+                </Alert>
               )}
             </div>
           </>
@@ -146,21 +151,23 @@ export function DirectionForm(props: DirectionFormProps) {
         </div>
       )}
       {submitted && error && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           id="tracker-calculation-error"
           role="alert"
         >
           {error.error}
-        </p>
+        </Alert>
       )}
       {save.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {errorText(save.error)}
-        </p>
+        </Alert>
       )}
       {save.isPending && (
         <p role="status">Дождитесь результата сохранения перед переходом на другую страницу.</p>
@@ -178,31 +185,34 @@ export function DirectionForm(props: DirectionFormProps) {
         </p>
       )}
       {localSaved === false && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="status"
         >
           Не удалось сохранить черновик в этой вкладке. Сохраните направление перед уходом.
-        </p>
+        </Alert>
       )}
       {localSaved === 'clear-failed' && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="status"
         >
           Не удалось удалить черновик в этой вкладке. Сохраните направление перед уходом.
-        </p>
+        </Alert>
       )}
-      <button
-        className="button button-primary"
+      <Button
+        variant="primary"
+
         type="submit"
         disabled={save.isPending || disabled}
       >
         {save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}
-      </button>
+      </Button>
       <p className="form-note">
         Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.
       </p>
-    </form>
+    </Card>
   );
 }

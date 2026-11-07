@@ -1,3 +1,4 @@
+import { Card, Badge, Button } from '@/shared/ui';
 import { SourceLookup } from '@/features/save-source-record';
 import { SourceProvenance } from '@/entities/admission-source';
 import type { SourceGroup } from '@/entities/admission-source';
@@ -22,10 +23,13 @@ type Props = {
 
 export function SourceGroupCard({ group, selected, onSelect, onClose }: Props) {
   return (
-    <article className="surface source-catalog-card">
-      <span className="tag">
+    <Card
+      as="article"
+      className="source-catalog-card"
+    >
+      <Badge>
         {modes[group.coverage]} · {group.year}
-      </span>
+      </Badge>
       <h2>{group.title.replace(/ · (?:full-time|part-time|mixed)$/u, '')}</h2>
       <p>
         {group.universityName}
@@ -70,15 +74,16 @@ export function SourceGroupCard({ group, selected, onSelect, onClose }: Props) {
         Официальный результат зачисления не рассчитывается.
       </p>
       {group.lookupAvailable && (
-        <button
+        <Button
+          variant="secondary"
           id={`lookup-${group.id}`}
-          className="button button-secondary"
+
           type="button"
           aria-expanded={selected}
           onClick={onSelect}
         >
           Найти свою запись
-        </button>
+        </Button>
       )}
       {selected && (
         <SourceLookup
@@ -88,6 +93,6 @@ export function SourceGroupCard({ group, selected, onSelect, onClose }: Props) {
         />
       )}
       <SourceProvenance group={group} />
-    </article>
+    </Card>
   );
 }

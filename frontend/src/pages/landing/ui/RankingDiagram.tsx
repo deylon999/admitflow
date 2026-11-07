@@ -1,3 +1,4 @@
+import { Card } from '@/shared/ui';
 const excludedIndices = new Set(
   Array.from({ length: 119 }, (_, index) => index + 1)
     .filter((index) => index % 5 === 0 || index % 3 === 0)
@@ -17,8 +18,8 @@ function Cells({ start, end, after = false }: { start: number; end: number; afte
 }
 export function RankingDiagram() {
   return (
-    <div
-      className="ranking-card surface"
+    <Card
+      className="ranking-card"
       role="img"
       aria-label="Ручной сценарий: номер 120 минус две непересекающиеся группы, всего 46 человек выше; расчётное место 74 при 90 местах"
     >
@@ -74,6 +75,6 @@ export function RankingDiagram() {
           Свободные места
         </span>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -1,3 +1,4 @@
+import { Alert, Button } from '@/shared/ui';
 import type { SourceGroup } from '@/entities/admission-source';
 import { ScenarioComparison } from './ScenarioComparison';
 import { useArchiveScenario } from '../model/useArchiveScenario';
@@ -27,29 +28,34 @@ export function ArchiveScenario({ id, group }: { id: string; group: SourceGroup 
       />
       {current.isPending && <p role="status">Загружаем сохранённый сценарий…</p>}
       {current.isError && (
-        <p role="alert">
+        <Alert
+          as="p"
+          role="alert"
+        >
           Не удалось перечитать сценарий.{' '}
           {value ? 'Ниже показан ранее загруженный результат с его датой.' : ''}{' '}
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             onClick={() => void current.refetch()}
           >
             Повторить сценарий
-          </button>
-        </p>
+          </Button>
+        </Alert>
       )}
       {value && !value.available && <p>{value.notice}</p>}
       {value?.available && value.snapshotId !== group.snapshotId ? (
         <p role="status">
           На сервере появился другой снимок.{' '}
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             onClick={refreshDirection}
           >
             Перечитать карточку направления
-          </button>
+          </Button>
         </p>
       ) : (
         result &&
@@ -117,28 +123,33 @@ export function ArchiveScenario({ id, group }: { id: string; group: SourceGroup 
       )}
       {value?.available && (
         <>
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             aria-expanded={showHistory}
             onClick={toggleHistory}
           >
             История условных сценариев
-          </button>
+          </Button>
           {showHistory && (
             <div className="scenario-history">
               {history.isPending && <p role="status">Загружаем версии сценария…</p>}
               {history.isError && (
-                <p role="alert">
+                <Alert
+                  as="p"
+                  role="alert"
+                >
                   Не удалось загрузить версии.{' '}
-                  <button
-                    className="text-button"
+                  <Button
+                    variant="ghost"
+
                     type="button"
                     onClick={retryHistory}
                   >
                     Повторить версии сценария
-                  </button>
-                </p>
+                  </Button>
+                </Alert>
               )}
               {history.data && (
                 <p className="small-copy">
@@ -164,14 +175,15 @@ export function ArchiveScenario({ id, group }: { id: string; group: SourceGroup 
                 ))}
               </ol>
               {history.hasNextPage && (
-                <button
-                  className="text-button"
+                <Button
+                  variant="ghost"
+
                   type="button"
                   disabled={history.isFetchingNextPage}
                   onClick={loadMoreHistory}
                 >
                   Ещё версии сценария
-                </button>
+                </Button>
               )}
             </div>
           )}

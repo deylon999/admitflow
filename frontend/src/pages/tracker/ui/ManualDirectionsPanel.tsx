@@ -1,3 +1,4 @@
+import { Card, Alert, Button } from '@/shared/ui';
 import { DirectionForm } from '@/features/edit-manual-direction';
 import { DirectionCard } from './DirectionCard';
 import type { TrackerModel } from '../model/useTrackerModel';
@@ -33,30 +34,31 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
       <div className={`tracker-layout ${form && privateVisible ? 'with-form' : ''}`}>
         <div className="directions-list">
           {!privateVisible ? null : watches.isPending ? (
-            <div
-              className="empty-state surface"
+            <Card
+              className="empty-state"
               role="status"
             >
               <h2>Загружаем направления…</h2>
               <p>Проверяем сохранённые данные.</p>
-            </div>
+            </Card>
           ) : watches.isError && !watches.data ? (
-            <div
+            <Alert
               className="empty-state surface"
               role="alert"
             >
               <h2>Не удалось загрузить направления</h2>
               <p>{errorText(watches.error)}</p>
-              <button
-                className="button button-secondary"
+              <Button
+                variant="secondary"
+
                 type="button"
                 onClick={() => void watches.refetch()}
               >
                 Повторить
-              </button>
-            </div>
+              </Button>
+            </Alert>
           ) : count === 0 ? (
-            <div className="empty-state surface">
+            <Card className="empty-state">
               <span
                 className="empty-mark"
                 aria-hidden="true"
@@ -68,22 +70,23 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
                 Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис
                 сохранит расчёт и его историю.
               </p>
-              <button
-                className="button button-primary"
+              <Button
+                variant="primary"
+
                 type="button"
                 disabled={directionTotal >= 20 || busy}
                 onClick={(event) => openForm('new', event.currentTarget)}
               >
                 Добавить первое направление
-              </button>
-            </div>
+              </Button>
+            </Card>
           ) : visible.length === 0 ? (
-            <div className="surface empty-state">
+            <Card className="empty-state">
               <h2>Поиск не дал результатов</h2>
               <p>
                 Измените запрос или сбросьте фильтры. Сохранённые направления остаются в кабинете.
               </p>
-            </div>
+            </Card>
           ) : (
             visible.map((watch) => (
               <DirectionCard

@@ -1,3 +1,4 @@
+import { Card, Input, Button, Alert } from '@/shared/ui';
 import type { ImportResult } from '@/entities/manual-direction';
 import { useManualImport } from '../model/useManualImport';
 
@@ -13,7 +14,10 @@ export function ImportData({
   const { prepared, reading, error, input, summary, mutation, clear, select, added, tooMany } =
     useManualImport(count, onDone);
   return (
-    <details className="import-data surface">
+    <Card
+      as="details"
+      className="import-data"
+    >
       <summary ref={summary}>Восстановить из JSON</summary>
       <p
         id="import-note"
@@ -24,7 +28,7 @@ export function ImportData({
       </p>
       <div className="field">
         <label htmlFor="manual-import-file">Файл выгрузки, до 8 МБ</label>
-        <input
+        <Input
           ref={input}
           id="manual-import-file"
           type="file"
@@ -37,22 +41,24 @@ export function ImportData({
       {reading && (
         <>
           <p role="status">Проверяем файл…</p>
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             onClick={clear}
           >
             Отменить чтение
-          </button>
+          </Button>
         </>
       )}
       {error && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
           {error}
-        </p>
+        </Alert>
       )}
       {prepared && (
         <div>
@@ -92,8 +98,9 @@ export function ImportData({
             </p>
           )}
           <div className="direction-actions">
-            <button
-              className="button button-primary"
+            <Button
+              variant="primary"
+
               type="button"
               disabled={disabled || mutation.isPending}
               aria-describedby={tooMany ? 'import-quota-note' : undefined}
@@ -106,20 +113,22 @@ export function ImportData({
                 : tooMany
                   ? 'Проверить повтор импорта'
                   : 'Импортировать файл'}
-            </button>
-            <button
-              className="text-button"
+            </Button>
+            <Button
+              variant="ghost"
+
               type="button"
               disabled={disabled || mutation.isPending}
               onClick={clear}
             >
               Отменить импорт
-            </button>
+            </Button>
           </div>
         </div>
       )}
       {mutation.isError && (
-        <p
+        <Alert
+          as="p"
           className="form-error"
           role="alert"
         >
@@ -127,8 +136,8 @@ export function ImportData({
             ? mutation.error.message
             : 'Не удалось импортировать файл.'}{' '}
           Повтор использует тот же ключ операции.
-        </p>
+        </Alert>
       )}
-    </details>
+    </Card>
   );
 }

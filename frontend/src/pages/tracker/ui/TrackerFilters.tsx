@@ -1,3 +1,4 @@
+import { Card, Input, Select, Button } from '@/shared/ui';
 import type { WatchOrder } from '@/entities/manual-direction';
 import type { TrackerModel } from '../model/useTrackerModel';
 
@@ -17,13 +18,14 @@ export function TrackerFilters({ model }: { model: TrackerModel }) {
   return (
     <>
       {privateVisible && count > 0 && (
-        <section
-          className="watch-filters surface"
+        <Card
+          as="section"
+          className="watch-filters"
           aria-label="Поиск направлений"
         >
           <div className="field">
             <label htmlFor="watch-search">Поиск по вузу и направлению</label>
-            <input
+            <Input
               id="watch-search"
               type="search"
               value={search}
@@ -32,7 +34,7 @@ export function TrackerFilters({ model }: { model: TrackerModel }) {
           </div>
           <div className="field">
             <label htmlFor="watch-state">Ручной сценарий</label>
-            <select
+            <Select
               id="watch-state"
               value={scenario}
               onChange={(event) => setScenario(event.target.value)}
@@ -41,11 +43,11 @@ export function TrackerFilters({ model }: { model: TrackerModel }) {
               <option value="safe">В пределах в обоих сценариях</option>
               <option value="conditional">В пределах только при текущих согласиях</option>
               <option value="out">За границей мест</option>
-            </select>
+            </Select>
           </div>
           <div className="field">
             <label htmlFor="watch-order">Порядок направлений</label>
-            <select
+            <Select
               id="watch-order"
               value={order}
               onChange={(event) => setOrder(event.target.value as WatchOrder)}
@@ -53,19 +55,20 @@ export function TrackerFilters({ model }: { model: TrackerModel }) {
               <option value="updated">Недавно сохранённые</option>
               <option value="university">По вузу и названию</option>
               <option value="created">Недавно добавленные</option>
-            </select>
+            </Select>
           </div>
           <p role="status">
             Показано {visible.length} из {count}
           </p>
-          <button
-            className="text-button"
+          <Button
+            variant="ghost"
+
             type="button"
             onClick={clearFilters}
           >
             Сбросить поиск и фильтры
-          </button>
-        </section>
+          </Button>
+        </Card>
       )}
     </>
   );

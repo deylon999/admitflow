@@ -1,3 +1,4 @@
+import { Card, Badge } from '@/shared/ui';
 import { Link } from 'react-router';
 import { RankingDiagram } from './RankingDiagram';
 const sources = [
@@ -94,13 +95,14 @@ export function HeroSection() {
             </a>
           </div>
         </div>
-        <aside
-          className="example-card surface"
+        <Card
+          as="aside"
+          className="example-card"
           aria-label="Пример расчёта из интервью"
         >
           <div className="example-heading">
             <span>Случай из интервью</span>
-            <span className="tag">Абитуриент, 1 курс</span>
+            <Badge>Абитуриент, 1 курс</Badge>
           </div>
           <dl className="example-numbers">
             <div>
@@ -125,7 +127,7 @@ export function HeroSection() {
             другой сценарий; по рассказу, в итоге его зачислили на 61-м месте из 90. Этот пример не
             гарантирует результат в другом конкурсе.
           </p>
-        </aside>
+        </Card>
       </div>
       <div
         className="statistics"
@@ -160,14 +162,15 @@ export function ProblemSection() {
       <h2 id="problem-title">Четыре источника, четыре разных ответа</h2>
       <div className="sources-grid">
         {sources.map(([title, description], index) => (
-          <article
-            className="source-card surface"
+          <Card
+            as="article"
+            className="source-card"
             key={title}
           >
             <span className="card-number">0{index + 1}</span>
             <h3>{title}</h3>
             <p>{description}</p>
-          </article>
+          </Card>
         ))}
       </div>
     </section>
@@ -228,14 +231,15 @@ export function CapabilitiesSection() {
       <h2 id="roadmap-title">Один экран вместо пяти сайтов</h2>
       <div className="features-grid">
         {features.map(([title, description, status]) => (
-          <article
-            className="feature-card surface"
+          <Card
+            as="article"
+            className="feature-card"
             key={title}
           >
-            <span className="tag">{status}</span>
+            <Badge>{status}</Badge>
             <h3>{title}</h3>
             <p>{description}</p>
-          </article>
+          </Card>
         ))}
       </div>
     </section>
@@ -271,7 +275,7 @@ export function QuestionsSection() {
       <div className="final-cta">
         <h2>Проверьте своё место за минуту</h2>
         <a
-          className="button"
+          className="button button-secondary"
           href="#calculator"
         >
           Открыть калькулятор

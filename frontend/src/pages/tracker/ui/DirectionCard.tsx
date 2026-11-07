@@ -1,3 +1,4 @@
+import { Button } from '@/shared/ui';
 import { useState } from 'react';
 import { ManualDirectionCard } from '@/entities/manual-direction';
 import type { Watch } from '@/entities/manual-direction';
@@ -25,31 +26,34 @@ export function DirectionCard({
   return (
     <ManualDirectionCard watch={watch}>
       <div className="direction-actions">
-        <button
-          className="button button-secondary"
+        <Button
+          variant="secondary"
+
           type="button"
           disabled={disabled}
           onClick={(event) => onEdit(event.currentTarget)}
         >
           Обновить цифры
-        </button>
-        <button
-          className="text-button"
+        </Button>
+        <Button
+          variant="ghost"
+
           type="button"
           aria-expanded={showHistory}
           onClick={() => setShowHistory(!showHistory)}
         >
           История
-        </button>
-        <button
+        </Button>
+        <Button
+          variant="ghost"
           ref={deletion.button}
-          className="text-button delete-link"
+          className="delete-link"
           type="button"
           disabled={disabled}
           onClick={deletion.toggle}
         >
           Удалить
-        </button>
+        </Button>
       </div>
       <DeleteManualDirectionFeedback
         deletion={deletion}
