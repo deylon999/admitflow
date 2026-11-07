@@ -1,5 +1,5 @@
 import { expect, it, vi } from 'vitest';
-import { readJsonResponse } from '../src/lib/transport';
+import { readJsonResponse } from '@/shared/api';
 
 it('decodes split UTF8 chunks without losing characters', async () => {
   const bytes = new TextEncoder().encode('{"value":"😀"}');

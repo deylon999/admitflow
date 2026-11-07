@@ -4,7 +4,7 @@ import {
   assertScenarioOrder,
   parseScenario,
   parseScenarioPage,
-} from '../src/lib/scenario-contracts';
+} from '@/entities/admission-scenario';
 it('preserves conditional bounds and stored explanation without calculating a forecast', () => {
   const value = parseScenario(fixture);
   expect(value.result?.numbers?.currentLower).toBe(2);

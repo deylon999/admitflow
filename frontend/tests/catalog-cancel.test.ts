@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { QueryObserver } from '@tanstack/react-query';
-import { api } from '../src/lib/api';
-import { createQueryClient } from '../src/lib/query-client';
+import { universityApi } from '@/entities/university';
+import { createQueryClient } from '@/app/providers/query-client';
 
 afterEach(() => vi.unstubAllGlobals());
 it('cancels an abandoned catalog request while a subsequent search succeeds', async () => {
@@ -19,7 +19,7 @@ it('cancels an abandoned catalog request while a subsequent search succeeds', as
   const client = createQueryClient();
   const observer = new QueryObserver(client, {
     queryKey: ['universities', 'old'],
-    queryFn: ({ signal }) => api.universities('old', signal),
+    queryFn: ({ signal }) => universityApi.universities('old', signal),
   });
   const unsubscribe = observer.subscribe(() => {});
   expect(oldSignal?.aborted).toBe(false);
@@ -28,7 +28,7 @@ it('cancels an abandoned catalog request while a subsequent search succeeds', as
   expect(
     await client.fetchQuery({
       queryKey: ['universities', 'new'],
-      queryFn: ({ signal }) => api.universities('new', signal),
+      queryFn: ({ signal }) => universityApi.universities('new', signal),
     }),
   ).toEqual({ items: [], total: 0, nextOffset: null });
   expect(fetch).toHaveBeenCalledTimes(2);

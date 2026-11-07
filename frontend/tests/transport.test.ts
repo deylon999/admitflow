@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { RequestTimeoutError, withRequestTimeout } from '../src/lib/transport';
+import { RequestTimeoutError, withRequestTimeout } from '@/shared/api';
 
 afterEach(() => vi.useRealTimers());
 it('limits a stalled response/body and aborts the underlying operation', async () => {

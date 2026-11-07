@@ -40,18 +40,19 @@ it('a canceled consumer settles before bootstrap while the shared session stays 
   });
   const fetch = vi.fn().mockReturnValueOnce(gate).mockResolvedValueOnce(Response.json([]));
   vi.stubGlobal('fetch', fetch);
-  const { api } = await import('../src/lib/api');
+  const { sessionApi } = await import('@/shared/api');
+  const { manualDirectionApi } = await import('@/entities/manual-direction');
   const controller = new AbortController();
-  const canceled = api.list(controller.signal);
+  const canceled = manualDirectionApi.list(controller.signal);
   const failure = expect(canceled).rejects.toBeInstanceOf(DOMException);
-  const other = api.list();
+  const other = manualDirectionApi.list();
   controller.abort();
   await failure;
   expect(fetch).toHaveBeenCalledTimes(1);
   release(Response.json(info));
   expect(await other).toEqual([]);
   expect(fetch).toHaveBeenCalledTimes(2);
-  expect(await api.session()).toEqual(info);
+  expect(await sessionApi.session()).toEqual(info);
 });
 
 it('late bootstrap failure cannot clear a newer readonly session', async () => {
@@ -65,13 +66,13 @@ it('late bootstrap failure cannot clear a newer readonly session', async () => {
     .mockImplementationOnce(() => gate)
     .mockResolvedValueOnce(Response.json(info));
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const old = api.session().catch((error) => error);
-  api.forgetSession();
-  expect(await api.resumeSession()).toEqual(info);
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const old = sessionApi.session().catch((error) => error);
+  sessionApi.forgetSession();
+  expect(await sessionApi.resumeSession()).toEqual(info);
   release(Response.json({ detail: 'old failure' }, { status: 503 }));
   expect(await old).toBeInstanceOf(SessionChangedError);
-  expect(await api.session()).toEqual(info);
+  expect(await sessionApi.session()).toEqual(info);
   expect(fetch).toHaveBeenCalledTimes(2);
 });
 
@@ -89,11 +90,12 @@ it('private body received after access changes is never returned as current data
     .mockResolvedValueOnce(new Response(body))
     .mockResolvedValueOnce(Response.json(info));
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const old = api.list().catch((error) => error);
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const { manualDirectionApi } = await import('@/entities/manual-direction');
+  const old = manualDirectionApi.list().catch((error) => error);
   await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(2));
-  api.forgetSession();
-  await api.resumeSession();
+  sessionApi.forgetSession();
+  await sessionApi.resumeSession();
   controller.enqueue(new TextEncoder().encode(JSON.stringify([fixture])));
   controller.close();
   expect(await old).toBeInstanceOf(SessionChangedError);
@@ -110,8 +112,9 @@ it('unauthorized responses cancel unread bodies', async () => {
       .mockResolvedValueOnce(Response.json(info))
       .mockResolvedValueOnce(new Response(body, { status: 401 })),
   );
-  const { api, SessionExpiredError } = await import('../src/lib/api');
-  await expect(api.list()).rejects.toBeInstanceOf(SessionExpiredError);
+  const { SessionExpiredError } = await import('@/shared/api');
+  const { manualDirectionApi } = await import('@/entities/manual-direction');
+  await expect(manualDirectionApi.list()).rejects.toBeInstanceOf(SessionExpiredError);
   expect(cancel).toHaveBeenCalledTimes(1);
 });
 
@@ -127,10 +130,10 @@ it('stale response headers cancel their unread body', async () => {
       }),
     ),
   );
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const result = api.session();
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const result = sessionApi.session();
   const failure = expect(result).rejects.toBeInstanceOf(SessionChangedError);
-  api.forgetSession();
+  sessionApi.forgetSession();
   release(new Response(new ReadableStream<Uint8Array>({ cancel })));
   await failure;
   expect(cancel).toHaveBeenCalledTimes(1);
@@ -153,10 +156,10 @@ it('readonly resume waits for a reset to finish and never creates or deletes a s
     );
   });
   vi.stubGlobal('fetch', fetch);
-  const { api } = await import('../src/lib/api');
-  const reset = api.resetSession();
+  const { sessionApi } = await import('@/shared/api');
+  const reset = sessionApi.resetSession();
   await vi.waitFor(() => expect(methods).toEqual(['DELETE', 'POST']));
-  const resume = api.resumeSession();
+  const resume = sessionApi.resumeSession();
   await Promise.resolve();
   expect(lock).toHaveBeenCalledTimes(2);
   expect(methods).toEqual(['DELETE', 'POST']);
@@ -165,7 +168,7 @@ it('readonly resume waits for a reset to finish and never creates or deletes a s
   expect(await reset).toEqual(info);
   expect(await resume).toEqual(info);
   expect(methods).toEqual(['DELETE', 'POST', 'GET', 'GET']);
-  expect(await api.session()).toEqual(info);
+  expect(await sessionApi.session()).toEqual(info);
   expect(fetch).toHaveBeenCalledTimes(4);
 });
 
@@ -179,10 +182,10 @@ it('queued resume rejects an access change before issuing its readonly request',
   const held = lock('admitflow-guest-session', {}, () => gate);
   const fetch = vi.fn();
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const resume = api.resumeSession();
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const resume = sessionApi.resumeSession();
   const rejected = expect(resume).rejects.toBeInstanceOf(SessionChangedError);
-  api.forgetSession();
+  sessionApi.forgetSession();
   release();
   await held;
   await rejected;
@@ -199,10 +202,10 @@ it('queued reset cannot delete the replacement session after an access change', 
   const held = lock('admitflow-guest-session', {}, () => gate);
   const fetch = vi.fn();
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const reset = api.resetSession();
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const reset = sessionApi.resetSession();
   const rejected = expect(reset).rejects.toBeInstanceOf(SessionChangedError);
-  api.forgetSession();
+  sessionApi.forgetSession();
   release();
   await held;
   await rejected;
@@ -223,15 +226,15 @@ it('resume cannot cache private session data received after the access epoch cha
     .mockResolvedValueOnce(new Response(body))
     .mockResolvedValueOnce(Response.json(info));
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionChangedError } = await import('../src/lib/api');
-  const resume = api.resumeSession();
+  const { sessionApi, SessionChangedError } = await import('@/shared/api');
+  const resume = sessionApi.resumeSession();
   const rejected = expect(resume).rejects.toBeInstanceOf(SessionChangedError);
   await vi.waitFor(() => expect(fetch).toHaveBeenCalledTimes(1));
-  api.forgetSession();
+  sessionApi.forgetSession();
   controller.enqueue(new TextEncoder().encode(JSON.stringify(info)));
   controller.close();
   await rejected;
-  expect(await api.session()).toEqual(info);
+  expect(await sessionApi.session()).toEqual(info);
   expect(fetch).toHaveBeenCalledTimes(2);
 });
 
@@ -250,9 +253,9 @@ it('a failed reset releases the guest lock for a readonly resume without another
       );
     }),
   );
-  const { api, SessionExpiredError } = await import('../src/lib/api');
-  await expect(api.resetSession()).rejects.toThrow('Synthetic failure');
-  await expect(api.resumeSession()).rejects.toBeInstanceOf(SessionExpiredError);
+  const { sessionApi, SessionExpiredError } = await import('@/shared/api');
+  await expect(sessionApi.resetSession()).rejects.toThrow('Synthetic failure');
+  await expect(sessionApi.resumeSession()).rejects.toBeInstanceOf(SessionExpiredError);
   expect(methods).toEqual(['DELETE', 'POST', 'GET']);
 });
 
@@ -260,8 +263,8 @@ it('readonly resume keeps genuine expiration semantics when Web Locks are unavai
   setup();
   const fetch = vi.fn().mockResolvedValue(Response.json({}, { status: 401 }));
   vi.stubGlobal('fetch', fetch);
-  const { api, SessionExpiredError } = await import('../src/lib/api');
-  await expect(api.resumeSession()).rejects.toBeInstanceOf(SessionExpiredError);
+  const { sessionApi, SessionExpiredError } = await import('@/shared/api');
+  await expect(sessionApi.resumeSession()).rejects.toBeInstanceOf(SessionExpiredError);
   expect(fetch).toHaveBeenCalledTimes(1);
   expect(fetch.mock.calls[0][1].method).toBeUndefined();
 });

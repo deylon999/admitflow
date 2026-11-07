@@ -6,8 +6,8 @@ import {
   MAX_DRAFT_BYTES,
   readDraft,
   storeDraft,
-} from '../src/lib/draft';
-import type { DraftPayload } from '../src/lib/draft';
+} from '@/features/edit-manual-direction';
+import type { DraftPayload } from '@/features/edit-manual-direction';
 
 const scope = 'a'.repeat(64),
   now = Date.parse('2026-11-01T12:00:00Z'),

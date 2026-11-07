@@ -1,9 +1,9 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { calculatePlace, exampleValues } from '../src/lib/calculator';
-import type { CalculationValues } from '../src/lib/calculator';
-import { parseSnapshot } from '../src/lib/contracts';
-import { compareSnapshots } from '../src/lib/comparison';
+import { calculatePlace, exampleValues } from '@/entities/manual-direction';
+import type { CalculationValues } from '@/entities/manual-direction';
+import { parseSnapshot } from '@/entities/manual-direction';
+import { compareSnapshots } from '@/entities/manual-direction';
 
 function snapshot(values: CalculationValues, id: string) {
   return parseSnapshot({ ...fixture.latest, id, values, calculation: calculatePlace(values) });

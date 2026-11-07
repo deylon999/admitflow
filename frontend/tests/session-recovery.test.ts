@@ -1,7 +1,7 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { SessionExpiredError } from '../src/lib/api';
-import { createQueryClient, sessionAccessKey } from '../src/lib/query-client';
-import type { SessionAccess } from '../src/lib/query-client';
+import { SessionExpiredError, sessionAccessKey } from '@/shared/api';
+import { createQueryClient } from '@/app/providers/query-client';
+import type { SessionAccess } from '@/shared/api';
 
 afterEach(() => {
   vi.unstubAllGlobals();

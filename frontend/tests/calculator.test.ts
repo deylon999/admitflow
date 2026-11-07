@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import fixtures from '../../shared/calculations.json';
-import { calculatePlace, exampleValues } from '../src/lib/calculator';
-import type { CalculationForm } from '../src/lib/calculator';
+import { calculatePlace, exampleValues } from '@/entities/manual-direction';
+import type { CalculationForm } from '@/entities/manual-direction';
 
 describe('manual-v1: общие сценарии TS/Python', () => {
   it.each(fixtures.valid)('$name', ({ input, expected }) => {

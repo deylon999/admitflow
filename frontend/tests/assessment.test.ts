@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import cases from '../../shared/assessment-cases.json';
-import { assessScenario, exampleValues } from '../src/lib/calculator';
+import { assessScenario, exampleValues } from '@/entities/manual-direction';
 
 it.each(cases)('assessment parity: $name', ({ input, state }) => {
   const result = assessScenario(input.values, input.mode, input.modelVersion);

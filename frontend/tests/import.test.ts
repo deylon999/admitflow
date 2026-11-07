@@ -5,8 +5,8 @@ import {
   importKey,
   MAX_IMPORT_FILE_BYTES,
   parseImportText,
-} from '../src/lib/import';
-import { parseImportResult } from '../src/lib/contracts';
+} from '@/features/import-manual-directions';
+import { parseImportResult } from '@/entities/manual-direction';
 
 const bundle = {
   formatVersion: 'manual-export-v1',

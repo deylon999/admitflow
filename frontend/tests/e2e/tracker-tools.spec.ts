@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
-import { calculatePlace } from '../../src/lib/calculator';
+import { calculatePlace } from '@/entities/manual-direction';
 
 test.beforeEach(async ({ page }) => {
   await page.route('**/api/v1/changes*', (route) =>
@@ -251,7 +251,7 @@ test('ошибка загрузки страницы показывает вос
     if (request.url().endsWith('/api/v1/session') && request.method() === 'POST') starts++;
   });
   await page.route(
-    /\/(?:src\/pages\/TrackerPage\.tsx|assets\/TrackerPage-[^/?]+\.js)(?:\?.*)?$/,
+    /\/(?:src\/pages\/tracker\/index\.ts|assets\/tracker-[^/?]+\.js)(?:\?.*)?$/,
     (route) => (failed ? route.abort('failed') : route.continue()),
   );
   await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));

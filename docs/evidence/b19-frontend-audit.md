@@ -40,9 +40,9 @@ P1 — риск потери данных/нарушение очистки пр
 
 ## F01. Восстановление доступа из второй вкладки удаляет новую сессию
 
-Места: [api.ts](../../frontend/src/lib/api.ts), resumeSession204,
-resetSession217–229; [TrackerPage.tsx](../../frontend/src/pages/TrackerPage.tsx),
-synchronize444 и recovery CTA656; [query-client.ts](../../frontend/src/lib/query-client.ts),27.
+Места: [api.ts](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/lib/api.ts), resumeSession204,
+resetSession217–229; [TrackerPage.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/pages/TrackerPage.tsx),
+synchronize444 и recovery CTA656; [query-client.ts](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/lib/query-client.ts),27.
 
 1. Открыть один гостевой кабинет в двух вкладках A/B.
 2. В B подтвердить «Удалить всё», задержать её новый POST/session после DELETE.
@@ -59,7 +59,7 @@ destructive reset. Probe:audit_sessions_race.cjs. Cleanup выполнен.
 
 ## F02. «Удалить всё» оставляет старые карточки после успешной смены сессии
 
-Место: [TrackerPage.tsx](../../frontend/src/pages/TrackerPage.tsx), reset.onSuccess494,
+Место: [TrackerPage.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/pages/TrackerPage.tsx), reset.onSuccess494,
 особенно invalidateQueries510.
 
 Создать запись, подтвердить сброс и вернуть503 только на обновление GET/watches
@@ -75,7 +75,7 @@ Probe:audit_sessions_stale_reset.cjs, основной исполнитель п
 
 ## F03. Черновик возвращает отменённые значения
 
-Место: [DirectionForm.tsx](../../frontend/src/components/DirectionForm.tsx),
+Место: [DirectionForm.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/components/DirectionForm.tsx),
 dirty60 и persist effect86.
 
 В сохранённой записи с номером10 открыть редактирование, ввести11, затем
@@ -88,8 +88,8 @@ Probe:audit_forms_probe.cjs, настоящая synthetic API запись.
 
 ## F04. Перечитывание фактов оставляет историю старой
 
-Места: [ArchiveDirections.tsx](../../frontend/src/components/ArchiveDirections.tsx),91;
-[ArchiveHistory.tsx](../../frontend/src/components/ArchiveHistory.tsx),64.
+Места: [ArchiveDirections.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/components/ArchiveDirections.tsx),91;
+[ArchiveHistory.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/components/ArchiveHistory.tsx),64.
 
 Раскрыть историю snapshot-1. Переключить синтетический сервер на snapshot-2,
 продвинуть browser clock на31секунду и нажать «Перечитать сохранённые факты».
@@ -100,7 +100,7 @@ subscription ID; records.refetch не инвалидирует историю. �
 
 ## F05. Сетевая ошибка выдаётся также за отсутствие групп
 
-Место: [SourcesPage.tsx](../../frontend/src/pages/SourcesPage.tsx),110.
+Место: [SourcesPage.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/pages/SourcesPage.tsx),110.
 
 При HTTP503 для GET/groups одновременно видны «Не удалось загрузить группы»
 и «Подходящих подключённых групп пока нет». Отсутствие данных не установлено:
@@ -109,7 +109,7 @@ subscription ID; records.refetch не инвалидирует историю. �
 
 ## F06. Каталог ломается при101подключённом филиале
 
-Места: [source-contracts.ts](../../frontend/src/lib/source-contracts.ts),211;
+Места: [source-contracts.ts](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/lib/source-contracts.ts),211;
 backend контракт: [source_catalog.py](../../backend/app/source_catalog.py),89.
 
 Валидный HTTP200 с50items/total100/100branch facets показывает50карточек.
@@ -122,7 +122,7 @@ Probe:audit_sources_probe.cjs, отдельный branches101 case.
 
 ## F07. Сравнение не сообщает об изменившемся количестве мест
 
-Место: [ArchiveHistory.tsx](../../frontend/src/components/ArchiveHistory.tsx),
+Место: [ArchiveHistory.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/components/ArchiveHistory.tsx),
 Difference23.
 
 Сравнить старый снимок seats2/candidate present и новый seats5/candidate absent.
@@ -133,7 +133,7 @@ Probe:audit_sources_probe.cjs, capacity case, синтетические сни�
 
 ## F08. После отмены неудачного импорта остаётся ложное предложение повтора
 
-Место: [ImportData.tsx](../../frontend/src/components/ImportData.tsx),clear45,
+Место: [ImportData.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/components/ImportData.tsx),clear45,
 cancel178 и mutation error185.
 
 Выбрать корректный JSON, получить503 при импорте и нажать «Отменить импорт».
@@ -144,7 +144,7 @@ Probe:audit_forms_import_cancel.cjs; только синтетический moc
 
 ## F09. Ctrl+P печатает время открытия кабинета вместо текущего
 
-Место: [TrackerPage.tsx](../../frontend/src/pages/TrackerPage.tsx),reportDate291,
+Место: [TrackerPage.tsx](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/pages/TrackerPage.tsx),reportDate291,
 собственная кнопка печати915.
 
 Открыть кабинет в10:48, продвинуть browser clock до10:58, вызвать штатную
@@ -155,7 +155,7 @@ Probe:audit_forms_print.cjs; synthetic record/browser clock.
 
 ## F10. Две секции теряют CSS границы
 
-Место: [tracker.css](../../frontend/src/tracker.css),790 и902.
+Место: [tracker.css](https://github.com/deylon999/admitflow/blob/fc9922b/frontend/src/tracker.css),790 и902.
 
 .source-lookup border-top и .scenario-comparison border используют --border,
 которой в стилях нет; объявлена --line. На реальных rendered elements

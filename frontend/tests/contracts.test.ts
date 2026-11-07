@@ -1,13 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import {
-  InvalidResponseError,
-  parseCatalog,
-  parseDetail,
-  parseSnapshot,
-  parseWatch,
-  parseWatches,
-} from '../src/lib/contracts';
+import { parseDetail, parseSnapshot, parseWatch, parseWatches } from '@/entities/manual-direction';
+import { parseCatalog } from '@/entities/university';
+import { InvalidResponseError } from '@/shared/api';
 
 describe('shared manual API contract', () => {
   it('accepts the exact response also checked against FastAPI', () => {

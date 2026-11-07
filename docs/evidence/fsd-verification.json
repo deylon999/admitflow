@@ -1,0 +1,36 @@
+{
+  "baseline": "3f8eee8",
+  "date": "2026-11-07",
+  "unit": {
+    "passed": 147,
+    "files": 24
+  },
+  "architecture": {
+    "modules": 119,
+    "dependencies": 279,
+    "cycles": 0
+  },
+  "appearance": {
+    "exactMatches": 12
+  },
+  "browsers": {
+    "chromium": {
+      "startTime": "2026-11-07T10:45:16.867Z",
+      "duration": 91449.231,
+      "expected": 105,
+      "skipped": 36,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "firefox": {
+      "startTime": "2026-11-07T10:48:13.813Z",
+      "duration": 100287.018,
+      "expected": 104,
+      "skipped": 37,
+      "unexpected": 0,
+      "flaky": 0
+    }
+  },
+  "committed": false,
+  "pushed": false
+}

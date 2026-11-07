@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
-import { explainScenario } from '../src/lib/explanation';
-import { exampleValues } from '../src/lib/calculator';
+import { explainScenario } from '@/entities/manual-direction';
+import { exampleValues } from '@/entities/manual-direction';
 
 it('ties both formulas and the boundary to the supplied numbers', () => {
   const explanation = explainScenario(exampleValues);

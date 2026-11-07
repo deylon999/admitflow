@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import fixture from './fixtures/scenario.json' with { type: 'json' };
-import { parseChanges } from '../src/lib/change-contracts';
+import { parseChanges } from '@/entities/admission-scenario';
 const scenario = {
   ...fixture,
   previousId: 'before',

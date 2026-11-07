@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import scenarioFixture from '../fixtures/scenario.json' with { type: 'json' };
-import type { Scenario } from '../../src/lib/scenario-contracts';
-import type { ArchiveHistoryItem, SourceGroup } from '../../src/lib/source-contracts';
+import type { Scenario } from '@/entities/admission-scenario';
+import type { ArchiveHistoryItem, SourceGroup } from '@/entities/admission-source';
 
 const subscriptionId = 'sub-demo';
 const template = scenarioFixture as Scenario;

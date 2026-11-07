@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { parseCoverage } from '../src/lib/contracts';
+import { parseCoverage } from '@/entities/admission-source';
 
 const base = {
   registeredSources: 0,

@@ -1,0 +1,90 @@
+import { Link } from 'react-router';
+import { useChangeFeed } from '../model/useChangeFeed';
+
+export function ChangeFeed() {
+  const { access, feed, seen, refreshChanges, loadMoreChanges, markSeen } = useChangeFeed();
+  if (access !== 'active') return null;
+  return (
+    <section
+      className="surface change-feed"
+      aria-labelledby="changes-title"
+    >
+      <h2 id="changes-title">Изменения в ваших списках</h2>
+      <p>
+        Изменения сохранённых условных сценариев. Архивные данные не описывают текущую приёмную
+        кампанию.
+      </p>
+      {feed.isPending && <p role="status">Загружаем изменения…</p>}
+      {feed.isError && (
+        <p role="alert">
+          Не удалось перечитать изменения.{' '}
+          <button
+            type="button"
+            onClick={refreshChanges}
+          >
+            Повторить изменения
+          </button>
+        </p>
+      )}
+      {feed.data && (
+        <p role="status">
+          Непрочитанных: {feed.data.pages[0].unreadCount} · всего: {feed.data.pages[0].total}
+        </p>
+      )}
+      {feed.data?.items.length === 0 && (
+        <p>Новых изменений пока нет. При первом сохранении записи уведомление не создаётся.</p>
+      )}
+      <button
+        type="button"
+        className="text-button"
+        disabled={feed.isFetching}
+        onClick={refreshChanges}
+      >
+        Перечитать изменения
+      </button>
+      {seen.isError && <p role="alert">{seen.error.message} Повторите отметку прочтения явно.</p>}
+      <ol>
+        {feed.data?.items.map((item) => (
+          <li key={item.id}>
+            <h3>{item.title}</h3>
+            <p>{item.scenario.explanation?.summary}</p>
+            <ul>
+              {item.scenario.explanation?.changes.map((text, index) => (
+                <li key={index}>{text}</li>
+              ))}
+            </ul>
+            <p className="small-copy">
+              Снимок получен: {item.scenario.fetchedAt}. Изменение обработано: {item.createdAt}.
+            </p>
+            <Link
+              to={`/tracker?direction=${encodeURIComponent(item.scenario.subscriptionId)}&assessment=${encodeURIComponent(item.scenario.id!)}`}
+            >
+              Сравнить сохранённые версии
+            </Link>
+            {item.seenAt ? (
+              <p className="small-copy">Прочитано: {item.seenAt}</p>
+            ) : (
+              <button
+                type="button"
+                className="text-button"
+                disabled={seen.isPending}
+                onClick={() => markSeen(item.id)}
+              >
+                Отметить прочитанным
+              </button>
+            )}
+          </li>
+        ))}
+      </ol>
+      {feed.hasNextPage && (
+        <button
+          type="button"
+          disabled={feed.isFetchingNextPage}
+          onClick={loadMoreChanges}
+        >
+          Ещё изменения
+        </button>
+      )}
+    </section>
+  );
+}

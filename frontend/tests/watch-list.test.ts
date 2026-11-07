@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { parseWatch } from '../src/lib/contracts';
-import { selectWatches } from '../src/lib/watch-list';
+import { parseWatch } from '@/entities/manual-direction';
+import { selectWatches } from '@/entities/manual-direction';
 
 test('filters do not mutate stored watches; date ordering retains microseconds', () => {
   const a = parseWatch({

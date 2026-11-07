@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { InvalidResponseError, parseDetail, parseExport } from '../src/lib/contracts';
+import { parseDetail, parseExport } from '@/entities/manual-direction';
+import { InvalidResponseError } from '@/shared/api';
 
 it('accepts the full export while detail remains bounded to 100 records', () => {
   const history = Array.from({ length: 150 }, (_, index) => ({

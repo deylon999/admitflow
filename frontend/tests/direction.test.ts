@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest';
-import { limitCodePoints, validateDirection } from '../src/lib/direction';
-import { parseWatch } from '../src/lib/contracts';
+import { validateDirection } from '@/features/edit-manual-direction';
+import { limitCodePoints } from '@/shared/lib/text';
+import { parseWatch } from '@/entities/manual-direction';
 import fixture from '../../shared/manual-watch.json';
 
 const valid = {

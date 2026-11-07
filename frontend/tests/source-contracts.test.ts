@@ -5,7 +5,7 @@ import {
   parseLookup,
   parseDirectionBudget,
   parseCandidate,
-} from '../src/lib/source-contracts';
+} from '@/entities/admission-source';
 
 const group = {
   id: 'g',
@@ -110,7 +110,7 @@ describe('source catalog contracts', () => {
 });
 
 it('validates archive version order, snapshot identity, presence and cursors', async () => {
-  const { parseArchiveHistory, assertArchiveOrder } = await import('../src/lib/source-contracts');
+  const { parseArchiveHistory, assertArchiveOrder } = await import('@/entities/admission-source');
   const base = {
     id: 'z',
     assessedAt: '2026-11-03T17:00:00Z',

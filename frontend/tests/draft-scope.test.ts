@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { parseSession } from '../src/lib/contracts';
+import { parseSession } from '@/shared/api';
 
 it('requires a valid scope when present and supports an older API without recovery', () => {
   const info = { expiresAt: '2026-12-01T00:00:00Z' };

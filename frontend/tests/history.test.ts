@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { parseHistoryPage } from '../src/lib/contracts';
+import { parseHistoryPage } from '@/entities/manual-direction';
 
 it('validates cursor, uniqueness and descending time before showing a page', () => {
   const item = fixture.latest;

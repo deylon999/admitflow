@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 import fixture from '../../shared/manual-watch.json';
-import { instantMicros } from '../src/lib/time';
-import { assertSnapshotOrder, parseExport, parseSnapshot } from '../src/lib/contracts';
+import { instantMicros } from '@/shared/lib/time';
+import { assertSnapshotOrder, parseExport, parseSnapshot } from '@/entities/manual-direction';
 
 it('requires an offset-normalized timestamp within the Python UTC calendar', () => {
   for (const value of ['0001-01-01T00:00:00+00:01', '9999-12-31T23:59:59.999999-00:01'])
