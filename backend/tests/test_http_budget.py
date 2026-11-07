@@ -41,21 +41,21 @@ def test_body_timeout_and_disconnect_never_call_application():
 
 
 def test_oversized_request_is_rejected_by_real_api(client):
-    response=client.post('/api/v1/calculate',content=b' '* (MAX_REQUEST_BYTES+1),headers={'Content-Type':'application/json'})
+    response=client.post('/api/v1/session',content=b' '* (MAX_REQUEST_BYTES+1),headers={'Content-Type':'application/json','X-Requested-With':'abiturient'})
     assert response.status_code==413
     assert response.headers['cache-control']=='no-store'
-    assert client.post('/api/v1/calculate',json={'rank':10,'seats':5,'excluded':0,'noConsent':0}).status_code==200
+    assert client.post('/api/v1/session',json={},headers={'X-Requested-With':'abiturient'}).status_code==204
 
 
 def test_ordinary_routes_accept_much_less_than_the_import_route(client):
     from app.http import DEFAULT_REQUEST_BYTES
     body=b'['+b'1,'*(DEFAULT_REQUEST_BYTES)+b'1]'
-    assert client.post('/api/v1/calculate',content=body,headers={'content-type':'application/json'}).status_code==413
+    assert client.post('/api/v1/session',content=body,headers={'content-type':'application/json','X-Requested-With':'abiturient'}).status_code==413
     response=client.post('/api/v1/import',content=body,headers={'content-type':'application/json','X-Requested-With':'abiturient'})
     assert response.status_code!=413
 
 
 def test_repeated_content_type_cannot_bypass_json_checks(client):
     duplicate=b'{"rank":1,"rank":2,"seats":1,"excluded":0,"noConsent":0}'
-    response=client.post('/api/v1/calculate',content=duplicate,headers=[('content-type','application/json'),('content-type','text/plain')])
+    response=client.post('/api/v1/session',content=duplicate,headers=[('content-type','application/json'),('content-type','text/plain'),('X-Requested-With','abiturient')])
     assert response.status_code==400

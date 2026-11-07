@@ -1,7 +1,7 @@
 """One per-owner limit shared by manual watches and confirmed source subscriptions."""
 from sqlalchemy import func,select
 from .admissions import Subscription
-from .calculation import CamelModel
+from .schema_base import CamelModel
 from .database import Watch
 
 LIMIT=20

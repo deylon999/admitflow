@@ -23,14 +23,11 @@ def create(client):
     return response.json()
 
 
-def test_health_and_calculation_without_session(client):
+def test_health_without_session(client):
     response = client.get('/api/health')
     assert response.status_code == 200
     assert response.json()['status'] == 'ok'
     assert response.headers['Cache-Control'] == 'no-store'
-    result = client.post('/api/v1/calculate', json=VALUES)
-    assert result.status_code == 200
-    assert result.json()['place'] == 74
 
 
 def test_manual_lifecycle(client, application):

@@ -25,5 +25,5 @@ def test_public_origin_is_exact_including_scheme_and_port(tmp_path):
         for origin in ['http://testserver:8443','https://testserver','https://testserver:8443.evil.org']:
             assert client.post('/api/v1/session',headers={'X-Requested-With':'abiturient','Origin':origin}).status_code==403
         assert client.post('/api/v1/session',headers={'X-Requested-With':'abiturient','Origin':'https://testserver:8443'}).status_code==204
-        # Calculations do not mutate or use a browser session.
-        assert client.post('/api/v1/calculate',headers={'Origin':'https://evil.example'},json={'rank':1,'seats':1,'excluded':0,'noConsent':0}).status_code==200
+        # There are no stateless calculator exceptions to the write-origin policy.
+        assert client.post('/api/v1/calculate', headers={'X-Requested-With':'abiturient','Origin':'https://evil.example'}, json={}).status_code==403

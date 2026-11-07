@@ -16,7 +16,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import TimeoutError as SQLAlchemyTimeoutError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from .calculation import AssessmentInput, CalculationInput, CalculationResult, ScenarioAssessment, assess_scenario, calculate, calculate_versioned
+from .calculation import CalculationInput, calculate_versioned
 from .config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
@@ -100,7 +100,7 @@ def create_app(settings: Settings | None = None):
     @app.middleware('http')
     async def protect_writes(request: Request, call_next):
         # Same-origin fetch with a custom header; no cross-origin CORS is enabled.
-        if request.method not in ('GET', 'HEAD', 'OPTIONS') and request.url.path not in ('/api/v1/calculate', '/api/v1/assess'):
+        if request.method not in ('GET', 'HEAD', 'OPTIONS'):
             if request.headers.get('X-Requested-With') != 'abiturient' or not permitted_origin(request, config):
                 from fastapi.responses import JSONResponse
                 return JSONResponse({'detail': 'Запрос должен исходить из интерфейса приложения.'}, status_code=403)
@@ -222,14 +222,6 @@ def create_app(settings: Settings | None = None):
             return system_status(db,registry=app.state.source_registry)
         except SQLAlchemyError:
             raise HTTPException(503,'База данных временно недоступна.') from None
-
-    @app.post('/api/v1/calculate', response_model=CalculationResult)
-    def calculate_endpoint(values: CalculationInput):
-        return calculate(values)
-
-    @app.post('/api/v1/assess', response_model=ScenarioAssessment)
-    def assess_endpoint(body: AssessmentInput):
-        return assess_scenario(body)
 
     @app.get('/api/v1/universities', response_model=CatalogRead)
     def universities(q: str = Query('', max_length=120), offset: int = Query(0,ge=0,le=100000), db: Session = Depends(database)):

@@ -10,7 +10,7 @@ from sqlalchemy import func,select,tuple_
 from sqlalchemy.orm import Session
 
 from .admissions import Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University
-from .calculation import CamelModel
+from .schema_base import CamelModel
 from .database import BrowserSession,LookupBudget,OperationRecord
 from .direction_budget import DirectionBudget,direction_budget
 from .operations import remember_operation
