@@ -5185,6 +5185,33 @@
 
 - [docs/evidence/final-ui-quality.md](../docs/evidence/final-ui-quality.md) — Production Chromium at375/768/1280/1920 light/dark; actual PNGs viewed. Fixed22.39px summary target to44px and redundant control CSS. typecheck/lint/build/format/architecture;150unit;72matrix+50regression Chromium passed/2API-fixture skips. Firefox Target crashed before page;WebKit/live API unavailable. No backend/business/FSD/commits/push.
 
+### T237. Fix cross-browser CI regressions after UI changes
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T236.
+
+**Результаты/файлы:** `frontend/tests/e2e/`; `docs/evidence/ui-ci-regressions.md`.
+
+**Шаги:**
+
+1. Reproduce failures.
+2. Identify fixture and focus changes.
+3. Correct regression tests or application defects.
+4. Verify with isolated API.
+5. Record limitations.
+
+**Критерии закрытия:**
+
+- Reproduce the reported Firefox failures where environment permits; separate incomplete mocks and outdated assertions from application defects.
+- Preserve session privacy checks and validation; no timeout increases/skips to hide failures.
+- Run relevant cross-browser/API regressions and frontend checks;record exact results and unavailable checks.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/ui-ci-regressions.md](../docs/evidence/ui-ci-regressions.md) — Reproduced exact Firefox detached-button timeout: unmocked history401;corrected five E2E fixtures/selectors/cache freshness expectations without production changes/timeouts/skips. Full Firefox254passed/37existing skips;targeted39Chromium+39Firefox;final4reset cases passed each;150unit and typecheck/lint/build/format/architecture. Fresh Ubuntu CI unverified;no push.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

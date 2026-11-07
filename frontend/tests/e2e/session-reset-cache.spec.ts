@@ -41,9 +41,17 @@ async function expectNoPreviousGuestData(page: Page) {
   await expect(page.locator('.direction-card')).toHaveCount(0);
   await expect(page.locator('.direction-history')).toHaveCount(0);
   await expect(page.locator('body')).not.toContainText(oldTitle);
-  await expect(page.locator('.watch-filters, .print-action')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Скачать данные (JSON)' })).toBeDisabled();
-  await expect(page.getByText(/^Всего направлений: 1 из 20/)).toHaveCount(0);
+  await expect(page.locator('.watch-filters')).toHaveCount(0);
+  // Tools can remain as disabled controls inside a closed disclosure, or be absent during reset.
+  await expect(page.locator('.print-action:enabled')).toHaveCount(0);
+  await expect(
+    page
+      .getByRole('button', { name: 'Скачать данные (JSON)', includeHidden: true })
+      .and(page.locator(':enabled')),
+  ).toHaveCount(0);
+  await expect(
+    page.locator('.tracker-list-heading .small-copy').filter({ hasText: /^1 из 20/ }),
+  ).toHaveCount(0);
 }
 
 test('successful guest reset clears cards history and print data even when the new list fails', async ({
@@ -168,7 +176,9 @@ test('failed deletion recovers the same owner only after a fresh authorized read
 
   try {
     await confirmReset(page);
-    await expect(page.getByText('Synthetic deletion failure', { exact: true })).toBeVisible();
+    await expect(page.getByRole('alert')).toContainText(
+      'Сервис временно недоступен. Попробуйте ещё раз чуть позже.',
+    );
     await expectNoPreviousGuestData(page);
     expect(await (await page.request.get('/api/v1/watches')).json()).toHaveLength(1);
     await expect(page.getByText('Создана новая гостевая сессия.', { exact: true })).toHaveCount(0);
@@ -211,8 +221,7 @@ test('confirmed deletion followed by failed creation never restores the previous
     await expect(page.getByRole('heading', { name: 'Срок гостевой сессии истёк' })).toHaveCount(0);
     releaseCreation();
     await expect(
-      // Both reset feedback and the failed fresh read may report the same failure.
-      page.getByText('Synthetic session creation failure', { exact: true }).first(),
+      page.getByRole('alert').filter({ hasText: 'Сервис временно недоступен' }).first(),
     ).toBeVisible();
     await expect(
       page.getByRole('heading', { name: 'Не удалось загрузить направления' }),

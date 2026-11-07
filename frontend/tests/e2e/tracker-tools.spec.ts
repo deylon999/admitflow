@@ -3,6 +3,11 @@ import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 import { calculatePlace } from '@/entities/manual-direction';
 
 test.beforeEach(async ({ page }) => {
+  // PositionChange loads history with the card; keep synthetic watches isolated from the real API.
+  // Individual history tests register their own response after this default route.
+  await page.route('**/api/v1/watches/*/history*', (route) =>
+    route.fulfill({ json: { items: [fixture.latest], nextCursor: null, total: 1 } }),
+  );
   await page.route('**/api/v1/changes*', (route) =>
     route.fulfill({ json: { items: [], total: 0, unreadCount: 0, nextCursor: null } }),
   );

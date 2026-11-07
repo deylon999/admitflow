@@ -79,6 +79,9 @@ for (const width of [390, 1440]) {
     await page.keyboard.press('Tab');
     await expect(university).toBeFocused();
     await page.keyboard.type('Keyboard University');
+    await expect(page.locator('.catalog-results')).toContainText('Вуз пока не добавлен');
+    await page.keyboard.press('Tab');
+    await expect(page.getByText('О подсказках вузов', { exact: true })).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(page.getByLabel('Направление', { exact: true })).toBeFocused();
     await page.keyboard.type('Keyboard admission group');
@@ -94,6 +97,8 @@ for (const width of [390, 1440]) {
     await page.keyboard.press('Tab');
     await page.keyboard.press('ControlOrMeta+A');
     await page.keyboard.type('16');
+    await page.keyboard.press('Tab');
+    await expect(page.getByText('Как посчитать без ошибок', { exact: true })).toBeFocused();
     await page.keyboard.press('Tab');
     await expect(page.getByRole('button', { name: 'Сохранить направление' })).toBeFocused();
     await page.keyboard.press('Enter');

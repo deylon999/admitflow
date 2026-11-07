@@ -28,12 +28,25 @@ for (const action of ['history', 'export', 'delete', 'import']) {
       ).status(),
     ).toBe(201);
     await page.reload();
+    if (action === 'history') {
+      await expect(page.locator('.position-change')).toContainText(
+        'Для сравнения нужно предыдущее сохранение.',
+      );
+    }
     await page.getByRole('button', { name: 'Обновить цифры', exact: true }).click();
     await page.getByLabel('Ваш номер в списке').fill('121');
     const starts = sessionStarts;
     await context.clearCookies();
-    if (action === 'history')
+    if (action === 'history') {
+      // The card has already cached this history. Advance its 30s freshness window
+      // so opening it exercises an actual unauthorized read rather than cached data.
+      await page.clock.setFixedTime(new Date(Date.now() + 31_000));
+      const denied = page.waitForResponse(
+        (response) => response.url().includes('/history') && response.status() === 401,
+      );
       await page.getByRole('button', { name: 'История', exact: true }).click();
+      await denied;
+    }
     if (action === 'export') {
       await openTrackerPanel(page, 'export');
       await page.getByRole('button', { name: 'Скачать данные (JSON)' }).click();

@@ -7424,6 +7424,40 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T237",
+      "title": "Fix cross-browser CI regressions after UI changes",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T236"
+      ],
+      "deliverables": [
+        "frontend/tests/e2e/",
+        "docs/evidence/ui-ci-regressions.md"
+      ],
+      "steps": [
+        "Reproduce failures",
+        "Identify fixture and focus changes",
+        "Correct regression tests or application defects",
+        "Verify with isolated API",
+        "Record limitations"
+      ],
+      "acceptance": [
+        "Reproduce the reported Firefox failures where environment permits; separate incomplete mocks and outdated assertions from application defects",
+        "Preserve session privacy checks and validation; no timeout increases/skips to hide failures",
+        "Run relevant cross-browser/API regressions and frontend checks;record exact results and unavailable checks"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/ui-ci-regressions.md",
+          "note": "Reproduced exact Firefox detached-button timeout: unmocked history401;corrected five E2E fixtures/selectors/cache freshness expectations without production changes/timeouts/skips. Full Firefox254passed/37existing skips;targeted39Chromium+39Firefox;final4reset cases passed each;150unit and typecheck/lint/build/format/architecture. Fresh Ubuntu CI unverified;no push."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

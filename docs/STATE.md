@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-07. Последняя сессия: S194.
+Дата: 2026-11-07. Последняя сессия: S195.
 
 ## Продолжение
 
@@ -12,10 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-User authorized commits after T236. Frontend committed as 2a9da3b; tests as 16cb145; UI evidence and session state committed separately. No push. Next product candidate T057.
+T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regressions.md. Local commit only;no push or fresh GitHub Actions result. Next product candidate T057.
 
 ## Последняя завершённая работа
 
+- T237: five E2E files corrected after UI updates;full Firefox254passed/37existing skips,all14reported scenarios passed;production code unchanged.
 - T233-T236 UI changes committed:2a9da3b frontend,16cb145 tests;verification and screenshots in docs/evidence/final-ui-quality.md.
 
 ## Ограничения
@@ -27,9 +28,8 @@ User authorized commits after T236. Frontend committed as 2a9da3b; tests as 16cb
 
 ## Проверенное окружение
 
-- S193: typecheck/lint/build/format/architecture passed;150unit;72matrix+50regression Chromium passed/2reviewed-source API skips;12actual screenshots viewed and saved.
-- Chromium production UI checked at375/768/1280/1920 light/dark. Firefox page creation Target crashed;WebKit absent;physical devices/live API/full WCAG not verified. No backend/business/FSD changes. Temporary preview stopped.
-- S194: user requested commits; prior verification retained because application files did not change. git diff --cached --check passed before commits. No push.
+- S195: typecheck/lint/build/format/architecture passed;150unit;full Firefox254passed/37existing skips;39targetedChromium+39targetedFirefox passed;final4reset cases passed each browser.
+- Actual isolated SQLite/FastAPI+production preview;Firefox works outside sandbox. Two Firefox PNGs viewed. Fresh Ubuntu/GitHub CI,source-fixture suites and reverse-proxy tests not verified this turn. Temporary servers stopped and test DB removed. No push.
 
 ## Готовность к выпуску
 

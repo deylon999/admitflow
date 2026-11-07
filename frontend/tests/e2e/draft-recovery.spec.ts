@@ -406,7 +406,9 @@ test('reload offers explicit restore and discard without writing directions', as
   await expect(recovery).toHaveCount(0);
   expect(await page.evaluate(() => sessionStorage.getItem('admitflow-draft-v1'))).toBeNull();
   await expect(
-    page.getByRole('button', { name: 'Добавить направление', exact: true }),
+    page
+      .locator('.tracker-page-heading')
+      .getByRole('button', { name: 'Добавить направление', exact: true }),
   ).toBeFocused();
   expect((await (await page.request.get('/api/v1/watches')).json()).length).toBe(0);
 });

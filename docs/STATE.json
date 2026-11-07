@@ -6,8 +6,8 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S194",
-  "resumeAction": "User authorized commits after T236. Frontend committed as 2a9da3b; tests as 16cb145; UI evidence and session state committed separately. No push. Next product candidate T057.",
+  "lastSession": "S195",
+  "resumeAction": "T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regressions.md. Local commit only;no push or fresh GitHub Actions result. Next product candidate T057.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -15,11 +15,11 @@
     "Опорный мониторинг не включает все лицензированные вузы. 2026-11-05 islod.obrnadzor.gov.ru/rlic timeout; нужна доступная официальная выгрузка для T056. Живая кампания 2027 и суточное наблюдение не подтверждены."
   ],
   "lastCompleted": [
+    "T237: five E2E files corrected after UI updates;full Firefox254passed/37existing skips,all14reported scenarios passed;production code unchanged.",
     "T233-T236 UI changes committed:2a9da3b frontend,16cb145 tests;verification and screenshots in docs/evidence/final-ui-quality.md."
   ],
   "environment": [
-    "S193: typecheck/lint/build/format/architecture passed;150unit;72matrix+50regression Chromium passed/2reviewed-source API skips;12actual screenshots viewed and saved.",
-    "Chromium production UI checked at375/768/1280/1920 light/dark. Firefox page creation Target crashed;WebKit absent;physical devices/live API/full WCAG not verified. No backend/business/FSD changes. Temporary preview stopped.",
-    "S194: user requested commits; prior verification retained because application files did not change. git diff --cached --check passed before commits. No push."
+    "S195: typecheck/lint/build/format/architecture passed;150unit;full Firefox254passed/37existing skips;39targetedChromium+39targetedFirefox passed;final4reset cases passed each browser.",
+    "Actual isolated SQLite/FastAPI+production preview;Firefox works outside sandbox. Two Firefox PNGs viewed. Fresh Ubuntu/GitHub CI,source-fixture suites and reverse-proxy tests not verified this turn. Temporary servers stopped and test DB removed. No push."
   ]
 }

@@ -1146,3 +1146,15 @@ Committed implementation as2a9da3b and regression tests as16cb145, using configu
 authorship. Evidence/screenshots/session documents committed separately. No
 application changes or repeated build needed;S193 verification retained. Staged
 whitespace checks passed. No push;next product candidate T057.
+
+S195 ? T237 started: investigate 14 Firefox CI failures reported after UI changes; preserve privacy checks and distinguish incomplete test fixtures from application defects. No timeout inflation or new skips.
+
+S195 ? T237 completed: exact reported Firefox timeout reproduced with real isolated
+API;unmocked synthetic-watch history401 caused correct private-UI cleanup. Five
+E2E files corrected for history fixtures,Tab hints,ambiguous add action,cache
+freshness and disabled tools/human errors. No production/backend/API changes,
+timeout increases or new skips. Full Firefox254passed/37existing skips;targeted
+39Chromium+39Firefox passed;final4reset cases passed each.150unit and typecheck/
+lint/build/format/architecture passed. Two actual Firefox PNGs viewed. Evidence:
+docs/evidence/ui-ci-regressions.md. Fresh GitHub/Ubuntu CI not confirmed. Temporary
+API/preview stopped and isolated DB removed;local commit authorized,no push.
