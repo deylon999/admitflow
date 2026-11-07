@@ -136,3 +136,35 @@ B12 owner changes and exact comparison:
 Events are inserted atomically with changed assessments/publication;unique assessment reference prevents duplicate worker retry messages. Initial/no-semantic-diff/template-only results do not create events. Deleting subscription/guest cascades through assessments to events. Source-operation journal remains operator-only and contains no applicant fields.
 
 Coverage response adds nonnegative registeredSources,reviewedSources,importedSources,importedGroups,importedUniversities,importedRows,archiveImportedGroups,conditionalGroups and nullable lastImportedAt. Existing automaticSources/publishedGroups/freshGroups/archiveGroups retain their separate accepted-auto-policy meaning. catalogUniversities is a catalog count,nationalTotal is null. See [catalog-coverage.md](catalog-coverage.md) for scope/denominator/disabled/held-source rules;generatedAt is report generation,lastImportedAt comes from snapshotfetch.
+
+## V3 public catalog (S200)
+
+New read-only facade; existing v1 APIs remain unchanged. No browser session is
+created. See product-functional-audit.md for data scope and rationale.
+
+- GET /api/v1/catalog/universities: q (120 chars), region (120 chars),
+  offset 0..100000, limit 1..50 (default 12), sort name|name-desc.
+  Returns items/total/nextOffset/regions/registryEdition.
+- GET /api/v1/catalog/universities/{id}: stable reference ID, name/legalName,
+  region/isBranch/officialUrl, provenance, knownProgramCount and years.
+  Count means verified imported scopes, not all courses offered.
+- GET /api/v1/catalog/programs: q, universityId, year 2000..2100, subject,
+  offset/limit/sort as above. Returns items/total/nextOffset/years/subjects.
+  Current verified examination dataset is absent: subjects=[], specific subject
+  filters return no matches. Unknown year never falls back to another year.
+- GET /api/v1/catalog/programs/{id}: group/campaign/year identity, university,
+  code/title, form/funding/category, nullable seats and provenance.
+  historicalCutoff, examRequirements and forecast are explicitly null.
+
+Unknown detail IDs return 404, invalid filter bounds 422. All responses use
+camelCase. Provenance includes URL, verifiedAt, nullable sourceUpdatedAt, kind
+(monitoring|archive), optional edition/originalSha256. Capture/review timestamps
+are never represented as the source publication timestamp. Reference edition
+2025 and admission campaign 2026 are separate fields.
+
+Explicit metadata import after migrations (backend working directory):
+python -m app.catalog_import
+It atomically imports two reviewed SGU archive-2026 budget/general scopes,
+refuses existing identity conflicts and never enables sources or imports PII.
+Without import, program endpoints correctly return an empty catalog. No schema
+migration or new database is needed for this metadata-only slice.

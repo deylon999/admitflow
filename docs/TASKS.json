@@ -7522,7 +7522,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T243"
       ],
@@ -7535,7 +7535,12 @@
       "acceptance": [
         "Public read API uses audited identities, nullable unknowns, campaign years and provenance; no synthetic production facts"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "backend/tests/test_product_catalog.py",
+          "note": "Public read facade and atomic audited import implemented. Targeted new + legacy catalog tests: 31 passed, 1 native PostgreSQL skipped (Docker permission denied). Provenance/year/null/conflict and legacy compatibility covered."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7544,7 +7549,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T244"
       ],

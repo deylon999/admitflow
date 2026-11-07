@@ -4128,7 +4128,7 @@
 
 ### T244. Implement verified campaign-scoped catalog API
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T243.
 
@@ -4145,11 +4145,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [backend/tests/test_product_catalog.py](../backend/tests/test_product_catalog.py) — Public read facade and atomic audited import implemented. Targeted new + legacy catalog tests: 31 passed, 1 native PostgreSQL skipped (Docker permission denied). Provenance/year/null/conflict and legacy compatibility covered.
 
 ### T245. Connect v3 catalog and detail pages to real API
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T244.
 

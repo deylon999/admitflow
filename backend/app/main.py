@@ -378,6 +378,8 @@ def create_app(settings: Settings | None = None):
         total = db.scalar(select(func.count()).select_from(Snapshot).where(Snapshot.watch_id == watch_id))
         return HistoryPage(items=[snapshot_read(row) for row in rows[:limit]], next_cursor=rows[limit - 1].id if len(rows) > limit else None, total=total)
 
+    from .product_catalog import install as install_product_catalog
+    install_product_catalog(app, database)
     return app
 
 
