@@ -4105,6 +4105,111 @@
 
 - [docs/evidence/frontend-v3-exact.md](../docs/evidence/frontend-v3-exact.md) — Implementation 3e50540: direct copy of all 29 source routes; one type-only fix, identical compiled JS/CSS. Install/typecheck/build/source verification passed. Chromium 187 passed, zero failed/skipped; 145 live pixel comparisons at five widths, zero different pixels and no horizontal overflow. All 290 PNGs and interactive gallery saved. Backend/shared/Compose and main/previous branch unchanged. No API integration, push or deployment.
 
+### T243. Audit all 29 v3 routes and backend reuse
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/product-functional-audit.md`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- 29-route table covers data, controls, demo/working state, required APIs, dependencies and priority; backend reuse and slice plan documented.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/product-functional-audit.md](../docs/product-functional-audit.md) — All 29 routes audited; backend reuse, source limits, API/model map and implementation sequence documented after source inspection.
+
+### T244. Implement verified campaign-scoped catalog API
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T243.
+
+**Результаты/файлы:** `backend/app/product_catalog.py`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Public read API uses audited identities, nullable unknowns, campaign years and provenance; no synthetic production facts.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T245. Connect v3 catalog and detail pages to real API
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T244.
+
+**Результаты/файлы:** `frontend/src/catalog/`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Four React pages use stable IDs and real API with search, filters, pagination, loading/error/empty states, no demo fallback.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T246. Verify catalog APIs, flows and unchanged design
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T245.
+
+**Результаты/файлы:** `docs/evidence/catalog-vertical-slice.md`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- TypeScript, ESLint, build, backend API tests and desktop/mobile Playwright pass; unavailable environment explicitly recorded.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T247. Document product foundation and remaining demo modules
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T246.
+
+**Результаты/файлы:** `docs/STATE.json`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Run instructions, API/model map, evidence, statuses and next steps are accurate.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

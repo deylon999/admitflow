@@ -7490,6 +7490,119 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T243",
+      "title": "Audit all 29 v3 routes and backend reuse",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/product-functional-audit.md"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "29-route table covers data, controls, demo/working state, required APIs, dependencies and priority; backend reuse and slice plan documented"
+      ],
+      "evidence": [
+        {
+          "path": "docs/product-functional-audit.md",
+          "note": "All 29 routes audited; backend reuse, source limits, API/model map and implementation sequence documented after source inspection."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T244",
+      "title": "Implement verified campaign-scoped catalog API",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T243"
+      ],
+      "deliverables": [
+        "backend/app/product_catalog.py"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Public read API uses audited identities, nullable unknowns, campaign years and provenance; no synthetic production facts"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T245",
+      "title": "Connect v3 catalog and detail pages to real API",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T244"
+      ],
+      "deliverables": [
+        "frontend/src/catalog/"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Four React pages use stable IDs and real API with search, filters, pagination, loading/error/empty states, no demo fallback"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T246",
+      "title": "Verify catalog APIs, flows and unchanged design",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T245"
+      ],
+      "deliverables": [
+        "docs/evidence/catalog-vertical-slice.md"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "TypeScript, ESLint, build, backend API tests and desktop/mobile Playwright pass; unavailable environment explicitly recorded"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T247",
+      "title": "Document product foundation and remaining demo modules",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T246"
+      ],
+      "deliverables": [
+        "docs/STATE.json"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Run instructions, API/model map, evidence, statuses and next steps are accurate"
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

@@ -1177,3 +1177,7 @@ CI updated for new frontend with independent backend PostgreSQL job retained.
 Backend/API/ML integration excluded by instruction. Docker/Nginx/hosted CI not
 run; no claim of cross-OS pixel identity. Temporary servers stopped and tool
 backup removed. No push/deployment; await review of exact-copy screenshots.
+
+S200 - T243-T247 started: explicit new product phase. Clean v3 branch preserved; feat/catalog-vertical-slice created. Audit 29 routes and existing backend before verified catalog implementation. No ML or redesign.
+
+S200 - T243 completed: 29-route audit, backend reuse and scoped API/data plan recorded in docs/product-functional-audit.md. Official MICCEDU index/card reachable; SGU current URLs unavailable through web tool, existing attested archive metadata retained with original dates. PostgreSQL Docker access denied in current environment. T244 started; no unverified exam/cutoff facts.

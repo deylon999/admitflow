@@ -3,16 +3,16 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-08. Последняя сессия: S199.
+Дата: 2026-11-08. Последняя сессия: S200.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: не назначена.
+- Текущая задача: T244.
+- Следующая задача: T244.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T242 exact v3 copy completed and verified. Await user review of paired screenshots. No backend/API/ML integration or redesign unless explicitly requested. Use frontend npm run dev (5173); previous branch preserved.
+New functional phase on feat/catalog-vertical-slice. Audit first, then verified catalog APIs and four v3 pages. Preserve exact visual foundation; no ML development.
 
 ## Последняя завершённая работа
 
