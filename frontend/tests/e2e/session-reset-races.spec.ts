@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 
 const headers = { 'X-Requested-With': 'abiturient' };
@@ -54,6 +55,7 @@ for (const webLocks of [true, false]) {
         }
         await route.continue();
       });
+      await openTrackerPanel(other, 'access');
       await other.getByRole('button', { name: 'Удалить все мои данные', exact: true }).click();
       await other.getByRole('button', { name: 'Удалить всё', exact: true }).click();
       await expect.poll(() => resetPostWaiting).toBe(true);

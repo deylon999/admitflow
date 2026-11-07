@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 test.beforeEach(() =>
   test.skip(process.env.E2E_SOURCE_FIXTURE !== '1', 'Requires anonymized fixture API'),
@@ -13,6 +14,7 @@ async function saved(page: import('@playwright/test').Page) {
 }
 test('native archive initial history preserves snapshot and version', async ({ page }) => {
   await saved(page);
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История фактов', exact: true }).click();
   await expect(page.locator('.archive-fact-list li')).toHaveCount(1);
   await expect(page.locator('.archive-fact-list')).toContainText('source-confirmation-v1');
@@ -55,6 +57,7 @@ test('synthetic page comparisons show consent changes and absence without inferr
         : { items: [latest, absent], total: 3, nextCursor: 'history-b' },
     }),
   );
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История фактов', exact: true }).click();
   await expect(page.getByRole('region', { name: 'Сравнение архивных фактов' })).toContainText(
     'Отсутствие не доказывает отзыв или отказ',

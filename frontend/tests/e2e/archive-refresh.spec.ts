@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import scenarioFixture from '../fixtures/scenario.json' with { type: 'json' };
@@ -179,7 +180,12 @@ async function installArchive(page: Page, sameSnapshot = false) {
 }
 
 async function openHistories(page: Page) {
+  await openTrackerPanel(page, 'archive');
+  await openTrackerPanel(page, 'archive-facts');
+  await openTrackerPanel(page, 'changes');
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История фактов', exact: true }).click();
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История условных сценариев', exact: true }).click();
   await expect(page.locator('.archive-fact-list > li')).toHaveCount(1);
   await expect(page.locator('.scenario-history > ol > li')).toHaveCount(1);
@@ -223,7 +229,9 @@ test('explicit refresh marks closed cached histories stale until they are opened
   const state = await installArchive(page, true);
   await page.goto('/tracker');
   await openHistories(page);
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История фактов', exact: true }).click();
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История условных сценариев', exact: true }).click();
 
   state.revision = 2;
@@ -232,7 +240,9 @@ test('explicit refresh marks closed cached histories stale until they are opened
   await expect(refresh).toBeEnabled();
   expect(state.reads['subscriptions/sub-demo/history']).toBe(1);
   expect(state.reads['subscriptions/sub-demo/scenario-history']).toBe(1);
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История фактов', exact: true }).click();
+  await openTrackerPanel(page, 'archive-history');
   await page.getByRole('button', { name: 'История условных сценариев', exact: true }).click();
   await expect(page.locator('.archive-fact-list > li')).toHaveCount(2);
   await expect(page.locator('.scenario-history > ol > li')).toHaveCount(2);
@@ -348,6 +358,7 @@ for (const item of capacityCases) {
       },
     ];
     await page.goto('/tracker');
+    await openTrackerPanel(page, 'archive-history');
     await page.getByRole('button', { name: 'История фактов', exact: true }).click();
     const comparison = page.getByRole('region', { name: 'Сравнение архивных фактов' });
     if (item.expected) {

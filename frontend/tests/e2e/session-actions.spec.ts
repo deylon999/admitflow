@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 import fixture from '../../../shared/manual-watch.json' with { type: 'json' };
 
@@ -33,8 +34,10 @@ for (const action of ['history', 'export', 'delete', 'import']) {
     await context.clearCookies();
     if (action === 'history')
       await page.getByRole('button', { name: 'История', exact: true }).click();
-    if (action === 'export')
+    if (action === 'export') {
+      await openTrackerPanel(page, 'export');
       await page.getByRole('button', { name: 'Скачать данные (JSON)' }).click();
+    }
     if (action === 'delete') {
       await page.getByRole('button', { name: 'Удалить', exact: true }).click();
       page.once('dialog', (dialog) => dialog.accept());

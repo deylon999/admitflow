@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
@@ -68,6 +69,7 @@ test('экспорт скачивается как JSON с полной свое
   await page.getByRole('button', { name: 'Сохранить направление' }).click();
   await expect(page.locator('.direction-card')).toHaveCount(1);
   const pending = page.waitForEvent('download');
+  await openTrackerPanel(page, 'export');
   await page.getByRole('button', { name: 'Скачать данные (JSON)' }).click();
   const file = await pending;
   const path = await file.path();
@@ -107,9 +109,11 @@ test('удаление всех данных требует подтвержде
   });
   expect(created.status()).toBe(201);
   await page.reload();
+  await openTrackerPanel(page, 'access');
   await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
   await page.getByRole('button', { name: 'Отмена' }).click();
   await expect(page.getByRole('heading', { name: 'Удаление данных' })).toBeVisible();
+  await openTrackerPanel(page, 'access');
   await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
   await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();

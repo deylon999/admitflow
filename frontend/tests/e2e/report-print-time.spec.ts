@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 
 test('browser beforeprint commits the current report time before returning', async ({ page }) => {
@@ -38,6 +39,7 @@ test('browser beforeprint commits the current report time before returning', asy
         document.querySelector('.print-report > p')?.textContent ?? '';
     };
   });
+  await openTrackerPanel(page, 'export');
   await page.getByRole('button', { name: 'Распечатать выбранный список (1)', exact: true }).click();
   await expect(page.locator('html')).toHaveAttribute(
     'data-printed-report-time',

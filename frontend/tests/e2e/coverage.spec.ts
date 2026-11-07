@@ -1,8 +1,10 @@
 import { expect, test } from '@playwright/test';
+import { openTrackerPanel } from './helpers/tracker';
 
 test('справочник не выдаётся за автоматический охват', async ({ page }) => {
   test.skip(process.env.E2E_API !== '1', 'Требуется API');
   await page.goto('/tracker');
+  await openTrackerPanel(page, 'sources');
   const section = page.getByRole('region', { name: 'Покрытие источников' });
   const coverage = await (await page.request.get('/api/v1/coverage')).json();
   await expect(section.locator('dd')).toHaveText(
@@ -25,6 +27,7 @@ test('ошибка проверки покрытия не заменяется �
     route.fulfill({ status: 503, json: { detail: 'Unavailable' } }),
   );
   await page.goto('/tracker');
+  await openTrackerPanel(page, 'sources');
   const section = page.getByRole('region', { name: 'Покрытие источников' });
   await expect(section.getByRole('alert')).toContainText('Не удалось проверить покрытие');
   await expect(section.locator('dd')).toHaveCount(0);

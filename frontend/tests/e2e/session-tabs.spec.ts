@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 
 test('сброс в другой вкладке скрывает старый ввод без нового POST session', async ({
@@ -29,6 +30,7 @@ test('сброс в другой вкладке скрывает старый в
     await expect
       .poll(() => other.evaluate(() => sessionStorage.getItem('admitflow-draft-v1')))
       .not.toBeNull();
+    await openTrackerPanel(page, 'access');
     await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
     await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
     await expect(page.getByRole('heading', { name: 'Направлений пока нет' })).toBeVisible();

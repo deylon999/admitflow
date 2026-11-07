@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 
@@ -31,6 +32,7 @@ async function seedPreviousGuest(page: Page) {
 }
 
 async function confirmReset(page: Page) {
+  await openTrackerPanel(page, 'access');
   await page.getByRole('button', { name: 'Удалить все мои данные', exact: true }).click();
   await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
 }

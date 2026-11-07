@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
 test.beforeEach(() =>
@@ -14,6 +15,7 @@ async function save(page: Page, code = 'FIXTURE-000001') {
   await expect(page.locator('.archive-direction-card')).toHaveCount(1);
 }
 async function reset(page: Page) {
+  await openTrackerPanel(page, 'access');
   await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
   await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
   await expect(page.locator('.archive-direction-card')).toHaveCount(0);
@@ -29,6 +31,7 @@ test('other tab hides old source history and explicitly syncs only the replaceme
     if (r.url().endsWith('/session') && r.method() === 'POST') starts++;
   });
   await other.goto('/tracker');
+  await openTrackerPanel(other, 'archive-history');
   await other.getByRole('button', { name: 'История фактов', exact: true }).click();
   await expect(other.locator('.archive-fact-list li')).toHaveCount(1);
   const before = starts;
@@ -38,6 +41,7 @@ test('other tab hides old source history and explicitly syncs only the replaceme
   await save(page, 'FIXTURE-000002');
   await other.getByRole('button', { name: 'Синхронизировать доступ' }).click();
   await expect(other.locator('.archive-direction-card')).toHaveCount(1);
+  await openTrackerPanel(other, 'archive-facts');
   await expect(other.locator('.archive-direction-card strong').first()).toHaveText('2');
   expect(starts).toBe(before);
 });
@@ -58,6 +62,7 @@ test('late old-owner history response cannot reappear after reset and sync', asy
     await gate;
     await route.fulfill({ response }).catch(() => {});
   });
+  await openTrackerPanel(other, 'archive-history');
   await other.getByRole('button', { name: 'История фактов', exact: true }).click();
   await requested;
   try {

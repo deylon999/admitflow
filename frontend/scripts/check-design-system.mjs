@@ -71,6 +71,8 @@ try {
           if (route.request().method() === 'POST') return route.fulfill({ status: 204 });
           body = { expiresAt: '2030-12-01T00:00:00Z', draftScope: 'a'.repeat(64) };
         } else if (path === '/watches') body = [watch];
+        else if (path === `/watches/${watch.id}/history`)
+          body = { items: [watch.latest], total: 1, nextCursor: null };
         else if (path === '/subscriptions') body = [];
         else if (path === '/direction-budget')
           body = { limit: 20, total: 1, manualCount: 1, archiveCount: 0 };

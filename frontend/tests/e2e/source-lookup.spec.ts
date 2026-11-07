@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 
 test.beforeEach(() =>
@@ -36,6 +37,7 @@ test('explicit group confirmation saves once, reloads and does not persist publi
   expect(
     await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage })),
   ).not.toContain('FIXTURE-');
+  await openTrackerPanel(page, 'access');
   await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
   await page.getByRole('button', { name: 'Удалить всё', exact: true }).click();
   await expect(page.locator('.archive-direction-card')).toHaveCount(0);

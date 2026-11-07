@@ -1,3 +1,4 @@
+import { openTrackerPanel } from './helpers/tracker';
 import { expect, test } from '@playwright/test';
 
 test('filtered print media exports only selected real manual records to PDF', async ({
@@ -24,6 +25,7 @@ test('filtered print media exports only selected real manual records to PDF', as
     expect(response.status()).toBe(201);
   }
   await page.reload();
+  await openTrackerPanel(page, 'filters');
   await page.locator('#watch-search').fill('Keep this');
   await expect(page.locator('.direction-card')).toHaveCount(1);
   await page.evaluate(() => {
@@ -32,6 +34,7 @@ test('filtered print media exports only selected real manual records to PDF', as
       (window as unknown as { prints: number }).prints++;
     };
   });
+  await openTrackerPanel(page, 'export');
   await page.getByRole('button', { name: 'Распечатать выбранный список (1)', exact: true }).click();
   await expect
     .poll(() => page.evaluate(() => (window as unknown as { prints: number }).prints))

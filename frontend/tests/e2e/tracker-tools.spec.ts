@@ -52,6 +52,7 @@ test('поиск, фильтр и порядок не удаляют напра�
   );
   await page.goto('/tracker');
   await expect(page.locator('.direction-card')).toHaveCount(2);
+  await page.getByText('Поиск и фильтры · 2 из 2', { exact: true }).click();
   await page.locator('#watch-search').fill('другой');
   await expect(page.locator('.direction-card')).toHaveCount(1);
   await page.locator('#watch-state').selectOption('out');
@@ -68,6 +69,7 @@ test('печатный отчёт содержит источник и допу�
   await page.evaluate(() => {
     window.print = () => {};
   });
+  await page.getByText('Скачать данные и распечатать', { exact: true }).click();
   await page.getByRole('button', { name: /Распечатать выбранный/ }).click();
   await page.emulateMedia({ media: 'print' });
   await expect(page.locator('.print-report')).toBeVisible();
@@ -111,6 +113,7 @@ test('подтверждение удаления получает фокус и
   await expect(page.getByRole('button', { name: 'Отмена', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
   await expect(trigger).toBeFocused();
+  await page.getByText('Доступ и удаление данных', { exact: true }).click();
   await page.getByRole('button', { name: 'Удалить все мои данные' }).click();
   await expect(page.getByRole('button', { name: 'Отмена', exact: true })).toBeFocused();
   await page.keyboard.press('Escape');
@@ -148,11 +151,13 @@ test('срок доступа берётся с сервера и не прод�
   });
   await page.route('**/api/v1/watches', (route) => route.fulfill({ json: [] }));
   await page.goto('/tracker');
+  await page.getByText('Доступ и удаление данных', { exact: true }).click();
   await expect(page.locator('.session-deadline time')).toHaveAttribute(
     'datetime',
     '2026-12-01T00:00:00Z',
   );
   await page.reload();
+  await page.getByText('Доступ и удаление данных', { exact: true }).click();
   await expect(page.locator('.session-deadline time')).toHaveAttribute(
     'datetime',
     '2026-12-01T00:00:00Z',

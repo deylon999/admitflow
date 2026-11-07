@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openTrackerPanel } from './helpers/tracker';
 import type { Page } from '@playwright/test';
 test.beforeEach(() =>
   test.skip(process.env.E2E_SCENARIOS !== '1', 'Requires two-source scenario fixtureAPI'),
@@ -12,6 +13,8 @@ async function save(page: Page, code = 'FIXTURE-000020', group = '09.03.04') {
   await page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись').check();
   await page.getByRole('button', { name: 'Сохранить эту запись' }).click();
   await page.getByRole('link', { name: /Открыть мои направления/ }).click();
+  await openTrackerPanel(page, 'archive-history');
+  await openTrackerPanel(page, 'archive-facts');
 }
 for (const theme of ['light', 'dark'])
   test(`stored archive scenario explains conditional numbers at320px ${theme}`, async ({

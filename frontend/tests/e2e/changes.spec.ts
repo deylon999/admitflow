@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { openTrackerPanel } from './helpers/tracker';
 import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 test('actual private changefeed links immutable comparison and keeps seen state', async ({
@@ -14,11 +15,13 @@ test('actual private changefeed links immutable comparison and keeps seen state'
   await page.getByLabel('Подтверждаю: выбраны нужные мне группа и запись').check();
   await page.getByRole('button', { name: 'Сохранить эту запись' }).click();
   await page.getByRole('link', { name: /Открыть мои направления/ }).click();
+  await openTrackerPanel(page, 'changes');
   const feed = page.getByRole('region', { name: 'Изменения в ваших списках' });
   await expect(feed).toContainText('Непрочитанных: 0');
   const other = await browser.newContext();
   const otherPage = await other.newPage();
   await otherPage.goto('/tracker');
+  await openTrackerPanel(otherPage, 'changes');
   await expect(otherPage.getByRole('region', { name: 'Изменения в ваших списках' })).toContainText(
     'Непрочитанных: 0',
   );
@@ -41,6 +44,7 @@ test('actual private changefeed links immutable comparison and keeps seen state'
   await feed.getByRole('button', { name: 'Отметить прочитанным' }).click();
   await expect(feed).toContainText('Непрочитанных: 0');
   await page.reload();
+  await openTrackerPanel(page, 'changes');
   await expect(feed).toContainText('Прочитано:');
   await otherPage
     .getByRole('region', { name: 'Изменения в ваших списках' })
