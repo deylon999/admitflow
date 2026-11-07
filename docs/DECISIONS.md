@@ -186,3 +186,16 @@ Backend, база, shared и Compose не меняются; API/ML-интегр�
 старые APIs не удаляются, manual calculation не становится новой моделью.
 Неподтверждённые cutoff/exams/forecast остаются null. Архив 2026 не выдаётся
 за кампанию 2027. ML, auth и остальные модули внедряются отдельно.
+
+2026-11-08, ADR-050, user-directed (T248–T252): очистка без новых функций
+в отдельной ветке от актуального v3/catalog состояния. Удаляются только
+подтверждённые dependency audit артефакты: offline HTML/имитация React,
+устаревший E2E stand, неиспользуемый plugin-react и два stateless manual
+HTTP calculator endpoints. Это уточняет прежний общий запрет удаления APIs:
+полезные catalog/source/history/worker и data-preservation контракты остаются.
+CamelModel переносится из арифметики в общий schema_base без изменения DTO.
+Существующие SQL-модели, БД и applied migrations не удаляются; дальнейший
+вывод legacy persistence требует inventory/backup/restore/retention плана.
+Визуальный render-код v3 не меняется. Docker Engine denied — T250 blocked,
+не основание обходить sandbox или заявлять PostgreSQL/Docker smoke по SQLite.
+Старые release/ML задачи deferred до критериев v3. После очистки остановиться.

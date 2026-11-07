@@ -1,60 +1,30 @@
 # AdmitFlow
 
-Текущий frontend сохраняет дизайн `admitflow-frontend-v3-main` и все 29
-маршрутов. Каталоги вузов/направлений и их страницы подключены к FastAPI:
-1257 организаций датированного справочника MICCEDU и два проверенных конкурса
-СГУ за 2026 год после явного metadata import. Остальные модули пока demo.
-ML не подключена; неизвестные проходные и требования ЕГЭ не выдумываются.
+React/TypeScript-интерфейс v3 и FastAPI/PostgreSQL backend. Дизайн v3 —
+визуальный эталон. Все 29 маршрутов сохраняются. Реально подключены каталог
+вузов, страница вуза, каталог направлений и страница направления; остальные
+разделы пока демонстрационные. ML не подключена.
 
-[Запуск каталога и проверок](docs/catalog-runbook.md) ·
-[Аудит 29 страниц](docs/product-functional-audit.md) ·
-[Результаты функционального этапа](docs/evidence/catalog-vertical-slice.md).
+Каталог использует датированный справочник MICCEDU и два проверенных архивных
+конкурса СГУ 2026. Неизвестные проходные и требования ЕГЭ не выдумываются.
 
-Запуск нового frontend из корня репозитория:
+Запуск и явный импорт metadata: [catalog-runbook](docs/catalog-runbook.md).
+Для frontend из `frontend/`: `npm ci`, `npm run dev`, localhost:5173.
+API proxy по умолчанию localhost:8000; адрес задаётся `API_PROXY_TARGET`.
+Для локальной изолированной проверки предусмотрен `node scripts/test-api.mjs`
+с временной SQLite; это не замена native PostgreSQL-проверке.
 
-```sh
-cd frontend
-npm ci
-npm run dev
-```
+Проверки из frontend: `npm run typecheck`, `npm run lint`, `npm run build`,
+`npm test`. Полное сравнение с read-only sibling: `npm run test:visual`.
+Нужны backend requirements-dev и установленный Chromium.
 
-Открыть `http://localhost:5173`. Для каталога нужен backend; proxy по умолчанию
-на localhost:8000, альтернативный адрес задаётся API_PROXY_TARGET.
-В этой среде dev использует Vite watch-build
-и preview; после изменений исходников обновите страницу. Сборка:
-`npm run build`. Проверки: `npm test`, с доступной соседней папкой оригинала —
-`npm run test:visual`.
+- [Текущая архитектура](docs/ARCHITECTURE.md)
+- [API и удалённые старые endpoints](docs/API.md)
+- [KEEP / REFACTOR / DELETE и план сохранности данных](docs/foundation-cleanup-audit.md)
+- [Результаты очистки и ограничения инфраструктуры](docs/evidence/foundation-cleanup.md)
+- [Состояние и задачи](docs/STATE.md)
 
-[Отчёт точного переноса и сравнение скриншотов](docs/evidence/frontend-v3-exact.md).
-
-Ниже сохранено историческое описание прежнего ручного трекера. Оно больше
-не описывает текущий frontend; прежние backend-сценарии сохранены независимо
-от нового каталога.
-
-Помогает абитуриентам следить за положением в конкурсных списках вузов и сравнивать направления.
-
-Сейчас доступны калькулятор, сохранение и сравнение направлений, история, экспорт и восстановление JSON. Данные вводятся вручную. Контур фонового импорта подготовлен; реальные источники ещё проходят подключение.
-
-**Стек:** React, TypeScript, Vite · Python, FastAPI, SQLAlchemy.
-
-## Локальный запуск
-
-Установи и запусти Docker Desktop. Из корня репозитория:
-
-```sh
-docker compose up --build
-```
-
-Открой http://localhost:8080. Интерфейс, API и PostgreSQL запускаются вместе. База сохраняется между перезапусками. Остановка: `docker compose down`.
-
-Запуск без Docker — в [инструкции](docs/RUNBOOK.md#команды-приложения).
-
-`frontend/` — интерфейс · `backend/` — API · `shared/` — общие тестовые данные · `docs/` — документация · `scripts/` — проверка плана.
-
-[План разработки](docs/ROADMAP.md) · [Правила расчёта](docs/DATA_RULES.md)
-
-[Актуальное состояние](docs/STATE.md) · [доказательства проверок](docs/README.md)
-
-[Чек-лист: сделано / осталось](CHECKLIST.md)
-
-[Что осталось до выпуска](docs/RELEASE_GATES.md)
+PostgreSQL через Compose и Docker smoke не подтверждены в текущем sandbox:
+доступ к Docker Engine запрещён. Данные и миграции не удалялись.
+Документация прежнего ручного продукта находится в
+[архиве](docs/archive/readme-before-foundation.md), код — в Git-истории.

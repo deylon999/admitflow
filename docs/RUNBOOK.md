@@ -1,5 +1,24 @@
 # Возобновление и эксплуатация
 
+## Текущий контур v3 — S201
+
+Запуск каталога/metadata import: [catalog-runbook](catalog-runbook.md).
+Архитектура и действующие контракты: [ARCHITECTURE](ARCHITECTURE.md),
+[API](API.md). Статусы очистки/проверок: [evidence](evidence/foundation-cleanup.md).
+Docker Engine в текущем sandbox недоступен; native PG и Docker smoke не
+объявляются проверенными. Рабочие volumes/миграции не удалять.
+
+CI описан в `.github/workflows/ci.yml`: Node lint/typecheck/build/browser
+checks и полный Linux backend suite с disposable PostgreSQL. Установку
+браузера выполняет штатный `npx playwright install --with-deps chromium`.
+Старый mirror installer удалён; его датированное описание ниже — история.
+Старые `/tracker` и calculator HTTP не являются сценарием нового frontend.
+Позднейшие backup/source/worker команды остаются полезными backend-механизмами;
+для destructive data retirement действует отдельный
+[план](foundation-cleanup-audit.md).
+
+## Исторические проверки и сохранённые operational инструкции
+
 ## CI после исправлений B18 — 6 ноября 2026
 
 Workflow использует Ubuntu24.04. `scripts/install_playwright_ci.sh` заменяет
