@@ -913,3 +913,5 @@ T189done: все6заранее объявленных критериев вып
 По запросу пользователя создана review/vadim-audit-fixes от ad5b938 после fetch и проверки чистого дерева. Пятёрка T238–T242 с acceptance до реализации. main 3abb8ab уже содержит mvp-readiness; вклад проверяется относительно первого parent PR #1 (7bba8b2). Без push и merge.
 
 S196/T238: история и диапазон вклада подтверждены; audit/VADIM_CODE_REVIEW.md. npm ci, unit, build прошли. Windows pytest: 12 collection errors из-за resource; переходим к Linux/PostgreSQL. Генератор старой ветки дополнен STATE.md согласно текущему AGENTS.
+
+S196/T239: AUD-01–07 исправлены: безопасные backup/restore/retention, проверка raw SHA-256, надёжный monitoring и перенос Unix import в worker setup. 27 targeted passed; реальный PostgreSQL restore 20 таблиц/1 synthetic raw. Полный Linux bind-mount 564 passed/1 startup-timing failure, все 3 fetch tests прошли native Linux; полный native rerun отнесён к T242. Не менялись правила расчёта и release gates.

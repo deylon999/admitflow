@@ -5975,7 +5975,7 @@
       "id": "T239",
       "phase": "E5",
       "title": "Проверить backend и безопасность backup",
-      "status": "in_progress",
+      "status": "done",
       "priority": "P0",
       "size": "L",
       "dependsOn": [
@@ -5991,13 +5991,22 @@
       "deliverables": [
         "audit/BUG_REPORT.md"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "path": "audit/BUG_REPORT.md",
+          "note": "AUD-01–07 fixed; 27 targeted tests, real PostgreSQL restore of 20 tables/one raw object; broader 564+3 checks, final full repeat in T242."
+        },
+        {
+          "path": "audit/evidence/initial-checks.json",
+          "note": "Commands, actual results and bind-mount limitation."
+        }
+      ]
     },
     {
       "id": "T240",
       "phase": "E5",
       "title": "Проверить frontend и изоляцию сессий",
-      "status": "todo",
+      "status": "in_progress",
       "priority": "P0",
       "size": "L",
       "dependsOn": [

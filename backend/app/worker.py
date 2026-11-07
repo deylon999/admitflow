@@ -7,7 +7,6 @@ import math
 import multiprocessing
 import os
 from pathlib import Path
-import resource
 import tempfile
 import time
 from typing import Literal
@@ -201,6 +200,10 @@ def limit_memory():
     megabytes=int(os.getenv('WORKER_MEMORY_LIMIT_MB','2048'))
     if not 256<=megabytes<=65536:
         raise RuntimeError('WORKER_MEMORY_LIMIT_MB must be between 256 and 65536.')
+    try:
+        import resource
+    except ImportError:
+        raise RuntimeError('Worker memory limits require Unix; run the worker in Docker on Windows.') from None
     resource.setrlimit(resource.RLIMIT_AS,(megabytes*1024*1024,resource.getrlimit(resource.RLIMIT_AS)[1]))
 
 

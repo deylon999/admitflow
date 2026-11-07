@@ -1,0 +1,28 @@
+{
+  "date": "2026-11-08",
+  "baseline": "ad5b938",
+  "windowsTargeted": {
+    "command": "backend/.venv/Scripts/python.exe -m pytest -q tests/test_production_backup.py tests/test_ops_check.py tests/test_worker.py (cwd backend)",
+    "exitCode": 0,
+    "passed": 27
+  },
+  "linuxBindMount": {
+    "passed": 564,
+    "failed": 1,
+    "cause": "Child startup did not reach marker within 2s on Windows bind mount; tests/test_fetch_exchange.py passed 3/3 on native Linux files."
+  },
+  "backup": {
+    "project": "admitflow-audit-20261108",
+    "verified": true,
+    "tables": 20,
+    "rawObjects": 1,
+    "sourceCandidates": 3,
+    "data": "Synthetic fixture only; private backup files excluded from Git."
+  },
+  "frontendBaseline": {
+    "npmCiExit": 0,
+    "unitPassed": 115,
+    "buildExit": 0,
+    "npmAuditVulnerabilities": 0
+  }
+}

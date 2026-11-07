@@ -160,3 +160,12 @@ def test_worker_memory_limit_setting_is_validated(monkeypatch):
     monkeypatch.setenv('WORKER_MEMORY_LIMIT_MB','1')
     with pytest.raises(RuntimeError):
         limit_memory()
+
+
+def test_missing_resource_fails_only_at_worker_memory_setup(monkeypatch):
+    import sys
+    from app.worker import limit_memory
+    monkeypatch.setitem(sys.modules, 'resource', None)
+    monkeypatch.setenv('WORKER_MEMORY_LIMIT_MB', '2048')
+    with pytest.raises(RuntimeError, match='run the worker in Docker'):
+        limit_memory()

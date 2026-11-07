@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-08",
-  "currentTask": "T239",
+  "currentTask": "T240",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S196",
-  "resumeAction": "T238 завершена. T239: backend/PostgreSQL и исправления backup; исходный Windows pytest блокирован импортом resource.",
+  "resumeAction": "T238–T239 завершены. T240: подтверждены сессии/cache/draft; перенести проверенные исправления из main, затем browser/final T241–T242. Полный Linux native rerun ещё выполняется.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",

@@ -4058,7 +4058,7 @@
 
 ### T239. Проверить backend и безопасность backup
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T238.
 
@@ -4076,11 +4076,12 @@
 
 **Доказательства:**
 
-Пока нет.
+- [audit/BUG_REPORT.md](../audit/BUG_REPORT.md) — AUD-01–07 fixed; 27 targeted tests, real PostgreSQL restore of 20 tables/one raw object; broader 564+3 checks, final full repeat in T242.
+- [audit/evidence/initial-checks.json](../audit/evidence/initial-checks.json) — Commands, actual results and bind-mount limitation.
 
 ### T240. Проверить frontend и изоляцию сессий
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T239.
 

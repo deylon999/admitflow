@@ -1,0 +1,4 @@
+FROM python:3.12-slim
+COPY backend/requirements.txt backend/requirements-dev.txt backend/constraints.txt /requirements/
+RUN python -m pip install --no-cache-dir -r /requirements/requirements-dev.txt -c /requirements/constraints.txt
+WORKDIR /workspace/backend
