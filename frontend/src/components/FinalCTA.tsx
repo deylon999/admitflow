@@ -1,0 +1,2 @@
+import { Icon } from './Icons';
+export function FinalCTA(){return <section className="final-cta"><div className="cta-copy"><h2>Проверьте свои<br/>шансы на поступление</h2><p>Актуальные данные, конкуренты и прогноз проходного —<br/>чтобы поступать увереннее.</p></div><a className="button button-inverse" href="#calculator">Оценить свои шансы <Icon name="arrow" size={18}/></a><span className="cta-purple"/><span className="cta-ring"/></section>}

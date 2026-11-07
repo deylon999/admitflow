@@ -12,7 +12,7 @@ FIXTURES = Path(__file__).parent / 'fixtures/sgu-2026'
 
 def test_actual_derived_sgu_fixture_has_verified_structure_and_no_original_ids():
     body = (FIXTURES / 'sgu-4588-derived.html').read_bytes()
-    manifest = json.loads((FIXTURES / 'manifest.json').read_text())
+    manifest = json.loads((FIXTURES / 'manifest.json').read_text(encoding='utf-8'))
     assert hashlib.sha256(body).hexdigest() == manifest['derivedHash']
     soup, table, rows, metadata = sgu_structure(body)
     assert len(rows) == manifest['rows'] == 573

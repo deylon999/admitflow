@@ -1,0 +1,212 @@
+[
+  {
+    "path": "frontend/preview/all-pages.html",
+    "sha256": "a7703ddeeded701a5733dd013884487397a07d3ab070849d3be823e055a9c975",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app.html",
+    "sha256": "b595db192ff6200e8406d90a70f173993623f1223d3b28ec567ff4b43da47636",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__compare.html",
+    "sha256": "727b9695f6c32e536b5ad1740f6915db44f2300852d3a95a76b894d91fecfa41",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__competitions__mtuci-se.html",
+    "sha256": "4ef7d4850b5d63a09afd12b05b7b0ba5027233950c15a00652936705a82045e3",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__competitions__mtuci-se__competitors.html",
+    "sha256": "48f300f608c9adccd7669bcdd072a7df09bf1ec0a99db96d1446bd0a6d17f162",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__forecast.html",
+    "sha256": "89ae2dec1595dda0cc631e885124f7f718b110579f21deba8e228fc2dd8bb552",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__forecast__example.html",
+    "sha256": "3d230e353b8a404ffeee318d3043fdb9b69fde8e39e321b99fcf4ad7b5248d89",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__forecast__method.html",
+    "sha256": "1af818663d59090885e7284352658e591582089c6da64dbf958b61b6338b2174",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__history.html",
+    "sha256": "5fea219aaf4f7631d6187a0362c9e359e8ccf38e627b7957308ae50237ff17a7",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__notifications.html",
+    "sha256": "0f8b98578c12dc5210d4719cdce4cf1ab05dbdfc71332750e222dbdf2d3323f2",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__profile.html",
+    "sha256": "140906745dd3d91f0d46b42719a546723bd2936725086d104293ccf626d6ee7c",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__settings.html",
+    "sha256": "7310bca1be09f3c3a5593538adb8a2552b02ec08613417a5023d41c5040c66ae",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__sources.html",
+    "sha256": "c287413518450de156627c4ae4b08d4a6df1f5fb24bfd6a0d5c3217bf18a3f52",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__states__empty.html",
+    "sha256": "429b894e38aadd793d53261e52c7bc4f372c5bdb5184b6aac39233976459a675",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__states__error.html",
+    "sha256": "6695aec48052ce101ecddd85b4aab3bd48a4a6dce989a4856a102460ed969143",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__states__success.html",
+    "sha256": "2c98fe5576dd0883ac4687a78a5704a5b7974ea16dbd35e0eafb0057eba25233",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__watchlist.html",
+    "sha256": "f36ac135d7ea003d10eb27dcb021cc688cbee4140a00b565bc71fde7a424a734",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/app__watchlist__add.html",
+    "sha256": "6f5ea106d60766832af9270b3387ed0606c90fd0b549cbcacf49075809a07409",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/auth__login.html",
+    "sha256": "4329e7c915c73a6e6b7c16a2d8ec584192d8f8c00873336f0e2a096217539109",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/auth__recovery.html",
+    "sha256": "002118f082ba653bdbbf79ca7deffba981dd3b19cf368fc8ea347623386c34c9",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/auth__register.html",
+    "sha256": "2e206e516f447eb35d7b40e92594bbe744652ac072b5c8a6564a261dedf2a4b6",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/ege-analytics.html",
+    "sha256": "eba8818612be5bb7b31076e2ca72cc4f0c4058586287db952ef28035744c7fd5",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/faq.html",
+    "sha256": "226f2bc26a7f272e5c7bb5c38579c907f65b7b43894631d3628ef5d7f62c95f5",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/how-it-works.html",
+    "sha256": "4b7b1a0cbab50c8b727a0293c96427cea4f702b16c82b5c5b53578dab45acd90",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/index.html",
+    "sha256": "514470cdc6da759a54eb5c3f243ec4dd550dbaf5927c7f46c773811e55cb2569",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/interactions.js",
+    "sha256": "61b11c8dc39c15224b75daa3b01bacce122aff6889c79faa017bf291b7be965e",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/not-found.html",
+    "sha256": "e5794c720a562fefef53552e59246e98254f305cda5721fc5d32dc66556c3fbd",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/programs.html",
+    "sha256": "880326b3abbac1b49da0d4c5e0a92be464b85702c9ec8dd24d255199450de891",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/programs__mtuci-se.html",
+    "sha256": "97c26b7b48ee2ce9130c17adaaffbfbf6feccd7778b4caa1fa6bb20bac54d621",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/universities.html",
+    "sha256": "f8ac6a5a309495a92fdc9d7bdf58bab1a92a671a4f2e009eedccb61bd183f28e",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/preview/universities__mtuci.html",
+    "sha256": "5b999d11e2c21a2e43da5cab19023f1687fd95a61b74eabb0cdda2260b3ee041",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/scripts/build-offline-preview.cjs",
+    "sha256": "e5675b5bc0dc6d83c109c416bb71d63a876bebd1dad574dde039dae592215cb0",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/scripts/render-preview.py",
+    "sha256": "6f53da6f82f495f6ef409e23b4a8d26ec09c286634cfdfb11247091d30a8f60f",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/scripts/validate-all.py",
+    "sha256": "5818f40ea07318a42c72cd0f15a9b0fc80d8d10ea395bd1860f361a0403f5b36",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/PROMPT_FOR_CODEX.md",
+    "sha256": "5c6affd0ae21287bc66600b3cf06da2526f6e91cd4da05a5a2a688dfe58a39f4",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/CHANGES_v3.md",
+    "sha256": "f57cdc398ecfdde6c0c4828822303a970179e4f44455d99efe2f7f6d4f6b562b",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "frontend/VISUAL_QA.md",
+    "sha256": "6314cd696325bbd38dfcc9c4ad4eccefa71a4563147d19e9f580b1d969529f2c",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "scripts/serve_source_e2e.py",
+    "sha256": "a5d1455715a34b046ca4ee95fa99097b5865fa4c005af5725df06f96745b2fca",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "scripts/advance_source_e2e.py",
+    "sha256": "e6cc045b52766c02dabf0d2de32a5606dcfeba1d027f18b331e75b69284088e8",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "scripts/install_playwright_ci.sh",
+    "sha256": "faab8528a8179f7a3cf1a6493030138717191743ff93797cdc0adad6849a0bb9",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "backend/tests/test_assessment.py",
+    "sha256": "e78920d17d8a816f050c04a52332203ae9921876c1890804f3dba2c232080480",
+    "recoveryCommit": "2a7835f"
+  },
+  {
+    "path": "shared/assessment-cases.json",
+    "sha256": "c351571da1e3c651a604fc9d8b43a14a808aac8a4a13fd9d6d6f3a1141faf762",
+    "recoveryCommit": "2a7835f"
+  }
+]

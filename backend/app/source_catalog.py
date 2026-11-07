@@ -6,7 +6,7 @@ from pydantic import Field
 from sqlalchemy import select,func,or_,and_
 
 from .admissions import Campaign,CompetitionGroup,Source,University
-from .calculation import CamelModel
+from .schema_base import CamelModel
 from .sources.registry import PRODUCTION_REGISTRY
 from .sources.status import source_status
 

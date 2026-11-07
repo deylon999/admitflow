@@ -1,7 +1,7 @@
 """Versioned conditional scenario from one ordered competition list;not admission."""
 from types import MappingProxyType
 from typing import Literal
-from .calculation import CamelModel
+from .schema_base import CamelModel
 
 VERSION='listed-consent-v1'
 ASSUMPTIONS=[

@@ -1,0 +1,10 @@
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
+const files=await readdir('test-results/exact-metrics');
+const cases=await Promise.all(files.filter(file=>file.endsWith('.json')).map(async file=>JSON.parse(await readFile('test-results/exact-metrics/'+file,'utf8'))));
+if(cases.length!==125||cases.some(row=>row.pixelDiff!==0||row.overflow!==0||!row.textEqual))throw Error(`Incomplete/failed visual matrix: ${cases.length}/125`);
+cases.sort((a,b)=>a.width-b.width||a.route.localeCompare(b.route));
+const summary={routes:25,widths:[390,768,1024,1280,1440],comparisons:cases.length,rawOriginalComparisons:cases.filter(row=>row.demoLabels.length===0).length,demoLabelAdjustedComparisons:cases.filter(row=>row.demoLabels.length>0).length,maxDiffPixels:0,maxColorThreshold:0,passed:true,cases};
+const directory=process.env.QA_EVIDENCE_DIR ?? 'test-results/evidence';
+await mkdir(directory,{recursive:true});
+await writeFile(directory+'/visual-results.json',JSON.stringify(summary,null,2)+'\n');
+console.log('125/125 comparisons passed: raw reference or four explicitly allowed demo labels. Zero other pixel differences.');

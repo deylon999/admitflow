@@ -1,34 +1,43 @@
-# Frontend
+# Frontend AdmitFlow v3
 
-Все npm-команды выполняются из этой директории.
+Один React entry `src/main.tsx` → `App.tsx`, History API router, общий AppShell.
+Исходные компоненты и CSS v3 сохранены. `src/catalog/` содержит только
+DTO/API/state/композиции реального каталога. Остальные страницы используют
+исходные demo-данные с явной маркировкой прогнозов.
+
+Из этой папки:
 
 ```powershell
 npm ci
-npm run format
-npm run format:check
-npm test
-npm run build
+npm run dev
 ```
 
-Стиль закреплён Prettier: ширина100, один JSX-атрибут на строку, LF.
-Компоненты, условия и обработчики должны оставаться читаемыми многострочными
-блоками. Форматтер не меняет смысл выражений и не заменяет функциональный аудит.
-Длинные строки пользовательского текста/URL допустимы без искусственного
-разбиения значений. Fixtures, font assets и lockfile не форматируются.
+Адрес localhost:5173. Backend по умолчанию localhost:8000; изменить через
+API_PROXY_TARGET. Watch-build пересобирает исходники; страницу обновлять
+вручную, HMR в этом launcher отсутствует.
 
-`format:check` входит в основной CI job. Обнаруженные B19 функциональные
-ошибки описаны в [отчёте аудита](../docs/evidence/b19-frontend-audit.md).
-F01/F02 исправлены в B20; остальные восемь остаются открытыми. Изменение
-форматирования само по себе функциональные ошибки не закрывает.
-# Архитектура FSD
+```powershell
+npm run typecheck
+npm run lint
+npm run build
+npm test
+```
 
-`src/app` запускает приложение и провайдеры; `pages` собирают экраны,
-`features` реализуют действия, `entities` содержат предметные модели/API,
-`shared` — техническую инфраструктуру. Подробности: `../docs/ARCHITECTURE.md`.
-Для внешних импортов используйте публичные API слайсов через `@/`.
+`npm test` сам запускает настоящий FastAPI с миграциями в временной SQLite
+и Vite production preview, затем закрывает свои серверы. Требуются Python
+requirements-dev backend и Chromium. Полный read-only reference test:
+`npm run test:visual`. Native PostgreSQL проверяется отдельно.
 
-Проверки из этой директории: `npm run typecheck`, `npm run lint`,
-`npm run architecture:check`, `npm run format:check`, `npm test`, `npm run build`.
-Архитектурная проверка учитывает относительные импорты, aliases и циклы.
-`scripts/capture-appearance.mjs baseline|after` сравнивает12 детерминированных
-снимков страниц в двух темах на390/1440px; артефакты находятся в test-results.
+Скриншоты и вспомогательные proof-файлы по умолчанию попадают в ignored
+`test-results/evidence`; для сохраняемого отчёта задать `QA_EVIDENCE_DIR`.
+После visual run выполнить `node scripts/summarize-visual.mjs`;
+`npm run verify:source` проверяет неизменность исходных UI-файлов с явными
+исключениями подключения каталога, demo-подписей и удаления dead route map.
+Для проверки каталога по ранее зафиксированным PNG есть `QA_BASELINE_REF`.
+
+Статические HTML previews и самописный renderer удалены. Нет второго приложения,
+отдельного Python screenshot stack или неиспользуемого React/Babel-плагина.
+Все runtime страницы перечислены в [SCREEN_INVENTORY.md](SCREEN_INVENTORY.md).
+Запуск backend/metadata import: [runbook](../docs/catalog-runbook.md).
+Прежняя инструкция дизайн-кита сохранена в
+[архиве](../docs/archive/frontend-readme-before-foundation.md).

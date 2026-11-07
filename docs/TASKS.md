@@ -2558,7 +2558,7 @@
 
 - [docs/evidence/b12-progress.md](../docs/evidence/b12-progress.md) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
 - [backend/tests/test_changes.py](../backend/tests/test_changes.py) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
-- [frontend/tests/e2e/changes.spec.ts](../frontend/tests/e2e/changes.spec.ts) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified.
+- [docs/archive/retired-frontend/changes.spec.ts](../docs/archive/retired-frontend/changes.spec.ts) — Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified. Historical evidence archived during T242; it targets the retired manual UI.
 
 ### T075. Сравнение сохранённых ручных направлений
 
@@ -4079,6 +4079,244 @@
 
 - [docs/evidence/frontend-consistency-audit.md](../docs/evidence/frontend-consistency-audit.md) — Remaining routes/shell audited; consistent navigation/mobile menu, surfaces/headings, source states, calculator validation and utility pages. typecheck/lint/build/format/architecture;150unit;59Chromium passed/2API-fixture skips;final37audit cases +12design/4editor checks passed. Viewed PNGs. Tracker hashes unchanged;no backend/business/FSD/commits.
 
+### T242. Replace frontend with an exact copy of the v3 source
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `frontend/src/`; `frontend/tests/`; `docs/evidence/frontend-v3-exact.md`.
+
+**Шаги:**
+
+1. Create clean branch from main preserving previous redesign branch.
+2. Copy original frontend sources directly without old logic/API.
+3. Install and run both React projects.
+4. Compare all 29 routes at five widths and test interactions.
+
+**Критерии закрытия:**
+
+- Source UI files remain identical; only documented technical setup changes.
+- All29routes run with original demo behavior, no old backend/API integration.
+- Typecheck/build/install and Playwright interactions/routes/console/overflow; paired original-vs-copy screenshots and pixel diff at390/768/1024/1280/1440.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/frontend-v3-exact.md](../docs/evidence/frontend-v3-exact.md) — Implementation 3e50540: direct copy of all 29 source routes; one type-only fix, identical compiled JS/CSS. Install/typecheck/build/source verification passed. Chromium 187 passed, zero failed/skipped; 145 live pixel comparisons at five widths, zero different pixels and no horizontal overflow. All 290 PNGs and interactive gallery saved. Backend/shared/Compose and main/previous branch unchanged. No API integration, push or deployment.
+
+### T243. Audit all 29 v3 routes and backend reuse
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/product-functional-audit.md`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- 29-route table covers data, controls, demo/working state, required APIs, dependencies and priority; backend reuse and slice plan documented.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/product-functional-audit.md](../docs/product-functional-audit.md) — All 29 routes audited; backend reuse, source limits, API/model map and implementation sequence documented after source inspection.
+
+### T244. Implement verified campaign-scoped catalog API
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T243.
+
+**Результаты/файлы:** `backend/app/product_catalog.py`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Public read API uses audited identities, nullable unknowns, campaign years and provenance; no synthetic production facts.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [backend/tests/test_product_catalog.py](../backend/tests/test_product_catalog.py) — Public read facade and atomic audited import implemented. Targeted new + legacy catalog tests: 31 passed, 1 native PostgreSQL skipped (Docker permission denied). Provenance/year/null/conflict and legacy compatibility covered.
+
+### T245. Connect v3 catalog and detail pages to real API
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T244.
+
+**Результаты/файлы:** `frontend/src/catalog/`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Four React pages use stable IDs and real API with search, filters, pagination, loading/error/empty states, no demo fallback.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [frontend/src/catalog/DetailPages.tsx](../frontend/src/catalog/DetailPages.tsx) — Four v3 compositions now use real public API, stable campaign IDs and provenance. Search/filters/pages, cancellation/retry/404 and no demo fallback. Catalog E2E 27 passed at five widths; TypeScript/ESLint/build passed. Long-name constraints reuse v3 responsive primitives.
+
+### T246. Verify catalog APIs, flows and unchanged design
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T245.
+
+**Результаты/файлы:** `docs/evidence/catalog-vertical-slice.md`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- TypeScript, ESLint, build, backend API tests and desktop/mobile Playwright pass; unavailable environment explicitly recorded.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/catalog-vertical-slice.md](../docs/evidence/catalog-vertical-slice.md) — Final 193 Chromium passed, no failures/skips/flaky; standalone runner 68 passed and graceful teardown verified. 47 backend passed, 1 PostgreSQL skipped (Docker denied). ESLint source/tests/scripts, TS/build/install passed. 100 raw +25 exact demo-label-normalized pixel comparisons zero diff, 20 catalog PNGs across five widths, source68 unchanged. Real positive API calls and error/empty/late-response cases checked. Two earlier temp DB folder removals denied by approval policy; no workaround.
+
+### T247. Document product foundation and remaining demo modules
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T246.
+
+**Результаты/файлы:** `docs/STATE.json`.
+
+**Шаги:**
+
+1. Implement the scoped work with source evidence and preserve v3 styling.
+
+**Критерии закрытия:**
+
+- Run instructions, API/model map, evidence, statuses and next steps are accurate.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/catalog-runbook.md](../docs/catalog-runbook.md) — All 29-route audit/API/model plan, real-vs-demo boundaries, explicit import and existing PostgreSQL/isolated local run instructions documented. Evidence gallery20 and final test summaries retained. Main/source/previous branches preserved; no push. Next: actual PostgreSQL verification, reviewed program/year/exam coverage, then saved real IDs; no ML yet.
+
+### T248. Audit and classify product foundation modules
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/foundation-cleanup-audit.md`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Dependencies and current product audited across frontend/backend/APIs/models/migrations/tests/deps/Docker/CI/docs; KEEP/REFACTOR/DELETE justified.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/foundation-cleanup-audit.md](../docs/foundation-cleanup-audit.md) — Audited source imports, active UI/build/test dependencies, backend consumers, persisted data, migrations, CI and docs. KEEP/REFACTOR/DELETE decisions and irreversible retirement plan recorded.
+
+### T249. Remove confirmed obsolete tooling and calculator endpoints
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T248.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup/deleted-files.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Only confirmed obsolete code removed; useful backend/source/history/models and applied migrations preserved; no v3 design changes.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/foundation-cleanup/deleted-files.json](../docs/evidence/foundation-cleanup/deleted-files.json) — 42 audited files removed; old calculate/assess HTTP wrappers and assessment-only types retired. DTO base isolated; all migration/model data protected. Unused React plugin removed: clean install116 vs162 packages; lint/TS/build passed, browser193 and catalog baseline20 zero pixel diff. Actual protocol validation/origin/budget tests retained and retargeted, 33 passed.
+
+### T250. Verify Compose PostgreSQL migrations and live catalog
+
+**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T248.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup/infrastructure.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Actual Docker Compose PostgreSQL startup, connection/migrations/API/catalog browser path executed; permission denial is a blocker, never a success.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/foundation-cleanup/infrastructure.json](../docs/evidence/foundation-cleanup/infrastructure.json) — Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion.
+
+**Причина блокировки/переноса:** Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL.
+
+### T251. Run current backend and frontend regression checks
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T249.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup.md`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- TS/ESLint/build/current backend and API/browser suites plus visual preservation; exact outcomes and environment limits recorded.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Final portable Windows backend549passed/35native PostgreSQL skips; 12 Linux resource modules explicitly uncollectable on Windows and retained for Linux CI. Browser193passed, 29routes, catalog20 baseline PNG diffs0 +125 reference comparisons; TS/ESLint/build/clean install/source guard passed. Docker startup denied, T250 remains blocked.
+
+### T252. Align documentation and stop after cleanup
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T251.
+
+**Результаты/файлы:** `docs/STATE.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Current architecture, removed files, preserved mechanisms and irreversible-change plan documented; registry regenerated, small commits, no main changes or new features.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Current v3 architecture/API/product/design/README/runbooks replace stale manual-product instructions; old docs archived with rebased links. Old release/ML tasks deferred, no false done. Removal manifest42, protected hashes, current API inventory31, dependency report and final tests recorded. Cleanup complete, T250 blocked; no new features or main/DB changes.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
@@ -4325,7 +4563,7 @@
 
 ### T051. Пройти полный путь автоматизированного MVP
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T021, T022, T024, T034, T040, T048.
 
@@ -4346,11 +4584,11 @@
 
 Пока нет.
 
-**Причина блокировки/переноса:** 2026-11-05: acceptance требует staging с настоящим API. Условие снятия: T048.
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ### T052. Провести продуктовую приёмку
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T039, T045, T051.
 
@@ -4371,7 +4609,7 @@
 
 Пока нет.
 
-**Причина блокировки/переноса:** 2026-11-05: нужны живые тестеры; отзывы нельзя выдумывать. Условие снятия: тестеры и T051.
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ### T084. Ограничить размер и время приёма API-запросов
 
@@ -5218,7 +5456,7 @@
 
 ### T053. Собрать релизный кандидат и отчёт gates
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T042, T043, T044, T045, T046, T049, T050, T051, T052.
 
@@ -5239,9 +5477,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T054. Использовать резерв на исправления и повторную проверку
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T053.
 
@@ -5262,9 +5502,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T055. Выпустить MVP и передать рабочий контекст
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T054.
 
@@ -5284,6 +5526,8 @@
 **Доказательства:**
 
 Пока нет.
+
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
 
 ## E7. После MVP: аккаунты, уведомления, ИИ и следующий сезон
 
@@ -5337,7 +5581,7 @@
 
 ### T060. Проверить реализуемость статистического прогноза
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T036, T055.
 
@@ -5358,9 +5602,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T061. Построить baseline на временно разделённых данных
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T060.
 
@@ -5381,9 +5627,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T062. Проверить калибровку и применимость прогноза
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** L.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** L.
 
 **Зависимости:** T061.
 
@@ -5404,9 +5652,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T063. Добавить ИИ-объяснение с контролем фактов
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T039, T043, T055.
 
@@ -5427,9 +5677,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T064. Пересмотреть инфраструктуру по стоимости и нагрузке
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T044, T055, T057.
 
@@ -5450,9 +5702,11 @@
 
 Пока нет.
 
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.
+
 ### T065. Подготовить следующий сезон приёма
 
-**Статус:** `todo` · **Приоритет:** P2 · **Размер:** M.
+**Статус:** `deferred` · **Приоритет:** P2 · **Размер:** M.
 
 **Зависимости:** T010, T057.
 
@@ -5472,3 +5726,5 @@
 **Доказательства:**
 
 Пока нет.
+
+**Причина блокировки/переноса:** Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git.

@@ -1,0 +1,18 @@
+{
+  "fullCollection": "exit 2: twelve modules import Linux-only resource",
+  "excludedFiles": [
+    "test_capture.py",
+    "test_fetch_exchange.py",
+    "test_observability.py",
+    "test_postgres_jobs.py",
+    "test_postgres_publishing.py",
+    "test_postgres_sgu.py",
+    "test_replay.py",
+    "test_reviewed_sources.py",
+    "test_sgu_worker.py",
+    "test_source_recovery.py",
+    "test_source_size_policy.py",
+    "test_worker.py"
+  ],
+  "nativePostgres": "TEST_DATABASE_URL unavailable; native fixtures remain skipped; CI Linux suite unchanged"
+}

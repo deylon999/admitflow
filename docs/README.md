@@ -5,6 +5,11 @@
 Для другой выбранной задачи — `--task Tnnn`.
 Полные TASKS, LOG, архив и исследования источников для старта не нужны.
 
+Текущий фундамент v3: [аудит очистки](foundation-cleanup-audit.md),
+[архитектура](ARCHITECTURE.md), [запуск](catalog-runbook.md),
+[итоговые проверки и Docker-блокер](evidence/foundation-cleanup.md).
+Документы `archive/*-before-foundation.md` — история, не активные требования.
+
 | Информация | Авторитетный источник | Когда читать |
 | --- | --- | --- |
 | Задачи, статусы, зависимости, acceptance, evidence | [TASKS.json](TASKS.json) | Через `--task Tnnn` или `--context` |

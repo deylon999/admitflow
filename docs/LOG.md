@@ -1158,3 +1158,44 @@ timeout increases or new skips. Full Firefox254passed/37existing skips;targeted
 lint/build/format/architecture passed. Two actual Firefox PNGs viewed. Evidence:
 docs/evidence/ui-ci-regressions.md. Fresh GitHub/Ubuntu CI not confirmed. Temporary
 API/preview stopped and isolated DB removed;local commit authorized,no push.
+
+S199 - T242 started by explicit strategy replacement. Clean previous branch feat/admitflow-ui-redesign preserved ataf387ad. New feat/frontend-v3-exact-copy created from main. Direct-copy29route v3 source is authoritative;old UI/calculator/FSD no longer frontend requirements. Backend/data/docs/history preserved. Frontend source manifest and retired-file inventory recorded before copy.
+
+S199 - T242 completed. User strategy supersedes previous integration requirements.
+Branch feat/frontend-v3-exact-copy created from main; previous redesign remains
+at af387ad. Implementation 3e50540 copies 68 source files including all 24 src
+files and all 29 routes; only source edit is one type-only as const fix.
+Compiled original/copy JS and CSS are identical. Source 68 checksums unchanged;
+backend/shared/Compose diff empty. Original demo behavior and text preserved.
+Install/typecheck/build/source verification passed. Final Chromium: 187 passed,
+0 failed/skipped/flaky. 145 live pixel comparisons (29 routes x five widths):
+0 different pixels, equal text, no horizontal overflow. 290 PNGs, interactive
+gallery and machine summaries: docs/evidence/frontend-v3-exact.md.
+Dev watch/preview works despite managed Windows optimizer restrictions; no HMR.
+Old frontend tests are historical; new route/interaction/visual suites installed.
+CI updated for new frontend with independent backend PostgreSQL job retained.
+Backend/API/ML integration excluded by instruction. Docker/Nginx/hosted CI not
+run; no claim of cross-OS pixel identity. Temporary servers stopped and tool
+backup removed. No push/deployment; await review of exact-copy screenshots.
+
+S200 - T243-T247 started: explicit new product phase. Clean v3 branch preserved; feat/catalog-vertical-slice created. Audit 29 routes and existing backend before verified catalog implementation. No ML or redesign.
+
+S200 - T243 completed: 29-route audit, backend reuse and scoped API/data plan recorded in docs/product-functional-audit.md. Official MICCEDU index/card reachable; SGU current URLs unavailable through web tool, existing attested archive metadata retained with original dates. PostgreSQL Docker access denied in current environment. T244 started; no unverified exam/cutoff facts.
+
+S200 - T244 completed: additive catalog facade, explicit atomic reviewed metadata importer, no migration/new DB/worker activation. Targeted API/source tests 31 passed, 1 native PostgreSQL skipped because Docker denied. Old APIs preserved. T245 React integration started.
+
+S200 - T245 completed: four v3 catalog pages connected to read facade, shared shell retained, stable IDs/year/source and nullable missing facts. CSS source unchanged; scoped real-name constraints reuse v3 heading/card modes. Install from cache, typecheck/ESLint/build passed; catalog E2E27 passed. Initial new test had over-exact region label; explicit accessible select label added. T246 full validation ongoing.
+
+S200 - T246 completed: 47 backend passed, 1 PostgreSQL skipped; 193 Chromium passed, no failed/skipped/flaky. 100 raw original pixel comparisons +25 with exact demo-label substitutions passed at five widths; 20 actual catalog screenshots saved and desktop/mobile viewed. TS/ESLint source+tests+scripts/build/install passed. Original source68 and source CSS unchanged. Four visible demo labels added without new blocks/ML. Playwright Windows webServer teardown hung; replaced with owned Vite previews and Python stdin shutdown, then standalone68 and full193 both finished cleanly. Servers stopped. Cleanup of two early owned temporary public-metadata DB folders outside workspace rejected by automatic approval (sandbox_approval=false); left untouched, no bypass. No existing user DB changed. T247 handoff docs in progress.
+
+S200 - T247 completed: current README/architecture/product/API/runbook and 29-route audit synchronized. Supplemental default68 passed in14.3s, covering unfiltered12-item catalog at all five widths and real university with zero imported scopes. Gallery20/full metrics/source guard saved. Five planned tasks complete; PostgreSQL/native verification explicitly outstanding. Existing DB read-only inspected (3 legacy tables), not migrated or overwritten. No new product DB/ML/auth implementation. Next native PostgreSQL and reviewed program/requirements coverage before saved real IDs. Main/exact-copy/redesign refs preserved, no push. Two early temp DB directory deletions rejected by automatic approval; left in TEMP and recorded.
+
+S201 - T248-T252 started: cleanup/infrastructure only, no new features. Clean catalog branch preserved at2a7835f; chore/product-foundation-cleanup created. KEEP/REFACTOR/DELETE audit before edits; no PostgreSQL volumes or applied migrations to delete.
+
+S201 - T248 completed: KEEP/REFACTOR/DELETE and dependency inventory recorded; baseline protects UI/migrations/DB. T250 blocked: actual Compose db start denied docker_engine/config access; no sandbox workaround, native connection/migrations/API/browser/container smoke unverified. T249 scoped cleanup started.
+
+S201 - T249 completed: 42 confirmed obsolete tracked files removed; retired stateless manual calculate/assess HTTP wrappers, retained versioned historical arithmetic and persisted models. CamelModel extracted to schema_base; unused Vite React plugin/transitives removed (162 to116 install). No UI code changes except dead routeLabels export. Browser193 and20 catalog baseline comparisons passed; lint/TS/build and33 HTTP safety tests passed. Full Windows collection blocked on12 Linux-resource modules; portable584 initial run548passed/35native skips/1UTF8 fixture-read failure. Fixed only test encoding; final portable rerun in progress. T251 testing active; T250 Docker block remains.
+
+S201 - T251 completed: final available Windows backend549passed/35native-PG skips, with12 Linux-resource collection modules explicitly excluded, not deleted or emulated. Fixed UTF8 fixture-read only. Browser193passed, 20 catalog PNG comparisons vs2a7835f plus125 source comparisons zero diff under prior demo-label rules. All29routes, no overflow; UI render/migration/local DB hashes protected. Clean install116/lint/typecheck/build passed. T250 remains blocked; no native PG/Docker success claimed. T252 current docs replacing stale manual-product instructions; prior versions archived with rebased links. T051-T055 andT060-T065 deferred pending v3 criteria/data rather than marked complete.
+
+S201 - T252 completed: active v3 docs/architecture/API/runbooks and roadmap synchronized; original docs archived with corrected relative links. Existing completed task history unchanged; 11 superseded release/future tasks deferred with resumption criteria. Inventory31 API paths, deleted42 tracked files, install116 and protected data/migration/render hashes recorded. Four cleanup tasks complete; T250 explicitly blocked by Docker Engine access. No new product features, ML, schema/data deletion, main edits or push. Stop as requested; actual PostgreSQL/Compose smoke requires allowed environment.

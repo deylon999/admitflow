@@ -1,0 +1,14 @@
+{
+  "renderFilesUnchanged": true,
+  "onlyDeadRouteExportRemoved": [
+    "frontend/src/data/demo.ts"
+  ],
+  "migrationHashesUnchanged": true,
+  "localLegacyDatabaseHashUnchanged": true,
+  "sqlModelsChanged": false,
+  "productionAssets": {
+    "index-CdCUn9di.css": "f37179f94e46182a8e5f755dc077370b05fcbe85a9781b2c9ee7e9ab06a125fe",
+    "index-CjjI_tS8.js": "95de092894fdd79fa28a8e33d42f85dbc5962fe701dff850aacda64f3f26592c"
+  },
+  "preexistingDistWasAbsent": true
+}

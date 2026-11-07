@@ -1,6 +1,6 @@
 # Постоянный контекст проекта «Абитуриент»
 
-Структура: `frontend/` — React, все npm-команды выполняются из него; `backend/` — Python API; `shared/calculations.json` — общие fixtures TS/Python; `docs/` — спецификация и память; `scripts/` — инструменты плана. Проверять roadmap из корня репозитория. Макеты лежат в `docs/design/`.
+Структура: `frontend/` — React v3, все npm-команды выполняются из него; `backend/` — FastAPI/SQLAlchemy, каталог и source pipeline; `shared/` — сохраняемые fixtures исторических manual данных; `docs/` — спецификация и память; `scripts/` — план и backend operations. Проверять roadmap из корня. Визуальный эталон — исходные React/CSS v3; `docs/design/` — исторические макеты. Очистка не должна возвращать прежний калькулятор или удалять PostgreSQL данные/applied migrations.
 
 Git: небольшие осмысленные коммиты с английскими сообщениями Conventional Commits (`feat(api): ...`, `fix(web): ...`, `test: ...`, `docs: ...`, `ci: ...`). Использовать настроенное авторство пользователя, не менять его глобальные настройки. Репозиторий: https://github.com/deylon999/admitflow. Не переписывать опубликованную историю без явного запроса.
 

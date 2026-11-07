@@ -1,5 +1,9 @@
 .git
 .github
+.npm-cache
+.qa-tools
+frontend/tests
+frontend/screenshots
 backend/var
 docs
 scripts

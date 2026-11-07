@@ -1,0 +1,193 @@
+[
+  {
+    "path": "/api/v1/sources/{source_id}/checks",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/direction-budget",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/archive-export",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sources/{source_id}/lookup",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions/{subscription_id}/history",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions/{subscription_id}",
+    "methods": [
+      "DELETE"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions/{subscription_id}/scenario",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions/{subscription_id}/scenarios/{assessment_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/subscriptions/{subscription_id}/scenario-history",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/changes",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/changes/{event_id}/seen",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/live",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/ready",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/health",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/status",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/universities",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/groups",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/sources/{source_id}/status",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/coverage",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/export",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/session",
+    "methods": [
+      "DELETE",
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/import",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/watches",
+    "methods": [
+      "GET",
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/watches/{watch_id}",
+    "methods": [
+      "DELETE",
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/watches/{watch_id}/snapshots",
+    "methods": [
+      "POST"
+    ]
+  },
+  {
+    "path": "/api/v1/watches/{watch_id}/history",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/catalog/universities",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/catalog/universities/{university_id}",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/catalog/programs",
+    "methods": [
+      "GET"
+    ]
+  },
+  {
+    "path": "/api/v1/catalog/programs/{program_id}",
+    "methods": [
+      "GET"
+    ]
+  }
+]

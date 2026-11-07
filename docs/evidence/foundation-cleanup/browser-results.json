@@ -1,0 +1,135 @@
+{
+  "stats": {
+    "startTime": "2026-11-07T23:04:05.556Z",
+    "duration": 54174.066,
+    "expected": 193,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "catalogBaselineComparisons": [
+    {
+      "name": "program",
+      "width": 1024,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "programs",
+      "width": 1024,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "universities",
+      "width": 1024,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "university",
+      "width": 1024,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "program",
+      "width": 1280,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "programs",
+      "width": 1280,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "universities",
+      "width": 1280,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "university",
+      "width": 1280,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "program",
+      "width": 1440,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "programs",
+      "width": 1440,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "universities",
+      "width": 1440,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "university",
+      "width": 1440,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "program",
+      "width": 390,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "programs",
+      "width": 390,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "universities",
+      "width": 390,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "university",
+      "width": 390,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "program",
+      "width": 768,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "programs",
+      "width": 768,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "universities",
+      "width": 768,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    },
+    {
+      "name": "university",
+      "width": 768,
+      "baselineRef": "2a7835f",
+      "pixelDiff": 0
+    }
+  ],
+  "catalogBaselineRef": "2a7835f",
+  "routes": 29,
+  "noHorizontalOverflow": true
+}

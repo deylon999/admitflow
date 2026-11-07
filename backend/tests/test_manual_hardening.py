@@ -34,14 +34,15 @@ def test_json_brackets_inside_string_are_not_nesting(client):
 
 
 def test_validation_errors_never_echo_input_or_unknown_keys(client):
-    payload=WATCH['values']|{f'private-secret-{index}':'private-value' for index in range(100)}
-    response=client.post('/api/v1/calculate',json=payload)
+    start(client)
+    payload=WATCH|{f'private-secret-{index}':'private-value' for index in range(100)}
+    response=client.post('/api/v1/watches',json=payload,headers=HEADERS)
     assert response.status_code==422
     body=response.json()
     assert len(body['fields'])==20 and body['truncated'] is True
     assert 'private' not in response.text and 'input' not in response.text and 'ctx' not in response.text
     schema=client.get('/api/openapi.json').json()
-    assert schema['paths']['/api/v1/calculate']['post']['responses']['422']['content']['application/json']['schema']['$ref'].endswith('/ValidationProblem')
+    assert schema['paths']['/api/v1/watches']['post']['responses']['422']['content']['application/json']['schema']['$ref'].endswith('/ValidationProblem')
 
 
 @pytest.mark.parametrize('value',[1761955200,'2026-11-01T00:00:00','2026-11-01T00:00:00.1234567Z'])

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-07",
+  "updatedAt": "2026-11-08",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -1457,8 +1457,8 @@
           "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
         },
         {
-          "path": "frontend/tests/e2e/changes.spec.ts",
-          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified."
+          "path": "docs/archive/retired-frontend/changes.spec.ts",
+          "note": "Owner isolation, idempotent seen-state, atomic event publication and actual PostgreSQL/browser comparison verified. Historical evidence archived during T242; it targets the retired manual UI."
         }
       ],
       "blockedReason": null
@@ -1782,7 +1782,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "deferred",
       "dependsOn": [
         "T021",
         "T022",
@@ -1804,7 +1804,7 @@
         "Внешний fetch при тестах не зависит от недетерминированной случайной выдачи"
       ],
       "evidence": [],
-      "blockedReason": "2026-11-05: acceptance требует staging с настоящим API. Условие снятия: T048."
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T052",
@@ -1812,7 +1812,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "deferred",
       "dependsOn": [
         "T039",
         "T045",
@@ -1830,7 +1830,7 @@
         "Нет придуманных отзывов и смешения сценария с гарантией"
       ],
       "evidence": [],
-      "blockedReason": "2026-11-05: нужны живые тестеры; отзывы нельзя выдумывать. Условие снятия: тестеры и T051."
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T053",
@@ -1838,7 +1838,7 @@
       "phase": "E6",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T042",
         "T043",
@@ -1863,7 +1863,7 @@
         "Наличие P0 или недоступной обязательной интеграции блокирует кандидат"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T054",
@@ -1871,7 +1871,7 @@
       "phase": "E6",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T053"
       ],
@@ -1888,7 +1888,7 @@
         "Release candidate соответствует последним проверенным изменениям"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T055",
@@ -1896,7 +1896,7 @@
       "phase": "E6",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T054"
       ],
@@ -1914,7 +1914,7 @@
         "Пользователь получил результат, а новая сессия может продолжить по STATE без догадок"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T056",
@@ -2034,7 +2034,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T036",
         "T055"
@@ -2051,7 +2051,7 @@
         "Недостаток данных приводит к отказу от процентов, а не к их выдумыванию"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T061",
@@ -2059,7 +2059,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T060"
       ],
@@ -2076,7 +2076,7 @@
         "Holdout не использован для настройки"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T062",
@@ -2084,7 +2084,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "L",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T061"
       ],
@@ -2101,7 +2101,7 @@
         "Модель отказывается на неподдержанном домене и имеет мониторинг drift"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T063",
@@ -2109,7 +2109,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T039",
         "T043",
@@ -2128,7 +2128,7 @@
         "Prompt injection и отказ провайдера не нарушают основной сценарий"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T064",
@@ -2136,7 +2136,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T044",
         "T055",
@@ -2155,7 +2155,7 @@
         "Усложнение архитектуры обосновано результатом"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T065",
@@ -2163,7 +2163,7 @@
       "phase": "E7",
       "priority": "P2",
       "size": "M",
-      "status": "todo",
+      "status": "deferred",
       "dependsOn": [
         "T010",
         "T057"
@@ -2182,7 +2182,7 @@
         "Новые правила не применяются к старым данным молча"
       ],
       "evidence": [],
-      "blockedReason": null
+      "blockedReason": "Deferred by S201 product cleanup: previous automated/manual MVP release scope or future prediction/expansion work is not the current v3 cleanup. Resume only after v3 acceptance criteria and dependencies are reviewed in a separately authorized phase; ML additionally requires verified outcomes/data and predefined metrics. Historical status and evidence remain in Git."
     },
     {
       "id": "T066",
@@ -7455,6 +7455,304 @@
         {
           "path": "docs/evidence/ui-ci-regressions.md",
           "note": "Reproduced exact Firefox detached-button timeout: unmocked history401;corrected five E2E fixtures/selectors/cache freshness expectations without production changes/timeouts/skips. Full Firefox254passed/37existing skips;targeted39Chromium+39Firefox;final4reset cases passed each;150unit and typecheck/lint/build/format/architecture. Fresh Ubuntu CI unverified;no push."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T242",
+      "title": "Replace frontend with an exact copy of the v3 source",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "frontend/src/",
+        "frontend/tests/",
+        "docs/evidence/frontend-v3-exact.md"
+      ],
+      "steps": [
+        "Create clean branch from main preserving previous redesign branch",
+        "Copy original frontend sources directly without old logic/API",
+        "Install and run both React projects",
+        "Compare all 29 routes at five widths and test interactions"
+      ],
+      "acceptance": [
+        "Source UI files remain identical; only documented technical setup changes",
+        "All29routes run with original demo behavior, no old backend/API integration",
+        "Typecheck/build/install and Playwright interactions/routes/console/overflow; paired original-vs-copy screenshots and pixel diff at390/768/1024/1280/1440"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/frontend-v3-exact.md",
+          "note": "Implementation 3e50540: direct copy of all 29 source routes; one type-only fix, identical compiled JS/CSS. Install/typecheck/build/source verification passed. Chromium 187 passed, zero failed/skipped; 145 live pixel comparisons at five widths, zero different pixels and no horizontal overflow. All 290 PNGs and interactive gallery saved. Backend/shared/Compose and main/previous branch unchanged. No API integration, push or deployment."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T243",
+      "title": "Audit all 29 v3 routes and backend reuse",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/product-functional-audit.md"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "29-route table covers data, controls, demo/working state, required APIs, dependencies and priority; backend reuse and slice plan documented"
+      ],
+      "evidence": [
+        {
+          "path": "docs/product-functional-audit.md",
+          "note": "All 29 routes audited; backend reuse, source limits, API/model map and implementation sequence documented after source inspection."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T244",
+      "title": "Implement verified campaign-scoped catalog API",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T243"
+      ],
+      "deliverables": [
+        "backend/app/product_catalog.py"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Public read API uses audited identities, nullable unknowns, campaign years and provenance; no synthetic production facts"
+      ],
+      "evidence": [
+        {
+          "path": "backend/tests/test_product_catalog.py",
+          "note": "Public read facade and atomic audited import implemented. Targeted new + legacy catalog tests: 31 passed, 1 native PostgreSQL skipped (Docker permission denied). Provenance/year/null/conflict and legacy compatibility covered."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T245",
+      "title": "Connect v3 catalog and detail pages to real API",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T244"
+      ],
+      "deliverables": [
+        "frontend/src/catalog/"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Four React pages use stable IDs and real API with search, filters, pagination, loading/error/empty states, no demo fallback"
+      ],
+      "evidence": [
+        {
+          "path": "frontend/src/catalog/DetailPages.tsx",
+          "note": "Four v3 compositions now use real public API, stable campaign IDs and provenance. Search/filters/pages, cancellation/retry/404 and no demo fallback. Catalog E2E 27 passed at five widths; TypeScript/ESLint/build passed. Long-name constraints reuse v3 responsive primitives."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T246",
+      "title": "Verify catalog APIs, flows and unchanged design",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T245"
+      ],
+      "deliverables": [
+        "docs/evidence/catalog-vertical-slice.md"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "TypeScript, ESLint, build, backend API tests and desktop/mobile Playwright pass; unavailable environment explicitly recorded"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/catalog-vertical-slice.md",
+          "note": "Final 193 Chromium passed, no failures/skips/flaky; standalone runner 68 passed and graceful teardown verified. 47 backend passed, 1 PostgreSQL skipped (Docker denied). ESLint source/tests/scripts, TS/build/install passed. 100 raw +25 exact demo-label-normalized pixel comparisons zero diff, 20 catalog PNGs across five widths, source68 unchanged. Real positive API calls and error/empty/late-response cases checked. Two earlier temp DB folder removals denied by approval policy; no workaround."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T247",
+      "title": "Document product foundation and remaining demo modules",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T246"
+      ],
+      "deliverables": [
+        "docs/STATE.json"
+      ],
+      "steps": [
+        "Implement the scoped work with source evidence and preserve v3 styling"
+      ],
+      "acceptance": [
+        "Run instructions, API/model map, evidence, statuses and next steps are accurate"
+      ],
+      "evidence": [
+        {
+          "path": "docs/catalog-runbook.md",
+          "note": "All 29-route audit/API/model plan, real-vs-demo boundaries, explicit import and existing PostgreSQL/isolated local run instructions documented. Evidence gallery20 and final test summaries retained. Main/source/previous branches preserved; no push. Next: actual PostgreSQL verification, reviewed program/year/exam coverage, then saved real IDs; no ML yet."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T248",
+      "title": "Audit and classify product foundation modules",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/foundation-cleanup-audit.md"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Dependencies and current product audited across frontend/backend/APIs/models/migrations/tests/deps/Docker/CI/docs; KEEP/REFACTOR/DELETE justified"
+      ],
+      "evidence": [
+        {
+          "path": "docs/foundation-cleanup-audit.md",
+          "note": "Audited source imports, active UI/build/test dependencies, backend consumers, persisted data, migrations, CI and docs. KEEP/REFACTOR/DELETE decisions and irreversible retirement plan recorded."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T249",
+      "title": "Remove confirmed obsolete tooling and calculator endpoints",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T248"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup/deleted-files.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Only confirmed obsolete code removed; useful backend/source/history/models and applied migrations preserved; no v3 design changes"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/foundation-cleanup/deleted-files.json",
+          "note": "42 audited files removed; old calculate/assess HTTP wrappers and assessment-only types retired. DTO base isolated; all migration/model data protected. Unused React plugin removed: clean install116 vs162 packages; lint/TS/build passed, browser193 and catalog baseline20 zero pixel diff. Actual protocol validation/origin/budget tests retained and retargeted, 33 passed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T250",
+      "title": "Verify Compose PostgreSQL migrations and live catalog",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "blocked",
+      "dependsOn": [
+        "T248"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup/infrastructure.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Actual Docker Compose PostgreSQL startup, connection/migrations/API/catalog browser path executed; permission denial is a blocker, never a success"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/foundation-cleanup/infrastructure.json",
+          "note": "Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion."
+        }
+      ],
+      "blockedReason": "Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL."
+    },
+    {
+      "id": "T251",
+      "title": "Run current backend and frontend regression checks",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T249"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup.md"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "TS/ESLint/build/current backend and API/browser suites plus visual preservation; exact outcomes and environment limits recorded"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/foundation-cleanup.md",
+          "note": "Final portable Windows backend549passed/35native PostgreSQL skips; 12 Linux resource modules explicitly uncollectable on Windows and retained for Linux CI. Browser193passed, 29routes, catalog20 baseline PNG diffs0 +125 reference comparisons; TS/ESLint/build/clean install/source guard passed. Docker startup denied, T250 remains blocked."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T252",
+      "title": "Align documentation and stop after cleanup",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T251"
+      ],
+      "deliverables": [
+        "docs/STATE.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Current architecture, removed files, preserved mechanisms and irreversible-change plan documented; registry regenerated, small commits, no main changes or new features"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/foundation-cleanup.md",
+          "note": "Current v3 architecture/API/product/design/README/runbooks replace stale manual-product instructions; old docs archived with rebased links. Old release/ML tasks deferred, no false done. Removal manifest42, protected hashes, current API inventory31, dependency report and final tests recorded. Cleanup complete, T250 blocked; no new features or main/DB changes."
         }
       ],
       "blockedReason": null

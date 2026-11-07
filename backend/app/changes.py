@@ -4,7 +4,7 @@ from fastapi import Depends,HTTPException,Path,Query
 from sqlalchemy import and_,func,or_,select
 from sqlalchemy.orm import Session
 from .admissions import Assessment,ChangeEvent,SourceSnapshot,Subscription,CompetitionGroup
-from .calculation import CamelModel
+from .schema_base import CamelModel
 from .scenario_api import ScenarioRead,read
 from .sources.publishing import utc
 

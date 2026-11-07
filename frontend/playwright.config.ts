@@ -1,37 +1,16 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
-const baseURL = process.env.E2E_BASE_URL ?? 'http://127.0.0.1:5173';
-const serverMode = process.env.E2E_SERVER ?? 'dev';
-if (!['dev', 'preview', 'external'].includes(serverMode)) {
-  throw new Error('E2E_SERVER must be dev, preview or external');
-}
-
+const live = process.env.COMPARE_REFERENCE === '1';
 export default defineConfig({
-  testDir: './tests/e2e',
+  testDir: './tests',
+  testMatch: live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts'],
   fullyParallel: true,
-  workers: process.env.CI ? 2 : 1,
-  forbidOnly: Boolean(process.env.CI),
-  retries: process.env.CI ? 1 : 0,
-  use: {
-    baseURL,
-    trace: 'retain-on-failure',
-  },
-  projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
-    { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
-    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
-    { name: 'mobile-chromium', use: { ...devices['Pixel 7'] } },
-    { name: 'mobile-webkit', use: { ...devices['iPhone 14'] } },
-  ],
-  webServer:
-    serverMode === 'external'
-      ? undefined
-      : {
-          command:
-            serverMode === 'preview'
-              ? `npm run build && npm run preview -- --port ${new URL(baseURL).port || '5173'}`
-              : `npm run dev -- --port ${new URL(baseURL).port || '5173'}`,
-          url: baseURL,
-          reuseExistingServer: serverMode === 'dev' && !process.env.CI,
-        },
+  workers: 2,
+  retries: 0,
+  timeout: 30_000,
+  reporter: [['line'], ['json',{outputFile:'test-results/results.json'}]],
+  expect: {toMatchSnapshot: {threshold:0,maxDiffPixels:0}},
+  use: {baseURL:process.env.COPY_URL ?? 'http://127.0.0.1:5301',browserName:'chromium',deviceScaleFactor:1,locale:'ru-RU',timezoneId:'Europe/Moscow',colorScheme:'light',reducedMotion:'reduce',trace:'retain-on-failure'},
+  // npm test / npm run test:visual own the real API and preview servers in
+  // scripts/test.mjs. Direct Playwright calls require already running previews.
 });

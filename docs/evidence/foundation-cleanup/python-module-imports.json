@@ -1,0 +1,2949 @@
+[
+  {
+    "path": "backend/app/admissions.py",
+    "imports": [
+      "datetime:datetime",
+      "decimal:Decimal",
+      "uuid:uuid4",
+      "sqlalchemy:Boolean,CheckConstraint,DateTime,ForeignKey,ForeignKeyConstraint,Integer,JSON,Numeric,String,UniqueConstraint,event",
+      "sqlalchemy.orm:Mapped,mapped_column",
+      ".database:Base",
+      ".catalog_search:university_search,group_search"
+    ]
+  },
+  {
+    "path": "backend/app/backup.py",
+    "imports": [
+      "argparse",
+      "contextlib:closing",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "os",
+      "pathlib:Path",
+      "shutil",
+      "sqlite3",
+      "time",
+      "typing:Annotated,Literal",
+      "uuid:uuid4",
+      "pydantic:AwareDatetime,Field",
+      ".config:Settings",
+      ".calculation:CamelModel",
+      ".database:make_engine",
+      ".sources.storage:RawStore"
+    ]
+  },
+  {
+    "path": "backend/app/calculation.py",
+    "imports": [
+      "typing:Literal",
+      "types:MappingProxyType",
+      "pydantic:BaseModel,ConfigDict,Field,model_validator",
+      "pydantic.alias_generators:to_camel"
+    ]
+  },
+  {
+    "path": "backend/app/catalog.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "sqlalchemy:select",
+      "sqlalchemy.dialects.postgresql:insert",
+      "sqlalchemy.dialects.sqlite:insert",
+      "sqlalchemy.orm:Session",
+      ".admissions:University",
+      ".schemas:CatalogRead,UniversityRead",
+      ".national_catalog:load_catalog",
+      ".catalog_lock:lock_catalog"
+    ]
+  },
+  {
+    "path": "backend/app/catalog_import.py",
+    "imports": [
+      "sqlalchemy.orm:Session",
+      ".admissions:Campaign,CompetitionGroup,University",
+      ".catalog_lock:lock_catalog",
+      ".config:Settings",
+      ".database:make_engine",
+      ".sources.table_profiles:PROFILES"
+    ]
+  },
+  {
+    "path": "backend/app/catalog_lock.py",
+    "imports": [
+      "sqlalchemy:text"
+    ]
+  },
+  {
+    "path": "backend/app/catalog_search.py",
+    "imports": []
+  },
+  {
+    "path": "backend/app/changes.py",
+    "imports": [
+      "datetime:datetime",
+      "fastapi:Depends,HTTPException,Path,Query",
+      "sqlalchemy:and_,func,or_,select",
+      "sqlalchemy.orm:Session",
+      ".admissions:Assessment,ChangeEvent,SourceSnapshot,Subscription,CompetitionGroup",
+      ".calculation:CamelModel",
+      ".scenario_api:ScenarioRead,read",
+      ".sources.publishing:utc"
+    ]
+  },
+  {
+    "path": "backend/app/config.py",
+    "imports": [
+      "os",
+      "re",
+      "dataclasses:dataclass",
+      "urllib.parse:urlsplit",
+      "sqlalchemy.engine:make_url",
+      "sqlalchemy.exc:ArgumentError"
+    ]
+  },
+  {
+    "path": "backend/app/coverage.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "sqlalchemy:func,select",
+      ".admissions:Campaign,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,University",
+      ".sources.contracts:AdapterError",
+      ".sources.publishing:binding_from_db,utc",
+      ".sources.registry:PRODUCTION_REGISTRY",
+      ".sources.status:source_status",
+      ".catalog:catalog_size",
+      ".national_catalog:load_catalog"
+    ]
+  },
+  {
+    "path": "backend/app/database.py",
+    "imports": [
+      "datetime:datetime",
+      "uuid:uuid4",
+      "sqlalchemy:CheckConstraint,DateTime,ForeignKey,Index,Integer,JSON,String,create_engine,event",
+      "sqlalchemy.orm:DeclarativeBase,Mapped,mapped_column",
+      "sqlalchemy.pool:StaticPool",
+      "sqlalchemy.engine:make_url"
+    ]
+  },
+  {
+    "path": "backend/app/diagnostics.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "sqlite3",
+      "alembic.config:Config",
+      "alembic.script:ScriptDirectory",
+      "sqlalchemy:create_engine,inspect,text",
+      "sqlalchemy.engine:make_url",
+      "sqlalchemy.pool:NullPool",
+      ".database:make_engine"
+    ]
+  },
+  {
+    "path": "backend/app/direction_budget.py",
+    "imports": [
+      "sqlalchemy:func,select",
+      ".admissions:Subscription",
+      ".calculation:CamelModel",
+      ".database:Watch"
+    ]
+  },
+  {
+    "path": "backend/app/http.py",
+    "imports": [
+      "asyncio",
+      "json",
+      "logging",
+      "math",
+      "time",
+      "urllib.parse:urlsplit",
+      "uuid:uuid4",
+      "starlette.responses:JSONResponse"
+    ]
+  },
+  {
+    "path": "backend/app/importing.py",
+    "imports": [
+      "datetime:datetime,timedelta,timezone",
+      "uuid:uuid4",
+      "fastapi:HTTPException",
+      "pydantic:ValidationError",
+      "sqlalchemy:func,select",
+      ".calculation:calculate",
+      ".database:Snapshot,Watch",
+      ".schemas:WatchCreate",
+      ".direction_budget:direction_budget"
+    ]
+  },
+  {
+    "path": "backend/app/jobs.py",
+    "imports": [
+      "dataclasses:dataclass,field",
+      "datetime:datetime,timedelta,timezone",
+      "uuid:uuid4",
+      "sqlalchemy:CheckConstraint,DateTime,ForeignKey,Index,Integer,String,and_,exists,or_,select,text",
+      "sqlalchemy.orm:Mapped,Session,aliased,mapped_column",
+      ".admissions:PublishedSnapshot,Source",
+      ".database:Base",
+      ".source_operations:record",
+      ".sources.publishing:FETCH_CODES,QUARANTINE_CODES,STORAGE_RETRY_CODES,lock_source,utc"
+    ]
+  },
+  {
+    "path": "backend/app/main.py",
+    "imports": [
+      "asyncio",
+      "hashlib",
+      "logging",
+      "secrets",
+      "contextlib:asynccontextmanager",
+      "contextlib:suppress",
+      "datetime:datetime,timedelta,timezone",
+      "uuid:UUID,uuid4",
+      "fastapi:Depends,FastAPI,HTTPException,Query,Request,Response",
+      "fastapi.exceptions:RequestValidationError",
+      "fastapi.responses:JSONResponse",
+      "sqlalchemy:and_,delete,func,or_,select,text",
+      "sqlalchemy.orm:Session",
+      "sqlalchemy.exc:SQLAlchemyError",
+      "sqlalchemy.exc:TimeoutError",
+      "starlette.middleware.trustedhost:TrustedHostMiddleware",
+      ".calculation:AssessmentInput,CalculationInput,CalculationResult,ScenarioAssessment,assess_scenario,calculate,calculate_versioned",
+      ".config:Settings",
+      ".database:BrowserSession,Snapshot,Watch,make_engine",
+      ".schemas:SessionRead,SnapshotRead,WatchCreate,WatchDetail,WatchRead",
+      ".maintenance:cleanup_expired_sessions",
+      ".catalog:search_universities,seed_catalog",
+      ".schemas:CatalogRead,CoverageRead,DataExport,HistoryPage,ImportRequest,ImportResult,SourceStatus,ValidationProblem",
+      ".coverage:coverage",
+      ".importing:import_bundle",
+      ".sources.status:source_status",
+      ".observability:system_status",
+      ".operations:begin_operation,remember_operation,retire_operations",
+      ".migrations:ensure_restore_complete,schema_heads,upgrade_schema",
+      ".http:RequestBudgetMiddleware,RequestDiagnosticsMiddleware,permitted_origin",
+      ".sources.registry:runtime_registry,identity_key",
+      ".source_api:install_source_routes",
+      ".scenario_api:install",
+      ".changes:install",
+      ".source_catalog:GroupCatalog,groups",
+      ".product_catalog:install",
+      ".direction_budget:direction_budget",
+      "fastapi.responses:JSONResponse"
+    ]
+  },
+  {
+    "path": "backend/app/maintenance.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "sqlalchemy:delete",
+      "sqlalchemy.orm:Session",
+      ".config:Settings",
+      ".database:BrowserSession,make_engine"
+    ]
+  },
+  {
+    "path": "backend/app/migrations.py",
+    "imports": [
+      "pathlib:Path",
+      "functools:lru_cache",
+      "alembic:command",
+      "alembic.config:Config",
+      "alembic.script:ScriptDirectory"
+    ]
+  },
+  {
+    "path": "backend/app/migration_checks.py",
+    "imports": [
+      "re",
+      "uuid:uuid4",
+      "sqlalchemy"
+    ]
+  },
+  {
+    "path": "backend/app/national_catalog.py",
+    "imports": [
+      "argparse",
+      "dataclasses:dataclass",
+      "datetime:datetime",
+      "functools:lru_cache",
+      "hashlib",
+      "json",
+      "os",
+      "pathlib:Path",
+      "re",
+      "tempfile",
+      "types:MappingProxyType",
+      "urllib.parse:urlsplit"
+    ]
+  },
+  {
+    "path": "backend/app/observability.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "datetime:datetime,timedelta,timezone",
+      "json",
+      "logging",
+      "sys",
+      "sqlalchemy:DateTime,String,delete,func,select",
+      "sqlalchemy.orm:Mapped,Session,mapped_column",
+      ".admissions:Assessment,Source,SourceSnapshot",
+      ".database:Base",
+      ".jobs:SourceCheck,SourceJob",
+      ".sources.publishing:utc",
+      ".sources.status:source_status",
+      ".config:Settings",
+      ".database:make_engine"
+    ]
+  },
+  {
+    "path": "backend/app/operations.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "re",
+      "datetime:datetime,timezone",
+      "fastapi:HTTPException",
+      "sqlalchemy:func,select,update",
+      ".database:OperationRecord"
+    ]
+  },
+  {
+    "path": "backend/app/product_catalog.py",
+    "imports": [
+      "re",
+      "typing:Literal",
+      "fastapi:Depends,HTTPException,Query",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      ".admissions:Campaign,CompetitionGroup,University",
+      ".catalog_import:expected_fields,reviewed_profiles",
+      ".national_catalog:load_catalog",
+      ".product_catalog_schemas:CatalogProgram,CatalogUniversity,ProgramPage,Provenance,UniversityPage"
+    ]
+  },
+  {
+    "path": "backend/app/product_catalog_schemas.py",
+    "imports": [
+      "datetime:datetime",
+      "typing:Literal",
+      ".calculation:CamelModel"
+    ]
+  },
+  {
+    "path": "backend/app/scenarios.py",
+    "imports": [
+      "types:MappingProxyType",
+      "typing:Literal",
+      ".calculation:CamelModel"
+    ]
+  },
+  {
+    "path": "backend/app/scenario_api.py",
+    "imports": [
+      "datetime:datetime",
+      "typing:Any",
+      "fastapi:Depends,HTTPException,Path,Query",
+      "sqlalchemy:and_,func,or_,select",
+      "sqlalchemy.orm:Session",
+      ".admissions:Assessment,SourceSnapshot,Subscription",
+      ".calculation:CamelModel",
+      ".scenarios:VERSION,ScenarioResult",
+      ".scenario_explanations:Explanation,explain",
+      ".sources.publishing:utc",
+      ".source_api:archive_directions"
+    ]
+  },
+  {
+    "path": "backend/app/scenario_explanations.py",
+    "imports": [
+      "typing:Literal",
+      ".calculation:CamelModel",
+      ".scenarios:ScenarioResult"
+    ]
+  },
+  {
+    "path": "backend/app/scenario_storage.py",
+    "imports": [
+      "sqlalchemy:select",
+      ".admissions:Assessment,Campaign,CandidateEntry,ChangeEvent,CompetitionGroup,Source,SourceSnapshot,Subscription",
+      ".scenarios:VERSION,PreparedRows,assess,ScenarioResult,ASSUMPTIONS",
+      ".scenario_explanations:explain",
+      ".sources.contracts:AdapterError",
+      ".sources.publishing:lock_source,binding_from_db",
+      ".sources.table_profiles:PROFILES",
+      "sqlalchemy.orm:Session",
+      ".source_history:assessment_clock",
+      ".admissions:PublishedSnapshot",
+      ".source_operations:record"
+    ]
+  },
+  {
+    "path": "backend/app/schemas.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "typing:Annotated,Literal",
+      "re",
+      "pydantic:AfterValidator,AwareDatetime,BeforeValidator,Field,HttpUrl,field_validator",
+      ".calculation:CalculationInput,CalculationResult,CamelModel"
+    ]
+  },
+  {
+    "path": "backend/app/source_api.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "decimal:Decimal",
+      "hashlib",
+      "typing:Literal",
+      "fastapi:Depends,HTTPException,Path,Query",
+      "pydantic:Field,field_validator",
+      "sqlalchemy:func,select,tuple_",
+      "sqlalchemy.orm:Session",
+      ".admissions:Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University",
+      ".calculation:CamelModel",
+      ".database:BrowserSession,LookupBudget,OperationRecord",
+      ".direction_budget:DirectionBudget,direction_budget",
+      ".operations:remember_operation",
+      ".source_catalog:GroupRead,group_read",
+      ".source_tokens:Confirmation,ConfirmationError,issue,verify",
+      ".sources.contracts:AdapterError,scoped_candidate_key",
+      ".sources.publishing:binding_from_db,utc",
+      ".jobs:SourceCheck",
+      ".source_history:history_rows",
+      ".scenario_storage:append_one"
+    ]
+  },
+  {
+    "path": "backend/app/source_catalog.py",
+    "imports": [
+      "datetime:datetime",
+      "typing:Literal",
+      "pydantic:Field",
+      "sqlalchemy:select,func,or_,and_",
+      ".admissions:Campaign,CompetitionGroup,Source,University",
+      ".calculation:CamelModel",
+      ".sources.registry:PRODUCTION_REGISTRY",
+      ".sources.status:source_status",
+      ".admissions:SourceSnapshot",
+      ".sources.table_profiles:PROFILES"
+    ]
+  },
+  {
+    "path": "backend/app/source_history.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "fastapi:HTTPException",
+      "sqlalchemy:and_,func,or_,select",
+      ".admissions:Assessment,CandidateEntry,SourceSnapshot,Subscription",
+      ".source_api:candidate_fact"
+    ]
+  },
+  {
+    "path": "backend/app/source_operations.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone,timedelta",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      ".admissions:SourceOperation",
+      ".sources.contracts:AdapterError",
+      ".sources.publishing:lock_source,binding_from_db,utc",
+      ".jobs:SourceJob"
+    ]
+  },
+  {
+    "path": "backend/app/source_tokens.py",
+    "imports": [
+      "base64",
+      "hashlib",
+      "hmac",
+      "json",
+      "re",
+      "pydantic:BaseModel,ConfigDict,Field,ValidationError"
+    ]
+  },
+  {
+    "path": "backend/app/worker.py",
+    "imports": [
+      "argparse",
+      "hashlib",
+      "json",
+      "logging",
+      "math",
+      "multiprocessing",
+      "os",
+      "pathlib:Path",
+      "resource",
+      "tempfile",
+      "time",
+      "typing:Literal",
+      "uuid:uuid4",
+      "pydantic:AwareDatetime,BaseModel,ConfigDict,Field,ValidationError",
+      "sqlalchemy.orm:Session",
+      ".admissions:Source",
+      ".config:Settings",
+      ".database:make_engine",
+      ".jobs:LostLease,claim,clock,complete,fail,guard_lease,renew",
+      ".observability:beat,log_event",
+      ".sources.contracts:AdapterError",
+      ".sources.fetcher:FetchError,Fetcher,FetchPolicy,FetchResult",
+      ".sources.publishing:FETCH_CODES,binding_from_db,publish",
+      ".sources.registry:PRODUCTION_REGISTRY,runtime_registry",
+      ".sources.storage:RawStore,StorageError",
+      ".sources.validation:Quarantined",
+      ".sources.page_cache:PageFetchCache"
+    ]
+  },
+  {
+    "path": "backend/app/__init__.py",
+    "imports": []
+  },
+  {
+    "path": "backend/app/sources/audit.py",
+    "imports": [
+      "argparse",
+      "contextlib:contextmanager",
+      "json",
+      "os",
+      "urllib.parse:urlsplit",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "..admissions:Campaign,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot",
+      "..config:Settings",
+      "..diagnostics:read_engine",
+      ".contracts:AdapterError,SourceBinding",
+      ".fetcher:FetchResult",
+      ".publishing:stored_list,utc",
+      ".registry:PRODUCTION_REGISTRY,runtime_registry",
+      ".storage:RawStore,StorageError",
+      ".validation:Quarantined,validate_list",
+      "pathlib:Path"
+    ]
+  },
+  {
+    "path": "backend/app/sources/batch.py",
+    "imports": [
+      "argparse",
+      "json",
+      "..config:Settings",
+      "..database:make_engine",
+      ".contracts:AdapterError",
+      ".profile_registration:register_profiles,select_profiles",
+      ".registry:runtime_registry"
+    ]
+  },
+  {
+    "path": "backend/app/sources/capture.py",
+    "imports": [
+      "argparse",
+      "hashlib",
+      "json",
+      "os",
+      "pathlib:Path",
+      "urllib.parse:urlsplit",
+      "uuid:uuid4",
+      "pydantic:AwareDatetime,BaseModel,ConfigDict,Field,ValidationError",
+      "..worker:bounded_fetch",
+      ".contracts:SourceBinding",
+      ".fetcher:FetchError"
+    ]
+  },
+  {
+    "path": "backend/app/sources/cli.py",
+    "imports": [
+      "argparse",
+      "json",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "..admissions:Source,SourceOperation",
+      "..config:Settings",
+      "..database:make_engine",
+      "..jobs:SourceJob,disable,enqueue",
+      ".contracts:AdapterError",
+      ".publishing:binding_from_db",
+      ".registry:PRODUCTION_REGISTRY,runtime_registry",
+      ".status:source_status",
+      "..source_operations:control",
+      ".pilots:register_sgu",
+      ".table_profiles:PROFILES",
+      ".profile_registration:register_profile",
+      "..scenario_storage:enable_scenarios"
+    ]
+  },
+  {
+    "path": "backend/app/sources/contracts.py",
+    "imports": [
+      "hashlib",
+      "hmac",
+      "json",
+      "dataclasses:dataclass",
+      "decimal:Decimal",
+      "typing:Literal",
+      "pydantic:AwareDatetime,BaseModel,ConfigDict,Field"
+    ]
+  },
+  {
+    "path": "backend/app/sources/fetcher.py",
+    "imports": [
+      "hashlib",
+      "http.client",
+      "ipaddress",
+      "socket",
+      "re",
+      "math",
+      "ssl",
+      "time",
+      "dataclasses:dataclass,field",
+      "datetime:datetime,timezone",
+      "email.utils:parsedate_to_datetime",
+      "email.message:Message",
+      "urllib.parse:urljoin,urlsplit,urlunsplit"
+    ]
+  },
+  {
+    "path": "backend/app/sources/html_inspection.py",
+    "imports": [
+      "bs4:BeautifulSoup",
+      ".contracts:AdapterError"
+    ]
+  },
+  {
+    "path": "backend/app/sources/navigation.py",
+    "imports": [
+      "re",
+      "urllib.parse:urlsplit"
+    ]
+  },
+  {
+    "path": "backend/app/sources/page_cache.py",
+    "imports": [
+      "collections:OrderedDict",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "math",
+      "time",
+      "urllib.parse:urlsplit",
+      ".fetcher:DEFAULT_SOURCE_BYTES,FetchPolicy,FetchResult"
+    ]
+  },
+  {
+    "path": "backend/app/sources/pilots.py",
+    "imports": [
+      "dataclasses:replace",
+      "sqlalchemy:select,text",
+      "sqlalchemy.dialects.postgresql:insert",
+      "sqlalchemy.dialects.sqlite:insert",
+      "sqlalchemy.orm:Session",
+      "..admissions:Campaign,CompetitionGroup,Source,University",
+      "..catalog:INITIAL_UNIVERSITIES",
+      "..catalog_lock:lock_catalog",
+      ".adapters.sgu2026:GROUP_ID,SOURCE_ID,URL,VERSION",
+      ".contracts:AdapterError",
+      ".publishing:binding_from_db",
+      ".registry:PRODUCTION_REGISTRY",
+      "..source_operations:record"
+    ]
+  },
+  {
+    "path": "backend/app/sources/profile_catalog.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "os",
+      "pathlib:Path,PurePosixPath",
+      "re",
+      "tempfile",
+      ".table_profiles:build_profiles"
+    ]
+  },
+  {
+    "path": "backend/app/sources/profile_registration.py",
+    "imports": [
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "..admissions:University,Campaign,CompetitionGroup,Source",
+      "..catalog_lock:lock_catalog",
+      ".contracts:AdapterError,SourceBinding",
+      ".registry:PRODUCTION_REGISTRY",
+      "..source_operations:record",
+      ".table_profiles:PROFILES"
+    ]
+  },
+  {
+    "path": "backend/app/sources/publishing.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "sqlalchemy:select,text",
+      "sqlalchemy.orm:Session",
+      "..admissions:Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot",
+      ".contracts:AdapterError,CandidateRow,ParsedList,SourceBinding",
+      ".fetcher:FetchResult",
+      ".registry:PRODUCTION_REGISTRY",
+      ".storage:RawStore",
+      ".validation:QualityPolicy,Quarantined,validate_list",
+      "..source_history:append_snapshot_facts",
+      "..scenario_storage:append_source"
+    ]
+  },
+  {
+    "path": "backend/app/sources/registry.py",
+    "imports": [
+      "dataclasses:dataclass",
+      "datetime:datetime",
+      "pathlib:PurePosixPath",
+      "os",
+      "re",
+      "typing:Callable",
+      "urllib.parse:urlsplit",
+      ".contracts:AdapterError,ParsedList,SourceBinding",
+      ".fetcher:DEFAULT_SOURCE_BYTES,MAX_SOURCE_BYTES,FetchResult,valid_domains",
+      ".adapters.sgu2026:make_adapter",
+      ".table_family:make_table_adapter",
+      ".table_profiles:PROFILES"
+    ]
+  },
+  {
+    "path": "backend/app/sources/retention.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timedelta,timezone",
+      "json",
+      "os",
+      "re",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "..admissions:SourceSnapshot",
+      "..config:Settings",
+      "..database:make_engine",
+      ".storage:RawStore"
+    ]
+  },
+  {
+    "path": "backend/app/sources/status.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "urllib.parse:urlsplit",
+      "sqlalchemy.orm:Session",
+      "..admissions:PublishedSnapshot,Source,SourceSnapshot",
+      "..jobs:SourceJob",
+      ".contracts:AdapterError",
+      ".publishing:QUARANTINE_CODES,binding_from_db,utc",
+      ".registry:PRODUCTION_REGISTRY"
+    ]
+  },
+  {
+    "path": "backend/app/sources/storage.py",
+    "imports": [
+      "hashlib",
+      "math",
+      "os",
+      "re",
+      "tempfile",
+      "threading",
+      "time",
+      "contextlib:contextmanager",
+      "pathlib:Path",
+      "msvcrt",
+      "fcntl",
+      "msvcrt",
+      "fcntl"
+    ]
+  },
+  {
+    "path": "backend/app/sources/table_family.py",
+    "imports": [
+      "dataclasses:dataclass",
+      "decimal:Decimal,InvalidOperation",
+      "hashlib",
+      "re",
+      "urllib.parse:urlsplit",
+      ".contracts:AdapterError,CandidateRow,ParsedList,scoped_candidate_key",
+      ".html_inspection:document",
+      ".registry:Adapter,Attestation",
+      ".fetcher:valid_domains"
+    ]
+  },
+  {
+    "path": "backend/app/sources/table_profiles.py",
+    "imports": [
+      "datetime:datetime",
+      "re",
+      "pathlib:Path",
+      "types:MappingProxyType",
+      ".registry:Attestation",
+      ".table_family:TableProfile,SECTION_VERSION",
+      ".profile_catalog:active_catalog,read_profile_data"
+    ]
+  },
+  {
+    "path": "backend/app/sources/validation.py",
+    "imports": [
+      "hashlib",
+      "dataclasses:dataclass",
+      "datetime:datetime,timedelta",
+      "pydantic:ValidationError",
+      ".contracts:ParsedList,SourceBinding"
+    ]
+  },
+  {
+    "path": "backend/app/sources/__init__.py",
+    "imports": []
+  },
+  {
+    "path": "backend/app/sources/adapters/sgu2026.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "decimal:Decimal,InvalidOperation",
+      "hashlib",
+      "re",
+      "..contracts:AdapterError,CandidateRow,ParsedList,scoped_candidate_key",
+      "..html_inspection:sgu_structure",
+      "..registry:Adapter,Attestation"
+    ]
+  },
+  {
+    "path": "backend/app/sources/adapters/__init__.py",
+    "imports": []
+  },
+  {
+    "path": "backend/tests/catalog_runtime.py",
+    "imports": [
+      "pathlib:Path",
+      "os",
+      "sys",
+      "threading",
+      "tempfile:TemporaryDirectory",
+      "uvicorn",
+      "app.catalog:seed_catalog",
+      "app.catalog_import:import_reviewed",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.migrations:upgrade_schema"
+    ]
+  },
+  {
+    "path": "backend/tests/conftest.py",
+    "imports": [
+      "pytest",
+      "fastapi.testclient:TestClient",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.database:Base,make_engine"
+    ]
+  },
+  {
+    "path": "backend/tests/native_support.py",
+    "imports": [
+      "os",
+      "pytest",
+      "app.migrations:upgrade_schema",
+      "pg_support:isolated_postgres"
+    ]
+  },
+  {
+    "path": "backend/tests/pg_guard.py",
+    "imports": [
+      "os",
+      "pytest",
+      "pg_support:disposable_postgres_url"
+    ]
+  },
+  {
+    "path": "backend/tests/pg_support.py",
+    "imports": [
+      "contextlib:contextmanager",
+      "uuid:uuid4",
+      "sqlalchemy.engine:make_url",
+      "sqlalchemy.schema:CreateSchema,DropSchema",
+      "app.database:make_engine"
+    ]
+  },
+  {
+    "path": "backend/tests/replay_case.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timedelta,timezone",
+      "hashlib",
+      "bs4:BeautifulSoup",
+      "fastapi.testclient:TestClient",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.jobs:enqueue",
+      "app.scenario_storage:enable_scenarios",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.table_profiles:SGU,GUAP",
+      "app.sources.storage:RawStore",
+      "app.sources.publishing:publish",
+      "app.worker:run_once",
+      "test_api:HEADERS,start",
+      "test_table_family:fetch,binding"
+    ]
+  },
+  {
+    "path": "backend/tests/runtime_smoke.py",
+    "imports": [
+      "argparse",
+      "json",
+      "datetime:datetime,timezone",
+      "pathlib:Path",
+      "urllib.parse:urlsplit",
+      "uuid:uuid4",
+      "httpx"
+    ]
+  },
+  {
+    "path": "backend/tests/sgu_helpers.py",
+    "imports": [
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,Source",
+      "app.catalog:seed_catalog",
+      "app.sources.adapters.sgu2026:GROUP_ID,SOURCE_ID,URL,VERSION"
+    ]
+  },
+  {
+    "path": "backend/tests/source_helpers.py",
+    "imports": [
+      "hashlib",
+      "datetime:datetime,timezone",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,Source,University",
+      "app.sources.contracts:CandidateRow,ParsedList,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.registry:Adapter,Attestation,Registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_adapter_contract.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "pytest",
+      "pydantic:ValidationError",
+      "app.sources.contracts:AdapterError,CandidateRow,ParsedList,SourceBinding,scoped_candidate_key",
+      "app.sources.registry:Adapter,PRODUCTION_REGISTRY,Registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_admissions.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "pytest",
+      "sqlalchemy.exc:IntegrityError",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University",
+      "app.database:BrowserSession"
+    ]
+  },
+  {
+    "path": "backend/tests/test_admissions_inventory.py",
+    "imports": [
+      "importlib.util",
+      "pathlib:Path",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_api.py",
+    "imports": [
+      "datetime:timedelta",
+      "pytest",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.database:BrowserSession,Snapshot",
+      "app.main:COOKIE,token_hash,utcnow"
+    ]
+  },
+  {
+    "path": "backend/tests/test_archive_export.py",
+    "imports": [
+      "fastapi.testclient:TestClient",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_subscriptions:confirm"
+    ]
+  },
+  {
+    "path": "backend/tests/test_assessment.py",
+    "imports": [
+      "json",
+      "pathlib:Path",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_attestation.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime",
+      "hashlib",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.contracts:AdapterError",
+      "app.sources.registry:Adapter,Registry",
+      "source_helpers:BINDING,parsed,synthetic_attestation"
+    ]
+  },
+  {
+    "path": "backend/tests/test_backup.py",
+    "imports": [
+      "datetime:timedelta",
+      "json",
+      "sqlite3",
+      "pytest",
+      "app.backup:BackupError,create_backup,file_hash",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore,StorageError",
+      "source_helpers:NOW,parsed,raw,registry,seed_source",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_batch_reads.py",
+    "imports": [
+      "datetime:datetime",
+      "sqlalchemy:event",
+      "sqlalchemy.orm:Session",
+      "app.database:Snapshot",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_bgu_attestation.py",
+    "imports": [
+      "dataclasses:replace",
+      "decimal:Decimal",
+      "hashlib",
+      "importlib.util",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.contracts:AdapterError",
+      "app.sources.registry:runtime_registry",
+      "app.sources.table_family:FILTERED_VERSION,parse_table",
+      "app.sources.table_profiles:PROFILES",
+      "test_filtered_table:KEY,binding,response"
+    ]
+  },
+  {
+    "path": "backend/tests/test_bgu_runtime.py",
+    "imports": [
+      "json",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,SourceSnapshot,Subscription",
+      "app.config:Settings",
+      "app.coverage:coverage",
+      "app.jobs:enqueue",
+      "app.main:create_app",
+      "app.sources.audit:audit_source",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "app.sources.table_profiles:PROFILES",
+      "native_support:postgres_engine",
+      "test_filtered_table:KEY,NOW,response",
+      "test_api:HEADERS,start",
+      "app.worker:run_once"
+    ]
+  },
+  {
+    "path": "backend/tests/test_calculation.py",
+    "imports": [
+      "json",
+      "pathlib:Path",
+      "pytest",
+      "pydantic:ValidationError",
+      "app.calculation:CalculationInput,calculate"
+    ]
+  },
+  {
+    "path": "backend/tests/test_capture.py",
+    "imports": [
+      "dataclasses:replace",
+      "json",
+      "pytest",
+      "app.sources.capture:CaptureError,TARGETS,capture,main,verify",
+      "app.sources.fetcher:FetchError",
+      "source_helpers:raw"
+    ]
+  },
+  {
+    "path": "backend/tests/test_catalog.py",
+    "imports": [
+      "sqlalchemy.orm:Session",
+      "app.admissions:University",
+      "app.catalog:seed_catalog"
+    ]
+  },
+  {
+    "path": "backend/tests/test_catalog_capture.py",
+    "imports": [
+      "importlib.util",
+      "pathlib:Path",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_catalog_sql.py",
+    "imports": [
+      "alembic:command",
+      "alembic.config:Config",
+      "pathlib:Path",
+      "pytest",
+      "sqlalchemy:event,insert,select,text",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,University",
+      "app.source_catalog:groups",
+      "native_support:postgres_engine",
+      "source_helpers:NOW,seed_source",
+      "app.database:make_engine",
+      "io",
+      "pg_support:isolated_postgres",
+      "os",
+      "unittest.mock:patch"
+    ]
+  },
+  {
+    "path": "backend/tests/test_changes.py",
+    "imports": [
+      "datetime:timedelta",
+      "dataclasses:replace",
+      "hashlib",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy:event,func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,ChangeEvent,SourceSnapshot",
+      "app.scenario_storage:enable_scenarios",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING",
+      "test_scenario_storage:changed_consent",
+      "test_subscriptions:confirm"
+    ]
+  },
+  {
+    "path": "backend/tests/test_config.py",
+    "imports": [
+      "pytest",
+      "app.config:Settings"
+    ]
+  },
+  {
+    "path": "backend/tests/test_config_strict.py",
+    "imports": [
+      "pytest",
+      "app.config:Settings",
+      "fastapi.testclient:TestClient",
+      "app.main:create_app",
+      "app.config:Settings"
+    ]
+  },
+  {
+    "path": "backend/tests/test_connection_timeout.py",
+    "imports": [
+      "socket",
+      "threading",
+      "time",
+      "pytest",
+      "sqlalchemy.exc:OperationalError",
+      "app.database:make_engine"
+    ]
+  },
+  {
+    "path": "backend/tests/test_contracts.py",
+    "imports": [
+      "json",
+      "pathlib:Path",
+      "app.schemas:WatchRead",
+      "test_api:HEADERS,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_coverage.py",
+    "imports": [
+      "dataclasses:replace",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot",
+      "app.coverage:coverage",
+      "app.sources.publishing:publish",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "source_helpers:NOW,parsed,raw,registry,seed_source",
+      "source_helpers:synthetic_attestation",
+      "app.sources.pilots:register_sgu",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.table_profiles:GUAP",
+      "app.sources.registry:runtime_registry",
+      "app.scenario_storage:enable_scenarios",
+      "app.sources.publishing:utc",
+      "test_sgu_adapter:BINDING,KEY,response",
+      "test_table_family:fetch,binding",
+      "os",
+      "unittest.mock:patch"
+    ]
+  },
+  {
+    "path": "backend/tests/test_database_diagnostics.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "sqlite3",
+      "pytest",
+      "sqlalchemy:text",
+      "sqlalchemy.exc:SQLAlchemyError",
+      "app.diagnostics:diagnose,main,read_engine",
+      "app.main:COOKIE",
+      "test_api:start,create"
+    ]
+  },
+  {
+    "path": "backend/tests/test_diagnostics.py",
+    "imports": [
+      "json",
+      "logging",
+      "uuid:UUID",
+      "sqlalchemy.exc:OperationalError",
+      "sqlalchemy:text",
+      "pytest",
+      "sqlalchemy.exc:TimeoutError"
+    ]
+  },
+  {
+    "path": "backend/tests/test_domain_queue.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Source",
+      "app.jobs:LostLease,SourceJob,claim,complete,disable,enqueue,renew",
+      "source_helpers:NOW,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_domain_regression.py",
+    "imports": [
+      "dataclasses:dataclass,replace",
+      "pathlib:Path",
+      "re",
+      "pydantic:ValidationError",
+      "pytest",
+      "app.calculation:AssessmentInput,CalculationInput,assess_scenario,calculate",
+      "app.scenarios:assess",
+      "app.sources.contracts:scoped_candidate_key",
+      "app.sources.validation:Quarantined,validate_list",
+      "source_helpers:BINDING,NOW,parsed",
+      "random:Random",
+      "app.scenarios:PreparedRows"
+    ]
+  },
+  {
+    "path": "backend/tests/test_draft_scope.py",
+    "imports": [
+      "app.main:COOKIE,token_hash",
+      "test_api:start,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_expected_snapshot.py",
+    "imports": [
+      "test_api:start,create,VALUES,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_export.py",
+    "imports": [
+      "sqlalchemy.orm:Session",
+      "app.database:Snapshot",
+      "app.main:utcnow",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_fetcher.py",
+    "imports": [
+      "hashlib",
+      "ssl",
+      "unittest.mock:Mock",
+      "pytest",
+      "app.sources.fetcher:FetchError,Fetcher,FetchPolicy,HTTPSReader,PinnedHTTPSConnection,RawResponse,retry_delay"
+    ]
+  },
+  {
+    "path": "backend/tests/test_fetch_exchange.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "time",
+      "pytest",
+      "app.sources.fetcher:FetchError",
+      "app.worker:bounded_fetch",
+      "source_helpers:BINDING"
+    ]
+  },
+  {
+    "path": "backend/tests/test_filtered_table.py",
+    "imports": [
+      "copy",
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "bs4:BeautifulSoup",
+      "pytest",
+      "app.sources.contracts:AdapterError,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.table_family:FILTERED_VERSION,TableProfile,parse_table",
+      "app.sources.table_profiles:SGU"
+    ]
+  },
+  {
+    "path": "backend/tests/test_format_groups.py",
+    "imports": [
+      "importlib.util",
+      "pathlib:Path",
+      "pytest",
+      "types:SimpleNamespace"
+    ]
+  },
+  {
+    "path": "backend/tests/test_group_catalog.py",
+    "imports": [
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,University",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.sources.pilots:register_sgu",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_sgu_adapter:BINDING,KEY,response",
+      "source_helpers:NOW"
+    ]
+  },
+  {
+    "path": "backend/tests/test_history_pages.py",
+    "imports": [
+      "sqlalchemy.orm:Session",
+      "app.database:Snapshot",
+      "app.main:utcnow",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_history_totals.py",
+    "imports": [
+      "test_api:create,start,VALUES,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_history_versions.py",
+    "imports": [
+      "types:MappingProxyType",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.calculation:CalculationInput,calculate_versioned",
+      "app.database:Snapshot",
+      "test_api:create,start",
+      "app.calculation"
+    ]
+  },
+  {
+    "path": "backend/tests/test_http_budget.py",
+    "imports": [
+      "asyncio",
+      "pytest",
+      "app.http:MAX_REQUEST_BYTES,RequestBudgetMiddleware",
+      "app.http:DEFAULT_REQUEST_BYTES"
+    ]
+  },
+  {
+    "path": "backend/tests/test_import.py",
+    "imports": [
+      "copy",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.database:Snapshot",
+      "app.calculation:CalculationInput,calculate",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_jobs.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Source",
+      "app.jobs:LostLease,SourceJob,claim,complete,disable,enqueue,fail,guard_lease",
+      "source_helpers:NOW,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_manual_hardening.py",
+    "imports": [
+      "pytest",
+      "json",
+      "test_api:start,WATCH,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_mass_queue.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:timedelta",
+      "json",
+      "os",
+      "pathlib:Path",
+      "time",
+      "pytest",
+      "sqlalchemy:insert,select,func,update",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Source",
+      "app.jobs:SourceJob,SourceCheck,LostLease,claim,complete,enqueue,renew",
+      "native_support:postgres_engine",
+      "source_helpers:NOW,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_migrations.py",
+    "imports": [
+      "importlib.util",
+      "io",
+      "os",
+      "pathlib:Path",
+      "pytest",
+      "alembic:command",
+      "alembic.config:Config",
+      "sqlalchemy:CheckConstraint,inspect,text",
+      "pg_support:isolated_postgres",
+      "app.database:Base,make_engine",
+      "datetime:datetime,timezone",
+      "sqlalchemy:delete,func,select",
+      "sqlalchemy.orm:Session",
+      "app.database:BrowserSession",
+      "app.admissions:Assessment,Campaign,CompetitionGroup,Source,SourceSnapshot,Subscription,University"
+    ]
+  },
+  {
+    "path": "backend/tests/test_national_catalog.py",
+    "imports": [
+      "json",
+      "pytest",
+      "app.national_catalog:DEFAULT_PATH,import_snapshot,load_catalog,parse_snapshot"
+    ]
+  },
+  {
+    "path": "backend/tests/test_next_scope.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.contracts:AdapterError,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.table_family:VERSION,parse_table",
+      "app.sources.table_profiles:PROFILES",
+      "native_support:postgres_engine",
+      "bs4:BeautifulSoup",
+      "app.sources.table_profiles:SGU",
+      "sqlalchemy:select,func",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,Source,SourceSnapshot",
+      "app.jobs:enqueue",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "app.worker:run_once",
+      "app.sources.status:source_status"
+    ]
+  },
+  {
+    "path": "backend/tests/test_observability.py",
+    "imports": [
+      "datetime:timedelta",
+      "json",
+      "logging",
+      "sqlalchemy.orm:Session",
+      "app.jobs:SourceJob,clock,enqueue",
+      "app.observability:WORKER_STALE_SECONDS,beat,system_status,trace_run,worker_status",
+      "app.sources.fetcher:FetchError",
+      "app.sources.storage:RawStore",
+      "app.worker:run_once",
+      "source_helpers:raw,registry,seed_source",
+      "app.observability:WorkerHeartbeat"
+    ]
+  },
+  {
+    "path": "backend/tests/test_ops_check.py",
+    "imports": [
+      "importlib.util",
+      "pathlib:Path"
+    ]
+  },
+  {
+    "path": "backend/tests/test_origin.py",
+    "imports": [
+      "dataclasses:replace",
+      "fastapi.testclient:TestClient",
+      "app.config:Settings",
+      "app.main:create_app"
+    ]
+  },
+  {
+    "path": "backend/tests/test_page_cache.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "pytest",
+      "app.sources.fetcher:FetchError",
+      "app.sources.page_cache:PageFetchCache",
+      "source_helpers:BINDING,NOW,raw"
+    ]
+  },
+  {
+    "path": "backend/tests/test_pg_guard.py",
+    "imports": [
+      "os",
+      "pathlib:Path",
+      "subprocess",
+      "sys",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_pg_support.py",
+    "imports": [
+      "contextlib:contextmanager",
+      "re",
+      "unittest.mock:Mock",
+      "pytest",
+      "sqlalchemy.dialects:postgresql",
+      "sqlalchemy.engine:make_url",
+      "pg_support:disposable_postgres_url,isolated_postgres"
+    ]
+  },
+  {
+    "path": "backend/tests/test_pilot_fixtures.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.contracts:AdapterError",
+      "app.sources.html_inspection:document,sgu_structure"
+    ]
+  },
+  {
+    "path": "backend/tests/test_pilot_registration.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CompetitionGroup,Source",
+      "app.sources.adapters.sgu2026:SOURCE_ID,make_adapter",
+      "app.sources.contracts:AdapterError",
+      "app.sources.pilots:register_sgu",
+      "app.sources.registry:Registry",
+      "test_sgu_adapter:KEY",
+      "fastapi.testclient:TestClient",
+      "app.config:Settings",
+      "app.main:create_app"
+    ]
+  },
+  {
+    "path": "backend/tests/test_postgres_jobs.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "multiprocessing",
+      "pytest",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.database:make_engine",
+      "app.jobs:SourceJob,claim,enqueue",
+      "native_support:postgres_engine",
+      "source_helpers:NOW,seed_source",
+      "test_jobs:test_one_source_one_active_claim_and_periodic_schedule,test_lease_recovery_rejects_old_owner_and_exhausts_attempts,test_retry_after_is_respected_and_disabled_source_cancels_owner,test_retry_limit_and_permanent_failure_do_not_spin",
+      "test_worker:test_worker_lost_lease_cannot_publish,test_disable_during_fetch_prevents_publication",
+      "test_domain_queue:test_same_domain_is_serialized_but_other_domains_are_not,test_progress_heartbeat_cannot_revive_expired_or_disabled_owner,test_different_domains_can_run_at_once"
+    ]
+  },
+  {
+    "path": "backend/tests/test_postgres_publishing.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:timedelta",
+      "threading:Event",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,PublishedSnapshot,SourceSnapshot",
+      "app.sources.storage:RawStore",
+      "native_support:postgres_engine",
+      "source_helpers:NOW,raw,seed_source",
+      "test_publishing:publish_sample,test_atomic_repeat_concurrency_and_new_parser_version,test_rejected_or_failed_write_preserves_latest_and_history,test_reinterpreting_same_raw_with_same_version_is_quarantined",
+      "test_worker:test_synthetic_worker_success_then_quarantine_preserves_latest,test_crash_after_publication_replays_without_second_snapshot,test_parser_exception_text_is_not_saved_or_returned"
+    ]
+  },
+  {
+    "path": "backend/tests/test_postgres_sgu.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "hashlib",
+      "os",
+      "threading:Event",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "app.config:Settings",
+      "app.admissions:CandidateEntry,PublishedSnapshot,SourceSnapshot",
+      "app.jobs:enqueue",
+      "app.main:create_app",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "app.sources.publishing:publish",
+      "app.worker:run_once",
+      "native_support:postgres_engine",
+      "sgu_helpers:seed_sgu",
+      "test_api:HEADERS",
+      "test_sgu_adapter:BINDING,KEY,make_adapter,response",
+      "test_sgu_worker:test_real_format_worker_success_then_bad_page_retains_last_good",
+      "test_pilot_registration:test_registration_is_explicit_disabled_and_idempotent,test_enable_requires_attested_key_and_conflicting_metadata_is_not_overwritten",
+      "test_source_lookup:test_lookup_requires_guest_and_never_creates_a_subscription,test_invalid_lookup_does_not_echo_code_or_accept_other_sources",
+      "test_subscriptions:test_repeated_confirmation_saves_once_and_other_owner_cannot_use_it,test_manual_and_archive_share_twenty_limit_under_concurrent_writes,test_stale_unconsumed_confirmation_refuses_but_successful_replay_ignores_expiry,test_guest_reset_removes_subscription_assessment_and_operation_payload,test_expiry_hides_private_rows_and_cleanup_keeps_shared_archive",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "test_source_lookup:test_lookup_budget_is_shared_by_requests_resets_and_does_not_store_codes",
+      "test_source_deletion:test_archive_delete_is_private_cascading_and_tombstones_replays,test_delete_racing_with_success_replay_cannot_resurrect",
+      "test_source_history:test_archive_history_is_immutable_paginated_private_and_idempotent,test_history_failure_rolls_back_publication_and_pointer",
+      "test_source_history:test_synthetic_changed_facts_keep_the_confirmation_unchanged",
+      "test_source_recovery:test_real_format_failure_quarantine_recovery_retains_history",
+      "test_source_recovery:test_synthetic_quality_quarantine_then_recovery_keeps_both_outcomes",
+      "test_archive_export:test_archive_export_is_private_bounded_factual_and_not_a_bearer_backup",
+      "test_subscriptions:test_batch_archive_cards_keep_twenty_identities_and_explicit_missing_row",
+      "test_source_audit:test_offline_audit_checks_rows_key_and_preserves_disabled_source,test_offline_audit_refuses_raw_and_normalized_database_corruption",
+      "test_source_audit:test_audit_limit_never_claims_unchecked_snapshots_are_valid",
+      "test_source_security:test_guest_removed_during_lookup_never_returns_private_facts,test_guest_deadline_crossed_during_lookup_does_not_issue_expired_confirmation",
+      "test_source_history:test_processing_time_is_separate_from_archive_fetch_and_retry_keeps_it",
+      "test_scenario_storage:test_versioned_scenario_reproduces_diff_and_history_without_mutation,test_assessment_failure_rolls_back_all_publication_and_preserves_previous,test_explicit_policy_backfills_existing_subscription_and_declines_paid_source",
+      "test_changes:test_changefeed_is_private_deduplicated_and_seen_is_idempotent,test_changefeed_same_clock_cursor_survives_seen_and_new_events,test_change_insert_failure_rolls_back_snapshot_and_scenarios",
+      "test_source_operations:test_operator_quarantine_fences_running_worker_and_resume_preserves_rate_limit,test_operator_enable_requires_attested_unchanged_binding_and_failed_control_is_atomic",
+      "test_coverage:test_reviewed_imports_are_counted_from_published_scopes_without_fabricating_automation",
+      "app.sources.pilots:register_sgu",
+      "app.sources.retention:cleanup_raw"
+    ]
+  },
+  {
+    "path": "backend/tests/test_postgres_writes.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "threading:Barrier",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "app.config:Settings",
+      "app.main:create_app",
+      "native_support:postgres_engine",
+      "test_api:HEADERS,VALUES,create,start",
+      "test_writes:test_create_retry_returns_original_response_without_duplicates,test_snapshot_retry_does_not_extend_history_twice,test_delete_erases_cached_payload_and_does_not_resurrect_watch,test_idempotency_keys_are_scoped_to_owner,test_invalid_key_does_not_create_data,test_concurrent_retries_create_one_watch,test_concurrent_creation_cannot_exceed_watch_limit,test_concurrent_snapshots_cannot_exceed_history_limit",
+      "test_expected_snapshot:test_stale_expected_snapshot_refuses_atomically_and_cached_replay_still_works,test_malformed_expected_snapshot_is_not_a_write",
+      "test_history_pages:test_all_500_with_equal_timestamps_and_new_insert,test_cursor_is_scoped_and_invalid_limits_rejected",
+      "test_history_totals:test_history_total_is_all_records_not_page_size_and_is_owner_scoped",
+      "test_history_versions:test_new_calculator_does_not_rewrite_saved_v1,test_unknown_history_version_refuses_instead_of_silent_recalculation"
+    ]
+  },
+  {
+    "path": "backend/tests/test_product_catalog.py",
+    "imports": [
+      "pytest",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,Source",
+      "app.catalog_import:import_reviewed",
+      "app.config:Settings",
+      "app.database:BrowserSession",
+      "app.main:create_app",
+      "native_support:postgres_engine"
+    ]
+  },
+  {
+    "path": "backend/tests/test_profile_batch.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "json",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CompetitionGroup,Source,SourceOperation,University",
+      "app.sources.batch:main",
+      "app.sources.contracts:AdapterError",
+      "app.sources.profile_registration:register_profile,register_profiles,select_profiles",
+      "app.sources.registry:Registry,runtime_registry",
+      "app.sources.table_profiles:PROFILES",
+      "native_support:postgres_engine",
+      "app.source_operations:control",
+      "app.sources.pilots:register_sgu",
+      "app.sources.adapters.sgu2026:VERSION",
+      "dataclasses:replace",
+      "types:MappingProxyType",
+      "app.sources:table_profiles",
+      "app.admissions:SourceSnapshot",
+      "app.jobs:SourceJob"
+    ]
+  },
+  {
+    "path": "backend/tests/test_profile_catalog.py",
+    "imports": [
+      "copy",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.profile_catalog:publish_profile_data,read_profile_data",
+      "app.sources.table_profiles:PROFILES,load_profiles"
+    ]
+  },
+  {
+    "path": "backend/tests/test_publishing.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,PublishedSnapshot,Source,SourceSnapshot",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "app.sources.validation:Quarantined",
+      "source_helpers:NOW,parsed,raw,registry,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_queue_policy.py",
+    "imports": [
+      "datetime:timedelta",
+      "sqlalchemy.orm:Session",
+      "app.jobs:SourceJob,claim,enqueue,fail",
+      "source_helpers:NOW,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_raw_store.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "hashlib",
+      "pytest",
+      "app.sources.storage:RawStore,StorageError"
+    ]
+  },
+  {
+    "path": "backend/tests/test_registry_contract.py",
+    "imports": [
+      "pytest",
+      "app.sources.registry:Adapter,Registry,PRODUCTION_REGISTRY",
+      "app.sources.contracts:AdapterError",
+      "source_helpers:BINDING,parsed"
+    ]
+  },
+  {
+    "path": "backend/tests/test_replay.py",
+    "imports": [
+      "pytest",
+      "native_support:postgres_engine",
+      "replay_case:replay_case",
+      "test_sgu_adapter:KEY"
+    ]
+  },
+  {
+    "path": "backend/tests/test_restart.py",
+    "imports": [
+      "contextlib:contextmanager",
+      "datetime:timedelta",
+      "os",
+      "pathlib:Path",
+      "socket",
+      "subprocess",
+      "sys",
+      "time",
+      "httpx",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy.orm:Session",
+      "app.config:Settings",
+      "app.database:BrowserSession",
+      "app.main:COOKIE,create_app,token_hash,utcnow",
+      "test_api:HEADERS,VALUES,WATCH,create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_restore.py",
+    "imports": [
+      "json",
+      "sqlite3",
+      "concurrent.futures:ThreadPoolExecutor",
+      "pathlib:Path",
+      "threading",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "app.backup:BackupError,create_backup,file_hash,restore_backup,verify_backup",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.sources.storage:RawStore",
+      "app.sources.publishing:publish",
+      "source_helpers:parsed,raw,registry,seed_source",
+      "test_api:create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_retention.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor,TimeoutError",
+      "datetime:timedelta",
+      "multiprocessing",
+      "os",
+      "threading",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.admissions:PublishedSnapshot",
+      "app.database:make_engine",
+      "app.sources.publishing:publish",
+      "app.sources.retention:cleanup_raw",
+      "app.sources.storage:RawStore",
+      "source_helpers:NOW,parsed,raw,registry,seed_source"
+    ]
+  },
+  {
+    "path": "backend/tests/test_reviewed_sources.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "pathlib:Path",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,SourceSnapshot,Source,University",
+      "app.config:Settings",
+      "app.main:create_app",
+      "app.jobs:enqueue",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.table_profiles:SGU,GUAP,PROFILES",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "app.sources.fetcher:FetchResult",
+      "app.worker:run_once",
+      "test_api:HEADERS,start",
+      "test_sgu_adapter:KEY",
+      "test_table_family:fetch,binding",
+      "native_support:postgres_engine",
+      "app.sources.contracts:AdapterError",
+      "app.sources.pilots:register_sgu",
+      "app.sources.contracts:AdapterError",
+      "app.sources.adapters.sgu2026:VERSION"
+    ]
+  },
+  {
+    "path": "backend/tests/test_scenarios.py",
+    "imports": [
+      "dataclasses:dataclass,replace",
+      "pytest",
+      "app.scenarios:VERSION,assess",
+      "itertools:product",
+      "app.scenario_storage:difference"
+    ]
+  },
+  {
+    "path": "backend/tests/test_scenario_explanations.py",
+    "imports": [
+      "app.scenario_explanations:explain",
+      "test_scenarios:rows,run"
+    ]
+  },
+  {
+    "path": "backend/tests/test_scenario_storage.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "hashlib",
+      "bs4:BeautifulSoup",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy:select,func",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,SourceSnapshot,PublishedSnapshot,Subscription,CandidateEntry",
+      "app.scenario_storage:enable_scenarios",
+      "app.scenarios:VERSION,assess",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING,response",
+      "test_subscriptions:confirm",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.table_profiles:GUAP",
+      "test_table_family:fetch,binding"
+    ]
+  },
+  {
+    "path": "backend/tests/test_section_family.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "pathlib:Path",
+      "urllib.parse:urlsplit",
+      "bs4:BeautifulSoup",
+      "pytest",
+      "app.sources.contracts:AdapterError,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.table_family:SECTION_VERSION,parse_table,make_table_adapter",
+      "app.sources.table_profiles:PROFILES",
+      "native_support:postgres_engine",
+      "sqlalchemy:select,func",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,SourceSnapshot",
+      "app.catalog:catalog_size",
+      "app.coverage:coverage",
+      "app.jobs:enqueue",
+      "app.sources.audit:audit_source",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.status:source_status",
+      "app.sources.storage:RawStore",
+      "app.worker:run_once"
+    ]
+  },
+  {
+    "path": "backend/tests/test_sessions.py",
+    "imports": [
+      "datetime:timedelta",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.database:BrowserSession,Snapshot,Watch",
+      "app.main:COOKIE,token_hash,utcnow",
+      "app.maintenance:cleanup_expired_sessions",
+      "test_api:HEADERS,create,start"
+    ]
+  },
+  {
+    "path": "backend/tests/test_sgu_adapter.py",
+    "imports": [
+      "dataclasses:replace",
+      "hashlib",
+      "pathlib:Path",
+      "pytest",
+      "app.sources.adapters.sgu2026:GROUP_ID,SOURCE_ID,URL,VERSION,make_adapter",
+      "app.sources.contracts:AdapterError,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.registry:Registry",
+      "source_helpers:NOW",
+      "bs4:BeautifulSoup",
+      "bs4:BeautifulSoup",
+      "app.sources.registry:runtime_registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_sgu_quarantine.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,PublishedSnapshot,SourceSnapshot",
+      "app.sources.contracts:AdapterError",
+      "app.sources.publishing:publish",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "app.sources.validation:Quarantined,validate_list",
+      "sgu_helpers:seed_sgu",
+      "test_sgu_adapter:BINDING,KEY,make_adapter,response",
+      "source_helpers:seed_source,parsed,raw,registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_sgu_worker.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "sqlalchemy.orm:Session",
+      "app.admissions:PublishedSnapshot,Source",
+      "app.jobs:SourceJob,enqueue",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "app.worker:run_once",
+      "sgu_helpers:seed_sgu",
+      "test_sgu_adapter:BINDING,KEY,make_adapter,response"
+    ]
+  },
+  {
+    "path": "backend/tests/test_snapshot_clock.py",
+    "imports": [
+      "datetime:datetime,timedelta,timezone",
+      "uuid:UUID",
+      "test_api:start,create,VALUES,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_audit.py",
+    "imports": [
+      "dataclasses:replace",
+      "json",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,Source",
+      "app.sources.audit:audit_source",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING,KEY,make_adapter,response",
+      "test_source_history:publish_version"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_deletion.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,CandidateEntry,SourceSnapshot,Subscription",
+      "app.database:OperationRecord",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_subscriptions:confirm"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_history.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "hashlib",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,SourceSnapshot",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING,response",
+      "test_subscriptions:confirm",
+      "app.admissions:PublishedSnapshot",
+      "pytest",
+      "bs4:BeautifulSoup",
+      "datetime:datetime,timezone"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_inventory.py",
+    "imports": [
+      "importlib.util",
+      "pathlib:Path",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_lookup.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "fastapi.testclient:TestClient",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Subscription",
+      "app.config:Settings",
+      "app.database:OperationRecord,Watch",
+      "app.main:create_app",
+      "app.source_tokens:Confirmation,ConfirmationError,issue,verify",
+      "app.sources.pilots:register_sgu",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_sgu_adapter:BINDING,KEY,response",
+      "datetime:timedelta",
+      "app.main:utcnow",
+      "app.database:LookupBudget"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_operations.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Source,SourceOperation,PublishedSnapshot",
+      "app.jobs:enqueue,claim,renew,disable,LostLease,SourceJob",
+      "app.source_operations:control",
+      "app.sources.cli:operate",
+      "app.sources.contracts:AdapterError",
+      "app.sources.publishing:publish,record_failure,utc",
+      "app.sources.storage:RawStore",
+      "app.sources.pilots:register_sgu",
+      "test_sgu_adapter:BINDING,KEY,make_adapter,response",
+      "app.sources.registry:Registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_recovery.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:PublishedSnapshot,Source",
+      "app.jobs:SourceCheck,enqueue",
+      "app.worker:run_once",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING,response",
+      "test_subscriptions:confirm",
+      "app.sources.registry:Registry"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_security.py",
+    "imports": [
+      "datetime:timedelta",
+      "sqlalchemy:delete,func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry",
+      "app.database:BrowserSession",
+      "test_api:HEADERS,start",
+      "test_source_lookup:lookup_context",
+      "test_sgu_adapter:BINDING",
+      "app.source_api",
+      "app.main:utcnow"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_size_policy.py",
+    "imports": [
+      "dataclasses:replace",
+      "hashlib",
+      "json",
+      "pytest",
+      "app.sources.fetcher:FetchError,Fetcher,FetchPolicy,RawResponse",
+      "app.sources.registry:Registry",
+      "app.sources.storage:RawStore,StorageError",
+      "app.worker:_read_fetch_result,run_once",
+      "app.jobs:enqueue",
+      "source_helpers:BINDING,NOW,parsed,raw,registry,seed_source",
+      "app.backup:create_backup,restore_backup,verify_backup",
+      "app.sources.publishing:publish"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_status.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "pytest",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CompetitionGroup,Source",
+      "app.coverage:coverage",
+      "app.jobs:claim,complete,enqueue",
+      "app.sources.publishing:publish,record_failure",
+      "app.sources.registry:Registry",
+      "app.sources.status:source_status",
+      "app.sources.storage:RawStore",
+      "source_helpers:NOW,parsed,raw,registry,seed_source,synthetic_attestation"
+    ]
+  },
+  {
+    "path": "backend/tests/test_source_validation.py",
+    "imports": [
+      "datetime:datetime,timedelta,timezone",
+      "decimal:Decimal",
+      "pytest",
+      "app.sources.contracts:CandidateRow,ParsedList,SourceBinding",
+      "app.sources.validation:QualityPolicy,Quarantined,validate_list"
+    ]
+  },
+  {
+    "path": "backend/tests/test_stateful_research.py",
+    "imports": [
+      "hashlib",
+      "importlib.util",
+      "pathlib:Path",
+      "pytest"
+    ]
+  },
+  {
+    "path": "backend/tests/test_storage_deadline.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "time",
+      "pytest",
+      "app.sources.storage:RawStore,StorageError"
+    ]
+  },
+  {
+    "path": "backend/tests/test_subscriptions.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "hashlib",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Assessment,Subscription",
+      "app.database:OperationRecord",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,WATCH,start",
+      "test_sgu_adapter:BINDING,response",
+      "test_source_lookup:lookup_context",
+      "app.main:utcnow",
+      "app.admissions:SourceSnapshot",
+      "app.database:BrowserSession",
+      "app.main:utcnow",
+      "app.maintenance:cleanup_expired_sessions"
+    ]
+  },
+  {
+    "path": "backend/tests/test_table_family.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "pathlib:Path",
+      "bs4:BeautifulSoup",
+      "pytest",
+      "app.sources.table_family:VERSION,parse_table",
+      "app.sources.table_profiles:SGU,GUAP",
+      "app.sources.contracts:AdapterError,SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "test_sgu_adapter:KEY,make_adapter,response",
+      "copy",
+      "test_sgu_adapter:BINDING"
+    ]
+  },
+  {
+    "path": "backend/tests/test_timestamp_bounds.py",
+    "imports": [
+      "pytest",
+      "pydantic:ValidationError",
+      "app.schemas:SessionRead",
+      "test_api:start,create,HEADERS"
+    ]
+  },
+  {
+    "path": "backend/tests/test_worker.py",
+    "imports": [
+      "dataclasses:replace",
+      "datetime:timedelta",
+      "time",
+      "pytest",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:PublishedSnapshot,Source,SourceSnapshot",
+      "app.jobs:SourceJob,claim,disable,enqueue",
+      "app.sources.cli:main,operate",
+      "app.sources.fetcher:FetchError",
+      "app.sources.registry:Adapter,Registry",
+      "app.sources.storage:RawStore",
+      "app.worker:bounded_fetch,main,run_once",
+      "source_helpers:BINDING,NOW,parsed,raw,registry,seed_source",
+      "os",
+      "app.worker:_fetch_child",
+      "app.worker:limit_memory"
+    ]
+  },
+  {
+    "path": "backend/tests/test_writes.py",
+    "imports": [
+      "concurrent.futures:ThreadPoolExecutor",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.database:OperationRecord,Snapshot,Watch",
+      "app.main:utcnow",
+      "test_api:HEADERS,VALUES,WATCH,create,start"
+    ]
+  },
+  {
+    "path": "scripts/admissions_inventory.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "concurrent.futures:ThreadPoolExecutor,as_completed",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "re",
+      "sys",
+      "urllib.parse:urlsplit",
+      "bs4:BeautifulSoup",
+      "app.national_catalog:valid_url",
+      "app.sources.navigation:admissions_link_score",
+      "source_inventory:observe,target"
+    ]
+  },
+  {
+    "path": "scripts/advance_source_e2e.py",
+    "imports": [
+      "json",
+      "os",
+      "sys",
+      "pathlib:Path",
+      "urllib.parse:urlparse",
+      "sqlalchemy:select",
+      "sqlalchemy.orm:Session",
+      "app.database:make_engine",
+      "app.admissions:PublishedSnapshot,SourceSnapshot",
+      "app.sources.registry:runtime_registry",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_sgu_adapter:KEY,BINDING",
+      "test_scenario_storage:changed_consent",
+      "types:SimpleNamespace"
+    ]
+  },
+  {
+    "path": "scripts/audit_private_artifacts.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "pathlib:Path",
+      "re",
+      "stat",
+      "subprocess",
+      "bs4:BeautifulSoup"
+    ]
+  },
+  {
+    "path": "scripts/audit_sgu.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "datetime:datetime,timezone",
+      "decimal:Decimal",
+      "hashlib",
+      "html.parser:HTMLParser",
+      "json",
+      "pathlib:Path",
+      "secrets",
+      "sys",
+      "app.sources.adapters.sgu2026:GROUP_ID,SOURCE_ID,URL,VERSION,make_adapter",
+      "app.sources.contracts:SourceBinding,scoped_candidate_key",
+      "app.sources.fetcher:FetchResult"
+    ]
+  },
+  {
+    "path": "scripts/audit_table_family.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "datetime:datetime,timezone",
+      "decimal:Decimal",
+      "hashlib",
+      "json",
+      "re",
+      "secrets",
+      "sys",
+      "html.parser:HTMLParser",
+      "pathlib:Path",
+      "app.sources.table_family:VERSION,parse_table",
+      "app.sources.table_profiles:SGU,GUAP",
+      "app.sources.contracts:SourceBinding,scoped_candidate_key",
+      "app.sources.fetcher:FetchResult",
+      "audit_sgu:Reference"
+    ]
+  },
+  {
+    "path": "scripts/build_bgu_fixture.py",
+    "imports": [
+      "html:escape",
+      "json",
+      "pathlib:Path"
+    ]
+  },
+  {
+    "path": "scripts/capture_catalog.py",
+    "imports": [
+      "argparse",
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "re",
+      "time",
+      "urllib.parse:parse_qs,urljoin,urlsplit",
+      "urllib.request:Request,urlopen",
+      "bs4:BeautifulSoup"
+    ]
+  },
+  {
+    "path": "scripts/group_source_formats.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "concurrent.futures:ThreadPoolExecutor,as_completed",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "sys",
+      "urllib.parse:urljoin,urlsplit",
+      "bs4:BeautifulSoup",
+      "app.national_catalog:load_catalog,valid_url",
+      "admissions_inventory:inspect_observation",
+      "source_inventory:target"
+    ]
+  },
+  {
+    "path": "scripts/load_profile.py",
+    "imports": [
+      "argparse",
+      "asyncio",
+      "datetime:datetime,timedelta,timezone",
+      "json",
+      "math",
+      "os",
+      "pathlib:Path",
+      "platform",
+      "random",
+      "secrets",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "threading",
+      "time",
+      "httpx",
+      "sqlalchemy.orm:Session",
+      "app.admissions:Campaign,CompetitionGroup,Source,University",
+      "app.database:make_engine",
+      "app.migrations:upgrade_schema",
+      "app.sources.contracts:SourceBinding",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "load_support:URL,VERSION,load_registry,raw_for,rows_list"
+    ]
+  },
+  {
+    "path": "scripts/load_server.py",
+    "imports": [
+      "os",
+      "pathlib:Path",
+      "sys",
+      "uvicorn",
+      "load_support:load_registry",
+      "app.main",
+      "app.sources.registry"
+    ]
+  },
+  {
+    "path": "scripts/load_support.py",
+    "imports": [
+      "datetime:datetime,timezone",
+      "decimal:Decimal",
+      "hashlib",
+      "os",
+      "app.sources.contracts:CandidateRow,ParsedList,scoped_candidate_key",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.registry:Adapter,Attestation,Registry"
+    ]
+  },
+  {
+    "path": "scripts/measure_archive.py",
+    "imports": [
+      "argparse",
+      "concurrent.futures:ThreadPoolExecutor",
+      "datetime:datetime,timezone",
+      "json",
+      "math",
+      "os",
+      "pathlib:Path",
+      "platform",
+      "resource",
+      "sys",
+      "tempfile",
+      "threading:Lock",
+      "time",
+      "postgres_runtime:disposable_postgres",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:event",
+      "app.config:Settings",
+      "app.database:make_engine",
+      "app.main:create_app",
+      "app.migrations:upgrade_schema",
+      "app.sources.pilots:register_sgu",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore",
+      "test_api:HEADERS,start",
+      "test_sgu_adapter:BINDING,KEY,response"
+    ]
+  },
+  {
+    "path": "scripts/ops_check.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "shutil",
+      "subprocess",
+      "sys",
+      "urllib.request"
+    ]
+  },
+  {
+    "path": "scripts/pack_profiles.py",
+    "imports": [
+      "argparse",
+      "pathlib:Path",
+      "sys",
+      "json",
+      "app.sources.profile_catalog:active_catalog,read_profile_data,publish_profile_data"
+    ]
+  },
+  {
+    "path": "scripts/postgres_runtime.py",
+    "imports": [
+      "contextlib:contextmanager",
+      "dataclasses:dataclass",
+      "json",
+      "subprocess",
+      "time",
+      "uuid:uuid4"
+    ]
+  },
+  {
+    "path": "scripts/prepare_bgu_scope.py",
+    "imports": [
+      "hashlib",
+      "json",
+      "re",
+      "sys",
+      "datetime:datetime,timezone",
+      "pathlib:Path",
+      "urllib.parse:urlsplit",
+      "bs4:BeautifulSoup",
+      "source_inventory:observe"
+    ]
+  },
+  {
+    "path": "scripts/rehearse_catalog_migration.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "os",
+      "pathlib:Path",
+      "sys",
+      "time",
+      "sqlalchemy:MetaData,select,text",
+      "sqlalchemy.engine:make_url",
+      "app.database:make_engine",
+      "app.migrations:upgrade_schema"
+    ]
+  },
+  {
+    "path": "scripts/rehearse_compose.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "socket",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "time",
+      "uuid:uuid4",
+      "httpx"
+    ]
+  },
+  {
+    "path": "scripts/rehearse_postgres_restore.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timedelta,timezone",
+      "hashlib",
+      "json",
+      "os",
+      "dataclasses:replace",
+      "pathlib:Path",
+      "sys",
+      "tempfile",
+      "time",
+      "postgres_runtime:disposable_postgres",
+      "fastapi.testclient:TestClient",
+      "sqlalchemy:inspect,select,text",
+      "app.admissions:SourceSnapshot",
+      "app.config:Settings",
+      "app.database:make_engine",
+      "app.jobs:enqueue",
+      "app.main:create_app",
+      "app.migrations:upgrade_schema",
+      "app.sources.publishing:publish",
+      "app.sources.storage:RawStore,StorageError",
+      "source_helpers:NOW,parsed,raw,registry,seed_source",
+      "test_api:HEADERS,VALUES,WATCH",
+      "test_sgu_adapter:BINDING,KEY,response",
+      "app.sources.pilots:register_sgu",
+      "app.scenario_storage:enable_scenarios",
+      "test_scenario_storage:changed_consent"
+    ]
+  },
+  {
+    "path": "scripts/rehearse_reviewed_worker.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "secrets",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "pathlib:Path",
+      "postgres_runtime:disposable_postgres",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,SourceSnapshot,PublishedSnapshot",
+      "app.database:make_engine",
+      "app.jobs:enqueue",
+      "app.migrations:upgrade_schema",
+      "app.sources.table_profiles:PROFILES",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore"
+    ]
+  },
+  {
+    "path": "scripts/rehearse_sgu_worker.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "secrets",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "postgres_runtime:disposable_postgres",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,PublishedSnapshot,SourceSnapshot",
+      "app.database:make_engine",
+      "app.jobs:SourceJob,enqueue",
+      "app.migrations:upgrade_schema",
+      "app.sources.adapters.sgu2026:SOURCE_ID",
+      "app.sources.storage:RawStore",
+      "sgu_helpers:seed_sgu"
+    ]
+  },
+  {
+    "path": "scripts/replay_archives.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "sys",
+      "tempfile",
+      "pathlib:Path",
+      "postgres_runtime:disposable_postgres",
+      "app.database:make_engine",
+      "app.migrations:upgrade_schema",
+      "replay_case:replay_case",
+      "test_sgu_adapter:KEY"
+    ]
+  },
+  {
+    "path": "scripts/research_stateful_formats.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "re",
+      "sys",
+      "urllib.parse:urljoin,urlsplit",
+      "bs4:BeautifulSoup",
+      "app.national_catalog:load_catalog,valid_url",
+      "admissions_inventory:inspect_observation",
+      "source_inventory:target"
+    ]
+  },
+  {
+    "path": "scripts/review_bgu_scope.py",
+    "imports": [
+      "argparse",
+      "copy",
+      "hashlib",
+      "hmac",
+      "json",
+      "re",
+      "secrets",
+      "sys",
+      "datetime:datetime",
+      "decimal:Decimal",
+      "html.parser:HTMLParser",
+      "pathlib:Path",
+      "app.sources.contracts:SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.profile_catalog:active_catalog,read_profile_data,publish_profile_data",
+      "app.sources.table_family:parse_table",
+      "app.sources.table_profiles:build_profiles"
+    ]
+  },
+  {
+    "path": "scripts/review_section_family.py",
+    "imports": [
+      "datetime:datetime",
+      "decimal:Decimal",
+      "hashlib",
+      "hmac",
+      "html:escape",
+      "html.parser:HTMLParser",
+      "json",
+      "pathlib:Path",
+      "re",
+      "secrets",
+      "sys",
+      "urllib.parse:urlsplit",
+      "bs4:BeautifulSoup",
+      "app.sources.contracts:SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.table_family:SECTION_VERSION,clean,parse_table,section_metadata",
+      "app.sources.table_profiles:build_profiles",
+      "app.sources.profile_catalog:active_catalog,read_profile_data,publish_profile_data"
+    ]
+  },
+  {
+    "path": "scripts/review_sgu_scope.py",
+    "imports": [
+      "argparse",
+      "copy",
+      "datetime:datetime,timezone",
+      "decimal:Decimal",
+      "hashlib",
+      "hmac",
+      "html:escape",
+      "html.parser:HTMLParser",
+      "json",
+      "pathlib:Path",
+      "re",
+      "secrets",
+      "sys",
+      "bs4:BeautifulSoup",
+      "app.sources.contracts:SourceBinding",
+      "app.sources.fetcher:FetchResult",
+      "app.sources.registry:Attestation",
+      "app.sources.table_family:TableProfile,SCHEMA_SET_VERSION,parse_table",
+      "app.sources.profile_catalog:active_catalog,read_profile_data,publish_profile_data"
+    ]
+  },
+  {
+    "path": "scripts/roadmap.py",
+    "imports": [
+      "argparse",
+      "copy",
+      "json",
+      "re",
+      "sys",
+      "collections:Counter",
+      "pathlib:Path"
+    ]
+  },
+  {
+    "path": "scripts/sanitize_pilot.py",
+    "imports": [
+      "argparse",
+      "copy",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "re",
+      "sys",
+      "bs4:BeautifulSoup",
+      "app.sources.html_inspection:sgu_structure"
+    ]
+  },
+  {
+    "path": "scripts/sanitize_table_source.py",
+    "imports": [
+      "argparse",
+      "copy",
+      "hashlib",
+      "json",
+      "re",
+      "pathlib:Path",
+      "bs4:BeautifulSoup"
+    ]
+  },
+  {
+    "path": "scripts/serve_source_e2e.py",
+    "imports": [
+      "os",
+      "pathlib:Path",
+      "signal",
+      "subprocess",
+      "sys",
+      "tempfile",
+      "postgres_runtime:disposable_postgres",
+      "app.database:make_engine",
+      "app.migrations:upgrade_schema",
+      "app.sources.pilots:register_sgu",
+      "app.sources.publishing:publish",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "test_sgu_adapter:BINDING,KEY,response",
+      "json",
+      "app.sources.table_profiles:GUAP",
+      "app.sources.profile_registration:register_profile",
+      "test_table_family:fetch,binding",
+      "app.scenario_storage:enable_scenarios"
+    ]
+  },
+  {
+    "path": "scripts/source_inventory.py",
+    "imports": [
+      "argparse",
+      "collections:Counter",
+      "concurrent.futures:ThreadPoolExecutor,as_completed",
+      "datetime:datetime,timezone",
+      "hashlib",
+      "json",
+      "pathlib:Path",
+      "re",
+      "sys",
+      "threading",
+      "time",
+      "urllib.parse:quote,urljoin,urlsplit,urlunsplit",
+      "urllib.robotparser:RobotFileParser",
+      "bs4:BeautifulSoup",
+      "app.national_catalog:load_catalog,valid_url",
+      "app.sources.fetcher:Fetcher,FetchPolicy,FetchError",
+      "app.sources.navigation:admissions_link_score"
+    ]
+  },
+  {
+    "path": "scripts/test_postgres.py",
+    "imports": [
+      "argparse",
+      "os",
+      "pathlib:Path",
+      "subprocess",
+      "sys",
+      "postgres_runtime:disposable_postgres"
+    ]
+  },
+  {
+    "path": "scripts/verify_filtered_scope.py",
+    "imports": [
+      "argparse",
+      "json",
+      "os",
+      "secrets",
+      "sys",
+      "tempfile",
+      "datetime:datetime,timezone",
+      "pathlib:Path",
+      "sqlalchemy:func,select",
+      "sqlalchemy.orm:Session",
+      "pg_support:isolated_postgres",
+      "app.admissions:CandidateEntry,SourceSnapshot",
+      "app.coverage:coverage",
+      "app.jobs:enqueue",
+      "app.migrations:upgrade_schema",
+      "app.sources.audit:audit_source",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "app.sources.table_profiles:PROFILES",
+      "app.worker:run_once,bounded_fetch",
+      "review_bgu_scope:compare_rows"
+    ]
+  },
+  {
+    "path": "scripts/verify_reviewed_scope.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "secrets",
+      "sys",
+      "tempfile",
+      "pg_support:isolated_postgres",
+      "sqlalchemy:select,func",
+      "sqlalchemy.orm:Session",
+      "app.admissions:CandidateEntry,SourceSnapshot",
+      "app.jobs:enqueue",
+      "app.migrations:upgrade_schema",
+      "app.sources.audit:audit_source",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "app.sources.table_profiles:PROFILES",
+      "app.worker:run_once,bounded_fetch",
+      "review_sgu_scope:audit_rows"
+    ]
+  },
+  {
+    "path": "scripts/verify_section_family.py",
+    "imports": [
+      "argparse",
+      "datetime:datetime,timezone",
+      "json",
+      "os",
+      "pathlib:Path",
+      "secrets",
+      "sys",
+      "tempfile",
+      "sqlalchemy:select,func",
+      "sqlalchemy.orm:Session",
+      "pg_support:isolated_postgres",
+      "app.admissions:CandidateEntry,SourceSnapshot",
+      "app.catalog:catalog_size",
+      "app.coverage:coverage",
+      "app.jobs:enqueue",
+      "app.migrations:upgrade_schema",
+      "app.sources.audit:audit_source",
+      "app.sources.profile_registration:register_profile",
+      "app.sources.page_cache:PageFetchCache",
+      "app.sources.registry:runtime_registry",
+      "app.sources.storage:RawStore",
+      "app.sources.table_family:SECTION_VERSION",
+      "app.sources.table_profiles:PROFILES",
+      "app.worker:run_once,bounded_fetch",
+      "review_section_family:compare_rows",
+      "app.scenario_storage:enable_scenarios"
+    ]
+  }
+]

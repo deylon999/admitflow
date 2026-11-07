@@ -9,7 +9,7 @@ import re
 from pydantic import ValidationError
 import pytest
 
-from app.calculation import AssessmentInput, CalculationInput, assess_scenario, calculate
+from app.calculation import CalculationInput, calculate
 from app.scenarios import assess
 from app.sources.contracts import scoped_candidate_key
 from app.sources.validation import Quarantined, validate_list
@@ -146,10 +146,11 @@ def test_q03_candidate_absent_from_list_is_not_treated_as_withdrawal():
     assert result.reason_codes == ['candidate_not_in_snapshot'] and result.numbers is None
 
 
-@pytest.mark.parametrize('mode', ['automatic', 'archive'])
-def test_q03_manual_endpoint_refuses_unverified_modes(mode):
-    assert assess_scenario(AssessmentInput(mode=mode)).state == 'unsupported'
-    assert assess_scenario(AssessmentInput()).state == 'insufficient_data'
+def test_retired_calculators_are_not_public_api(client):
+    paths = client.get('/api/openapi.json').json()['paths']
+    for path in ('/api/v1/calculate', '/api/v1/assess'):
+        assert path not in paths
+        assert client.post(path, json={}, headers={'X-Requested-With': 'abiturient'}).status_code == 404
 
 
 def test_regression_map_points_at_existing_tests():

@@ -3,21 +3,22 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-07. Последняя сессия: S195.
+Дата: 2026-11-08. Последняя сессия: S201.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T057.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regressions.md. Local commit only;no push or fresh GitHub Actions result. Next product candidate T057.
+Stop after completed cleanup as requested. Read docs/evidence/foundation-cleanup.md and docs/foundation-cleanup-audit.md. T250 remains blocked: Docker Compose PostgreSQL startup denied docker_engine/config access. Resume only with permitted Docker/PostgreSQL environment and explicit next work; verify native migrations/API/catalog without deleting volumes. No new features or redesign.
 
 ## Последняя завершённая работа
 
-- T237: five E2E files corrected after UI updates;full Firefox254passed/37existing skips,all14reported scenarios passed;production code unchanged.
-- T233-T236 UI changes committed:2a9da3b frontend,16cb145 tests;verification and screenshots in docs/evidence/final-ui-quality.md.
+- T248-T249: dependency audit and KEEP/REFACTOR/DELETE decisions; 42 stale files and two old stateless calculator HTTP endpoints removed; CamelModel isolated; 46 unused lock entries removed (162 ->116 install).
+- T251: frontend TS/ESLint/build/source guard pass; 193 Chromium passed, 29 runtime routes; 20 catalog baseline +125 reference pixel comparisons zero diff. Portable Windows backend549passed/35PG skips; 12 Linux-resource modules retained and uncollectable here.
+- T252: current v3 docs/architecture/API and registry aligned; old release/ML tasks deferred, historical done/evidence retained. Protected UI/migration/local DB hashes verified. T250 native PG/Docker blocked; cleanup stopped without new features.
 
 ## Ограничения
 
@@ -28,8 +29,11 @@ T237 Firefox CI regressions corrected locally;review docs/evidence/ui-ci-regress
 
 ## Проверенное окружение
 
-- S195: typecheck/lint/build/format/architecture passed;150unit;full Firefox254passed/37existing skips;39targetedChromium+39targetedFirefox passed;final4reset cases passed each browser.
-- Actual isolated SQLite/FastAPI+production preview;Firefox works outside sandbox. Two Firefox PNGs viewed. Fresh Ubuntu/GitHub CI,source-fixture suites and reverse-proxy tests not verified this turn. Temporary servers stopped and test DB removed. No push.
+- Actual docker compose config --quiet exit0; up -d db exit1 permission denied on docker_engine, Docker config access denied. No permission/config workaround, no volume deletion or working PostgreSQL connection/migration claim.
+- Final portable backend549passed/35native PG skips (182.05s); initial full collection12resource errors on Windows, Linux CI suite remains intact. UTF8 fixture-read test fixed without altering source fixtures.
+- Chromium193passed/0failed/skipped/flaky (54.2s). All29routes; 20 catalog PNGs identical to2a7835f and125 source comparisons under existing demo-label rules. All render files/CSS unchanged except dead routeLabels removed.
+- No frontend static preview/parallel renderer or unused React plugin. npm ci116; lint source/tests/scripts, tsc, Vite build pass. Production asset names/sizes match prior recorded build; initial dist absent, raw byte comparison not claimed.
+- Applied migrations and local legacy DB hashes unchanged; SQL models and source/normalization/history/jobs/backup kept. Hosted CI/native PG/Docker runtime not verified. QA servers stopped cleanly; no push/deployment/main changes.
 
 ## Готовность к выпуску
 
