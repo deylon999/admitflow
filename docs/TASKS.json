@@ -7623,6 +7623,124 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T248",
+      "title": "Audit and classify product foundation modules",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/foundation-cleanup-audit.md"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Dependencies and current product audited across frontend/backend/APIs/models/migrations/tests/deps/Docker/CI/docs; KEEP/REFACTOR/DELETE justified"
+      ],
+      "evidence": [
+        {
+          "path": "docs/foundation-cleanup-audit.md",
+          "note": "Audited source imports, active UI/build/test dependencies, backend consumers, persisted data, migrations, CI and docs. KEEP/REFACTOR/DELETE decisions and irreversible retirement plan recorded."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T249",
+      "title": "Remove confirmed obsolete tooling and calculator endpoints",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T248"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup/deleted-files.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Only confirmed obsolete code removed; useful backend/source/history/models and applied migrations preserved; no v3 design changes"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T250",
+      "title": "Verify Compose PostgreSQL migrations and live catalog",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "blocked",
+      "dependsOn": [
+        "T248"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup/infrastructure.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Actual Docker Compose PostgreSQL startup, connection/migrations/API/catalog browser path executed; permission denial is a blocker, never a success"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/foundation-cleanup/infrastructure.json",
+          "note": "Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion."
+        }
+      ],
+      "blockedReason": "Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL."
+    },
+    {
+      "id": "T251",
+      "title": "Run current backend and frontend regression checks",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T249"
+      ],
+      "deliverables": [
+        "docs/evidence/foundation-cleanup.md"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "TS/ESLint/build/current backend and API/browser suites plus visual preservation; exact outcomes and environment limits recorded"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T252",
+      "title": "Align documentation and stop after cleanup",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T251"
+      ],
+      "deliverables": [
+        "docs/STATE.json"
+      ],
+      "steps": [
+        "Complete scoped cleanup/infrastructure work without new product features"
+      ],
+      "acceptance": [
+        "Current architecture, removed files, preserved mechanisms and irreversible-change plan documented; registry regenerated, small commits, no main changes or new features"
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

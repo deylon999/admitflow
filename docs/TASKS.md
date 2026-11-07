@@ -4210,6 +4210,113 @@
 
 - [docs/catalog-runbook.md](../docs/catalog-runbook.md) — All 29-route audit/API/model plan, real-vs-demo boundaries, explicit import and existing PostgreSQL/isolated local run instructions documented. Evidence gallery20 and final test summaries retained. Main/source/previous branches preserved; no push. Next: actual PostgreSQL verification, reviewed program/year/exam coverage, then saved real IDs; no ML yet.
 
+### T248. Audit and classify product foundation modules
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/foundation-cleanup-audit.md`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Dependencies and current product audited across frontend/backend/APIs/models/migrations/tests/deps/Docker/CI/docs; KEEP/REFACTOR/DELETE justified.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/foundation-cleanup-audit.md](../docs/foundation-cleanup-audit.md) — Audited source imports, active UI/build/test dependencies, backend consumers, persisted data, migrations, CI and docs. KEEP/REFACTOR/DELETE decisions and irreversible retirement plan recorded.
+
+### T249. Remove confirmed obsolete tooling and calculator endpoints
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T248.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup/deleted-files.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Only confirmed obsolete code removed; useful backend/source/history/models and applied migrations preserved; no v3 design changes.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T250. Verify Compose PostgreSQL migrations and live catalog
+
+**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T248.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup/infrastructure.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Actual Docker Compose PostgreSQL startup, connection/migrations/API/catalog browser path executed; permission denial is a blocker, never a success.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/foundation-cleanup/infrastructure.json](../docs/evidence/foundation-cleanup/infrastructure.json) — Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion.
+
+**Причина блокировки/переноса:** Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL.
+
+### T251. Run current backend and frontend regression checks
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T249.
+
+**Результаты/файлы:** `docs/evidence/foundation-cleanup.md`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- TS/ESLint/build/current backend and API/browser suites plus visual preservation; exact outcomes and environment limits recorded.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T252. Align documentation and stop after cleanup
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T251.
+
+**Результаты/файлы:** `docs/STATE.json`.
+
+**Шаги:**
+
+1. Complete scoped cleanup/infrastructure work without new product features.
+
+**Критерии закрытия:**
+
+- Current architecture, removed files, preserved mechanisms and irreversible-change plan documented; registry regenerated, small commits, no main changes or new features.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

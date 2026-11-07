@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 223 из 243 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 224 из 248 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -205,6 +205,11 @@
 - [x] T245 Connect v3 catalog and detail pages to real API
 - [x] T246 Verify catalog APIs, flows and unchanged design
 - [x] T247 Document product foundation and remaining demo modules
+- [x] T248 Audit and classify product foundation modules
+- [ ] T249 Remove confirmed obsolete tooling and calculator endpoints — **в работе**
+- [ ] T250 Verify Compose PostgreSQL migrations and live catalog — **заблокировано**
+- [ ] T251 Run current backend and frontend regression checks
+- [ ] T252 Align documentation and stop after cleanup
 
 ## Качество и эксплуатация
 

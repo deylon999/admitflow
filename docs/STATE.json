@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-08",
-  "currentTask": null,
-  "nextTask": null,
+  "currentTask": "T249",
+  "nextTask": "T249",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S200",
-  "resumeAction": "T243-T247 functional foundation completed on feat/catalog-vertical-slice. Review docs/evidence/catalog-vertical-slice.md and docs/catalog-runbook.md. Next: verify actual PostgreSQL on disposable schema, expand reviewed program/year/exam datasets, then saved-programs with real IDs. Preserve v3 design; no ML until outcomes and metrics exist.",
+  "lastSession": "S201",
+  "resumeAction": "User requested cleanup only. Branch chore/product-foundation-cleanup created from clean catalog state. Audit first; preserve v3 visuals, PostgreSQL data and all applied migrations. No new product features.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

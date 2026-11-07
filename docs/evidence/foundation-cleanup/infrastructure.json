@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-11-07T22:57:37.349639+00:00",
+  "composeConfig": {
+    "command": "docker compose -f compose.yaml config --quiet",
+    "exitCode": 0,
+    "stderr": "WARNING: Error loading config file: open C:\\Users\\pc\\.docker\\config.json: Access is denied.\nWARNING: Error loading config file: open C:\\Users\\pc\\.docker\\config.json: Access is denied."
+  },
+  "postgresStartup": {
+    "command": "docker compose -f compose.yaml up -d db",
+    "exitCode": 1,
+    "state": "blocked",
+    "reason": "permission denied connecting to npipe:////./pipe/docker_engine; Docker config access denied"
+  },
+  "postgresConnection": "not verified",
+  "migrationsPostgres": "not executed",
+  "containerApiAndBrowserSmoke": "not executed",
+  "volumesDeleted": false,
+  "sandboxBypass": false
+}

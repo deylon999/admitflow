@@ -3,16 +3,16 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-08. Последняя сессия: S200.
+Дата: 2026-11-08. Последняя сессия: S201.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: не назначена.
+- Текущая задача: T249.
+- Следующая задача: T249.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T243-T247 functional foundation completed on feat/catalog-vertical-slice. Review docs/evidence/catalog-vertical-slice.md and docs/catalog-runbook.md. Next: verify actual PostgreSQL on disposable schema, expand reviewed program/year/exam datasets, then saved-programs with real IDs. Preserve v3 design; no ML until outcomes and metrics exist.
+User requested cleanup only. Branch chore/product-foundation-cleanup created from clean catalog state. Audit first; preserve v3 visuals, PostgreSQL data and all applied migrations. No new product features.
 
 ## Последняя завершённая работа
 
