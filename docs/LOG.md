@@ -1041,3 +1041,31 @@ S185/T231 started: visual design-system audit/refactor on existing FSD tree. Pre
 S185/T231 complete: unified visual tokens/scale/shared primitives on existing FSD.55buttons (6previously unstyled). typecheck/lint/build/format/architecture exit0,147unit passed;12page/theme/viewport +4editor/state +4outage checks, snapshots reviewed. No long E2E/backend/UX/API/model changes, commits/staging/push. Previous uncommitted FSD retained. Evidence docs/evidence/design-system.md;preview5285 stopped.
 
 S186: subsequent user request authorizes local commits, user will push. Preserved live worktree and staged pre-design FSD snapshot from recorded originals; staged FSD TypeScript passed. Source commits de1821b and ac11756. Full current typecheck/lint/build/format/architecture/147unit passed. Documentation/status recorded separately; no push or history rewrite.
+
+
+## S187 — 2026-11-07 — оптимизация документации
+
+По результатам предыдущего аудита: начальный Git main чистый. STATE.md теперь
+генерируется из STATE.json и проверяется roadmap; старый STATE, PROGRESS,
+предыдущий план архитектуры и оценка gates сохранены в docs/archive/ с исправлением
+относительных ссылок. LOG оставлен на месте ради evidence; добавлены --context,
+--task ID и --log [ID] --entries N для выборочного чтения. API.md — единый
+контракт, api-contract.md — указатель совместимости. Подтверждённые устаревшие
+утверждения о native PG, пагинации, архивных API и старой frontend-структуре исправлены.
+Приёмка G0–G4 не синтезирована из done; внешние условия T046/T048–T052 сохранены.
+TASKS.json, исходные evidence, паспорта/JSON источников, fixtures, CI и приложение
+не изменяются. Проверки инструментов и сохранности данных следуют ниже.
+Коммиты и push запрещены текущим запросом; этот запрет соблюдён.
+
+S187 verification: roadmap --render --check --self-test passed (231 tasks,
+211 done/13 todo/6 blocked/1 review; 6 invalid states rejected). Ten unittest
+cases passed: selection/dependencies/evidence, exact log IDs, unheaded sessions,
+current/next/explicit selection, invalid input and stale generated STATE rejection.
+The CI-equivalent command from frontend passed; all local Markdown links and
+registered evidence paths passed. TASKS.json is semantically identical to HEAD;
+149 protected source/evidence/design/CI artifacts have unchanged Git-normalized
+hashes; previous LOG text is preserved. Fixed startup for T057: 74611 → 13406
+UTF-8 bytes (51892 → 8741 characters), excluding task-specific reference docs.
+No application/backend/E2E suite run: application and fixtures unchanged.
+Final gate acceptance and external deployment/retention/tester decisions remain
+unconfirmed; no gate or task status changed. No commits or push.

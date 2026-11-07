@@ -6,12 +6,22 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S186",
-  "resumeAction": "T230 FSD and T231 design system complete and committed locally at subsequent user request. Source commits de1821b (FSD), ac11756 (design). Typecheck/lint/build/format/architecture and147unit passed again before commits. No push; user will push. Temporary previews stopped. Next candidate T057 remains source expansion.",
+  "lastSession": "S187",
+  "resumeAction": "Оптимизация документации завершена; изменения локальные, без коммитов и push. Следующий продуктовый кандидат — T057: получить карточку командой python scripts/roadmap.py --task T057, проверить её зависимости и выбрать конкретный следующий источник/формат. Не начинать новый импорт из архивных инструкций без проверки сезона и аттестации.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
     "Опорный мониторинг не включает все лицензированные вузы. 2026-11-05 islod.obrnadzor.gov.ru/rlic timeout; нужна доступная официальная выгрузка для T056. Живая кампания 2027 и суточное наблюдение не подтверждены."
+  ],
+  "lastCompleted": [
+    "T230: frontend переведён на FSD; [evidence](evidence/fsd-migration.md).",
+    "T231: единая дизайн-система; [evidence](evidence/design-system.md). Последние проверки приложения записаны там; эта сессия их не повторяет.",
+    "S187: сокращён стартовый контекст, добавлены адресные команды roadmap, исправлены подтверждённые устаревшие сведения. Результаты проверок инструментов — LOG.md."
+  ],
+  "environment": [
+    "В начале S187 рабочее дерево main было чистым; текущие изменения — документация и инструменты её чтения.",
+    "Состояние Docker/demo8091 и внешнего deployment в S187 не проверялось. Старые адреса в журнале не подтверждают актуальный deployment.",
+    "Скрипт roadmap использует только стандартную библиотеку Python. Команды выполнять из корня; npm — из frontend/."
   ]
 }

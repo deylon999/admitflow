@@ -165,7 +165,7 @@ def render_checklist(data):
 
 def check_links():
     errors = []
-    for path in [ROOT / 'README.md', *DOCS.rglob('*.md')]:
+    for path in [ROOT / 'README.md', ROOT / 'AGENTS.md', *DOCS.rglob('*.md')]:
         for raw in re.findall(r'\[[^\]]*\]\(([^)]+)\)', path.read_text(encoding='utf-8')):
             target = raw.strip('<>').split('#', 1)[0]
             if not target or re.match(r'^[a-z]+:', target, re.I):
@@ -174,6 +174,73 @@ def check_links():
             if not resolved.exists():
                 errors.append(f'Broken local link in {path.relative_to(ROOT)}: {raw}')
     return errors
+
+
+def render_state(state):
+    """A projection of STATE.json, never a second editable session record."""
+    lines = ['# Актуальная передача контекста', '',
+             'Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.',
+             'Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.', '',
+             f'Дата: {state["updatedAt"]}. Последняя сессия: {state["lastSession"]}.', '',
+             '## Продолжение', '',
+             f'- Текущая задача: {state.get("currentTask") or "нет"}.',
+             f'- Следующая задача: {state.get("nextTask") or "не назначена"}.',
+             '- Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).',
+             '- Карточка и прямые зависимости: `python scripts/roadmap.py --context`.', '',
+             state['resumeAction'], '', '## Последняя завершённая работа', '']
+    lines.extend(f'- {item}' for item in state.get('lastCompleted', []))
+    lines += ['', '## Ограничения', '']
+    lines.extend(f'- {item}' for item in state.get('externalConstraints', []))
+    lines += ['', '## Проверенное окружение', '']
+    lines.extend(f'- {item}' for item in state.get('environment', []))
+    lines += ['', '## Готовность к выпуску', '',
+              'Принятые gates в STATE.json: ' + (', '.join(state.get('completedGates', [])) or 'не зафиксированы') + '.',
+              'Технические результаты и внешние условия — [RELEASE_GATES.md](RELEASE_GATES.md).',
+              'Завершение задач не означает автоматическую приёмку gate.', '',
+              '## Чтение по задаче', '',
+              'Карта документов — [README.md](README.md). Полный TASKS, журнал и исследования',
+              'источников не входят в стартовый контекст. Старые передачи — [архив](archive/state-before-optimization.md).']
+    return '\n'.join(lines).rstrip() + '\n'
+
+
+def render_task(data, task_id):
+    by_id = {task['id']: task for task in data['tasks']}
+    if task_id not in by_id:
+        raise ValueError(f'Unknown task: {task_id}')
+    task = by_id[task_id]
+    lines = [f'{task_id} [{task["status"]}] {task["title"]}',
+             f'Priority: {task["priority"]}; size: {task["size"]}', '', 'Steps:']
+    lines.extend(f'- {item}' for item in task['steps'])
+    lines += ['', 'Acceptance:']
+    lines.extend(f'- {item}' for item in task['acceptance'])
+    lines += ['- Общая Definition of Done: docs/QUALITY.md.', '', 'Deliverables:']
+    lines.extend(f'- {item}' for item in task['deliverables'])
+    lines += ['', 'Evidence:']
+    lines.extend(f'- {item["path"]}: {item["note"]}' for item in task['evidence'])
+    if not task['evidence']:
+        lines.append('- none')
+    if task.get('blockedReason'):
+        lines += ['', 'Blocked: ' + task['blockedReason']]
+    lines += ['', 'Direct dependencies (use --task ID for their full cards):']
+    for dependency in task['dependsOn']:
+        parent = by_id[dependency]
+        lines.append(f'- {dependency} [{parent["status"]}] {parent["title"]}')
+        lines.extend(f'  Evidence: {item["path"]}: {item["note"]}' for item in parent['evidence'])
+    if not task['dependsOn']:
+        lines.append('- none')
+    return '\n'.join(lines) + '\n'
+
+
+def select_log(text, query=None, count=3):
+    """Include unheaded session notes too; preserve their original text/order."""
+    starts = list(re.finditer(r'(?m)^(?:##\s+)?S\d{3}\b[^\n]*', text))
+    entries = [text[match.start():starts[i + 1].start() if i + 1 < len(starts) else len(text)]
+               for i, match in enumerate(starts)]
+    if query:
+        entries = [entry for entry in entries if re.search(r'\b' + re.escape(query) + r'\b', entry)]
+    if not entries:
+        raise ValueError(f'No log entries for {query or "recent"}')
+    return '\n'.join(entry.rstrip() for entry in entries[-count:]) + '\n'
 
 
 def self_test(data, state):
@@ -214,7 +281,13 @@ def main():
     parser.add_argument('--render', action='store_true')
     parser.add_argument('--next', action='store_true')
     parser.add_argument('--self-test', action='store_true')
+    parser.add_argument('--context', action='store_true', help='Session handoff and current/next task only')
+    parser.add_argument('--task', metavar='ID', help='One full card and direct dependency summaries')
+    parser.add_argument('--log', nargs='?', const='', metavar='ID', help='Recent log entries, optionally matching Tnnn/Snnn')
+    parser.add_argument('--entries', type=int, default=3, help='Maximum log entries (default: 3)')
     args = parser.parse_args()
+    if args.entries < 1:
+        parser.error('--entries must be positive')
     data, state = read_json('TASKS.json'), read_json('STATE.json')
     errors = validate(data, state)
     if errors:
@@ -224,17 +297,23 @@ def main():
     target = DOCS / 'TASKS.md'
     checklist = ROOT / 'CHECKLIST.md'
     expected_checklist = render_checklist(data)
+    state_target = DOCS / 'STATE.md'
+    expected_state = render_state(state)
     if args.render:
         target.write_text(expected, encoding='utf-8')
         checklist.write_text(expected_checklist, encoding='utf-8')
+        state_target.write_text(expected_state, encoding='utf-8')
         print('Rendered docs/TASKS.md')
         print('Rendered CHECKLIST.md')
-    if args.check or not any(vars(args).values()):
+        print('Rendered docs/STATE.md')
+    if args.check or not (args.render or args.next or args.self_test or args.context or args.task or args.log is not None):
         errors = check_links()
         if not target.exists() or target.read_text(encoding='utf-8') != expected:
             errors.append('TASKS.md is stale or missing; run --render')
         if not checklist.exists() or checklist.read_text(encoding='utf-8') != expected_checklist:
             errors.append('CHECKLIST.md is stale or missing; run --render')
+        if not state_target.exists() or state_target.read_text(encoding='utf-8') != expected_state:
+            errors.append('STATE.md is stale or missing; run --render')
         if state['lastSession'] not in (DOCS / 'LOG.md').read_text(encoding='utf-8'):
             errors.append('STATE.lastSession is missing from LOG.md')
         if errors:
@@ -252,6 +331,18 @@ def main():
             print(f'Available {task["id"]} [{task["priority"]}]: {task["title"]}')
     if args.self_test:
         self_test(data, state)
+    try:
+        selected = args.task
+        if args.context:
+            print(f'Session {state["lastSession"]}; updated {state["updatedAt"]}')
+            print(state['resumeAction'])
+            selected = selected or state.get('currentTask') or state.get('nextTask')
+        if selected:
+            print(render_task(data, selected))
+        if args.log is not None:
+            print(select_log((DOCS / 'LOG.md').read_text(encoding='utf-8'), args.log, args.entries))
+    except ValueError as error:
+        parser.error(str(error))
     return 0
 
 
