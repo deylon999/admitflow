@@ -1,4 +1,4 @@
-import { Card, Alert, Button } from '@/shared/ui';
+import { Card, RequestFeedback } from '@/shared/ui';
 import { useQuery } from '@tanstack/react-query';
 import { sourceApi } from '@/entities/admission-source';
 
@@ -18,23 +18,23 @@ export function CoverageSummary() {
         >
           Проверяем покрытие…
         </p>
-      ) : query.isError ? (
-        <Alert
-          as="p"
-          className="small-copy"
-          role="alert"
+      ) : null}
+      {query.isError && (
+        <RequestFeedback
+          busy={query.isFetching}
+          onRetry={() => void query.refetch()}
+          retryLabel="Повторить проверку покрытия"
         >
-          Не удалось проверить покрытие.{' '}
-          <Button
-            variant="ghost"
-
-            type="button"
-            onClick={() => void query.refetch()}
-          >
-            Повторить проверку покрытия
-          </Button>
-        </Alert>
-      ) : (
+          Не удалось загрузить сведения об источниках.{' '}
+          {query.data
+            ? 'Показаны ранее загруженные сведения.'
+            : 'Это не мешает работать с направлениями.'}
+        </RequestFeedback>
+      )}
+      {query.isFetching && query.data && (
+        <RequestFeedback>Обновляем сведения об источниках…</RequestFeedback>
+      )}
+      {query.data && (
         <>
           <dl className="coverage-numbers">
             <div>

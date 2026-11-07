@@ -74,6 +74,10 @@
   summary {
     cursor: pointer;
   }
+  summary {
+    min-height: var(--control-height);
+    align-content: center;
+  }
   button,
   a,
   input,

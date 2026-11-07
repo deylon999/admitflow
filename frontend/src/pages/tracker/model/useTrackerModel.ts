@@ -72,6 +72,25 @@ export function useTrackerModel() {
     queryFn: ({ signal }) => sourceApi.directionBudget(signal),
     enabled: privateVisible,
   });
+  // Same query/cache as the archive panel; its result is needed before declaring the list empty.
+  const archive = useQuery({
+    queryKey: ['archive-directions'],
+    queryFn: ({ signal }) => sourceApi.subscriptions(signal),
+    enabled: privateVisible && access.data === 'active',
+  });
+  const directionsLoading = watches.isPending || (watches.data?.length === 0 && archive.isPending);
+  const directionsError =
+    (watches.isError && watches.data === undefined) ||
+    (watches.data?.length === 0 && archive.isError && archive.data === undefined);
+  const directionsEmpty =
+    watches.isSuccess &&
+    watches.data.length === 0 &&
+    archive.isSuccess &&
+    archive.data.length === 0;
+  const refreshError =
+    !directionsError &&
+    ((watches.isError && watches.data !== undefined) ||
+      (archive.isError && archive.data !== undefined));
   const directionTotal = privateVisible
     ? Math.max(budget.data?.total ?? 0, watches.data?.length ?? 0)
     : 0;
@@ -84,9 +103,10 @@ export function useTrackerModel() {
   );
   const report = useManualReportPrint();
   async function refreshDirections() {
-    const result = await watches.refetch();
-    if (!result.error) {
-      setNotice('Список направлений обновлён. Ручные цифры не загружались из вузов.');
+    setNotice('');
+    const results = await Promise.all([watches.refetch(), archive.refetch(), budget.refetch()]);
+    if (results.every((result) => !result.error)) {
+      setNotice('Список направлений обновлён. Ручные цифры обновляете вы.');
     }
   }
   function clearFilters() {
@@ -118,6 +138,11 @@ export function useTrackerModel() {
     synchronize,
     reset,
     budget,
+    archive,
+    directionsLoading,
+    directionsError,
+    directionsEmpty,
+    refreshError,
     directionTotal,
     count,
     visible,

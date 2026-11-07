@@ -1,4 +1,5 @@
-import { Alert, Button } from '@/shared/ui';
+import { Button, RequestFeedback } from '@/shared/ui';
+import { requestErrorText } from '@/shared/api';
 import type { Watch } from '@/entities/manual-direction';
 import { HistoryComparison } from './HistoryComparison';
 import { useManualHistory } from '../model/useManualHistory';
@@ -10,10 +11,6 @@ const exactDateFormat = new Intl.DateTimeFormat('ru-RU', {
 function exactDate(value: string) {
   return `${exactDateFormat.format(new Date(value))} (${value})`;
 }
-function errorText(error: unknown) {
-  return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
-}
-
 export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: boolean }) {
   const history = useManualHistory(watch.id, show, watch.latest.id);
   const snapshots = history.data?.snapshots ?? [];
@@ -32,23 +29,25 @@ export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: bo
       ) : (
         <>
           {history.isError && (
-            <Alert
-              as="p"
-              className="form-error"
-              role="alert"
+            <RequestFeedback
+              busy={history.isFetching}
+              retryLabel="Повторить загрузку истории"
+              onRetry={() =>
+                void (history.isFetchNextPageError ? history.fetchNextPage() : history.refetch())
+              }
             >
-              {errorText(history.error)}{' '}
-              <Button
-                variant="ghost"
-
-                type="button"
-                onClick={() =>
-                  void (history.isFetchNextPageError ? history.fetchNextPage() : history.refetch())
-                }
-              >
-                Повторить загрузку истории
-              </Button>
-            </Alert>
+              Не удалось загрузить{' '}
+              {history.isFetchNextPageError ? 'следующие сохранения' : 'историю'}.{' '}
+              {history.data
+                ? 'Показаны ранее загруженные сохранения.'
+                : requestErrorText(history.error)}
+            </RequestFeedback>
+          )}
+          {history.isFetching && history.data && (
+            <RequestFeedback>Обновляем историю…</RequestFeedback>
+          )}
+          {history.isSuccess && snapshots.length === 0 && (
+            <p className="small-copy">Сохранений в истории пока нет.</p>
           )}
           {snapshots.length > 0 && (
             <>
@@ -104,7 +103,7 @@ export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: bo
               </div>
             </>
           )}
-          {history.hasNextPage && (
+          {history.hasNextPage && !history.isFetchNextPageError && (
             <Button
               variant="ghost"
 

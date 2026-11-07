@@ -1,12 +1,9 @@
-import { Card, Button, Input, Alert } from '@/shared/ui';
+﻿import { Card, Button, Input, Alert } from '@/shared/ui';
+import { requestErrorText } from '@/shared/api';
 import { CalculationInputs } from '@/entities/manual-direction';
 import { UniversityPicker } from '@/entities/university';
 import { useDirectionForm } from '../model/useDirectionForm';
 import type { DirectionFormProps } from '../model/useDirectionForm';
-
-function errorText(error: unknown) {
-  return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
-}
 
 export function DirectionForm(props: DirectionFormProps) {
   const { watch, disabled, onCancel } = props;
@@ -34,6 +31,8 @@ export function DirectionForm(props: DirectionFormProps) {
       className="direction-form"
       noValidate
       aria-labelledby="direction-form-heading"
+      aria-describedby="direction-form-intro"
+      aria-busy={save.isPending}
       onKeyDown={(event) => {
         if (event.key === 'Escape' && !event.defaultPrevented && !save.isPending) {
           event.preventDefault();
@@ -52,7 +51,6 @@ export function DirectionForm(props: DirectionFormProps) {
         </h2>
         <Button
           variant="ghost"
-
           type="button"
           onClick={onCancel}
           aria-label="Закрыть форму"
@@ -61,17 +59,41 @@ export function DirectionForm(props: DirectionFormProps) {
           ✕
         </Button>
       </div>
+      <p
+        id="direction-form-intro"
+        className="direction-form-intro"
+      >
+        {watch
+          ? 'Введите свежие числа из списка. Новый расчёт добавится в историю, прежние сохранятся.'
+          : 'Перенесите данные из конкурсного списка вуза. Сохраним направление и расчёт, чтобы вы могли следить за изменениями.'}
+      </p>
+      <p className="form-note direction-required-note">
+        Все поля обязательны.{!watch && ' Выбор вуза из подсказок можно пропустить.'}
+      </p>
       <fieldset
         className="direction-fields"
         disabled={save.isPending || disabled}
       >
         <legend className="visually-hidden">Данные направления</legend>
         {watch ? (
-          <p className="small-copy">
-            {watch.university} · {watch.title}
-          </p>
+          <div className="direction-context">
+            <dl>
+              <dt>Вуз</dt>
+              <dd>{watch.university}</dd>
+              <dt>Направление</dt>
+              <dd>{watch.title}</dd>
+            </dl>
+            <a
+              href={watch.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Открыть список вуза ↗
+            </a>
+          </div>
         ) : (
-          <>
+          <fieldset className="direction-section">
+            <legend>Вуз и направление</legend>
             <UniversityPicker
               value={university}
               onChange={setUniversity}
@@ -82,16 +104,23 @@ export function DirectionForm(props: DirectionFormProps) {
               }}
             />
             <div className="field">
-              <label htmlFor="direction-title">Направление и конкурсная группа</label>
+              <label htmlFor="direction-title">Направление</label>
               <Input
                 id="direction-title"
                 value={title}
                 required
                 aria-invalid={Boolean(metadata.title) || undefined}
-                aria-describedby={metadata.title ? 'direction-title-error' : undefined}
+                aria-describedby={`direction-title-hint${metadata.title ? ' direction-title-error' : ''}`}
                 onChange={(event) => setTitle(event.target.value)}
-                placeholder="Например: информатика, общий конкурс"
+                placeholder="Например: программная инженерия, очно, общий конкурс"
               />
+              <p
+                id="direction-title-hint"
+                className="form-note"
+              >
+                Укажите название, форму обучения и конкурс из списка вуза. Общий конкурс и квота —
+                разные группы.
+              </p>
               {metadata.title && (
                 <Alert
                   as="p"
@@ -99,7 +128,7 @@ export function DirectionForm(props: DirectionFormProps) {
                   className="form-error"
                   role="alert"
                 >
-                  {metadata.title}
+                  Укажите направление и условия конкурса в одну строку, до 200 символов.
                 </Alert>
               )}
             </div>
@@ -112,10 +141,16 @@ export function DirectionForm(props: DirectionFormProps) {
                 maxLength={2048}
                 required
                 aria-invalid={Boolean(metadata.sourceUrl) || undefined}
-                aria-describedby={metadata.sourceUrl ? 'source-url-error' : undefined}
+                aria-describedby={`source-url-hint${metadata.sourceUrl ? ' source-url-error' : ''}`}
                 onChange={(event) => setSourceUrl(event.target.value)}
-                placeholder="https://…"
+                placeholder="https://example.ru/abiturient/lists"
               />
+              <p
+                id="source-url-hint"
+                className="form-note"
+              >
+                Скопируйте адрес списка из браузера. Цифры по ссылке автоматически не загружаются.
+              </p>
               {metadata.sourceUrl && (
                 <Alert
                   as="p"
@@ -123,65 +158,88 @@ export function DirectionForm(props: DirectionFormProps) {
                   className="form-error"
                   role="alert"
                 >
-                  {metadata.sourceUrl}
+                  Введите ссылку http:// или https:// без логина и пароля, до 2048 символов.
                 </Alert>
               )}
             </div>
-          </>
+          </fieldset>
         )}
-        <div className="tracker-number-fields">
-          <CalculationInputs
-            values={values}
-            onChange={setValues}
-            error={submitted ? error : undefined}
-            prefix="tracker-"
-          />
-        </div>
+        <CalculationInputs
+          values={values}
+          onChange={setValues}
+          error={submitted ? error : undefined}
+          prefix="tracker-"
+          withGuidance
+        />
       </fieldset>
-      <p className="form-note">
-        Берите данные одной конкурсной группы. Каждый человек выше вас учитывается только в одной из
-        двух вычитаемых групп.
-      </p>
       {!('error' in result) && (
-        <div className="tracker-preview">
-          <span>Место по введённым данным</span>
-          <strong>
-            {result.place} <small>из {result.seats}</small>
-          </strong>
+        <div className="direction-preview-block">
+          <div className="tracker-preview">
+            <span>Расчётное место</span>
+            <strong>
+              {result.place} <small>из {result.seats}</small>
+            </strong>
+          </div>
+          <p className="form-note">По введённым цифрам. Расчёт не гарантирует зачисление.</p>
         </div>
-      )}
-      {submitted && error && (
-        <Alert
-          as="p"
-          className="form-error"
-          id="tracker-calculation-error"
-          role="alert"
-        >
-          {error.error}
-        </Alert>
       )}
       {save.isError && (
         <Alert
-          as="p"
-          className="form-error"
+          className="form-error direction-save-error"
           role="alert"
         >
-          {errorText(save.error)}
+          <p>
+            <strong>Не удалось подтвердить сохранение.</strong> {requestErrorText(save.error)}
+          </p>
+          <p>Введённые данные остались в форме. Проверьте сообщение и повторите сохранение.</p>
         </Alert>
       )}
       {save.isPending && (
-        <p role="status">Дождитесь результата сохранения перед переходом на другую страницу.</p>
-      )}
-      {disabled && !save.isPending && (
-        <p role="status">Дождитесь завершения текущей операции. Поля формы сохранены.</p>
-      )}
-      {localSaved === true && (
         <p
           className="form-note"
           role="status"
         >
-          Черновик сохранён в этой вкладке на 30 минут, не дольше гостевого доступа. Это не
-          подтверждение сохранения направления на сервере.
+          Сохраняем направление… Дождитесь результата перед уходом со страницы.
+        </p>
+      )}
+      {disabled && !save.isPending && (
+        <p
+          className="form-note"
+          role="status"
+        >
+          Дождитесь завершения текущей операции. Введённые данные сохранены в форме.
+        </p>
+      )}
+      <div className="direction-form-actions">
+        <Button
+          variant="primary"
+          type="submit"
+          disabled={save.isPending || disabled}
+        >
+          {save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}
+        </Button>
+        <Button
+          variant="ghost"
+          type="button"
+          disabled={save.isPending}
+          onClick={onCancel}
+        >
+          Отмена
+        </Button>
+      </div>
+      <p className="form-note direction-save-note">
+        {watch
+          ? 'Обновим карточку направления и добавим запись в историю.'
+          : 'Создадим карточку направления с первым расчётом и историей обновлений.'}{' '}
+        Дальше цифры обновляете вы — по списку вуза.
+      </p>
+      {localSaved === true && (
+        <p
+          className="form-note direction-draft-note"
+          role="status"
+        >
+          Черновик сохранён в этой вкладке на 30 минут, не дольше срока доступа. Чтобы сохранить
+          направление, нажмите кнопку выше.
         </p>
       )}
       {localSaved === false && (
@@ -190,7 +248,8 @@ export function DirectionForm(props: DirectionFormProps) {
           className="form-error"
           role="status"
         >
-          Не удалось сохранить черновик в этой вкладке. Сохраните направление перед уходом.
+          Не удалось сохранить черновик в этой вкладке. Ввод остаётся в форме. Сохраните направление
+          перед уходом.
         </Alert>
       )}
       {localSaved === 'clear-failed' && (
@@ -202,17 +261,6 @@ export function DirectionForm(props: DirectionFormProps) {
           Не удалось удалить черновик в этой вкладке. Сохраните направление перед уходом.
         </Alert>
       )}
-      <Button
-        variant="primary"
-
-        type="submit"
-        disabled={save.isPending || disabled}
-      >
-        {save.isPending ? 'Сохраняем…' : watch ? 'Сохранить обновление' : 'Сохранить направление'}
-      </Button>
-      <p className="form-note">
-        Числа сохраняются вручную. Сервис не запрашивает список по указанной ссылке.
-      </p>
     </Card>
   );
 }

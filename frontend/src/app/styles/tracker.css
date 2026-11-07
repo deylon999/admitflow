@@ -33,8 +33,6 @@
   }
   .tracker-disclosure > summary,
   .direction-details > summary {
-    min-height: var(--control-height);
-    align-content: center;
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
   }
@@ -73,6 +71,13 @@
   .tracker-notice:empty {
     min-height: 0;
     margin: 0;
+  }
+  .tracker-success {
+    padding: var(--space-3) var(--space-4);
+    border-left: 3px solid var(--primary);
+    border-radius: var(--radius-control);
+    background: var(--tag-bg);
+    color: var(--tag-text);
   }
   .tracker-page .watch-filters {
     background: transparent;
@@ -198,6 +203,98 @@
     min-width: 0;
     overflow-wrap: anywhere;
   }
+  .direction-form-intro {
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+  .direction-required-note {
+    margin-block: var(--space-3) var(--space-6);
+  }
+  .direction-section {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .direction-section + .direction-section {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--line);
+  }
+  .direction-section legend {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin-bottom: var(--space-4);
+    font-size: var(--text-base);
+    font-weight: var(--weight-semibold);
+  }
+  .direction-section legend + * {
+    clear: both;
+  }
+  .direction-section .field {
+    margin-bottom: var(--space-5);
+  }
+  .direction-section .field > .form-note {
+    margin-top: var(--space-2);
+  }
+  .direction-section-intro {
+    margin-bottom: var(--space-4);
+  }
+  .form-help {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+  .form-help summary {
+    color: var(--text);
+  }
+  .form-help p {
+    margin-top: var(--space-3);
+  }
+  .direction-context {
+    padding: var(--space-4);
+    margin-bottom: var(--space-6);
+    border-radius: var(--radius-control);
+    background: var(--surface-muted);
+    font-size: var(--text-sm);
+  }
+  .direction-context dt {
+    color: var(--muted);
+  }
+  .direction-context dd {
+    margin: var(--space-1) 0 var(--space-3);
+  }
+  .direction-context a {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--control-height);
+    color: var(--primary);
+  }
+  .direction-preview-block {
+    margin-top: var(--space-6);
+    padding: var(--space-4);
+    border-radius: var(--radius-control);
+    background: var(--surface-muted);
+  }
+  .direction-preview-block .tracker-preview {
+    margin: 0 0 var(--space-2);
+  }
+  .direction-form-actions {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+  .direction-save-note,
+  .direction-draft-note {
+    margin-top: var(--space-3);
+  }
+  .direction-save-error {
+    margin-top: var(--space-5);
+  }
+  .direction-save-error p + p {
+    margin-top: var(--space-2);
+  }
   .tracker-sidebar {
     min-width: 0;
   }
@@ -213,19 +310,6 @@
     margin: 0;
     padding: 0;
     min-width: 0;
-  }
-  .direction-fields > .small-copy {
-    margin-top: calc(-1 * var(--space-3));
-    margin-bottom: var(--space-6);
-  }
-  .tracker-number-fields {
-    margin-top: var(--space-7);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--line);
-  }
-  .direction-form > .button {
-    width: 100%;
-    margin-top: var(--space-6);
   }
   .tracker-preview {
     display: flex;
@@ -247,9 +331,6 @@
     color: var(--muted);
     letter-spacing: 0;
     font-weight: var(--weight-regular);
-  }
-  button:disabled {
-    cursor: wait;
   }
   .direction-card {
     align-self: start;

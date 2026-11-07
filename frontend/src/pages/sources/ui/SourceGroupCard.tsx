@@ -30,7 +30,7 @@ export function SourceGroupCard({ group, selected, onSelect, onClose }: Props) {
       <Badge>
         {modes[group.coverage]} · {group.year}
       </Badge>
-      <h2>{group.title.replace(/ · (?:full-time|part-time|mixed)$/u, '')}</h2>
+      <h3>{group.title.replace(/ · (?:full-time|part-time|mixed)$/u, '')}</h3>
       <p>
         {group.universityName}
         {group.parentUniversityId ? ' · филиал' : ' · головной вуз'}

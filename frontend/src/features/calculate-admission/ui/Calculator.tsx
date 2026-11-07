@@ -1,4 +1,4 @@
-import { Card, Alert } from '@/shared/ui';
+import { Card } from '@/shared/ui';
 import { useState } from 'react';
 import {
   assessScenario,
@@ -27,27 +27,24 @@ export function Calculator() {
           as="form"
           className="calculator-form"
           id="calculator-form"
+          aria-label="Данные для расчёта"
+          aria-describedby="calculator-input-note"
           noValidate
           onSubmit={(event) => event.preventDefault()}
         >
+          <p
+            className="calculator-note small-copy"
+            id="calculator-input-note"
+          >
+            Сейчас заполнен пример. Подставьте свои четыре числа из одного конкурса. Каждого
+            человека выше вас учитывайте только в одной из двух групп.
+          </p>
           <CalculationInputs
             values={values}
             onChange={setValues}
             error={error}
+            inlineErrors
           />
-          <p className="form-note">
-            Значения — пример. Подставьте данные из своего списка. Учитывайте людей в одной
-            конкурсной группе, без повторов между двумя вычитаемыми группами.
-          </p>
-          <Alert
-            as="p"
-            className="form-error"
-            id="calculation-error"
-            role="alert"
-            hidden={!error}
-          >
-            {error?.error}
-          </Alert>
         </Card>
         <CalculationOutput
           assessment={assessment}

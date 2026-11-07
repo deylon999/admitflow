@@ -46,7 +46,7 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
     );
   return (
     <div className="source-lookup">
-      <h3>Найти запись в этой группе</h3>
+      <h4>Найти запись в этой группе</h4>
       <p className="small-copy">
         {group.lookupCodeHint ?? 'Введите публичный код из выбранного списка.'} ФИО, паспорт и СНИЛС
         не нужны. Код не сохраняется в браузере или в карточке направления.
@@ -99,12 +99,12 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
       )}
       {preview && (
         <Card className="source-candidate-preview">
-          <h3
+          <h4
             ref={heading}
             tabIndex={-1}
           >
             {preview.found ? 'Проверьте выбранную запись' : 'Запись не найдена в выбранном снимке'}
-          </h3>
+          </h4>
           <p>
             {preview.group.universityName} · {preview.group.title} · сезон {preview.group.year}
           </p>

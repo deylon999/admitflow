@@ -1,11 +1,8 @@
 import { Card, Alert, Button } from '@/shared/ui';
 import { DirectionForm } from '@/features/edit-manual-direction';
 import { DirectionCard } from './DirectionCard';
+import { requestErrorText } from '@/shared/api';
 import type { TrackerModel } from '../model/useTrackerModel';
-
-function errorText(error: unknown) {
-  return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
-}
 
 export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
   const {
@@ -18,6 +15,10 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
     sessionInfo,
     setNotice,
     editor,
+    archive,
+    directionsLoading,
+    directionsError,
+    directionsEmpty,
   } = model;
   const {
     form,
@@ -33,7 +34,22 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
     <>
       <div className={`tracker-layout ${form && privateVisible ? 'with-form' : ''}`}>
         <div className="directions-list">
-          {!privateVisible ? null : watches.isPending ? (
+          {!privateVisible ? null : directionsError ? (
+            <Alert
+              className="empty-state surface"
+              role="alert"
+            >
+              <h2>Не удалось загрузить направления</h2>
+              <p>{requestErrorText(watches.error ?? archive.error)}</p>
+              <Button
+                type="button"
+                disabled={watches.isFetching || archive.isFetching}
+                onClick={() => void model.refreshDirections()}
+              >
+                {watches.isFetching || archive.isFetching ? 'Повторяем загрузку…' : 'Повторить'}
+              </Button>
+            </Alert>
+          ) : directionsLoading ? (
             <Card
               className="empty-state"
               role="status"
@@ -41,23 +57,7 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
               <h2>Загружаем направления…</h2>
               <p>Проверяем сохранённые данные.</p>
             </Card>
-          ) : watches.isError && !watches.data ? (
-            <Alert
-              className="empty-state surface"
-              role="alert"
-            >
-              <h2>Не удалось загрузить направления</h2>
-              <p>{errorText(watches.error)}</p>
-              <Button
-                variant="secondary"
-
-                type="button"
-                onClick={() => void watches.refetch()}
-              >
-                Повторить
-              </Button>
-            </Alert>
-          ) : count === 0 ? (
+          ) : directionsEmpty ? (
             <Card className="empty-state">
               <span
                 className="empty-mark"
@@ -65,7 +65,7 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
               >
                 ＋
               </span>
-              <h2>{directionTotal ? 'Ручных направлений пока нет' : 'Направлений пока нет'}</h2>
+              <h2>Направлений пока нет</h2>
               <p>
                 Добавьте вуз, направление и ссылку на список. Введите текущие цифры — сервис
                 сохранит расчёт и его историю.
@@ -74,13 +74,15 @@ export function ManualDirectionsPanel({ model }: { model: TrackerModel }) {
                 variant="primary"
 
                 type="button"
-                disabled={directionTotal >= 20 || busy}
+                disabled={
+                  directionTotal >= 20 || busy || model.budget.isPending || model.budget.isError
+                }
                 onClick={(event) => openForm('new', event.currentTarget)}
               >
-                Добавить первое направление
+                Добавить направление
               </Button>
             </Card>
-          ) : visible.length === 0 ? (
+          ) : count === 0 ? null : visible.length === 0 ? (
             <Card className="empty-state">
               <h2>Поиск не дал результатов</h2>
               <p>

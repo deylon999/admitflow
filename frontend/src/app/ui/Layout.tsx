@@ -1,19 +1,32 @@
-import { Link, useLocation } from 'react-router';
+﻿import { Link, NavLink, useLocation } from 'react-router';
+import { useRef, useState } from 'react';
+import { Button } from '@/shared/ui';
 import { ThemeToggle } from './ThemeToggle';
 
 export function Header() {
-  const pathname = useLocation().pathname;
-  const tracker = pathname === '/tracker';
-  const sources = pathname.startsWith('/sources');
-  const secondary = pathname !== '/';
+  const { pathname, hash, search } = useLocation();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  const landing = pathname === '/';
   return (
-    <header className="header">
+    <header
+      className="header"
+      onKeyDown={(event) => {
+        if (event.key === 'Escape' && menuOpen) {
+          event.preventDefault();
+          setMenuOpen(false);
+          menuButton.current?.focus();
+        }
+      }}
+    >
       <div className="container header-inner">
         <Link
           data-router-link
           className="brand"
           to="/"
           aria-label="Абитуриент — в начало"
+          onClick={() => setMenuOpen(false)}
+          aria-current={landing && !hash ? 'page' : undefined}
         >
           <span
             className="brand-mark"
@@ -21,58 +34,77 @@ export function Header() {
           />
           Абитуриент
         </Link>
+        <Button
+          ref={menuButton}
+          variant="secondary"
+          className="navigation-toggle"
+          type="button"
+          aria-expanded={menuOpen}
+          aria-controls="site-navigation"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          Разделы сайта <span aria-hidden="true">{menuOpen ? '−' : '+'}</span>
+        </Button>
         <nav
+          id="site-navigation"
           className="navigation"
           aria-label="Разделы сайта"
+          data-open={menuOpen}
+          onClickCapture={(event) => {
+            const link = event.target instanceof Element ? event.target.closest('a') : null;
+            if (!link) return;
+            if (
+              menuOpen &&
+              link.pathname === pathname &&
+              link.hash === hash &&
+              link.search === search
+            ) {
+              event.preventDefault();
+              requestAnimationFrame(() => menuButton.current?.focus());
+            }
+            setMenuOpen(false);
+          }}
         >
-          {sources ? (
-            <span aria-current="page">Источники</span>
-          ) : (
-            <Link
-              data-router-link
-              to="/sources"
-            >
-              Источники
-            </Link>
-          )}
-          {secondary ? (
-            <>
-              <Link
-                data-router-link
-                to="/"
-              >
-                О проекте
-              </Link>
-              <a href="/#calculator">Калькулятор</a>
-              {tracker ? (
-                <span aria-current="page">Мои направления</span>
-              ) : (
-                <Link
-                  data-router-link
-                  to="/tracker"
-                >
-                  Мои направления
-                </Link>
-              )}
-            </>
-          ) : (
-            <>
-              <a href="#problem">Проблема</a>
-              <a href="#how-it-works">Почему номер не место</a>
-              <a href="#calculator">Калькулятор</a>
-              <a href="#questions">Вопросы</a>
-            </>
-          )}
+          <Link
+            data-router-link
+            to="/#about"
+            aria-current={landing && hash === '#about' ? 'location' : undefined}
+          >
+            О проекте
+          </Link>
+          <Link
+            data-router-link
+            to="/#calculator"
+            aria-current={landing && hash === '#calculator' ? 'location' : undefined}
+          >
+            Калькулятор
+          </Link>
+          <NavLink
+            data-router-link
+            to="/sources"
+            end
+          >
+            Источники
+          </NavLink>
+          <NavLink
+            data-router-link
+            to="/tracker"
+            end
+          >
+            Мои направления
+          </NavLink>
         </nav>
         <div className="header-actions">
           <ThemeToggle />
-          <a
+          <Link
+            data-router-link
             className="button button-primary button-compact header-cta"
-            href={secondary ? '/#calculator' : '#calculator'}
+            to="/#calculator"
+            onClick={() => setMenuOpen(false)}
           >
             <span className="desktop-label">Посчитать место</span>
             <span className="mobile-label">Посчитать</span>
-          </a>
+          </Link>
         </div>
       </div>
     </header>

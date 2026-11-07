@@ -16,3 +16,11 @@ export class SessionChangedError extends Error {
     super('Доступ изменился во время запроса. Синхронизируйте текущую сессию.');
   }
 }
+export class ApiError extends Error {
+  constructor(
+    message: string,
+    readonly status: number,
+  ) {
+    super(message);
+  }
+}

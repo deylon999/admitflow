@@ -26,7 +26,12 @@ export function DirectionCard({
   return (
     <ManualDirectionCard
       watch={watch}
-      positionChange={<PositionChange watch={watch} />}
+      positionChange={
+        <PositionChange
+          watch={watch}
+          showFailure={!showHistory}
+        />
+      }
     >
       <div className="direction-actions">
         <Button

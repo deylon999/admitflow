@@ -59,7 +59,11 @@ export function CalculationOutput({
         id="result-status"
         data-state={valid ? result.state : assessment.state}
       >
-        {valid ? result.status : result.error}
+        {valid
+          ? result.status
+          : assessment.state === 'insufficient_data'
+            ? 'Исправьте отмеченные поля, чтобы увидеть расчёт.'
+            : result.error}
       </p>
       <div
         className="progress-bar"
@@ -84,7 +88,7 @@ export function CalculationOutput({
         />
         <span className="progress-free" />
       </div>
-      <ResultLegend />
+      {valid && <ResultLegend />}
       {valid && <ScenarioExplanation values={values} />}
     </Card>
   );

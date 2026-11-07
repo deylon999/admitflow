@@ -1,4 +1,4 @@
-import { Card, Alert, Button } from '@/shared/ui';
+import { Card, Button, RequestFeedback } from '@/shared/ui';
 import { Link } from 'react-router';
 import { useChangeFeed } from '../model/useChangeFeed';
 
@@ -18,44 +18,38 @@ export function ChangeFeed() {
       </p>
       {feed.isPending && <p role="status">Загружаем изменения…</p>}
       {feed.isError && (
-        <Alert
-          as="p"
-          role="alert"
+        <RequestFeedback
+          onRetry={feed.isFetchNextPageError ? loadMoreChanges : refreshChanges}
+          busy={feed.isFetching}
+          retryLabel="Повторить изменения"
         >
-          Не удалось перечитать изменения.{' '}
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={refreshChanges}
-          >
-            Повторить изменения
-          </Button>
-        </Alert>
+          Не удалось загрузить {feed.isFetchNextPageError ? 'следующие изменения' : 'изменения'}.{' '}
+          {feed.data ? 'Ранее загруженные записи сохранены.' : 'Список направлений доступен выше.'}
+        </RequestFeedback>
       )}
       {feed.data && (
         <p role="status">
           Непрочитанных: {feed.data.pages[0].unreadCount} · всего: {feed.data.pages[0].total}
         </p>
       )}
-      {feed.data?.items.length === 0 && (
+      {!feed.isError && feed.data?.items.length === 0 && (
         <p>Новых изменений пока нет. При первом сохранении записи уведомление не создаётся.</p>
       )}
-      <Button
-        variant="ghost"
-        type="button"
+      {!feed.isError && (
+        <Button
+          variant="ghost"
+          type="button"
 
-        disabled={feed.isFetching}
-        onClick={refreshChanges}
-      >
-        Перечитать изменения
-      </Button>
-      {seen.isError && (
-        <Alert
-          as="p"
-          role="alert"
+          disabled={feed.isFetching}
+          onClick={refreshChanges}
         >
-          {seen.error.message} Повторите отметку прочтения явно.
-        </Alert>
+          {feed.isFetching ? 'Обновляем изменения…' : 'Перечитать изменения'}
+        </Button>
+      )}
+      {seen.isError && (
+        <RequestFeedback>
+          Не удалось отметить изменение прочитанным. Попробуйте ещё раз рядом с записью.
+        </RequestFeedback>
       )}
       <ol>
         {feed.data?.items.map((item) => (
@@ -91,7 +85,7 @@ export function ChangeFeed() {
           </li>
         ))}
       </ol>
-      {feed.hasNextPage && (
+      {feed.hasNextPage && !feed.isFetchNextPageError && (
         <Button
           variant="secondary"
           type="button"

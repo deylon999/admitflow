@@ -1,4 +1,5 @@
 export { request, read, ensureSession, sessionApi, sessionChangeKey } from './client';
+export { requestErrorText } from './error-text';
 export { InvalidResponseError, SessionChangedError, SessionExpiredError } from './errors';
 export { parseSession, sessionAccessKey } from './session-contract';
 export type { SessionInfo, SessionAccess } from './session-contract';

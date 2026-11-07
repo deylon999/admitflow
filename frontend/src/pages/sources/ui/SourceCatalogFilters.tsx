@@ -12,7 +12,11 @@ type Props = {
 
 export function SourceCatalogFilters({ filters, onChange, facets }: Props) {
   return (
-    <Card className="source-catalog-filters">
+    <Card
+      as="section"
+      className="source-catalog-filters"
+      aria-label="Фильтры конкурсных групп"
+    >
       <label>
         Группа или направление
         <Input

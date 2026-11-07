@@ -1,17 +1,9 @@
-import { InvalidResponseError, SessionChangedError, SessionExpiredError } from './errors';
+import { ApiError, InvalidResponseError, SessionChangedError, SessionExpiredError } from './errors';
 import { parseSession } from './session-contract';
 import type { SessionInfo } from './session-contract';
 import { readJsonResponse, RequestTimeoutError, withRequestTimeout } from './transport';
 
 let sessionEpoch = 0;
-class ApiError extends Error {
-  constructor(
-    message: string,
-    readonly status: number,
-  ) {
-    super(message);
-  }
-}
 export async function request(
   path: string,
   init: RequestInit = {},

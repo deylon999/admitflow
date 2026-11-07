@@ -6,6 +6,7 @@ import { privateQueryFamilies } from '@/features/manage-guest-session';
 import { queryClient } from '../providers/query-client';
 import { PagePosition } from '../routes/PagePosition';
 import { Header, Footer } from './Layout';
+import { Card } from '@/shared/ui';
 export function AppShell() {
   useEffect(() => {
     const onStorage = (event: StorageEvent) => {
@@ -39,9 +40,14 @@ export function AppShell() {
         fallback={
           <main
             id="top"
-            className="container tracker-page"
+            className="container page-shell"
           >
-            <p role="status">Загружаем страницу…</p>
+            <Card
+              className="page-message"
+              aria-busy="true"
+            >
+              <p role="status">Загружаем страницу…</p>
+            </Card>
           </main>
         }
       >

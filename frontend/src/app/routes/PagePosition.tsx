@@ -3,13 +3,15 @@ import { useLocation } from 'react-router';
 export function PagePosition() {
   const { pathname, hash } = useLocation();
   useEffect(() => {
-    document.title = pathname.startsWith('/sources')
-      ? 'Источники и группы — Абитуриент'
-      : pathname === '/tracker'
-        ? 'Мои направления — Абитуриент'
-        : pathname === '/'
-          ? 'Абитуриент — ручные сценарии поступления'
-          : 'Страница не найдена — Абитуриент';
+    const page = pathname.replace(/\/+$/, '').toLowerCase() || '/';
+    document.title =
+      page === '/sources'
+        ? 'Источники и группы — Абитуриент'
+        : page === '/tracker'
+          ? 'Мои направления — Абитуриент'
+          : page === '/'
+            ? 'Абитуриент — ручные сценарии поступления'
+            : 'Страница не найдена — Абитуриент';
     const observer = new MutationObserver(position);
     function position() {
       const target = hash

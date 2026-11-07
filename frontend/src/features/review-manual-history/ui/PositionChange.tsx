@@ -1,16 +1,22 @@
 import type { Watch } from '@/entities/manual-direction';
 import { useManualHistory } from '../model/useManualHistory';
 
-export function PositionChange({ watch }: { watch: Watch }) {
+export function PositionChange({
+  watch,
+  showFailure = true,
+}: {
+  watch: Watch;
+  showFailure?: boolean;
+}) {
   const history = useManualHistory(watch.id, true, watch.latest.id);
   const snapshots = history.data?.snapshots;
   // Only compare a history that still describes the displayed latest snapshot.
   const previous = snapshots?.[0]?.id === watch.latest.id ? snapshots[1] : undefined;
-  if (history.isError)
-    return (
+  if (history.isError && !history.data)
+    return showFailure ? (
       <p className="position-change">Изменение места недоступно. Повторите загрузку в «Истории».</p>
-    );
-  if (history.isFetching)
+    ) : null;
+  if (history.isPending)
     return (
       <p
         className="position-change"
@@ -37,6 +43,8 @@ export function PositionChange({ watch }: { watch: Watch }) {
         ? 'Место не изменилось'
         : `${change > 0 ? '↑ Выше' : '↓ Ниже'} на ${Math.abs(change)}`}
       <span> · было {previous.calculation.place} при прошлом сохранении</span>
+      {history.isError && showFailure && <span> · Не удалось обновить изменение.</span>}
+      {history.isFetching && <span> · Обновляем…</span>}
     </p>
   );
 }

@@ -4,3 +4,4 @@ export { Input, Select } from './Input';
 export { Card } from './Card';
 export { Badge } from './Badge';
 export { Alert } from './Alert';
+export { RequestFeedback } from './RequestFeedback';

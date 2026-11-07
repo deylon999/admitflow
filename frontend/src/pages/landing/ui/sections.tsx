@@ -65,20 +65,13 @@ export function HeroSection() {
       <div className="hero-grid">
         <div className="hero-copy">
           <h1 id="hero-title">
-            За конкурсными
-            <br />
-            списками при
-            <br />
-            поступлении
-            <br />
-            приходится следить
-            <br />
+            За конкурсными списками при поступлении приходится следить{' '}
             <span className="accent">вручную</span>
           </h1>
           <p className="hero-description">
             После подачи документов абитуриент неделями открывает списки нескольких вузов, сверяет
-            цифры и считает своё реальное место сам. Номер в списке показывает совсем не то, что ему
-            нужно знать.
+            цифры и считает своё расчётное место сам. Номер в списке показывает совсем не то, что
+            ему нужно знать.
           </p>
           <div className="hero-buttons">
             <a
@@ -94,6 +87,29 @@ export function HeroSection() {
               Как это устроено
             </a>
           </div>
+          <nav
+            className="landing-navigation"
+            aria-label="На этой странице"
+          >
+            <Link
+              data-router-link
+              to="/#problem"
+            >
+              Проблема
+            </Link>
+            <Link
+              data-router-link
+              to="/#how-it-works"
+            >
+              Почему номер не место
+            </Link>
+            <Link
+              data-router-link
+              to="/#questions"
+            >
+              Вопросы
+            </Link>
+          </nav>
         </div>
         <Card
           as="aside"
@@ -207,14 +223,20 @@ export function InterviewsSection() {
       <p className="eyebrow">Из интервью</p>
       <h2 id="interviews-title">Что говорят абитуриенты</h2>
       <div className="quotes-grid">
-        <figure className="quote-card">
+        <Card
+          as="figure"
+          className="quote-card"
+        >
           <blockquote>«Я почти пошёл не туда.»</blockquote>
           <figcaption>Абитуриент, 1 курс, прикладная информатика</figcaption>
-        </figure>
-        <figure className="quote-card">
+        </Card>
+        <Card
+          as="figure"
+          className="quote-card"
+        >
           <blockquote>«Как будто каждую минуту.»</blockquote>
           <figcaption>Абитуриент, 1 курс, реклама</figcaption>
-        </figure>
+        </Card>
       </div>
       <p className="source-note">Цитаты из интервью, без правок по смыслу</p>
     </section>
@@ -225,6 +247,7 @@ export function CapabilitiesSection() {
   return (
     <section
       className="section container roadmap"
+      id="about"
       aria-labelledby="roadmap-title"
     >
       <p className="eyebrow">Возможности сервиса</p>

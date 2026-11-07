@@ -1,5 +1,7 @@
 ﻿import { Button, Card } from '@/shared/ui';
 import { Link } from 'react-router';
+import { RequestFeedback } from '@/shared/ui';
+import { useState } from 'react';
 import { ChangeFeed } from '@/features/review-source-changes';
 import { ImportData } from '@/features/import-manual-directions';
 import { WatchComparison } from '@/features/compare-manual-directions';
@@ -15,6 +17,7 @@ import { ManualDirectionsPanel } from './ManualDirectionsPanel';
 
 export default function TrackerPage() {
   const model = useTrackerModel();
+  const [panels, setPanels] = useState({ changes: false, coverage: false });
   const {
     privateVisible,
     watches,
@@ -39,25 +42,45 @@ export default function TrackerPage() {
           <div>
             <h2>Сохранённые направления</h2>
             <p className="small-copy">
-              {budget.data && watches.data
-                ? `${directionTotal} из 20`
-                : 'Проверяем сохранённые направления'}{' '}
+              {model.directionsError
+                ? 'Часть направлений недоступна'
+                : budget.isError
+                  ? 'Количество направлений временно недоступно'
+                  : budget.data && watches.data
+                    ? `${directionTotal} из 20`
+                    : 'Проверяем сохранённые направления'}{' '}
               · Цифры ручного ввода обновляете вы.
             </p>
           </div>
           <Button
             variant="ghost"
             type="button"
-            disabled={busy || watches.isFetching}
+            disabled={busy || watches.isFetching || model.archive.isFetching || budget.isFetching}
             onClick={() => void model.refreshDirections()}
           >
-            {watches.isFetching ? 'Обновляем…' : 'Обновить направления'}
+            {watches.isFetching || model.archive.isFetching || budget.isFetching
+              ? 'Обновляем…'
+              : 'Обновить направления'}
           </Button>
         </div>
       )}
+      {privateVisible && !model.directionsError && !model.directionsLoading && budget.isError && (
+        <RequestFeedback
+          busy={budget.isFetching}
+          onRetry={() => void budget.refetch()}
+        >
+          Не удалось проверить число сохранённых направлений. Добавление и импорт пока недоступны.
+        </RequestFeedback>
+      )}
       <TrackerFilters model={model} />
       <ManualDirectionsPanel model={model} />
-      {privateVisible && <ArchiveDirections />}
+      {privateVisible && (
+        <ArchiveDirections
+          suppressLoading={model.directionsLoading}
+          suppressLoadError={model.directionsError || model.refreshError}
+          onNotice={model.setNotice}
+        />
+      )}
       <p className="tracker-disclaimer">
         Расчёт описывает положение по введённым данным в одной конкурсной группе. Он не учитывает
         все правила и приоритеты конкретного вуза и не гарантирует зачисление.
@@ -72,13 +95,16 @@ export default function TrackerPage() {
             История места — в карточке направления. Здесь можно сравнить направления и изменения
             списков.
           </p>
-          {!watches.isError && watches.data && <WatchComparison watches={watches.data} />}
+          {watches.data && <WatchComparison watches={watches.data} />}
           <Card
             as="details"
             className="tracker-disclosure"
+            onToggle={(event) => {
+              if (event.currentTarget.open) setPanels((current) => ({ ...current, changes: true }));
+            }}
           >
             <summary>Изменения сохранённых списков</summary>
-            <ChangeFeed />
+            {panels.changes && <ChangeFeed />}
           </Card>
         </section>
       )}
@@ -103,7 +129,13 @@ export default function TrackerPage() {
                 <Button
                   type="button"
                   disabled={busy || !count}
-                  onClick={() => model.download.mutate()}
+                  onClick={() => {
+                    model.setNotice('');
+                    model.download.mutate(undefined, {
+                      onSuccess: () =>
+                        model.setNotice('Файл с направлениями подготовлен для скачивания.'),
+                    });
+                  }}
                 >
                   {model.download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}
                 </Button>
@@ -152,8 +184,13 @@ export default function TrackerPage() {
                   .
                 </p>
               )}
-              {sessionInfo.isError && (
-                <p role="alert">Не удалось проверить точную дату окончания доступа.</p>
+              {sessionInfo.isError && !model.directionsError && (
+                <RequestFeedback
+                  busy={sessionInfo.isFetching}
+                  onRetry={() => void sessionInfo.refetch()}
+                >
+                  Не удалось проверить срок доступа.
+                </RequestFeedback>
               )}
               <TrackerAccess
                 model={model}
@@ -165,6 +202,9 @@ export default function TrackerPage() {
         <Card
           as="details"
           className="tracker-disclosure"
+          onToggle={(event) => {
+            if (event.currentTarget.open) setPanels((current) => ({ ...current, coverage: true }));
+          }}
         >
           <summary>Источники и охват вузов</summary>
           <Link
@@ -173,7 +213,7 @@ export default function TrackerPage() {
           >
             Найти направление в каталоге →
           </Link>
-          <CoverageSummary />
+          {panels.coverage && <CoverageSummary />}
         </Card>
       </section>
       {privateVisible && (

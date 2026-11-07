@@ -1,10 +1,6 @@
 import { DeleteConfirmation, Button, Alert, Card } from '@/shared/ui';
-import { SessionExpiredError } from '@/shared/api';
+import { SessionExpiredError, requestErrorText } from '@/shared/api';
 import type { TrackerModel } from '../model/useTrackerModel';
-
-function errorText(error: unknown) {
-  return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
-}
 
 export function TrackerAccess({ model, tools = false }: { model: TrackerModel; tools?: boolean }) {
   const {
@@ -45,7 +41,7 @@ export function TrackerAccess({ model, tools = false }: { model: TrackerModel; t
           className="form-error"
           role="alert"
         >
-          {errorText(download.error)}
+          Не удалось подготовить файл. {requestErrorText(download.error)}
         </Alert>
       )}
       {tools && confirmReset && privateVisible && (
@@ -92,7 +88,7 @@ export function TrackerAccess({ model, tools = false }: { model: TrackerModel; t
         >
           {changed && synchronize.error instanceof SessionExpiredError
             ? 'Доступ ещё обновляется или временно недоступен. Повторите синхронизацию.'
-            : errorText(synchronize.error)}
+            : requestErrorText(synchronize.error)}
         </Alert>
       )}
       {!tools && reset.isError && (
@@ -101,7 +97,7 @@ export function TrackerAccess({ model, tools = false }: { model: TrackerModel; t
           className="form-error"
           role="alert"
         >
-          {errorText(reset.error)}
+          {requestErrorText(reset.error)}
         </Alert>
       )}
     </>

@@ -1,4 +1,4 @@
-import { Input, Select, Alert, Button } from '@/shared/ui';
+import { Input, Select, RequestFeedback, Button } from '@/shared/ui';
 import { useState } from 'react';
 import { useUniversityCatalog } from '../model/useUniversityCatalog';
 import type { University } from '../model/types';
@@ -64,22 +64,16 @@ export function SourceUniversityFilter({
           Ищем вуз…
         </p>
       ) : catalog.isError ? (
-        <Alert
-          role="alert"
-          className="small-copy"
+        <RequestFeedback
+          busy={catalog.isFetching}
+          retryLabel="Повторить загрузку вузов"
+          onRetry={() =>
+            void (catalog.isFetchNextPageError ? catalog.fetchNextPage() : catalog.refetch())
+          }
         >
-          <p>
-            Не удалось загрузить {items.length ? 'следующие вузы' : 'справочник вузов'}. Выбор
-            сохранён.
-          </p>
-          <Button
-            variant="secondary"
-            type="button"
-            onClick={() => void (items.length ? catalog.fetchNextPage() : catalog.refetch())}
-          >
-            Повторить загрузку вузов
-          </Button>
-        </Alert>
+          Не удалось загрузить{' '}
+          {catalog.isFetchNextPageError ? 'следующие вузы' : 'справочник вузов'}. Выбор сохранён.
+        </RequestFeedback>
       ) : (
         <p
           className="small-copy"
@@ -87,6 +81,9 @@ export function SourceUniversityFilter({
         >
           Найдено вузов: {catalog.data?.pages[0].total}. Показано: {items.length}.
         </p>
+      )}
+      {catalog.isFetching && catalog.data && !catalog.isFetchingNextPage && (
+        <RequestFeedback>Обновляем список вузов…</RequestFeedback>
       )}
       {catalog.hasNextPage && !catalog.isError && (
         <Button

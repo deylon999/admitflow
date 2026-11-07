@@ -61,7 +61,7 @@ export function UniversityPicker({
         value={value}
         required
         autoComplete="off"
-        placeholder="Название вуза"
+        placeholder="Например: СПбГУ или вуз в Казани"
         aria-invalid={Boolean(error) || undefined}
         aria-describedby={error ? 'catalog-note university-error' : 'catalog-note'}
         onFocus={() => setOpen(true)}
@@ -74,9 +74,7 @@ export function UniversityPicker({
         className="form-note"
         id="catalog-note"
       >
-        Поиск по названию вуза и региону. Можно ввести вуз вручную. Выбор из справочника не
-        подключает автоматическое обновление. Стрелки ↑ и ↓ переходят к вариантам, Escape закрывает
-        их.
+        Введите название или выберите подсказку. Можно указать свой вуз.
       </p>
       {error && (
         <Alert
@@ -85,7 +83,7 @@ export function UniversityPicker({
           id="university-error"
           role="alert"
         >
-          {error}
+          Введите название вуза в одну строку, до 160 символов.
         </Alert>
       )}
       {open && (
@@ -109,13 +107,7 @@ export function UniversityPicker({
           ) : (
             <>
               <p className="small-copy">
-                Найдено: {catalog.data?.pages[0].total}. Показано: {universities.length}.{' '}
-                {catalog.data?.pages[0].registryEdition && (
-                  <>
-                    Опорный перечень: мониторинг {catalog.data.pages[0].registryEdition}; он имеет
-                    исключения и не подтверждает действующий приём.
-                  </>
-                )}
+                Найдено: {catalog.data?.pages[0].total}. Показано: {universities.length}.
               </p>
               <ul>
                 {universities.map((university) => (
@@ -176,6 +168,21 @@ export function UniversityPicker({
           )}
         </div>
       )}
+      <details className="form-help">
+        <summary>О подсказках вузов</summary>
+        <p>
+          Можно просто написать название. Подсказки помогают заполнить форму, но не подключают
+          автоматическое обновление. После выбора проверьте ссылку: она должна вести на нужный
+          конкурсный список.
+        </p>
+        <p>Стрелки ↑ и ↓ переходят к вариантам, Enter выбирает, Escape закрывает подсказки.</p>
+        {catalog.data?.pages[0].registryEdition && (
+          <p>
+            В справочнике используется перечень мониторинга {catalog.data.pages[0].registryEdition}.
+            Он охватывает не все вузы и не подтверждает действующий приём.
+          </p>
+        )}
+      </details>
     </div>
   );
 }

@@ -1,19 +1,17 @@
 import { Alert, Button } from '@/shared/ui';
 import { DraftRecovery } from '@/features/edit-manual-direction';
+import { requestErrorText } from '@/shared/api';
 import type { TrackerModel } from '../model/useTrackerModel';
 
-function errorText(error: unknown) {
-  return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
-}
-
 export function TrackerFeedback({ model }: { model: TrackerModel }) {
-  const { notice, privateVisible, watches, busy, editor } = model;
+  const { notice, privateVisible, watches, archive, busy, editor, refreshError } = model;
   const { restore, form, recovery, recoveryBlocked, discardRecovery } = editor;
   return (
     <>
       <p
-        className="tracker-notice"
+        className={`tracker-notice${notice ? ' tracker-success' : ''}`}
         role="status"
+        aria-atomic="true"
       >
         {notice}
       </p>
@@ -23,7 +21,7 @@ export function TrackerFeedback({ model }: { model: TrackerModel }) {
           className="form-error"
           role="alert"
         >
-          Не удалось проверить доступ перед восстановлением. {errorText(restore.error)}
+          Не удалось восстановить черновик. {requestErrorText(restore.error)}
         </Alert>
       )}
       {privateVisible && !form && recovery && (
@@ -35,25 +33,25 @@ export function TrackerFeedback({ model }: { model: TrackerModel }) {
           onDiscard={discardRecovery}
         />
       )}
-      {privateVisible && watches.isError && watches.data && (
+      {privateVisible && refreshError && (
         <Alert
           tone="warning"
           className="surface stale-warning"
           role="alert"
         >
           <p>
-            Не удалось обновить направления. Показаны последние загруженные сохранения с их
-            исходными датами.
+            {watches.data?.length === 0 && archive.data?.length === 0
+              ? 'При последней успешной загрузке направлений не было. Сейчас обновить список не удалось.'
+              : 'Не удалось обновить направления. Показаны ранее загруженные данные с исходными датами.'}
           </p>
-          <p>{errorText(watches.error)}</p>
           <Button
             variant="ghost"
 
             type="button"
-            disabled={watches.isFetching}
-            onClick={() => void watches.refetch()}
+            disabled={watches.isFetching || archive.isFetching}
+            onClick={() => void model.refreshDirections()}
           >
-            Повторить обновление
+            {watches.isFetching || archive.isFetching ? 'Обновляем…' : 'Повторить обновление'}
           </Button>
         </Alert>
       )}

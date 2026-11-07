@@ -20,7 +20,13 @@ export function TrackerHeading({ model }: { model: TrackerModel }) {
           variant="primary"
           ref={editor.addButton}
           type="button"
-          disabled={expired || directionTotal >= 20 || busy}
+          disabled={
+            expired ||
+            directionTotal >= 20 ||
+            busy ||
+            model.budget.isPending ||
+            model.budget.isError
+          }
           onClick={(event) => editor.openForm('new', event.currentTarget)}
         >
           Добавить направление

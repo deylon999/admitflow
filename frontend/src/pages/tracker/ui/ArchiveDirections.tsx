@@ -3,18 +3,33 @@ import { useSearchParams } from 'react-router';
 import { ArchiveScenario } from '@/features/review-source-scenario';
 import { ArchiveHistory } from '@/features/review-archive-history';
 import { SourceProvenance } from '@/entities/admission-source';
-import { DeleteConfirmation, Alert, Button, Card, Badge } from '@/shared/ui';
+import { DeleteConfirmation, Alert, Button, Card, Badge, RequestFeedback } from '@/shared/ui';
+import { requestErrorText } from '@/shared/api';
 import { useArchiveDirections } from '../model/useArchiveDirections';
 
-export function ArchiveDirections() {
+export function ArchiveDirections({
+  suppressLoadError = false,
+  suppressLoading = false,
+  onNotice,
+}: {
+  suppressLoadError?: boolean;
+  suppressLoading?: boolean;
+  onNotice?: (notice: string) => void;
+}) {
   const [params] = useSearchParams();
   const refresh = useRef<HTMLButtonElement>(null);
-  const focusAfterDelete = () =>
+  const focusAfterDelete = () => {
+    onNotice?.('Архивное направление удалено.');
     requestAnimationFrame(() => document.querySelector<HTMLElement>('main h1')?.focus());
+  };
   const { deleting, setDeleting, download, remove, access, records, sourceReads, refreshFacts } =
     useArchiveDirections(focusAfterDelete);
   if (access !== 'active') return null;
-  if (records.isPending) return <p role="status">Загружаем архивные направления…</p>;
+  if (records.isPending)
+    return suppressLoading ? null : (
+      <RequestFeedback>Загружаем архивные направления…</RequestFeedback>
+    );
+  if (suppressLoadError && records.isError && !records.data?.length) return null;
   if (!records.data?.length && !records.isError) return null;
   return (
     <section
@@ -25,14 +40,19 @@ export function ArchiveDirections() {
       <p className="small-copy">
         Сохранённые списки прошлых кампаний. Они не показывают ваше текущее место.
       </p>
-      {records.isError && (
-        <Alert
-          as="p"
-          role="alert"
+      {records.isFetching && records.data && (
+        <RequestFeedback>Обновляем архивные направления…</RequestFeedback>
+      )}
+      {records.isError && !suppressLoadError && (
+        <RequestFeedback
+          busy={records.isFetching}
+          onRetry={() => void records.refetch()}
         >
-          Не удалось перечитать архивные направления.{' '}
-          {records.data ? 'Показаны ранее загруженные датированные записи.' : ''}
-        </Alert>
+          Не удалось загрузить архивные направления.{' '}
+          {records.data
+            ? 'Показаны ранее загруженные данные.'
+            : 'Ручные направления доступны выше.'}
+        </RequestFeedback>
       )}
       <details className="tracker-disclosure archive-tools">
         <summary>Инструменты архива</summary>
@@ -42,39 +62,47 @@ export function ArchiveDirections() {
           type="button"
 
           disabled={sourceReads > 0 || refreshFacts.isPending}
-          onClick={() => refreshFacts.mutate()}
+          onClick={() =>
+            refreshFacts.mutate(undefined, {
+              onSuccess: () => onNotice?.('Архивные данные обновлены.'),
+            })
+          }
         >
-          Перечитать сохранённые факты
+          {refreshFacts.isPending ? 'Обновляем архив…' : 'Перечитать сохранённые факты'}
         </Button>
         <Button
           variant="ghost"
           type="button"
 
           disabled={download.isPending || !records.data?.length}
-          onClick={() => download.mutate()}
+          onClick={() =>
+            download.mutate(undefined, {
+              onSuccess: () => onNotice?.('Файл архива подготовлен для скачивания.'),
+            })
+          }
         >
-          Скачать текущие архивные факты (JSON)
+          {download.isPending ? 'Готовим файл…' : 'Скачать текущие архивные факты (JSON)'}
         </Button>
         <p className="small-copy">
           Архивный файл содержит текущие датированные факты ваших записей. История доступна в
           карточках. Файл не восстанавливает гостевой доступ и не импортируется как ручной расчёт.
         </p>
       </details>
-      {refreshFacts.isError && sourceReads === 0 && (
-        <Alert
-          as="p"
-          role="alert"
+      {refreshFacts.isError && !records.isError && sourceReads === 0 && (
+        <RequestFeedback
+          onRetry={() => refreshFacts.mutate()}
+          busy={refreshFacts.isPending}
         >
           Не удалось перечитать все сохранённые факты. Показаны прежние данные с исходными датами.
           Повторите обновление в инструментах архива.
-        </Alert>
+        </RequestFeedback>
       )}
       {download.isError && (
         <Alert
           as="p"
           role="alert"
         >
-          {download.error.message}
+          Не удалось подготовить файл. {requestErrorText(download.error)}
         </Alert>
       )}
       <div className="source-catalog-list">
