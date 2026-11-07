@@ -85,6 +85,7 @@ def test_unicode_search_region_sort_and_pagination(catalog):
     assert region['items'] and all(r['region'] == 'Саратовская область' for r in region['items'])
     for term in ('ПРОГРАММНАЯ', '09.03.04'):
         assert catalog.get(BASE + '/programs', params={'q': term}).json()['total'] == 1
+        assert catalog.get(BASE + '/universities', params={'q': term}).json()['items'][0]['id'] == 'sgu-saratov'
     first = catalog.get(BASE + '/programs', params={'limit': 1}).json()
     reverse = catalog.get(BASE + '/programs', params={'sort': 'name-desc', 'limit': 1}).json()
     assert first['items'][0]['id'] != reverse['items'][0]['id']

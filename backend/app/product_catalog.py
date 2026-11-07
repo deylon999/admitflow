@@ -77,8 +77,12 @@ def install(app, database):
         rows = universities(db)
         regions = sorted({row.region for row in rows})
         tokens = q.casefold().split()
+        course_text = {}
+        if tokens:
+            for program in programs(db):
+                course_text[program.university_id] = course_text.get(program.university_id, '') + ' ' + program.title
         matches = [row for row in rows if (not region or row.region == region)
-                   and all(token in f'{row.name} {row.legal_name} {row.region} {row.id}'.casefold() for token in tokens)]
+                   and all(token in f'{row.name} {row.legal_name} {row.region} {row.id} {course_text.get(row.id, "")}'.casefold() for token in tokens)]
         matches.sort(key=lambda row: (row.name.casefold(), row.id), reverse=sort == 'name-desc')
         items, after = paginate(matches, offset, limit)
         return UniversityPage(items=items, total=len(matches), next_offset=after,
