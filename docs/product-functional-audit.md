@@ -118,3 +118,21 @@ Artifact сохраняет исходные даты захвата; повто
 проходные по сопоставимым конкурсам, официальные требования ЕГЭ и city dataset.
 Они не блокируют честный архивный каталог, но блокируют прогноз и полноту.
 ML и внедрение остальных 25 страниц в этом подходе не выполняются.
+
+## Модели и контракты следующих срезов (не реализованы)
+
+| Модуль | Предлагаемые контракты | Необходимые данные / связи |
+| --- | --- | --- |
+| Аккаунт | `/auth/register`, `/auth/login`, `/auth/recovery`, `/profile` под `/api/v1` | Account, verified email, private profile; текущая BrowserSession — только гостевой контур |
+| Сохранённые программы | `/api/v1/saved-programs` CRUD | Owner + стабильный competitionGroup ID; год уже привязан через Campaign; не смешивать с demo localStorage IDs |
+| Требования и история | `/api/v1/catalog/programs/{id}/requirements`, `/outcomes` | Source-backed exam alternatives/minimums и historical enrolled outcomes, version/year/form/quota; сейчас таких datasets нет |
+| ЕГЭ | `/api/v1/exam-distributions` | Subject/year, bins/units, methodology, population and provenance; официальные распределения не равны картинке demo |
+| Списки | Read facade над SourceSnapshot, scoped lookup и bounded rows | Только reviewed published snapshot того же group/year; CandidateEntry не публичное досье |
+| Изменения/уведомления | Adapt `/changes`, notification preferences/read-state | Saved-program owner, факт версии snapshot, агрегат события, доставка; demo reviews не события БД |
+| Прогноз | Контракт определяется после выбора target/метрик; endpoint пока не создаётся | Сопоставимые кампании, outcomes, feature availability на дату, calibration/backtesting, versioned artifacts |
+
+Это карта зависимостей для планирования, не новые активные endpoints.
+На текущем этапе реализованы только четыре `/api/v1/catalog/*` из плана.
+Для маркировки оставшихся mock-прогнозов минимально изменены четыре
+существующие текстовые подписи (без нового блока/стиля). Подробные результаты:
+[catalog-vertical-slice.md](evidence/catalog-vertical-slice.md).

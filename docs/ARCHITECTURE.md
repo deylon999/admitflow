@@ -1,5 +1,15 @@
 # Frontend AdmitFlow: Feature-Sliced Design
 
+**Функциональный срез S200:** дизайн и History API router v3 сохранены.
+`src/catalog/` содержит DTO, API-клиент, cancellable resource/filter state,
+UI parts и четыре композиции. Они используют исходные shared/UI и Shell;
+старый FSD/калькулятор не возвращаются. Vite/Nginx дают same-origin `/api`.
+Новый read facade `backend/app/product_catalog.py` публикует только reference
+организации и совпадающие с reviewed metadata группы. Явный атомарный importer
+использует существующие University/Campaign/CompetitionGroup, без новой схемы
+или источников/worker. Старые backend-контракты независимы и сохранены.
+[Модели, API, зависимости и границы](product-functional-audit.md).
+
 **Актуальное состояние с T242 (2026-11-08):** по прямому запросу пользователя
 frontend полностью заменён исходной структурой v3: `App.tsx`, `app/`,
 `components/`, `pages/`, `shared/UI.tsx`, `data/demo.ts`, два исходных CSS.

@@ -7,17 +7,18 @@
 
 ## Продолжение
 
-- Текущая задача: T247.
-- Следующая задача: T247.
+- Текущая задача: нет.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-New functional phase on feat/catalog-vertical-slice. Audit first, then verified catalog APIs and four v3 pages. Preserve exact visual foundation; no ML development.
+T243-T247 functional foundation completed on feat/catalog-vertical-slice. Review docs/evidence/catalog-vertical-slice.md and docs/catalog-runbook.md. Next: verify actual PostgreSQL on disposable schema, expand reviewed program/year/exam datasets, then saved-programs with real IDs. Preserve v3 design; no ML until outcomes and metrics exist.
 
 ## Последняя завершённая работа
 
-- T242: all 29 v3 routes copied on feat/frontend-v3-exact-copy from main; implementation 3e50540. Original source remains unchanged.
-- 187 Chromium tests passed; 145 original/copy comparisons at five widths: zero different pixels, no overflow. Evidence: docs/evidence/frontend-v3-exact.md.
+- T243: full 29-route functionality/demo/API/dependency/priority audit and backend reuse/model/API plan in docs/product-functional-audit.md.
+- T244-T245: additive public catalog API + atomic reviewed metadata import and four React API pages. Existing models/DB reused; source scopes: 1257 reference institutions and two SGU archive-2026 contests, no invented cutoff/exams/ML.
+- T246-T247: 47 backend passed/1 native PostgreSQL skipped; 193 Chromium passed including 125 pixel comparisons (100 raw +25 explicit demo labels); standalone default68 passed, 20 catalog screenshots at five widths; lint/TS/build/install passed.
 
 ## Ограничения
 
@@ -28,9 +29,10 @@ New functional phase on feat/catalog-vertical-slice. Audit first, then verified 
 
 ## Проверенное окружение
 
-- S199: npm ci offline, typecheck, build and source verification passed. Source/copy production JS and CSS identical. Dev launch smoke passed for landing, forecast, login.
-- Managed Windows Vite optimizer access restrictions bypassed by Vite watch-build/preview launcher (refresh after edits, no HMR). All temporary servers stopped; tools backup removed.
-- Backend, shared fixtures and Compose unchanged; API/PostgreSQL integration deliberately excluded. Docker/Nginx and hosted CI not run. Original has no implemented dark theme. No push/deployment.
+- Docker API/config permission denied; PostgreSQL unavailable and native test explicitly skipped. Real API E2E used owned temporary SQLite with current migrations; existing legacy user DB read-only inspected, not changed.
+- 23 original UI/config files verified with four exact demo label changes/type-only fix; three integration compositions explicit. Original CSS and all 68 source files unchanged. No new runtime dependencies or product database.
+- Windows Playwright webServer teardown hang fixed with scripts/test.mjs owning Vite previews and Python stdin shutdown. Standalone68 and visual193 finish and close servers. Early temp DB folders xhiql9eb/_wn5xa4d remain: automatic approval rejected outside-workspace deletion (sandbox_approval=false); no bypass.
+- Hosted CI/Docker/Nginx/Firefox/WebKit not verified; full dark theme absent in source. No push/deployment; main, exact-copy and previous redesign branches unchanged.
 
 ## Готовность к выпуску
 

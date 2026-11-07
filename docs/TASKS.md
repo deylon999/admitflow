@@ -4191,7 +4191,7 @@
 
 ### T247. Document product foundation and remaining demo modules
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T246.
 
@@ -4208,7 +4208,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/catalog-runbook.md](../docs/catalog-runbook.md) — All 29-route audit/API/model plan, real-vs-demo boundaries, explicit import and existing PostgreSQL/isolated local run instructions documented. Evidence gallery20 and final test summaries retained. Main/source/previous branches preserved; no push. Next: actual PostgreSQL verification, reviewed program/year/exam coverage, then saved real IDs; no ML yet.
 
 ## E5. Качество и эксплуатация
 

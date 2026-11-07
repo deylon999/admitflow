@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 222 из 243 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 223 из 243 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -204,7 +204,7 @@
 - [x] T244 Implement verified campaign-scoped catalog API
 - [x] T245 Connect v3 catalog and detail pages to real API
 - [x] T246 Verify catalog APIs, flows and unchanged design
-- [ ] T247 Document product foundation and remaining demo modules — **в работе**
+- [x] T247 Document product foundation and remaining demo modules
 
 ## Качество и эксплуатация
 

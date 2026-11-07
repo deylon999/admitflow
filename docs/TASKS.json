@@ -7603,7 +7603,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T246"
       ],
@@ -7616,7 +7616,12 @@
       "acceptance": [
         "Run instructions, API/model map, evidence, statuses and next steps are accurate"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/catalog-runbook.md",
+          "note": "All 29-route audit/API/model plan, real-vs-demo boundaries, explicit import and existing PostgreSQL/isolated local run instructions documented. Evidence gallery20 and final test summaries retained. Main/source/previous branches preserved; no push. Next: actual PostgreSQL verification, reviewed program/year/exam coverage, then saved real IDs; no ML yet."
+        }
+      ],
       "blockedReason": null
     }
   ]
