@@ -143,6 +143,20 @@ def render(data):
     return '\n'.join(lines).rstrip() + '\n'
 
 
+def render_state(state):
+    lines = ['# Актуальная передача контекста', '',
+             'Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.',
+             'Не редактировать вручную. История — [LOG.md](LOG.md).', '',
+             f"Дата: {state['updatedAt']}. Сессия: {state['lastSession']}.", '',
+             f"- Текущая задача: {state.get('currentTask') or 'нет'}.",
+             f"- Следующая задача: {state.get('nextTask') or 'нет'}.", '',
+             state.get('resumeAction', ''), '', '## Ограничения', '']
+    lines.extend(f'- {item}' for item in state.get('externalConstraints', []))
+    lines.extend(['', 'Статусы и acceptance — [TASKS.json](TASKS.json).',
+                  'Готовность к выпуску — [RELEASE_GATES.md](RELEASE_GATES.md).', ''])
+    return '\n'.join(lines)
+
+
 def render_checklist(data):
     done = sum(task['status'] == 'done' for task in data['tasks'])
     lines = ['# Чек-лист AdmitFlow', '',
@@ -224,9 +238,12 @@ def main():
     target = DOCS / 'TASKS.md'
     checklist = ROOT / 'CHECKLIST.md'
     expected_checklist = render_checklist(data)
+    state_target = DOCS / 'STATE.md'
+    expected_state = render_state(state)
     if args.render:
         target.write_text(expected, encoding='utf-8')
         checklist.write_text(expected_checklist, encoding='utf-8')
+        state_target.write_text(expected_state, encoding='utf-8')
         print('Rendered docs/TASKS.md')
         print('Rendered CHECKLIST.md')
     if args.check or not any(vars(args).values()):
@@ -235,6 +252,8 @@ def main():
             errors.append('TASKS.md is stale or missing; run --render')
         if not checklist.exists() or checklist.read_text(encoding='utf-8') != expected_checklist:
             errors.append('CHECKLIST.md is stale or missing; run --render')
+        if not state_target.exists() or state_target.read_text(encoding='utf-8') != expected_state:
+            errors.append('STATE.md is stale or missing; run --render')
         if state['lastSession'] not in (DOCS / 'LOG.md').read_text(encoding='utf-8'):
             errors.append('STATE.lastSession is missing from LOG.md')
         if errors:

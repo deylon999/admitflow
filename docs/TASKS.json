@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-05",
+  "updatedAt": "2026-11-08",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -5945,6 +5945,119 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T238",
+      "phase": "E5",
+      "title": "Зафиксировать границы аудита и историю mvp-readiness",
+      "status": "done",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [],
+      "steps": [
+        "История проверена по merge parents; зафиксированы авторство, объём и ограничения."
+      ],
+      "acceptance": [
+        "История проверена по merge parents; зафиксированы авторство, объём и ограничения.",
+        "Общая Definition of Done: docs/QUALITY.md. Без push/merge; main и mvp-readiness не изменяются."
+      ],
+      "deliverables": [
+        "audit/VADIM_CODE_REVIEW.md"
+      ],
+      "evidence": [
+        {
+          "path": "audit/VADIM_CODE_REVIEW.md",
+          "note": "Fetch, merge parents, 10 authorship records and 68-file diff verified."
+        }
+      ]
+    },
+    {
+      "id": "T239",
+      "phase": "E5",
+      "title": "Проверить backend и безопасность backup",
+      "status": "in_progress",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "T238"
+      ],
+      "steps": [
+        "Backend/API/DB проверены; дефекты backup исправлены с негативными и интеграционными проверками."
+      ],
+      "acceptance": [
+        "Backend/API/DB проверены; дефекты backup исправлены с негативными и интеграционными проверками.",
+        "Общая Definition of Done: docs/QUALITY.md. Без push/merge; main и mvp-readiness не изменяются."
+      ],
+      "deliverables": [
+        "audit/BUG_REPORT.md"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "T240",
+      "phase": "E5",
+      "title": "Проверить frontend и изоляцию сессий",
+      "status": "todo",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "T239"
+      ],
+      "steps": [
+        "Проверены ключевые frontend-модули; подтверждённые дефекты сессий исправлены с регрессионными тестами."
+      ],
+      "acceptance": [
+        "Проверены ключевые frontend-модули; подтверждённые дефекты сессий исправлены с регрессионными тестами.",
+        "Общая Definition of Done: docs/QUALITY.md. Без push/merge; main и mvp-readiness не изменяются."
+      ],
+      "deliverables": [
+        "audit/FIX_REPORT.md"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "T241",
+      "phase": "E5",
+      "title": "Проверить браузерные сценарии и интерфейс",
+      "status": "todo",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "T240"
+      ],
+      "steps": [
+        "Доступные E2E с API выполнены; desktop/mobile screenshots сохранены; пропуски перечислены."
+      ],
+      "acceptance": [
+        "Доступные E2E с API выполнены; desktop/mobile screenshots сохранены; пропуски перечислены.",
+        "Общая Definition of Done: docs/QUALITY.md. Без push/merge; main и mvp-readiness не изменяются."
+      ],
+      "deliverables": [
+        "audit/SCREENSHOTS.md"
+      ],
+      "evidence": []
+    },
+    {
+      "id": "T242",
+      "phase": "E5",
+      "title": "Подготовить проверки и отчёты тимлиду",
+      "status": "todo",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "T241"
+      ],
+      "steps": [
+        "Шесть отчётов с оценками, командами и ограничениями; все доступные итоговые проверки выполнены."
+      ],
+      "acceptance": [
+        "Шесть отчётов с оценками, командами и ограничениями; все доступные итоговые проверки выполнены.",
+        "Общая Definition of Done: docs/QUALITY.md. Без push/merge; main и mvp-readiness не изменяются."
+      ],
+      "deliverables": [
+        "audit/FULL_AUDIT.md"
+      ],
+      "evidence": []
     }
   ]
 }

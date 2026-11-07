@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-05",
-  "currentTask": null,
+  "updatedAt": "2026-11-08",
+  "currentTask": "T239",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S174",
-  "resumeAction": "B13: код, CI, браузеры, контейнеры, нагрузка на dev-стенде и аудит завершены на ветке mvp-readiness. Дальше нужны решения людей: docs/RELEASE_GATES.md. После выбора сервера начать T048, затем T046, T049, T050, T051, повторить T044.",
+  "lastSession": "S196",
+  "resumeAction": "T238 завершена. T239: backend/PostgreSQL и исправления backup; исходный Windows pytest блокирован импортом resource.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",
