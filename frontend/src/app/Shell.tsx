@@ -24,7 +24,7 @@ function Brand() {
   );
 }
 
-export function AppHeader() {
+export function AppHeader({ catalog = false }: { catalog?: boolean }) {
   return (
     <header className="af-app-header">
       <Brand />
@@ -34,7 +34,7 @@ export function AppHeader() {
         <RouteLink to="/how-it-works">Как это работает</RouteLink>
       </div>
       <div className="af-app-header__right">
-        <span className="af-campaign">КАМПАНИЯ 2027</span>
+        <span className="af-campaign">{catalog ? 'КАТАЛОГ' : 'КАМПАНИЯ 2027'}</span>
         <RouteLink to="/app/notifications" aria-label="Уведомления" className="af-header-icon">♧</RouteLink>
         <RouteLink to="/app/profile" className="af-avatar">А</RouteLink>
       </div>
@@ -45,7 +45,7 @@ export function AppHeader() {
 export function AppShell({ path, children }: { path: string; children: ReactNode }) {
   return (
     <div className="af-app">
-      <AppHeader />
+      <AppHeader catalog={path.startsWith('/universities') || path.startsWith('/programs')} />
       <div className="af-app-layout">
         <aside className="af-sidebar" aria-label="Меню приложения">
           <div className="af-sidebar__caption">НАВИГАЦИЯ</div>

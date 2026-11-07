@@ -7549,7 +7549,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T244"
       ],
@@ -7562,7 +7562,12 @@
       "acceptance": [
         "Four React pages use stable IDs and real API with search, filters, pagination, loading/error/empty states, no demo fallback"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "frontend/src/catalog/DetailPages.tsx",
+          "note": "Four v3 compositions now use real public API, stable campaign IDs and provenance. Search/filters/pages, cancellation/retry/404 and no demo fallback. Catalog E2E 27 passed at five widths; TypeScript/ESLint/build passed. Long-name constraints reuse v3 responsive primitives."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -7571,7 +7576,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T245"
       ],

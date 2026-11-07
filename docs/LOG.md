@@ -1183,3 +1183,5 @@ S200 - T243-T247 started: explicit new product phase. Clean v3 branch preserved;
 S200 - T243 completed: 29-route audit, backend reuse and scoped API/data plan recorded in docs/product-functional-audit.md. Official MICCEDU index/card reachable; SGU current URLs unavailable through web tool, existing attested archive metadata retained with original dates. PostgreSQL Docker access denied in current environment. T244 started; no unverified exam/cutoff facts.
 
 S200 - T244 completed: additive catalog facade, explicit atomic reviewed metadata importer, no migration/new DB/worker activation. Targeted API/source tests 31 passed, 1 native PostgreSQL skipped because Docker denied. Old APIs preserved. T245 React integration started.
+
+S200 - T245 completed: four v3 catalog pages connected to read facade, shared shell retained, stable IDs/year/source and nullable missing facts. CSS source unchanged; scoped real-name constraints reuse v3 heading/card modes. Install from cache, typecheck/ESLint/build passed; catalog E2E27 passed. Initial new test had over-exact region label; explicit accessible select label added. T246 full validation ongoing.

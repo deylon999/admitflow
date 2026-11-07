@@ -1,5 +1,6 @@
 import { build, preview } from 'vite';
 import { parseArgs } from 'node:util';
+import { apiProxy } from '../vite.config.mjs';
 
 // Managed Windows prevents esbuild's dependency optimizer from reading parent
 // directories. Vite's Rollup watch build avoids that optimizer, with identical UI.
@@ -10,7 +11,7 @@ let server;
 watcher.on('event',async event=>{
   if(event.code==='ERROR')console.error(event.error);
   if(event.code==='END'&&!server){
-    server=await preview({configFile:false,build:{outDir:output},preview:{host:values.host,port:Number(values.port),strictPort:values.strictPort}});
+    server=await preview({configFile:false,build:{outDir:output},preview:{host:values.host,port:Number(values.port),strictPort:values.strictPort,proxy:apiProxy}});
     server.printUrls();
   }
 });

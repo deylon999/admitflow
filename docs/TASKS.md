@@ -4149,7 +4149,7 @@
 
 ### T245. Connect v3 catalog and detail pages to real API
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T244.
 
@@ -4166,11 +4166,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [frontend/src/catalog/DetailPages.tsx](../frontend/src/catalog/DetailPages.tsx) — Four v3 compositions now use real public API, stable campaign IDs and provenance. Search/filters/pages, cancellation/retry/404 and no demo fallback. Catalog E2E 27 passed at five widths; TypeScript/ESLint/build passed. Long-name constraints reuse v3 responsive primitives.
 
 ### T246. Verify catalog APIs, flows and unchanged design
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T245.
 

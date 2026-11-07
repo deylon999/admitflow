@@ -11,11 +11,13 @@ import { FAQ } from './components/FAQ';
 import { FinalCTA } from './components/FinalCTA';
 import { AppShell } from './app/Shell';
 import { interceptInternalLinks } from './app/navigation';
-import { programs } from './data/demo';
 import { Action, EmptyMessage } from './shared/UI';
 import { AuthPage } from './pages/AuthPages';
-import { ExamAnalytics, FaqPage, HowItWorks, ProgramDetail, ProgramsCatalog, UniversityCatalog, UniversityPage } from './pages/PublicPages';
+import { ExamAnalytics, FaqPage, HowItWorks } from './pages/PublicPages';
 import { AddWatch, Compare, CompetitionList, Competitors, Dashboard, ForecastForm, ForecastMethod, ForecastResult, HistoryPage, NotificationsPage, ProfilePage, SettingsPage, SourcesPage, StatusPage, Watchlist } from './pages/AppPages';
+import { ProgramsCatalog, UniversityCatalog } from './catalog/CatalogPages';
+import { ProgramDetail, UniversityPage } from './catalog/DetailPages';
+import './catalog/catalog.css';
 import './styles.css';
 import './internal.css';
 
@@ -105,16 +107,12 @@ function PrivateRoute({ path, tracked, onToggle }: {
   }
 }
 
-function PublicRoute({ path, tracked, onToggle }: {
-  path: string;
-  tracked: string[];
-  onToggle: (id: string) => void;
-}) {
+function PublicRoute({ path }: { path: string }) {
+  if (/^\/universities\/[^/]+$/.test(path)) return <UniversityPage key={path} id={path.slice('/universities/'.length)} />;
+  if (/^\/programs\/[^/]+$/.test(path)) return <ProgramDetail key={path} id={path.slice('/programs/'.length)} />;
   switch (path) {
-    case '/universities': return <UniversityCatalog tracked={tracked} onToggle={onToggle} />;
-    case '/universities/mtuci': return <UniversityPage />;
-    case '/programs': return <ProgramsCatalog tracked={tracked} onToggle={onToggle} />;
-    case '/programs/mtuci-se': return <ProgramDetail item={programs[0]} />;
+    case '/universities': return <UniversityCatalog />;
+    case '/programs': return <ProgramsCatalog />;
     case '/ege-analytics': return <ExamAnalytics />;
     case '/how-it-works': return <HowItWorks />;
     case '/faq': return <FaqPage />;
@@ -133,7 +131,7 @@ export default function App() {
   }
   const content = pathname.startsWith('/app')
     ? <PrivateRoute path={pathname} tracked={tracked} onToggle={onToggle} />
-    : <PublicRoute path={pathname} tracked={tracked} onToggle={onToggle} />;
+    : <PublicRoute path={pathname} />;
   // Catalog, university, program, EGE and private routes share one persistent sidebar.
   return <AppShell path={pathname}>{content}</AppShell>;
 }

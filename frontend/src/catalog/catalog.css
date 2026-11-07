@@ -1,0 +1,20 @@
+/* Only constraints needed for real legal names and catalog controls.
+   Original v3 tokens, typography, cards and responsive rules remain in use. */
+.af-catalog-card h3, .af-catalog-card .af-program-card__university,
+.af-catalog-detail h1, .af-catalog-detail .af-profile-hero p { overflow-wrap: anywhere; }
+.af-catalog-controls { flex-wrap: wrap; }
+.af-catalog-controls .af-field { min-width: 0; flex: 1 1 170px; }
+.af-catalog-controls .af-field--grow { flex: 3 1 260px; }
+.af-catalog-pagination { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 14px; }
+.af-catalog-pagination button:disabled { opacity: .5; cursor: default; transform: none; box-shadow: none; }
+.af-catalog-source a { color: var(--af-electric); text-decoration: underline; }
+.af-catalog-detail .af-profile-hero > div:first-child { min-width: 0; }
+.af-catalog-detail .af-spotlight > strong.af-catalog-unknown { font-size: clamp(32px, 4vw, 58px); letter-spacing: -.045em; }
+.af-catalog-detail .af-info-row b { text-align: right; }
+.af-catalog-detail .af-info-row a { color: var(--af-electric); }
+.af-catalog-detail .af-profile-hero--long-name h1 { font-size: clamp(30px, 3vw, 47px); letter-spacing: -.045em; }
+@media (max-width: 650px) {
+  /* Use v3's existing two-column card mode for real names that exceed demo labels. */
+  .af-catalog-card { grid-template-columns: 54px minmax(0, 1fr); }
+  .af-catalog-card .af-program-card__stats { grid-column: 2; text-align: left; }
+}
