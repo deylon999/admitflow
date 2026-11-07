@@ -75,6 +75,13 @@ test('program code search, campaign isolation and unsupported subject', async ({
   await expect(page.locator('.af-empty')).toContainText('Нет данных');
   await page.goto('/programs?subject=Информатика');
   await expect(page.locator('.af-empty')).toContainText('Ничего не нашлось');
+  const directory = await page.request.get('/api/v1/catalog/universities?limit=12');
+  const emptyUniversity = (await directory.json()).items.find((item: { knownProgramCount: number }) => item.knownProgramCount === 0);
+  expect(emptyUniversity).toBeTruthy();
+  await page.goto(`/universities/${emptyUniversity.id}`);
+  await expect(page.locator('.af-profile-hero h1')).toBeVisible();
+  await expect(page.locator('.af-empty')).toContainText('Нет данных');
+  await expect(page.locator('.af-program-card')).toHaveCount(0);
 });
 
 test('loading, real HTTP errors, retry and detail 404', async ({ page }) => {
@@ -123,7 +130,7 @@ test('an HTML fallback is an error, never demo catalog data', async ({ page }) =
 });
 
 for (const width of [390, 768, 1024, 1280, 1440]) {
-  for (const [name, path] of [['universities', '/universities?q=СГУ+Чернышевского'], ['university', university], ['programs', '/programs'], ['program', program]]) {
+  for (const [name, path] of [['universities', '/universities'], ['university', university], ['programs', '/programs'], ['program', program]]) {
     test(`catalog screenshot ${name} ${width}`, async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(path);

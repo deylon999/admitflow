@@ -9,9 +9,16 @@
   },
   "errors": [],
   "standaloneDefault": {
-    "passed": 68,
-    "durationSeconds": 13.4,
-    "gracefulShutdown": true
+    "stats": {
+      "startTime": "2026-11-07T22:47:29.272Z",
+      "duration": 14332.7,
+      "expected": 68,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "gracefulShutdown": true,
+    "additionalCoverage": "Default unfiltered 12-item university catalog screenshots at all five widths, real university with no imported programs"
   },
   "scope": "Chromium real API plus 125 reference pixel comparisons; four explicit demo-label normalizations",
   "ownedServerLifecycle": "scripts/test.mjs gracefully stops Python through owned stdin and closes Vite previews; no Windows taskkill/WMI"
