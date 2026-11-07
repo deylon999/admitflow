@@ -11,7 +11,7 @@ export function ChangeFeed() {
       className="change-feed"
       aria-labelledby="changes-title"
     >
-      <h2 id="changes-title">Изменения в ваших списках</h2>
+      <h3 id="changes-title">Изменения в ваших списках</h3>
       <p>
         Изменения сохранённых условных сценариев. Архивные данные не описывают текущую приёмную
         кампанию.
@@ -60,7 +60,7 @@ export function ChangeFeed() {
       <ol>
         {feed.data?.items.map((item) => (
           <li key={item.id}>
-            <h3>{item.title}</h3>
+            <h4>{item.title}</h4>
             <p>{item.scenario.explanation?.summary}</p>
             <ul>
               {item.scenario.explanation?.changes.map((text, index) => (

@@ -10,7 +10,7 @@ export function CoverageSummary() {
       className="coverage-summary"
       aria-labelledby="coverage-heading"
     >
-      <h2 id="coverage-heading">Покрытие источников</h2>
+      <h3 id="coverage-heading">Покрытие источников</h3>
       {query.isPending ? (
         <p
           className="small-copy"

@@ -15,7 +15,7 @@ function errorText(error: unknown) {
 }
 
 export function ManualDirectionHistory({ watch, show }: { watch: Watch; show: boolean }) {
-  const history = useManualHistory(watch.id, show);
+  const history = useManualHistory(watch.id, show, watch.latest.id);
   const snapshots = history.data?.snapshots ?? [];
   const totalSnapshots = history.data?.pages[0]?.total;
   if (!show) return null;

@@ -6,13 +6,11 @@ function errorText(error: unknown) {
   return error instanceof Error ? error.message : 'Не удалось выполнить действие.';
 }
 
-export function TrackerAccess({ model }: { model: TrackerModel }) {
+export function TrackerAccess({ model, tools = false }: { model: TrackerModel; tools?: boolean }) {
   const {
     resetButton,
     expired,
     busy,
-    watches,
-    count,
     directionTotal,
     download,
     setConfirmReset,
@@ -22,43 +20,26 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
     resetting,
     changed,
     synchronize,
-    refreshDirections,
   } = model;
   return (
     <>
-      <div className="tracker-data-actions">
-        <Button
-          variant="ghost"
-
-          type="button"
-          disabled={expired || busy || watches.isFetching}
-          onClick={() => void refreshDirections()}
-        >
-          {watches.isFetching ? 'Обновляем…' : 'Обновить направления'}
-        </Button>
-        <Button
-          variant="ghost"
-
-          type="button"
-          disabled={busy || !count}
-          onClick={() => download.mutate()}
-        >
-          {download.isPending ? 'Готовим файл…' : 'Скачать данные (JSON)'}
-        </Button>
-        {directionTotal > 0 && (
-          <Button
-            variant="ghost"
-            ref={resetButton}
-            className="delete-link"
-            type="button"
-            disabled={busy}
-            onClick={() => setConfirmReset(true)}
-          >
-            Удалить все мои данные
-          </Button>
-        )}
-      </div>
-      {privateVisible && download.isError && (
+      {tools && (
+        <div className="tracker-data-actions">
+          {directionTotal > 0 && (
+            <Button
+              variant="ghost"
+              ref={resetButton}
+              className="delete-link"
+              type="button"
+              disabled={busy}
+              onClick={() => setConfirmReset(true)}
+            >
+              Удалить все мои данные
+            </Button>
+          )}
+        </div>
+      )}
+      {!tools && privateVisible && download.isError && (
         <Alert
           as="p"
           className="form-error"
@@ -67,7 +48,7 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
           {errorText(download.error)}
         </Alert>
       )}
-      {confirmReset && privateVisible && (
+      {tools && confirmReset && privateVisible && (
         <DeleteConfirmation
           text="Удалить все направления и историю в этом браузере? Отменить удаление нельзя."
           label="Удалить всё"
@@ -79,8 +60,8 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
           onConfirm={() => reset.mutate()}
         />
       )}
-      {resetting && <p role="status">Обновляем гостевой доступ…</p>}
-      {expired && !resetting && (
+      {!tools && resetting && <p role="status">Обновляем гостевой доступ…</p>}
+      {!tools && expired && !resetting && (
         <Card className="empty-state">
           <h2>{changed ? 'Гостевой доступ изменён' : 'Срок гостевой сессии истёк'}</h2>
           <p>
@@ -103,7 +84,7 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
           </Button>
         </Card>
       )}
-      {synchronize.isError && (
+      {!tools && synchronize.isError && (
         <Alert
           as="p"
           className="form-error"
@@ -114,7 +95,7 @@ export function TrackerAccess({ model }: { model: TrackerModel }) {
             : errorText(synchronize.error)}
         </Alert>
       )}
-      {reset.isError && (
+      {!tools && reset.isError && (
         <Alert
           as="p"
           className="form-error"

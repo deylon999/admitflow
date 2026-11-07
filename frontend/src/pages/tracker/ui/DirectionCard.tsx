@@ -6,7 +6,7 @@ import {
   useDeleteManualDirection,
   DeleteManualDirectionFeedback,
 } from '@/features/delete-manual-direction';
-import { ManualDirectionHistory } from '@/features/review-manual-history';
+import { ManualDirectionHistory, PositionChange } from '@/features/review-manual-history';
 
 export function DirectionCard({
   watch,
@@ -24,7 +24,10 @@ export function DirectionCard({
   const [showHistory, setShowHistory] = useState(false);
   const deletion = useDeleteManualDirection({ id: watch.id, beforeDelete, onRemoved });
   return (
-    <ManualDirectionCard watch={watch}>
+    <ManualDirectionCard
+      watch={watch}
+      positionChange={<PositionChange watch={watch} />}
+    >
       <div className="direction-actions">
         <Button
           variant="secondary"

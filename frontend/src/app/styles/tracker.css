@@ -1,4 +1,99 @@
 @layer layout {
+  .tracker-safety-note {
+    margin-top: var(--space-6);
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--line);
+    color: var(--muted);
+    font-size: var(--text-sm);
+    max-width: 80ch;
+  }
+  .tracker-list-heading {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    margin-block: var(--space-8) var(--space-5);
+  }
+  .tracker-list-heading .small-copy,
+  .tracker-section > .small-copy {
+    margin-top: var(--space-2);
+  }
+  .tracker-section {
+    margin-top: var(--space-section);
+    min-width: 0;
+  }
+  .tracker-section > .small-copy {
+    margin-bottom: var(--space-6);
+  }
+  .tracker-disclosure {
+    margin-bottom: var(--space-3);
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .tracker-disclosure > summary,
+  .direction-details > summary {
+    min-height: var(--control-height);
+    align-content: center;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+  .tracker-disclosure[open] > summary,
+  .direction-details[open] > summary {
+    margin-bottom: var(--space-4);
+  }
+  .tracker-disclosure > p + p {
+    margin-top: var(--space-3);
+  }
+  .tracker-disclosure .coverage-summary,
+  .tracker-disclosure .change-feed {
+    margin-block: var(--space-4) 0;
+  }
+  .position-change {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+  .position-change[data-changed='true'] {
+    color: var(--text);
+    font-weight: var(--weight-medium);
+  }
+  .position-change span {
+    color: var(--muted);
+    font-weight: var(--weight-regular);
+  }
+  .direction-details {
+    border-top: 1px solid var(--line);
+    margin-top: var(--space-4);
+    padding-top: var(--space-2);
+  }
+  .direction-details > .small-copy {
+    margin-top: var(--space-3);
+  }
+  .tracker-notice:empty {
+    min-height: 0;
+    margin: 0;
+  }
+  .tracker-page .watch-filters {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    gap: var(--space-3);
+  }
+  .tracker-page .tracker-filter-panel {
+    margin-bottom: var(--space-5);
+    padding-block: var(--space-2);
+  }
+  .tracker-page .watch-filters > p {
+    flex-basis: auto;
+    margin-right: auto;
+  }
+  .archive-tools {
+    margin-top: var(--space-3);
+  }
+  .tracker-page .archive-directions .source-catalog-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .footer-inner {
     display: flex;
     align-items: center;
@@ -157,6 +252,7 @@
     cursor: wait;
   }
   .direction-card {
+    align-self: start;
     padding: var(--card-padding);
     overflow-wrap: anywhere;
     min-width: 0;
@@ -168,15 +264,23 @@
     gap: var(--space-4);
   }
   .direction-top .eyebrow {
-    letter-spacing: 0.5px;
+    letter-spacing: normal;
+    text-transform: none;
+    font-size: var(--text-sm);
+    color: var(--muted);
   }
   .direction-top .tag {
     flex-shrink: 0;
   }
-  .direction-card h2 {
+  .direction-card h3 {
     margin-top: var(--space-4);
   }
   .direction-result {
+    flex-wrap: wrap;
+    padding: var(--space-5);
+    border-radius: var(--radius-control);
+    background: var(--surface-muted);
+    font-variant-numeric: tabular-nums;
     display: flex;
     gap: var(--space-6);
     align-items: center;
@@ -187,7 +291,7 @@
     font-size: var(--text-metric);
     line-height: 1;
     font-weight: var(--weight-semibold);
-    letter-spacing: -3px;
+    letter-spacing: -0.04em;
     color: var(--primary);
   }
   .direction-result > span {
@@ -311,6 +415,9 @@
     border: 0;
   }
   @media (max-width: 1000px) {
+    .tracker-page .archive-directions .source-catalog-list {
+      grid-template-columns: minmax(0, 1fr);
+    }
     .tracker-layout.with-form {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -325,6 +432,17 @@
     }
   }
   @media (max-width: 700px) {
+    .direction-source {
+      flex-direction: column;
+      align-items: start;
+    }
+    .direction-result {
+      padding: var(--space-4);
+      gap: var(--space-4);
+    }
+    .direction-actions {
+      gap: var(--space-2);
+    }
     .tracker-page {
       padding-block: var(--space-page-top) var(--space-page-bottom);
     }
@@ -524,7 +642,7 @@
     padding: var(--card-padding);
     margin-bottom: var(--space-6);
   }
-  .coverage-summary h2 {
+  .coverage-summary h3 {
     margin: 0 0 var(--space-4);
   }
   .coverage-numbers {
