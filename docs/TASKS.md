@@ -3911,6 +3911,66 @@
 
 - [docs/evidence/b21-section-borders.md](../docs/evidence/b21-section-borders.md) — Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows.
 
+### T230. Полная миграция frontend AdmitFlow на Feature-Sliced Design
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T229.
+
+**Результаты/файлы:** `frontend/src/`; `frontend/scripts/`; `docs/ARCHITECTURE.md`; `docs/evidence/fsd-migration.md`.
+
+**Шаги:**
+
+1. Аудит исходников, сценариев, зависимостей и официальных принципов FSD..
+2. Фундамент app/shared, импорты и публичные API..
+3. Бизнес-сущности, типы, формулы, контракты и предметные API..
+4. Действия пользователя и модели форм, сессий, импорта, истории и сравнения..
+5. Декомпозиция страниц и композиция без изменения DOM/дизайна..
+6. Удаление старой параллельной структуры и лишних зависимостей..
+7. Typecheck, ESLint, Prettier, build, unit/E2E, зависимости/циклы и итоговая статистика..
+
+**Критерии закрытия:**
+
+- Все исходные сценарии, бизнес-формулы, API-форматы и визуальный дизайн сохранены..
+- Зависимости направлены вниз; sibling imports/deep imports/циклы отсутствуют..
+- Нет src/lib/src/components или старых фасадов, дублирующих FSD..
+- Крупные страницы/формы/API разделены по реальным обязанностям..
+- Все фактически выполненные проверки и ограничения записаны в evidence..
+- Никаких автоматических коммитов/push или изменений backend..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/fsd-migration.md](../docs/evidence/fsd-migration.md) — Full FSD migration;147unit, typecheck/lint/format/build,119modules/279dependencies/no cycles,12exact screenshots,105Chromium/104Firefox passed. Scoped skips documented. No commits/push.
+
+### T231. Единая визуальная дизайн-система AdmitFlow
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T230.
+
+**Результаты/файлы:** `frontend/src/shared/ui/`; `frontend/src/app/styles/`; `docs/DESIGN_SYSTEM.md`; `docs/evidence/design-system.md`.
+
+**Шаги:**
+
+1. Аудит существующих размеров, CSS, тем и неоформленных элементов..
+2. Единые design tokens и типографика..
+3. UI primitives Button/Input/Select/Card/Badge/Alert и подключение в текущие страницы..
+4. Очистка конфликтующих стилей без изменений UX и бизнес-логики..
+5. Typecheck/lint/format/build, короткая визуальная проверка обеих тем..
+
+**Критерии закрытия:**
+
+- Все страницы используют общую типографическую шкалу и состояния управления..
+- Нет неоформленных кнопок, темы согласованы; интерфейс работает на320px..
+- Сценарии, модели, API и архитектура не изменены..
+- Фактические проверки и ограничения зафиксированы; нет commits/push..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/design-system.md](../docs/evidence/design-system.md) — Unified tokens/type scale/shared UI and both themes. typecheck/lint/build/format/architecture pass;147unit,12page and4editor/state checks. No long E2E/UX/API/model changes/commits/push.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

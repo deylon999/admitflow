@@ -1,5 +1,7 @@
 # T231 — аудит и рефакторинг визуальной системы
 
+Update after completion: user authorized local commits. Source commit `ac11756`; no push. Earlier no-commit statements below describe the original implementation stage.
+
 Проверено7 ноября2026. Работа выполнена поверх незакоммиченной FSD-миграции;
 предыдущие изменения сохранены. Архитектура, бизнес-модели, расчёты, запросы
 API, тексты, навигация и последовательность действий не перерабатывались.

@@ -31,6 +31,8 @@
       "flaky": 0
     }
   },
-  "committed": false,
-  "pushed": false
+  "committed": true,
+  "pushed": false,
+  "localSourceCommit": "de1821b",
+  "commitAuthorization": "Subsequent user request; push reserved for user."
 }

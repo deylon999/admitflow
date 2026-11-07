@@ -1,5 +1,7 @@
 # T230 — миграция frontend на FSD
 
+Update after completion: user authorized local commits. Source commit `de1821b`; no push. Earlier no-commit statements below describe the original implementation stage.
+
 Исходное дерево чистое, HEAD `3f8eee8`; пользовательские незакоммиченные
 изменения отсутствовали. Коммиты/push запрещены текущим запросом.
 

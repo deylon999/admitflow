@@ -104,3 +104,9 @@
 ## B13 — текущий запрос 2026-11-05
 
 Пользователь поручил выполнить оставшиеся задачи до MVP, провести аудит уязвимостей и недочётов и запушить результат. Код, CI, браузеры, контейнеры, нагрузка и production-конфигурация выполнены и проверены. Staging, суточное наблюдение, приёмка людьми и правовые решения требуют внешних условий: они перечислены в RELEASE_GATES.md и остаются открытыми. Критерии выпуска не снижены.
+Техническое требование от6–7 ноября2026: frontend переводится на FSD с
+сохранением всех текущих сценариев, правил, API и дизайна. Это изменение
+организации кода, оно не расширяет охват источников и не добавляет обещаний
+поступления. Архитектура описана в ARCHITECTURE.md; проверка — T230.
+
+Visual requirement,2026-11-07: unified typography/tokens/controls/cards across current AdmitFlow pages and light/dark themes. Preserve blue identity, UX, business models and API. No new UI library or FSD migration. Specification: DESIGN_SYSTEM.md.

@@ -1029,3 +1029,15 @@ S183/T228: Browser beforeprint commits current report timestamp synchronously; r
 S183/T229: Both section borders use existing --line; actual computed1px solid and correct light/dark colors verified. Build/format/diff passed; all8 fixes complete, final integrated verification follows. Evidence: docs/evidence/b21-section-borders.md. Next None.
 
 S183/B21 final: T222–T229 complete8/8, all10 B19 defects fixed with B20. 136Vitest/build/format;105Chromium/36scopedskips,0failed/flaky, retries0; 6Firefox session cases passed. Source commit f326dc7; evidence docs/evidence/b21-final-verification.md/json. Synthetic API8033/preview5283 stopped, historical screenshot restored. Original key/database/volumes unchanged. T056/T057 open; next candidate T057. Preparing ordinary Git push.
+
+## S184 — FSD migration
+
+User authorized full frontend FSD migration with preserved behavior/design/formulas/backend API. No commits or push override the previous batch preference. No scripts in service caches. Baseline clean 3f8eee8, 136 unit tests and production build passed. T230 active; audit completed, foundation next.
+
+S184 final: T230 complete. FSD app/pages/features/entities/shared; legacy removed;147unit/typecheck/lint/format/build;105Chromium/104Firefox,36/37scoped skips,0failed/flaky;12exact screenshots;119modules279edges no cycles. No commits/push/backend/formula changes. Evidence docs/evidence/fsd-migration.md.
+
+S185/T231 started: visual design-system audit/refactor on existing FSD tree. Preserve all earlier uncommitted work. Five stages, no UX/API/business changes, no commits/push or lengthy E2E.
+
+S185/T231 complete: unified visual tokens/scale/shared primitives on existing FSD.55buttons (6previously unstyled). typecheck/lint/build/format/architecture exit0,147unit passed;12page/theme/viewport +4editor/state +4outage checks, snapshots reviewed. No long E2E/backend/UX/API/model changes, commits/staging/push. Previous uncommitted FSD retained. Evidence docs/evidence/design-system.md;preview5285 stopped.
+
+S186: subsequent user request authorizes local commits, user will push. Preserved live worktree and staged pre-design FSD snapshot from recorded originals; staged FSD TypeScript passed. Source commits de1821b and ac11756. Full current typecheck/lint/build/format/architecture/147unit passed. Documentation/status recorded separately; no push or history rewrite.

@@ -7174,6 +7174,84 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T230",
+      "title": "Полная миграция frontend AdmitFlow на Feature-Sliced Design",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [
+        "T229"
+      ],
+      "deliverables": [
+        "frontend/src/",
+        "frontend/scripts/",
+        "docs/ARCHITECTURE.md",
+        "docs/evidence/fsd-migration.md"
+      ],
+      "steps": [
+        "Аудит исходников, сценариев, зависимостей и официальных принципов FSD.",
+        "Фундамент app/shared, импорты и публичные API.",
+        "Бизнес-сущности, типы, формулы, контракты и предметные API.",
+        "Действия пользователя и модели форм, сессий, импорта, истории и сравнения.",
+        "Декомпозиция страниц и композиция без изменения DOM/дизайна.",
+        "Удаление старой параллельной структуры и лишних зависимостей.",
+        "Typecheck, ESLint, Prettier, build, unit/E2E, зависимости/циклы и итоговая статистика."
+      ],
+      "acceptance": [
+        "Все исходные сценарии, бизнес-формулы, API-форматы и визуальный дизайн сохранены.",
+        "Зависимости направлены вниз; sibling imports/deep imports/циклы отсутствуют.",
+        "Нет src/lib/src/components или старых фасадов, дублирующих FSD.",
+        "Крупные страницы/формы/API разделены по реальным обязанностям.",
+        "Все фактически выполненные проверки и ограничения записаны в evidence.",
+        "Никаких автоматических коммитов/push или изменений backend."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/fsd-migration.md",
+          "note": "Full FSD migration;147unit, typecheck/lint/format/build,119modules/279dependencies/no cycles,12exact screenshots,105Chromium/104Firefox passed. Scoped skips documented. No commits/push."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T231",
+      "title": "Единая визуальная дизайн-система AdmitFlow",
+      "phase": "E4",
+      "priority": "P1",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [
+        "T230"
+      ],
+      "deliverables": [
+        "frontend/src/shared/ui/",
+        "frontend/src/app/styles/",
+        "docs/DESIGN_SYSTEM.md",
+        "docs/evidence/design-system.md"
+      ],
+      "steps": [
+        "Аудит существующих размеров, CSS, тем и неоформленных элементов.",
+        "Единые design tokens и типографика.",
+        "UI primitives Button/Input/Select/Card/Badge/Alert и подключение в текущие страницы.",
+        "Очистка конфликтующих стилей без изменений UX и бизнес-логики.",
+        "Typecheck/lint/format/build, короткая визуальная проверка обеих тем."
+      ],
+      "acceptance": [
+        "Все страницы используют общую типографическую шкалу и состояния управления.",
+        "Нет неоформленных кнопок, темы согласованы; интерфейс работает на320px.",
+        "Сценарии, модели, API и архитектура не изменены.",
+        "Фактические проверки и ограничения зафиксированы; нет commits/push."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/design-system.md",
+          "note": "Unified tokens/type scale/shared UI and both themes. typecheck/lint/build/format/architecture pass;147unit,12page and4editor/state checks. No long E2E/UX/API/model changes/commits/push."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

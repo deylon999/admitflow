@@ -1,3 +1,27 @@
+# S186 — local commits requested
+
+User subsequently authorized local commits for completed FSD/design changes; push is reserved for the user.
+Source commits: de1821b (FSD), ac11756 (design system).
+Typecheck/lint/build/format/architecture and147unit passed again. Staged FSD snapshot separately typechecked.
+No history rewriting or push. T230/T231 remain done; next candidate T057 unchanged.
+
+# S185 — unified visual design system
+
+T231 complete. Existing uncommitted FSD work preserved, no architecture migration.
+Tokens/type scale/shared UI integrated with unchanged UX/models/API.
+Typecheck/lint/build/format/architecture passed;147unit and short visual review passed.
+12page/theme/viewport +4editor/state +4outage cases,320/1440px,light/dark.
+No long E2E, no commits/push. Evidence: evidence/design-system.md.
+Preview5285 stopped; next candidate T057 remains open source expansion.
+
+# S184 — FSD migration complete
+
+T230 done. All seven stages complete; code left uncommitted by user request.
+147unit;typecheck/lint/format/build pass.105Chromium/104Firefox passed,36/37scoped skips.
+119modules/279dependencies/no cycles;12exact screenshots. See evidence/fsd-migration.md.
+No backend/business rule changes. Temporary8034/5284 processes closing.
+Next candidate T057, national coverage unchanged.
+
 # S183 — B21: оставшиеся восемь ошибок исправлены
 
 T222–T229 завершены8/8, первая пятёрка и следующие три. Вместе с B20

@@ -101,3 +101,21 @@ Global facets проверяются отдельно от страницы, с 
 присутствия строки не меняет смысла отсутствия/согласия. Отмена импорта
 очищает ошибку; beforeprint обновляет дату синхронно. Правила расчёта,
 backend, source profiles и фактическое покрытие этим не меняются.
+
+2026-11-06, ADR-036, user-directed: выполнить полноценную FSD-миграцию
+frontend с аудитом, разделением ответственности и проверкой сохранения
+поведения/дизайна. Официальные правила FSD и публичные API обязательны;
+shared не содержит бизнес-моделей/формул, app владеет глобальной политикой.
+Стек и backend API сохраняются. Семь этапов входят в один активный T230.
+Текущее указание запрещает автоматические коммиты/push и временные
+тестовые скрипты в служебных cache директориях; прежнее правило коммитить
+каждый пункт здесь не применяется. План: docs/ARCHITECTURE.md.
+
+2026-11-07, ADR-037, user-directed: T231 вводит единую визуальную систему
+на базе текущей архитектуры и синего стиля AdmitFlow. Семантические CSS
+tokens и layers, общие примитивы управления, единая типографика/отступы/
+темы. UX, тексты, API и модели не меняются; новая FSD-миграция не проводится.
+Требуемые typecheck/lint/build и короткая визуальная проверка выполняются,
+длительные E2E не запускаются. Коммиты/push запрещены. Документ DESIGN_SYSTEM.md.
+
+2026-11-07, ADR-038, user-directed: after completing T230/T231, create local logical commits for FSD, design system and documentation. This subsequent authorization supersedes the earlier no-commit instruction; push remains reserved for the user. Preserve configured author and published history.

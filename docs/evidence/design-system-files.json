@@ -151,6 +151,8 @@
     "unitTests": 147
   },
   "longE2E": false,
-  "commits": false,
-  "push": false
+  "commits": true,
+  "push": false,
+  "localSourceCommit": "ac11756",
+  "commitAuthorization": "Subsequent user request; push reserved for user."
 }
