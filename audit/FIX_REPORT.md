@@ -7,7 +7,7 @@
 | b1e223d | История веток, план T238–T242; генерация STATE.md в старом roadmap | roadmap --render --check --self-test, 6 negative self-tests |
 | f587eef | AUD-01–07: backup ownership, restore/raw verification, monitoring, Windows import | 27 targeted pytest; реальный restore 20 таблиц/1 raw; полный Linux PostgreSQL 565 passed / 0 skipped |
 | e3ae7dd | AUD-08–10: session epoch/lock, удаление private cache при reset, корректный draft rollback | 125 Vitest; build; 13 Chromium API-регрессий passed |
-| T241 | AUD-11: WebKit picker blur; AUD-12: focus превью после commit; запись responsive PNG | До: 2 WebKit catalog failures; source 95 passed/10 failed. После: 15 catalog и 90 source fixture API E2E passed на пяти профилях |
+| 1441d00 | AUD-11: WebKit picker blur; AUD-12: focus превью после commit; запись responsive PNG | До: 2 WebKit catalog failures; source 95 passed/10 failed. После: 15 catalog и 90 source fixture API E2E passed на пяти профилях |
 
 Основные файлы backend: scripts/backup_production.py, backup_production.sh,
 ops_check.py, backend/app/worker.py. Новые негативные проверки:

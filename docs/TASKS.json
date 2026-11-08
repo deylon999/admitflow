@@ -6064,7 +6064,7 @@
       "id": "T242",
       "phase": "E5",
       "title": "Подготовить проверки и отчёты тимлиду",
-      "status": "in_progress",
+      "status": "done",
       "priority": "P0",
       "size": "L",
       "dependsOn": [
@@ -6080,7 +6080,20 @@
       "deliverables": [
         "audit/FULL_AUDIT.md"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "path": "audit/FULL_AUDIT.md",
+          "note": "Scope, 9 scored axes, release readiness, exact test results and limitations documented."
+        },
+        {
+          "path": "audit/TEAMLEAD_REPORT.md",
+          "note": "Russian review verdict, findings, fixes, checks, remaining gates and PR recommendation."
+        },
+        {
+          "path": "audit/evidence/verification.json",
+          "note": "Compact reproducible summary; raw test logs retained locally and ignored."
+        }
+      ]
     }
   ]
 }

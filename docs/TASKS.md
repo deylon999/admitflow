@@ -4126,7 +4126,7 @@
 
 ### T242. Подготовить проверки и отчёты тимлиду
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T241.
 
@@ -4144,7 +4144,9 @@
 
 **Доказательства:**
 
-Пока нет.
+- [audit/FULL_AUDIT.md](../audit/FULL_AUDIT.md) — Scope, 9 scored axes, release readiness, exact test results and limitations documented.
+- [audit/TEAMLEAD_REPORT.md](../audit/TEAMLEAD_REPORT.md) — Russian review verdict, findings, fixes, checks, remaining gates and PR recommendation.
+- [audit/evidence/verification.json](../audit/evidence/verification.json) — Compact reproducible summary; raw test logs retained locally and ignored.
 
 ## E6. Резерв и выпуск
 
