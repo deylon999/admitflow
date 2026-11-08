@@ -6,8 +6,8 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S196",
-  "resumeAction": "Пятёрка T238–T242 завершена в review/vadim-audit-fixes без push/merge. Следующий шаг: ревью локального PR diff и запуск CI на чистом runner; для MVP отдельно закрыть внешние release gates. Все собственные test API остановлены; Docker volumes не удалялись.",
+  "lastSession": "S197",
+  "resumeAction": "Пятёрка T238–T242 завершена; review/vadim-audit-fixes опубликована на origin. mvp-readiness является предком main 79593a5; открыть PR в main, затем разрешить подтверждённые merge-tree конфликты и проверить CI на чистом runner. PR/merge не выполнялись; test API остановлены, Docker volumes не удалялись.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Живые списки появятся только в кампанию 2027; сайты вузов недоступны из среды разработки.",

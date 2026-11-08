@@ -3,12 +3,12 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md).
 
-Дата: 2026-11-08. Сессия: S196.
+Дата: 2026-11-08. Сессия: S197.
 
 - Текущая задача: нет.
 - Следующая задача: нет.
 
-Пятёрка T238–T242 завершена в review/vadim-audit-fixes без push/merge. Следующий шаг: ревью локального PR diff и запуск CI на чистом runner; для MVP отдельно закрыть внешние release gates. Все собственные test API остановлены; Docker volumes не удалялись.
+Пятёрка T238–T242 завершена; review/vadim-audit-fixes опубликована на origin. mvp-readiness является предком main 79593a5; открыть PR в main, затем разрешить подтверждённые merge-tree конфликты и проверить CI на чистом runner. PR/merge не выполнялись; test API остановлены, Docker volumes не удалялись.
 
 ## Ограничения
 
