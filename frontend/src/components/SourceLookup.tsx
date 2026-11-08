@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router';
 import { api } from '../lib/api';
@@ -13,12 +13,13 @@ export function SourceLookup({ group, onClose }: { group: SourceGroup; onClose: 
   const input = useRef<HTMLInputElement>(null);
   const savedLink = useRef<HTMLAnchorElement>(null);
   useEffect(() => { input.current?.focus(); }, []);
+  useLayoutEffect(() => { if (preview) heading.current?.focus(); }, [preview]);
   const access = useQuery<SessionAccess>({ queryKey: sessionAccessKey, queryFn: async (): Promise<SessionAccess> => 'active', enabled: false, initialData: 'active' });
   const lookup = useMutation({ mutationFn: async () => {
     const value = await api.lookup(group.sourceId!, code.trim());
     if (value.group.id !== group.id || value.group.year !== group.year || value.group.universityId !== group.universityId) throw new Error('Ответ относится к другой группе. Повторите поиск в каталоге.');
     return value;
-  }, onSuccess: value => { setPreview(value); setAcknowledged(false); setAttempted(false); setExpired(false); requestAnimationFrame(() => heading.current?.focus()); } });
+  }, onSuccess: value => { setPreview(value); setAcknowledged(false); setAttempted(false); setExpired(false); } });
   const save = useMutation({ mutationFn: () => api.subscribe(preview!.confirmationToken!), onSuccess: async () => {
     setCode(''); setPreview(null); setSaved(true);
     await queryClient.invalidateQueries({ queryKey: ['archive-directions'] });

@@ -4103,7 +4103,7 @@
 
 ### T241. Проверить браузерные сценарии и интерфейс
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T240.
 
@@ -4121,11 +4121,12 @@
 
 **Доказательства:**
 
-Пока нет.
+- [audit/evidence/verification.json](../audit/evidence/verification.json) — Browser full 434 passed/163 scoped skipped/3 failed before final fixes; source after 90/90, catalog after 15/15 on five profiles; visual 2/2; final frontend 125 unit/build passed.
+- [audit/SCREENSHOTS.md](../audit/SCREENSHOTS.md) — Five real Playwright PNG with before/after and 390/1440 px review.
 
 ### T242. Подготовить проверки и отчёты тимлиду
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T241.
 

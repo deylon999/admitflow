@@ -28,7 +28,14 @@ export function UniversityPicker({ value, onChange, onSelect, error }: {
       else options[current < 0 ? (event.key === 'ArrowDown' ? 0 : options.length - 1) : Math.min(options.length - 1, current + (event.key === 'ArrowDown' ? 1 : -1))].focus();
     }
   }} onBlur={event => {
-    if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
+    // WebKit can report null relatedTarget while a result button is being clicked.
+    // Let that click select the result before deciding whether focus left the picker.
+    const container = event.currentTarget;
+    if (!container.contains(event.relatedTarget)) {
+      requestAnimationFrame(() => {
+        if (!container.contains(document.activeElement)) setOpen(false);
+      });
+    }
   }}>
     <label htmlFor="university">Вуз</label>
     <input ref={input} id="university" value={value} required autoComplete="off"

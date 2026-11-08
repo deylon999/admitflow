@@ -6033,7 +6033,7 @@
       "id": "T241",
       "phase": "E5",
       "title": "Проверить браузерные сценарии и интерфейс",
-      "status": "in_progress",
+      "status": "done",
       "priority": "P0",
       "size": "L",
       "dependsOn": [
@@ -6049,13 +6049,22 @@
       "deliverables": [
         "audit/SCREENSHOTS.md"
       ],
-      "evidence": []
+      "evidence": [
+        {
+          "path": "audit/evidence/verification.json",
+          "note": "Browser full 434 passed/163 scoped skipped/3 failed before final fixes; source after 90/90, catalog after 15/15 on five profiles; visual 2/2; final frontend 125 unit/build passed."
+        },
+        {
+          "path": "audit/SCREENSHOTS.md",
+          "note": "Five real Playwright PNG with before/after and 390/1440 px review."
+        }
+      ]
     },
     {
       "id": "T242",
       "phase": "E5",
       "title": "Подготовить проверки и отчёты тимлиду",
-      "status": "todo",
+      "status": "in_progress",
       "priority": "P0",
       "size": "L",
       "dependsOn": [

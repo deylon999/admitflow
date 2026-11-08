@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-08",
+  "baseline": "ad5b938",
+  "branch": "review/vadim-audit-fixes",
+  "backend_native_linux_postgresql": { "passed": 565, "skipped": 0, "warnings": 2 },
+  "backend_targeted_windows": { "passed": 27 },
+  "backup_runtime": { "restored_tables": 20, "synthetic_raw_objects_verified": 1, "retained_temporary_databases": 0 },
+  "frontend_vitest_final": { "passed": 125, "test_files": 23 },
+  "frontend_build_final": "passed",
+  "browser_full_before_last_fixes": { "collected": 600, "passed": 434, "scoped_skips": 163, "failed": 3, "failures": "2 WebKit catalog click, 1 Firefox external Kaspersky request in font test" },
+  "browser_source_before": { "passed": 95, "failed": 10, "context": "single-source fixture; 9 focus/confirmation, 1 Firefox extension request" },
+  "browser_source_after": { "passed": 90, "failed": 0, "profiles": 5 },
+  "browser_catalog_after": { "passed": 15, "failed": 0, "profiles": 5 },
+  "browser_session_cache_draft_after": { "passed": 13, "failed": 0, "profile": "Chromium API" },
+  "browser_visual": { "passed": 2, "widths_px": [390, 1440] },
+  "caveat": "Post-fix targeted runs do not replace a full 600-case rerun; Firefox font case remains unresolved on a clean runner."
+}

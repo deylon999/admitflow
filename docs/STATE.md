@@ -5,10 +5,10 @@
 
 Дата: 2026-11-08. Сессия: S196.
 
-- Текущая задача: T241.
+- Текущая задача: T242.
 - Следующая задача: нет.
 
-T238–T240 завершены; backend 565 passed/0skip, frontend 125 unit/build/13 API E2E. T241: полная browser matrix и source fixture, затем T242 отчёты. Изолированные API18000/18001 и Compose18080 ещё работают.
+T238–T241 завершены; backend 565 passed/0skip, frontend 125 unit/build, source 90/90, catalog 15/15 на пяти browser profiles. T242: вычитать шесть отчётов, финальные проверки и безопасно остановить собственные test API.
 
 ## Ограничения
 

@@ -1,3 +1,9 @@
 evidence/private-backups/
 evidence/private-*/
 evidence/*.db*
+evidence/*.log
+evidence/*.xml
+evidence/*.txt
+evidence/*browser*.json
+evidence/*-results-*/
+evidence/catalog-after/
