@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react';
 import { RouteLink } from '../app/RouteLink';
-import { Action, EmptyMessage, Surface } from '../shared/UI';
-import { CatalogError } from './api';
+import { Surface } from '../shared/UI';
 import type { CatalogPage, CatalogProgram, Provenance, University } from './types';
 
 export const unknown = 'Нет данных';
@@ -19,18 +17,7 @@ export function SourceNote({ source }: { source: Provenance }) {
   </p>;
 }
 
-export function ResourceState({ loading, error, retry, children }: {
-  loading: boolean; error?: Error; retry: () => void; children: ReactNode;
-}) {
-  if (loading) return <div role="status" aria-live="polite"><EmptyMessage title="Загрузка данных" description="Получаем сведения каталога." /></div>;
-  if (error) {
-    const missing = error instanceof CatalogError && error.status === 404;
-    return <div role="alert"><EmptyMessage title={missing ? 'Запись не найдена' : 'Не удалось загрузить данные'}
-      description={missing ? 'Проверь адрес или перейди к каталогу.' : 'Проверь соединение и повтори запрос.'}
-      action={missing ? <Action to="/universities">Каталог ↗</Action> : <button type="button" className="af-action af-action--primary" onClick={retry}>Повторить</button>} /></div>;
-  }
-  return children;
-}
+export { ResourceState } from '../shared/ResourceState';
 
 export function CatalogCard({ university, program }: { university?: University; program?: CatalogProgram }) {
   const name = program?.universityName ?? university?.name ?? '';

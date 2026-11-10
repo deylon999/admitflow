@@ -7,7 +7,7 @@ const navigation = [
   { to: '/universities', icon: '▥', label: 'Вузы' },
   { to: '/programs', icon: '▤', label: 'Направления' },
   { to: '/app/watchlist', icon: '♡', label: 'Мои направления' },
-  { to: '/app/competitions/mtuci-se', icon: '☷', label: 'Конкурсные списки' },
+  { to: '/app/competitions', icon: '☷', label: 'Конкурсные списки' },
   { to: '/app/compare', icon: '⇄', label: 'Сравнение' },
   { to: '/ege-analytics', icon: '▥', label: 'Аналитика ЕГЭ' },
   { to: '/app/history', icon: '◷', label: 'История' },
