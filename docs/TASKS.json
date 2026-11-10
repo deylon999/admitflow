@@ -7682,7 +7682,7 @@
       "phase": "E4",
       "priority": "P0",
       "size": "M",
-      "status": "blocked",
+      "status": "done",
       "dependsOn": [
         "T248"
       ],
@@ -7699,9 +7699,13 @@
         {
           "path": "docs/evidence/foundation-cleanup/infrastructure.json",
           "note": "Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion."
+        },
+        {
+          "path": "docs/evidence/local-postgresql.md",
+          "note": "S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim."
         }
       ],
-      "blockedReason": "Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL."
+      "blockedReason": null
     },
     {
       "id": "T251",
@@ -7787,6 +7791,42 @@
         {
           "path": "docs/evidence/v3-production-api.md",
           "note": "Commit69275e6: shared HTTP/validated DTO/session/resource states;live existing catalog/subscriptions/groups/lookup-confirm/changes/coverage;explicit unsupported/demo. typecheck/lint/build exit0;84Chromium passed including29routes and16API tests. CSS/backend/migrations unchanged;PG T250 and hosted CI unverified;no push. Strict204 write acknowledgement regression passed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T254",
+      "title": "Run complete local Compose PostgreSQL stack with safe startup smoke",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [
+        "T253"
+      ],
+      "deliverables": [
+        "compose.yaml",
+        "scripts/local_smoke.py",
+        "README.md",
+        "docs/evidence/local-postgresql.md"
+      ],
+      "steps": [
+        "Audit Compose environment and persistent mounts",
+        "Start real Docker PostgreSQL safely",
+        "Verify migrations and catalog import/API",
+        "Provide one reproducible smoke and README",
+        "Test persistence and record evidence commit"
+      ],
+      "acceptance": [
+        "Actual Docker Compose backend frontend PostgreSQL startup; current=head;catalog import and API verified on PostgreSQL only",
+        "Keep existing project volumes and applied migrations;backup before upgrade and verify stored history across restart;no volume deletion or fabricated product values",
+        "One documented startup smoke command for new contributor;automated checks,commit and evidence with exact limitations"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/local-postgresql.md",
+          "note": "S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim."
         }
       ],
       "blockedReason": null

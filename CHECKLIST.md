@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 228 из 249 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 230 из 250 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -207,7 +207,7 @@
 - [x] T247 Document product foundation and remaining demo modules
 - [x] T248 Audit and classify product foundation modules
 - [x] T249 Remove confirmed obsolete tooling and calculator endpoints
-- [ ] T250 Verify Compose PostgreSQL migrations and live catalog — **заблокировано**
+- [x] T250 Verify Compose PostgreSQL migrations and live catalog
 - [x] T251 Run current backend and frontend regression checks
 - [x] T252 Align documentation and stop after cleanup
 
@@ -263,6 +263,7 @@
 - [x] T236 Final UI quality verification at requested viewport widths
 - [x] T237 Fix cross-browser CI regressions after UI changes
 - [x] T253 Unify production API DTO errors and route states for React v3
+- [x] T254 Run complete local Compose PostgreSQL stack with safe startup smoke
 
 ## Резерв и выпуск
 
