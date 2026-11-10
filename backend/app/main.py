@@ -27,6 +27,7 @@ from .coverage import coverage
 from .importing import import_bundle
 from .sources.status import source_status
 from .observability import system_status
+from .national_coverage import national_coverage, with_checksum
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import ensure_restore_complete, schema_heads, upgrade_schema
 from .http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
@@ -143,6 +144,8 @@ def create_app(settings: Settings | None = None):
     install_source_routes(app,database,owner,write_owner,source_registry,source_identity_key,lambda:utcnow())
     from .scenario_api import install as install_scenarios
     install_scenarios(app,database,owner,source_registry)
+    from .competition_api import install as install_competitions
+    install_competitions(app,database,owner,registry=source_registry)
     from .changes import install as install_changes
     install_changes(app,database,owner,write_owner,lambda:utcnow())
 
@@ -244,6 +247,11 @@ def create_app(settings: Settings | None = None):
     @app.get('/api/v1/coverage', response_model=CoverageRead)
     def get_coverage(db: Session = Depends(database)):
         return coverage(db,registry=source_registry)
+
+    @app.get('/api/v1/coverage/national')
+    def get_national_coverage(db: Session = Depends(database)):
+        # Aggregates only: no candidate rows, session data or raw source bodies.
+        return with_checksum(national_coverage(db,registry_rules=source_registry))
 
     @app.get('/api/v1/export', response_model=DataExport)
     def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):

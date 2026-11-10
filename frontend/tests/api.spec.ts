@@ -14,3 +14,68 @@ test('background refresh keeps dated data on server failure and drops it on 401'
 test('native guest API starts only on request and exposes actual empty history',async({page})=>{await page.goto('/app/watchlist');await page.getByRole('button',{name:'Начать гостевую сессию'}).click();await expect(page.getByRole('heading',{name:'Направлений пока нет'})).toBeVisible();await page.locator('.af-sidebar').getByRole('link',{name:'История',exact:false}).click();await expect(page.getByRole('heading',{name:'Изменений пока нет'})).toBeVisible();});
 
 test('unexpected success-shaped delete response is not an acknowledged deletion',async({page})=>{await page.route('**/api/v1/subscriptions',r=>r.fulfill({json:[record]}));await page.route('**/api/v1/subscriptions/subscription-real-id',r=>r.fulfill({status:200,json:{detail:'not a deletion acknowledgement'}}));await page.goto('/app/watchlist');await expect(page.getByText('Проверенный вуз')).toBeVisible();page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'Удалить подписку'}).click();await expect(page.getByRole('alert')).toContainText('Не удалось проверить');await expect(page.getByText('Подписка удалена.',{exact:true})).toHaveCount(0);await expect(page.getByText('Проверенный вуз')).toBeVisible();});
+
+const competitionInfo = { groupId: 'g1', title: '09.03.04 Программная инженерия', universityId: 'u1', universityName: 'Проверенный вуз', year: 2026, level: 'bachelor', studyForm: 'full-time', funding: 'budget', category: 'general', sourceState: 'archived',
+  snapshot: { id: 's2', fetchedAt: '2026-11-03T10:00:00+00:00', sourceUpdatedAt: null, kind: 'archive', rowCount: 120, complete: true, seats: 16, sourceUrl: 'https://example.org/list' },
+  warnings: ['archive', 'priorities_not_published'], prioritiesPublished: false, consentPublished: true, myRank: 3,
+  history: [{ id: 's2', fetchedAt: '2026-11-03T10:00:00+00:00', rowCount: 120, seats: 16, published: true }, { id: 's1', fetchedAt: '2026-11-01T10:00:00+00:00', rowCount: 118, seats: 16, published: false }] };
+const competitionRow = (rank: number) => ({ officialRank: rank, score: String(300 - rank), consent: rank % 2 === 0, priority: null, participation: rank === 2 ? 'withdrawn' : 'active', mine: rank === 3 });
+
+test('competition list shows the official order, own row and honest warnings', async ({ page }) => {
+  const queries: string[] = [];
+  await page.route('**/api/v1/competitions/g1', r => r.fulfill({ json: competitionInfo }));
+  await page.route('**/api/v1/competitions/g1/rows?**', r => {
+    const url = new URL(r.request().url()); queries.push(url.search);
+    const offset = Number(url.searchParams.get('offset') ?? 0);
+    const from = Number(url.searchParams.get('rankFrom') ?? 1) + offset;
+    return r.fulfill({ json: { items: Array.from({ length: 50 }, (_, i) => competitionRow(from + i)), total: 120, nextOffset: offset + 50 < 120 ? offset + 50 : null } });
+  });
+  await page.goto('/app/competitions/g1');
+  await expect(page.locator('h1')).toContainText('Программная инженерия');
+  await expect(page.locator('.af-metric').first()).toContainText('3');
+  await expect(page.locator('.af-competition-warnings')).toContainText('Архивный список');
+  await expect(page.locator('.af-competition-warnings')).toContainText('не публикует приоритеты');
+  await expect(page.locator('thead th')).toHaveText(['№', 'Баллы', 'Согласие', 'Участие']);
+  await expect(page.locator('tbody tr.is-me')).toHaveCount(1);
+  await expect(page.locator('tbody tr.is-me')).toContainText('Вы');
+  await expect(page.locator('tbody tr').nth(1)).toContainText('Отозвал');
+  await page.getByRole('button', { name: 'Согласие есть', exact: true }).click();
+  await expect.poll(() => queries.at(-1)).toContain('consent=yes');
+  await page.getByRole('button', { name: 'Далее', exact: true }).click();
+  await expect.poll(() => queries.at(-1)).toContain('offset=50');
+  await page.getByLabel('Перейти к месту').fill('100');
+  await expect.poll(() => queries.at(-1)).toContain('rankFrom=100');
+  await expect.poll(() => queries.at(-1)).toContain('offset=0');
+  await expect(page.locator('.af-info-row').filter({ hasText: 'показан' })).toContainText('120 строк');
+  await expect(page.getByRole('link', { name: 'Официальный список ↗' })).toHaveAttribute('href', 'https://example.org/list');
+});
+
+test('competition rows with identifiers are rejected instead of rendered', async ({ page }) => {
+  await page.route('**/api/v1/competitions/g1', r => r.fulfill({ json: competitionInfo }));
+  await page.route('**/api/v1/competitions/g1/rows?**', r => r.fulfill({ json: { items: [{ ...competitionRow(1), candidateKey: 'secret' }], total: 1, nextOffset: null } }));
+  await page.goto('/app/competitions/g1');
+  await expect(page.locator('tbody tr')).toHaveCount(0);
+  await expect(page.getByText('secret')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Повторить/ }).first()).toBeVisible();
+});
+
+test('competitors page shows aggregates above the guest only', async ({ page }) => {
+  await page.route('**/api/v1/competitions/g1', r => r.fulfill({ json: competitionInfo }));
+  await page.route('**/api/v1/competitions/g1/summary', r => r.fulfill({ json: { total: 120, seats: 16, byConsent: { yes: 60, no: 50, unknown: 10 },
+    byParticipation: { unknown: 0, active: 118, withdrawn: 2, enrolled: 0 }, priorityKnown: 0, priorityFirst: 0, scoreKnown: 120,
+    scoreBins: [{ lower: 180, upper: 190, count: 4 }, { lower: 190, upper: 200, count: 12 }], myRank: 3,
+    aboveMe: { total: 2, consentYes: 1, consentNo: 1, consentUnknown: 0, withdrawn: 1, priorityFirst: 0 }, warnings: ['archive'] } }));
+  await page.goto('/app/competitions/g1/competitors');
+  await expect(page.locator('.af-spotlight strong')).toHaveText('2');
+  await expect(page.locator('.af-info-row').filter({ hasText: 'Отозвали заявление' })).toContainText('1');
+  await expect(page.locator('.af-score-bins > div')).toHaveCount(2);
+  await expect(page.getByText('Источник не публикует приоритеты.')).toBeVisible();
+});
+
+test('competitions index lists imported lists only', async ({ page }) => {
+  const group = (id: string, coverage: string) => ({ id, title: `Конкурс ${id}`, universityId: 'u', universityName: 'Вуз', parentUniversityId: null, year: 2026, level: 'bachelor', studyForm: 'full-time', funding: 'budget', category: 'general', seats: 10, coverage, sourceId: coverage === 'manual' ? null : 's', sourceUrl: null, lookupAvailable: coverage !== 'manual' });
+  await page.route('**/api/v1/groups?**', r => r.fulfill({ json: { items: [group('a', 'archive'), group('m', 'manual'), group('x', 'automatic')], total: 3, nextCursor: null, facets: {} } }));
+  await page.goto('/app/competitions');
+  await expect(page.locator('.af-program-card')).toHaveCount(2);
+  await expect(page.locator('.af-program-card').first().getByRole('link').first()).toHaveAttribute('href', '/app/competitions/a');
+});

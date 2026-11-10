@@ -7,7 +7,7 @@
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S204",
-  "resumeAction": "KAN-217/T056 done on branch feat/kan-217-national-denominator: national denominator 785 from the Rosobrnadzor RAOO register, catalog coverage 86.0%. Refresh: download the RAOO ZIP and run python scripts/build_accreditation_registry.py <zip>. Next Jira cards of Vadim: KAN-221 dashboard, KAN-228 competition pages, KAN-220 adapters, KAN-218/219/227 data.",
+  "resumeAction": "Work branch zarbondo (PR #7). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228. Next Jira cards of Vadim: KAN-220 adapters, KAN-218/219/227 data, KAN-24 report template. RAOO refresh: python scripts/build_accreditation_registry.py <zip>.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -15,8 +15,9 @@
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены."
   ],
   "lastCompleted": [
-    "T056 (KAN-217): accreditation register denominator 785 (2026-11-10), 675 catalog heads matched, 109 register-only organisations added to the catalog API/UI with source and date; report docs/evidence/kan-217-national-denominator.md.",
-    "T254: one-command full Docker Compose startup with backup,migrations,import,API and history persistence check;full build and no-build passed."
+    "T256 (KAN-228): real competition list/competitors pages on snapshot API, official order, no identifiers, own row only after confirmation.",
+    "T255 (KAN-221): /app/coverage and /api/v1/coverage/national: four separate layers on the 785 denominator, years, gaps, regions, sources, queue, reproducible JSON report.",
+    "T056 (KAN-217): accreditation register denominator 785 (2026-11-10), 675 catalog heads matched, 109 register-only organisations added to the catalog API/UI with source and date; report docs/evidence/kan-217-national-denominator.md."
   ],
   "environment": [
     "S203 actual Docker29.9.2/Compose/PostgreSQL17.11;db/backend/frontend healthy at127.0.0.1:8080. Alembic current=head0011 and check pass;repeat import1257universities/2reviewedprograms;HTTP/assets/SPA smoke pass.",

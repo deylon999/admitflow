@@ -173,3 +173,27 @@ test('accreditation register: active status, source date and register-only organ
   await expect(page.locator('.af-accreditation .af-info-row').filter({ hasText: 'ОГРН' })).toContainText(only.accreditation.ogrn);
   await expect(page.locator('.af-program-card')).toHaveCount(0);
 });
+
+test('national coverage dashboard keeps layers apart and exports the report', async ({ page }) => {
+  await page.goto('/app/coverage');
+  const layers = page.locator('.af-coverage-layer');
+  await expect(layers).toHaveCount(4);
+  await expect(layers.nth(0)).toContainText('86,0%');
+  await expect(layers.nth(0)).toContainText('675 из 785');
+  await expect(layers.nth(0)).toContainText('Порог достигнут');
+  await expect(layers.nth(1)).toContainText('Ниже порога');
+  await expect(layers.nth(2)).toContainText('0,0%');
+  await expect(page.locator('.af-coverage-denominator')).toContainText('10.11.2026');
+  await expect(page.locator('.af-coverage-regions tbody tr')).toHaveCount(15);
+  await page.getByRole('button', { name: /Все регионы/ }).click();
+  await expect.poll(() => page.locator('.af-coverage-regions tbody tr').count()).toBeGreaterThan(15);
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Скачать отчёт JSON' }).click();
+  const file = await download;
+  const body = JSON.parse(await (await import('node:fs/promises')).readFile(await file.path(), 'utf8'));
+  expect(body.denominator.total).toBe(785);
+  expect(body.inputs.checksum).toMatch(/^[a-f0-9]{64}$/);
+  await page.goto('/app/sources');
+  await page.getByRole('link', { name: 'Покрытие вузов России ↗' }).click();
+  await expect(page).toHaveURL(/\/app\/coverage$/);
+});

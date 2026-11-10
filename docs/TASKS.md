@@ -484,6 +484,33 @@
 
 - [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — Validated atomic read-only artifact import, 1257 identities and 521 branches, legacy aliases preserved; 12 targeted checks passed; no Source or user DB mutation.
 
+### T255. KAN-221: дашборд покрытия РФ и контроль свежести
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T056.
+
+**Результаты/файлы:** `backend/app/national_coverage.py`; `frontend/src/pages/CoveragePage.tsx`; `docs/evidence/kan-221-coverage-dashboard.md`.
+
+**Шаги:**
+
+1. Один знаменатель из реестра аккредитации.
+2. Раздельные слои каталога, программ, ЕГЭ и списков.
+3. Годы, пробелы, регионы, источники и очередь.
+4. Воспроизводимая выгрузка с контрольной суммой.
+5. Экран v3, тесты и снимки.
+
+**Критерии закрытия:**
+
+- Отдельно показаны доли реестра, программ и подтверждённых требований; филиалы и головные вузы не смешаны.
+- stale/ошибки источников видны, отчёт воспроизводим.
+- Нет утверждений о покрытии без фактических данных.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-221-coverage-dashboard.md](../docs/evidence/kan-221-coverage-dashboard.md) — S204 API /api/v1/coverage/national, CLI python -m app.national_coverage, screen /app/coverage. Layers on 785: catalog 675 (86.0%), programs/EGE/lists from the DB (test stand 1/0/0). Checksum stable for equal inputs; 6 backend tests incl. failed source, browser test incl. JSON export; screenshots 1440/390 without page overflow.
+
 ## E2. Ядро продукта
 
 Плановый интервал: D4–D10.
@@ -4315,6 +4342,33 @@
 **Доказательства:**
 
 - [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Current v3 architecture/API/product/design/README/runbooks replace stale manual-product instructions; old docs archived with rebased links. Old release/ML tasks deferred, no false done. Removal manifest42, protected hashes, current API inventory31, dependency report and final tests recorded. Cleanup complete, T250 blocked; no new features or main/DB changes.
+
+### T256. KAN-228: рабочие страницы конкурсных списков и конкурентов v3
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T255.
+
+**Результаты/файлы:** `backend/app/competition_api.py`; `frontend/src/pages/CompetitionPages.tsx`; `docs/evidence/kan-228-competition-pages.md`.
+
+**Шаги:**
+
+1. API списка, строк и агрегатов по опубликованному снимку.
+2. Официальный порядок, фильтры по неперсональным признакам, переход к месту.
+3. Своя строка только для подтвердившего гостя.
+4. Страницы v3 списка и конкурентов, перенос сохранённого направления в /app/watchlist/{id}.
+5. Тесты и ручная проверка на архиве.
+
+**Критерии закрытия:**
+
+- Реальные списки открываются с меткой времени и ссылкой.
+- Позиции и приоритеты не выдуманы; неполные списки и неподдержанные правила помечены.
+- E2E и защита персональных данных.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-228-competition-pages.md](../docs/evidence/kan-228-competition-pages.md) — S204 /api/v1/competitions/{id}, /rows, /summary; pages /app/competitions, /{id}, /{id}/competitors. Official order only, no identifiers in responses (tested), frontend rejects extra row fields, own row only after confirmation. 4 backend tests, 4 browser tests; SGU archive 573 rows viewed at 1440/390.
 
 ## E5. Качество и эксплуатация
 

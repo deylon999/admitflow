@@ -1,4 +1,6 @@
 import { LiveDirections, LiveEvents, LiveSources, LiveAdd, Unsupported } from './pages/LivePages';
+import { CoveragePage } from './pages/CoveragePage';
+import { CompetitionPage, CompetitionsIndex, CompetitorsPage } from './pages/CompetitionPages';
 import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -86,10 +88,13 @@ function PrivateRoute({ path, tracked, onToggle }: {
   tracked: string[];
   onToggle: (id: string) => void;
 }) {
-  if (/^\/app\/competitions\/[^/]+$/.test(path)) return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><CompetitionList /></Unsupported> : <LiveDirections key={path} id={path.split('/').at(-1)!} />;
+  if (/^\/app\/competitions\/[^/]+$/.test(path)) return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><CompetitionList /></Unsupported> : <CompetitionPage key={path} id={decodeURIComponent(path.split('/').at(-1)!)} />;
+  if (/^\/app\/watchlist\/[^/]+$/.test(path) && path !== '/app/watchlist/add') return <LiveDirections key={path} id={decodeURIComponent(path.split('/').at(-1)!)} />;
+  // The design inventory keeps one illustrative competitors screen; real groups use the snapshot API.
+  if (/^\/app\/competitions\/[^/]+\/competitors$/.test(path) && path !== '/app/competitions/mtuci-se/competitors') return <CompetitorsPage key={path} id={decodeURIComponent(path.split('/').at(-2)!)} />;
   switch (path) {
     case '/app': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Dashboard tracked={tracked}/></Unsupported> : <LiveDirections />;
-    case '/app/competitions': return <LiveDirections />;
+    case '/app/competitions': return <CompetitionsIndex />;
     case '/app/profile': return <Unsupported><ProfilePage /></Unsupported>;
     case '/app/forecast': return <Unsupported><ForecastForm /></Unsupported>;
     case '/app/forecast/example': return <Unsupported><ForecastResult /></Unsupported>;
@@ -103,6 +108,7 @@ function PrivateRoute({ path, tracked, onToggle }: {
     case '/app/notifications': return <LiveEvents />;
     case '/app/settings': return <Unsupported><SettingsPage /></Unsupported>;
     case '/app/sources': return <LiveSources />;
+    case '/app/coverage': return <CoveragePage />;
     case '/app/states/empty': return <Unsupported><StatusPage variant="empty" /></Unsupported>;
     case '/app/states/error': return <Unsupported><StatusPage variant="error" /></Unsupported>;
     case '/app/states/success': return <Unsupported><StatusPage variant="success" /></Unsupported>;
