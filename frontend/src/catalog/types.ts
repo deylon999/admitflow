@@ -2,9 +2,23 @@ export type Provenance = {
   url: string;
   verifiedAt: string;
   sourceUpdatedAt: string | null;
-  kind: 'monitoring' | 'archive';
+  kind: 'monitoring' | 'archive' | 'accreditation';
   edition: number | null;
   originalSha256: string | null;
+};
+
+export type Accreditation = {
+  status: 'active';
+  ogrn: string;
+  inn: string | null;
+  certificateNumber: string | null;
+  bachelorPrograms: number;
+  specialistPrograms: number;
+  branchesWithPrograms: number;
+  departmental: boolean;
+  matchMethod: string;
+  datasetDate: string;
+  sourceUrl: string;
 };
 
 export type University = {
@@ -17,6 +31,7 @@ export type University = {
   provenance: Provenance;
   knownProgramCount: number;
   years: number[];
+  accreditation: Accreditation | null;
 };
 
 export type CatalogProgram = {
@@ -44,5 +59,5 @@ export type CatalogPage<T> = {
   total: number;
   nextOffset: number | null;
 };
-export type UniversityResults = CatalogPage<University> & { regions: string[]; registryEdition: number };
+export type UniversityResults = CatalogPage<University> & { regions: string[]; registryEdition: number; accreditationDate: string };
 export type ProgramResults = CatalogPage<CatalogProgram> & { years: number[]; subjects: string[] };

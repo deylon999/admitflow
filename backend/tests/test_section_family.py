@@ -1,3 +1,4 @@
+from app.accreditation_registry import load_registry
 from dataclasses import replace
 from datetime import datetime,timezone
 import hashlib
@@ -107,5 +108,5 @@ def test_all_scopes_publish_to_native_pg_without_inflating_catalog_or_coverage(p
         data=coverage(db,registry=registry,now=NOW)
         assert data['importedUniversities']==2 and data['importedGroups']==data['archiveImportedGroups']==11
         assert data['importedRows']==168 and data['automaticSources']==data['freshGroups']==data['conditionalGroups']==0
-        assert data['nationalTotal'] is None
+        assert data['nationalTotal']==load_registry().denominator
         assert all(source_status(db,p.source_id,registry=registry,now=NOW)['state']=='archived' for p in SCOPES)

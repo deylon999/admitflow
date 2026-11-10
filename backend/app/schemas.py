@@ -142,7 +142,9 @@ class CoverageRead(CamelModel):
     published_groups: int = Field(ge=0)
     fresh_groups: int = Field(ge=0)
     archive_groups: int = Field(ge=0)
-    national_total: None
+    # Denominator from the Rosobrnadzor accreditation register (KAN-217); see national.
+    national_total: int | None
+    national: dict | None = None
     generated_at: datetime
 
 

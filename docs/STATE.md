@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-10. Последняя сессия: S203.
+Дата: 2026-11-11. Последняя сессия: S204.
 
 ## Продолжение
 
@@ -12,19 +12,19 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T254/T250 complete: Docker PostgreSQL running at http://localhost:8080. Repeat python scripts/local_smoke.py;read docs/evidence/local-postgresql.md. Keep volumes/backups;stop with docker compose stop. No push. New feature APIs/deployment remain separate tasks.
+KAN-217/T056 done on branch feat/kan-217-national-denominator: national denominator 785 from the Rosobrnadzor RAOO register, catalog coverage 86.0%. Refresh: download the RAOO ZIP and run python scripts/build_accreditation_registry.py <zip>. Next Jira cards of Vadim: KAN-221 dashboard, KAN-228 competition pages, KAN-220 adapters, KAN-218/219/227 data.
 
 ## Последняя завершённая работа
 
+- T056 (KAN-217): accreditation register denominator 785 (2026-11-10), 675 catalog heads matched, 109 register-only organisations added to the catalog API/UI with source and date; report docs/evidence/kan-217-national-denominator.md.
 - T254: one-command full Docker Compose startup with backup,migrations,import,API and history persistence check;full build and no-build passed.
-- T250: actual native PostgreSQL verification unblocked and complete;Alembic observability metadata fixed in881422f;11native PG+5launcher unit tests passed;Chromium catalog390/1440 viewed.
 
 ## Ограничения
 
 - HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.
 - Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.
 - Нужны живые тестеры для T052.
-- Опорный мониторинг не включает все лицензированные вузы. 2026-11-05 islod.obrnadzor.gov.ru/rlic timeout; нужна доступная официальная выгрузка для T056. Живая кампания 2027 и суточное наблюдение не подтверждены.
+- Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 
 ## Проверенное окружение
 

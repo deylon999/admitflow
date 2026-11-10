@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-08",
+  "updatedAt": "2026-11-11",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -1922,14 +1922,16 @@
       "phase": "E1",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T012",
         "T038",
         "T192"
       ],
       "deliverables": [
-        "backend/app/catalog/",
+        "backend/app/accreditation_registry.py",
+        "backend/app/data/accreditation-registry.json",
+        "scripts/build_accreditation_registry.py",
         "docs/catalog-coverage.md"
       ],
       "steps": [
@@ -1940,7 +1942,12 @@
         "Есть понятный знаменатель полноты и дата",
         "Полный каталог не называется полным автоматическим сбором"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-217-national-denominator.md",
+          "note": "S204 KAN-217. Rosobrnadzor RAOO open data 2026-11-10 (SHA-256 c86f8e46…): 785 active head organisations with accredited bachelor/specialist, 83 departmental by name, 5 abroad excluded. MICCEDU catalog matched 675 (86.0%; civil 675/702=96.2%), 109 register-only added with source, 59 unmatched and 1 ambiguous OGRN listed. Coverage of catalog only; programmes/EGE/lists not claimed. Whole-file validation, builder on synthetic XML without personal fields, API/UI accreditation source tested."
+        }
+      ],
       "blockedReason": null
     },
     {

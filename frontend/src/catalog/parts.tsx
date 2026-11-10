@@ -12,7 +12,7 @@ export function SourceNote({ source }: { source: Provenance }) {
   const date = new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(source.verifiedAt));
   return <p className="af-caption af-catalog-source">
     <a href={source.url} target="_blank" rel="noreferrer">Источник ↗</a>
-    {' · '}{source.kind === 'archive' ? 'Архив' : `Мониторинг ${source.edition}`}
+    {' · '}{source.kind === 'archive' ? 'Архив' : source.kind === 'accreditation' ? 'Реестр аккредитации Рособрнадзора' : `Мониторинг ${source.edition}`}
     {' · '}Проверено: <time dateTime={source.verifiedAt}>{date}</time>
   </p>;
 }
@@ -33,14 +33,31 @@ export function CatalogCard({ university, program }: { university?: University; 
       <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${program.seats ?? unknown} мест` : university?.isBranch ? 'Филиал' : 'Образовательная организация'}</p>
     </div>
     <div className="af-program-card__stats">
-      <span>{program ? 'КАМПАНИЯ' : 'РЕДАКЦИЯ'}</span>
-      <strong>{program?.year ?? university?.provenance.edition}</strong>
-      <small>{program ? formName(program.studyForm) : 'Мониторинг'}</small>
+      <span>{program ? 'КАМПАНИЯ' : university?.provenance.kind === 'accreditation' ? 'ИСТОЧНИК' : 'РЕДАКЦИЯ'}</span>
+      <strong>{program?.year ?? (university?.provenance.kind === 'accreditation' ? 'Реестр' : university?.provenance.edition)}</strong>
+      <small>{program ? formName(program.studyForm) : university?.accreditation ? 'Аккредитация действует' : 'Мониторинг'}</small>
     </div>
     <div className="af-program-card__actions">
       <RouteLink to={href} className="af-small-link">{program ? 'Направление ↗' : 'Университет ↗'}</RouteLink>
     </div>
   </article>;
+}
+
+export function AccreditationNote({ university }: { university: University }) {
+  const value = university.accreditation;
+  const date = (iso: string) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(iso));
+  if (university.isBranch) return null;
+  if (!value) return <Surface title="Государственная аккредитация" className="af-accreditation">
+    <p>Организация не сопоставлена с действующей аккредитацией бакалавриата или специалитета в реестре Рособрнадзора. Это может означать и отсутствие аккредитации, и переименование, которое не удалось сопоставить автоматически.</p>
+  </Surface>;
+  return <Surface title="Государственная аккредитация" className="af-accreditation">
+    <div className="af-info-row"><span>Статус в реестре</span><b>Действует</b></div>
+    <div className="af-info-row"><span>Аккредитованных программ</span><b>бакалавриат {value.bachelorPrograms} · специалитет {value.specialistPrograms}</b></div>
+    {value.branchesWithPrograms > 0 && <div className="af-info-row"><span>Филиалов с программами</span><b>{value.branchesWithPrograms}</b></div>}
+    <div className="af-info-row"><span>ОГРН</span><b>{value.ogrn}</b></div>
+    {value.departmental && <p className="af-caption">По названию это ведомственный вуз: приём обычно идёт через отбор ведомства, а не только по общим спискам.</p>}
+    <p className="af-caption af-catalog-source"><a href={value.sourceUrl} target="_blank" rel="noreferrer">Реестр Рособрнадзора ↗</a>{' · '}Данные на <time dateTime={value.datasetDate}>{date(value.datasetDate)}</time></p>
+  </Surface>;
 }
 
 export function Pagination({ page, offset, onOffset }: {

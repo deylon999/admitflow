@@ -157,3 +157,19 @@ for (const width of [390, 768, 1024, 1280, 1440]) {
     });
   }
 }
+
+test('accreditation register: active status, source date and register-only organisations', async ({ page, request }) => {
+  await page.goto('/universities/sgu-saratov');
+  const block = page.locator('.af-accreditation');
+  await expect(block).toContainText('Государственная аккредитация');
+  await expect(block.locator('.af-info-row').filter({ hasText: 'Статус в реестре' })).toContainText('Действует');
+  await expect(block.locator('a')).toHaveAttribute('href', 'https://isga.obrnadzor.gov.ru/accredreestr/opendata/');
+  await expect(block).toContainText('10.11.2026');
+  const found = await (await request.get('/api/v1/catalog/universities?q=СКОЛКОВО')).json();
+  const only = found.items.find((item: { provenance: { kind: string } }) => item.provenance.kind === 'accreditation');
+  expect(only).toBeTruthy();
+  await page.goto(`/universities/${only.id}`);
+  await expect(page.locator('.af-catalog-source').first()).toContainText('Реестр аккредитации Рособрнадзора');
+  await expect(page.locator('.af-accreditation .af-info-row').filter({ hasText: 'ОГРН' })).toContainText(only.accreditation.ogrn);
+  await expect(page.locator('.af-program-card')).toHaveCount(0);
+});

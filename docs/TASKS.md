@@ -394,11 +394,11 @@
 
 ### T056. Расширить проверенный каталог до национального охвата
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T012, T038, T192.
 
-**Результаты/файлы:** `backend/app/catalog/`; `docs/catalog-coverage.md`.
+**Результаты/файлы:** `backend/app/accreditation_registry.py`; `backend/app/data/accreditation-registry.json`; `scripts/build_accreditation_registry.py`; `docs/catalog-coverage.md`.
 
 **Шаги:**
 
@@ -413,7 +413,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/kan-217-national-denominator.md](../docs/evidence/kan-217-national-denominator.md) — S204 KAN-217. Rosobrnadzor RAOO open data 2026-11-10 (SHA-256 c86f8e46…): 785 active head organisations with accredited bachelor/specialist, 83 departmental by name, 5 abroad excluded. MICCEDU catalog matched 675 (86.0%; civil 675/702=96.2%), 109 register-only added with source, 59 unmatched and 1 ambiguous OGRN listed. Coverage of catalog only; programmes/EGE/lists not claimed. Whole-file validation, builder on synthetic XML without personal fields, API/UI accreditation source tested.
 
 ### T083. Получать проверяемый пакет исходных страниц пилота
 
