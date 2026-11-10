@@ -57,3 +57,12 @@ DTO каталога не зависят от этой арифметики. П�
 
 Исторический полный контракт прежнего продукта:
 [api-before-foundation](archive/api-before-foundation.md).
+
+## React v3 binding — S202
+
+Единый клиент и runtime DTO используют только существующие контракты.
+Гостевой POST session выполняется по явному действию, 401 не вызывает
+автоматический restart. Подписки читаются/удаляются по настоящему ID, добавление
+идёт через source lookup/confirm. History/notifications читают changes, sources —
+coverage. Account/forecast/EGE/profile feature API по-прежнему отсутствуют.
+Контрактный frontend smoke и границы: [T253](evidence/v3-production-api.md).

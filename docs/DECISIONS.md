@@ -199,3 +199,5 @@ CamelModel переносится из арифметики в общий schema
 Визуальный render-код v3 не меняется. Docker Engine denied — T250 blocked,
 не основание обходить sandbox или заявлять PostgreSQL/Docker smoke по SQLite.
 Старые release/ML задачи deferred до критериев v3. После очистки остановиться.
+
+2026-11-10: объединить transport/DTO/session/resource states для 29 маршрутов. Старые AF-карточки исторические; не объявлять demo, legacy manual арифметику или source scenarios production ML.

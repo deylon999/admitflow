@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-08. Последняя сессия: S201.
+Дата: 2026-11-10. Последняя сессия: S202.
 
 ## Продолжение
 
@@ -12,13 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Stop after completed cleanup as requested. Read docs/evidence/foundation-cleanup.md and docs/foundation-cleanup-audit.md. T250 remains blocked: Docker Compose PostgreSQL startup denied docker_engine/config access. Resume only with permitted Docker/PostgreSQL environment and explicit next work; verify native migrations/API/catalog without deleting volumes. No new features or redesign.
+T253 P0 production API block complete;implementation69275e6 plus final204 acknowledgement regression. Review docs/evidence/v3-production-api.md. Local commits,no push. New feature APIs are separate tasks;T250 native PostgreSQL remains blocked.
 
 ## Последняя завершённая работа
 
-- T248-T249: dependency audit and KEEP/REFACTOR/DELETE decisions; 42 stale files and two old stateless calculator HTTP endpoints removed; CamelModel isolated; 46 unused lock entries removed (162 ->116 install).
-- T251: frontend TS/ESLint/build/source guard pass; 193 Chromium passed, 29 runtime routes; 20 catalog baseline +125 reference pixel comparisons zero diff. Portable Windows backend549passed/35PG skips; 12 Linux-resource modules retained and uncollectable here.
-- T252: current v3 docs/architecture/API and registry aligned; old release/ML tasks deferred, historical done/evidence retained. Protected UI/migration/local DB hashes verified. T250 native PG/Docker blocked; cleanup stopped without new features.
+- T253: consolidated P0 API/DTO/errors with live route bindings and explicit demo/unsupported;all29originalroutes smoke passed;implementation69275e6.
 
 ## Ограничения
 
@@ -29,11 +27,9 @@ Stop after completed cleanup as requested. Read docs/evidence/foundation-cleanup
 
 ## Проверенное окружение
 
-- Actual docker compose config --quiet exit0; up -d db exit1 permission denied on docker_engine, Docker config access denied. No permission/config workaround, no volume deletion or working PostgreSQL connection/migration claim.
-- Final portable backend549passed/35native PG skips (182.05s); initial full collection12resource errors on Windows, Linux CI suite remains intact. UTF8 fixture-read test fixed without altering source fixtures.
-- Chromium193passed/0failed/skipped/flaky (54.2s). All29routes; 20 catalog PNGs identical to2a7835f and125 source comparisons under existing demo-label rules. All render files/CSS unchanged except dead routeLabels removed.
-- No frontend static preview/parallel renderer or unused React plugin. npm ci116; lint source/tests/scripts, tsc, Vite build pass. Production asset names/sizes match prior recorded build; initial dist absent, raw byte comparison not claimed.
-- Applied migrations and local legacy DB hashes unchanged; SQL models and source/normalization/history/jobs/backup kept. Hosted CI/native PG/Docker runtime not verified. QA servers stopped cleanly; no push/deployment/main changes.
+- S202: frontend typecheck/lint/build exit0;84Chromium passed/0failed/skipped (17.0s),including29route smoke,16API tests,catalog and demo regressions.
+- CSS v3,backend,applied migrations and PostgreSQL data unchanged. Existing owned FastAPI/SQLite runner used;native guest start/empty history verified,positive lookup/confirm/error injection via synthetic HTTP fixtures.
+- Native PostgreSQL T250,Firefox/WebKit,fresh hosted CI,full reference pixel comparison and deployment not verified. QA runner stopped owned servers. Local commits only;no push.
 
 ## Готовность к выпуску
 

@@ -5450,6 +5450,33 @@
 
 - [docs/evidence/ui-ci-regressions.md](../docs/evidence/ui-ci-regressions.md) — Reproduced exact Firefox detached-button timeout: unmocked history401;corrected five E2E fixtures/selectors/cache freshness expectations without production changes/timeouts/skips. Full Firefox254passed/37existing skips;targeted39Chromium+39Firefox;final4reset cases passed each;150unit and typecheck/lint/build/format/architecture. Fresh Ubuntu CI unverified;no push.
 
+### T253. Unify production API DTO errors and route states for React v3
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T252.
+
+**Результаты/файлы:** `frontend/src/shared/`; `docs/evidence/v3-production-api.md`.
+
+**Шаги:**
+
+1. Inventory contracts and routes.
+2. Unify transport DTO session errors.
+3. Connect existing entities.
+4. Align live demo and resource states.
+5. Verify routes and commit.
+
+**Критерии закрытия:**
+
+- All29 routes smoke without runtime errors; live/demo explicit and no fallback to fake data or success.
+- Shared validated DTO transport session errors and retry; retain v3 CSS and catalog; unsupported APIs deferred separately.
+- typecheck lint build Playwright smoke; evidence commit and verification instructions.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/v3-production-api.md](../docs/evidence/v3-production-api.md) — Commit69275e6: shared HTTP/validated DTO/session/resource states;live existing catalog/subscriptions/groups/lookup-confirm/changes/coverage;explicit unsupported/demo. typecheck/lint/build exit0;84Chromium passed including29routes and16API tests. CSS/backend/migrations unchanged;PG T250 and hosted CI unverified;no push. Strict204 write acknowledgement regression passed.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

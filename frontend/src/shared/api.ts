@@ -28,6 +28,10 @@ export async function request<T>(path: string, decode: Decoder<T>, init: Request
             }
             throw new ApiError(response.status);
         }
+        // Existing session and delete contracts acknowledge writes with 204 only.
+        // A JSON error wrapped in an accidental 200 must never look successful.
+        if ((init.method === 'DELETE' || (path === 'session' && init.method === 'POST')) && response.status !== 204)
+            invalid();
         if (path === 'session' && init.method === 'POST') {
             sessionEpoch++;
             try {

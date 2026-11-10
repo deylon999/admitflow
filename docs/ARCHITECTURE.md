@@ -1,14 +1,14 @@
 # Архитектура AdmitFlow
 
-Актуально на S201, 2026-11-08. Один frontend и один backend; новая БД,
+Актуально на S202, 2026-11-10. Один frontend и один backend; новая БД,
 сервис или миграция при очистке не создавались.
 
 | Слой | Реализация / ответственность |
 | --- | --- |
-| Frontend entry/router | `src/main.tsx`, App, History API navigation; 29 страниц |
+| Frontend entry/router | `src/main.tsx`, App, History API navigation; 29 исходных страниц + алиас списка конкурсов |
 | UI | Исходные `components/`, `shared/UI.tsx`, Shell, styles.css/internal.css v3; неизменный визуальный эталон |
 | Catalog | `src/catalog/types`, api, cancellable state, parts и четыре композиции; loading/error/empty, ID/year/source |
-| Demo | AppPages, AuthPages, публичные информационные страницы и data/demo; не реальные ML, аккаунты или списки |
+| Demo | AppPages/AuthPages/data/demo только при явном mode=demo; отсутствующие feature API показывают unsupported |
 | HTTP | FastAPI main, origin/body/timeout/host protection, гостевая изоляция, no-store |
 | Общие DTO | `schema_base.CamelModel`; каталог и pipeline не зависят от старой арифметики |
 | Product catalog | product_catalog + DTOs, проверенный national artifact, явный atomic catalog_import |
@@ -36,3 +36,12 @@ Playwright runner владеет временным API и previews и штат�
 [Проверки](evidence/foundation-cleanup.md).
 Прежняя FSD/ручная архитектура сохранена в
 [архиве](archive/architecture-before-foundation.md); она не описывает v3.
+
+## Production frontend API (T253)
+
+`shared/api.ts` — транспорт/ошибки/timeout/session epoch; `shared/dto.ts` и
+`catalog/decode.ts` — проверка используемых DTO; `shared/resource.ts` и
+`ResourceState` — отмена, loading/error/retry/stale/401. Каталог сохраняет прежние
+композиции. LivePages/AddSource используют существующие subscriptions, changes,
+coverage, groups и source lookup/confirm; новые feature API не создаются.
+Матрица маршрутов и проверка: [evidence](evidence/v3-production-api.md).

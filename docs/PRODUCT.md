@@ -30,3 +30,5 @@ MVP, ни done исторических задач не означает гот�
 [29-страничный аудит](product-functional-audit.md),
 [реестр задач](TASKS.json), [границы очистки](foundation-cleanup-audit.md).
 Прежняя концепция сохранена в [архиве](archive/product-before-foundation.md).
+
+2026-11-10: единый P0-блок API/DTO/errors React v3 заменяет мелкую AF-декомпозицию. Реальные API подключаются без demo fallback; отсутствующие feature APIs — отдельная последующая работа. CSS v3, каталог, applied migrations и PostgreSQL данные сохраняются.

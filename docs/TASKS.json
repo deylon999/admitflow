@@ -7756,6 +7756,40 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T253",
+      "title": "Unify production API DTO errors and route states for React v3",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "done",
+      "dependsOn": [
+        "T252"
+      ],
+      "deliverables": [
+        "frontend/src/shared/",
+        "docs/evidence/v3-production-api.md"
+      ],
+      "steps": [
+        "Inventory contracts and routes",
+        "Unify transport DTO session errors",
+        "Connect existing entities",
+        "Align live demo and resource states",
+        "Verify routes and commit"
+      ],
+      "acceptance": [
+        "All29 routes smoke without runtime errors; live/demo explicit and no fallback to fake data or success",
+        "Shared validated DTO transport session errors and retry; retain v3 CSS and catalog; unsupported APIs deferred separately",
+        "typecheck lint build Playwright smoke; evidence commit and verification instructions"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/v3-production-api.md",
+          "note": "Commit69275e6: shared HTTP/validated DTO/session/resource states;live existing catalog/subscriptions/groups/lookup-confirm/changes/coverage;explicit unsupported/demo. typecheck/lint/build exit0;84Chromium passed including29routes and16API tests. CSS/backend/migrations unchanged;PG T250 and hosted CI unverified;no push. Strict204 write acknowledgement regression passed."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }
