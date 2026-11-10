@@ -448,3 +448,13 @@
 .af-coverage-problems p { margin: 6px 0 0; }
 .af-coverage-regions td:not(:first-child), .af-coverage-regions th:not(:first-child) { text-align: right; }
 @media (max-width: 760px) { .af-coverage-layers { grid-template-columns: 1fr; } }
+/* KAN-228 competition pages */
+.af-competition-controls { display: flex; gap: 10px; flex-wrap: wrap; }
+.af-competition-controls select, .af-competition-controls input { background: white; border: 1px solid #e3e8f2; border-radius: 12px; height: 44px; padding: 0 12px; font-size: 14px; max-width: 220px; }
+.af-competition-table td .af-pill { margin-left: 8px; }
+.af-competition-warnings ul { margin: 0; padding-left: 18px; }
+.af-score-bins { display: flex; align-items: flex-end; gap: 6px; height: 180px; overflow-x: auto; padding-top: 8px; }
+.af-score-bins > div { flex: 1 0 34px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+.af-score-bins span { width: 100%; background: var(--af-electric); border-radius: 8px 8px 0 0; min-height: 2px; }
+.af-score-bins small { color: var(--af-muted); font-size: 11px; margin-top: 4px; }
+.af-score-bins b { font-size: 11px; }

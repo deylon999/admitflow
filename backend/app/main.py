@@ -144,6 +144,8 @@ def create_app(settings: Settings | None = None):
     install_source_routes(app,database,owner,write_owner,source_registry,source_identity_key,lambda:utcnow())
     from .scenario_api import install as install_scenarios
     install_scenarios(app,database,owner,source_registry)
+    from .competition_api import install as install_competitions
+    install_competitions(app,database,owner,registry=source_registry)
     from .changes import install as install_changes
     install_changes(app,database,owner,write_owner,lambda:utcnow())
 

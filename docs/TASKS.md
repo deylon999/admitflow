@@ -4343,6 +4343,33 @@
 
 - [docs/evidence/foundation-cleanup.md](../docs/evidence/foundation-cleanup.md) — Current v3 architecture/API/product/design/README/runbooks replace stale manual-product instructions; old docs archived with rebased links. Old release/ML tasks deferred, no false done. Removal manifest42, protected hashes, current API inventory31, dependency report and final tests recorded. Cleanup complete, T250 blocked; no new features or main/DB changes.
 
+### T256. KAN-228: рабочие страницы конкурсных списков и конкурентов v3
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T255.
+
+**Результаты/файлы:** `backend/app/competition_api.py`; `frontend/src/pages/CompetitionPages.tsx`; `docs/evidence/kan-228-competition-pages.md`.
+
+**Шаги:**
+
+1. API списка, строк и агрегатов по опубликованному снимку.
+2. Официальный порядок, фильтры по неперсональным признакам, переход к месту.
+3. Своя строка только для подтвердившего гостя.
+4. Страницы v3 списка и конкурентов, перенос сохранённого направления в /app/watchlist/{id}.
+5. Тесты и ручная проверка на архиве.
+
+**Критерии закрытия:**
+
+- Реальные списки открываются с меткой времени и ссылкой.
+- Позиции и приоритеты не выдуманы; неполные списки и неподдержанные правила помечены.
+- E2E и защита персональных данных.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-228-competition-pages.md](../docs/evidence/kan-228-competition-pages.md) — S204 /api/v1/competitions/{id}, /rows, /summary; pages /app/competitions, /{id}, /{id}/competitors. Official order only, no identifiers in responses (tested), frontend rejects extra row fields, own row only after confirmation. 4 backend tests, 4 browser tests; SGU archive 573 rows viewed at 1440/390.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.
