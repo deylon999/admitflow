@@ -260,7 +260,7 @@ export function ProfilePage() {
             <label className="af-field"><span>ГОД ПОСТУПЛЕНИЯ</span><select defaultValue="2027"><option>2027</option><option>2026</option></select></label>
           </div>
           <button className="af-action af-action--primary" type="button" onClick={() => setSaved(true)}>Сохранить изменения</button>
-          {saved && <div className="af-inline-success">Настройки изменены.</div>}
+          {saved && <div className="af-inline-success">Демо: изменения не сохраняются на сервере.</div>}
         </Surface>
         <Surface tone="lime" title="Твои баллы — твой выбор." description="Добавь результаты, чтобы сравнивать возможные варианты. Изменения в реальной системе должны храниться безопасно." />
       </div>

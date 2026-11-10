@@ -48,7 +48,7 @@ test('real search, region, sorting, pages and browser history', async ({ page })
   await page.getByRole('button', { name: 'Далее', exact: true }).click();
   await expect(page).toHaveURL(/offset=12/);
   await expect(page.locator('.af-program-card')).toHaveCount(12);
-  expect(await page.locator('.af-program-card h3').allTextContents()).not.toEqual(first);
+  await expect.poll(()=>page.locator('.af-program-card h3').allTextContents()).not.toEqual(first);
   await page.goBack();
   await expect(page.locator('.af-program-card h3').first()).toHaveText(first[0]);
   await page.getByLabel('СОРТИРОВКА').selectOption('name-desc');

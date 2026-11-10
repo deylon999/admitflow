@@ -8,7 +8,7 @@ type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
 /** The global router intercepts these plain links; they also work in offline previews. */
 export function RouteLink({ to, children, ...props }: Props) {
   return (
-    <a href={to} {...props}>
+    <a href={typeof window !== 'undefined' && new URLSearchParams(location.search).get('mode')==='demo' && to.startsWith('/') && !to.includes('?') && !to.startsWith('/universities') && !to.startsWith('/programs') ? to+'?mode=demo' : to} {...props}>
       {children}
     </a>
   );

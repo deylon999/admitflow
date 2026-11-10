@@ -3,7 +3,7 @@ import { defineConfig } from '@playwright/test';
 const live = process.env.COMPARE_REFERENCE === '1';
 export default defineConfig({
   testDir: './tests',
-  testMatch: live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts'],
+  testMatch: live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts','**/api.spec.ts'],
   fullyParallel: true,
   workers: 2,
   retries: 0,

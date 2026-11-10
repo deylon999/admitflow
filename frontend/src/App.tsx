@@ -1,3 +1,4 @@
+import { LiveDirections, LiveEvents, LiveSources, LiveAdd, Unsupported } from './pages/LivePages';
 import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -14,7 +15,7 @@ import { interceptInternalLinks } from './app/navigation';
 import { Action, EmptyMessage } from './shared/UI';
 import { AuthPage } from './pages/AuthPages';
 import { ExamAnalytics, FaqPage, HowItWorks } from './pages/PublicPages';
-import { AddWatch, Compare, CompetitionList, Competitors, Dashboard, ForecastForm, ForecastMethod, ForecastResult, HistoryPage, NotificationsPage, ProfilePage, SettingsPage, SourcesPage, StatusPage, Watchlist } from './pages/AppPages';
+import { AddWatch, Dashboard, Compare, CompetitionList, Competitors, ForecastForm, ForecastMethod, ForecastResult, ProfilePage, SettingsPage, StatusPage, Watchlist } from './pages/AppPages';
 import { ProgramsCatalog, UniversityCatalog } from './catalog/CatalogPages';
 import { ProgramDetail, UniversityPage } from './catalog/DetailPages';
 import './catalog/catalog.css';
@@ -22,10 +23,10 @@ import './styles.css';
 import './internal.css';
 
 function usePathname(): string {
-  const [path, setPath] = useState(() => window.location.pathname.replace(/\/$/, '') || '/');
+  const [path, setPath] = useState(() => (window.location.pathname.replace(/\/$/, '') || '/') + window.location.search);
 
   useEffect(() => {
-    const onRouteChange = () => setPath(window.location.pathname.replace(/\/$/, '') || '/');
+    const onRouteChange = () => setPath((window.location.pathname.replace(/\/$/, '') || '/') + window.location.search);
     window.addEventListener('popstate', onRouteChange);
     document.addEventListener('click', interceptInternalLinks);
     return () => {
@@ -85,24 +86,26 @@ function PrivateRoute({ path, tracked, onToggle }: {
   tracked: string[];
   onToggle: (id: string) => void;
 }) {
+  if (/^\/app\/competitions\/[^/]+$/.test(path)) return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><CompetitionList /></Unsupported> : <LiveDirections key={path} id={path.split('/').at(-1)!} />;
   switch (path) {
-    case '/app': return <Dashboard tracked={tracked} />;
-    case '/app/profile': return <ProfilePage />;
-    case '/app/forecast': return <ForecastForm />;
-    case '/app/forecast/example': return <ForecastResult />;
-    case '/app/forecast/method': return <ForecastMethod />;
-    case '/app/watchlist': return <Watchlist tracked={tracked} onToggle={onToggle} />;
-    case '/app/watchlist/add': return <AddWatch tracked={tracked} onToggle={onToggle} />;
-    case '/app/competitions/mtuci-se': return <CompetitionList />;
-    case '/app/competitions/mtuci-se/competitors': return <Competitors />;
-    case '/app/compare': return <Compare />;
-    case '/app/history': return <HistoryPage />;
-    case '/app/notifications': return <NotificationsPage />;
-    case '/app/settings': return <SettingsPage />;
-    case '/app/sources': return <SourcesPage />;
-    case '/app/states/empty': return <StatusPage variant="empty" />;
-    case '/app/states/error': return <StatusPage variant="error" />;
-    case '/app/states/success': return <StatusPage variant="success" />;
+    case '/app': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Dashboard tracked={tracked}/></Unsupported> : <LiveDirections />;
+    case '/app/competitions': return <LiveDirections />;
+    case '/app/profile': return <Unsupported><ProfilePage /></Unsupported>;
+    case '/app/forecast': return <Unsupported><ForecastForm /></Unsupported>;
+    case '/app/forecast/example': return <Unsupported><ForecastResult /></Unsupported>;
+    case '/app/forecast/method': return <Unsupported><ForecastMethod /></Unsupported>;
+    case '/app/watchlist': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Watchlist tracked={tracked} onToggle={onToggle} /></Unsupported> : <LiveDirections />;
+    case '/app/watchlist/add': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><AddWatch tracked={tracked} onToggle={onToggle} /></Unsupported> : <LiveAdd />;
+    case '/app/competitions/mtuci-se': return <Unsupported><CompetitionList /></Unsupported>;
+    case '/app/competitions/mtuci-se/competitors': return <Unsupported><Competitors /></Unsupported>;
+    case '/app/compare': return <Unsupported><Compare /></Unsupported>;
+    case '/app/history': return <LiveEvents />;
+    case '/app/notifications': return <LiveEvents />;
+    case '/app/settings': return <Unsupported><SettingsPage /></Unsupported>;
+    case '/app/sources': return <LiveSources />;
+    case '/app/states/empty': return <Unsupported><StatusPage variant="empty" /></Unsupported>;
+    case '/app/states/error': return <Unsupported><StatusPage variant="error" /></Unsupported>;
+    case '/app/states/success': return <Unsupported><StatusPage variant="success" /></Unsupported>;
     default: return <EmptyMessage title="Страница не найдена" description="Маршрут не предусмотрен прототипом." action={<Action to="/app">На главную ↗</Action>} />;
   }
 }
@@ -113,7 +116,7 @@ function PublicRoute({ path }: { path: string }) {
   switch (path) {
     case '/universities': return <UniversityCatalog />;
     case '/programs': return <ProgramsCatalog />;
-    case '/ege-analytics': return <ExamAnalytics />;
+    case '/ege-analytics': return <Unsupported><ExamAnalytics /></Unsupported>;
     case '/how-it-works': return <HowItWorks />;
     case '/faq': return <FaqPage />;
     default: return <EmptyMessage title="Такой страницы нет" description="Проверь адрес или перейди к каталогу." action={<Action to="/universities">Каталог ↗</Action>} />;
@@ -121,13 +124,14 @@ function PublicRoute({ path }: { path: string }) {
 }
 
 export default function App() {
-  const pathname = usePathname();
+  const routeKey = usePathname();
+  const pathname = routeKey.split('?')[0];
   const [tracked, onToggle] = useTracked();
 
   if (pathname === '/') return <LandingPage />;
   if (pathname.startsWith('/auth/')) {
     const mode = pathname.endsWith('/register') ? 'register' : pathname.endsWith('/recovery') ? 'recovery' : 'login';
-    return <AuthPage mode={mode} />;
+    return <Unsupported><AuthPage mode={mode} /></Unsupported>;
   }
   const content = pathname.startsWith('/app')
     ? <PrivateRoute path={pathname} tracked={tracked} onToggle={onToggle} />
