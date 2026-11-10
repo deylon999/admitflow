@@ -127,5 +127,8 @@ def runtime_registry():
     from .adapters.sgu2026 import make_adapter
     from .table_family import make_table_adapter
     from .table_profiles import PROFILES
+    from .structured_family import PROFILES as STRUCTURED, make_structured_adapter
     versions=sorted({p.version for p in PROFILES.values()})
-    return Registry((make_adapter(key),*(make_table_adapter(key,[p for p in PROFILES.values() if p.version==version],version=version) for version in versions)))
+    structured=sorted({p.version for p in STRUCTURED})
+    return Registry((make_adapter(key),*(make_table_adapter(key,[p for p in PROFILES.values() if p.version==version],version=version) for version in versions),
+                     *(make_structured_adapter(key,[p for p in STRUCTURED if p.version==version],version=version) for version in structured)))

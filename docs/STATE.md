@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-11. Последняя сессия: S204.
+Дата: 2026-11-11. Последняя сессия: S205.
 
 ## Продолжение
 
@@ -12,13 +12,13 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Work branch zarbondo (PR #7). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228. Next Jira cards of Vadim: KAN-220 adapters, KAN-218/219/227 data, KAN-24 report template. RAOO refresh: python scripts/build_accreditation_registry.py <zip>.
+Work branch zarbondo (PR #7). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228, T257/KAN-220. Next Jira cards of Vadim: KAN-218/219/227 data, KAN-24 report template. Mass queue: python -m app.sources.cli enqueue-all. RAOO refresh: python scripts/build_accreditation_registry.py <zip>.
 
 ## Последняя завершённая работа
 
+- T257 (KAN-220): reviewed JSON/CSV adapters through the common Adapter/Registry, enqueue-all with same-domain spreading, PostgreSQL re-import/failure tests; PDF not done, JSON/CSV profiles empty until reviewed.
 - T256 (KAN-228): real competition list/competitors pages on snapshot API, official order, no identifiers, own row only after confirmation.
 - T255 (KAN-221): /app/coverage and /api/v1/coverage/national: four separate layers on the 785 denominator, years, gaps, regions, sources, queue, reproducible JSON report.
-- T056 (KAN-217): accreditation register denominator 785 (2026-11-10), 675 catalog heads matched, 109 register-only organisations added to the catalog API/UI with source and date; report docs/evidence/kan-217-national-denominator.md.
 
 ## Ограничения
 

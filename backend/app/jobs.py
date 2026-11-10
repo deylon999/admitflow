@@ -61,8 +61,11 @@ def clock():
     return datetime.now(timezone.utc)
 
 
-def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
+def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5,start_at=None):
     now=now or clock()
+    start_at=start_at or now
+    if start_at<now:
+        raise ValueError('invalid_queue_policy')
     if type(interval_seconds) is not int or type(max_attempts) is not int or not 60 <= interval_seconds <= 86400 or not 1 <= max_attempts <= 20:
         raise ValueError('invalid_queue_policy')
     with Session(engine) as db:
@@ -78,9 +81,9 @@ def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5):
             job.last_error_code=None
             job.interval_seconds=interval_seconds
             job.max_attempts=max_attempts
-            job.next_run_at=now
+            job.next_run_at=start_at
         else:
-            db.add(SourceJob(source_id=source_id,state='queued',next_run_at=now,attempts=0,max_attempts=max_attempts,interval_seconds=interval_seconds))
+            db.add(SourceJob(source_id=source_id,state='queued',next_run_at=start_at,attempts=0,max_attempts=max_attempts,interval_seconds=interval_seconds))
         record(db,source,'enqueue','queued',now=now)
         db.commit()
         return True
@@ -197,3 +200,35 @@ def disable(engine,source_id,*,now=None):
             job.next_run_at=now+timedelta(seconds=job.interval_seconds)
         record(db,source,'disable','disabled',now=now)
         db.commit()
+
+
+def enqueue_all(engine,*,registry,now=None,interval_seconds=900,spread_seconds=60,allow_unattested=False):
+    """Queue every enabled source with a resolvable adapter; same-domain starts are spread out.
+
+    The claim step already allows one running job per domain. Spreading the first runs keeps
+    a mass enqueue from bursting at one official site. Repeated calls never duplicate a job.
+    Sources whose adapter is missing or unattested are counted by reason and left alone.
+    """
+    from .sources.publishing import binding_from_db
+    from .sources.contracts import AdapterError
+    now=now or clock()
+    if type(spread_seconds) is not int or not 0<=spread_seconds<=3600:
+        raise ValueError('invalid_queue_policy')
+    with Session(engine) as db:
+        sources=db.scalars(select(Source).where(Source.enabled.is_(True)).order_by(Source.domain,Source.id)).all()
+        plan,skipped=[],{}
+        for source in sources:
+            try:
+                registry.resolve(binding_from_db(db,source),allow_unattested=allow_unattested)
+            except AdapterError as error:
+                skipped[error.code]=skipped.get(error.code,0)+1
+                continue
+            plan.append((source.id,source.domain))
+    queued=deferred=0;position={}
+    for source_id,domain in plan:
+        offset=position.get(domain,0);position[domain]=offset+1
+        if enqueue(engine,source_id,now=now,interval_seconds=interval_seconds,start_at=now+timedelta(seconds=offset*spread_seconds)):
+            queued+=1
+        else:
+            deferred+=1
+    return dict(sources=len(sources),queued=queued,deferred=deferred,skipped=dict(sorted(skipped.items())),domains=len(position))
