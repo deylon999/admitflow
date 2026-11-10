@@ -4,9 +4,10 @@ import { subscriptions, events, coverage } from '../shared/dto';
 import { useResource } from '../shared/resource';
 import { ResourceState } from '../shared/ResourceState';
 import { Action, EmptyMessage, PageTitle, Surface } from '../shared/UI';
+import { RouteLink } from '../app/RouteLink';
 export function LiveSources() {
     const r = useResource('coverage', coverage);
-    return <><PageTitle kicker="API · ИСТОЧНИКИ" title="Источники и доступность данных" description="Каталог и свежий импорт — разные показатели. Архив не является текущей кампанией."/><ResourceState {...r} hasData={!!r.data}>{r.data && <Surface title="Подтверждённые сведения"><p>Вузов в каталоге: {r.data.catalogUniversities}</p><p>Зарегистрировано источников: {r.data.registeredSources}</p><p>Свежих групп: {r.data.freshGroups}</p><p>Архивных групп: {r.data.archiveGroups}</p><time dateTime={r.data.generatedAt}>{r.data.generatedAt}</time></Surface>}</ResourceState></>;
+    return <><PageTitle kicker="API · ИСТОЧНИКИ" title="Источники и доступность данных" description="Каталог и свежий импорт — разные показатели. Архив не является текущей кампанией."/><ResourceState {...r} hasData={!!r.data}>{r.data && <Surface title="Подтверждённые сведения"><p>Вузов в каталоге: {r.data.catalogUniversities}</p><p>Зарегистрировано источников: {r.data.registeredSources}</p><p>Свежих групп: {r.data.freshGroups}</p><p>Архивных групп: {r.data.archiveGroups}</p><time dateTime={r.data.generatedAt}>{r.data.generatedAt}</time><p><RouteLink to="/app/coverage">Покрытие вузов России ↗</RouteLink></p></Surface>}</ResourceState></>;
 }
 export function LiveEvents() {
     const [cursors, setCursors] = useState<string[]>([]);

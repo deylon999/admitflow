@@ -7837,6 +7837,41 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T255",
+      "title": "KAN-221: дашборд покрытия РФ и контроль свежести",
+      "phase": "E1",
+      "priority": "P1",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T056"
+      ],
+      "deliverables": [
+        "backend/app/national_coverage.py",
+        "frontend/src/pages/CoveragePage.tsx",
+        "docs/evidence/kan-221-coverage-dashboard.md"
+      ],
+      "steps": [
+        "Один знаменатель из реестра аккредитации",
+        "Раздельные слои каталога, программ, ЕГЭ и списков",
+        "Годы, пробелы, регионы, источники и очередь",
+        "Воспроизводимая выгрузка с контрольной суммой",
+        "Экран v3, тесты и снимки"
+      ],
+      "acceptance": [
+        "Отдельно показаны доли реестра, программ и подтверждённых требований; филиалы и головные вузы не смешаны",
+        "stale/ошибки источников видны, отчёт воспроизводим",
+        "Нет утверждений о покрытии без фактических данных"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-221-coverage-dashboard.md",
+          "note": "S204 API /api/v1/coverage/national, CLI python -m app.national_coverage, screen /app/coverage. Layers on 785: catalog 675 (86.0%), programs/EGE/lists from the DB (test stand 1/0/0). Checksum stable for equal inputs; 6 backend tests incl. failed source, browser test incl. JSON export; screenshots 1440/390 without page overflow."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

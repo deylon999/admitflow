@@ -1,4 +1,5 @@
 import { LiveDirections, LiveEvents, LiveSources, LiveAdd, Unsupported } from './pages/LivePages';
+import { CoveragePage } from './pages/CoveragePage';
 import { useEffect, useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
@@ -103,6 +104,7 @@ function PrivateRoute({ path, tracked, onToggle }: {
     case '/app/notifications': return <LiveEvents />;
     case '/app/settings': return <Unsupported><SettingsPage /></Unsupported>;
     case '/app/sources': return <LiveSources />;
+    case '/app/coverage': return <CoveragePage />;
     case '/app/states/empty': return <Unsupported><StatusPage variant="empty" /></Unsupported>;
     case '/app/states/error': return <Unsupported><StatusPage variant="error" /></Unsupported>;
     case '/app/states/success': return <Unsupported><StatusPage variant="success" /></Unsupported>;

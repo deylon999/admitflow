@@ -484,6 +484,33 @@
 
 - [docs/evidence/b14-national-catalog.md](../docs/evidence/b14-national-catalog.md) — Validated atomic read-only artifact import, 1257 identities and 521 branches, legacy aliases preserved; 12 targeted checks passed; no Source or user DB mutation.
 
+### T255. KAN-221: дашборд покрытия РФ и контроль свежести
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T056.
+
+**Результаты/файлы:** `backend/app/national_coverage.py`; `frontend/src/pages/CoveragePage.tsx`; `docs/evidence/kan-221-coverage-dashboard.md`.
+
+**Шаги:**
+
+1. Один знаменатель из реестра аккредитации.
+2. Раздельные слои каталога, программ, ЕГЭ и списков.
+3. Годы, пробелы, регионы, источники и очередь.
+4. Воспроизводимая выгрузка с контрольной суммой.
+5. Экран v3, тесты и снимки.
+
+**Критерии закрытия:**
+
+- Отдельно показаны доли реестра, программ и подтверждённых требований; филиалы и головные вузы не смешаны.
+- stale/ошибки источников видны, отчёт воспроизводим.
+- Нет утверждений о покрытии без фактических данных.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-221-coverage-dashboard.md](../docs/evidence/kan-221-coverage-dashboard.md) — S204 API /api/v1/coverage/national, CLI python -m app.national_coverage, screen /app/coverage. Layers on 785: catalog 675 (86.0%), programs/EGE/lists from the DB (test stand 1/0/0). Checksum stable for equal inputs; 6 backend tests incl. failed source, browser test incl. JSON export; screenshots 1440/390 without page overflow.
+
 ## E2. Ядро продукта
 
 Плановый интервал: D4–D10.

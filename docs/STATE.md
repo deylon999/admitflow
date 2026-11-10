@@ -12,10 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-217/T056 done on branch feat/kan-217-national-denominator: national denominator 785 from the Rosobrnadzor RAOO register, catalog coverage 86.0%. Refresh: download the RAOO ZIP and run python scripts/build_accreditation_registry.py <zip>. Next Jira cards of Vadim: KAN-221 dashboard, KAN-228 competition pages, KAN-220 adapters, KAN-218/219/227 data.
+KAN-217/T056 done on branch feat/kan-217-national-denominator: national denominator 785 from the Rosobrnadzor RAOO register, catalog coverage 86.0%. Refresh: download the RAOO ZIP and run python scripts/build_accreditation_registry.py <zip>. KAN-221/T255 done on feat/kan-221-coverage-dashboard. Next Jira cards of Vadim: KAN-228 competition pages, KAN-220 adapters, KAN-218/219/227 data.
 
 ## Последняя завершённая работа
 
+- T255 (KAN-221): /app/coverage and /api/v1/coverage/national: four separate layers on the 785 denominator, years, gaps, regions, sources, queue, reproducible JSON report.
 - T056 (KAN-217): accreditation register denominator 785 (2026-11-10), 675 catalog heads matched, 109 register-only organisations added to the catalog API/UI with source and date; report docs/evidence/kan-217-national-denominator.md.
 - T254: one-command full Docker Compose startup with backup,migrations,import,API and history persistence check;full build and no-build passed.
 
