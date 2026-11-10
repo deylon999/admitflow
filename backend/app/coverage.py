@@ -8,13 +8,15 @@ from .sources.registry import PRODUCTION_REGISTRY
 from .sources.status import source_status
 from .catalog import catalog_size
 from .national_catalog import load_catalog
+from .accreditation_registry import load_registry, summary as registry_summary
 
 
 def coverage(db,*,registry=PRODUCTION_REGISTRY,now=None):
     now=now or datetime.now(timezone.utc)
+    national=registry_summary(load_registry())
     result=dict(catalogUniversities=catalog_size(db),registryTotal=len(load_catalog().institutions),registryEdition=load_catalog().edition,registeredSources=db.scalar(select(func.count()).select_from(Source)),
         reviewedSources=0,importedSources=0,importedGroups=0,importedUniversities=0,importedRows=0,archiveImportedGroups=0,conditionalGroups=0,lastImportedAt=None,
-        automaticSources=0,publishedGroups=0,freshGroups=0,archiveGroups=0,nationalTotal=None,generatedAt=now)
+        automaticSources=0,publishedGroups=0,freshGroups=0,archiveGroups=0,nationalTotal=national['denominator'],national=national,generatedAt=now)
     imported={};universities=set();conditional=set();automatic={}
     for source in db.scalars(select(Source).where(Source.enabled.is_(True))).all():
         try:registry.resolve(binding_from_db(db,source))

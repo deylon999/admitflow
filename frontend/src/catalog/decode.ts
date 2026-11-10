@@ -5,10 +5,27 @@ function provenance(value: unknown) {
     date(p.verifiedAt);
     if (p.sourceUpdatedAt !== null)
         date(p.sourceUpdatedAt);
-    if (!['archive', 'monitoring'].includes(text(p.kind)))
+    if (!['archive', 'monitoring', 'accreditation'].includes(text(p.kind)))
         invalid();
     if (p.edition !== null)
         count(p.edition);
+    return p;
+}
+function accreditation(value: unknown) {
+    const p = object(value);
+    if (p.status !== 'active' || !/^\d{13}$/.test(text(p.ogrn)))
+        invalid();
+    if (p.inn !== null)
+        text(p.inn);
+    if (p.certificateNumber !== null)
+        text(p.certificateNumber);
+    for (const k of ['bachelorPrograms', 'specialistPrograms', 'branchesWithPrograms'])
+        count(p[k]);
+    if (typeof p.departmental !== 'boolean')
+        invalid();
+    text(p.matchMethod);
+    date(p.datasetDate);
+    url(p.sourceUrl);
     return p;
 }
 function university(value: unknown) {
@@ -22,6 +39,8 @@ function university(value: unknown) {
     count(p.knownProgramCount);
     array(p.years, count);
     provenance(p.provenance);
+    if (p.accreditation !== null)
+        accreditation(p.accreditation);
     return p;
 }
 function program(value: unknown) {
@@ -54,6 +73,7 @@ export function decodeCatalog(path: string, value: unknown): unknown {
     if (isUniversity) {
         array(p.regions, text);
         count(p.registryEdition);
+        date(p.accreditationDate);
     }
     else {
         array(p.years, count);

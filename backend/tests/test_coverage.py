@@ -1,3 +1,4 @@
+from app.accreditation_registry import load_registry
 from dataclasses import replace
 
 from sqlalchemy.orm import Session
@@ -17,7 +18,7 @@ def test_public_catalog_does_not_imply_automatic_coverage(client):
     assert data['catalogUniversities']==1257
     assert data['registryTotal']==1257 and data['registryEdition']==2025
     assert data['automaticSources']==data['publishedGroups']==data['freshGroups']==0
-    assert data['nationalTotal'] is None
+    assert data['nationalTotal']==load_registry().denominator
 
 
 def test_only_attested_enabled_groups_with_rules_count_as_automatic(source_engine,tmp_path):
@@ -65,7 +66,7 @@ def test_reviewed_imports_are_counted_from_published_scopes_without_fabricating_
         result=coverage(db,registry=reviewed,now=NOW)
         assert result['importedSources']==result['importedGroups']==result['importedUniversities']==result['archiveImportedGroups']==2
         assert result['importedRows']==1154 and result['conditionalGroups']==1
-        assert result['automaticSources']==result['publishedGroups']==result['freshGroups']==0 and result['nationalTotal'] is None
+        assert result['automaticSources']==result['publishedGroups']==result['freshGroups']==0 and result['nationalTotal']==load_registry().denominator
         assert result['lastImportedAt']==max(response().fetched_at,fetch(GUAP).fetched_at)
         # Duplicate legacy/common proofs do not add scopes;held lastgood remains an archive.
         db.get(Source,BINDING.source_id).last_error_code='operator_quarantine';db.commit()

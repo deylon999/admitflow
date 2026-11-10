@@ -1,7 +1,7 @@
 import { Action, EmptyMessage, PageTitle, Pill, Surface } from '../shared/UI';
 import { RouteLink } from '../app/RouteLink';
 import { YearField } from './CatalogPages';
-import { CatalogCard, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
+import { AccreditationNote, CatalogCard, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
 import { useCatalog, useCatalogFilters } from './state';
 import type { CatalogProgram, ProgramResults, University } from './types';
 
@@ -25,9 +25,10 @@ export function UniversityPage({ id }: { id: string }) {
         <div className="af-grid-metrics">
           <Surface tone="lime"><strong className="af-big-number">{university.data.knownProgramCount}</strong><p>Подтверждено программ</p></Surface>
           <Surface><strong className="af-big-number">{university.data.years.join(', ') || unknown}</strong><p>Приёмная кампания</p></Surface>
-          <Surface><strong className="af-big-number">{university.data.provenance.edition}</strong><p>Редакция справочника</p></Surface>
+          <Surface><strong className="af-big-number">{university.data.provenance.edition ?? 'Реестр'}</strong><p>{university.data.provenance.kind === 'accreditation' ? 'Источник записи' : 'Редакция справочника'}</p></Surface>
         </div>
         <SourceNote source={university.data.provenance} />
+        <AccreditationNote university={university.data} />
         {university.data.officialUrl && <a className="af-small-link" href={university.data.officialUrl} target="_blank" rel="noreferrer">Официальный сайт ↗</a>}
         <div className="af-section-heading"><h2>Программы университета</h2><Pill tone="blue">{courses.data?.total ?? '…'} направления</Pill></div>
         <div className="af-search-panel"><YearField value={year} years={university.data.years} onChange={value => update('year', value)} /></div>

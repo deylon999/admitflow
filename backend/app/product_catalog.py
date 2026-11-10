@@ -1,4 +1,5 @@
 """Read facade for v3. Old catalog and tracker contracts remain independent."""
+from datetime import datetime, time, timezone
 import re
 from typing import Literal
 
@@ -8,9 +9,10 @@ from sqlalchemy.orm import Session
 
 from .admissions import Campaign, CompetitionGroup, University
 from .catalog_import import expected_fields, reviewed_profiles
+from .accreditation_registry import SOURCE_URL as ACCREDITATION_URL, load_registry
 from .national_catalog import load_catalog
 from .product_catalog_schemas import (
-    CatalogProgram, CatalogUniversity, ProgramPage, Provenance, UniversityPage,
+    Accreditation, CatalogProgram, CatalogUniversity, ProgramPage, Provenance, UniversityPage,
 )
 
 
@@ -46,8 +48,36 @@ def programs(db):
     return result
 
 
+def accreditation(org, registry, method):
+    return Accreditation(status='active', ogrn=org.ogrn, inn=org.inn, certificate_number=org.certificate_number,
+                         bachelor_programs=org.bachelor_programs, specialist_programs=org.specialist_programs,
+                         branches_with_programs=org.branches_with_programs, departmental=org.departmental,
+                         match_method=method, dataset_date=registry.dataset_date.isoformat(), source_url=ACCREDITATION_URL)
+
+
+def region_key(value):
+    value = ' '.join(re.sub(r'[^0-9a-zа-яё]+', ' ', (value or '').casefold().replace('ё', 'е')).split())
+    value = re.sub(r'^(республика|г) ', '', value)
+    return re.sub(r' \(.*', '', value).split(' ')[0] if value else ''
+
+
+def registry_only(snapshot, registry):
+    """Domestic accredited organisations missing from the monitoring catalog, as their own records."""
+    regions = {region_key(r.region): r.region for r in snapshot.institutions}
+    verified = datetime.combine(registry.dataset_date, time.min, tzinfo=timezone.utc)
+    return [CatalogUniversity(
+        id=org.id, name=org.short_name or org.name, legal_name=org.name,
+        region=regions.get(region_key(org.region), org.region or 'Регион не указан'), is_branch=False,
+        official_url=org.official_url,
+        provenance=Provenance(url=ACCREDITATION_URL, verified_at=verified, kind='accreditation'),
+        known_program_count=0, years=[], accreditation=accreditation(org, registry, 'registry'),
+    ) for org in registry.registry_only]
+
+
 def universities(db):
     snapshot = load_catalog()
+    registry = load_registry()
+    matched = registry.by_catalog_id
     by_university = {}
     for program in programs(db):
         by_university.setdefault(program.university_id, []).append(program)
@@ -59,7 +89,9 @@ def universities(db):
                               kind='monitoring', edition=snapshot.edition),
         known_program_count=len(by_university.get(row.id, [])),
         years=sorted({p.year for p in by_university.get(row.id, [])}, reverse=True),
-    ) for row in snapshot.institutions]
+        accreditation=accreditation(matched[row.registry_id], registry, matched[row.registry_id].match_method)
+        if row.registry_id in matched and not row.is_branch else None,
+    ) for row in snapshot.institutions] + registry_only(snapshot, registry)
 
 
 def paginate(rows, offset, limit):
@@ -86,7 +118,8 @@ def install(app, database):
         matches.sort(key=lambda row: (row.name.casefold(), row.id), reverse=sort == 'name-desc')
         items, after = paginate(matches, offset, limit)
         return UniversityPage(items=items, total=len(matches), next_offset=after,
-                              regions=regions, registry_edition=load_catalog().edition)
+                              regions=regions, registry_edition=load_catalog().edition,
+                              accreditation_date=load_registry().dataset_date.isoformat())
 
     @app.get('/api/v1/catalog/universities/{university_id}', response_model=CatalogUniversity)
     def university_detail(university_id: str, db: Session = Depends(database)):

@@ -1,5 +1,8 @@
 """Verified public metadata, isolation, import atomicity and old API compatibility."""
 import pytest
+
+from app.accreditation_registry import load_registry
+from app.national_catalog import load_catalog
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
@@ -78,7 +81,9 @@ def test_year_subject_unknown_id_and_empty_search_do_not_invent_data(catalog):
 
 def test_unicode_search_region_sort_and_pagination(catalog):
     page = catalog.get(BASE + '/universities', params={'limit': 50}).json()
-    assert page['total'] == 1257 and page['nextOffset'] == 50
+    # 1257 monitoring records plus organisations found only in the accreditation register (KAN-217).
+    assert page['total'] == 1257 + len(load_registry().registry_only) and page['nextOffset'] == 50
+    assert page['accreditationDate'] == '2026-11-10'
     second = catalog.get(BASE + '/universities', params={'limit': 50, 'offset': 50}).json()
     assert not {r['id'] for r in page['items']} & {r['id'] for r in second['items']}
     region = catalog.get(BASE + '/universities', params={'region': 'Саратовская область'}).json()
@@ -132,3 +137,19 @@ def test_native_postgres_catalog_path(postgres_engine):
     with TestClient(app) as client:
         import_reviewed(app.state.engine)
         assert_catalog_path(client)
+
+
+def test_universities_show_accreditation_source_and_registry_only_records(catalog):
+    registry = load_registry()
+    sgu = catalog.get(BASE + '/universities/sgu-saratov').json()
+    assert sgu['accreditation']['status'] == 'active' and sgu['accreditation']['ogrn'] == registry.by_catalog_id['258'].ogrn
+    assert sgu['accreditation']['sourceUrl'] == 'https://isga.obrnadzor.gov.ru/accredreestr/opendata/'
+    assert sgu['provenance']['kind'] == 'monitoring'
+    only = registry.registry_only[0]
+    record = catalog.get(BASE + '/universities/' + only.id).json()
+    assert record['provenance']['kind'] == 'accreditation' and record['accreditation']['matchMethod'] == 'registry'
+    assert record['knownProgramCount'] == 0 and record['years'] == [] and record['legalName'] == only.name
+    page = catalog.get(BASE + '/universities', params={'q': only.ogrn[:0] + (only.short_name or only.name).split()[0]}).json()
+    assert page['total'] >= 1
+    branch = next(r for r in load_catalog().institutions if r.is_branch)
+    assert catalog.get(BASE + '/universities/' + branch.id).json()['accreditation'] is None
