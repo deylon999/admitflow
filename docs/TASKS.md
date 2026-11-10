@@ -4254,7 +4254,7 @@
 
 ### T250. Verify Compose PostgreSQL migrations and live catalog
 
-**Статус:** `blocked` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T248.
 
@@ -4272,8 +4272,7 @@
 **Доказательства:**
 
 - [docs/evidence/foundation-cleanup/infrastructure.json](../docs/evidence/foundation-cleanup/infrastructure.json) — Compose syntax check performed and actual db startup attempted. PostgreSQL and container smoke not verified; no workaround or volume deletion.
-
-**Причина блокировки/переноса:** Docker Compose up -d db denied access to docker_engine named pipe and Docker config. Resume only with permitted Docker/PostgreSQL environment, then verify migrations, APIs and browser catalog on actual PostgreSQL.
+- [docs/evidence/local-postgresql.md](../docs/evidence/local-postgresql.md) — S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim.
 
 ### T251. Run current backend and frontend regression checks
 
@@ -5476,6 +5475,33 @@
 **Доказательства:**
 
 - [docs/evidence/v3-production-api.md](../docs/evidence/v3-production-api.md) — Commit69275e6: shared HTTP/validated DTO/session/resource states;live existing catalog/subscriptions/groups/lookup-confirm/changes/coverage;explicit unsupported/demo. typecheck/lint/build exit0;84Chromium passed including29routes and16API tests. CSS/backend/migrations unchanged;PG T250 and hosted CI unverified;no push. Strict204 write acknowledgement regression passed.
+
+### T254. Run complete local Compose PostgreSQL stack with safe startup smoke
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T253.
+
+**Результаты/файлы:** `compose.yaml`; `scripts/local_smoke.py`; `README.md`; `docs/evidence/local-postgresql.md`.
+
+**Шаги:**
+
+1. Audit Compose environment and persistent mounts.
+2. Start real Docker PostgreSQL safely.
+3. Verify migrations and catalog import/API.
+4. Provide one reproducible smoke and README.
+5. Test persistence and record evidence commit.
+
+**Критерии закрытия:**
+
+- Actual Docker Compose backend frontend PostgreSQL startup; current=head;catalog import and API verified on PostgreSQL only.
+- Keep existing project volumes and applied migrations;backup before upgrade and verify stored history across restart;no volume deletion or fabricated product values.
+- One documented startup smoke command for new contributor;automated checks,commit and evidence with exact limitations.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/local-postgresql.md](../docs/evidence/local-postgresql.md) — S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim.
 
 ## E6. Резерв и выпуск
 

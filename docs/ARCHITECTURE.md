@@ -1,6 +1,6 @@
 # Архитектура AdmitFlow
 
-Актуально на S202, 2026-11-10. Один frontend и один backend; новая БД,
+Актуально на S203, 2026-11-10. Один frontend и один backend; новая БД,
 сервис или миграция при очистке не создавались.
 
 | Слой | Реализация / ответственность |
@@ -18,8 +18,9 @@
 
 Applied Alembic 0001–0011 неизменны. SQLite — изолированный dev/test контур,
 не доказательство совместимости native PostgreSQL. Обычный Docker Compose
-сохраняет существующие volumes. PostgreSQL и контейнеры в текущем sandbox
-не удалось запустить из-за запрета Docker Engine.
+сохраняет существующие volumes. В S203 Docker Desktop запущен с разрешённым доступом к Engine; реальный
+PostgreSQL/Compose проверен, прежний инфраструктурный блокер T250 снят.
+Полный старт: `python scripts/local_smoke.py`; [evidence](evidence/local-postgresql.md).
 
 Старые stateless `/calculate` и `/assess` удалены. Версионированная арифметика
 остаётся только для сохранённых manual snapshot/import/export, а не модели

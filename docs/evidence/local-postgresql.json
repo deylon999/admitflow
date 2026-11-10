@@ -1,0 +1,156 @@
+{
+  "recordedAt": "20261110T204015-c204d96f",
+  "project": "admitflow",
+  "success": true,
+  "checks": [
+    "postgresql-current-equals-head",
+    "alembic-model-check",
+    "import-repeatable",
+    "old-history-preserved",
+    "frontend-assets-spa-and-catalog-api",
+    "two-snapshot-history-survives-container-recreate",
+    "only-smoke-guest-cleaned-existing-history-identical"
+  ],
+  "backup": "test-results/local-start/20261110T204015-c204d96f-before-upgrade.dump",
+  "historyBefore": {
+    "watches": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "subscriptions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assessments": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "candidate_entries": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "published_snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "change_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "operation_records": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_operations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "schema": {
+    "dialect": "postgresql",
+    "serverVersion": [
+      17,
+      11
+    ],
+    "current": [
+      "0011"
+    ],
+    "heads": [
+      "0011"
+    ]
+  },
+  "catalog": {
+    "universities": 1257,
+    "programs": 2
+  },
+  "mounts": {
+    "db": [
+      [
+        "admitflow_postgres_data",
+        "/var/lib/postgresql/data"
+      ]
+    ],
+    "backend": [
+      [
+        "admitflow_raw_data",
+        "/app/var/raw"
+      ]
+    ]
+  },
+  "historyAfter": {
+    "watches": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "subscriptions": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "assessments": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "candidate_entries": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "published_snapshots": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "change_events": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "operation_records": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "source_operations": {
+      "rows": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "url": "http://127.0.0.1:8080",
+  "scope": "Actual existing-volume Docker Compose PostgreSQL full startup incl build;private dump is ignored and not published.",
+  "nativeRegression": {
+    "engine": "postgresql",
+    "isolation": "new admitflow_test_s203_* database and owned schemas;test database removed",
+    "passed": 11,
+    "deselected": 28,
+    "exitCode": 0
+  },
+  "launcherUnitTests": {
+    "passed": 5,
+    "exitCode": 0,
+    "scope": "failure paths,not PostgreSQL proof"
+  },
+  "browser": {
+    "engine": "Chromium",
+    "widths": [
+      390,
+      1440
+    ],
+    "realCatalogPrograms": 2,
+    "detailId": "sgu-2026-4576",
+    "pageErrors": 0,
+    "overflow": false,
+    "screenshotsViewed": true
+  }
+}

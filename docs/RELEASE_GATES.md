@@ -44,3 +44,10 @@ V3 build/193 browser checks и доступные Windows backend tests прох
 После выбора сервера применять production-процедуры [RUNBOOK.md](RUNBOOK.md):
 окружение/HTTPS, миграции, запуск, backup/restore, мониторинг, T046, T044, T051 и T052,
 затем релизный кандидат T053. Старые localhost-адреса не подтверждают deployment.
+
+## Локальный PostgreSQL — S203, 2026-11-10
+
+T250/T254 подтверждены реальным Compose/PostgreSQL: [evidence](evidence/local-postgresql.md).
+Docker-блокер локального старта снят; current=head0011,импорт/API/persistence
+и native regression tests прошли. Это не приёмка публичного staging/HTTPS,
+production restore или остальных release gates; completedGates не меняется.
