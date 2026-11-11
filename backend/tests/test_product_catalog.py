@@ -159,3 +159,15 @@ def test_universities_show_accreditation_source_and_registry_only_records(catalo
     assert page['total'] >= 1
     branch = next(r for r in load_catalog().institutions if r.is_branch)
     assert catalog.get(BASE + '/universities/' + branch.id).json()['accreditation'] is None
+
+
+def test_register_only_records_never_show_a_placeholder_as_the_name(catalog):
+    # The register holds "-" as the short name of some organisations; the full legal name is shown instead.
+    page = catalog.get(BASE + '/universities/raoo-1023100009900').json()
+    assert page['name'] == page['legalName'] and 'Белгородская' in page['name']
+    offset, names = 0, []
+    while offset is not None:
+        body = catalog.get(BASE + '/universities', params={'offset': offset, 'limit': 50}).json()
+        names += [u['name'] for u in body['items']]
+        offset = body['nextOffset']
+    assert all(sum(c.isalpha() for c in name) >= 3 for name in names)
