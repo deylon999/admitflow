@@ -13,6 +13,7 @@
 .af-catalog-detail .af-info-row b { text-align: right; }
 .af-catalog-detail .af-info-row a { color: var(--af-electric); }
 .af-catalog-detail .af-profile-hero--long-name h1 { font-size: clamp(30px, 3vw, 47px); letter-spacing: -.045em; }
+.af-catalog-detail .af-exam-source { margin-bottom: 14px; }
 @media (max-width: 650px) {
   /* Use v3's existing two-column card mode for real names that exceed demo labels. */
   .af-catalog-card { grid-template-columns: 54px minmax(0, 1fr); }

@@ -7943,6 +7943,43 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T258",
+      "title": "KAN-219: требования вступительных испытаний из официальных документов",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T255"
+      ],
+      "deliverables": [
+        "scripts/build_exam_requirements.py",
+        "backend/app/exam_requirements.py",
+        "backend/app/data/exam-requirements.json",
+        "docs/sources/exam-rules/sgu-2026.json",
+        "docs/evidence/kan-219-exam-requirements.md"
+      ],
+      "steps": [
+        "Ревью официального документа вуза с якорями и строками-доказательствами",
+        "Сборщик сверяет хеш документа и каждое значение с текстом",
+        "Строгий парсер и выдача только при точном совпадении года, кода, формы и уровня",
+        "API и страница программы, слой покрытия ЕГЭ",
+        "Тесты на повреждения, воспроизводимость и несовпадающие правила"
+      ],
+      "acceptance": [
+        "Для опубликованной группы читается полный состав известных требований, неизвестное null, источник проверяем",
+        "Импорт идемпотентен",
+        "E2E на реальном документе и несовпадающих правилах"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-219-exam-requirements.md",
+          "note": "S206 SGU 09.03.04 and 02.03.03 (2026): math 40, informatics 46 or physics (null: document says 41 and 40), Russian 40; source PDF 2026-06-08 sha256 936121ed, cross-check sgu.ru/cpk. Builder refuses facts not in the document; artifact rebuilt byte-identical. Layer 1/785. Benefits not collected; other universities not reviewed."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

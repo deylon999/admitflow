@@ -43,6 +43,46 @@ function university(value: unknown) {
         accreditation(p.accreditation);
     return p;
 }
+function examTests(value: unknown) {
+    const tests = array(value, item => {
+        const t = object(item);
+        const options = array(t.options, raw => {
+            const o = object(raw);
+            if (Object.keys(o).length !== 3 || !/^[a-z]+$/.test(text(o.subject)))
+                invalid();
+            text(o.title);
+            if (o.minScore !== null && (count(o.minScore) < 1 || (o.minScore as number) > 100))
+                invalid();
+            return o;
+        });
+        if (Object.keys(t).length !== 2 || !options.length)
+            invalid();
+        return { position: count(t.position) };
+    });
+    // Tests are numbered as in the document, 1..N without gaps.
+    if (tests.some((t, i) => t.position !== i + 1))
+        invalid();
+}
+function examRequirements(value: unknown) {
+    const p = object(value);
+    if (Object.keys(p).length !== 5 || p.benefits !== null)
+        invalid();
+    examTests(p.tests);
+    if (!(p.tests as unknown[]).length)
+        invalid();
+    if (p.additionalTests !== null)
+        examTests(p.additionalTests);
+    array(p.notes, text);
+    const s = object(p.source);
+    url(s.url);
+    text(s.title);
+    date(s.documentDate);
+    date(s.checkedAt);
+    if (!/^[a-f0-9]{64}$/.test(text(s.sha256)))
+        invalid();
+    if (s.crossCheckUrl !== null)
+        url(s.crossCheckUrl);
+}
 function program(value: unknown) {
     const p = object(value);
     for (const k of ['id', 'title', 'universityId', 'universityName', 'region', 'campaignId', 'level', 'studyForm', 'funding', 'category'])
@@ -52,9 +92,11 @@ function program(value: unknown) {
         text(p.code);
     if (p.seats !== null)
         count(p.seats);
-    for (const k of ['historicalCutoff', 'examRequirements', 'forecast'])
+    for (const k of ['historicalCutoff', 'forecast'])
         if (p[k] !== null)
             invalid();
+    if (p.examRequirements !== null)
+        examRequirements(p.examRequirements);
     provenance(p.provenance);
     return p;
 }

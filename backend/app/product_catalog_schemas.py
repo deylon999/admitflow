@@ -43,6 +43,38 @@ class CatalogUniversity(CamelModel):
     accreditation: Accreditation | None = None
 
 
+class ExamOption(CamelModel):
+    subject: str
+    title: str
+    # None: the document does not state the minimum consistently or at all.
+    min_score: int | None
+
+
+class ExamTest(CamelModel):
+    position: int
+    options: list[ExamOption]
+
+
+class ExamSource(CamelModel):
+    url: str
+    title: str
+    document_date: str
+    sha256: str
+    checked_at: datetime
+    cross_check_url: str | None
+
+
+class ExamRequirements(CamelModel):
+    """Entrance tests from the university's official document, reviewed and checked against its text."""
+    tests: list[ExamTest]
+    # Empty list: the document names no additional tests; None: not collected.
+    additional_tests: list[ExamTest] | None
+    # Special rights and quotas are not collected yet.
+    benefits: None = None
+    notes: list[str]
+    source: ExamSource
+
+
 class CatalogProgram(CamelModel):
     id: str
     university_id: str
@@ -57,10 +89,10 @@ class CatalogProgram(CamelModel):
     funding: str
     category: str
     seats: int | None
-    # These fields have no verified dataset yet. A schema deliberately forbids
-    # returning inferred cutoffs, examination rules or model probabilities.
+    # No verified dataset yet. The schema forbids inferred cutoffs and model probabilities.
     historical_cutoff: None = None
-    exam_requirements: None = None
+    # None unless reviewed rules exist for exactly this year, level, code and study form.
+    exam_requirements: ExamRequirements | None = None
     forecast: None = None
     provenance: Provenance
 
