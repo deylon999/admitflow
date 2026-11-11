@@ -1,12 +1,20 @@
 # Еженедельный отчёт
 
-Отчёт за неделю (понедельник–воскресенье) публикуется в `docs/reports/<год>-W<неделя>.md`, черновик собирается скриптом:
+Отчёт за неделю (понедельник–воскресенье) собирается в PDF и отправляется в чат команды. В проекте отчёты не хранятся.
 
 ```
-python scripts/weekly_report.py --week 2026-W46 --output docs/reports/2026-W46.md
+pip install -r scripts/requirements-report.txt
+python scripts/weekly_report.py --week 2026-W46 --extra notes.json
 ```
 
-Скрипт берёт факты из git и `docs/TASKS.json`. Срок, риски и пропущенные связи дописывает ответственный.
+Скрипт печатает путь к PDF (по умолчанию во временной папке системы). Факты берутся из git и `docs/TASKS.json`. Срок, риски и строки, о которых репозиторий не знает, добавляются файлом `--extra`:
+
+```json
+{"rows": [{"section": "progress", "task": "KAN-218", "what": "…", "status": "В работе", "deadline": "", "evidence": "…", "owner": "…"}],
+ "risks": ["…"]}
+```
+
+`--format md` печатает тот же отчёт в Markdown, чтобы вставить текстом.
 
 ## Разделы
 

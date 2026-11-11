@@ -7983,7 +7983,7 @@
     },
     {
       "id": "T259",
-      "title": "KAN-24: еженедельный отчёт: шаблон и генератор черновика",
+      "title": "KAN-24: еженедельный отчёт: шаблон и PDF для чата команды",
       "phase": "E4",
       "priority": "P2",
       "size": "S",
@@ -7992,22 +7992,23 @@
       "deliverables": [
         "docs/WEEKLY_REPORT.md",
         "scripts/weekly_report.py",
-        "scripts/tests/test_weekly_report.py",
-        "docs/reports/2026-W46.md"
+        "scripts/requirements-report.txt",
+        "scripts/tests/test_weekly_report.py"
       ],
       "steps": [
         "Шаблон: сделано, на проверке, в работе, заблокировано, сроки, доказательства, ответственный",
         "Генератор из git и TASKS.json: Done только после слияния в main, сроки не выдумываются",
-        "Первый отчёт за 2026-W46"
+        "PDF во временной папке для отправки в чат; отчёты в проекте не хранятся",
+        "Первый отчёт за 2026-W46 отправлен в чат"
       ],
       "acceptance": [
         "Шаблон содержит сделано, в работе, заблокировано, сроки, доказательства, ответственного",
-        "Есть первый отчёт со ссылками на коммиты и evidence"
+        "Отчёт выходит PDF-файлом со ссылками на коммиты и evidence и не хранится в проекте"
       ],
       "evidence": [
         {
-          "path": "docs/reports/2026-W46.md",
-          "note": "S206 template docs/WEEKLY_REPORT.md; draft from scripts/weekly_report.py (4 unit tests) with manual risks; agreement with the team lead is a team step outside the repository."
+          "path": "docs/WEEKLY_REPORT.md",
+          "note": "S207 PDF via reportlab with embedded Cyrillic font and clickable commit links; extra rows and risks from --extra; 7 unit tests incl. PDF text and links via pypdf. Reports are not committed (.gitignore admitflow-weekly-*.pdf); 2026-W46 sent to chat. Agreement with the team lead is a team step."
         }
       ],
       "blockedReason": null

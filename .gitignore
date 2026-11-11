@@ -18,3 +18,6 @@ backend/var/
 # Local tooling used for exact frontend verification
 .npm-cache/
 .qa-tools/
+
+# Weekly reports are sent to the team chat, not kept in the project (KAN-24).
+admitflow-weekly-*.pdf
