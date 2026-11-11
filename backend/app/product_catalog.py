@@ -78,12 +78,18 @@ def region_key(value):
     return re.sub(r' \(.*', '', value).split(' ')[0] if value else ''
 
 
+def display_name(org):
+    """Short name from the register when it is a real name; some records hold a dash or nothing there."""
+    short = (org.short_name or '').strip()
+    return short if len(re.findall(r'[A-Za-zА-Яа-яЁё]', short)) >= 3 else org.name
+
+
 def registry_only(snapshot, registry):
     """Domestic accredited organisations missing from the monitoring catalog, as their own records."""
     regions = {region_key(r.region): r.region for r in snapshot.institutions}
     verified = datetime.combine(registry.dataset_date, time.min, tzinfo=timezone.utc)
     return [CatalogUniversity(
-        id=org.id, name=org.short_name or org.name, legal_name=org.name,
+        id=org.id, name=display_name(org), legal_name=org.name,
         region=regions.get(region_key(org.region), org.region or 'Регион не указан'), is_branch=False,
         official_url=org.official_url,
         provenance=Provenance(url=ACCREDITATION_URL, verified_at=verified, kind='accreditation'),

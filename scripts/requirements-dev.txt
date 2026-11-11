@@ -1,0 +1,2 @@
+-r requirements-report.txt
+pypdf==5.1.0
