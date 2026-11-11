@@ -4424,29 +4424,30 @@
 
 - [docs/evidence/kan-219-exam-requirements.md](../docs/evidence/kan-219-exam-requirements.md) — S206 SGU 09.03.04 and 02.03.03 (2026): math 40, informatics 46 or physics (null: document says 41 and 40), Russian 40; source PDF 2026-06-08 sha256 936121ed, cross-check sgu.ru/cpk. Builder refuses facts not in the document; artifact rebuilt byte-identical. Layer 1/785. Benefits not collected; other universities not reviewed.
 
-### T259. KAN-24: еженедельный отчёт: шаблон и генератор черновика
+### T259. KAN-24: еженедельный отчёт: шаблон и PDF для чата команды
 
 **Статус:** `done` · **Приоритет:** P2 · **Размер:** S.
 
 **Зависимости:** нет.
 
-**Результаты/файлы:** `docs/WEEKLY_REPORT.md`; `scripts/weekly_report.py`; `scripts/tests/test_weekly_report.py`; `docs/reports/2026-W46.md`.
+**Результаты/файлы:** `docs/WEEKLY_REPORT.md`; `scripts/weekly_report.py`; `scripts/requirements-report.txt`; `scripts/tests/test_weekly_report.py`.
 
 **Шаги:**
 
 1. Шаблон: сделано, на проверке, в работе, заблокировано, сроки, доказательства, ответственный.
 2. Генератор из git и TASKS.json: Done только после слияния в main, сроки не выдумываются.
-3. Первый отчёт за 2026-W46.
+3. PDF во временной папке для отправки в чат; отчёты в проекте не хранятся.
+4. Первый отчёт за 2026-W46 отправлен в чат.
 
 **Критерии закрытия:**
 
 - Шаблон содержит сделано, в работе, заблокировано, сроки, доказательства, ответственного.
-- Есть первый отчёт со ссылками на коммиты и evidence.
+- Отчёт выходит PDF-файлом со ссылками на коммиты и evidence и не хранится в проекте.
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
 
-- [docs/reports/2026-W46.md](../docs/reports/2026-W46.md) — S206 template docs/WEEKLY_REPORT.md; draft from scripts/weekly_report.py (4 unit tests) with manual risks; agreement with the team lead is a team step outside the repository.
+- [docs/WEEKLY_REPORT.md](../docs/WEEKLY_REPORT.md) — S207 PDF via reportlab with embedded Cyrillic font and clickable commit links; extra rows and risks from --extra; 7 unit tests incl. PDF text and links via pypdf. Reports are not committed (.gitignore admitflow-weekly-*.pdf); 2026-W46 sent to chat. Agreement with the team lead is a team step.
 
 ## E5. Качество и эксплуатация
 

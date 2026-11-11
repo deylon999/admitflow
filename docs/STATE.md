@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-11. Последняя сессия: S206.
+Дата: 2026-11-11. Последняя сессия: S207.
 
 ## Продолжение
 
@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Work branch zarbondo (PR #8). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228 (merged), T257/KAN-220, T258/KAN-219, KAN-24 report template. Next: KAN-218/227 data at national scale. Exam rules: python scripts/build_exam_requirements.py --pdf <doc>. Weekly report: python scripts/weekly_report.py --week <YYYY-Www>.
+Work branch zarbondo (PR #9). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228 (merged), T257/KAN-220, T258/KAN-219, KAN-24 report template. Next: KAN-218/227 data at national scale. Exam rules: python scripts/build_exam_requirements.py --pdf <doc>. Weekly report PDF: python scripts/weekly_report.py --week <YYYY-Www> --extra notes.json (not kept in the project).
 
 ## Последняя завершённая работа
 
