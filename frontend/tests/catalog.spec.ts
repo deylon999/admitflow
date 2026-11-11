@@ -25,8 +25,22 @@ for (const width of [390, 1440]) {
     await expect(page.locator('.af-info-row').filter({ hasText: 'Бюджетных мест' })).toContainText('16');
     await expect(page.locator('.af-info-row').filter({ hasText: 'Приёмная кампания' })).toContainText('2026');
     await expect(page.locator('.af-spotlight')).toContainText('Нет данных');
-    await expect(page.locator('.af-catalog-source a')).toHaveAttribute('href', 'https://www.sgu.ru/svodka/4588');
-    await expect(page.locator('.af-catalog-source')).toContainText('03.11.2026');
+    const listSource = page.locator('.af-catalog-source').filter({ hasText: 'Источник ↗' });
+    await expect(listSource.locator('a')).toHaveAttribute('href', 'https://www.sgu.ru/svodka/4588');
+    await expect(listSource).toContainText('03.11.2026');
+    // KAN-219: entrance tests from the university's document; an inconsistent minimum stays unconfirmed.
+    const exams = page.locator('.af-card-grid-3 .af-surface');
+    await expect(exams).toHaveCount(3);
+    await expect(exams.nth(0)).toContainText('Математика (профильная)');
+    await expect(exams.nth(0)).toContainText('от 40');
+    await expect(exams.nth(1)).toContainText('НА ВЫБОР');
+    await expect(exams.nth(1).locator('.af-info-row').filter({ hasText: 'Информатика' })).toContainText('от 46');
+    await expect(exams.nth(1).locator('.af-info-row').filter({ hasText: 'Физика' })).toContainText('минимум не подтверждён');
+    await expect(exams.nth(2)).toContainText('Русский язык');
+    const examSource = page.locator('.af-catalog-source').filter({ hasText: 'Документ вуза' });
+    await expect(examSource).toContainText('08.06.2026');
+    await expect(examSource.locator('a').first()).toHaveAttribute('href', /^https:\/\/www\.sgu\.ru\/sites\/default\/files\/page\/files\/perechen-/);
+    await expect(page.locator('.af-main')).toContainText('Минимальный балл по физике указан в документе по-разному');
     await expect(page.locator('.af-main')).not.toContainText('74%');
     await page.reload();
     await expect(page.locator('.af-info-row').filter({ hasText: 'Бюджетных мест' })).toContainText('16');
@@ -124,6 +138,26 @@ test('a late response cannot replace the current search', async ({ page }) => {
   await expect(page.locator('.af-program-card')).toContainText('Программная инженерия');
 });
 
+type RawExams = { tests: { position: number; options: { minScore: number | null }[] }[]; benefits: unknown; chance?: number };
+for (const [name, damage] of [
+  ['score above 100', (e: RawExams) => { e.tests[0].options[0].minScore = 140; }],
+  ['gap in numbering', (e: RawExams) => { e.tests[1].position = 3; }],
+  ['unexpected field', (e: RawExams) => { e.chance = 0.7; }],
+  ['benefits claimed', (e: RawExams) => { e.benefits = []; }],
+] as const) {
+  test(`damaged exam requirements are an error, never shown: ${name}`, async ({ page }) => {
+    await page.route('**/api/v1/catalog/programs/sgu-2026-4588', async route => {
+      const response = await route.fetch();
+      const body = await response.json();
+      damage(body.examRequirements);
+      await route.fulfill({ response, json: body });
+    });
+    await page.goto(program);
+    await expect(page.getByRole('alert')).toContainText('Не удалось загрузить данные');
+    await expect(page.locator('.af-main')).not.toContainText('Математика (профильная)');
+  });
+}
+
 test('an HTML fallback is an error, never demo catalog data', async ({ page }) => {
   await page.route('**/api/v1/catalog/universities?**', route => route.fulfill({ status: 200, contentType: 'text/html', body: '<div id="root"></div>' }));
   await page.goto('/universities');
@@ -182,7 +216,8 @@ test('national coverage dashboard keeps layers apart and exports the report', as
   await expect(layers.nth(0)).toContainText('675 из 785');
   await expect(layers.nth(0)).toContainText('Порог достигнут');
   await expect(layers.nth(1)).toContainText('Ниже порога');
-  await expect(layers.nth(2)).toContainText('0,0%');
+  await expect(layers.nth(2)).toContainText('1 из 785');
+  await expect(layers.nth(2)).toContainText('Ниже порога');
   await expect(page.locator('.af-coverage-denominator')).toContainText('10.11.2026');
   await expect(page.locator('.af-coverage-regions tbody tr')).toHaveCount(15);
   await page.getByRole('button', { name: /Все регионы/ }).click();

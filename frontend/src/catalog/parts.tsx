@@ -1,6 +1,6 @@
 import { RouteLink } from '../app/RouteLink';
 import { Surface } from '../shared/UI';
-import type { CatalogPage, CatalogProgram, Provenance, University } from './types';
+import type { CatalogPage, CatalogProgram, ExamRequirements, ExamTest, Provenance, University } from './types';
 
 export const unknown = 'Нет данных';
 export const formName = (value: string) => ({ 'full-time': 'Очная', 'part-time': 'Очно-заочная', mixed: 'Смешанная' }[value] ?? unknown);
@@ -69,6 +69,36 @@ export function Pagination({ page, offset, onOffset }: {
     <span aria-live="polite">{Math.min(offset + 1, page.total)}–{Math.min(offset + page.items.length, page.total)} из {page.total}</span>
     <button type="button" className="af-action af-action--outline" disabled={page.nextOffset === null} onClick={() => onOffset(page.nextOffset!)}>Далее</button>
   </nav>;
+}
+
+const day = (value: string) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(value));
+
+function ExamCard({ test }: { test: ExamTest }) {
+  return <Surface tone="soft">
+    <span className="af-eyebrow">{test.options.length > 1 ? `ИСПЫТАНИЕ ${test.position} · НА ВЫБОР` : `ИСПЫТАНИЕ ${test.position}`}</span>
+    {test.options.map((option, index) => <div className="af-info-row" key={option.subject}>
+      <span>{index ? 'или ' : ''}{option.title}</span>
+      <b>{option.minScore === null ? 'минимум не подтверждён' : `от ${option.minScore}`}</b>
+    </div>)}
+  </Surface>;
+}
+
+export function ExamRequirementsView({ exams }: { exams: ExamRequirements }) {
+  const extra = exams.additionalTests;
+  return <>
+    <div className="af-card-grid-3">{exams.tests.map(test => <ExamCard key={test.position} test={test} />)}</div>
+    {extra && extra.length > 0 && <div className="af-card-grid-3">{extra.map(test => <ExamCard key={`extra-${test.position}`} test={test} />)}</div>}
+    <Surface title="Откуда требования" className="af-exam-source">
+      <div className="af-info-row"><span>Дополнительные испытания</span><b>{extra === null ? unknown : extra.length ? extra.length : 'Нет'}</b></div>
+      <div className="af-info-row"><span>Особые права и льготы</span><b>{unknown}</b></div>
+      {exams.notes.map(note => <p className="af-caption" key={note}>{note}</p>)}
+      <p className="af-caption af-catalog-source">
+        <a href={exams.source.url} target="_blank" rel="noreferrer">Документ вуза от <time dateTime={exams.source.documentDate}>{day(exams.source.documentDate)}</time> ↗</a>
+        {exams.source.crossCheckUrl && <>{' · '}<a href={exams.source.crossCheckUrl} target="_blank" rel="noreferrer">Сверено с таблицей на сайте ↗</a></>}
+        {' · '}Проверено: <time dateTime={exams.source.checkedAt}>{day(exams.source.checkedAt)}</time>
+      </p>
+    </Surface>
+  </>;
 }
 
 export function MissingExams() {

@@ -1,7 +1,7 @@
 import { Action, EmptyMessage, PageTitle, Pill, Surface } from '../shared/UI';
 import { RouteLink } from '../app/RouteLink';
 import { YearField } from './CatalogPages';
-import { AccreditationNote, CatalogCard, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
+import { AccreditationNote, CatalogCard, ExamRequirementsView, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
 import { useCatalog, useCatalogFilters } from './state';
 import type { CatalogProgram, ProgramResults, University } from './types';
 
@@ -68,7 +68,7 @@ export function ProgramDetail({ id }: { id: string }) {
           </Surface>
         </div>
         <div className="af-section-heading"><h2>Какие экзамены учитывать</h2></div>
-        <div className="af-card-grid-3"><MissingExams /></div>
+        {item.examRequirements ? <ExamRequirementsView exams={item.examRequirements} /> : <div className="af-card-grid-3"><MissingExams /></div>}
         <Surface title="Источник данных">
           <SourceNote source={item.provenance} />
           <p>Количество мест относится к указанному конкурсу и архивной кампании {item.year} года.</p>

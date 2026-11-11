@@ -43,8 +43,14 @@ def assert_catalog_path(client):
     assert program['provenance']['verifiedAt'].startswith('2026-11-03')
     assert program['provenance']['sourceUpdatedAt'] is None
     assert len(program['provenance']['originalSha256']) == 64
-    for field in ('forecast', 'examRequirements', 'historicalCutoff'):
+    for field in ('forecast', 'historicalCutoff'):
         assert program[field] is None
+    exams = program['examRequirements']
+    assert [[(o['subject'], o['minScore']) for o in t['options']] for t in exams['tests']] == [
+        [('math', 40)], [('informatics', 46), ('physics', None)], [('russian', 40)]]
+    assert exams['additionalTests'] == [] and exams['benefits'] is None
+    assert exams['source']['documentDate'] == '2026-06-08' and exams['source']['url'].startswith('https://www.sgu.ru/')
+    assert any('физике' in note for note in exams['notes'])
     assert not {'entries', 'candidateKey', 'chance', 'position'} & program.keys()
 
 

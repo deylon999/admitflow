@@ -11,8 +11,10 @@ from .admissions import Campaign, CompetitionGroup, University
 from .catalog_import import expected_fields, reviewed_profiles
 from .accreditation_registry import SOURCE_URL as ACCREDITATION_URL, load_registry
 from .national_catalog import load_catalog
+from .exam_requirements import SUBJECTS, for_group
 from .product_catalog_schemas import (
-    Accreditation, CatalogProgram, CatalogUniversity, ProgramPage, Provenance, UniversityPage,
+    Accreditation, CatalogProgram, CatalogUniversity, ExamOption, ExamRequirements, ExamSource, ExamTest, ProgramPage,
+    Provenance, UniversityPage,
 )
 
 
@@ -42,10 +44,25 @@ def programs(db):
             year=campaign.year, level=campaign.level, code=code[0] if code else None,
             title=group.title, study_form=group.study_form, funding=group.funding,
             category=group.category, seats=group.seats,
+            exam_requirements=exam_requirements(group, campaign, code[0] if code else None),
             provenance=Provenance(url=profile.url, verified_at=profile.proof.verified_at,
                                   kind='archive', original_sha256=profile.proof.original_sha256),
         ))
     return result
+
+
+def exam_requirements(group, campaign, code):
+    rules = for_group(group.id, year=campaign.year, level=campaign.level, code=code, study_form=group.study_form) if code else None
+    if rules is None:
+        return None
+    def tests(items):
+        return [ExamTest(position=t.position, options=[ExamOption(subject=o.subject, title=SUBJECTS[o.subject], min_score=o.min_score)
+                                                        for o in t.options]) for t in items]
+    source = rules.source
+    return ExamRequirements(
+        tests=tests(rules.tests), additional_tests=None if rules.additional_tests is None else tests(rules.additional_tests),
+        notes=list(rules.notes), source=ExamSource(url=source.url, title=source.title, document_date=source.document_date.isoformat(),
+                                                   sha256=source.sha256, checked_at=source.checked_at, cross_check_url=source.cross_check_url))
 
 
 def accreditation(org, registry, method):

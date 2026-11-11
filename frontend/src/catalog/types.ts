@@ -34,6 +34,16 @@ export type University = {
   accreditation: Accreditation | null;
 };
 
+export type ExamOption = { subject: string; title: string; minScore: number | null };
+export type ExamTest = { position: number; options: ExamOption[] };
+export type ExamRequirements = {
+  tests: ExamTest[];
+  additionalTests: ExamTest[] | null;
+  benefits: null;
+  notes: string[];
+  source: { url: string; title: string; documentDate: string; sha256: string; checkedAt: string; crossCheckUrl: string | null };
+};
+
 export type CatalogProgram = {
   id: string;
   universityId: string;
@@ -49,7 +59,7 @@ export type CatalogProgram = {
   category: string;
   seats: number | null;
   historicalCutoff: null;
-  examRequirements: null;
+  examRequirements: ExamRequirements | null;
   forecast: null;
   provenance: Provenance;
 };

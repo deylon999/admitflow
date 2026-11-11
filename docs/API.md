@@ -11,7 +11,7 @@ unknown facts — null. Dev OpenAPI: `/api/openapi.json`; production docs зак
 | GET `/api/v1/catalog/universities` | q/region ≤120, offset 0..100000, limit 1..50 (12 default), sort name/name-desc; items/total/nextOffset/regions/registryEdition |
 | GET `/api/v1/catalog/universities/{id}` | stable ID, name/legalName/region/isBranch/officialUrl, provenance, knownProgramCount, years |
 | GET `/api/v1/catalog/programs` | q/universityId/year/subject, offset/limit/sort; items/total/nextOffset/years/subjects |
-| GET `/api/v1/catalog/programs/{id}` | campaign-scoped ID, вуз/код/название, year, форма/funding/category/seats, provenance; historicalCutoff/examRequirements/forecast пока null |
+| GET `/api/v1/catalog/programs/{id}` | campaign-scoped ID, вуз/код/название, year, форма/funding/category/seats, provenance; examRequirements: испытания по порядку документа, варианты на выбор, minScore или null, additionalTests ([] = нет, null = не собрано), benefits всегда null, notes, source (url, дата документа, sha256, дата проверки, сверка). null, если проверенных правил для этого года, кода и формы нет. historicalCutoff/forecast пока null |
 
 Unknown ID →404, invalid filters →422. Year 2000..2100, отсутствие совпадения
 не подменяется другой кампанией. knownProgramCount — число подтверждённых

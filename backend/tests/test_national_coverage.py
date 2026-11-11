@@ -30,10 +30,11 @@ def test_layers_are_measured_separately_against_the_register(imported):
     assert by_id['registry']['covered'] == registry.matched_catalog_heads and by_id['registry']['targetMet'] is True
     # Reviewed programmes exist for a handful of universities only; the report must say so.
     assert 0 < by_id['programs']['covered'] < 0.05 * registry.denominator and by_id['programs']['targetMet'] is False
-    assert by_id['examRequirements']['covered'] == 0 and by_id['examRequirements']['share'] == 0
+    # Reviewed entrance tests exist for SGU programmes only.
+    assert by_id['examRequirements']['covered'] == 1 and by_id['examRequirements']['targetMet'] is False
     assert report['target'] == TARGET == 0.6
     years = {row['year']: row for row in report['byYear']}
-    assert years and all(row['examRequirements'] == 0 for row in years.values())
+    assert years and years[2026]['examRequirements'] == 1
     assert sum(r['total'] for r in report['regions']) == registry.denominator
     assert report['gaps']['headsWithoutPrograms'] == registry.denominator - by_id['programs']['covered']
 

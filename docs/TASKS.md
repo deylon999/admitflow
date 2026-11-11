@@ -4397,6 +4397,57 @@
 
 - [docs/evidence/kan-220-source-adapters.md](../docs/evidence/kan-220-source-adapters.md) — S205 HTML (SGU, 4 table variants), JSON and CSV through one Adapter/Registry; enqueue-all spreads same-domain starts, skips unattested by reason; 18 new tests incl. PostgreSQL worker; manual run on 6 sources/5 domains. PDF not done; JSON/CSV PROFILES empty until a source is reviewed.
 
+### T258. KAN-219: требования вступительных испытаний из официальных документов
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T255.
+
+**Результаты/файлы:** `scripts/build_exam_requirements.py`; `backend/app/exam_requirements.py`; `backend/app/data/exam-requirements.json`; `docs/sources/exam-rules/sgu-2026.json`; `docs/evidence/kan-219-exam-requirements.md`.
+
+**Шаги:**
+
+1. Ревью официального документа вуза с якорями и строками-доказательствами.
+2. Сборщик сверяет хеш документа и каждое значение с текстом.
+3. Строгий парсер и выдача только при точном совпадении года, кода, формы и уровня.
+4. API и страница программы, слой покрытия ЕГЭ.
+5. Тесты на повреждения, воспроизводимость и несовпадающие правила.
+
+**Критерии закрытия:**
+
+- Для опубликованной группы читается полный состав известных требований, неизвестное null, источник проверяем.
+- Импорт идемпотентен.
+- E2E на реальном документе и несовпадающих правилах.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-219-exam-requirements.md](../docs/evidence/kan-219-exam-requirements.md) — S206 SGU 09.03.04 and 02.03.03 (2026): math 40, informatics 46 or physics (null: document says 41 and 40), Russian 40; source PDF 2026-06-08 sha256 936121ed, cross-check sgu.ru/cpk. Builder refuses facts not in the document; artifact rebuilt byte-identical. Layer 1/785. Benefits not collected; other universities not reviewed.
+
+### T259. KAN-24: еженедельный отчёт: шаблон и генератор черновика
+
+**Статус:** `done` · **Приоритет:** P2 · **Размер:** S.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/WEEKLY_REPORT.md`; `scripts/weekly_report.py`; `scripts/tests/test_weekly_report.py`; `docs/reports/2026-W46.md`.
+
+**Шаги:**
+
+1. Шаблон: сделано, на проверке, в работе, заблокировано, сроки, доказательства, ответственный.
+2. Генератор из git и TASKS.json: Done только после слияния в main, сроки не выдумываются.
+3. Первый отчёт за 2026-W46.
+
+**Критерии закрытия:**
+
+- Шаблон содержит сделано, в работе, заблокировано, сроки, доказательства, ответственного.
+- Есть первый отчёт со ссылками на коммиты и evidence.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/reports/2026-W46.md](../docs/reports/2026-W46.md) — S206 template docs/WEEKLY_REPORT.md; draft from scripts/weekly_report.py (4 unit tests) with manual risks; agreement with the team lead is a team step outside the repository.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

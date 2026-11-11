@@ -1,0 +1,54 @@
+{
+  "source": {
+    "id": "sgu-2026-entrance-tests",
+    "universityId": "sgu-saratov",
+    "title": "Информация о перечне и формах проведения вступительных испытаний по программам бакалавриата и специалитета в СГУ имени Н.Г. Чернышевского в 2026 году (из Правил приёма, гл. III)",
+    "url": "https://www.sgu.ru/sites/default/files/page/files/perechen-napravleniy-podgotovki-bakalavriata-i-specialiteta-v-sgu-2026-08-06-2026.pdf",
+    "documentDate": "2026-06-08",
+    "sha256": "936121ed4c0454f562b3d7ca3c6979a339dadb140613486856b52c757bf26903",
+    "pages": [4, 11],
+    "checkedAt": "2026-11-11T09:40:00+00:00",
+    "crossCheck": {
+      "url": "https://www.sgu.ru/cpk",
+      "note": "Таблица «Приёмная кампания 2026» на сайте СГУ: для 02.03.03 и 09.03.04 (очная) русский язык, математика, информатика и ИКТ / физика. Набор предметов совпадает, минимальных баллов в таблице нет."
+    }
+  },
+  "block": {
+    "start": "ФАКУЛЬТЕТ КОМПЬЮТЕРНЫХ НАУК И ИНФОРМАЦИОННЫХ ТЕХНОЛОГИЙ",
+    "end": "10.05.01 Компьютерная безопасность",
+    "evidence": ["1. математика (ПУ) 40", "2. информатика / 46", "физика 41", "3. русский язык 40"]
+  },
+  "conflicts": [
+    {
+      "subject": "physics",
+      "evidence": ["физика 41", "Физика 40"],
+      "note": "Минимальный балл по физике указан в документе по-разному: 41 в таблице направлений факультета и 40 в п. 18 (по приказу Минобрнауки № 881). Пока вуз не уточнит, балл не показываем."
+    }
+  ],
+  "groups": [
+    {
+      "groupId": "sgu-2026-4588", "year": 2026, "level": "bachelor", "code": "09.03.04", "studyForm": "full-time",
+      "anchor": "09.03.04 Программная инженерия",
+      "tests": [
+        {"position": 1, "options": [{"subject": "math", "minScore": 40}]},
+        {"position": 2, "options": [{"subject": "informatics", "minScore": 46}, {"subject": "physics", "minScore": null}]},
+        {"position": 3, "options": [{"subject": "russian", "minScore": 40}]}
+      ],
+      "additionalTests": [],
+      "benefits": null,
+      "notes": ["Через косую черту в документе указан предмет по выбору поступающего. Порядок испытаний как в документе. Дополнительных испытаний для направления нет (п. 19 их не называет). Особые права и льготы не собраны."]
+    },
+    {
+      "groupId": "sgu-2026-4576", "year": 2026, "level": "bachelor", "code": "02.03.03", "studyForm": "full-time",
+      "anchor": "02.03.03 Математическое обеспечение и",
+      "tests": [
+        {"position": 1, "options": [{"subject": "math", "minScore": 40}]},
+        {"position": 2, "options": [{"subject": "informatics", "minScore": 46}, {"subject": "physics", "minScore": null}]},
+        {"position": 3, "options": [{"subject": "russian", "minScore": 40}]}
+      ],
+      "additionalTests": [],
+      "benefits": null,
+      "notes": ["Через косую черту в документе указан предмет по выбору поступающего. Порядок испытаний как в документе. Дополнительных испытаний для направления нет (п. 19 их не называет). Особые права и льготы не собраны."]
+    }
+  ]
+}
