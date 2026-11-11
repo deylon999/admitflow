@@ -4370,6 +4370,33 @@
 
 - [docs/evidence/kan-228-competition-pages.md](../docs/evidence/kan-228-competition-pages.md) — S204 /api/v1/competitions/{id}, /rows, /summary; pages /app/competitions, /{id}, /{id}/competitors. Official order only, no identifiers in responses (tested), frontend rejects extra row fields, own row only after confirmation. 4 backend tests, 4 browser tests; SGU archive 573 rows viewed at 1440/390.
 
+### T257. KAN-220: JSON/CSV адаптеры через общий интерфейс и массовая очередь
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T255.
+
+**Результаты/файлы:** `backend/app/sources/structured_family.py`; `backend/app/jobs.py`; `backend/tests/test_structured_family.py`; `docs/evidence/kan-220-source-adapters.md`.
+
+**Шаги:**
+
+1. Строгие декодеры JSON и CSV по проверенному профилю.
+2. Подключение к runtime registry только с аттестацией.
+3. enqueue_all: массовая постановка с разносом по доменам и без дублей.
+4. Интеграционные тесты PostgreSQL: повторный импорт и сбой.
+5. Ручная проверка на 6 зарегистрированных источниках.
+
+**Критерии закрытия:**
+
+- Не меньше 3 типов источников через общий интерфейс.
+- Повторный импорт не дублирует, сбой не затирает проверенный снимок.
+- Лог ошибок, ограничение нагрузки, тесты PostgreSQL.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-220-source-adapters.md](../docs/evidence/kan-220-source-adapters.md) — S205 HTML (SGU, 4 table variants), JSON and CSV through one Adapter/Registry; enqueue-all spreads same-domain starts, skips unattested by reason; 18 new tests incl. PostgreSQL worker; manual run on 6 sources/5 domains. PDF not done; JSON/CSV PROFILES empty until a source is reviewed.
+
 ## E5. Качество и эксплуатация
 
 Плановый интервал: D20–D27.

@@ -7907,6 +7907,42 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T257",
+      "title": "KAN-220: JSON/CSV адаптеры через общий интерфейс и массовая очередь",
+      "phase": "E4",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T255"
+      ],
+      "deliverables": [
+        "backend/app/sources/structured_family.py",
+        "backend/app/jobs.py",
+        "backend/tests/test_structured_family.py",
+        "docs/evidence/kan-220-source-adapters.md"
+      ],
+      "steps": [
+        "Строгие декодеры JSON и CSV по проверенному профилю",
+        "Подключение к runtime registry только с аттестацией",
+        "enqueue_all: массовая постановка с разносом по доменам и без дублей",
+        "Интеграционные тесты PostgreSQL: повторный импорт и сбой",
+        "Ручная проверка на 6 зарегистрированных источниках"
+      ],
+      "acceptance": [
+        "Не меньше 3 типов источников через общий интерфейс",
+        "Повторный импорт не дублирует, сбой не затирает проверенный снимок",
+        "Лог ошибок, ограничение нагрузки, тесты PostgreSQL"
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-220-source-adapters.md",
+          "note": "S205 HTML (SGU, 4 table variants), JSON and CSV through one Adapter/Registry; enqueue-all spreads same-domain starts, skips unattested by reason; 18 new tests incl. PostgreSQL worker; manual run on 6 sources/5 domains. PDF not done; JSON/CSV PROFILES empty until a source is reviewed."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

@@ -42,11 +42,11 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
 
 def main(argv=None):
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('action',choices=['list','status','enqueue','disable','register-sgu','register-reviewed','enable-scenarios','enable','quarantine','resume'])
+    parser.add_argument('action',choices=['list','status','enqueue','enqueue-all','disable','register-sgu','register-reviewed','enable-scenarios','enable','quarantine','resume'])
     parser.add_argument('source_id',nargs='?')
     parser.add_argument('--enable',action='store_true',help='Only with register-sgu; requires configured reviewed adapter key')
     args=parser.parse_args(argv)
-    if args.action not in ('list','register-sgu') and not args.source_id:
+    if args.action not in ('list','register-sgu','enqueue-all') and not args.source_id:
         parser.error('source_id is required')
     if args.enable and args.action not in ('register-sgu','register-reviewed'):parser.error('--enable requires a reviewed registration')
     if args.action=='register-sgu' and args.source_id:parser.error('register-sgu does not accept a user source/URL')
@@ -64,6 +64,9 @@ def main(argv=None):
         elif args.action=='enable-scenarios':
             from ..scenario_storage import enable_scenarios
             result=enable_scenarios(engine,args.source_id,registry=runtime_registry())
+        elif args.action=='enqueue-all':
+            from ..jobs import enqueue_all
+            result=enqueue_all(engine,registry=runtime_registry())
         elif args.action=='list':
             with Session(engine) as db:
                 result={'items':list(db.scalars(select(Source.id).order_by(Source.id).limit(101)))}

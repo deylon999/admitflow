@@ -99,6 +99,8 @@ def test_operator_cli_and_worker_cli_do_not_enable_unattested_sources(source_eng
     assert 'source-1' in capsys.readouterr().out
     assert cli_main(['enqueue','source-1'])==1
     assert 'unattested' not in capsys.readouterr().out  # No adapter exists in production.
+    assert cli_main(['enqueue-all'])==0
+    assert '"queued": 0' in capsys.readouterr().out  # Mass enqueue follows the same production rules.
     assert worker_main(['once'])==0
     assert 'idle' in capsys.readouterr().out
     status=operate(source_engine,'status','source-1')
