@@ -8194,7 +8194,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T265"
       ],
@@ -8211,7 +8211,12 @@
         "Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults",
         "Verify timeout, cancellation, HTTP statuses and session races"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8220,7 +8225,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T265"
       ],

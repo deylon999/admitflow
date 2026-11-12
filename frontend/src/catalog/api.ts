@@ -1,4 +1,2 @@
-import { ApiError, request } from '../shared/api';
-import { decodeCatalog } from './decode';
+import { ApiError } from '../shared/api';
 export { ApiError as CatalogError };
-export function getCatalog<T>(path: string, signal: AbortSignal): Promise<T> { return request(`catalog/${path}`, value => decodeCatalog(path, value) as T, { signal }); }

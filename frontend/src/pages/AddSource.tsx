@@ -30,13 +30,13 @@ export function AddSource() {
         setSuccess('');
         try {
             if (result) {
-                const id = await request('subscriptions', saved, { method: 'POST', body: JSON.stringify({ confirmationToken: result.token }) });
+                const id = await request('subscriptions', saved, { method: 'POST', json: { confirmationToken: result.token } });
                 setSuccess(id);
                 setResult(undefined);
                 setCode('');
             }
             else if (group?.sourceId) {
-                setResult(await request(`sources/${encodeURIComponent(group.sourceId)}/lookup`, lookup, { method: 'POST', body: JSON.stringify({ publicCode: code }) }));
+                setResult(await request(`sources/${encodeURIComponent(group.sourceId)}/lookup`, lookup, { method: 'POST', json: { publicCode: code } }));
             }
         }
         catch (e) {

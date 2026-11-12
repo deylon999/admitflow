@@ -1,10 +1,22 @@
 import { useEffect, useMemo, useState } from 'react';
 import { navigate } from '../app/navigation';
 import { useResource } from '../shared/resource';
-import { decodeCatalog } from './decode';
-export function useCatalog<T>(path: string) {
-    const decode = useMemo(() => (value: unknown) => decodeCatalog(path, value) as T, [path]);
-    return useResource<T>(`catalog/${path}`, decode);
+import { invalid, object, type Decoder } from '../shared/api';
+export function useCatalog<T>(path: string, decode: Decoder<T>) {
+    const scoped = useMemo(() => (value: unknown) => {
+        const data = decode(value);
+        const result = object(data);
+        const target = new URL(path, 'https://catalog.invalid/');
+        const id = target.pathname.split('/')[2];
+        if (id && result.id !== decodeURIComponent(id)) invalid();
+        if (Array.isArray(result.items)) {
+            const year = target.searchParams.get('year'), universityId = target.searchParams.get('universityId');
+            if (result.items.some(item => (year && object(item).year !== Number(year)) || (universityId && object(item).universityId !== universityId))) invalid();
+            if (result.nextOffset !== null && typeof result.nextOffset === 'number' && result.nextOffset <= Number(target.searchParams.get('offset') ?? 0)) invalid();
+        }
+        return data;
+    }, [path, decode]);
+    return useResource<T>(`catalog/${path}`, scoped);
 }
 export function useCatalogFilters() {
     const [search, setSearch] = useState(() => window.location.search);
