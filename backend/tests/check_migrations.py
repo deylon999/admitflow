@@ -32,6 +32,9 @@ def verify_clean_database(connection):
     config.attributes['connection'] = connection
     print('Empty PostgreSQL database confirmed; upgrading to head', flush=True)
     command.upgrade(config, 'head')
+    # NEG-03: drift only in this disposable test database.
+    connection.exec_driver_sql('ALTER TABLE universities ADD COLUMN ci_negative_drift INTEGER')
+    connection.commit()
     check_alignment(connection, config)
     print('Migration verification passed', flush=True)
 
