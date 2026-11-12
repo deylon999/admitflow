@@ -16,3 +16,8 @@ for(const route of runtimeRoutes)test(`route ${route}: React loads with the appr
   if(route.startsWith('/universities')||route.startsWith('/programs')) await expect(page.locator('.af-program-card, .af-catalog-detail h1').first()).toBeVisible();
   expect(errors).toEqual([]);if(route.startsWith('/universities')||route.startsWith('/programs')||['/app','/app/watchlist','/app/watchlist/add','/app/history','/app/notifications','/app/sources','/app/competitions/mtuci-se'].includes(route))expect(backend.length).toBeGreaterThan(0);else expect(backend).toEqual([]);
 });
+
+test('NEG-01 deliberate frontend assertion failure', async ({ page }) => {
+  await page.goto('/');
+  expect(1).toBe(2);
+});
