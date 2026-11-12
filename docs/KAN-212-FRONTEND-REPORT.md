@@ -120,3 +120,19 @@ T267 verification: lint/typecheck и **131 tests passed**, включая две
 от программы другой кампании. Реальный Compose/PostgreSQL startup smoke exit 0,
 backup/import/migrations/persistence подтверждены; текущий frontend ещё проверяется
 против этого стека отдельно. Существующие volumes и история сохранены.
+
+T268: allowlist auth, безопасное однократное decode ID, отсутствие demo fallback
+для неизвестных competition ID, корректная ссылка watchlist/{subscriptionId}.
+URL filters конкурса переживают reload/Back/Forward; hash переход сохраняет query
+и history; download, target, foreign origin и prevented clicks не перехватываются.
+Opt-in Demo сохраняет query/hash; явный выход из demo работает. Private страницы
+получают key по пути, чтобы состояние соседнего экрана не переносилось.
+
+T268 verification: **143 passed**, 0 skipped/failed (25.9 s), lint/typecheck pass.
+Каждый из 29 маршрутов проверен прямым открытием, reload, внутренним переходом,
+Back и Forward. Дополнительно unknown auth, encoded/malformed IDs, query/hash,
+ссылка после реального по контракту тестового confirm и demo link isolation.
+Начальный расширенный тестовый прогон выявил ошибку размещения тестовой ссылки
+вне scroll container; исправлен harness, проверки и timeout не ослаблены.
+Vite preview возвращает 500 на malformed percent encoding до React; такие пути
+проверены клиентским переходом, nginx HTTP-граница проверяется отдельно в T269.

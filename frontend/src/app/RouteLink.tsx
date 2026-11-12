@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import { routeHref } from './navigation';
 
 type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
   to: string;
@@ -8,7 +9,7 @@ type Props = AnchorHTMLAttributes<HTMLAnchorElement> & {
 /** The global router intercepts these plain links; they also work in offline previews. */
 export function RouteLink({ to, children, ...props }: Props) {
   return (
-    <a href={typeof window !== 'undefined' && new URLSearchParams(location.search).get('mode')==='demo' && to.startsWith('/') && !to.includes('?') && !to.startsWith('/universities') && !to.startsWith('/programs') ? to+'?mode=demo' : to} {...props}>
+    <a href={routeHref(to)} {...props}>
       {children}
     </a>
   );

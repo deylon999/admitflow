@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 244 из 265 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 245 из 265 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -277,8 +277,8 @@
 - [x] T265 KAN-212: Audit and route matrix
 - [x] T266 KAN-212: API and DTO validation
 - [x] T267 KAN-212: Server state and live integration
-- [ ] T268 KAN-212: Navigation and route boundaries — **в работе**
-- [ ] T269 KAN-212: Regression and review delivery
+- [x] T268 KAN-212: Navigation and route boundaries
+- [ ] T269 KAN-212: Regression and review delivery — **в работе**
 
 ## Резерв и выпуск
 

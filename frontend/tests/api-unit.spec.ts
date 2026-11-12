@@ -120,3 +120,14 @@ test('catalog decoder returns concrete typed DTO and retains official provenance
     expect(() => catalog.university({ ...record, provenance: { ...provenance, originalSha256: 'bad' } })).toThrow();
     expect(() => catalog.university({ ...record, years: [0] })).toThrow();
 });
+
+test('demo links merge query and hash while explicit exit and real catalog remain live', async () => {
+    const navigation = await import('../src/app/navigation');
+    Object.defineProperty(window, 'location', { configurable: true, value: new URL('https://example.org/app?mode=demo') });
+    expect(navigation.routeHref('/app/forecast?from=compare#form')).toBe('/app/forecast?from=compare&mode=demo#form');
+    expect(navigation.routeHref('/app/forecast?mode=live&from=compare')).toBe('/app/forecast?mode=live&from=compare');
+    expect(navigation.routeHref('/programs?year=2026')).toBe('/programs?year=2026');
+    expect(navigation.routeHref('//elsewhere.org/app')).toBe('//elsewhere.org/app');
+    for (const bad of ['%', '%E0%A4%A', 'bad%2Fid', 'bad%00id']) expect(navigation.decodeRouteId(bad)).toBeNull();
+    expect(navigation.decodeRouteId('%73gu-saratov')).toBe('sgu-saratov');
+});

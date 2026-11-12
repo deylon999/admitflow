@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { competition, competitionGroups, competitionRows, competitionSummary } from '../shared/dto';
 import { useResource } from '../shared/resource';
 import { ResourceState } from '../shared/ResourceState';
@@ -61,17 +60,17 @@ const FILTERS = [['', 'Все'], ['yes', 'Согласие есть'], ['no', '�
 export function CompetitionPage({ id }: { id: string }) {
   const base = `competitions/${encodeURIComponent(id)}`;
   const info = useResource(base, competition);
-  const [consent, setConsent] = useState('');
-  const [priority, setPriority] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [rankFrom, setRankFrom] = useState('');
+  const { params, update } = useCatalogFilters();
+  const consent = params.get('consent') ?? '';
+  const priority = params.get('priority') ?? '';
+  const offset = Number(params.get('offset') ?? 0);
+  const rankFrom = params.get('rankFrom') ?? '';
   const query = new URLSearchParams({ offset: String(offset) });
   if (consent) query.set('consent', consent);
   if (priority) query.set('priority', priority);
   if (rankFrom) query.set('rankFrom', rankFrom);
   const rows = useResource(`${base}/rows?${query}`, competitionRows);
   const data = info.data;
-  const reset = (apply: () => void) => { apply(); setOffset(0); };
   return <ResourceState {...info} hasData={!!data}>
     {data && <>
       <PageTitle kicker={`КОНКУРСНЫЙ СПИСОК · ${data.year}`} title={data.title} description={`${data.universityName} · ${data.funding === 'budget' ? 'Бюджет' : data.funding === 'contract' ? 'Платное' : data.funding}`}
@@ -85,12 +84,12 @@ export function CompetitionPage({ id }: { id: string }) {
       <Warnings codes={data.warnings} />
       <Surface title="Участники конкурса">
         <div className="af-table-toolbar">
-          <div className="af-tabs">{FILTERS.map(([value, label]) => <button type="button" key={value} className={consent === value ? 'is-active' : ''} onClick={() => reset(() => setConsent(value))}>{label}</button>)}</div>
+          <div className="af-tabs">{FILTERS.map(([value, label]) => <button type="button" key={value} className={consent === value ? 'is-active' : ''} onClick={() => update('consent', value)}>{label}</button>)}</div>
           <div className="af-competition-controls">
-            {data.prioritiesPublished && <select aria-label="Приоритет" value={priority} onChange={e => reset(() => setPriority(e.target.value))}>
+            {data.prioritiesPublished && <select aria-label="Приоритет" value={priority} onChange={e => update('priority', e.target.value)}>
               <option value="">Любой приоритет</option><option value="first">Только приоритет 1</option><option value="known">Приоритет указан</option><option value="unknown">Приоритет не указан</option>
             </select>}
-            <input inputMode="numeric" aria-label="Перейти к месту" placeholder="Перейти к месту" value={rankFrom} onChange={e => reset(() => setRankFrom(e.target.value.replace(/\D/g, '').slice(0, 6)))} />
+            <input inputMode="numeric" aria-label="Перейти к месту" placeholder="Перейти к месту" value={rankFrom} onChange={e => update('rankFrom', e.target.value.replace(/\D/g, '').slice(0, 6))} />
           </div>
         </div>
         <ResourceState {...rows} hasData={!!rows.data}>
@@ -101,9 +100,9 @@ export function CompetitionPage({ id }: { id: string }) {
                 {data.prioritiesPublished && <td>{row.priority ?? unknown}</td>}<td>{participationName[row.participation] ?? row.participation}</td>
               </tr>)}</tbody></table></div>
             <nav className="af-catalog-pagination" aria-label="Страницы списка">
-              <button type="button" className="af-action af-action--outline" disabled={offset === 0} onClick={() => setOffset(Math.max(0, offset - 50))}>Назад</button>
+              <button type="button" className="af-action af-action--outline" disabled={offset === 0 || rows.loading} onClick={() => update('offset', String(Math.max(0, offset - 50)))}>Назад</button>
               <span aria-live="polite">{offset + 1}–{offset + rows.data.items.length} из {rows.data.total}</span>
-              <button type="button" className="af-action af-action--outline" disabled={rows.data.nextOffset === null} onClick={() => setOffset(rows.data!.nextOffset!)}>Далее</button>
+              <button type="button" className="af-action af-action--outline" disabled={rows.data.nextOffset === null || rows.loading} onClick={() => update('offset', String(rows.data!.nextOffset!))}>Далее</button>
             </nav>
           </> : <EmptyMessage title="Нет строк" description="Под выбранные условия в этом снимке строк нет." />)}
         </ResourceState>

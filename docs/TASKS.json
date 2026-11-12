@@ -8256,7 +8256,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T265"
       ],
@@ -8273,7 +8273,12 @@
         "Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash",
         "Fix saved subscription links without changing v3 design"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8282,7 +8287,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T265"
       ],
