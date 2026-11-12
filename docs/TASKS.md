@@ -5636,6 +5636,123 @@
 
 - [docs/evidence/local-postgresql.md](../docs/evidence/local-postgresql.md) — S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim.
 
+### T260. KAN-238: аудит существующего CI
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline.
+2. До реализации сохранена таблица недостатков и работающих проверок.
+
+**Критерии закрытия:**
+
+- Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline.
+- До реализации сохранена таблица недостатков и работающих проверок.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report.
+
+### T261. KAN-238: frontend CI и диагностика
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. npm ci, lint, typecheck, build и npm test проходят на текущем коде.
+2. Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены.
+
+**Критерии закрытия:**
+
+- npm ci, lint, typecheck, build и npm test проходят на текущем коде.
+- Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T262. KAN-238: PostgreSQL и Alembic
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Backend pytest проходит с --require-postgres на изолированном PostgreSQL.
+2. Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code.
+
+**Критерии закрытия:**
+
+- Backend pytest проходит с --require-postgres на изолированном PostgreSQL.
+- Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T263. KAN-238: существующие ML/ETL проверки
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Проверены fixture ETL, форматы, воспроизводимость и временная граница.
+2. Отсутствующие датасет и обученная модель явно указаны в CI и отчёте.
+
+**Критерии закрытия:**
+
+- Проверены fixture ETL, форматы, воспроизводимость и временная граница.
+- Отсутствующие датасет и обученная модель явно указаны в CI и отчёте.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T264. KAN-238: негативные hosted проверки, PR и отчёт
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках.
+2. Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок.
+3. Русский отчёт содержит evidence, ограничения и рекомендации branch protection.
+
+**Критерии закрытия:**
+
+- NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках.
+- Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок.
+- Русский отчёт содержит evidence, ограничения и рекомендации branch protection.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

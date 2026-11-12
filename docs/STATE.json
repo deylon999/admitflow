@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-11",
-  "currentTask": null,
+  "updatedAt": "2026-11-12",
+  "currentTask": "T261",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S207",
-  "resumeAction": "Work branch zarbondo (PR #9). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228 (merged), T257/KAN-220, T258/KAN-219, KAN-24 report template. Next: KAN-218/227 data at national scale. Exam rules: python scripts/build_exam_requirements.py --pdf <doc>. Weekly report PDF: python scripts/weekly_report.py --week <YYYY-Www> --extra notes.json (not kept in the project).",
+  "lastSession": "S208",
+  "resumeAction": "KAN-238 ci/kan-238-hardening: Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report. Next: T261",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -15,6 +15,7 @@
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены."
   ],
   "lastCompleted": [
+    "T260: Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report.",
     "T258 (KAN-219): reviewed entrance tests for SGU 09.03.04/02.03.03 from the official 2026 document, builder checks every value against the text, conflicting physics minimum kept null; API, page and coverage layer 1/785.",
     "T257 (KAN-220): reviewed JSON/CSV adapters through the common Adapter/Registry, enqueue-all with same-domain spreading, PostgreSQL re-import/failure tests; PDF not done, JSON/CSV profiles empty until reviewed.",
     "T256 (KAN-228): real competition list/competitors pages on snapshot API, official order, no identifiers, own row only after confirmation."

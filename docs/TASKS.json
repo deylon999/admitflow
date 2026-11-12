@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-11",
+  "updatedAt": "2026-11-12",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -8011,6 +8011,131 @@
           "note": "S207 PDF via reportlab with embedded Cyrillic font and clickable commit links; extra rows and risks from --extra; 7 unit tests incl. PDF text and links via pypdf. Reports are not committed (.gitignore admitflow-weekly-*.pdf); 2026-W46 sent to chat. Agreement with the team lead is a team step."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T260",
+      "title": "KAN-238: аудит существующего CI",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/KAN-238-CI-REPORT.md"
+      ],
+      "steps": [
+        "Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline",
+        "До реализации сохранена таблица недостатков и работающих проверок"
+      ],
+      "acceptance": [
+        "Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline",
+        "До реализации сохранена таблица недостатков и работающих проверок"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-238-CI-REPORT.md",
+          "note": "Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T261",
+      "title": "KAN-238: frontend CI и диагностика",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T260"
+      ],
+      "deliverables": [
+        "docs/KAN-238-CI-REPORT.md"
+      ],
+      "steps": [
+        "npm ci, lint, typecheck, build и npm test проходят на текущем коде",
+        "Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены"
+      ],
+      "acceptance": [
+        "npm ci, lint, typecheck, build и npm test проходят на текущем коде",
+        "Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T262",
+      "title": "KAN-238: PostgreSQL и Alembic",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T260"
+      ],
+      "deliverables": [
+        "docs/KAN-238-CI-REPORT.md"
+      ],
+      "steps": [
+        "Backend pytest проходит с --require-postgres на изолированном PostgreSQL",
+        "Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code"
+      ],
+      "acceptance": [
+        "Backend pytest проходит с --require-postgres на изолированном PostgreSQL",
+        "Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T263",
+      "title": "KAN-238: существующие ML/ETL проверки",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T260"
+      ],
+      "deliverables": [
+        "docs/KAN-238-CI-REPORT.md"
+      ],
+      "steps": [
+        "Проверены fixture ETL, форматы, воспроизводимость и временная граница",
+        "Отсутствующие датасет и обученная модель явно указаны в CI и отчёте"
+      ],
+      "acceptance": [
+        "Проверены fixture ETL, форматы, воспроизводимость и временная граница",
+        "Отсутствующие датасет и обученная модель явно указаны в CI и отчёте"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T264",
+      "title": "KAN-238: негативные hosted проверки, PR и отчёт",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T260"
+      ],
+      "deliverables": [
+        "docs/KAN-238-CI-REPORT.md"
+      ],
+      "steps": [
+        "NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках",
+        "Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок",
+        "Русский отчёт содержит evidence, ограничения и рекомендации branch protection"
+      ],
+      "acceptance": [
+        "NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках",
+        "Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок",
+        "Русский отчёт содержит evidence, ограничения и рекомендации branch protection"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]
