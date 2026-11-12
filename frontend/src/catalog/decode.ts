@@ -1,125 +1,62 @@
-import { array, count, date, invalid, object, text, url } from '../shared/api';
-function provenance(value: unknown) {
+import { array, bool, checksum, count, date, identifier, invalid, nullable, object, oneOf, positive, text, url, year } from '../shared/api';
+import type { Accreditation, CatalogProgram, ExamRequirements, ExamTest, ProgramResults, Provenance, University, UniversityResults } from './types';
+
+function provenance(value: unknown): Provenance {
     const p = object(value);
-    url(p.url);
-    date(p.verifiedAt);
-    if (p.sourceUpdatedAt !== null)
-        date(p.sourceUpdatedAt);
-    if (!['archive', 'monitoring', 'accreditation'].includes(text(p.kind)))
-        invalid();
-    if (p.edition !== null)
-        count(p.edition);
-    return p;
+    return { ...p, url: url(p.url), verifiedAt: date(p.verifiedAt), sourceUpdatedAt: nullable(p.sourceUpdatedAt, date), kind: oneOf(p.kind, ['archive', 'monitoring', 'accreditation']), edition: nullable(p.edition, year), originalSha256: nullable(p.originalSha256, checksum) };
 }
-function accreditation(value: unknown) {
+function accreditation(value: unknown): Accreditation {
     const p = object(value);
-    if (p.status !== 'active' || !/^\d{13}$/.test(text(p.ogrn)))
-        invalid();
-    if (p.inn !== null)
-        text(p.inn);
-    if (p.certificateNumber !== null)
-        text(p.certificateNumber);
-    for (const k of ['bachelorPrograms', 'specialistPrograms', 'branchesWithPrograms'])
-        count(p[k]);
-    if (typeof p.departmental !== 'boolean')
-        invalid();
-    text(p.matchMethod);
-    date(p.datasetDate);
-    url(p.sourceUrl);
-    return p;
+    const ogrn = text(p.ogrn);
+    if (!/^\d{13}$/.test(ogrn)) invalid();
+    return { ...p, status: oneOf(p.status, ['active']), ogrn, inn: nullable(p.inn, text), certificateNumber: nullable(p.certificateNumber, text), bachelorPrograms: count(p.bachelorPrograms), specialistPrograms: count(p.specialistPrograms), branchesWithPrograms: count(p.branchesWithPrograms), departmental: bool(p.departmental), matchMethod: oneOf(p.matchMethod, ['registry', 'name', 'domain', 'core-region', 'honorary-name-region', 'fuzzy-region']), datasetDate: date(p.datasetDate), sourceUrl: url(p.sourceUrl) };
 }
-function university(value: unknown) {
+export function university(value: unknown): University {
     const p = object(value);
-    for (const k of ['id', 'name', 'legalName', 'region'])
-        text(p[k]);
-    if (typeof p.isBranch !== 'boolean')
-        invalid();
-    if (p.officialUrl !== null)
-        url(p.officialUrl);
-    count(p.knownProgramCount);
-    array(p.years, count);
-    provenance(p.provenance);
-    if (p.accreditation !== null)
-        accreditation(p.accreditation);
-    return p;
+    return { ...p, id: identifier(p.id), name: text(p.name), legalName: text(p.legalName), region: text(p.region), isBranch: bool(p.isBranch), officialUrl: nullable(p.officialUrl, url), knownProgramCount: count(p.knownProgramCount), years: array(p.years, year), provenance: provenance(p.provenance), accreditation: nullable(p.accreditation, accreditation) };
 }
-function examTests(value: unknown) {
+function examTests(value: unknown): ExamTest[] {
     const tests = array(value, item => {
         const t = object(item);
         const options = array(t.options, raw => {
             const o = object(raw);
-            if (Object.keys(o).length !== 3 || !/^[a-z]+$/.test(text(o.subject)))
-                invalid();
-            text(o.title);
-            if (o.minScore !== null && (count(o.minScore) < 1 || (o.minScore as number) > 100))
-                invalid();
-            return o;
+            if (Object.keys(o).length !== 3 || !/^[a-z]+$/.test(text(o.subject))) invalid();
+            const minScore = nullable(o.minScore, positive);
+            if (minScore !== null && minScore > 100) invalid();
+            return { subject: text(o.subject), title: text(o.title), minScore };
         });
-        if (Object.keys(t).length !== 2 || !options.length)
-            invalid();
-        return { position: count(t.position) };
+        if (Object.keys(t).length !== 2 || !options.length) invalid();
+        return { position: positive(t.position), options };
     });
-    // Tests are numbered as in the document, 1..N without gaps.
-    if (tests.some((t, i) => t.position !== i + 1))
-        invalid();
+    if (tests.some((t, i) => t.position !== i + 1)) invalid();
+    return tests;
 }
-function examRequirements(value: unknown) {
+function examRequirements(value: unknown): ExamRequirements {
     const p = object(value);
-    if (Object.keys(p).length !== 5 || p.benefits !== null)
-        invalid();
-    examTests(p.tests);
-    if (!(p.tests as unknown[]).length)
-        invalid();
-    if (p.additionalTests !== null)
-        examTests(p.additionalTests);
-    array(p.notes, text);
+    if (Object.keys(p).length !== 5 || p.benefits !== null) invalid();
+    const tests = examTests(p.tests);
+    if (!tests.length) invalid();
     const s = object(p.source);
-    url(s.url);
-    text(s.title);
-    date(s.documentDate);
-    date(s.checkedAt);
-    if (!/^[a-f0-9]{64}$/.test(text(s.sha256)))
-        invalid();
-    if (s.crossCheckUrl !== null)
-        url(s.crossCheckUrl);
+    return { tests, additionalTests: nullable(p.additionalTests, examTests), benefits: null, notes: array(p.notes, text), source: { ...s, url: url(s.url), title: text(s.title), documentDate: date(s.documentDate), checkedAt: date(s.checkedAt), sha256: checksum(s.sha256), crossCheckUrl: nullable(s.crossCheckUrl, url) } };
 }
-function program(value: unknown) {
+export function program(value: unknown): CatalogProgram {
     const p = object(value);
-    for (const k of ['id', 'title', 'universityId', 'universityName', 'region', 'campaignId', 'level', 'studyForm', 'funding', 'category'])
-        text(p[k]);
-    count(p.year);
-    if (p.code !== null)
-        text(p.code);
-    if (p.seats !== null)
-        count(p.seats);
-    for (const k of ['historicalCutoff', 'forecast'])
-        if (p[k] !== null)
-            invalid();
-    if (p.examRequirements !== null)
-        examRequirements(p.examRequirements);
-    provenance(p.provenance);
-    return p;
+    if (p.historicalCutoff !== null || p.forecast !== null) invalid();
+    return { ...p, id: identifier(p.id), title: text(p.title), universityId: identifier(p.universityId), universityName: text(p.universityName), region: text(p.region), campaignId: identifier(p.campaignId), level: text(p.level), studyForm: text(p.studyForm), funding: text(p.funding), category: text(p.category), year: year(p.year), code: nullable(p.code, text), seats: nullable(p.seats, count), historicalCutoff: null, forecast: null, examRequirements: nullable(p.examRequirements, examRequirements), provenance: provenance(p.provenance) };
 }
-export function decodeCatalog(path: string, value: unknown): unknown {
-    const isUniversity = path.startsWith('universities');
-    const item = isUniversity ? university : program;
-    if (path.split('?')[0].includes('/'))
-        return item(value);
+function page(value: unknown) {
     const p = object(value);
-    const items = array(p.items, item);
-    const total = count(p.total);
-    if (items.length > total)
-        invalid();
-    if (p.nextOffset !== null)
-        count(p.nextOffset);
-    if (isUniversity) {
-        array(p.regions, text);
-        count(p.registryEdition);
-        date(p.accreditationDate);
-    }
-    else {
-        array(p.years, count);
-        array(p.subjects, text);
-    }
-    return p;
+    return { p, total: count(p.total), nextOffset: nullable(p.nextOffset, positive) };
+}
+export function universityResults(value: unknown): UniversityResults {
+    const { p, total, nextOffset } = page(value);
+    const items = array(p.items, university);
+    if (items.length > total || (nextOffset !== null && nextOffset >= total)) invalid();
+    return { ...p, items, total, nextOffset, regions: array(p.regions, text), registryEdition: year(p.registryEdition), accreditationDate: date(p.accreditationDate) };
+}
+export function programResults(value: unknown): ProgramResults {
+    const { p, total, nextOffset } = page(value);
+    const items = array(p.items, program);
+    if (items.length > total || (nextOffset !== null && nextOffset >= total)) invalid();
+    return { ...p, items, total, nextOffset, years: array(p.years, year), subjects: array(p.subjects, text) };
 }

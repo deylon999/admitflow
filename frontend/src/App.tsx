@@ -13,7 +13,7 @@ import { Testimonial } from './components/Testimonial';
 import { FAQ } from './components/FAQ';
 import { FinalCTA } from './components/FinalCTA';
 import { AppShell } from './app/Shell';
-import { interceptInternalLinks } from './app/navigation';
+import { decodeRouteId, interceptInternalLinks } from './app/navigation';
 import { Action, EmptyMessage } from './shared/UI';
 import { AuthPage } from './pages/AuthPages';
 import { ExamAnalytics, FaqPage, HowItWorks } from './pages/PublicPages';
@@ -88,10 +88,20 @@ function PrivateRoute({ path, tracked, onToggle }: {
   tracked: string[];
   onToggle: (id: string) => void;
 }) {
-  if (/^\/app\/competitions\/[^/]+$/.test(path)) return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><CompetitionList /></Unsupported> : <CompetitionPage key={path} id={decodeURIComponent(path.split('/').at(-1)!)} />;
-  if (/^\/app\/watchlist\/[^/]+$/.test(path) && path !== '/app/watchlist/add') return <LiveDirections key={path} id={decodeURIComponent(path.split('/').at(-1)!)} />;
+  if (/^\/app\/competitions\/[^/]+$/.test(path)) {
+    const id = decodeRouteId(path.split('/').at(-1)!);
+    if (!id) return <NotFound />;
+    return id === 'mtuci-se' && new URLSearchParams(location.search).get('mode') === 'demo' ? <Unsupported><CompetitionList /></Unsupported> : <CompetitionPage key={path} id={id} />;
+  }
+  if (/^\/app\/watchlist\/[^/]+$/.test(path) && path !== '/app/watchlist/add') {
+    const id = decodeRouteId(path.split('/').at(-1)!);
+    return id ? <LiveDirections key={path} id={id} /> : <NotFound />;
+  }
   // The design inventory keeps one illustrative competitors screen; real groups use the snapshot API.
-  if (/^\/app\/competitions\/[^/]+\/competitors$/.test(path) && path !== '/app/competitions/mtuci-se/competitors') return <CompetitorsPage key={path} id={decodeURIComponent(path.split('/').at(-2)!)} />;
+  if (/^\/app\/competitions\/[^/]+\/competitors$/.test(path) && path !== '/app/competitions/mtuci-se/competitors') {
+    const id = decodeRouteId(path.split('/').at(-2)!);
+    return id ? <CompetitorsPage key={path} id={id} /> : <NotFound />;
+  }
   switch (path) {
     case '/app': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Dashboard tracked={tracked}/></Unsupported> : <LiveDirections />;
     case '/app/competitions': return <CompetitionsIndex />;
@@ -101,7 +111,6 @@ function PrivateRoute({ path, tracked, onToggle }: {
     case '/app/forecast/method': return <Unsupported><ForecastMethod /></Unsupported>;
     case '/app/watchlist': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Watchlist tracked={tracked} onToggle={onToggle} /></Unsupported> : <LiveDirections />;
     case '/app/watchlist/add': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><AddWatch tracked={tracked} onToggle={onToggle} /></Unsupported> : <LiveAdd />;
-    case '/app/competitions/mtuci-se': return <Unsupported><CompetitionList /></Unsupported>;
     case '/app/competitions/mtuci-se/competitors': return <Unsupported><Competitors /></Unsupported>;
     case '/app/compare': return <Unsupported><Compare /></Unsupported>;
     case '/app/history': return <LiveEvents />;
@@ -116,16 +125,26 @@ function PrivateRoute({ path, tracked, onToggle }: {
   }
 }
 
+function NotFound() {
+  return <EmptyMessage title="Такой страницы нет" description="Проверь адрес или перейди к каталогу." action={<Action to="/universities">Каталог ↗</Action>} />;
+}
+
 function PublicRoute({ path }: { path: string }) {
-  if (/^\/universities\/[^/]+$/.test(path)) return <UniversityPage key={path} id={path.slice('/universities/'.length)} />;
-  if (/^\/programs\/[^/]+$/.test(path)) return <ProgramDetail key={path} id={path.slice('/programs/'.length)} />;
+  if (/^\/universities\/[^/]+$/.test(path)) {
+    const id = decodeRouteId(path.slice('/universities/'.length));
+    return id ? <UniversityPage key={path} id={id} /> : <NotFound />;
+  }
+  if (/^\/programs\/[^/]+$/.test(path)) {
+    const id = decodeRouteId(path.slice('/programs/'.length));
+    return id ? <ProgramDetail key={path} id={id} /> : <NotFound />;
+  }
   switch (path) {
     case '/universities': return <UniversityCatalog />;
     case '/programs': return <ProgramsCatalog />;
     case '/ege-analytics': return <Unsupported><ExamAnalytics /></Unsupported>;
     case '/how-it-works': return <HowItWorks />;
     case '/faq': return <FaqPage />;
-    default: return <EmptyMessage title="Такой страницы нет" description="Проверь адрес или перейди к каталогу." action={<Action to="/universities">Каталог ↗</Action>} />;
+    default: return <NotFound />;
   }
 }
 
@@ -135,12 +154,12 @@ export default function App() {
   const [tracked, onToggle] = useTracked();
 
   if (pathname === '/') return <LandingPage />;
-  if (pathname.startsWith('/auth/')) {
-    const mode = pathname.endsWith('/register') ? 'register' : pathname.endsWith('/recovery') ? 'recovery' : 'login';
-    return <Unsupported><AuthPage mode={mode} /></Unsupported>;
+  if (pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth/recovery') {
+    const mode = pathname === '/auth/register' ? 'register' : pathname === '/auth/recovery' ? 'recovery' : 'login';
+    return <Unsupported key={pathname}><AuthPage mode={mode} /></Unsupported>;
   }
-  const content = pathname.startsWith('/app')
-    ? <PrivateRoute path={pathname} tracked={tracked} onToggle={onToggle} />
+  const content = pathname === '/app' || pathname.startsWith('/app/')
+    ? <PrivateRoute key={pathname} path={pathname} tracked={tracked} onToggle={onToggle} />
     : <PublicRoute path={pathname} />;
   // Catalog, university, program, EGE and private routes share one persistent sidebar.
   return <AppShell path={pathname}>{content}</AppShell>;

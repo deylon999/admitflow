@@ -1,49 +1,57 @@
-import { useEffect, useState } from 'react';
-import { request } from '../shared/api';
+import { useEffect, useRef, useState } from 'react';
+import { ApiError, request, sessionChanged, sessionExpired } from '../shared/api';
 import { groups, lookup, saved, type Group } from '../shared/dto';
 import { useResource } from '../shared/resource';
 import { ResourceState } from '../shared/ResourceState';
 import { Action, EmptyMessage, PageTitle, Surface } from '../shared/UI';
 export function AddSource() {
-    const [q, setQ] = useState(''), [cursor, setCursor] = useState(''), [group, setGroup] = useState<Group | null>(null), [code, setCode] = useState(''), [result, setResult] = useState<ReturnType<typeof lookup>>(), [busy, setBusy] = useState(false), [error, setError] = useState(''), [success, setSuccess] = useState('');
+    const [q, setQ] = useState(''), [cursor, setCursor] = useState(''), [group, setGroup] = useState<Group | null>(null), [code, setCode] = useState(''), [result, setResult] = useState<ReturnType<typeof lookup>>(), [busy, setBusy] = useState(false), [error, setError] = useState<Error>(), [success, setSuccess] = useState('');
+    const pending = useRef<AbortController | null>(null);
     const r = useResource('groups?' + new URLSearchParams({ q, after: cursor, limit: '20' }), groups);
     useEffect(() => {
         const clear = () => {
+            pending.current?.abort();
+            setBusy(false);
             setResult(undefined);
             setCode('');
             setSuccess('');
+            setError(undefined);
         };
-        const storage = (e: StorageEvent) => {
-            if (e.key === 'admitflow-session-change')
-                clear();
-        };
-        window.addEventListener('admitflow-session-expired', clear);
-        window.addEventListener('storage', storage);
+        // Keep a 401 visible until the user explicitly starts a guest session.
+        const expired = () => { clear(); setError(new ApiError(401)); };
+        window.addEventListener(sessionExpired, expired);
+        window.addEventListener(sessionChanged, clear);
         return () => {
-            window.removeEventListener('admitflow-session-expired', clear);
-            window.removeEventListener('storage', storage);
+            pending.current?.abort();
+            window.removeEventListener(sessionExpired, expired);
+            window.removeEventListener(sessionChanged, clear);
         };
     }, []);
     async function submit() {
+        if (pending.current && !pending.current.signal.aborted && busy) return;
+        const controller = new AbortController();
+        pending.current = controller;
         setBusy(true);
-        setError('');
+        setError(undefined);
         setSuccess('');
         try {
             if (result) {
-                const id = await request('subscriptions', saved, { method: 'POST', body: JSON.stringify({ confirmationToken: result.token }) });
+                const id = await request('subscriptions', saved, { method: 'POST', json: { confirmationToken: result.token }, signal: controller.signal });
+                if (controller.signal.aborted) return;
                 setSuccess(id);
                 setResult(undefined);
                 setCode('');
             }
             else if (group?.sourceId) {
-                setResult(await request(`sources/${encodeURIComponent(group.sourceId)}/lookup`, lookup, { method: 'POST', body: JSON.stringify({ publicCode: code }) }));
+                const found = await request(`sources/${encodeURIComponent(group.sourceId)}/lookup`, lookup, { method: 'POST', json: { publicCode: code }, signal: controller.signal });
+                if (!controller.signal.aborted) setResult(found);
             }
         }
         catch (e) {
-            setError((e as Error).message);
+            if (!controller.signal.aborted) setError(e instanceof Error ? e : new Error('Не удалось выполнить запрос.'));
         }
         finally {
-            setBusy(false);
+            if (!controller.signal.aborted) setBusy(false);
         }
     }
     return <><PageTitle kicker="API · ДОБАВЛЕНИЕ" title="Выбери конкурсный список" description="Подписка создаётся после поиска и подтверждения вашей записи. Прогноз поступления не рассчитывается."/><Surface><label className="af-field">Поиск конкурса<input value={q} disabled={busy} onChange={e => {
@@ -56,7 +64,7 @@ export function AddSource() {
         setGroup(g);
         setCode('');
         setResult(undefined);
-        setError('');
+        setError(undefined);
         setSuccess('');
     }}>{g.lookupAvailable ? 'Выбрать' : 'Поиск не подключён'}</button></div>) : <EmptyMessage title="Конкурсы не найдены" description="Измените поиск. Подписка без проверенного источника не создаётся."/>}<button className="af-action af-action--outline" disabled={!cursor || busy} onClick={() => setCursor('')}>В начало</button><button className="af-action af-action--outline" disabled={!r.data.nextCursor || busy} onClick={() => setCursor(r.data!.nextCursor!)}>Далее</button></Surface>{group && <Surface title={group.title} description={`${group.universityName} · ${group.year}`}><form onSubmit={e => {
         e.preventDefault();
@@ -64,5 +72,5 @@ export function AddSource() {
     }}><label className="af-field">Публичный код в списке<input value={code} disabled={busy || !!result} required maxLength={64} pattern="[A-Za-z0-9-]+" onChange={e => {
         setCode(e.target.value);
         setResult(undefined);
-    }}/></label>{result && <p>Запись найдена: {result.title}, {result.year}. Номер в официальном списке: {result.rank}. Проверьте конкурс перед сохранением.</p>}{result === null && <p role="status">Запись не найдена. Проверьте код.</p>}{error && <p role="alert">{error}</p>}<button className="af-action af-action--primary" disabled={busy}>{busy ? 'Подождите…' : result ? 'Подтвердить и сохранить' : 'Найти запись'}</button>{result && <button className="af-action af-action--outline" type="button" disabled={busy} onClick={() => setResult(undefined)}>Изменить код</button>}</form></Surface>}{success && <Surface title="Направление сохранено"><p role="status">Сервер подтвердил сохранение подписки.</p><Action to={'/app/competitions/' + encodeURIComponent(success)}>Открыть направление ↗</Action></Surface>}</>}</ResourceState></>;
+    }}/></label>{result && <p>Запись найдена: {result.title}, {result.year}. Номер в официальном списке: {result.rank}. Проверьте конкурс перед сохранением.</p>}{result === null && <p role="status">Запись не найдена. Проверьте код.</p>}{error && (error instanceof ApiError && error.status === 401 ? <ResourceState loading={false} error={error} retry={() => setError(undefined)}>{null}</ResourceState> : <p role="alert">{error.message}</p>)}<button className="af-action af-action--primary" disabled={busy}>{busy ? 'Подождите…' : result ? 'Подтвердить и сохранить' : 'Найти запись'}</button>{result && <button className="af-action af-action--outline" type="button" disabled={busy} onClick={() => setResult(undefined)}>Изменить код</button>}</form></Surface>}{success && <Surface title="Направление сохранено"><p role="status">Сервер подтвердил сохранение подписки.</p><Action to={'/app/watchlist/' + encodeURIComponent(success)}>Открыть направление ↗</Action></Surface>}</>}</ResourceState></>;
 }

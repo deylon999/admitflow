@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-12. Последняя сессия: S208.
+Дата: 2026-11-13. Последняя сессия: S209.
 
 ## Продолжение
 
@@ -12,15 +12,14 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-238: пятёрка T260–T264 завершена; PR #12 в main открыт без merge. Implementation 4f60dad: push 43277687053 и PR 43277802246 success; NEG-01–04 подтверждены отдельными hosted runs/artifacts. После публикации отчёта проверить latest Checks; точные SHA/run последней публикации находятся в описании PR #12. Следующий шаг владельца: review/приёмка и required frontend/backend/migrations/etl checks. Dataset/model и внешние release gates не закрыты.
+KAN-212 delivered in PR13; T265-T268 done,T269 review. Owner acceptance required; do not mark Done or merge autonomously. Initial dc5205c/run43313647129 all jobs green. Final public401 recovery fix: local147 tests and visual116 passed; final source SHA/latest hosted checks in PR13 description. User PostgreSQL stack healthy at http://127.0.0.1:8080,volumes/history preserved. After acceptance next feature KAN-223; no EGE/auth implementation started.
 
 ## Последняя завершённая работа
 
-- T260: аудит до реализации, подтверждённые пробелы и сохранённый зелёный baseline.
-- T261: frontend диагностика, bounded API teardown; 94 Chromium и 3 shutdown tests passed.
-- T262: 774 full backend passed (1 dataset skip), 32 migration tests и fresh head/check; 17 tools tests passed.
-- T263: отдельный ETL job, 55 passed + 1 явный dataset skip, без вымышленной модели.
-- T264: PR #12, hosted green push/PR и NEG-01–04 с проверенными архивами; отчёт/evidence готовы.
+- T268: All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269.
+- T267: Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.
+- T266: Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed.
+- T265: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
 
 ## Ограничения
 
@@ -31,10 +30,10 @@ KAN-238: пятёрка T260–T264 завершена; PR #12 в main откр�
 
 ## Проверенное окружение
 
-- S208: Node24.21.0 локально; Linux Python3.12.16/PostgreSQL17 в owned disposable runtime; frontend94, backend774+1dataset skip, migration32, tools17 passed.
-- Hosted после разделения: backend719/0skip, ETL55+1explicit missing dataset skip, frontend94; four jobs success. NEG workflow failures и upload artifacts проверены скачиванием.
-- Локальные admitflow-kan238-tests/pg и сеть admitflow-kan238 остановлены и удалены; пользовательские volumes не менялись. Test API завершён; production deploy не выполнялся.
-- Старые private audit/evidence сохранены и исключены локально; новые raw logs/XML/trace в ignored .qa-tools и GitHub artifacts (7 дней), только компактный безопасный JSON добавлен в git.
+- S209: npm ci/lint/typecheck/build exit0;147 current Chromium/unit tests against real existing PostgreSQL API passed. Initial hosted dc5205c:frontend146,backend719/0skip,ETL55+1 explicit dataset skip,migrations0011/head/check success. Final hosted SHA/run in PR13 description.
+- After final public401 fix:116 screenshot pairs identical to main07526c3 across29 routes x390/1440 xdefault/demo; text equal,no overflow/pageerrors. Viewport galleries inspected.58 direct nginx openings with current JS asset passed.
+- Real FastAPI/PostgreSQL guest->lookup->confirm201->subscription->rows50->page/reload51->summary above2 passed with explicit archive fixture in an isolated DB. All owned API containers/test DBs/previews removed; no source activated in user DB.
+- User Docker PostgreSQL/backend/frontend healthy on127.0.0.1:8080. Protected history fingerprint unchanged; Alembic0011=head; named volumes retained. No backend source, applied migration,CSS,dependency or workflow changes. PR13 open,no review submitted,no merge; no HTTPS production/live2027 claim.
 
 ## Готовность к выпуску
 

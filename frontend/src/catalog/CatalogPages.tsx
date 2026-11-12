@@ -1,7 +1,7 @@
 import { EmptyMessage, PageTitle, Pill } from '../shared/UI';
 import { CatalogCard, Pagination, ResourceState } from './parts';
 import { useCatalog, useCatalogFilters, useDebounced } from './state';
-import type { ProgramResults, UniversityResults } from './types';
+import { programResults, universityResults } from './decode';
 
 export function SortField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
   return <label className="af-field"><span>СОРТИРОВКА</span><select value={value} onChange={e => onChange(e.target.value)}>
@@ -24,7 +24,7 @@ export function UniversityCatalog() {
   const offset = Number(params.get('offset') ?? 0);
   const query = new URLSearchParams({ q: search, region, sort, offset: String(offset) });
   const requestKey = useDebounced(query.toString());
-  const resource = useCatalog<UniversityResults>(`universities?${requestKey}`);
+  const resource = useCatalog(`universities?${requestKey}`, universityResults);
   return <>
     <PageTitle kicker="КАТАЛОГ ВУЗОВ" title="Найди место, где тебе понравится учиться." description="Вузы и подтверждённые конкурсные программы — на одном экране." />
     <div className="af-search-panel af-catalog-controls">
@@ -60,7 +60,7 @@ export function ProgramsCatalog() {
   const universityId = params.get('universityId');
   if (universityId) request.set('universityId', universityId);
   const requestKey = useDebounced(request.toString());
-  const resource = useCatalog<ProgramResults>(`programs?${requestKey}`);
+  const resource = useCatalog(`programs?${requestKey}`, programResults);
   return <>
     <PageTitle kicker="ПОДБОР ПРОГРАММ" title="Направление сначала. Вуз — следом." description="Выбирай специальность и проверяй параметры приёма." />
     <div className="af-search-panel af-catalog-controls">

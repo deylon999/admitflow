@@ -21,7 +21,7 @@
 | Трекер направлений | `/app/watchlist` | Live subscriptions; localStorage только в opt-in demo |
 | Добавить направление | `/app/watchlist/add` | Live groups → lookup → подтверждение подписки |
 | Конкурсный список | `/app/competitions/mtuci-se` | Live ID lookup/не найдено; demo только при opt-in |
-| Анализ конкуренции | `/app/competitions/mtuci-se/competitors` | Нет feature API; opt-in demo, без серверного успеха |
+| Анализ конкуренции | `/app/competitions/mtuci-se/competitors` | Исторический design ID: Unsupported/opt-in Demo; реальные group ID используют существующий summary API |
 | Сравнение | `/app/compare` | Нет feature API; opt-in demo, без серверного успеха |
 | История | `/app/history` | Live private changes; loading/empty/error/retry |
 | Уведомления | `/app/notifications` | Live private changes, без вымышленных событий |
@@ -39,3 +39,7 @@
 Каталог поддерживает динамические ID; остальные demo-маршруты v3 сохранены.
 
 S202: все 29 исходных URL сохранены. Дополнительный алиас списка конкурсов: /app/competitions; детали используют настоящий subscription ID. Матрица: docs/evidence/v3-production-api.md.
+
+S209/KAN-212: актуальная матрица — [отчёт](../docs/KAN-212-FRONTEND-REPORT.md).
+Конкурсы `/app/competitions/{id}` используют group ID; сохранённое направление
+`/app/watchlist/{id}` — subscription ID. Все 29 исходных URL сохранены.

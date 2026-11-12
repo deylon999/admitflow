@@ -1232,3 +1232,17 @@ S208/T262 done: Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit 
 S208/T263 done: Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed.
 
 S208/T264 done: PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.
+
+S209/2026-11-13/T265 done: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
+
+S209/2026-11-13/T266 done: Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed.
+
+S209/2026-11-13/T267 done: Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.
+
+S209/2026-11-13/T268 done: All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269.
+
+S209/2026-11-13/T269 review: PR13 open for owner review; implementation dc5205c hosted run43313647129 success: frontend146, backend719, ETL55+1 explicit dataset skip, migrations0011/check. Local146 against PostgreSQL, positive isolated archive flow, visual116 equal and58 nginx routes passed. Original history unchanged; all owned test DBs/containers removed; user stack8080 healthy. No merge. Final documentation SHA/checks in PR description.
+
+S209/T269 follow-up: final inspection found public401 was offered guest recovery although public resources ignore session changes. Reopen for explicit session-bound error semantics and regression; no new feature API.
+
+S209/2026-11-13/T269 review: Final public401 recovery fix verified:147 local tests against PostgreSQL,116 fresh visual pairs equal,58 nginx openings; public401 GET retry creates0 sessions. Initial dc5205c hosted four jobs success, final source SHA/latest checks recorded in PR13. Owner acceptance pending; no merge, user history/volumes retained.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-13",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -8155,6 +8155,163 @@
         {
           "path": "docs/KAN-238-CI-REPORT.md",
           "note": "PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T265",
+      "title": "KAN-212: Audit and route matrix",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Audit current main and merged PRs before implementation",
+        "Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes",
+        "Run existing browser baseline"
+      ],
+      "acceptance": [
+        "Audit current main and merged PRs before implementation",
+        "Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes",
+        "Run existing browser baseline"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T266",
+      "title": "KAN-212: API and DTO validation",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Reuse one request client and typed runtime decoders",
+        "Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults",
+        "Verify timeout, cancellation, HTTP statuses and session races"
+      ],
+      "acceptance": [
+        "Reuse one request client and typed runtime decoders",
+        "Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults",
+        "Verify timeout, cancellation, HTTP statuses and session races"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T267",
+      "title": "KAN-212: Server state and live integration",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Clear private state on session changes and cancel stale mutations",
+        "Preserve retry/stale/empty/error semantics and isolate demo",
+        "Paginate imported groups and expose metadata errors"
+      ],
+      "acceptance": [
+        "Clear private state on session changes and cancel stale mutations",
+        "Preserve retry/stale/empty/error semantics and isolate demo",
+        "Paginate imported groups and expose metadata errors"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T268",
+      "title": "KAN-212: Navigation and route boundaries",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Preserve all 29 routes and additional existing aliases",
+        "Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash",
+        "Fix saved subscription links without changing v3 design"
+      ],
+      "acceptance": [
+        "Preserve all 29 routes and additional existing aliases",
+        "Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash",
+        "Fix saved subscription links without changing v3 design"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T269",
+      "title": "KAN-212: Regression and review delivery",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Pass npm ci/lint/typecheck/build/test and 29-route browser smoke",
+        "Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots",
+        "Publish technical report and reviewable PR with hosted checks; owner review remains required"
+      ],
+      "acceptance": [
+        "Pass npm ci/lint/typecheck/build/test and 29-route browser smoke",
+        "Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots",
+        "Publish technical report and reviewable PR with hosted checks; owner review remains required"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Final public401 recovery fix verified:147 local tests against PostgreSQL,116 fresh visual pairs equal,58 nginx openings; public401 GET retry creates0 sessions. Initial dc5205c hosted four jobs success, final source SHA/latest checks recorded in PR13. Owner acceptance pending; no merge, user history/volumes retained."
+        },
+        {
+          "path": "docs/evidence/kan-212-stabilization.json",
+          "note": "Compact hosted/local/visual/PostgreSQL/nginx/history evidence. Final documentation-only checks are tracked in PR13 description. Owner acceptance pending."
         }
       ],
       "blockedReason": null

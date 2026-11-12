@@ -3,16 +3,16 @@ import { RouteLink } from '../app/RouteLink';
 import { YearField } from './CatalogPages';
 import { AccreditationNote, CatalogCard, ExamRequirementsView, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
 import { useCatalog, useCatalogFilters } from './state';
-import type { CatalogProgram, ProgramResults, University } from './types';
+import { program, programResults, university as decodeUniversity } from './decode';
 
 export function UniversityPage({ id }: { id: string }) {
-  const university = useCatalog<University>(`universities/${encodeURIComponent(id)}`);
+  const university = useCatalog(`universities/${encodeURIComponent(id)}`, decodeUniversity);
   const { params, update } = useCatalogFilters();
   const year = params.get('year') ?? '';
   const offset = Number(params.get('offset') ?? 0);
   const query = new URLSearchParams({ universityId: id, offset: String(offset) });
   if (year) query.set('year', year);
-  const courses = useCatalog<ProgramResults>(`programs?${query}`);
+  const courses = useCatalog(`programs?${query}`, programResults);
   return <div className="af-catalog-detail">
     <ResourceState {...university}>
       {university.data && <>
@@ -45,7 +45,7 @@ export function UniversityPage({ id }: { id: string }) {
 }
 
 export function ProgramDetail({ id }: { id: string }) {
-  const resource = useCatalog<CatalogProgram>(`programs/${encodeURIComponent(id)}`);
+  const resource = useCatalog(`programs/${encodeURIComponent(id)}`, program);
   const item = resource.data;
   return <div className="af-catalog-detail">
     <ResourceState {...resource}>

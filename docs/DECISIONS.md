@@ -211,3 +211,5 @@ CamelModel переносится из арифметики в общий schema
 2026-11-10: объединить transport/DTO/session/resource states для 29 маршрутов. Старые AF-карточки исторические; не объявлять demo, legacy manual арифметику или source scenarios production ML.
 
 2026-11-10 S203 T254: единая dev-команда python scripts/local_smoke.py использует существующий Compose project admitflow и named volumes. Backup до миграций, Alembic current/head/check, атомарный повторный metadata import, реальная PostgreSQL история после recreate;cleanup только собственной новой сессии. SQLite не является этой приёмкой;applied migrations и дизайн v3 сохраняются.
+
+2026-11-13 S209 KAN-212 (T265-T269): continue from current main, reuse shared request/useResource/ResourceState and catalog decoders. Fix only audit-confirmed defects; preserve React v3 CSS, backend contracts and applied migrations. No new dependencies or auth/EGE/ML APIs. Owner review required before task acceptance.

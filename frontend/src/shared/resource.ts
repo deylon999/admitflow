@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ApiError, request, type Decoder } from './api';
+import { ApiError, request, sessionBound, sessionChanged, sessionExpired, type Decoder } from './api';
 type State<T> = {
     key: string;
     data?: T;
@@ -12,38 +12,35 @@ export function useResource<T>(path: string, decode: Decoder<T>) {
     useEffect(() => {
         let active = true;
         const controller = new AbortController();
+        const changed = () => {
+            if (!sessionBound(path)) return;
+            active = false;
+            controller.abort();
+            setState({ key: path, loading: true });
+            setAttempt(n => n + 1);
+        };
+        const expired = () => {
+            if (!sessionBound(path)) return;
+            active = false;
+            controller.abort();
+            setState({ key: path, loading: false, error: new ApiError(401) });
+        };
+        window.addEventListener(sessionChanged, changed);
+        window.addEventListener(sessionExpired, expired);
         setState(old => ({ key: path, data: old.key === path ? old.data : undefined, loading: true }));
         request(path, decode, { signal: controller.signal }).then(data => {
             if (active)
                 setState({ key: path, data, loading: false });
         }, error => {
             if (active)
-                setState(old => ({ key: path, data: old.key === path && !(error instanceof ApiError && error.status === 401) ? old.data : undefined, error, loading: false }));
+                setState(old => ({ key: path, data: old.key === path && !(error instanceof ApiError && [401, 403, 404, 410].includes(error.status)) ? old.data : undefined, error, loading: false }));
         });
         return () => {
             active = false;
             controller.abort();
+            window.removeEventListener(sessionChanged, changed);
+            window.removeEventListener(sessionExpired, expired);
         };
     }, [path, decode, attempt]);
-    useEffect(() => {
-        const clear = () => {
-            setState({ key: path, loading: true });
-            setAttempt(n => n + 1);
-        };
-        const storage = (e: StorageEvent) => {
-            if (e.key === 'admitflow-session-change')
-                clear();
-        };
-        const expired = () => {
-            if (!path.startsWith('catalog/'))
-                setState({ key: path, loading: false, error: new ApiError(401) });
-        };
-        window.addEventListener('storage', storage);
-        window.addEventListener('admitflow-session-expired', expired);
-        return () => {
-            window.removeEventListener('storage', storage);
-            window.removeEventListener('admitflow-session-expired', expired);
-        };
-    }, [path]);
     return { ...(state.key === path ? state : { key: path, loading: true }), retry: () => setAttempt(n => n + 1) };
 }
