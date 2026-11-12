@@ -11,7 +11,7 @@ export function ResourceState({ loading, error, retry, children, data, hasData =
 }) {
     const [starting, setStarting] = useState(false);
     const [failure, setFailure] = useState('');
-    const expired = error instanceof ApiError && error.status === 401;
+    const expired = error instanceof ApiError && error.status === 401 && error.requiresSession;
     async function start() {
         setStarting(true);
         setFailure('');

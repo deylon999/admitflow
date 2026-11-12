@@ -196,3 +196,16 @@ for (const status of [403, 404, 410]) test(`authoritative refresh ${status} clea
   await expect(page.getByRole('alert')).toBeVisible();
   await expect(page.getByText('Проверенный вуз')).toHaveCount(0);
 });
+
+test('public catalog 401 retries its GET without suggesting a guest session', async ({ page }) => {
+  let fail = true, starts = 0;
+  await page.route('**/api/v1/session', route => { starts++; return route.fulfill({ status: 204 }); });
+  await page.route('**/api/v1/catalog/universities?**', route => fail ? route.fulfill({ status: 401, json: {} }) : route.continue());
+  await page.goto('/universities');
+  await expect(page.getByRole('alert')).toContainText('Не удалось получить доступ к данным');
+  await expect(page.getByRole('button', { name: 'Начать гостевую сессию' })).toHaveCount(0);
+  fail = false;
+  await page.getByRole('button', { name: 'Повторить', exact: true }).click();
+  await expect(page.locator('.af-program-card')).toHaveCount(12);
+  expect(starts).toBe(0);
+});

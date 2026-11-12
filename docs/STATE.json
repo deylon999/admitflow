@@ -7,7 +7,7 @@
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S209",
-  "resumeAction": "KAN-212 implementation and verification delivered in PR13; T265-T268 done, T269 review. Owner review/acceptance required; do not mark KAN-212 Done or merge autonomously. All four hosted jobs green at dc5205c/run43313647129. Final documentation-only SHA/latest checks are in PR13 description. User PostgreSQL stack healthy at http://127.0.0.1:8080, volumes/history preserved. After acceptance the requested next feature is KAN-223; no EGE/auth implementation started.",
+  "resumeAction": "KAN-212 delivered in PR13; T265-T268 done,T269 review. Owner acceptance required; do not mark Done or merge autonomously. Initial dc5205c/run43313647129 all jobs green. Final public401 recovery fix: local147 tests and visual116 passed; final source SHA/latest hosted checks in PR13 description. User PostgreSQL stack healthy at http://127.0.0.1:8080,volumes/history preserved. After acceptance next feature KAN-223; no EGE/auth implementation started.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -21,8 +21,8 @@
     "T265: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence."
   ],
   "environment": [
-    "S209: npm ci/lint/typecheck/build exit0;146 Chromium/unit tests against real existing PostgreSQL API passed. Hosted frontend146, backend719/0skip, ETL55+1 explicit missing-dataset skip; migrations0011/head/schema check success.",
-    "Final source dc5205c:116 screenshot pairs identical to main07526c3 across29 routes x390/1440 xdefault/demo; text equal,no overflow/pageerrors. Viewport galleries inspected.58 direct nginx openings with current JS asset passed.",
+    "S209: npm ci/lint/typecheck/build exit0;147 current Chromium/unit tests against real existing PostgreSQL API passed. Initial hosted dc5205c:frontend146,backend719/0skip,ETL55+1 explicit dataset skip,migrations0011/head/check success. Final hosted SHA/run in PR13 description.",
+    "After final public401 fix:116 screenshot pairs identical to main07526c3 across29 routes x390/1440 xdefault/demo; text equal,no overflow/pageerrors. Viewport galleries inspected.58 direct nginx openings with current JS asset passed.",
     "Real FastAPI/PostgreSQL guest->lookup->confirm201->subscription->rows50->page/reload51->summary above2 passed with explicit archive fixture in an isolated DB. All owned API containers/test DBs/previews removed; no source activated in user DB.",
     "User Docker PostgreSQL/backend/frontend healthy on127.0.0.1:8080. Protected history fingerprint unchanged; Alembic0011=head; named volumes retained. No backend source, applied migration,CSS,dependency or workflow changes. PR13 open,no review submitted,no merge; no HTTPS production/live2027 claim."
   ]

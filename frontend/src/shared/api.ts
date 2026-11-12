@@ -25,7 +25,7 @@ export function sessionBound(path: string): boolean {
 }
 
 export class ApiError extends Error {
-    constructor(public status: number, message?: string) {
+    constructor(public status: number, message?: string, public requiresSession = status === 401) {
         super(message ?? ({ 400: 'Проверьте параметры запроса.', 401: 'Гостевой доступ не начат или уже завершён. Начните гостевую сессию, чтобы сохранять направления.', 403: 'Действие недоступно. Проверьте гостевой доступ.', 409: 'Данные изменились или источник недоступен. Проверьте список и повторите действие.', 410: 'Срок подтверждения истёк. Найдите запись заново.', 404: 'Запись не найдена', 422: 'Проверьте параметры запроса.', 429: 'Слишком много запросов. Повторите позже.' }[status] ?? (status >= 500 ? 'Сервер временно недоступен. Повторите позже.' : 'Не удалось загрузить данные')));
     }
 }
@@ -66,7 +66,7 @@ export async function request<T>(path: string, decode: Decoder<T>, init: Request
         check();
         if (!response.ok) {
             if (response.status === 401 && sessionBound(path)) changeSession(true, true);
-            throw new ApiError(response.status);
+            throw new ApiError(response.status, response.status === 401 && !sessionBound(path) ? 'Не удалось получить доступ к данным. Повторите запрос позже.' : undefined, sessionBound(path));
         }
         if ((method === 'DELETE' || sessionWrite) && response.status !== 204) invalid();
         let value: unknown = null;

@@ -9,9 +9,9 @@
   },
   "browser": {
     "stats": {
-      "startTime": "2026-11-12T21:40:38.762Z",
-      "duration": 26970.19,
-      "expected": 146,
+      "startTime": "2026-11-12T21:58:20.953Z",
+      "duration": 28501.299,
+      "expected": 147,
       "skipped": 0,
       "unexpected": 0,
       "flaky": 0
@@ -24,7 +24,7 @@
     "allTextEqual": true,
     "pageErrors": 0,
     "horizontalOverflow": 0,
-    "source": "fresh Git main reference with read-only local API replay; current source dc5205c",
+    "source": "fresh Git main reference with read-only local API replay; final public401 follow-up source, SHA in PR13",
     "equalPngSha256": {
       "390/default/": "041832b00b4b9ec7e6e60320534389b6348e8cbd1488c256fbc239dbb273ed97",
       "390/default/universities": "7acec1f8710863f5e868a8519e824a12f17a0cb3c10da32331b5ad556594bb68",
@@ -50,7 +50,7 @@
       "390/default/app/history": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
       "390/default/app/notifications": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
       "390/default/app/settings": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
-      "390/default/app/sources": "51e4ae6333b60f23fc7c75b84a5dc59ee0c53c8095f4f8cb99f77dab0bf5021e",
+      "390/default/app/sources": "9d6d3a068573fe9c4f9b6cf11ee0c054dd15a8d70473cdf0dd09b4be41a9acab",
       "390/default/app/states/empty": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
       "390/default/app/states/error": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
       "390/default/app/states/success": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
@@ -79,7 +79,7 @@
       "390/demo/app/history": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
       "390/demo/app/notifications": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
       "390/demo/app/settings": "b963a1a75a3461a0265af404e4650c2a64d32480c32d3c614a65891b70abf175",
-      "390/demo/app/sources": "51e4ae6333b60f23fc7c75b84a5dc59ee0c53c8095f4f8cb99f77dab0bf5021e",
+      "390/demo/app/sources": "9d6d3a068573fe9c4f9b6cf11ee0c054dd15a8d70473cdf0dd09b4be41a9acab",
       "390/demo/app/states/empty": "4ecff42855b2d641af48a7f798979abdbc1489152c766b64c538b6e53026b0f3",
       "390/demo/app/states/error": "c896af4a5df89951d16f32bff1917df04d6aabbf202258590a0656a24aad7801",
       "390/demo/app/states/success": "c05d24fcba181fcee321a9d72dbee32bb446659401690ee1ebbaf6d824e47d96",
@@ -108,7 +108,7 @@
       "1440/default/app/history": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188",
       "1440/default/app/notifications": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c",
       "1440/default/app/settings": "daddb9c9e4101578b5def5651107f17b391bb326a33d13fe6d1639bd92b51142",
-      "1440/default/app/sources": "7dab4eec0dea8b2a2c2b98ab660ba532275ffd3b427c8b3c311b5c957012bec9",
+      "1440/default/app/sources": "eb558b52dea86665f65e648b9dbe8b643d92f75a80eae3d70c3bc75415ca70b2",
       "1440/default/app/states/empty": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
       "1440/default/app/states/error": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
       "1440/default/app/states/success": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
@@ -137,7 +137,7 @@
       "1440/demo/app/history": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188",
       "1440/demo/app/notifications": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c",
       "1440/demo/app/settings": "378032a98e71dda843c68fd36130d8d98ca0c7f26ee2d9283a316cc15ce2141c",
-      "1440/demo/app/sources": "7dab4eec0dea8b2a2c2b98ab660ba532275ffd3b427c8b3c311b5c957012bec9",
+      "1440/demo/app/sources": "eb558b52dea86665f65e648b9dbe8b643d92f75a80eae3d70c3bc75415ca70b2",
       "1440/demo/app/states/empty": "1c400a82aee8234dc41137ec8cde7026cb52fc3378f37f793356c544b6fc21a6",
       "1440/demo/app/states/error": "e6b83c14a133504d73106acdac3fbb0ce217dbc176230383c870e0a786357456",
       "1440/demo/app/states/success": "de928524c0b7c2fda38a0b3aa6b5dd48ed266258c1e2704c99d31d16bf7c1893",
@@ -246,7 +246,7 @@
       "head": "0011",
       "schemaCheck": true
     },
-    "finalDocumentationChecks": "Final SHA/run are recorded in PR13 description"
+    "finalPublicationChecks": "Final public401 follow-up SHA/run are recorded in PR13 description"
   },
   "review": "PR13 owner acceptance pending; no merge"
 }

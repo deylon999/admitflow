@@ -251,6 +251,14 @@ migrations0011/head/schema check. Review submissions на момент пров�
 Окончательный SHA документации/latest Checks — в
 описании PR, чтобы этот отчёт не требовал бесконечной цепочки self-referencing SHA.
 
+Дополнительная финальная проверка нашла public401 boundary: ApiError теперь
+различает session-bound и public 401. Публичный каталог предлагает только GET retry,
+не гостевую сессию; private 401 сохраняет явный guest recovery. Новый regression
+подтверждает успешный retry и 0 session POST. После этого изменения локально
+**147 tests passed (28.5 s)**, lint/typecheck/build pass и повторно **116/116**
+visual pairs equal. Окончательный source SHA/latest hosted run — в описании PR13;
+ранее завершённые hosted результаты выше относятся к первому набору dc5205c.
+
 Локальный nginx обновлён текущей сборкой: JS asset побайтово совпадает с dist;
 **58 direct openings** (29×390/1440), unknown auth404 и 0 pageerrors. Backend/db/
 frontend healthy на http://127.0.0.1:8080; worker не запускался. Тестовые API,
