@@ -1236,3 +1236,5 @@ S208/T264 done: PR12 opened without merge. Hosted push43277687053/PR43277802246 
 S209/2026-11-13/T265 done: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
 
 S209/2026-11-13/T266 done: Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed.
+
+S209/2026-11-13/T267 done: Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.

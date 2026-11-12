@@ -2,14 +2,18 @@ let sessionEpoch = 0;
 export const sessionChanged = 'admitflow-session-change';
 export const sessionExpired = 'admitflow-session-expired';
 window.addEventListener('storage', event => {
-    if (event.key === sessionChanged || event.key === null) changeSession(false);
+    if (event.key !== sessionChanged && event.key !== null) return;
+    let expired = false;
+    try { expired = JSON.parse(event.newValue ?? 'null')?.expired === true; }
+    catch { /* Previous clients used an opaque change marker. */ }
+    changeSession(false, expired);
 });
 
 function changeSession(broadcast: boolean, expired = false) {
     sessionEpoch++;
     window.dispatchEvent(new Event(expired ? sessionExpired : sessionChanged));
     if (broadcast) {
-        try { localStorage.setItem(sessionChanged, crypto.randomUUID()); }
+        try { localStorage.setItem(sessionChanged, JSON.stringify({ id: crypto.randomUUID(), expired })); }
         catch { /* Other tabs reconcile on their next authorized request. */ }
     }
 }

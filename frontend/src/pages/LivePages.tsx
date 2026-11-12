@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { request } from '../shared/api';
+import { useEffect, useRef, useState } from 'react';
+import { request, sessionChanged, sessionExpired } from '../shared/api';
 import { subscriptions, events, coverage } from '../shared/dto';
 import { useResource } from '../shared/resource';
 import { ResourceState } from '../shared/ResourceState';
@@ -12,6 +12,15 @@ export function LiveSources() {
 export function LiveEvents() {
     const [cursors, setCursors] = useState<string[]>([]);
     const cursor = cursors.at(-1);
+    useEffect(() => {
+        const clear = () => setCursors([]);
+        window.addEventListener(sessionChanged, clear);
+        window.addEventListener(sessionExpired, clear);
+        return () => {
+            window.removeEventListener(sessionChanged, clear);
+            window.removeEventListener(sessionExpired, clear);
+        };
+    }, []);
     const r = useResource(`changes${cursor ? '?before=' + encodeURIComponent(cursor) : ''}`, events);
     return <><PageTitle kicker="API · СОБЫТИЯ" title="Изменения сохранённых списков"/><ResourceState {...r} hasData={!!r.data}>{r.data && <>{r.data.items.length ? r.data.items.map(e => <Surface key={e.id} title={e.title}><time dateTime={e.createdAt}>{e.createdAt}</time></Surface>) : <EmptyMessage title="Изменений пока нет" description="Здесь появятся события по вашим подпискам."/>}<button className="af-action af-action--outline" disabled={!cursors.length || r.loading} onClick={() => setCursors(s => s.slice(0, -1))}>Назад</button><button className="af-action af-action--outline" disabled={!r.data.nextCursor || r.loading} onClick={() => setCursors(s => [...s, r.data!.nextCursor!])}>Далее</button></>}</ResourceState></>;
 }
@@ -20,22 +29,42 @@ export function LiveDirections({ id }: {
 }) {
     const r = useResource('subscriptions', subscriptions);
     const [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [error, setError] = useState('');
+    const pending = useRef<AbortController | null>(null);
+    useEffect(() => {
+        const clear = () => {
+            pending.current?.abort();
+            setBusy(false);
+            setMessage('');
+            setError('');
+        };
+        window.addEventListener(sessionChanged, clear);
+        window.addEventListener(sessionExpired, clear);
+        return () => {
+            pending.current?.abort();
+            window.removeEventListener(sessionChanged, clear);
+            window.removeEventListener(sessionExpired, clear);
+        };
+    }, []);
     async function remove(key: string) {
+        if (busy) return;
         if (!confirm('Удалить подписку и её историю?'))
             return;
         setBusy(true);
+        const controller = new AbortController();
+        pending.current = controller;
         setError('');
         setMessage('');
         try {
-            await request(`subscriptions/${encodeURIComponent(key)}`, () => null, { method: 'DELETE' });
+            await request(`subscriptions/${encodeURIComponent(key)}`, () => null, { method: 'DELETE', signal: controller.signal });
+            if (controller.signal.aborted) return;
             setMessage('Подписка удалена.');
             r.retry();
         }
         catch (e) {
-            setError((e as Error).message);
+            if (!controller.signal.aborted) setError(e instanceof Error ? e.message : 'Не удалось удалить подписку.');
         }
         finally {
-            setBusy(false);
+            if (!controller.signal.aborted) setBusy(false);
         }
     }
     const rows = id ? r.data?.filter(x => x.id === id) : r.data;

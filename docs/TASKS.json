@@ -8225,7 +8225,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T265"
       ],
@@ -8242,7 +8242,12 @@
         "Preserve retry/stale/empty/error semantics and isolate demo",
         "Paginate imported groups and expose metadata errors"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8251,7 +8256,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T265"
       ],

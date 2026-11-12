@@ -5805,7 +5805,7 @@
 
 ### T267. KAN-212: Server state and live integration
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T265.
 
@@ -5826,11 +5826,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-212-FRONTEND-REPORT.md](../docs/KAN-212-FRONTEND-REPORT.md) — Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.
 
 ### T268. KAN-212: Navigation and route boundaries
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T265.
 

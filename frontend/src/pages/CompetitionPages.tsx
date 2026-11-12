@@ -4,6 +4,7 @@ import { useResource } from '../shared/resource';
 import { ResourceState } from '../shared/ResourceState';
 import { Action, EmptyMessage, Metric, PageTitle, Pill, Surface } from '../shared/UI';
 import { RouteLink } from '../app/RouteLink';
+import { useCatalogFilters } from '../catalog/state';
 
 const day = (iso: string) => new Intl.DateTimeFormat('ru-RU', { timeZone: 'Europe/Moscow', dateStyle: 'short', timeStyle: 'short' }).format(new Date(iso));
 const unknown = 'Нет данных';
@@ -29,7 +30,9 @@ function Warnings({ codes }: { codes: string[] }) {
 }
 
 export function CompetitionsIndex() {
-  const r = useResource('groups?limit=50', competitionGroups);
+  const { params, update } = useCatalogFilters();
+  const cursor = params.get('after') ?? '';
+  const r = useResource('groups?' + new URLSearchParams({ limit: '50', after: cursor }), competitionGroups);
   const lists = r.data?.items.filter(g => g.coverage === 'archive' || g.coverage === 'automatic') ?? [];
   return <>
     <PageTitle kicker="КОНКУРСНЫЕ СПИСКИ" title="Импортированные конкурсные списки"
@@ -44,7 +47,11 @@ export function CompetitionsIndex() {
           <p>{g.year} · {g.coverage === 'archive' ? 'Архив' : 'Автоматическое обновление'} · Мест: {g.seats ?? unknown}</p>
         </div>
         <div className="af-program-card__actions"><RouteLink to={`/app/competitions/${encodeURIComponent(g.id)}`} className="af-small-link">Список ↗</RouteLink></div>
-      </article>)}</div> : <EmptyMessage title="Списков пока нет" description="Ни один конкурсный список ещё не импортирован." />)}
+      </article>)}</div> : <EmptyMessage title="На этой странице списков нет" description="Здесь нет импортированных списков. Проверьте следующую страницу, если она доступна." />)}
+      {r.data && <nav className="af-catalog-pagination" aria-label="Страницы конкурсов">
+        <button type="button" className="af-action af-action--outline" disabled={!cursor || r.loading} onClick={() => update('after', '')}>В начало</button>
+        <button type="button" className="af-action af-action--outline" disabled={!r.data.nextCursor || r.loading} onClick={() => update('after', r.data!.nextCursor!)}>Далее</button>
+      </nav>}
     </ResourceState>
   </>;
 }
@@ -116,7 +123,7 @@ export function CompetitorsPage({ id }: { id: string }) {
   const summary = useResource(`competitions/${encodeURIComponent(id)}/summary`, competitionSummary);
   const s = summary.data;
   const peak = s ? Math.max(1, ...s.scoreBins.map(b => b.count)) : 1;
-  return <ResourceState {...summary} hasData={!!s}>
+  return <ResourceState {...info} hasData={!!info.data}><ResourceState {...summary} hasData={!!s}>
     {s && <>
       <PageTitle kicker="АНАЛИЗ КОНКУРЕНЦИИ" title={info.data ? info.data.title : 'Состав конкурса'}
         description="Только агрегаты выбранного снимка. Отсутствие согласия или строки не означает, что человек выбыл."
@@ -141,5 +148,5 @@ export function CompetitorsPage({ id }: { id: string }) {
       </Surface>
       <Warnings codes={s.warnings} />
     </>}
-  </ResourceState>;
+  </ResourceState></ResourceState>;
 }

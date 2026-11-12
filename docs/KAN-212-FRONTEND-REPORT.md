@@ -105,3 +105,18 @@ passed**, 0 skipped (повторный полный прогон). Первый
 один `net::ERR_NO_BUFFER_SPACE` при page.goto, до выполнения приложения;
 повтор без изменения теста прошёл. CSS asset совпадает с baseline:
 `index-CE7INdrk.css`. Аудит и эти проверки не заменяют финальную приёмку.
+
+T267: useResource отменяет активный приватный запрос и очищает данные при
+session change/expiry; публичный каталог/groups/coverage не перезапрашиваются.
+Событие смены сессии своей вкладки поддержано. Между вкладками expiry передаётся
+отдельно от смены владельца: это исключает цикл взаимных 401/refetch. Lookup и
+DELETE отменяются при уходе/смене сессии; старый результат не показывает успех.
+Прямой add после 401 предлагает явный старт гостя и не повторяет POST автоматически.
+Индекс groups использует after cursor; manual-only страница не объявляет весь
+каталог пустым. Competitors показывает ошибки и metadata, и summary.
+
+T267 verification: lint/typecheck и **131 tests passed**, включая две вкладки,
+отменённый lookup, explicit guest recovery, pagination/history/reload и отказ
+от программы другой кампании. Реальный Compose/PostgreSQL startup smoke exit 0,
+backup/import/migrations/persistence подтверждены; текущий frontend ещё проверяется
+против этого стека отдельно. Существующие volumes и история сохранены.
