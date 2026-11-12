@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-12",
-  "currentTask": "T262",
+  "currentTask": "T263",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S208",
-  "resumeAction": "KAN-238 ci/kan-238-hardening: npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264. Next: T262",
+  "resumeAction": "KAN-238 ci/kan-238-hardening: Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed. Next: T263",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -15,11 +15,11 @@
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены."
   ],
   "lastCompleted": [
+    "T262: Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed.",
     "T261: npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264.",
     "T260: Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report.",
     "T258 (KAN-219): reviewed entrance tests for SGU 09.03.04/02.03.03 from the official 2026 document, builder checks every value against the text, conflicting physics minimum kept null; API, page and coverage layer 1/785.",
-    "T257 (KAN-220): reviewed JSON/CSV adapters through the common Adapter/Registry, enqueue-all with same-domain spreading, PostgreSQL re-import/failure tests; PDF not done, JSON/CSV profiles empty until reviewed.",
-    "T256 (KAN-228): real competition list/competitors pages on snapshot API, official order, no identifiers, own row only after confirmation."
+    "T257 (KAN-220): reviewed JSON/CSV adapters through the common Adapter/Registry, enqueue-all with same-domain spreading, PostgreSQL re-import/failure tests; PDF not done, JSON/CSV profiles empty until reviewed."
   ],
   "environment": [
     "S203 actual Docker29.9.2/Compose/PostgreSQL17.11;db/backend/frontend healthy at127.0.0.1:8080. Alembic current=head0011 and check pass;repeat import1257universities/2reviewedprograms;HTTP/assets/SPA smoke pass.",

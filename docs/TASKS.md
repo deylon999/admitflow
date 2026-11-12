@@ -5684,7 +5684,7 @@
 
 ### T262. KAN-238: PostgreSQL и Alembic
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 
@@ -5703,11 +5703,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed.
 
 ### T263. KAN-238: существующие ML/ETL проверки
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 

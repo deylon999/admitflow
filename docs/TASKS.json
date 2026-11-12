@@ -8075,7 +8075,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T260"
       ],
@@ -8090,7 +8090,12 @@
         "Backend pytest проходит с --require-postgres на изолированном PostgreSQL",
         "Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-238-CI-REPORT.md",
+          "note": "Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8099,7 +8104,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T260"
       ],

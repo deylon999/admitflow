@@ -38,6 +38,10 @@ upload при ошибке, push/PR triggers и минимальные permissio
 - `frontend/playwright.config.ts`: CI forbidOnly, JUnit, screenshot on failure; отдельный outputDir для browser artifacts, чтобы Playwright не удалял открытый runner log.
 - `frontend/scripts/stop-child.mjs`, `stop-child.test.mjs`, `test.mjs`: ограниченный stdin → TERM → KILL teardown; три проверки реальных дочерних процессов, включая игнорирование сигналов в Linux.
 - `.github/workflows/ci.yml`: shutdown tests, сохранение frontend console log через Bash pipefail/tee, явные retention 7 дней и ошибка при отсутствии artifacts.
+- Backend/frontend pip используют существующий runtime `constraints.txt`, cache учитывает его, выполняется `pip check`; версии основных зависимостей не обновлены.
+- `backend/tests/check_migrations.py`: gate требует явный disposable PostgreSQL URL, пустую БД, upgrade head, равенство heads и `alembic check`. `backend/tests/test_ci_migrations.py` проверяет успешный путь, отказ от непустой БД, schema drift, потерю revision и небезопасные URL.
+- Workflow: отдельный независимый `migrations` service/job с собственной чистой БД; backend console/JUnit и PostgreSQL logs сохраняются с исходным кодом ошибки pipeline.
+- TASKS/STATE/LOG и генерируемые документы фиксируют пятёрку; PRODUCT/ADR-051 фиксируют критерий hosted приёмки без изменения продуктовых правил.
 
 ## 4. Выполненные проверки
 
@@ -46,6 +50,9 @@ upload при ошибке, push/PR triggers и минимальные permissio
 - GitHub API: доступ push есть, admin/maintain нет; baseline run действительно success.
 - Локально доступны Node 24.21.0, Python 3.14.7, Docker 29.5.3. CI Python 3.12 проверяется отдельно в Linux.
 - T261: `npm ci` exit 0 (0 vulnerabilities); lint/typecheck/build exit 0; `npm test` **94 passed**, включая 29 маршрутов; JUnit/JSON записаны. Shutdown tests **3 passed**. UI, API и CSS не менялись.
+- T262 targeted Linux/Python 3.12/PostgreSQL 17: **32 passed** (старые и новые migration tests), `pip check` exit 0. Отдельная свежесозданная `admitflow_test_migrations`: head `0011`, schema check pass. `actionlint 1.7.7` exit 0.
+- Полный backend до выделения ETL: `python -m pytest -q --require-postgres --junitxml=test-results/backend.xml` — **774 passed, 1 skipped**, 260.97 s. Единственный skip — отсутствующий MICCEDU dataset, не PostgreSQL. Native guard прошёл; SQLite unit tests не выдаются за PG.
+- Repository tools: `python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report` — **17 passed**, включая PDF после установки Cyrillic TTF в одноразовом Linux-контейнере. Первоначальный optional font skip устранён установкой окружения, тест не менялся.
 
 ## 5. Проверка обнаружения ошибок
 
@@ -56,6 +63,7 @@ NEG-01–04: NOT VERIFIED до фактических hosted runs. Искусс�
 Полный MICCEDU dataset/passport не собран; `ml/` содержит README, ETL реализован в scripts и tests.
 Нет обученной модели, backtest и метрик модели. Fixture checks не доказывают качество модели или национальное покрытие.
 Доступность capture из российской сети — отдельное внешнее условие; массовый fetch в CI не запускается.
+Старые приватные `audit/evidence/` от ветки предыдущего аудита сохранены на диске и исключены только локальным `.git/info/exclude`; в PR и artifacts они не включаются.
 
 ## 7. Pull Request и рекомендации
 
@@ -66,6 +74,6 @@ PR ещё не создан. Итоговый отчёт дополнится с
 
 - [x] T260 — аудит и таблица
 - [x] T261 — frontend
-- [ ] T262 — PostgreSQL / Alembic
+- [x] T262 — PostgreSQL / Alembic
 - [ ] T263 — ETL
 - [ ] T264 — hosted NEG, PR, отчёт
