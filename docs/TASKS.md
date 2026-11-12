@@ -5855,7 +5855,7 @@
 
 ### T269. KAN-212: Regression and review delivery
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T265.
 
@@ -5876,7 +5876,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-212-FRONTEND-REPORT.md](../docs/KAN-212-FRONTEND-REPORT.md) — PR13 open for owner review; implementation dc5205c hosted run43313647129 success: frontend146, backend719, ETL55+1 explicit dataset skip, migrations0011/check. Local146 against PostgreSQL, positive isolated archive flow, visual116 equal and58 nginx routes passed. Original history unchanged; all owned test DBs/containers removed; user stack8080 healthy. No merge. Final documentation SHA/checks in PR description.
+- [docs/evidence/kan-212-stabilization.json](../docs/evidence/kan-212-stabilization.json) — Compact hosted/local/visual/PostgreSQL/nginx/history evidence. Final documentation-only checks are tracked in PR13 description. Owner acceptance pending.
 
 ## E6. Резерв и выпуск
 

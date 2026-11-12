@@ -180,8 +180,8 @@ warnings и национальный dashboard; отдельный новый so
 `npm run typecheck`, `npm run build`, `QA_API_TARGET=http://127.0.0.1:8080 npm test`
 завершилась exit 0: **146 passed, 0 failed/skipped, 27.0 s**, Chromium. Переменная
 окружения в PowerShell задаётся через `$env:QA_API_TARGET`; см. frontend/README.
-Обычный contract runtime ранее прошёл 143 теста; финальный обычный runtime дополнительно
-проверяется неизменным hosted frontend job. CI SHA/run будут записаны после публикации.
+Обычный contract runtime ранее прошёл 143 теста; финальный обычный runtime прошёл
+146 тестов в неизменном hosted frontend job. SHA/run указаны ниже.
 
 `python scripts/local_smoke.py`: exit 0, PostgreSQL 17, Alembic **0011=head**, model
 check/import/backup/persistence pass. После browser проверок повторно сравнен весь
@@ -240,3 +240,20 @@ frontend в выполненных сценариях не осталось. HTT
 Основа для KAN-223/214/222 подготовлена: типизированный request+decoder, session
 invalidation, cancellable resource, error/retry/unsupported и устойчивые маршруты.
 Это совместимость для последующей интеграции, не реализация этих feature-задач.
+
+## Передача на review
+
+[PR #13](https://github.com/deylon999/admitflow/pull/13) открыт; merge не выполнялся.
+Реализация проверена на SHA `dc5205c784eff44deaaef237ce701cf68203c141`.
+Hosted [run 43313647129](https://github.com/deylon999/admitflow/actions/runs/43313647129):
+**success**: frontend146, backend719/0skip, ETL55+1 explicit missing-dataset skip,
+migrations0011/head/schema check. Review submissions на момент проверки отсутствуют.
+Окончательный SHA документации/latest Checks — в
+описании PR, чтобы этот отчёт не требовал бесконечной цепочки self-referencing SHA.
+
+Локальный nginx обновлён текущей сборкой: JS asset побайтово совпадает с dist;
+**58 direct openings** (29×390/1440), unknown auth404 и 0 pageerrors. Backend/db/
+frontend healthy на http://127.0.0.1:8080; worker не запускался. Тестовые API,
+preview и все временные тестовые БД/контейнеры удалены; пользовательский
+стек оставлен работающим. Компактный evidence не содержит cookies, токенов,
+публичных кодов поступающих или raw scores.

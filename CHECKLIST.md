@@ -278,7 +278,7 @@
 - [x] T266 KAN-212: API and DTO validation
 - [x] T267 KAN-212: Server state and live integration
 - [x] T268 KAN-212: Navigation and route boundaries
-- [ ] T269 KAN-212: Regression and review delivery — **в работе**
+- [ ] T269 KAN-212: Regression and review delivery — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 
