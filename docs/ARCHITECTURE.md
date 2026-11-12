@@ -46,3 +46,13 @@ Playwright runner владеет временным API и previews и штат�
 композиции. LivePages/AddSource используют существующие subscriptions, changes,
 coverage, groups и source lookup/confirm; новые feature API не создаются.
 Матрица маршрутов и проверка: [evidence](evidence/v3-production-api.md).
+
+KAN-212/S209: существующий request поддерживает типизированный json и Headers,
+проверяет отмену/session epoch после body; конкретные decoders строят DTO без
+generic casts. Resource очищает private данные при смене/истечении сессии и
+авторитетных 403/404/410; при временном сбое сохраняет подтверждённые данные с
+меткой stale. Public catalog/groups/coverage не зависят от владельца. Сессия
+передаёт разные события change/expiry между вкладками, без автоматического POST
+и циклов повторов. Router остаётся History API; ID декодируется один раз,
+auth имеет точный allowlist, query/hash/history сохраняются. Дизайн/CSS прежние.
+Актуальная матрица, ограничения и проверка: [отчёт KAN-212](KAN-212-FRONTEND-REPORT.md).

@@ -136,3 +136,107 @@ Back и Forward. Дополнительно unknown auth, encoded/malformed IDs,
 вне scroll container; исправлен harness, проверки и timeout не ослаблены.
 Vite preview возвращает 500 на malformed percent encoding до React; такие пути
 проверены клиентским переходом, nginx HTTP-граница проверяется отдельно в T269.
+
+## Изменённые файлы и API/DTO
+
+| Файлы | Изменение и причина |
+| --- | --- |
+| shared/api.ts | Единственный fetch; typed JSON/Headers, статусы, timeout/abort/body/session boundary |
+| shared/dto.ts, catalog/decode.ts | Конкретные проверенные типы вместо generic casts; null, обязательные nested поля, даты/IDs/ranks/checksums; сохраняется metadata |
+| catalog/state.ts, CatalogPages, DetailPages, api.ts | Hook принимает decoder; ответ ограничен ID/year/universityId запроса; удалена неиспользуемая generic обёртка |
+| shared/resource.ts, ResourceState | Отмена/очистка при смене/истечении сессии, 403/404/410; временная ошибка оставляет валидные stale данные; session start только явно |
+| App, navigation, RouteLink | Точные auth routes, безопасный ID, история/query/hash и native ссылки; прежний router сохранён |
+| AddSource, LivePages, CompetitionPages | Mutation lifecycle, корректный subscription link, pagination, metadata errors, URL filters |
+| api-unit/api/routes tests, playwright.config | 28 unit + негативные API + all-route/history/ID regression; существующие тесты сохранены |
+| scripts/test.mjs | Дополнительный opt-in локальный API target; обычный CI stand прежний |
+| scripts/compare-main.mjs | Сравнение 116 пар со свежим Git reference, без обновления baseline |
+| scripts/verify-postgres.mjs, postgres-runtime.py | Реальный positive E2E в отдельной PostgreSQL БД с archive fixture; cleanup своих ресурсов |
+| docs, README, inventory, roadmap | Матрица, evidence, инструкции, границы и передача review |
+
+Backend source, schemas, parsers, applied migrations, shared historical fixtures,
+CSS и GitHub Actions не изменены. Новых зависимостей нет. Проверены существующие
+FastAPI contracts catalog universities/programs (включая KAN-219 exams), groups,
+subscriptions, source lookup/confirmation, changes, competitions metadata/rows/
+summary, coverage и coverage/national. `SourceStatus` отражается через group metadata,
+warnings и национальный dashboard; отдельный новый source API не создан.
+
+## Ошибки и состояния
+
+| Проверка | Реакция |
+| --- | --- |
+| 400/401/403/404/409/410/422/429/500/503 | Контролируемое сообщение, без backend detail/stack; нет автоматического повтора POST |
+| 401 | Приватные данные и token/code очищаются; явный guest start; две вкладки без циклов |
+| 403/404/410 после success | Прежние записи удаляются из состояния; не показываются как доступные |
+| Временный 5xx при refresh | Предыдущие валидные данные с меткой stale и retry |
+| Network/timeout | Ошибка с retry, не empty и не вечная загрузка |
+| Caller abort/unmount/быстрый переход | Запрос отменяется, старый ответ не перезаписывает экран |
+| Неверный JSON/Content-Type/DTO/date/ID/rank/count | 502 и понятное error state, без успешной загрузки |
+| Валидные []/null | Настоящее empty или «Нет данных», без выдуманного 0/false/процента |
+| Demo/Unsupported | Только opt-in; нет скрытого fallback, серверного сохранения или успешного login |
+
+## Финальные локальные проверки
+
+Все npm-команды из frontend. Финальная последовательность `npm ci`, `npm run lint`,
+`npm run typecheck`, `npm run build`, `QA_API_TARGET=http://127.0.0.1:8080 npm test`
+завершилась exit 0: **146 passed, 0 failed/skipped, 27.0 s**, Chromium. Переменная
+окружения в PowerShell задаётся через `$env:QA_API_TARGET`; см. frontend/README.
+Обычный contract runtime ранее прошёл 143 теста; финальный обычный runtime дополнительно
+проверяется неизменным hosted frontend job. CI SHA/run будут записаны после публикации.
+
+`python scripts/local_smoke.py`: exit 0, PostgreSQL 17, Alembic **0011=head**, model
+check/import/backup/persistence pass. После browser проверок повторно сравнен весь
+контрольный набор protected history — хеши совпадают. Пользовательские volumes сохранены.
+
+`node scripts/verify-postgres.mjs`: exit 0. Настоящие FastAPI + PostgreSQL и текущая
+production-сборка, без HTTP intercept: guest start204 → groups → archive lookup
+(rank3) → confirm201 → subscription detail → list50 → next/reload (rank51) → summary
+(aboveMe2). Данные — существующий derived SGU archive fixture на 573 строки, **не
+production capture**. Созданная БД и API-контейнер удалены. Официальные источники
+в пользовательской БД не активировались. Raw score screenshots не публикуются.
+
+Malformed percent URLs на настоящем nginx возвращают **400**, без stack trace;
+переход к таким URL в SPA даёт 404 UI, без pageerrors. Оба уровня проверены.
+`python scripts/roadmap.py --render --check` и `git diff --check` проходят.
+
+Производительность: каталог продолжает получать страницы по 12 записей, groups по
+20/50, rows по 50. Positive PostgreSQL scenario подтверждает переход 1–50 → 51–100
+из 573, а не загрузку всего списка. Старые запросы отменяются; public данные не
+перезагружаются при смене сессии. Production p95/масштаб 10k строк не измерялись;
+спекулятивных оптимизаций и новых state dependencies нет.
+
+## Визуальная проверка
+
+`node scripts/compare-main.mjs 07526c3`: exit 0, **116/116 PNG пар побайтово
+совпадают**: 29 маршрутов × 390/1440 × default/demo. Text equal, 0 pageerrors,
+0 horizontal overflow. Свежий reference извлечён из Git, CSS asset по-прежнему
+`index-CE7INdrk.css`; baseline не обновлялся. Для сравнения обеим версиям передавались
+одинаковые read-only ответы локального API (временные timestamps зафиксированы).
+Это visual replay, отдельный от настоящих PostgreSQL проверок выше.
+
+Визуально просмотрены viewport-галереи всех 29 default экранов на 390/1440;
+дополнительно полные PNG программы на обеих ширинах, Unsupported и guest state.
+Кнопки, шрифты, палитра, header/sidebar и композиции сохранены. Полная UX/adaptive
+приёмка остаётся KAN-213; исторический sibling comparator не объявляется новой
+приёмкой live-экранов. Evidence: ignored frontend/test-results/compare-main-*;
+компактные метрики — [kan-212-stabilization.json](evidence/kan-212-stabilization.json).
+
+## Pull Request, ограничения и продолжение
+
+Изменение оформляется одним follow-up PR к уже merged #4: небольшой согласованный
+набор исправлений разбит на отдельные audit/API/state/navigation/regression коммиты.
+API/session и routing исправления зависят друг от друга, поэтому самостоятельный
+merge пяти веток не требуется. Review владельца и merge не выполняются агентом.
+Ссылка и hosted проверки добавляются после открытия PR; KAN-212 до принятия остаётся
+**In Review**, T269 не отмечается done.
+
+Нерешённые продуктовые функции: account login/register/recovery (KAN-214), подбор
+ЕГЭ (KAN-223), saved/ML и будущие API (KAN-222). Они честно Unsupported; отсутствие
+этих API не блокирует стабилизацию. Национальное покрытие и живая кампания 2027 не
+заявляются. Vite preview malformed-encoding HTTP500 — отдельная граница dev-server;
+nginx безопасно возвращает400, React переход не падает. Новых дефектов production
+frontend в выполненных сценариях не осталось. HTTPS deploy и приёмка owner не
+подтверждены. Самостоятельный merge/force push не выполняется.
+
+Основа для KAN-223/214/222 подготовлена: типизированный request+decoder, session
+invalidation, cancellable resource, error/retry/unsupported и устойчивые маршруты.
+Это совместимость для последующей интеграции, не реализация этих feature-задач.

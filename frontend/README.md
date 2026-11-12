@@ -2,8 +2,9 @@
 
 Один React entry `src/main.tsx` → `App.tsx`, History API router, общий AppShell.
 Исходные компоненты и CSS v3 сохранены. `src/catalog/` содержит только
-DTO/API/state/композиции реального каталога. Остальные страницы используют
-исходные demo-данные с явной маркировкой прогнозов.
+DTO/API/state/композиции реального каталога. Подписки, события, списки и покрытие
+используют существующие API. Будущие функции показывают Unsupported; исходные
+demo-экраны доступны только после явного включения демонстрации.
 
 Из этой папки:
 
@@ -25,8 +26,32 @@ npm test
 
 `npm test` сам запускает настоящий FastAPI с миграциями в временной SQLite
 и Vite production preview, затем закрывает свои серверы. Требуются Python
-requirements-dev backend и Chromium. Полный read-only reference test:
-`npm run test:visual`. Native PostgreSQL проверяется отдельно.
+requirements-dev backend и Chromium. Исторический comparator с исходным sibling
+v3: `npm run test:visual` (ожидания периода до live-интеграций). Для текущего
+frontend приёмка KAN-212 использует свежую Git-копию main без перезаписи baseline:
+
+```powershell
+node scripts/compare-main.mjs 07526c3
+```
+
+Все 29 экранов проверяются на 390/1440, default/demo; ответы локального API
+читаются один раз для обеих картинок, поэтому это visual replay. PNG/metrics
+сохраняются в ignored test-results/compare-main-*. Для проверки настоящего API
+нужен работающий стек `python scripts/local_smoke.py` из корня, затем:
+
+```powershell
+$env:QA_API_TARGET='http://127.0.0.1:8080'
+npm test
+Remove-Item Env:QA_API_TARGET
+node scripts/verify-postgres.mjs
+```
+
+QA_API_TARGET разрешает только локальный HTTP origin и не запускает SQLite.
+verify-postgres создаёт отдельную PostgreSQL-базу и временный API-контейнер,
+публикует только в ней явно тестовый архивный fixture, проходит guest → lookup →
+confirm → список/summary. Удаляет только свою базу и контейнер, пользовательские
+источники/volumes не меняет; требует свободные 5301/5303. Это проверка реального
+backend с архивным fixture, не новая загрузка официального списка.
 
 Скриншоты и вспомогательные proof-файлы по умолчанию попадают в ignored
 `test-results/evidence`; для сохраняемого отчёта задать `QA_EVIDENCE_DIR`.

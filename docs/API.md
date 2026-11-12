@@ -66,3 +66,9 @@ DTO каталога не зависят от этой арифметики. П�
 идёт через source lookup/confirm. History/notifications читают changes, sources —
 coverage. Account/forecast/EGE/profile feature API по-прежнему отсутствуют.
 Контрактный frontend smoke и границы: [T253](evidence/v3-production-api.md).
+
+KAN-212/S209: публичные backend DTO не менялись. Frontend дополнительно проверяет
+ISO calendar dates, идентификаторы, rank/count/null и обязательные потребляемые
+nested поля; catalog ID/year/universityId ответа должны соответствовать запросу.
+Неизвестные admission факты остаются null. HTTP 401 не создаёт гостя автоматически.
+Актуальные 29 маршрутов и негативные сценарии: [отчёт](KAN-212-FRONTEND-REPORT.md).

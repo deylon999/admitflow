@@ -1,0 +1,1731 @@
+{
+  "recordedAt": "2026-11-13",
+  "baseline": "07526c32017d0eebbb08c06851e46cc13782656d",
+  "localChecks": {
+    "npmCi": true,
+    "lint": true,
+    "typecheck": true,
+    "build": true
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-11-12T21:40:38.762Z",
+      "duration": 26970.19,
+      "expected": 146,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "target": "real existing PostgreSQL API via QA_API_TARGET; controlled HTTP fixtures explicitly intercepted only in negative/unit cases"
+  },
+  "visual": {
+    "comparisons": 116,
+    "allEqual": true,
+    "source": "fresh Git main reference with read-only local API replay",
+    "results": [
+      {
+        "route": "/",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "041832b00b4b9ec7e6e60320534389b6348e8cbd1488c256fbc239dbb273ed97",
+        "currentSha256": "041832b00b4b9ec7e6e60320534389b6348e8cbd1488c256fbc239dbb273ed97"
+      },
+      {
+        "route": "/universities",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "7acec1f8710863f5e868a8519e824a12f17a0cb3c10da32331b5ad556594bb68",
+        "currentSha256": "7acec1f8710863f5e868a8519e824a12f17a0cb3c10da32331b5ad556594bb68"
+      },
+      {
+        "route": "/universities/sgu-saratov",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "0da2624a08a92a2bdc8a03d92ddbd0b7318b8df976ce5a559cfe1c7c6dd415f3",
+        "currentSha256": "0da2624a08a92a2bdc8a03d92ddbd0b7318b8df976ce5a559cfe1c7c6dd415f3"
+      },
+      {
+        "route": "/programs",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "643d227ecc04513748a211e91d5bb32c97d5cc5cc3bdc65788d4a5b4de59c3f8",
+        "currentSha256": "643d227ecc04513748a211e91d5bb32c97d5cc5cc3bdc65788d4a5b4de59c3f8"
+      },
+      {
+        "route": "/programs/sgu-2026-4588",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "49a2557f368e1fb281ecae6c2772e21afaf631d4fd3837d7d82e589b94cc3c63",
+        "currentSha256": "49a2557f368e1fb281ecae6c2772e21afaf631d4fd3837d7d82e589b94cc3c63"
+      },
+      {
+        "route": "/ege-analytics",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/how-it-works",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "07c6e3c4854b2b991b4aff61584a192be9422348e1d2884d37530fa3428d60fc",
+        "currentSha256": "07c6e3c4854b2b991b4aff61584a192be9422348e1d2884d37530fa3428d60fc"
+      },
+      {
+        "route": "/faq",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3f8c4291e6640c6627b107f1071e260c6ff3a0838772de66772f19659f2afc78",
+        "currentSha256": "3f8c4291e6640c6627b107f1071e260c6ff3a0838772de66772f19659f2afc78"
+      },
+      {
+        "route": "/auth/login",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752",
+        "currentSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752"
+      },
+      {
+        "route": "/auth/register",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752",
+        "currentSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752"
+      },
+      {
+        "route": "/auth/recovery",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752",
+        "currentSha256": "76df209f8036805ed5fa216bd17f8c863d2ec68b772c7594f06185599f6bc752"
+      },
+      {
+        "route": "/app",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "8bb2f9ed647f5f761c15b4a9b1a5cdc70595321ad193b59fa81389cdb3e9edb1",
+        "currentSha256": "8bb2f9ed647f5f761c15b4a9b1a5cdc70595321ad193b59fa81389cdb3e9edb1"
+      },
+      {
+        "route": "/app/profile",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/forecast",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3c58be51047f96c63515740e8a4250bc8ea9d14095dbd303e465043bdea15ed0",
+        "currentSha256": "3c58be51047f96c63515740e8a4250bc8ea9d14095dbd303e465043bdea15ed0"
+      },
+      {
+        "route": "/app/forecast/example",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/forecast/method",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/watchlist",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "2e7cc8d8e66588293d8cdbbf33048a512538fe477a475368e23072e89e7cf4b7",
+        "currentSha256": "2e7cc8d8e66588293d8cdbbf33048a512538fe477a475368e23072e89e7cf4b7"
+      },
+      {
+        "route": "/app/watchlist/add",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "d0152168a1bb5752e2554cd2b397611a30ab59c317ad28c2d558d74d78ecfbaa",
+        "currentSha256": "d0152168a1bb5752e2554cd2b397611a30ab59c317ad28c2d558d74d78ecfbaa"
+      },
+      {
+        "route": "/app/competitions/mtuci-se",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ab2afdf9d3888496f321e1bcbeeb1889a7ff3dc1c04ad0d086dc0ff222f86b2c",
+        "currentSha256": "ab2afdf9d3888496f321e1bcbeeb1889a7ff3dc1c04ad0d086dc0ff222f86b2c"
+      },
+      {
+        "route": "/app/competitions/mtuci-se/competitors",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/compare",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/history",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
+        "currentSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22"
+      },
+      {
+        "route": "/app/notifications",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
+        "currentSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22"
+      },
+      {
+        "route": "/app/settings",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/sources",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "6b87cd84b3fdc26b63784f75af3c30b7c32b6080a001d76dd67957a2c0d1a2f3",
+        "currentSha256": "6b87cd84b3fdc26b63784f75af3c30b7c32b6080a001d76dd67957a2c0d1a2f3"
+      },
+      {
+        "route": "/app/states/empty",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/states/error",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/app/states/success",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44",
+        "currentSha256": "11801120141b1630112d2110a89f014dd91f67d0386e26642eb8bf0bbbdf8f44"
+      },
+      {
+        "route": "/not-found",
+        "demo": false,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "441447ca133165cb70aa1405490b9f2e595cbe6a4f1eef55c888c99698b3f043",
+        "currentSha256": "441447ca133165cb70aa1405490b9f2e595cbe6a4f1eef55c888c99698b3f043"
+      },
+      {
+        "route": "/",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "041832b00b4b9ec7e6e60320534389b6348e8cbd1488c256fbc239dbb273ed97",
+        "currentSha256": "041832b00b4b9ec7e6e60320534389b6348e8cbd1488c256fbc239dbb273ed97"
+      },
+      {
+        "route": "/universities",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "7acec1f8710863f5e868a8519e824a12f17a0cb3c10da32331b5ad556594bb68",
+        "currentSha256": "7acec1f8710863f5e868a8519e824a12f17a0cb3c10da32331b5ad556594bb68"
+      },
+      {
+        "route": "/universities/sgu-saratov",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "0da2624a08a92a2bdc8a03d92ddbd0b7318b8df976ce5a559cfe1c7c6dd415f3",
+        "currentSha256": "0da2624a08a92a2bdc8a03d92ddbd0b7318b8df976ce5a559cfe1c7c6dd415f3"
+      },
+      {
+        "route": "/programs",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "643d227ecc04513748a211e91d5bb32c97d5cc5cc3bdc65788d4a5b4de59c3f8",
+        "currentSha256": "643d227ecc04513748a211e91d5bb32c97d5cc5cc3bdc65788d4a5b4de59c3f8"
+      },
+      {
+        "route": "/programs/sgu-2026-4588",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "49a2557f368e1fb281ecae6c2772e21afaf631d4fd3837d7d82e589b94cc3c63",
+        "currentSha256": "49a2557f368e1fb281ecae6c2772e21afaf631d4fd3837d7d82e589b94cc3c63"
+      },
+      {
+        "route": "/ege-analytics",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "e605f681333a10f1dd57a3b8f8cc5efd3fd9c293804425265d210f1a1d50d431",
+        "currentSha256": "e605f681333a10f1dd57a3b8f8cc5efd3fd9c293804425265d210f1a1d50d431"
+      },
+      {
+        "route": "/how-it-works",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "07c6e3c4854b2b991b4aff61584a192be9422348e1d2884d37530fa3428d60fc",
+        "currentSha256": "07c6e3c4854b2b991b4aff61584a192be9422348e1d2884d37530fa3428d60fc"
+      },
+      {
+        "route": "/faq",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3f8c4291e6640c6627b107f1071e260c6ff3a0838772de66772f19659f2afc78",
+        "currentSha256": "3f8c4291e6640c6627b107f1071e260c6ff3a0838772de66772f19659f2afc78"
+      },
+      {
+        "route": "/auth/login",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f02c158f96e98f87b3035da8bef4c4ebe0a9540d8e38bb02f46c7206522c8d3e",
+        "currentSha256": "f02c158f96e98f87b3035da8bef4c4ebe0a9540d8e38bb02f46c7206522c8d3e"
+      },
+      {
+        "route": "/auth/register",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "4252d736ddf4bfe228204395be938959904e21704b4fcdc17523adf9e8530e62",
+        "currentSha256": "4252d736ddf4bfe228204395be938959904e21704b4fcdc17523adf9e8530e62"
+      },
+      {
+        "route": "/auth/recovery",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "9c8552b04eabdc26ccbe2d8fd6d0eabd44a069fa62c2d3ac8887d7201146ada2",
+        "currentSha256": "9c8552b04eabdc26ccbe2d8fd6d0eabd44a069fa62c2d3ac8887d7201146ada2"
+      },
+      {
+        "route": "/app",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "2c1d1fdb9d1b458f4e463d4882e5620d6591593ee09e7ed64f16b04f68131c9c",
+        "currentSha256": "2c1d1fdb9d1b458f4e463d4882e5620d6591593ee09e7ed64f16b04f68131c9c"
+      },
+      {
+        "route": "/app/profile",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "5242f8c89cec41c0c4843d14aaf99ad9c6b0d83470b73fe63808897986cee948",
+        "currentSha256": "5242f8c89cec41c0c4843d14aaf99ad9c6b0d83470b73fe63808897986cee948"
+      },
+      {
+        "route": "/app/forecast",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "47071b80a9ab115504774e5a5a396c5b942e89f95e5d1b91aa981fc4de58dede",
+        "currentSha256": "47071b80a9ab115504774e5a5a396c5b942e89f95e5d1b91aa981fc4de58dede"
+      },
+      {
+        "route": "/app/forecast/example",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ae5d100b76823beca930660bd0bca85d57117c74d8938effcd39dc8442312031",
+        "currentSha256": "ae5d100b76823beca930660bd0bca85d57117c74d8938effcd39dc8442312031"
+      },
+      {
+        "route": "/app/forecast/method",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "9e8bf8156e306216bb6a5c2b0659bed697106e5b29e29fd22516d271e3597839",
+        "currentSha256": "9e8bf8156e306216bb6a5c2b0659bed697106e5b29e29fd22516d271e3597839"
+      },
+      {
+        "route": "/app/watchlist",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3a1c19446e872a2c286aa93c5fb2bbb8b015dec7b077da5c1ccc105360d4b1af",
+        "currentSha256": "3a1c19446e872a2c286aa93c5fb2bbb8b015dec7b077da5c1ccc105360d4b1af"
+      },
+      {
+        "route": "/app/watchlist/add",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "88a34650606fa5c1af512d57bd44c24844c9972df549c1d0bee9f30f0208be09",
+        "currentSha256": "88a34650606fa5c1af512d57bd44c24844c9972df549c1d0bee9f30f0208be09"
+      },
+      {
+        "route": "/app/competitions/mtuci-se",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "0a51ca0c9b9a5fe0c9a49ed23a7c91abee8d04384b00abd4be34793495644f08",
+        "currentSha256": "0a51ca0c9b9a5fe0c9a49ed23a7c91abee8d04384b00abd4be34793495644f08"
+      },
+      {
+        "route": "/app/competitions/mtuci-se/competitors",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f93dba2c15a1baadf37e81034aa32bc89a859d323f9afe0b49c6394bb119da58",
+        "currentSha256": "f93dba2c15a1baadf37e81034aa32bc89a859d323f9afe0b49c6394bb119da58"
+      },
+      {
+        "route": "/app/compare",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "dfe17d91cec9e189ae26fa374833593b879fefbdcf11b3642d58d4c6daee0cd0",
+        "currentSha256": "dfe17d91cec9e189ae26fa374833593b879fefbdcf11b3642d58d4c6daee0cd0"
+      },
+      {
+        "route": "/app/history",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
+        "currentSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22"
+      },
+      {
+        "route": "/app/notifications",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22",
+        "currentSha256": "f4dc9d444dadb0d4092bf757529b824dc4e5b2aed618792632c025c29ac08c22"
+      },
+      {
+        "route": "/app/settings",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "b963a1a75a3461a0265af404e4650c2a64d32480c32d3c614a65891b70abf175",
+        "currentSha256": "b963a1a75a3461a0265af404e4650c2a64d32480c32d3c614a65891b70abf175"
+      },
+      {
+        "route": "/app/sources",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "6b87cd84b3fdc26b63784f75af3c30b7c32b6080a001d76dd67957a2c0d1a2f3",
+        "currentSha256": "6b87cd84b3fdc26b63784f75af3c30b7c32b6080a001d76dd67957a2c0d1a2f3"
+      },
+      {
+        "route": "/app/states/empty",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "4ecff42855b2d641af48a7f798979abdbc1489152c766b64c538b6e53026b0f3",
+        "currentSha256": "4ecff42855b2d641af48a7f798979abdbc1489152c766b64c538b6e53026b0f3"
+      },
+      {
+        "route": "/app/states/error",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "c896af4a5df89951d16f32bff1917df04d6aabbf202258590a0656a24aad7801",
+        "currentSha256": "c896af4a5df89951d16f32bff1917df04d6aabbf202258590a0656a24aad7801"
+      },
+      {
+        "route": "/app/states/success",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "c05d24fcba181fcee321a9d72dbee32bb446659401690ee1ebbaf6d824e47d96",
+        "currentSha256": "c05d24fcba181fcee321a9d72dbee32bb446659401690ee1ebbaf6d824e47d96"
+      },
+      {
+        "route": "/not-found",
+        "demo": true,
+        "width": 390,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "441447ca133165cb70aa1405490b9f2e595cbe6a4f1eef55c888c99698b3f043",
+        "currentSha256": "441447ca133165cb70aa1405490b9f2e595cbe6a4f1eef55c888c99698b3f043"
+      },
+      {
+        "route": "/",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "709c550777523cdade39c9cc7eba94263d6a67299091458cb4e8b416aad9ddaf",
+        "currentSha256": "709c550777523cdade39c9cc7eba94263d6a67299091458cb4e8b416aad9ddaf"
+      },
+      {
+        "route": "/universities",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "2717b11acf70f24df761f9782b66e83007c13b9cb02668f598d13076e0bcdff2",
+        "currentSha256": "2717b11acf70f24df761f9782b66e83007c13b9cb02668f598d13076e0bcdff2"
+      },
+      {
+        "route": "/universities/sgu-saratov",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "0e5270a3decc9de58b37efa462a1f97cb8983fb9e36ca6f82708e50fa12592d0",
+        "currentSha256": "0e5270a3decc9de58b37efa462a1f97cb8983fb9e36ca6f82708e50fa12592d0"
+      },
+      {
+        "route": "/programs",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ddb2b9271dff241e8a22be0b2aa8270bff9648816d6e46eaed3fb32d218ac82f",
+        "currentSha256": "ddb2b9271dff241e8a22be0b2aa8270bff9648816d6e46eaed3fb32d218ac82f"
+      },
+      {
+        "route": "/programs/sgu-2026-4588",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ef573b7a65d8c6fd53d47c62c21a8cac6164285f36d4c25dfe1c4c4d736df848",
+        "currentSha256": "ef573b7a65d8c6fd53d47c62c21a8cac6164285f36d4c25dfe1c4c4d736df848"
+      },
+      {
+        "route": "/ege-analytics",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "b6b964572b5db7e7bd3881df4dfae58d98f088c08fcf4b46316bfaefde67bf16",
+        "currentSha256": "b6b964572b5db7e7bd3881df4dfae58d98f088c08fcf4b46316bfaefde67bf16"
+      },
+      {
+        "route": "/how-it-works",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3aadf121a74a68530e0a80218e9ecc9c3197636a0d6d4ba26772033358d43498",
+        "currentSha256": "3aadf121a74a68530e0a80218e9ecc9c3197636a0d6d4ba26772033358d43498"
+      },
+      {
+        "route": "/faq",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "d08ee09a6a48bea2646671dd129529a8ab34d125d3d912201a5c63b0af6dccf5",
+        "currentSha256": "d08ee09a6a48bea2646671dd129529a8ab34d125d3d912201a5c63b0af6dccf5"
+      },
+      {
+        "route": "/auth/login",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14",
+        "currentSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14"
+      },
+      {
+        "route": "/auth/register",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14",
+        "currentSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14"
+      },
+      {
+        "route": "/auth/recovery",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14",
+        "currentSha256": "16520344ec1569dfdacbb27f9efb989ebbd7dbef9818cd89b0fe22d2c5513c14"
+      },
+      {
+        "route": "/app",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "9f2eddae73a64e0b5bdb2a2ee2c0ee3668f8328133e34bcb5f59aba69c1c361e",
+        "currentSha256": "9f2eddae73a64e0b5bdb2a2ee2c0ee3668f8328133e34bcb5f59aba69c1c361e"
+      },
+      {
+        "route": "/app/profile",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
+        "currentSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554"
+      },
+      {
+        "route": "/app/forecast",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a",
+        "currentSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a"
+      },
+      {
+        "route": "/app/forecast/example",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a",
+        "currentSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a"
+      },
+      {
+        "route": "/app/forecast/method",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a",
+        "currentSha256": "07faa75c604ff2158365f5c38f9c505e9300288cd0489953b5bec38f4cd0d26a"
+      },
+      {
+        "route": "/app/watchlist",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "7757a23aa189ee61d50c41262ee42d69d29f7b2a8d108eb7e21bf838a206d740",
+        "currentSha256": "7757a23aa189ee61d50c41262ee42d69d29f7b2a8d108eb7e21bf838a206d740"
+      },
+      {
+        "route": "/app/watchlist/add",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "6c68f9a5bc6bd7a5c0489ea8cf9b8b06ab04ebcfb673e14a2eb60ff30233f8b2",
+        "currentSha256": "6c68f9a5bc6bd7a5c0489ea8cf9b8b06ab04ebcfb673e14a2eb60ff30233f8b2"
+      },
+      {
+        "route": "/app/competitions/mtuci-se",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "16b8079411796c817628e250f1c082628a41ef093209643c74243f574450b04e",
+        "currentSha256": "16b8079411796c817628e250f1c082628a41ef093209643c74243f574450b04e"
+      },
+      {
+        "route": "/app/competitions/mtuci-se/competitors",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ff5ac74cda02a0ba5bc87d113179c5fa44ade9075328e49818524f1a494f8461",
+        "currentSha256": "ff5ac74cda02a0ba5bc87d113179c5fa44ade9075328e49818524f1a494f8461"
+      },
+      {
+        "route": "/app/compare",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ca305108cbac767f0addef825cc179bda2e63aeb1fe9edc3362407b482556473",
+        "currentSha256": "ca305108cbac767f0addef825cc179bda2e63aeb1fe9edc3362407b482556473"
+      },
+      {
+        "route": "/app/history",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188",
+        "currentSha256": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188"
+      },
+      {
+        "route": "/app/notifications",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c",
+        "currentSha256": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c"
+      },
+      {
+        "route": "/app/settings",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "daddb9c9e4101578b5def5651107f17b391bb326a33d13fe6d1639bd92b51142",
+        "currentSha256": "daddb9c9e4101578b5def5651107f17b391bb326a33d13fe6d1639bd92b51142"
+      },
+      {
+        "route": "/app/sources",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "a3d4bfb65f69d090960b2ba1496ddb90c58ec437c90235fd2a920998820183ae",
+        "currentSha256": "a3d4bfb65f69d090960b2ba1496ddb90c58ec437c90235fd2a920998820183ae"
+      },
+      {
+        "route": "/app/states/empty",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
+        "currentSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554"
+      },
+      {
+        "route": "/app/states/error",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
+        "currentSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554"
+      },
+      {
+        "route": "/app/states/success",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554",
+        "currentSha256": "86f5a17fb5d31855505877524fe8641e2c401cd73d0e1e555fe3559d68286554"
+      },
+      {
+        "route": "/not-found",
+        "demo": false,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "93c09d8ccb24792510395002b9e3213f343a4febe34031e3362ed579d4af3427",
+        "currentSha256": "93c09d8ccb24792510395002b9e3213f343a4febe34031e3362ed579d4af3427"
+      },
+      {
+        "route": "/",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "709c550777523cdade39c9cc7eba94263d6a67299091458cb4e8b416aad9ddaf",
+        "currentSha256": "709c550777523cdade39c9cc7eba94263d6a67299091458cb4e8b416aad9ddaf"
+      },
+      {
+        "route": "/universities",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "2717b11acf70f24df761f9782b66e83007c13b9cb02668f598d13076e0bcdff2",
+        "currentSha256": "2717b11acf70f24df761f9782b66e83007c13b9cb02668f598d13076e0bcdff2"
+      },
+      {
+        "route": "/universities/sgu-saratov",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "0e5270a3decc9de58b37efa462a1f97cb8983fb9e36ca6f82708e50fa12592d0",
+        "currentSha256": "0e5270a3decc9de58b37efa462a1f97cb8983fb9e36ca6f82708e50fa12592d0"
+      },
+      {
+        "route": "/programs",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ddb2b9271dff241e8a22be0b2aa8270bff9648816d6e46eaed3fb32d218ac82f",
+        "currentSha256": "ddb2b9271dff241e8a22be0b2aa8270bff9648816d6e46eaed3fb32d218ac82f"
+      },
+      {
+        "route": "/programs/sgu-2026-4588",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ef573b7a65d8c6fd53d47c62c21a8cac6164285f36d4c25dfe1c4c4d736df848",
+        "currentSha256": "ef573b7a65d8c6fd53d47c62c21a8cac6164285f36d4c25dfe1c4c4d736df848"
+      },
+      {
+        "route": "/ege-analytics",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3f19b0173f558012f0147569f19fe6c7d894e7c247020662413df75227204b8f",
+        "currentSha256": "3f19b0173f558012f0147569f19fe6c7d894e7c247020662413df75227204b8f"
+      },
+      {
+        "route": "/how-it-works",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "3aadf121a74a68530e0a80218e9ecc9c3197636a0d6d4ba26772033358d43498",
+        "currentSha256": "3aadf121a74a68530e0a80218e9ecc9c3197636a0d6d4ba26772033358d43498"
+      },
+      {
+        "route": "/faq",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "d08ee09a6a48bea2646671dd129529a8ab34d125d3d912201a5c63b0af6dccf5",
+        "currentSha256": "d08ee09a6a48bea2646671dd129529a8ab34d125d3d912201a5c63b0af6dccf5"
+      },
+      {
+        "route": "/auth/login",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "fdd1ce54fd29e0bd07ca9731052515fa56e83925db52fe435da47984f6bdb5b8",
+        "currentSha256": "fdd1ce54fd29e0bd07ca9731052515fa56e83925db52fe435da47984f6bdb5b8"
+      },
+      {
+        "route": "/auth/register",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "2b91be88695e4b154a1df7ef1800c855630cc24e53dd2d6b43fe82256d040f6e",
+        "currentSha256": "2b91be88695e4b154a1df7ef1800c855630cc24e53dd2d6b43fe82256d040f6e"
+      },
+      {
+        "route": "/auth/recovery",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "42cdde8f06e0311f14282544565c224db1d07dca0c1483517ab977614a3c7bb0",
+        "currentSha256": "42cdde8f06e0311f14282544565c224db1d07dca0c1483517ab977614a3c7bb0"
+      },
+      {
+        "route": "/app",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "43160d85a5b0a1c13c859625a4cd6366db53b56eebbf0cbb2464c8debe686daf",
+        "currentSha256": "43160d85a5b0a1c13c859625a4cd6366db53b56eebbf0cbb2464c8debe686daf"
+      },
+      {
+        "route": "/app/profile",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "cdd3bfa413f92094afea13fabc3e124c1592bc97e65dcbdcc1ba7e9005d83517",
+        "currentSha256": "cdd3bfa413f92094afea13fabc3e124c1592bc97e65dcbdcc1ba7e9005d83517"
+      },
+      {
+        "route": "/app/forecast",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "7a57001dc235ee07ae235e97ec481e59316b19db781393f82b46045478af9d39",
+        "currentSha256": "7a57001dc235ee07ae235e97ec481e59316b19db781393f82b46045478af9d39"
+      },
+      {
+        "route": "/app/forecast/example",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "a10c844462d03d4535a8e61ff27760b8a15116472eb48feefaa2363e85d0c0ec",
+        "currentSha256": "a10c844462d03d4535a8e61ff27760b8a15116472eb48feefaa2363e85d0c0ec"
+      },
+      {
+        "route": "/app/forecast/method",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "d8dbf797bb3475984d037844b48276088ae58ba07b9ed1a4ba58b86d5733aebe",
+        "currentSha256": "d8dbf797bb3475984d037844b48276088ae58ba07b9ed1a4ba58b86d5733aebe"
+      },
+      {
+        "route": "/app/watchlist",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "f225ca38da071ecae7665ea1a466f816b03194bc73d5cae1a140ba2206ad6e77",
+        "currentSha256": "f225ca38da071ecae7665ea1a466f816b03194bc73d5cae1a140ba2206ad6e77"
+      },
+      {
+        "route": "/app/watchlist/add",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "473e158b9c00b830779cb7e5b9ae5733a7f5ac34063356ccdfed6c9ae884d539",
+        "currentSha256": "473e158b9c00b830779cb7e5b9ae5733a7f5ac34063356ccdfed6c9ae884d539"
+      },
+      {
+        "route": "/app/competitions/mtuci-se",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "4784c33847dd0ee0e1bd9d2a604a9f6a64b667c51bf3d610e7f41cb519362d4d",
+        "currentSha256": "4784c33847dd0ee0e1bd9d2a604a9f6a64b667c51bf3d610e7f41cb519362d4d"
+      },
+      {
+        "route": "/app/competitions/mtuci-se/competitors",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "b4e0d4a1940e5cb271671b4e180bbc2b12386b2d2318438f301d4d37299053cc",
+        "currentSha256": "b4e0d4a1940e5cb271671b4e180bbc2b12386b2d2318438f301d4d37299053cc"
+      },
+      {
+        "route": "/app/compare",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "c60e36edb052077802f26e28c0abe91ed2a943e6e939e1084b7819c3348e72e9",
+        "currentSha256": "c60e36edb052077802f26e28c0abe91ed2a943e6e939e1084b7819c3348e72e9"
+      },
+      {
+        "route": "/app/history",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188",
+        "currentSha256": "ba4e295f4bff796c876f09b63467091921b0e62b61df5ab70f259688ae149188"
+      },
+      {
+        "route": "/app/notifications",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c",
+        "currentSha256": "5054bec0a22dcbb044cd13963f9fe7612b87a79a0b316dbfbeb0de2b2167098c"
+      },
+      {
+        "route": "/app/settings",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "378032a98e71dda843c68fd36130d8d98ca0c7f26ee2d9283a316cc15ce2141c",
+        "currentSha256": "378032a98e71dda843c68fd36130d8d98ca0c7f26ee2d9283a316cc15ce2141c"
+      },
+      {
+        "route": "/app/sources",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "a3d4bfb65f69d090960b2ba1496ddb90c58ec437c90235fd2a920998820183ae",
+        "currentSha256": "a3d4bfb65f69d090960b2ba1496ddb90c58ec437c90235fd2a920998820183ae"
+      },
+      {
+        "route": "/app/states/empty",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "1c400a82aee8234dc41137ec8cde7026cb52fc3378f37f793356c544b6fc21a6",
+        "currentSha256": "1c400a82aee8234dc41137ec8cde7026cb52fc3378f37f793356c544b6fc21a6"
+      },
+      {
+        "route": "/app/states/error",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "e6b83c14a133504d73106acdac3fbb0ce217dbc176230383c870e0a786357456",
+        "currentSha256": "e6b83c14a133504d73106acdac3fbb0ce217dbc176230383c870e0a786357456"
+      },
+      {
+        "route": "/app/states/success",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "de928524c0b7c2fda38a0b3aa6b5dd48ed266258c1e2704c99d31d16bf7c1893",
+        "currentSha256": "de928524c0b7c2fda38a0b3aa6b5dd48ed266258c1e2704c99d31d16bf7c1893"
+      },
+      {
+        "route": "/not-found",
+        "demo": true,
+        "width": 1440,
+        "equal": true,
+        "textEqual": true,
+        "overflow": [
+          0,
+          0
+        ],
+        "errors": [],
+        "baselineSha256": "93c09d8ccb24792510395002b9e3213f343a4febe34031e3362ed579d4af3427",
+        "currentSha256": "93c09d8ccb24792510395002b9e3213f343a4febe34031e3362ed579d4af3427"
+      }
+    ]
+  },
+  "postgresFlow": {
+    "fixture": "derived archive SGU573 rows; isolated PostgreSQL DB; not production source capture",
+    "passed": true,
+    "flow": "guest -> groups -> lookup rank3 -> confirm201 -> subscription detail -> real list50 -> next/reload51 -> summary above2",
+    "errors": [],
+    "requests": [
+      {
+        "endpoint": "/api/v1/subscriptions",
+        "status": 401
+      },
+      {
+        "endpoint": "/api/v1/session",
+        "status": 204
+      },
+      {
+        "endpoint": "/api/v1/subscriptions",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/groups",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/sources/sgu-2026-4588/lookup",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/subscriptions",
+        "status": 201
+      },
+      {
+        "endpoint": "/api/v1/subscriptions",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588/rows",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588/rows",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588/rows",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588/summary",
+        "status": 200
+      },
+      {
+        "endpoint": "/api/v1/competitions/sgu-2026-4588",
+        "status": 200
+      }
+    ],
+    "cleanup": "only owned container and fresh test database removed"
+  },
+  "history": {
+    "unchanged": true,
+    "fingerprint": "f9ac50fbf9a3f9fd098003e6e7032d63278a710a385d81496a21506cbe2ac457",
+    "tables": 10
+  },
+  "nginxMalformed": [
+    400,
+    400,
+    400
+  ],
+  "hosted": {
+    "status": "pending publication"
+  },
+  "review": "Owner acceptance pending; no merge"
+}

@@ -33,7 +33,7 @@ export function useResource<T>(path: string, decode: Decoder<T>) {
                 setState({ key: path, data, loading: false });
         }, error => {
             if (active)
-                setState(old => ({ key: path, data: old.key === path && !(error instanceof ApiError && error.status === 401) ? old.data : undefined, error, loading: false }));
+                setState(old => ({ key: path, data: old.key === path && !(error instanceof ApiError && [401, 403, 404, 410].includes(error.status)) ? old.data : undefined, error, loading: false }));
         });
         return () => {
             active = false;
