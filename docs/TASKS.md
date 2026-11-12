@@ -5661,7 +5661,7 @@
 
 ### T261. KAN-238: frontend CI и диагностика
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 
@@ -5680,11 +5680,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264.
 
 ### T262. KAN-238: PostgreSQL и Alembic
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 

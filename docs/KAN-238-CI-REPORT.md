@@ -35,7 +35,9 @@ upload при ошибке, push/PR triggers и минимальные permissio
 
 ## 3. Что изменено
 
-Работа продолжается; итоговый список будет дополнен проверенными изменениями.
+- `frontend/playwright.config.ts`: CI forbidOnly, JUnit, screenshot on failure; отдельный outputDir для browser artifacts, чтобы Playwright не удалял открытый runner log.
+- `frontend/scripts/stop-child.mjs`, `stop-child.test.mjs`, `test.mjs`: ограниченный stdin → TERM → KILL teardown; три проверки реальных дочерних процессов, включая игнорирование сигналов в Linux.
+- `.github/workflows/ci.yml`: shutdown tests, сохранение frontend console log через Bash pipefail/tee, явные retention 7 дней и ошибка при отсутствии artifacts.
 
 ## 4. Выполненные проверки
 
@@ -43,6 +45,7 @@ upload при ошибке, push/PR triggers и минимальные permissio
 - `python scripts/roadmap.py --check`: исходный план валиден (255 задач).
 - GitHub API: доступ push есть, admin/maintain нет; baseline run действительно success.
 - Локально доступны Node 24.21.0, Python 3.14.7, Docker 29.5.3. CI Python 3.12 проверяется отдельно в Linux.
+- T261: `npm ci` exit 0 (0 vulnerabilities); lint/typecheck/build exit 0; `npm test` **94 passed**, включая 29 маршрутов; JUnit/JSON записаны. Shutdown tests **3 passed**. UI, API и CSS не менялись.
 
 ## 5. Проверка обнаружения ошибок
 
@@ -62,7 +65,7 @@ PR ещё не создан. Итоговый отчёт дополнится с
 ## Чек-лист пятёрки
 
 - [x] T260 — аудит и таблица
-- [ ] T261 — frontend
+- [x] T261 — frontend
 - [ ] T262 — PostgreSQL / Alembic
 - [ ] T263 — ETL
 - [ ] T264 — hosted NEG, PR, отчёт

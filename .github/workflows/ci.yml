@@ -29,12 +29,19 @@ jobs:
       - run: npm run typecheck
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: node --test scripts/stop-child.test.mjs
+      - name: Frontend tests
+        shell: bash
+        run: |
+          mkdir -p test-results
+          npm test 2>&1 | tee test-results/frontend.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: frontend-tests
           path: frontend/test-results
+          retention-days: 7
+          if-no-files-found: error
       # Live pixel comparison needs the sibling source checkout. Run locally
       # with npm run test:visual; OS-dependent font baselines are not used in CI.
   backend:

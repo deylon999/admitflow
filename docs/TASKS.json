@@ -8046,7 +8046,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T260"
       ],
@@ -8061,7 +8061,12 @@
         "npm ci, lint, typecheck, build и npm test проходят на текущем коде",
         "Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-238-CI-REPORT.md",
+          "note": "npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8070,7 +8075,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T260"
       ],
