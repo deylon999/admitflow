@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-12",
+  "updatedAt": "2026-11-13",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -8157,6 +8157,139 @@
           "note": "PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T265",
+      "title": "KAN-212: Audit and route matrix",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Audit current main and merged PRs before implementation",
+        "Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes",
+        "Run existing browser baseline"
+      ],
+      "acceptance": [
+        "Audit current main and merged PRs before implementation",
+        "Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes",
+        "Run existing browser baseline"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-212-FRONTEND-REPORT.md",
+          "note": "Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T266",
+      "title": "KAN-212: API and DTO validation",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Reuse one request client and typed runtime decoders",
+        "Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults",
+        "Verify timeout, cancellation, HTTP statuses and session races"
+      ],
+      "acceptance": [
+        "Reuse one request client and typed runtime decoders",
+        "Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults",
+        "Verify timeout, cancellation, HTTP statuses and session races"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T267",
+      "title": "KAN-212: Server state and live integration",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Clear private state on session changes and cancel stale mutations",
+        "Preserve retry/stale/empty/error semantics and isolate demo",
+        "Paginate imported groups and expose metadata errors"
+      ],
+      "acceptance": [
+        "Clear private state on session changes and cancel stale mutations",
+        "Preserve retry/stale/empty/error semantics and isolate demo",
+        "Paginate imported groups and expose metadata errors"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T268",
+      "title": "KAN-212: Navigation and route boundaries",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Preserve all 29 routes and additional existing aliases",
+        "Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash",
+        "Fix saved subscription links without changing v3 design"
+      ],
+      "acceptance": [
+        "Preserve all 29 routes and additional existing aliases",
+        "Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash",
+        "Fix saved subscription links without changing v3 design"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T269",
+      "title": "KAN-212: Regression and review delivery",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T265"
+      ],
+      "deliverables": [
+        "docs/KAN-212-FRONTEND-REPORT.md"
+      ],
+      "steps": [
+        "Pass npm ci/lint/typecheck/build/test and 29-route browser smoke",
+        "Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots",
+        "Publish technical report and reviewable PR with hosted checks; owner review remains required"
+      ],
+      "acceptance": [
+        "Pass npm ci/lint/typecheck/build/test and 29-route browser smoke",
+        "Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots",
+        "Publish technical report and reviewable PR with hosted checks; owner review remains required"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

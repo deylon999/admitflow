@@ -3,24 +3,24 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-12. Последняя сессия: S208.
+Дата: 2026-11-13. Последняя сессия: S209.
 
 ## Продолжение
 
-- Текущая задача: нет.
+- Текущая задача: T266.
 - Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-238: пятёрка T260–T264 завершена; PR #12 в main открыт без merge. Implementation 4f60dad: push 43277687053 и PR 43277802246 success; NEG-01–04 подтверждены отдельными hosted runs/artifacts. После публикации отчёта проверить latest Checks; точные SHA/run последней публикации находятся в описании PR #12. Следующий шаг владельца: review/приёмка и required frontend/backend/migrations/etl checks. Dataset/model и внешние release gates не закрыты.
+Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence. Next: T266
 
 ## Последняя завершённая работа
 
+- T265: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
 - T260: аудит до реализации, подтверждённые пробелы и сохранённый зелёный baseline.
 - T261: frontend диагностика, bounded API teardown; 94 Chromium и 3 shutdown tests passed.
 - T262: 774 full backend passed (1 dataset skip), 32 migration tests и fresh head/check; 17 tools tests passed.
 - T263: отдельный ETL job, 55 passed + 1 явный dataset skip, без вымышленной модели.
-- T264: PR #12, hosted green push/PR и NEG-01–04 с проверенными архивами; отчёт/evidence готовы.
 
 ## Ограничения
 

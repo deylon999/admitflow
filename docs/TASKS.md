@@ -5753,6 +5753,131 @@
 
 - [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.
 
+### T265. KAN-212: Audit and route matrix
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/KAN-212-FRONTEND-REPORT.md`.
+
+**Шаги:**
+
+1. Audit current main and merged PRs before implementation.
+2. Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes.
+3. Run existing browser baseline.
+
+**Критерии закрытия:**
+
+- Audit current main and merged PRs before implementation.
+- Record all 29 routes with API, DTO, mode, errors, navigation and minimal fixes.
+- Run existing browser baseline.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-212-FRONTEND-REPORT.md](../docs/KAN-212-FRONTEND-REPORT.md) — Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
+
+### T266. KAN-212: API and DTO validation
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T265.
+
+**Результаты/файлы:** `docs/KAN-212-FRONTEND-REPORT.md`.
+
+**Шаги:**
+
+1. Reuse one request client and typed runtime decoders.
+2. Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults.
+3. Verify timeout, cancellation, HTTP statuses and session races.
+
+**Критерии закрытия:**
+
+- Reuse one request client and typed runtime decoders.
+- Reject malformed JSON, dates, IDs, numeric and nested DTO fields without defaults.
+- Verify timeout, cancellation, HTTP statuses and session races.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T267. KAN-212: Server state and live integration
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T265.
+
+**Результаты/файлы:** `docs/KAN-212-FRONTEND-REPORT.md`.
+
+**Шаги:**
+
+1. Clear private state on session changes and cancel stale mutations.
+2. Preserve retry/stale/empty/error semantics and isolate demo.
+3. Paginate imported groups and expose metadata errors.
+
+**Критерии закрытия:**
+
+- Clear private state on session changes and cancel stale mutations.
+- Preserve retry/stale/empty/error semantics and isolate demo.
+- Paginate imported groups and expose metadata errors.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T268. KAN-212: Navigation and route boundaries
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T265.
+
+**Результаты/файлы:** `docs/KAN-212-FRONTEND-REPORT.md`.
+
+**Шаги:**
+
+1. Preserve all 29 routes and additional existing aliases.
+2. Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash.
+3. Fix saved subscription links without changing v3 design.
+
+**Критерии закрытия:**
+
+- Preserve all 29 routes and additional existing aliases.
+- Verify dynamic IDs, unknown auth and malformed URLs, history and query/hash.
+- Fix saved subscription links without changing v3 design.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T269. KAN-212: Regression and review delivery
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T265.
+
+**Результаты/файлы:** `docs/KAN-212-FRONTEND-REPORT.md`.
+
+**Шаги:**
+
+1. Pass npm ci/lint/typecheck/build/test and 29-route browser smoke.
+2. Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots.
+3. Publish technical report and reviewable PR with hosted checks; owner review remains required.
+
+**Критерии закрытия:**
+
+- Pass npm ci/lint/typecheck/build/test and 29-route browser smoke.
+- Verify existing APIs against PostgreSQL and inspect desktop/mobile screenshots.
+- Publish technical report and reviewable PR with hosted checks; owner review remains required.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.
