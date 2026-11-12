@@ -3,6 +3,7 @@ import { existsSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { resolve } from 'node:path';
 import { build, preview } from 'vite';
+import { stopChild } from './stop-child.mjs';
 
 // Own server lifetimes directly. Playwright's Windows webServer teardown can
 // hang when WMI/taskkill are unavailable in managed environments.
@@ -66,11 +67,5 @@ try {
     server.httpServer.closeAllConnections();
     await new Promise(done => server.httpServer.close(done));
   }
-  if (api?.pid && api.exitCode === null) {
-    const exited = new Promise(done => api.once('exit', done));
-    api.stdin.end('stop\n');
-    const timeout = setTimeout(() => { if (api.exitCode === null) api.kill(); }, 5000);
-    await exited;
-    clearTimeout(timeout);
-  }
+  await stopChild(api);
 }

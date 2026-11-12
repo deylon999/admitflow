@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-11. Последняя сессия: S207.
+Дата: 2026-11-12. Последняя сессия: S208.
 
 ## Продолжение
 
@@ -12,13 +12,15 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Work branch zarbondo (PR #9). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228 (merged), T257/KAN-220, T258/KAN-219, KAN-24 report template. Next: KAN-218/227 data at national scale. Exam rules: python scripts/build_exam_requirements.py --pdf <doc>. Weekly report PDF: python scripts/weekly_report.py --week <YYYY-Www> --extra notes.json (not kept in the project).
+KAN-238: пятёрка T260–T264 завершена; PR #12 в main открыт без merge. Implementation 4f60dad: push 43277687053 и PR 43277802246 success; NEG-01–04 подтверждены отдельными hosted runs/artifacts. После публикации отчёта проверить latest Checks; точные SHA/run последней публикации находятся в описании PR #12. Следующий шаг владельца: review/приёмка и required frontend/backend/migrations/etl checks. Dataset/model и внешние release gates не закрыты.
 
 ## Последняя завершённая работа
 
-- T258 (KAN-219): reviewed entrance tests for SGU 09.03.04/02.03.03 from the official 2026 document, builder checks every value against the text, conflicting physics minimum kept null; API, page and coverage layer 1/785.
-- T257 (KAN-220): reviewed JSON/CSV adapters through the common Adapter/Registry, enqueue-all with same-domain spreading, PostgreSQL re-import/failure tests; PDF not done, JSON/CSV profiles empty until reviewed.
-- T256 (KAN-228): real competition list/competitors pages on snapshot API, official order, no identifiers, own row only after confirmation.
+- T260: аудит до реализации, подтверждённые пробелы и сохранённый зелёный baseline.
+- T261: frontend диагностика, bounded API teardown; 94 Chromium и 3 shutdown tests passed.
+- T262: 774 full backend passed (1 dataset skip), 32 migration tests и fresh head/check; 17 tools tests passed.
+- T263: отдельный ETL job, 55 passed + 1 явный dataset skip, без вымышленной модели.
+- T264: PR #12, hosted green push/PR и NEG-01–04 с проверенными архивами; отчёт/evidence готовы.
 
 ## Ограничения
 
@@ -29,10 +31,10 @@ Work branch zarbondo (PR #9). Done: T056/KAN-217, T255/KAN-221, T256/KAN-228 (me
 
 ## Проверенное окружение
 
-- S203 actual Docker29.9.2/Compose/PostgreSQL17.11;db/backend/frontend healthy at127.0.0.1:8080. Alembic current=head0011 and check pass;repeat import1257universities/2reviewedprograms;HTTP/assets/SPA smoke pass.
-- Existing admitflow_postgres_data and admitflow_raw_data retained across container recreation. Runtime two-snapshot synthetic history preserved;own guest cleaned;original history fingerprints match. Pre-upgrade dumps kept in ignored test-results/local-start.
-- 11native PG tests passed in isolated test database/schemas;test DB removed.5launcher unit tests passed. Fresh Chromium actual PG catalog/detail at390/1440:0pageerrors,nooverflow,PNGs viewed.
-- Applied migration versions and React/CSS v3 unchanged. Local stack intentionally left running;no worker/profile automation or source activation. Hosted CI/public release/production restore not claimed;no push.
+- S208: Node24.21.0 локально; Linux Python3.12.16/PostgreSQL17 в owned disposable runtime; frontend94, backend774+1dataset skip, migration32, tools17 passed.
+- Hosted после разделения: backend719/0skip, ETL55+1explicit missing dataset skip, frontend94; four jobs success. NEG workflow failures и upload artifacts проверены скачиванием.
+- Локальные admitflow-kan238-tests/pg и сеть admitflow-kan238 остановлены и удалены; пользовательские volumes не менялись. Test API завершён; production deploy не выполнялся.
+- Старые private audit/evidence сохранены и исключены локально; новые raw logs/XML/trace в ignored .qa-tools и GitHub artifacts (7 дней), только компактный безопасный JSON добавлен в git.
 
 ## Готовность к выпуску
 

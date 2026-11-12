@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 236 из 255 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 241 из 260 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -269,6 +269,11 @@
 - [x] T237 Fix cross-browser CI regressions after UI changes
 - [x] T253 Unify production API DTO errors and route states for React v3
 - [x] T254 Run complete local Compose PostgreSQL stack with safe startup smoke
+- [x] T260 KAN-238: аудит существующего CI
+- [x] T261 KAN-238: frontend CI и диагностика
+- [x] T262 KAN-238: PostgreSQL и Alembic
+- [x] T263 KAN-238: существующие ML/ETL проверки
+- [x] T264 KAN-238: негативные hosted проверки, PR и отчёт
 
 ## Резерв и выпуск
 

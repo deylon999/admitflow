@@ -5636,6 +5636,123 @@
 
 - [docs/evidence/local-postgresql.md](../docs/evidence/local-postgresql.md) — S203 actual existing-volume Docker Compose full command including build exit0;PG17.11/current=head0011/alembic check/import twice/API/SPA;two-snapshot history and mount identities survive recreate.11native PG tests+5launcher unit tests passed;Chromium390/1440 viewed. Alembic metadata fix881422f,applied migrations intact. No SQLite substitute,push or release-gate claim.
 
+### T260. KAN-238: аудит существующего CI
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline.
+2. До реализации сохранена таблица недостатков и работающих проверок.
+
+**Критерии закрытия:**
+
+- Проверены workflow, runner, PostgreSQL guard, миграции, ETL и hosted baseline.
+- До реализации сохранена таблица недостатков и работающих проверок.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report.
+
+### T261. KAN-238: frontend CI и диагностика
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. npm ci, lint, typecheck, build и npm test проходят на текущем коде.
+2. Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены.
+
+**Критерии закрытия:**
+
+- npm ci, lint, typecheck, build и npm test проходят на текущем коде.
+- Ошибки runner не скрываются; отчёты доступны; все 29 маршрутов сохранены.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264.
+
+### T262. KAN-238: PostgreSQL и Alembic
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Backend pytest проходит с --require-postgres на изолированном PostgreSQL.
+2. Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code.
+
+**Критерии закрытия:**
+
+- Backend pytest проходит с --require-postgres на изолированном PostgreSQL.
+- Отдельная чистая БД: upgrade head, совпадение heads, alembic check; отказ даёт ненулевой exit code.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed.
+
+### T263. KAN-238: существующие ML/ETL проверки
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+
+**Шаги:**
+
+1. Проверены fixture ETL, форматы, воспроизводимость и временная граница.
+2. Отсутствующие датасет и обученная модель явно указаны в CI и отчёте.
+
+**Критерии закрытия:**
+
+- Проверены fixture ETL, форматы, воспроизводимость и временная граница.
+- Отсутствующие датасет и обученная модель явно указаны в CI и отчёте.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed.
+
+### T264. KAN-238: негативные hosted проверки, PR и отчёт
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T260.
+
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`; `docs/evidence/kan-238-ci.json`.
+
+**Шаги:**
+
+1. NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках.
+2. Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок.
+3. Русский отчёт содержит evidence, ограничения и рекомендации branch protection.
+
+**Критерии закрытия:**
+
+- NEG-01–04 подтверждены hosted run, SHA и артефактами в изолированных ветках.
+- Создан PR в main; последний SHA проверен hosted CI; основной PR без искусственных ошибок.
+- Русский отчёт содержит evidence, ограничения и рекомендации branch protection.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

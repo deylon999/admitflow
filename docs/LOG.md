@@ -1218,3 +1218,17 @@ S204 — KAN-228/T256 complete: competition list, rows and summary API over the 
 S205 — KAN-220/T257 complete: reviewed JSON and CSV list decoders behind the common Adapter/Registry (strict order, header, codes, consent/status values; invalid_format on any surprise), enqueue-all queues every enabled attested source with 60 s spacing per domain and counts skipped reasons. PostgreSQL tests for re-import without duplicates and failure keeping the published snapshot. Manual run: 6 reviewed sources on 5 domains queued once, repeat deferred all. PDF lists not done; no JSON/CSV source reviewed yet.
 S206 — KAN-219/T258 complete: entrance tests from the SGU 2026 document (08.06.2026) for the two published SGU programmes; review file plus builder that checks the document hash, block anchors and every minimum against the text; the document states physics as 41 and 40, so the minimum stays null with a note. API examRequirements, program page, EGE coverage layer 1/785. KAN-24: weekly report template docs/WEEKLY_REPORT.md and scripts/weekly_report.py (facts from git and TASKS.json, Done only after merge, deadlines never invented).
 S207 — KAN-24 rework after team feedback: the weekly report is a PDF for the team chat, not a file in the project. docs/reports removed, generator writes PDF to the temp folder with clickable commit links, extra rows and risks from --extra JSON.
+
+## S208 — 2026-11-12 — KAN-238
+
+Пятёрка T260–T264: аудит, frontend, PostgreSQL/Alembic, ETL, hosted негативные проверки/PR/отчёт. Чистая ветка ci/kan-238-hardening создана от актуального origin/main e4d59b4; baseline hosted 43084056846 success. Production, applied migrations и UI вне scope.
+
+S208/T260 done: Audit completed before implementation; baseline hosted run 43084056846 success at e4d59b4. Confirmed gaps and preserved checks recorded in report.
+
+S208/T261 done: npm ci/lint/typecheck/build passed; 94 Chromium tests passed including all 29 routes; 3 child shutdown tests passed. JUnit, screenshot, trace and bounded teardown added. Hosted proof tracked separately in T264.
+
+S208/T262 done: Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed.
+
+S208/T263 done: Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed.
+
+S208/T264 done: PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.

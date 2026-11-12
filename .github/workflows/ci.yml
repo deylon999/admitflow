@@ -22,19 +22,29 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: backend/requirements-dev.txt
-      - run: python -m pip install -r ../backend/requirements-dev.txt
+          cache-dependency-path: |
+            backend/requirements*.txt
+            backend/constraints.txt
+      - run: python -m pip install -r ../backend/requirements-dev.txt -c ../backend/constraints.txt
+      - run: python -m pip check
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - run: node --test scripts/stop-child.test.mjs
+      - name: Frontend tests
+        shell: bash
+        run: |
+          mkdir -p test-results
+          npm test 2>&1 | tee test-results/frontend.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: frontend-tests
           path: frontend/test-results
+          retention-days: 7
+          if-no-files-found: error
       # Live pixel comparison needs the sibling source checkout. Run locally
       # with npm run test:visual; OS-dependent font baselines are not used in CI.
   backend:
@@ -61,9 +71,16 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
-          cache-dependency-path: backend/requirements*.txt
-      - run: python -m pip install -r requirements-dev.txt
-      - run: python -m pytest -q --require-postgres --junitxml=test-results/backend.xml
+          cache-dependency-path: |
+            backend/requirements*.txt
+            backend/constraints.txt
+      - run: python -m pip install -r requirements-dev.txt -c constraints.txt
+      - run: python -m pip check
+      - name: Backend tests (PostgreSQL required)
+        shell: bash
+        run: |
+          mkdir -p test-results
+          python -m pytest -q --require-postgres --ignore=tests/test_admission_history.py --ignore=tests/test_accreditation_registry.py --ignore=tests/test_exam_requirements.py --junitxml=test-results/backend.xml 2>&1 | tee test-results/backend.log
         env:
           TEST_DATABASE_URL: postgresql+psycopg://admitflow:admitflow@localhost:5432/admitflow_test
       # Repository tools: roadmap consistency and the weekly report generator (PDF included).
@@ -73,8 +90,107 @@ jobs:
         working-directory: .
       - run: python scripts/roadmap.py --check
         working-directory: .
+      - name: PostgreSQL diagnostics
+        if: always() && job.services.postgres.id != ''
+        run: |
+          mkdir -p test-results
+          docker logs "${{ job.services.postgres.id }}" > test-results/postgres.log 2>&1
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: backend-tests
-          path: backend/test-results/backend.xml
+          path: backend/test-results
+          retention-days: 7
+          if-no-files-found: error
+  migrations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: admitflow_test_migrations
+          POSTGRES_USER: admitflow
+          POSTGRES_PASSWORD: admitflow
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U admitflow -d admitflow_test_migrations"
+          --health-interval 3s --health-timeout 3s --health-retries 20
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements*.txt
+            backend/constraints.txt
+      - run: python -m pip install -r requirements-dev.txt -c constraints.txt
+      - run: python -m pip check
+      - name: Empty PostgreSQL upgrade, heads and schema check
+        shell: bash
+        env:
+          MIGRATION_DATABASE_URL: postgresql+psycopg://admitflow:admitflow@localhost:5432/admitflow_test_migrations
+          PYTHONPATH: .
+        run: |
+          mkdir -p test-results
+          python tests/check_migrations.py 2>&1 | tee test-results/migrations.log
+      - name: PostgreSQL diagnostics
+        if: always() && job.services.postgres.id != ''
+        run: |
+          mkdir -p test-results
+          docker logs "${{ job.services.postgres.id }}" > test-results/postgres.log 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: migration-tests
+          path: backend/test-results
+          retention-days: 7
+          if-no-files-found: error
+  etl:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements*.txt
+            backend/constraints.txt
+      - run: python -m pip install -r requirements-dev.txt -c constraints.txt
+      - run: python -m pip check
+      - name: Report available ML artifacts
+        shell: bash
+        run: |
+          mkdir -p test-results
+          python - <<'PY' | tee test-results/ml-status.txt
+          from pathlib import Path
+          dataset = Path('../ml/data/miccedu-admission-history.csv')
+          passport = dataset.with_suffix('.passport.json')
+          if dataset.exists() != passport.exists():
+              raise SystemExit('Incomplete ML artifacts: dataset and passport must be supplied together')
+          print('MICCEDU dataset: ' + ('available; validated by pytest' if dataset.exists() else 'NOT AVAILABLE; full-dataset test explicitly skipped'))
+          print('ETL fixture, reproducibility and temporal-leakage checks are required below.')
+          print('Trained-model/backtest checks: NOT AVAILABLE; no trained stage is implemented.')
+          PY
+          cat test-results/ml-status.txt >> "$GITHUB_STEP_SUMMARY"
+      - name: Existing offline ETL tests
+        shell: bash
+        run: |
+          python -m pytest -q -ra tests/test_admission_history.py tests/test_accreditation_registry.py tests/test_exam_requirements.py --junitxml=test-results/etl.xml 2>&1 | tee test-results/etl.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: etl-tests
+          path: backend/test-results
+          retention-days: 7
+          if-no-files-found: error
