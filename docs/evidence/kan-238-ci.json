@@ -1,0 +1,444 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-12",
+  "pr": "https://github.com/deylon999/admitflow/pull/12",
+  "implementationSHA": "4f60dad3a6bb01862b4eec43e46ae07139cf6a5d",
+  "runs": [
+    {
+      "id": 43277851703,
+      "branch": "ci/kan-238-neg-migrations",
+      "sha": "18970ff5630a8be3cddf86ebd1810cc2d09218f4",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703",
+      "artifacts": [
+        {
+          "id": 13972330703,
+          "name": "backend-tests",
+          "expired": false,
+          "size": 20151,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/artifacts/13972330703"
+        },
+        {
+          "id": 13972011023,
+          "name": "frontend-tests",
+          "expired": false,
+          "size": 3600607,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/artifacts/13972011023"
+        },
+        {
+          "id": 13971796615,
+          "name": "migration-tests",
+          "expired": false,
+          "size": 1982,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/artifacts/13971796615"
+        },
+        {
+          "id": 13971736813,
+          "name": "etl-tests",
+          "expired": false,
+          "size": 2041,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/artifacts/13971736813"
+        }
+      ],
+      "jobs": [
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/job/131390951613",
+          "failedSteps": []
+        },
+        {
+          "name": "migrations",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/job/131390951972",
+          "failedSteps": [
+            "Empty PostgreSQL upgrade, heads and schema check"
+          ]
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/job/131390952298",
+          "failedSteps": [
+            "Backend tests (PostgreSQL required)"
+          ]
+        },
+        {
+          "name": "etl",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/job/131390953658",
+          "failedSteps": []
+        }
+      ]
+    },
+    {
+      "id": 43277831614,
+      "branch": "ci/kan-238-neg-backend",
+      "sha": "f6ac42ff07b54ab74dc98b0949ee5063a3fc7073",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614",
+      "artifacts": [
+        {
+          "id": 13972050797,
+          "name": "migration-tests",
+          "expired": false,
+          "size": 1663,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/artifacts/13972050797"
+        },
+        {
+          "id": 13971756948,
+          "name": "frontend-tests",
+          "expired": false,
+          "size": 3600649,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/artifacts/13971756948"
+        },
+        {
+          "id": 13970668519,
+          "name": "backend-tests",
+          "expired": false,
+          "size": 18092,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/artifacts/13970668519"
+        },
+        {
+          "id": 13970168523,
+          "name": "etl-tests",
+          "expired": false,
+          "size": 2013,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/artifacts/13970168523"
+        }
+      ],
+      "jobs": [
+        {
+          "name": "etl",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/job/131390881989",
+          "failedSteps": []
+        },
+        {
+          "name": "migrations",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/job/131390882329",
+          "failedSteps": []
+        },
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/job/131390882466",
+          "failedSteps": []
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/job/131390882553",
+          "failedSteps": [
+            "Backend tests (PostgreSQL required)"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43277814063,
+      "branch": "ci/kan-238-neg-frontend",
+      "sha": "d64d5018a0f64053b4ebb224eb552064cfb2a8a8",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063",
+      "artifacts": [
+        {
+          "id": 13972255281,
+          "name": "migration-tests",
+          "expired": false,
+          "size": 1668,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/artifacts/13972255281"
+        },
+        {
+          "id": 13971776586,
+          "name": "etl-tests",
+          "expired": false,
+          "size": 2033,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/artifacts/13971776586"
+        },
+        {
+          "id": 13970992560,
+          "name": "frontend-tests",
+          "expired": false,
+          "size": 4149888,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/artifacts/13970992560"
+        },
+        {
+          "id": 13970893585,
+          "name": "backend-tests",
+          "expired": false,
+          "size": 17952,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/artifacts/13970893585"
+        }
+      ],
+      "jobs": [
+        {
+          "name": "etl",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/job/131390820270",
+          "failedSteps": []
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/job/131390820928",
+          "failedSteps": []
+        },
+        {
+          "name": "migrations",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/job/131390821044",
+          "failedSteps": []
+        },
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/job/131390821107",
+          "failedSteps": [
+            "Frontend tests"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 43277802246,
+      "branch": "ci/kan-238-hardening",
+      "sha": "4f60dad3a6bb01862b4eec43e46ae07139cf6a5d",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246",
+      "artifacts": [
+        {
+          "id": 13972245310,
+          "name": "etl-tests",
+          "expired": false,
+          "size": 2022,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/artifacts/13972245310"
+        },
+        {
+          "id": 13970918366,
+          "name": "backend-tests",
+          "expired": false,
+          "size": 17959,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/artifacts/13970918366"
+        },
+        {
+          "id": 13970168525,
+          "name": "migration-tests",
+          "expired": false,
+          "size": 1663,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/artifacts/13970168525"
+        },
+        {
+          "id": 13970158738,
+          "name": "frontend-tests",
+          "expired": false,
+          "size": 3646040,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/artifacts/13970158738"
+        }
+      ],
+      "jobs": [
+        {
+          "name": "etl",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/job/131390782351",
+          "failedSteps": []
+        },
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/job/131390782680",
+          "failedSteps": []
+        },
+        {
+          "name": "migrations",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/job/131390783086",
+          "failedSteps": []
+        },
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277802246/job/131390783158",
+          "failedSteps": []
+        }
+      ]
+    },
+    {
+      "id": 43277687053,
+      "branch": "ci/kan-238-hardening",
+      "sha": "4f60dad3a6bb01862b4eec43e46ae07139cf6a5d",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053",
+      "artifacts": [
+        {
+          "id": 13972086402,
+          "name": "backend-tests",
+          "expired": false,
+          "size": 17853,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/artifacts/13972086402"
+        },
+        {
+          "id": 13971627059,
+          "name": "migration-tests",
+          "expired": false,
+          "size": 1656,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/artifacts/13971627059"
+        },
+        {
+          "id": 13971506845,
+          "name": "etl-tests",
+          "expired": false,
+          "size": 2022,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/artifacts/13971506845"
+        },
+        {
+          "id": 13971482084,
+          "name": "frontend-tests",
+          "expired": false,
+          "size": 3600697,
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/artifacts/13971482084"
+        }
+      ],
+      "jobs": [
+        {
+          "name": "backend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/job/131390374641",
+          "failedSteps": []
+        },
+        {
+          "name": "frontend",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/job/131390375095",
+          "failedSteps": []
+        },
+        {
+          "name": "etl",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/job/131390375201",
+          "failedSteps": []
+        },
+        {
+          "name": "migrations",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/deylon999/admitflow/actions/runs/43277687053/job/131390375372",
+          "failedSteps": []
+        }
+      ]
+    }
+  ],
+  "inspectedArtifacts": [
+    {
+      "run": 43277814063,
+      "branch": "ci/kan-238-neg-frontend",
+      "artifact": "frontend-tests",
+      "id": 13970992560,
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277814063/artifacts/13970992560",
+      "files": [
+        "evidence/1024/program.png",
+        "evidence/1024/programs.png",
+        "evidence/1024/university.png",
+        "evidence/1024/universities.png",
+        "evidence/1280/program.png",
+        "evidence/1280/programs.png",
+        "evidence/1280/universities.png",
+        "evidence/1280/university.png",
+        "evidence/1440/program.png",
+        "evidence/1440/programs.png",
+        "evidence/1440/universities.png",
+        "evidence/1440/university.png",
+        "evidence/390/program.png",
+        "evidence/390/programs.png",
+        "evidence/390/universities.png",
+        "evidence/390/university.png",
+        "evidence/768/program.png",
+        "evidence/768/programs.png",
+        "evidence/768/universities.png",
+        "evidence/768/university.png",
+        "frontend.xml",
+        "frontend.log",
+        "playwright/routes-NEG-01-deliberate-frontend-assertion-failure/error-context.md",
+        "playwright/routes-NEG-01-deliberate-frontend-assertion-failure/test-failed-1.png",
+        "playwright/routes-NEG-01-deliberate-frontend-assertion-failure/trace.zip",
+        "results.json"
+      ],
+      "xml": [
+        {
+          "file": "frontend.xml",
+          "tests": 95,
+          "failures": [
+            "NEG-01 deliberate frontend assertion failure"
+          ],
+          "skipped": []
+        }
+      ]
+    },
+    {
+      "run": 43277831614,
+      "branch": "ci/kan-238-neg-backend",
+      "artifact": "backend-tests",
+      "id": 13970668519,
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277831614/artifacts/13970668519",
+      "files": [
+        "backend.log",
+        "backend.xml",
+        "postgres.log"
+      ],
+      "xml": [
+        {
+          "file": "backend.xml",
+          "tests": 720,
+          "failures": [
+            "test_neg_02_deliberate_backend_failure"
+          ],
+          "skipped": []
+        }
+      ]
+    },
+    {
+      "run": 43277851703,
+      "branch": "ci/kan-238-neg-migrations",
+      "artifact": "migration-tests",
+      "id": 13971796615,
+      "url": "https://github.com/deylon999/admitflow/actions/runs/43277851703/artifacts/13971796615",
+      "files": [
+        "migrations.log",
+        "postgres.log"
+      ],
+      "xml": [],
+      "migrationDriftDetected": true,
+      "headsMatched": true
+    }
+  ]
+}

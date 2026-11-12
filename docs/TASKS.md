@@ -5730,11 +5730,11 @@
 
 ### T264. KAN-238: негативные hosted проверки, PR и отчёт
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 
-**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`.
+**Результаты/файлы:** `docs/KAN-238-CI-REPORT.md`; `docs/evidence/kan-238-ci.json`.
 
 **Шаги:**
 
@@ -5751,7 +5751,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.
 
 ## E6. Резерв и выпуск
 

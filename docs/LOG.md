@@ -1230,3 +1230,5 @@ S208/T261 done: npm ci/lint/typecheck/build passed; 94 Chromium tests passed inc
 S208/T262 done: Linux Python3.12/PostgreSQL17 full pytest:774 passed,1 explicit missing-dataset skip; required native guard passed.32 migration tests passed; separate clean database upgrade/head0011/check passed;17 repository tests passed; actionlint and pip check passed.
 
 S208/T263 done: Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed.
+
+S208/T264 done: PR12 opened without merge. Hosted push43277687053/PR43277802246 success at4f60dad; NEG01frontend43277814063,NEG02backend43277831614,NEG03migrations43277851703 failed as expected; NEG04archives downloaded and XML/log/screenshot/trace verified. Report and compact evidence saved; final documentation push checks must be observed.
