@@ -41,6 +41,7 @@ upload при ошибке, push/PR triggers и минимальные permissio
 - Backend/frontend pip используют существующий runtime `constraints.txt`, cache учитывает его, выполняется `pip check`; версии основных зависимостей не обновлены.
 - `backend/tests/check_migrations.py`: gate требует явный disposable PostgreSQL URL, пустую БД, upgrade head, равенство heads и `alembic check`. `backend/tests/test_ci_migrations.py` проверяет успешный путь, отказ от непустой БД, schema drift, потерю revision и небезопасные URL.
 - Workflow: отдельный независимый `migrations` service/job с собственной чистой БД; backend console/JUnit и PostgreSQL logs сохраняются с исходным кодом ошибки pipeline.
+- Workflow `etl`: существующие `test_admission_history.py`, `test_accreditation_registry.py`, `test_exam_requirements.py` перенесены из backend job без удаления проверок и повторного запуска тех же suites. Отдельные JUnit/log и summary явно показывают отсутствие MICCEDU dataset и model/backtest stage; неполная пара CSV/passport вызывает failure. Массового HTTP fetch нет.
 - TASKS/STATE/LOG и генерируемые документы фиксируют пятёрку; PRODUCT/ADR-051 фиксируют критерий hosted приёмки без изменения продуктовых правил.
 
 ## 4. Выполненные проверки
@@ -53,6 +54,7 @@ upload при ошибке, push/PR triggers и минимальные permissio
 - T262 targeted Linux/Python 3.12/PostgreSQL 17: **32 passed** (старые и новые migration tests), `pip check` exit 0. Отдельная свежесозданная `admitflow_test_migrations`: head `0011`, schema check pass. `actionlint 1.7.7` exit 0.
 - Полный backend до выделения ETL: `python -m pytest -q --require-postgres --junitxml=test-results/backend.xml` — **774 passed, 1 skipped**, 260.97 s. Единственный skip — отсутствующий MICCEDU dataset, не PostgreSQL. Native guard прошёл; SQLite unit tests не выдаются за PG.
 - Repository tools: `python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report` — **17 passed**, включая PDF после установки Cyrillic TTF в одноразовом Linux-контейнере. Первоначальный optional font skip устранён установкой окружения, тест не менялся.
+- T263: offline ETL **55 passed, 1 skipped** (только отсутствующий full dataset, причина видна через `-ra`). Проверены malformed values, duplicate records, provenance, edition/year, byte reproducibility, ограничение `admission_year <= campaign_year - 2`, registry и exam document fixtures. Точный status step workflow исполнен в Linux: отсутствие dataset/model отображается явно. Actionlint exit 0.
 
 ## 5. Проверка обнаружения ошибок
 
@@ -75,5 +77,5 @@ PR ещё не создан. Итоговый отчёт дополнится с
 - [x] T260 — аудит и таблица
 - [x] T261 — frontend
 - [x] T262 — PostgreSQL / Alembic
-- [ ] T263 — ETL
+- [x] T263 — ETL
 - [ ] T264 — hosted NEG, PR, отчёт

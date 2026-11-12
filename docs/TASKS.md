@@ -5707,7 +5707,7 @@
 
 ### T263. KAN-238: существующие ML/ETL проверки
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 
@@ -5726,11 +5726,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-238-CI-REPORT.md](../docs/KAN-238-CI-REPORT.md) — Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed.
 
 ### T264. KAN-238: негативные hosted проверки, PR и отчёт
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T260.
 

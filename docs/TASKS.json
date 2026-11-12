@@ -8104,7 +8104,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T260"
       ],
@@ -8119,7 +8119,12 @@
         "Проверены fixture ETL, форматы, воспроизводимость и временная граница",
         "Отсутствующие датасет и обученная модель явно указаны в CI и отчёте"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-238-CI-REPORT.md",
+          "note": "Existing offline ETL suites:55 passed,1 explicit missing-MICCEDU-dataset skip. Reproducibility, malformed input and temporal-leakage cases preserved. Separate required etl job, artifact availability summary and JUnit/log added; actionlint passed. No trained model or backtest claimed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8128,7 +8133,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T260"
       ],
