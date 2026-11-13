@@ -6248,7 +6248,7 @@
 
 ### T286. KAN-214 PR3: Refresh rotation and expiry
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T285.
 
@@ -6269,11 +6269,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout.
 
 ### T287. KAN-214 PR3: Server logout and revocation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T286.
 

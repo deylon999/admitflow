@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 257 из 285 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 258 из 285 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -295,8 +295,8 @@
 - [x] T283 KAN-214 PR2: Login and current account session
 - [x] T284 KAN-214 PR2: PR2 regression and review delivery
 - [x] T285 KAN-214 PR3: Merged baseline and lifecycle acceptance
-- [ ] T286 KAN-214 PR3: Refresh rotation and expiry — **в работе**
-- [ ] T287 KAN-214 PR3: Server logout and revocation
+- [x] T286 KAN-214 PR3: Refresh rotation and expiry
+- [ ] T287 KAN-214 PR3: Server logout and revocation — **в работе**
 - [ ] T288 KAN-214 PR3: Concurrency and security regression
 - [ ] T289 KAN-214 PR3: PR3 verification and review delivery
 

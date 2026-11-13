@@ -8772,7 +8772,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T285"
       ],
@@ -8789,7 +8789,12 @@
         "Atomic user/session/refresh/context locking, one rotation, durable family revocation on replay",
         "Access-expired classification and session-bound CSRF restoration without creating guests"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8798,7 +8803,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T286"
       ],

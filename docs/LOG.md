@@ -1302,3 +1302,7 @@ PR15 source7a90d60/run43413656989 all4 jobs success. Backend820/0skip,frontend14
 ## S212 — T285 KAN-214 PR3 (2026-11-13)
 
 Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation.
+
+## S212 — T286 KAN-214 PR3 (2026-11-13)
+
+Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout.

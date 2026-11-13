@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T286.
-- Следующая задача: T286.
+- Текущая задача: T287.
+- Следующая задача: T287.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR3 lifecycle implementation T285-T289 from main5cddc54. Auth remains di
 
 ## Последняя завершённая работа
 
-- T285: Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation.
+- T286: Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout.
 
 ## Ограничения
 

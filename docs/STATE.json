@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T286",
-  "nextTask": "T286",
+  "currentTask": "T287",
+  "nextTask": "T287",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -16,7 +16,7 @@
     "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
   ],
   "lastCompleted": [
-    "T285: Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation."
+    "T286: Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout."
   ],
   "environment": [
     "S211: hosted source7a90d60/run43413656989 all4 jobs success:backend820 passed/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check; repository tools17/0skip. Local full811/0skip plus16 targeted cases documented separately; final SHA/latest checks in PR15 description.",
