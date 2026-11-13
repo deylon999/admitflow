@@ -9269,7 +9269,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T300"
       ],
@@ -9285,7 +9285,12 @@
         "Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation",
         "Общая Definition of Done: docs/QUALITY.md."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9294,7 +9299,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T301"
       ],

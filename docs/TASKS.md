@@ -6622,7 +6622,7 @@
 
 ### T301. KAN-214 PR6: Security regression and evidence
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T300.
 
@@ -6642,11 +6642,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.
 
 ### T302. KAN-214 PR6: Native PostgreSQL cross-browser acceptance
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T301.
 

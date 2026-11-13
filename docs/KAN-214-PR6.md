@@ -45,3 +45,26 @@ AUTH_RATE_KEY, разрешённый исходящий SMTP/TLS трафик, 
 Nginx/Caddy security headers и production-cookie tests уже существуют; deployment
 не считается проверенным по Settings/TestClient или localhost. Не добавляем
 новый mail/queue service и не меняем production networks/secrets автоматически.
+
+## T301 — security evidence
+
+[Матрица32 критических контролей](KAN-214-SECURITY-MATRIX.md) и
+[machine manifest](evidence/kan-214-controls.json) связывают угрозы с конкретными
+pytest selectors. Проверка selectors по AST выполнена до публикации матрицы.
+Новый native-PG test заполняет BrowserSession/Watch/Snapshot/LookupBudget/
+OperationRecord/Subscription/Assessment/ChangeEvent, затем сравнивает строки после
+регистрации, настоящего подтверждения email, login/logout и смены аккаунта. Account
+cookies в другом браузере не дают владение исходными guest subscriptions/history.
+Отдельно проверяется неизменность populated graph при0011→0012 и no-store/отсутствие
+password/action/access/refresh/context secrets в response и HTTP logs.
+
+`check_auth_acceptance.py` требует фактически выполненные backend JUnit cases без
+failure/error/skip и успешные JSON результаты каждого из трёх browsers. Он не
+принимает внешние release gates и всегда сохраняет productionReady=false.
+Проверки самого валидатора отклоняют missing/failed/skipped/truncated evidence;
+успешный synthetic report не может автоматически принять SMTP gate.
+
+Проверено: новые native-PG3 passed; выбранная security-регрессия112 passed
+(42.34s,1 существующий Starlette/httpx deprecation warning); validator unit3 passed.
+Начальная ошибка нового теста GET subscription была исправлена на существующий
+`/subscriptions/{id}/history` (вместо несуществующего GET detail); контракт API не менялся.

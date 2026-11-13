@@ -1,0 +1,271 @@
+{
+  "scope": "automated-acceptance-only",
+  "minimumBackendTests": 979,
+  "minimumBrowserTests": 5,
+  "automated": [
+    {
+      "id": "password_hash",
+      "requirement": "Argon2id, параметры, salt, verification/rehash",
+      "tests": [
+        "backend/tests/test_account_security.py::test_argon2id_unique_salts_and_full_password_verification"
+      ]
+    },
+    {
+      "id": "input_bounds",
+      "requirement": "Длинные Unicode пароли, неверный email и bounded input",
+      "tests": [
+        "backend/tests/test_account_security.py::test_unicode_whitespace_and_boundaries_preserved",
+        "backend/tests/test_account_registration.py::test_invalid_payload_is_redacted_and_never_persisted"
+      ]
+    },
+    {
+      "id": "registration_race",
+      "requirement": "Нормализация/уникальность и конкурентная регистрация",
+      "tests": [
+        "backend/tests/test_account_security.py::test_email_identity_policy",
+        "backend/tests/test_account_registration.py::test_concurrent_registration_creates_one_user_and_action"
+      ]
+    },
+    {
+      "id": "login_denials",
+      "requirement": "Несуществующий, unverified, disabled и неверный пароль",
+      "tests": [
+        "backend/tests/test_account_login.py::test_sensitive_login_denials_are_uniform"
+      ]
+    },
+    {
+      "id": "login_transactions",
+      "requirement": "Не выдавать сессию до commit; пароль не устаревает при гонке",
+      "tests": [
+        "backend/tests/test_account_http_security.py::test_commit_failure_never_sets_session_cookie",
+        "backend/tests/test_account_login.py::test_password_change_during_verification_cannot_issue_stale_session"
+      ]
+    },
+    {
+      "id": "fixation",
+      "requirement": "Guest credential не повышается до account; новый контекст",
+      "tests": [
+        "backend/tests/test_account_login.py::test_login_retains_guest_history_and_cannot_promote_guest_token"
+      ]
+    },
+    {
+      "id": "server_state",
+      "requirement": "Сроки/отзыв/disabled проверяются сервером",
+      "tests": [
+        "backend/tests/test_account_login.py::test_session_checks_real_server_state_every_time"
+      ]
+    },
+    {
+      "id": "refresh_rotation",
+      "requirement": "Сроки, новая пара opaque credentials, bound CSRF",
+      "tests": [
+        "backend/tests/test_account_refresh.py::test_rotation_replaces_credentials_and_keeps_csrf_and_identity",
+        "backend/tests/test_account_refresh.py::test_access_expiry_and_missing_cookie_restore_through_refresh"
+      ]
+    },
+    {
+      "id": "refresh_race_replay",
+      "requirement": "Один конкурентный refresh; повтор отзывает семейство",
+      "tests": [
+        "backend/tests/test_account_refresh.py::test_simultaneous_refresh_can_rotate_only_once_then_revokes",
+        "backend/tests/test_account_refresh.py::test_replay_commits_family_revocation_and_logs_no_secrets"
+      ]
+    },
+    {
+      "id": "refresh_absolute",
+      "requirement": "Абсолютный срок не продлевается, idle ограничен",
+      "tests": [
+        "backend/tests/test_account_refresh.py::test_absolute_deadline_caps_access_idle_refresh_and_csrf",
+        "backend/tests/test_account_lifecycle_security.py::test_refresh_extends_idle_within_unchanged_absolute_deadline"
+      ]
+    },
+    {
+      "id": "refresh_rollback",
+      "requirement": "Ошибка commit не потребляет refresh и не выдаёт cookies",
+      "tests": [
+        "backend/tests/test_account_lifecycle_security.py::test_failed_rotation_rolls_back_consumption_and_never_sets_cookies"
+      ]
+    },
+    {
+      "id": "logout",
+      "requirement": "Серверный отзыв, exact cookie deletion, guest сохранён",
+      "tests": [
+        "backend/tests/test_account_logout.py::test_logout_revokes_family_deletes_exact_cookies_and_preserves_guest"
+      ]
+    },
+    {
+      "id": "logout_race",
+      "requirement": "Logout/refresh не воскрешают сессию; failure не успех",
+      "tests": [
+        "backend/tests/test_account_logout.py::test_simultaneous_refresh_logout_never_resurrects_family",
+        "backend/tests/test_account_logout.py::test_failed_revocation_never_deletes_cookies_or_claims_success"
+      ]
+    },
+    {
+      "id": "csrf_origin",
+      "requirement": "Нет/неверный/чужой CSRF, Origin, cross-site, custom header",
+      "tests": [
+        "backend/tests/test_account_lifecycle_security.py::test_sensitive_writes_reject_csrf_and_origin_without_revocation",
+        "backend/tests/test_account_email_security.py::test_action_endpoints_reject_csrf_origin_and_headers_without_changes"
+      ]
+    },
+    {
+      "id": "csrf_sessions",
+      "requirement": "CSRF/credentials другой сессии и mixed cookies",
+      "tests": [
+        "backend/tests/test_account_login.py::test_session_and_csrf_are_not_transferable_between_accounts",
+        "backend/tests/test_account_lifecycle_security.py::test_mixed_valid_account_cookies_never_mutate_either_family"
+      ]
+    },
+    {
+      "id": "csrf_revoked",
+      "requirement": "Отозванные credentials не bootstrap CSRF/доступ",
+      "tests": [
+        "backend/tests/test_account_lifecycle_security.py::test_spent_refresh_alone_cannot_bootstrap_bound_csrf",
+        "backend/tests/test_account_lifecycle_security.py::test_csrf_bootstrap_waiting_on_logout_cannot_rebind_revoked_family"
+      ]
+    },
+    {
+      "id": "durable_limits",
+      "requirement": "Лимиты атомарны и переживают engine/process restart",
+      "tests": [
+        "backend/tests/test_account_limits.py::test_parallel_budget_is_atomic_and_survives_engine_restart",
+        "backend/tests/test_account_login.py::test_password_attempts_persist_and_forwarded_addresses_do_not_bypass"
+      ]
+    },
+    {
+      "id": "mail_limits",
+      "requirement": "Общий лимит писем, токенов, не доверять spoofed XFF",
+      "tests": [
+        "backend/tests/test_account_email_security.py::test_email_budget_is_shared_by_register_verify_and_recovery",
+        "backend/tests/test_account_email_security.py::test_shared_mail_peer_budget_ignores_forwarding_headers",
+        "backend/tests/test_account_email_security.py::test_attempt_budget_is_durable_without_revealing_token"
+      ]
+    },
+    {
+      "id": "verification",
+      "requirement": "Одноразовая, истёкшая, fake, missing user, concurrent ссылка",
+      "tests": [
+        "backend/tests/test_account_email_verification.py::test_invalid_confirmation_is_uniform_and_never_confirms",
+        "backend/tests/test_account_email_verification.py::test_concurrent_confirmation_consumes_one_token"
+      ]
+    },
+    {
+      "id": "resend",
+      "requirement": "Новая verification ссылка инвалидирует старую",
+      "tests": [
+        "backend/tests/test_account_email_verification.py::test_resend_invalidates_older_links_and_preserves_password"
+      ]
+    },
+    {
+      "id": "token_purpose",
+      "requirement": "Криптография/разделение назначения, malformed input",
+      "tests": [
+        "backend/tests/test_account_security.py::test_tokens_are_random_purpose_separated_and_never_echoed",
+        "backend/tests/test_account_email_security.py::test_malformed_action_token_is_bounded_and_not_echoed"
+      ]
+    },
+    {
+      "id": "recovery_privacy",
+      "requirement": "Единый ответ для несуществующих/неподходящих аккаунтов",
+      "tests": [
+        "backend/tests/test_account_recovery.py::test_recovery_ineligible_addresses_are_uniform_and_deliver_generic_notice"
+      ]
+    },
+    {
+      "id": "recovery_once",
+      "requirement": "Истёкшая/поддельная/used ссылка, конкурентный reset",
+      "tests": [
+        "backend/tests/test_account_recovery.py::test_reset_invalid_tokens_are_uniform_and_do_not_change_password",
+        "backend/tests/test_account_recovery.py::test_simultaneous_reset_consumes_token_once"
+      ]
+    },
+    {
+      "id": "recovery_revocation",
+      "requirement": "Новый пароль отзывает все сессии target, сохраняет B/guest",
+      "tests": [
+        "backend/tests/test_account_recovery.py::test_reset_revokes_all_target_sessions_but_not_other_account_or_guest",
+        "backend/tests/test_account_recovery.py::test_reset_refresh_serializations_never_restore_old_credentials"
+      ]
+    },
+    {
+      "id": "recovery_atomic",
+      "requirement": "Ошибка commit откатывает пароль/token/revocation",
+      "tests": [
+        "backend/tests/test_account_recovery.py::test_reset_commit_failure_rolls_back_hash_token_and_revocation"
+      ]
+    },
+    {
+      "id": "transport",
+      "requirement": "TLS SMTP без downgrade/retry, generic ошибки провайдера",
+      "tests": [
+        "backend/tests/test_account_mail.py::test_smtp_tls_and_fixed_fragment_links",
+        "backend/tests/test_account_mail.py::test_smtp_failure_is_explicit_sanitized_and_not_retried",
+        "backend/tests/test_account_recovery.py::test_recovery_provider_failure_is_generic_and_never_changes_password"
+      ]
+    },
+    {
+      "id": "no_secrets",
+      "requirement": "Пароли/credentials не в response/log; Cache-Control no-store",
+      "tests": [
+        "backend/tests/test_account_acceptance.py::test_auth_responses_and_http_logs_are_noncacheable_and_secret_free",
+        "backend/tests/test_account_email_security.py::test_action_secrets_and_passwords_never_appear_in_http_logs"
+      ]
+    },
+    {
+      "id": "production_cookies",
+      "requirement": "Secure/HttpOnly/Lax/host-only/path и deletion",
+      "tests": [
+        "backend/tests/test_account_http_security.py::test_production_cookies_are_secure_httponly_host_only",
+        "backend/tests/test_account_lifecycle_security.py::test_production_rotation_and_deletion_keep_cookie_security_contract"
+      ]
+    },
+    {
+      "id": "guest_graph",
+      "requirement": "Заполненная цепочка guest subscription/assessment/event не переносится",
+      "tests": [
+        "backend/tests/test_account_acceptance.py::test_account_transitions_preserve_full_guest_graph_and_do_not_transfer_ownership"
+      ]
+    },
+    {
+      "id": "migration_preservation",
+      "requirement": "Миграция сохраняет populated guest history",
+      "tests": [
+        "backend/tests/test_account_acceptance.py::test_additive_migration_preserves_populated_subscription_and_change_history"
+      ]
+    },
+    {
+      "id": "cleanup",
+      "requirement": "Истёкшие токены очищаются; replay tombstone до absolute expiry",
+      "tests": [
+        "backend/tests/test_account_foundation.py::test_account_cleanup_retains_spent_refresh_and_guest_history",
+        "backend/tests/test_account_foundation.py::test_absolute_expiry_purges_session_credentials_without_deleting_user"
+      ]
+    },
+    {
+      "id": "unavailable",
+      "requirement": "AUTH disabled/DB failure явные503, не anonymous/success",
+      "tests": [
+        "backend/tests/test_account_http_security.py::test_disabled_default_is_explicit_without_mutating_guest_or_accounts",
+        "backend/tests/test_account_http_security.py::test_temporary_database_failure_is_503_not_missing_account"
+      ]
+    }
+  ],
+  "externalGates": [
+    {
+      "id": "real_email_delivery",
+      "status": "not_verified",
+      "requiredEvidence": "Actual provider acceptance + verification/recovery inbox delivery, or explicit documented owner exception"
+    },
+    {
+      "id": "https_proxy_egress",
+      "status": "not_verified",
+      "requiredEvidence": "Reviewed deployment config, trusted proxy/IP rate-limit policy, SMTP egress, browser HTTPS/Secure cookies and actual Origin smoke"
+    },
+    {
+      "id": "owner_review",
+      "status": "not_verified",
+      "requiredEvidence": "Owner review and acceptance/merge of PR6"
+    }
+  ]
+}

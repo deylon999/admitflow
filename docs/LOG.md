@@ -1368,3 +1368,5 @@ S214 PR5 URL boundary follow-up: canonicalize a trailing slash consistently with
 Owner requested PR6. PR18 merge confirmed by GitHub and fresh origin/main12c78e4. Clean branch feat/kan-214-final-acceptance. Five tasks T300-T304 acceptance defined before implementation; no autonomous merge or production acceptance. SMTP/HTTPS remain external until actual evidence.
 
 S215 T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
+
+S215 T301: Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.

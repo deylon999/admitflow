@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T301.
-- Следующая задача: T301.
+- Текущая задача: T302.
+- Следующая задача: T302.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR6 final acceptance from owner-merged main12c78e4. Five tasks T300-T304
 
 ## Последняя завершённая работа
 
-- T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
+- T301: Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.
 
 ## Ограничения
 
