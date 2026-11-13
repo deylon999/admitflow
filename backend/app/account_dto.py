@@ -26,6 +26,22 @@ class LoginRequest(CamelModel):
     password: Password
 
 
+class EmailActionRequest(CamelModel):
+    email: Email
+
+
+class TokenConfirmation(CamelModel):
+    token: Annotated[SecretStr, Field(min_length=43, max_length=43)]
+
+
+class PasswordResetRequest(TokenConfirmation):
+    password: Annotated[Password, AfterValidator(registration_password)]
+
+
+class EmailActionRead(CamelModel):
+    message: str = 'Запрос принят. Если операция доступна для этого адреса, проверьте почту.'
+
+
 class AccountRead(CamelModel):
     id: str
     email: str

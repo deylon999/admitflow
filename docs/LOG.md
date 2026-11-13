@@ -1318,3 +1318,23 @@ Server logout implemented;8 native PG tests pass for revocation, exact cookie de
 ## S212 — T276/T289 PR3 review delivery (2026-11-13)
 
 Refresh rotation/strict replay, bound CSRF restoration, logout/revocation and peer/session budgets implemented. Full local native-PG867/0skip,security47,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,clean migration0012/head/schema check pass. Repository tools17 with1 local PDF-dependency skip; hosted installs it. All tests collected before full run. Exact SHA/PR/verified hosted jobs maintained in PR description. T276/T289 review, no merge; default auth disabled, real SMTP/frontend coordination remain later PRs. Owned schemas/container/anonymous volume cleaned; user DBs/volumes untouched.
+
+## S213 — T290 KAN-214 PR4 (2026-11-13)
+
+Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.
+
+## S213 — T291 KAN-214 PR4 (2026-11-13)
+
+TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes.
+
+## S213 — T292 KAN-214 PR4 (2026-11-13)
+
+Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim.
+
+## S213 — T293 KAN-214 PR4 (2026-11-13)
+
+Recovery/reset implemented;18 native recovery and83 combined action/security tests pass. Atomic hash/action/session/refresh update, one use, no auto-login, reset/refresh orderings, rollback, guest/other-account isolation verified. Mail/config35 passed; real delivery still unverified.
+
+## S213 — T277/T294 PR4 review handoff (2026-11-13)
+
+TLS SMTP/verification/resend/recovery implemented. Full current local backend976/0skip mandatory native PG; action/security83,mail/config35,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,fresh migration0012/head/check. Repository tools17 with1 local missing-PDF skip; hosted installs it. Final SHA/PR/verified hosted checks in PR description. T277/T294 review; no merge. SMTP parameters absent, no real inbox delivery verified or external recipient contacted. RELEASE_GATES records explicit unaccepted delivery condition; full KAN-214 cannot be accepted from mock delivery. Owned PG schemas/container/anonymous volume cleaned; user DB/volumes untouched.

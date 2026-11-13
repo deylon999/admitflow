@@ -310,3 +310,11 @@ server locks; logout revokes the family before exact-path cookie deletion. A sho
 CSRF tombstone replaces immediate context deletion solely for idempotent logout;
 revoked families cannot authorize account data or refresh. Browser coordination and
 real SMTP/verification/recovery remain subsequent PRs; default auth stays disabled.
+
+## S213 email actions after owner merged PR16
+
+[PR4 contracts and evidence](KAN-214-PR4.md): TLS SMTP adapter, verification/resend,
+one-use recovery and transactional password/session revocation implemented. Only
+recording/protocol tests verified, no real provider/inbox delivery supplied. Default
+auth remains disabled; frontend fragment/forms/session integration is PR5. Full
+KAN-214 delivery acceptance remains external, independent of code/CI completion.
