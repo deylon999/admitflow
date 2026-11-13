@@ -6644,7 +6644,7 @@
 
 ### T302. KAN-214 PR6: Native PostgreSQL cross-browser acceptance
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T301.
 
@@ -6663,11 +6663,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19.
 
 ### T303. KAN-214 PR6: Migration visual and full regression
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T302.
 

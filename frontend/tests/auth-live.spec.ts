@@ -4,6 +4,10 @@ import { join } from 'node:path';
 // Test credentials never enter trace/video/screenshots or published reports.
 test.use({ trace: 'off', screenshot: 'off', video: 'off' });
 test.describe.configure({ mode: 'serial' });
+test.beforeEach(({ browser, browserName }, info) => {
+    expect(browser.browserType().name()).toBe(browserName);
+    info.annotations.push({ type: 'browser-engine', description: browserName });
+});
 const password = 'a safe isolated original phrase';
 const replacement = 'a different isolated new phrase';
 function clock(seconds: number) {
@@ -43,8 +47,11 @@ test('PostgreSQL account lifecycle, strict refresh across tabs, guest preservati
     test.setTimeout(90000); clock(0);
     const email = 'pg-browser@example.org';
     await page.goto('/app');
-    await page.getByRole('button', { name: 'Начать гостевую сессию' }).click();
-    await expect(page.getByRole('button', { name: 'Начать гостевую сессию' })).toHaveCount(0);
+    await Promise.all([
+        page.waitForResponse(response => new URL(response.url()).pathname === '/api/v1/session' && response.request().method() === 'POST' && response.status() === 204),
+        page.getByRole('button', { name: 'Начать гостевую сессию' }).click(),
+    ]);
+    await expect.poll(async () => (await context.cookies()).some(cookie => cookie.name === 'abiturient_session')).toBe(true);
     const guest = (await context.cookies()).find(cookie => cookie.name === 'abiturient_session');
     if (!guest) throw Error('Guest cookie missing.');
     await register(page, email);

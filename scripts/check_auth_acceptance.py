@@ -25,6 +25,10 @@ def validate(matrix, backend_xml, browser_root):
     for engine in ENGINES:
         report = json.loads((Path(browser_root)/engine/'results.json').read_text())
         stats = report['stats']
+        if (report.get('config', {}).get('metadata', {}).get('authBrowser') != engine
+                or report.get('config', {}).get('metadata', {}).get('nativePostgres') is not True
+                or [project.get('name') for project in report.get('config', {}).get('projects', [])] != [engine]):
+            raise ValueError(f'Wrong browser evidence identity: {engine}')
         if (stats['expected'] < matrix['minimumBrowserTests'] or report.get('errors')
                 or any(stats.get(key, 0) for key in ('unexpected', 'flaky', 'skipped'))):
             raise ValueError(f'Incomplete or failing browser evidence: {engine}')

@@ -8,6 +8,8 @@ const evidence = auth ? process.env.AUTH_TEST_RESULTS_DIR ?? `test-results/auth-
 const live = process.env.COMPARE_REFERENCE === '1';
 export default defineConfig({
   testDir: './tests',
+  projects: auth ? [{ name: browserName }] : undefined,
+  metadata: auth ? { authBrowser: browserName, nativePostgres: true } : undefined,
   outputDir: `${evidence}/playwright`,
   testMatch: auth ? '**/auth-live.spec.ts' : live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts','**/api.spec.ts','**/api-unit.spec.ts','**/auth-unit.spec.ts','**/auth.spec.ts'],
   testIgnore: auth ? [] : ['**/auth-live.spec.ts'],

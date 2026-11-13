@@ -19,7 +19,7 @@ class AuthAcceptanceEvidenceTests(unittest.TestCase):
         for engine in ('chromium', 'firefox', 'webkit'):
             path = self.root/engine
             path.mkdir()
-            (path/'results.json').write_text(json.dumps({'stats': {'expected': 1, 'unexpected': 0, 'flaky': 0, 'skipped': 0}, 'errors': []}))
+            (path/'results.json').write_text(json.dumps({'config': {'metadata': {'authBrowser': engine, 'nativePostgres': True}, 'projects': [{'name': engine}]}, 'stats': {'expected': 1, 'unexpected': 0, 'flaky': 0, 'skipped': 0}, 'errors': []}))
 
     def test_successful_automated_evidence_cannot_accept_external_gates(self):
         result = validate(self.matrix, self.junit, self.root)
@@ -39,7 +39,9 @@ class AuthAcceptanceEvidenceTests(unittest.TestCase):
         path = self.root/'webkit'/'results.json'
         for stats in [{'expected': 0}, {'expected': 1, 'unexpected': 1}, {'expected': 1, 'skipped': 1}, {'expected': 1, 'flaky': 1}]:
             with self.subTest(stats=stats):
-                path.write_text(json.dumps({'stats': stats}))
+                path.write_text(json.dumps({'config': {'metadata': {'authBrowser': 'webkit', 'nativePostgres': True}, 'projects': [{'name': 'webkit'}]}, 'stats': stats}))
                 with self.assertRaises(ValueError): validate(self.matrix, self.junit, self.root)
+        path.write_text(json.dumps({'config': {'metadata': {'authBrowser': 'chromium', 'nativePostgres': True}, 'projects': [{'name': 'chromium'}]}, 'stats': {'expected': 1}}))
+        with self.assertRaises(ValueError): validate(self.matrix, self.junit, self.root)
         path.unlink()
         with self.assertRaises(FileNotFoundError): validate(self.matrix, self.junit, self.root)

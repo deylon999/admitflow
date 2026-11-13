@@ -1370,3 +1370,5 @@ Owner requested PR6. PR18 merge confirmed by GitHub and fresh origin/main12c78e4
 S215 T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
 
 S215 T301: Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.
+
+S215 T302: Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19.

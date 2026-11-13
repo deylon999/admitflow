@@ -9297,7 +9297,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T301"
       ],
@@ -9312,7 +9312,12 @@
         "Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport",
         "Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9321,7 +9326,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T302"
       ],
