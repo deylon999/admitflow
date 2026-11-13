@@ -6017,7 +6017,7 @@
 
 ### T276. KAN-214: Refresh logout and CSRF
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T275.
 
@@ -6034,7 +6034,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim.
 
 ### T277. KAN-214: Email verification and recovery
 
@@ -6321,7 +6321,7 @@
 
 ### T289. KAN-214 PR3: PR3 verification and review delivery
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T288.
 
@@ -6342,7 +6342,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim.
 
 ## E6. Резерв и выпуск
 

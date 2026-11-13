@@ -8498,7 +8498,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T275"
       ],
@@ -8511,7 +8511,12 @@
       "acceptance": [
         "Implement PR3 acceptance from KAN-214 specification with concurrency/security tests and review"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8863,7 +8868,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T288"
       ],
@@ -8880,7 +8885,12 @@
         "Document browser coordination reserved for PR5, external SMTP/HTTPS gates and no production readiness claim",
         "Publish small reviewable PR, update STATE/TASKS/LOG, no autonomous merge"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim."
+        }
+      ],
       "blockedReason": null
     }
   ]

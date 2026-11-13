@@ -285,7 +285,7 @@
 - [x] T273 KAN-214: PostgreSQL account foundation
 - [x] T274 KAN-214: Password security foundation
 - [x] T275 KAN-214: Registration and login API
-- [ ] T276 KAN-214: Refresh logout and CSRF
+- [ ] T276 KAN-214: Refresh logout and CSRF — **нужна проверка / завершение**
 - [ ] T277 KAN-214: Email verification and recovery
 - [ ] T278 KAN-214: React v3 account integration
 - [ ] T279 KAN-214: Final security and acceptance
@@ -298,7 +298,7 @@
 - [x] T286 KAN-214 PR3: Refresh rotation and expiry
 - [x] T287 KAN-214 PR3: Server logout and revocation
 - [x] T288 KAN-214 PR3: Concurrency and security regression
-- [ ] T289 KAN-214 PR3: PR3 verification and review delivery — **в работе**
+- [ ] T289 KAN-214 PR3: PR3 verification and review delivery — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

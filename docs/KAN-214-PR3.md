@@ -126,3 +126,40 @@ cannot extend absolute lifetime or create a new user/session/guest. Lost-respons
 strict replay has an explicit re-login availability tradeoff. Frontend PR5 must
 serialize refresh across tabs and perform only a bounded retry on classified auth
 errors; this backend PR does not claim that browser coordination is implemented.
+
+## Final local regression and review handoff (T289)
+
+`TEST_DATABASE_URL=<isolated PG> backend/.venv/bin/python -m pytest -q
+--require-postgres --ignore=backend/tests/test_admission_history.py
+--ignore=backend/tests/test_accreditation_registry.py
+--ignore=backend/tests/test_exam_requirements.py backend/tests`:
+**867 passed, zero skipped**, exit0,259.80s; all new tests were collected before
+this run. Existing framework/legacy migration warnings remain, no tests disabled.
+
+Frontend lint/typecheck/build and npm test: exit0, **147 passed**, all29 existing
+routes. No frontend/CSS/baseline edits; generated JS/CSS asset names unchanged.
+No new full pixel comparison claimed; auth frontend/visual acceptance is PR5/6.
+ETL:55 passed + one explicit missing full-dataset skip, exit0. pip check clean.
+Repository tools17 tests, one local missing-PDF-dependency skip; hosted installs
+required reporting dependencies. Fresh PostgreSQL migration verifier head0012,
+no schema drift, exit0. No new/applied migration or user data identifiers changed.
+
+Owned test PostgreSQL17 on loopback55439 used only admitflow_test_kan214_pr3 and
+admitflow_test_kan214_pr3_migrations; every native case owns a random schema via
+pg_support. Schema count0 after tests; owned container/anonymous volume removed.
+User databases/volumes and unrelated project containers untouched. No production
+secrets, proxy/network/CI/dependency changes. Initial interruption stopped the owned
+DB and removed temporary helper; DB was restarted and registry helper recreated,
+without repeating completed audit or rewriting Git history.
+
+Review PR for branch feat/kan-214-session-lifecycle contains exact final SHA, URL,
+hosted run and verified job counts; hosted results are never inferred from local
+checks. This live PR description is the hosted evidence reference, avoiding a
+self-invalidating documentation-only commit. T276/T289 remain review until owner
+acceptance; T285-T288 done. Agent does not merge or begin PR4 before acceptance.
+After owner review/merge: T277 PR4 SMTP, verification and recovery, respecting the
+same user/session lock order and token purpose/expiry policies. No real provider or
+production delivery exists yet. AUTH_ENABLED remainsfalse; full KAN-214 acceptance
+requires PR4-6, frontend refresh coordination, HTTPS and real delivery (or an explicit
+owner exception). Deployment's peer counters remain proxy-aggregate pending a
+trusted client-address contract. Backend race tests are not multi-tab browser proof.

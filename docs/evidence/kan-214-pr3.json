@@ -1,0 +1,48 @@
+{
+  "date": "2026-11-13",
+  "task": "KAN-214 PR3",
+  "base": "5cddc5401a05153917bbc02ad56166ea505d958c",
+  "branch": "feat/kan-214-session-lifecycle",
+  "hostedEvidence": "Review PR description records exact final SHA, workflow URL and verified results; no hosted inference from local runs",
+  "local": {
+    "backend": {
+      "passed": 867,
+      "skipped": 0,
+      "postgresRequired": true,
+      "exitCode": 0,
+      "seconds": 259.8
+    },
+    "lifecycleSecurity": 47,
+    "frontend": {
+      "passed": 147,
+      "lint": 0,
+      "typecheck": 0,
+      "build": 0
+    },
+    "etl": {
+      "passed": 55,
+      "skipped": 1,
+      "reason": "existing missing full dataset"
+    },
+    "migration": {
+      "head": "0012",
+      "freshPostgres": true,
+      "aligned": true
+    },
+    "pipCheck": 0
+  },
+  "dataSafety": {
+    "userDatabaseTouched": false,
+    "userVolumesTouched": false,
+    "guestRowsPreserved": true,
+    "ownedTestContainerRemoved": true
+  },
+  "limitations": [
+    "T276/T289 review; owner acceptance required before PR4",
+    "Auth defaults disabled; no production auth acceptance",
+    "Real SMTP/verification/recovery remain PR4 and external delivery gate",
+    "Frontend single-flight, cross-tab epoch/abort and auth forms remain PR5",
+    "Peer behind current proxy is aggregate; forwarded headers not trusted",
+    "Strict replay revokes the family after duplicate/lost refresh response; explicit re-login required"
+  ]
+}
