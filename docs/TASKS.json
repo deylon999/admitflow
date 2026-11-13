@@ -9102,7 +9102,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T295"
       ],
@@ -9119,7 +9119,12 @@
         "Server-verified reload, one bounded refresh, single-flight/Web Locks and separate account epoch/abort",
         "No secrets/account proof in browser storage; network unavailable is not anonymous"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9128,7 +9133,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T296"
       ],

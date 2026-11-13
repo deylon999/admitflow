@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T296.
-- Следующая задача: T296.
+- Текущая задача: T297.
+- Следующая задача: T297.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR5 React auth T295-T299 from main3035f5e. Separate account/guest lifecy
 
 ## Последняя завершённая работа
 
-- T295: Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation.
+- T296: Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.
 
 ## Ограничения
 

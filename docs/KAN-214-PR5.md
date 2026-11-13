@@ -54,3 +54,11 @@ routes; no visual baseline rewrite. Real native-PG browser flow uses an owned te
 runtime and file mailbox outside web root/artifacts, never a product debug endpoint.
 Existing CI contour unchanged; opt-in native PG browser evidence reported separately
 from default mock/browser-contract tests if frontend CI has no PostgreSQL service.
+
+T296 implementation: shared transport now classifies public/guest/auth/account paths;
+account errors never trigger guest expiry, error codes are bounded/whitelisted and
+Retry-After is retained. Account DTOs whitelist fields. Independent account epoch
+checks both headers and body and aborts private reads. External account store uses
+server session proof, one refresh mutation under Web Locks, same-tab single flight,
+nonsecret cross-tab markers and explicit unavailable state. Guest epoch remains intact.
+Validation: frontend typecheck/lint and 32 transport/DTO tests passed locally.

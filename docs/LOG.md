@@ -1342,3 +1342,7 @@ TLS SMTP/verification/resend/recovery implemented. Full current local backend976
 ## S214 — T295 KAN-214 PR5 (2026-11-13)
 
 Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation.
+
+## S214 — T296 KAN-214 PR5 (2026-11-13)
+
+Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.

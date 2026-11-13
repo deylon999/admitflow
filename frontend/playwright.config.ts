@@ -4,7 +4,7 @@ const live = process.env.COMPARE_REFERENCE === '1';
 export default defineConfig({
   testDir: './tests',
   outputDir: './test-results/playwright',
-  testMatch: live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts','**/api.spec.ts','**/api-unit.spec.ts'],
+  testMatch: live ? '**/*.spec.ts' : ['**/routes.spec.ts','**/interactions.spec.ts','**/catalog.spec.ts','**/api.spec.ts','**/api-unit.spec.ts','**/auth-unit.spec.ts','**/auth.spec.ts'],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   workers: 2,

@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 269 из 295 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 270 из 295 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -305,8 +305,8 @@
 - [x] T293 KAN-214 PR4: Password recovery and revocation
 - [x] T294 KAN-214 PR4: PR4 regression and review handoff
 - [x] T295 KAN-214 PR5: Merged baseline and frontend auth audit
-- [ ] T296 KAN-214 PR5: Shared client and account state — **в работе**
-- [ ] T297 KAN-214 PR5: Live forms and email link routes
+- [x] T296 KAN-214 PR5: Shared client and account state
+- [ ] T297 KAN-214 PR5: Live forms and email link routes — **в работе**
 - [ ] T298 KAN-214 PR5: Logout guards and browser isolation
 - [ ] T299 KAN-214 PR5: Frontend regression visual and PR handoff
 

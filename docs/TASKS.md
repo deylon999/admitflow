@@ -6496,7 +6496,7 @@
 
 ### T296. KAN-214 PR5: Shared client and account state
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T295.
 
@@ -6517,11 +6517,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.
 
 ### T297. KAN-214 PR5: Live forms and email link routes
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T296.
 

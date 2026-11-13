@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { ApiError, request, sessionBound, sessionChanged, sessionExpired, type Decoder } from './api';
+import { accountChanged, accountInvalidated, apiScope, ApiError, request, sessionBound, sessionChanged, sessionExpired, type Decoder } from './api';
 type State<T> = {
     key: string;
     data?: T;
@@ -25,6 +25,17 @@ export function useResource<T>(path: string, decode: Decoder<T>) {
             controller.abort();
             setState({ key: path, loading: false, error: new ApiError(401) });
         };
+        const accountReset = () => {
+            if (apiScope(path) !== 'account') return;
+            active = false;
+            controller.abort();
+            setState({ key: path, loading: false, error: new ApiError(401, 'Состояние аккаунта изменилось.', false) });
+        };
+        const accountReady = () => {
+            if (apiScope(path) === 'account') setAttempt(n => n + 1);
+        };
+        window.addEventListener(accountInvalidated, accountReset);
+        window.addEventListener(accountChanged, accountReady);
         window.addEventListener(sessionChanged, changed);
         window.addEventListener(sessionExpired, expired);
         setState(old => ({ key: path, data: old.key === path ? old.data : undefined, loading: true }));
@@ -38,6 +49,8 @@ export function useResource<T>(path: string, decode: Decoder<T>) {
         return () => {
             active = false;
             controller.abort();
+            window.removeEventListener(accountInvalidated, accountReset);
+            window.removeEventListener(accountChanged, accountReady);
             window.removeEventListener(sessionChanged, changed);
             window.removeEventListener(sessionExpired, expired);
         };
