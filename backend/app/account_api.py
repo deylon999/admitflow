@@ -12,10 +12,10 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from .account_dto import AccountRead, AccountSessionRead, CsrfRead, RegistrationRead, RegistrationRequest
+from .account_dto import AccountRead, AccountSessionRead, CsrfRead, LoginRequest, RegistrationRead, RegistrationRequest
 from .account_limits import AuthRateExceeded, Budget, consume_budgets
 from .account_mail import UnavailableRegistrationMailer
-from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token
+from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
 from .accounts import AccountActionToken, AccountCsrfContext, AccountSession, AccountUser
 from .http import permitted_origin
 
@@ -203,5 +203,48 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
         except Exception:
             raise unavailable() from None
         return RegistrationRead()
+
+    @router.post('/login', response_model=AccountSessionRead,
+                 dependencies=[Depends(guard('login', 30, 900))])
+    def login(body: LoginRequest, request: Request, response: Response, db: Session = Depends(database)):
+        csrf_context(db, request, clock())
+        consume_budgets(engine, config.auth_rate_key,
+                        [Budget('login-pair', ('email-peer', body.email, peer(request)), 10, 900)], now=clock())
+        found = db.execute(select(AccountUser.id, AccountUser.password_hash).where(AccountUser.email == body.email)).first()
+        user_id, encoded = found if found else (None, None)
+        db.rollback()  # Do not hold a connection/user lock while running Argon2id.
+        checked = verify_password(body.password.get_secret_value(), encoded)
+        if not checked.valid:
+            raise unauthenticated()
+        user = db.scalar(select(AccountUser).where(AccountUser.id == user_id).with_for_update())
+        if (not user or user.password_hash != encoded or user.status != 'active'
+                or user.email_verified_at is None):
+            raise unauthenticated()
+        now = clock()
+        # Lock and consume the browser context after the user lock. A second login
+        # from the same preauth context cannot issue another session concurrently.
+        context = csrf_context(db, request, now, lock=True)
+        if checked.needs_rehash:
+            user.password_hash = hash_password(body.password.get_secret_value())
+            user.updated_at = now
+        access = new_token()
+        session = AccountSession(user_id=user.id, access_hash=credential_digest('access', access), created_at=now,
+                                 access_expires_at=now+timedelta(seconds=ACCESS_SECONDS),
+                                 idle_expires_at=now+timedelta(days=7), expires_at=now+timedelta(days=30))
+        db.add(session); db.flush()
+        db.delete(context)
+        context_token, _ = make_context(db, now, session_id=session.id, seconds=ACCESS_SECONDS)
+        result = session_read(session, user)
+        db.commit()  # Credentials are never emitted before successful persistence.
+        response.set_cookie(ACCESS_COOKIE, access, path=ACCESS_PATH, max_age=ACCESS_SECONDS,
+                            httponly=True, secure=config.secure_cookie, samesite='lax')
+        set_context_cookie(response, context_token, config, ACCESS_SECONDS)
+        return result
+
+    @router.get('/session', response_model=AccountSessionRead,
+                dependencies=[Depends(guard('session', 600, 900))])
+    def session(request: Request, db: Session = Depends(database)):
+        account_session, user = current_account(db, request, clock())
+        return session_read(account_session, user)
 
     app.include_router(router)

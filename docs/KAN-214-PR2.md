@@ -80,3 +80,49 @@ mail unavailable/failure for both new/existing email and durable mail suppressio
 Initial surrogate test failed in httpx encoding before reaching the API; corrected
 by sending escaped JSON bytes, then the real server rejection passed.
 Persistent-budget/config test command: **12 passed**, exit0.
+
+## Login/session implemented (T283)
+
+POST /login uses persistent peer30/15min + email/peer10/15min budgets BEFORE Argon2id.
+Ignores X-Forwarded-For/X-Real-IP. Missing accounts verify a production dummy hash;
+wrong password, absent, disabled and unverified users all return identical401.
+Password hash/status rechecked under user lock AFTER expensive verification;
+password-change race cannot create a session. Rehash happens only after successful
+verification with the production profile. CSRF context locked/consumed after the
+user lock; two concurrent logins using one browser context yield one session.
+New access/session/context are committed before emitting cookies. No refresh is
+minted. Session DTO whitelists account{id,email,emailVerified}, accessExpiresAt and
+absoluteExpiresAt. Cookies HttpOnly/Secure in production, host-only/Lax,/api/v1.
+
+GET /session and reusable current_account(db,request,now) join the user each time,
+checking verification/status, revocation and access/idle/absolute deadlines. Unknown,
+expired or revoked access returns terminal not_authenticated in PR2 (no refresh yet).
+Session-bound CSRF cannot be borrowed by another account. Reload uses server state.
+Bootstrap after expired access permits a new anonymous login context, never grants
+account privileges. Repeated login is a fresh session; full logout/switch/revocation
+policy and refresh are PR3, so production rollout remains disabled.
+
+Native login/HTTP tests: **25 passed**, exit0. Includes actual hash/login/reload,
+production cookie properties, all uniform credential denials, expiry/revocation/
+deletion/status checks, cross-account CSRF, concurrent login, password-change race,
+production-strength rehash, durable brute-force limits despite spoofed forwarding,
+secret-free logs/responses, commit failure without cookies, disabled defaults and
+preserved guest history/owner isolation. Verified users are explicitly seeded only
+inside isolated test DBs; no application bypass for email confirmation exists.
+
+## Implemented contracts (all /api/v1/auth)
+
+| Endpoint | Request -> response | Access and errors |
+|---|---|---|
+| GET /csrf | none ->200 {csrfToken} | enabled, same-origin/custom header; peer120/15min;403/429/503 |
+| POST /register | {email,password} ->202 {message} | enabled, valid CSRF+Origin/header, peer10/h, email delivery3/h;422/403/429/503 |
+| POST /login | {email,password} ->200 session DTO, cookies | enabled, valid CSRF+Origin/header, peer30/15min+email-peer10/15min;401/403/422/429/503 |
+| GET /session | none ->200 session DTO | enabled, access cookie, peer600/15min;401/429/503 |
+
+Email ASCII identity rules and password15..128 codepoints/512-byte bound remain PR1.
+Login bounds1..128, allowing future password-policy upgrades without truncation.
+Errors: not_authenticated401, csrf_invalid403, invalid_input422, rate_limited429
+with Retry-After, auth_unavailable503. Existing safe validation and Origin rejection
+formats retained. No tokens in URLs or auth secrets in JSON; csrfToken is the
+non-auth synchronizer value, intended only for JS memory. No frontend/storage code
+changed. Missing real mail is explicitly503 even when AUTH_ENABLED=true.

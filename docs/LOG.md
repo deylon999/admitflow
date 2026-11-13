@@ -1286,3 +1286,7 @@ Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency
 ## S211 — T282 KAN-214 PR2 (2026-11-13)
 
 Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification.
+
+## S211 — T283 KAN-214 PR2 (2026-11-13)
+
+Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.

@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T283.
-- Следующая задача: T283.
+- Текущая задача: T284.
+- Следующая задача: T284.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR2 implementation from main494d270. T280-T284; no merge. Real SMTP and 
 
 ## Последняя завершённая работа
 
-- T282: Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification.
+- T283: Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.
 
 ## Ограничения
 

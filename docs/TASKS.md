@@ -6173,7 +6173,7 @@
 
 ### T283. KAN-214 PR2: Login and current account session
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T282.
 
@@ -6194,11 +6194,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.
 
 ### T284. KAN-214 PR2: PR2 regression and review delivery
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T283.
 

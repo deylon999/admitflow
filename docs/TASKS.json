@@ -8668,7 +8668,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T282"
       ],
@@ -8685,7 +8685,12 @@
         "Independent access credential, session CSRF rotation and current-account dependency",
         "Expiry/revocation/status checked server-side; no guest mutation or refresh issuance"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8694,7 +8699,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T283"
       ],
