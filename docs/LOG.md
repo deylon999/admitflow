@@ -1310,3 +1310,7 @@ Refresh source51975ee verified:39 native PG refresh/login/security tests pass. R
 ## S212 — T287 KAN-214 PR3 (2026-11-13)
 
 Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion.
+
+## S212 — T288 KAN-214 PR3 (2026-11-13)
+
+47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy.

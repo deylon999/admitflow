@@ -8834,7 +8834,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T287"
       ],
@@ -8849,7 +8849,12 @@
         "Native PG simultaneous refresh/replay/logout races and rollback behavior",
         "CSRF/Origin/cookie tampering, expired/revoked credentials, trusted-peer budgets and secret redaction"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8858,7 +8863,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T288"
       ],

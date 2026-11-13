@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T288.
-- Следующая задача: T288.
+- Текущая задача: T289.
+- Следующая задача: T289.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR3 lifecycle implementation T285-T289 from main5cddc54. Auth remains di
 
 ## Последняя завершённая работа
 
-- T287: Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion.
+- T288: 47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy.
 
 ## Ограничения
 

@@ -92,3 +92,37 @@ A first test fixture used global unscoped httpx cookies; corrected to actual ser
 host/path scopes before validating browser deletion. Race snapshots preserve cookie
 scopes so either legal ordering (refresh200 then logout, or logout then refresh401)
 is reproducible without a test-only CookieConflict.
+
+## Concurrency and security verification (T288)
+
+Current native PG refresh/logout/lifecycle-security suite: **47 passed**, exit0,
+30.30s. Includes14 negative CSRF/Origin/header cases on both endpoints, mixed valid
+account cookies, spent-refresh rejection without CSRF-authorized revocation, spent
+refresh unable to bootstrap bound CSRF, durable peer/session budgets despite spoofed
+forwarded headers, failed rotation/replay commit rollback, fresh application/engine
+revocation persistence, production issuance/deletion flags, two competing refreshes,
+refresh/logout serialization and a deterministic bootstrap/logout race paused before
+row locking. Re-reading after the lock produces anonymous CSRF for the revoked
+family. Future-time test proves idle extension while absolute deadline stays fixed.
+No test uses weaker hashing, SQLite substitution or a public test-token endpoint.
+Existing disabled-default test now includes refresh/logout; full backend collection
+contains all new cases before the final run. HTTP/DTO/guest behavior stays covered.
+
+## Implemented contracts
+
+| Endpoint | Success | Policy/failures |
+|---|---|---|
+| POST /api/v1/auth/login |200 existing session DTO + access/refresh/CSRF cookies |PR2 credentials/CSRF/limits retained; refresh now minted atomically |
+| POST /api/v1/auth/refresh |200 same account/session/absolute deadline, rotated access+refresh |body{}; valid bound CSRF/Origin/custom header; peer120 + session60 per15min;401 terminal,403 CSRF/mixed credentials,422 invalid body,429 Retry-After,503 unavailable |
+| POST /api/v1/auth/logout |204 empty, account cookie deletion after commit |body{}; valid bound CSRF or anonymous proof for unknown/inactive family; peer60 + session60 per15min;403/422/429/503; no guest deletion |
+| GET /api/v1/auth/session |200 current account/session |access_expired401 only when renewal is possible; other auth401 terminal;503 DB fault does not mean logout |
+| GET /api/v1/auth/csrf |200 {csrfToken} |current access or fresh refresh binds context under locks; otherwise anonymous; no silent rotation/revocation/guest creation |
+
+Origin/custom-header errors retain existing safe format. Tokens never appear in JSON
+except the non-auth synchronizer value. Family revocation changes server state and
+marks unspent refresh records consumed; the DB is the authority across workers.
+Fresh access remains <=15min, idle <=7d, absolute <=30d since initial login. Refresh
+cannot extend absolute lifetime or create a new user/session/guest. Lost-response
+strict replay has an explicit re-login availability tradeoff. Frontend PR5 must
+serialize refresh across tabs and perform only a bounded retry on classified auth
+errors; this backend PR does not claim that browser coordination is implemented.

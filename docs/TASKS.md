@@ -6298,7 +6298,7 @@
 
 ### T288. KAN-214 PR3: Concurrency and security regression
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T287.
 
@@ -6317,11 +6317,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — 47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy.
 
 ### T289. KAN-214 PR3: PR3 verification and review delivery
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T288.
 
