@@ -1246,3 +1246,7 @@ S209/2026-11-13/T269 review: PR13 open for owner review; implementation dc5205c 
 S209/T269 follow-up: final inspection found public401 was offered guest recovery although public resources ignore session changes. Reopen for explicit session-bound error semantics and regression; no new feature API.
 
 S209/2026-11-13/T269 review: Final public401 recovery fix verified:147 local tests against PostgreSQL,116 fresh visual pairs equal,58 nginx openings; public401 GET retry creates0 sessions. Initial dc5205c hosted four jobs success, final source SHA/latest checks recorded in PR13. Owner acceptance pending; no merge, user history/volumes retained.
+
+## S210 — T270 KAN-214 (2026-11-13)
+
+Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.

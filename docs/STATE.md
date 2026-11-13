@@ -3,23 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S209.
+Дата: 2026-11-13. Последняя сессия: S210.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: не назначена.
+- Текущая задача: T271.
+- Следующая задача: T271.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-212 delivered in PR13; T265-T268 done,T269 review. Owner acceptance required; do not mark Done or merge autonomously. Initial dc5205c/run43313647129 all jobs green. Final public401 recovery fix: local147 tests and visual116 passed; final source SHA/latest hosted checks in PR13 description. User PostgreSQL stack healthy at http://127.0.0.1:8080,volumes/history preserved. After acceptance next feature KAN-223; no EGE/auth implementation started.
+KAN-214 PR1 foundation only. PR2-6 remain open. Review/merge required before continuing sequence.
 
 ## Последняя завершённая работа
 
-- T268: All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269.
-- T267: Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.
-- T266: Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed.
-- T265: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence.
+- T270: Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.
 
 ## Ограничения
 
