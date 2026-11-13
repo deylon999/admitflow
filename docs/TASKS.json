@@ -8591,7 +8591,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T278"
       ],
@@ -8606,7 +8606,12 @@
         "Implement PR6 acceptance: PostgreSQL E2E/security/browser/visual/hosted CI and owner review",
         "Require real email delivery or explicit documented owner exception"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9355,7 +9360,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T303"
       ],
@@ -9370,7 +9375,12 @@
         "Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR",
         "Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done."
+        }
+      ],
       "blockedReason": null
     }
   ]

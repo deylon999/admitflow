@@ -6083,7 +6083,7 @@
 
 ### T279. KAN-214: Final security and acceptance
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T278.
 
@@ -6102,7 +6102,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done.
 
 ### T280. KAN-214 PR2: Merged baseline and PR2 boundaries
 
@@ -6690,7 +6690,7 @@
 
 ### T304. KAN-214 PR6: Final report and review handoff
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T303.
 
@@ -6709,7 +6709,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done.
 
 ## E6. Резерв и выпуск
 

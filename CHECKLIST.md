@@ -288,7 +288,7 @@
 - [x] T276 KAN-214: Refresh logout and CSRF
 - [x] T277 KAN-214: Email verification and recovery
 - [x] T278 KAN-214: React v3 account integration
-- [ ] T279 KAN-214: Final security and acceptance
+- [ ] T279 KAN-214: Final security and acceptance — **нужна проверка / завершение**
 - [x] T280 KAN-214 PR2: Merged baseline and PR2 boundaries
 - [x] T281 KAN-214 PR2: Persistent auth rate budgets
 - [x] T282 KAN-214 PR2: Registration and CSRF prerequisite
@@ -313,7 +313,7 @@
 - [x] T301 KAN-214 PR6: Security regression and evidence
 - [x] T302 KAN-214 PR6: Native PostgreSQL cross-browser acceptance
 - [x] T303 KAN-214 PR6: Migration visual and full regression
-- [ ] T304 KAN-214 PR6: Final report and review handoff — **в работе**
+- [ ] T304 KAN-214 PR6: Final report and review handoff — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

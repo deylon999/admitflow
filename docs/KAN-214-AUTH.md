@@ -328,3 +328,12 @@ guest lifecycle preserved, Demo remains separate. Chromium default175 tests plus
 2 native-PostgreSQL browser scenarios;108 retained Live/Demo comparisons identical.
 PR5 awaits owner review/merge; KAN-214 full acceptance remains PR6 and the external
 real SMTP/HTTPS gate. Earlier statements about missing frontend describe past PRs.
+
+## S215 финальная автоматическая приёмка после owner merge PR18
+
+[Итоговый отчёт PR6](KAN-214-PR6.md), [32 security controls](KAN-214-SECURITY-MATRIX.md)
+и [внешняя доставка/HTTPS процедура](KAN-214-DELIVERY-SMOKE.md). Native PostgreSQL
+Chromium/Firefox/WebKit по5 сценариев теперь входят в существующий backend CI job;
+полный backend979/0skip и default frontend175. Реальная SMTP доставка, production
+HTTPS/proxy/egress и owner acceptance не заменяются этим успехом. PR19 остаётся
+review, AUTH_ENABLED=false. Full KAN-214 DoD не объявлен закрытым.

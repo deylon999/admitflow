@@ -287,3 +287,57 @@ WebKit действительно выполнен в Ubuntu, не помече�
 отклоняет отчёт от другого engine. Local Chromium5 (9.2s), Firefox5 (13.3s) после
 добавления metadata и исправления ожидания guest cookie повторно прошли. Final head
 повторно проверяется CI; ссылка/результаты поддерживаются в PR19 description.
+
+## Воспроизведение
+
+Только disposable PostgreSQL17 `admitflow_test*`. Команды npm — из frontend;
+полный трёхбраузерный запуск требует поддерживаемое Ubuntu24.04 окружение с deps.
+
+```sh
+npm run lint
+npm run typecheck
+npm run build
+npm test
+npx playwright install --with-deps chromium firefox webkit
+TEST_DATABASE_URL='<isolated PG URL>' AUTH_BROWSER_RESULTS_ROOT=../backend/test-results/auth-browser npm run test:auth
+node scripts/check-auth-visual.mjs --acceptance
+```
+
+Последняя команда сохраняет raw сравнение и возвращает exit1 при любом mismatch;
+для описанного border variance не следует менять baseline/threshold. Воспроизвести
+отдельные движки можно `AUTH_BROWSER_E2E=1 AUTH_TEST_BROWSER=firefox TEST_DATABASE_URL=... npm test`.
+
+Из корня (ETL запускается отдельно, как в существующем CI):
+
+```sh
+TEST_DATABASE_URL='<isolated PG URL>' backend/.venv/bin/python -m pytest -q --require-postgres --ignore=backend/tests/test_admission_history.py --ignore=backend/tests/test_accreditation_registry.py --ignore=backend/tests/test_exam_requirements.py --junitxml=backend/test-results/backend.xml backend/tests
+python scripts/check_auth_acceptance.py --backend-junit backend/test-results/backend.xml --browser-results backend/test-results/auth-browser --output backend/test-results/auth-acceptance.json
+backend/.venv/bin/python -m pytest -q -ra backend/tests/test_admission_history.py backend/tests/test_accreditation_registry.py backend/tests/test_exam_requirements.py
+python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report scripts.tests.test_auth_acceptance
+python scripts/roadmap.py --render --check
+```
+
+Из backend, свежая отдельная пустая БД с суффиксом `_migrations`:
+`PYTHONPATH=. MIGRATION_DATABASE_URL='<isolated PG URL>' .venv/bin/python tests/check_migrations.py`.
+
+Evidence: [сводка](evidence/kan-214-pr6.json), [матрица](evidence/kan-214-controls.json),
+[GitHub history](evidence/kan-214-pr-history.json),
+[124 comparisons](evidence/kan-214-pr6/visual-comparison.json),
+[diagnostics](evidence/kan-214-pr6/visual-diagnostics.json),
+[before](evidence/kan-214-pr6/live-1440-_programs-before.png),
+[after](evidence/kan-214-pr6/live-1440-_programs-after.png).
+
+## Чек-лист передачи
+
+- [x] T300: owner merge/main и технический аудит.
+- [x] T301: security controls, populated guest isolation/migration/privacy и validator.
+- [x] T302: настоящий PostgreSQL lifecycle/security в трёх engines и hosted evidence.
+- [x] T303: regression/migrations и честная визуальная диагностика без изменения UI.
+- [ ] T304 / T279: финальный PR, owner review/acceptance и внешние условия остаются review.
+- [ ] Реальная verification/recovery inbox-доставка либо явное решение владельца.
+- [ ] Production HTTPS/proxy/egress deployment smoke и visual variance review.
+
+Backend product/frontend src/CSS/Compose/dependency lock/applied migrations не менялись
+в PR6; CI расширен обязательными test steps в существующем backend job. Owner test
+container admitflow-kan214-pr5-db останавливается после local проверок, volume
+сохраняется; случайные test schema и private mailbox/runtime процессы очищаются.
