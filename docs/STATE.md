@@ -28,7 +28,7 @@ KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. R
 
 ## Проверенное окружение
 
-- S214: frontend174 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).
+- S214: frontend175 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).
 - Full native-PG backend976/0skip; ETL55+1 explicit dataset skip; repository tools17+1 optional local PDF skip; clean migrations0012/head/no schema drift. Hosted results/final SHA recorded in review PR description.
 - Visual108/108 identical retained Live/Demo comparisons at390/1440, plus12 changed/technical screen captures; baseline/source comparison evidence committed. No CSS, backend product/migration/dependency/CI/Compose changes.
 - Owned PostgreSQL17 test container admitflow-kan214-pr5-db stopped; its test-only volume preserved. Random test schemas cleaned. User DBs/volumes and running services untouched. Mailbox/clock/preview processes cleaned.

@@ -188,7 +188,7 @@ No application databases or volumes were used. Full backend976 passed/0skip,
 4 pre-existing Alembic warnings,306.32s. ETL55 passed plus1 explicit unavailable
 external dataset skip; repository tools17 with1 local optional PDF dependency skip
 (hosted installs that dependency); pip check clean; server lifecycle3 passed.
-Frontend174 tests, including7 new transport/DTO and20 browser-contract cases, plus
+Frontend175 tests, including7 new transport/DTO and21 browser-contract cases, plus
 2 native-PG browser scenarios. The latter cover registration, real email-token
 consumption via the test port, login/reload, exactly one parallel-tab refresh,
 logout/stale-cookie rejection, recovery/one-use/reset/revocation, absolute expiry,
@@ -221,3 +221,8 @@ SMTP provider/inbox delivery or the owner's explicit documented exception, and
 production HTTPS/proxy checks. AUTH_ENABLED remains false by default. No real email
 was sent or inbox delivery verified. The isolated file mailer proves the backend
 integration and browser workflow only. No production-ready claim or gate completion.
+
+Final mobile follow-up: account email uses scoped overflow-wrap so a valid64-character
+local part stays inside a390px screen. Added a browser assertion for this boundary;
+full frontend175 passed (22.6s), lint/typecheck clean. This only affects the new live
+account summary, not the108 retained comparison routes. No CSS file changed.

@@ -6078,7 +6078,7 @@
 
 **Доказательства:**
 
-- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
 
 ### T279. KAN-214: Final security and acceptance
 
@@ -6592,7 +6592,7 @@
 
 **Доказательства:**
 
-- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
 
 ## E6. Резерв и выпуск
 

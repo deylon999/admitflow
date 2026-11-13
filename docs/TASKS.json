@@ -8576,7 +8576,7 @@
       "evidence": [
         {
           "path": "docs/KAN-214-PR5.md",
-          "note": "PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+          "note": "PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
         }
       ],
       "blockedReason": null
@@ -9220,7 +9220,7 @@
       "evidence": [
         {
           "path": "docs/KAN-214-PR5.md",
-          "note": "PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+          "note": "PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
         }
       ],
       "blockedReason": null

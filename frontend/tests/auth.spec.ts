@@ -213,3 +213,12 @@ test('BroadcastChannel synchronises account transitions when storage writes are 
     await expect(other.locator('#root')).not.toContainText('alice@example.org');
     await expect(other.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
 });
+
+
+test('a long valid account email stays inside the mobile layout', async ({ page, context }) => {
+    const server = await mockAuth(context); server.user = 'a'.repeat(64);
+    await page.setViewportSize({ width: 390, height: 900 });
+    await page.goto('/app/profile');
+    await expect(page.locator('#root')).toContainText(server.user + '@example.org');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});

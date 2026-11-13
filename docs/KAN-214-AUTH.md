@@ -324,7 +324,7 @@ KAN-214 delivery acceptance remains external, independent of code/CI completion.
 [PR5 implementation/contracts/evidence](KAN-214-PR5.md): real controlled auth forms,
 server-confirmed state after login/reload, cross-tab locked refresh, account-only
 profile summary/logout and fragment verification/reset screens. Shared client and
-guest lifecycle preserved, Demo remains separate. Chromium default174 tests plus
+guest lifecycle preserved, Demo remains separate. Chromium default175 tests plus
 2 native-PostgreSQL browser scenarios;108 retained Live/Demo comparisons identical.
 PR5 awaits owner review/merge; KAN-214 full acceptance remains PR6 and the external
 real SMTP/HTTPS gate. Earlier statements about missing frontend describe past PRs.
