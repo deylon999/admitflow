@@ -8529,7 +8529,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T276"
       ],
@@ -8542,7 +8542,12 @@
       "acceptance": [
         "Implement PR4 acceptance; test transport is isolated; production delivery remains external gate"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR4.md",
+          "note": "PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9029,7 +9034,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T293"
       ],
@@ -9046,7 +9051,12 @@
         "Document real SMTP delivery/HTTPS/egress external gate and isolated test-mail evidence",
         "Publish reviewable PR with actual test counts and no autonomous merge"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR4.md",
+          "note": "PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim."
+        }
+      ],
       "blockedReason": null
     }
   ]

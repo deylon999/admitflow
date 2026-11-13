@@ -95,3 +95,14 @@ Exact DTO/cookie/deadline/replay/idempotency/error policy and tested boundaries:
 [KAN-214-PR3.md](KAN-214-PR3.md). This supersedes PR2's temporary no-refresh/logout
 boundary; SMTP/confirmation/recovery and frontend integration remain unavailable.
 AUTH_ENABLED remainsfalse by default; full production acceptance is not claimed.
+
+## KAN-214 PR4 email actions
+
+POST `/api/v1/auth/verification/request`, `/verification/confirm`, `/recovery/request`
+and `/recovery/confirm` implement purpose-hashed single-use email actions. Request
+bodies/status/CSRF/rate/expiry/rollback contracts and SMTP configuration:
+[KAN-214-PR4.md](KAN-214-PR4.md). Confirm operations204 never auto-login; reset revokes
+all target user sessions and outstanding actions atomically. Requests use generic202,
+missing/failed transport explicit503. This supersedes PR3's temporary missing-mail
+boundary; real delivery and frontend link handling remain unverified external/UI
+gates. AUTH_ENABLED staysfalse. No callback URL or public test-mail retrieval route.

@@ -1,0 +1,56 @@
+{
+  "date": "2026-11-13",
+  "task": "KAN-214 PR4",
+  "base": "d63a2087ed81a1bf435088d0927cf2176bc371eb",
+  "branch": "feat/kan-214-email-recovery",
+  "hostedEvidence": "Review PR description records exact final SHA, workflow URL and verified results; no hosted inference from local tests",
+  "local": {
+    "backend": {
+      "passed": 976,
+      "skipped": 0,
+      "postgresRequired": true,
+      "exitCode": 0,
+      "seconds": 299.11
+    },
+    "actionsAndSecurity": 83,
+    "mailAndConfig": 35,
+    "frontend": {
+      "passed": 147,
+      "lint": 0,
+      "typecheck": 0,
+      "build": 0
+    },
+    "etl": {
+      "passed": 55,
+      "skipped": 1,
+      "reason": "existing missing full dataset"
+    },
+    "migration": {
+      "head": "0012",
+      "freshPostgres": true,
+      "aligned": true
+    },
+    "pipCheck": 0
+  },
+  "email": {
+    "transport": "stdlib authenticated STARTTLS/SSL, verified certificates/hostname",
+    "runtimeConfigured": false,
+    "realInboxDeliveryVerified": false,
+    "tests": "isolated recording port and mocked SMTP protocol client only",
+    "externalGate": "not accepted; owner/provider/HTTPS/egress and actual delivery needed"
+  },
+  "dataSafety": {
+    "userDatabaseTouched": false,
+    "userVolumesTouched": false,
+    "guestRowsPreserved": true,
+    "ownedTestContainerRemoved": true
+  },
+  "limitations": [
+    "T277/T294 review, owner acceptance required before PR5",
+    "Auth disabled by default; no full production acceptance",
+    "SMTP acceptance tests are not actual inbox delivery; no external recipient contacted",
+    "Frontend /auth/verify and /auth/reset/fragment clearing/session coordination remain PR5",
+    "Mail latest-issued action only; SMTP delivery order not guaranteed; failed postcommit send needs bounded resend",
+    "Proxy peer is aggregate pending deployment trust contract"
+  ]
+}

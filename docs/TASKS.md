@@ -6039,7 +6039,7 @@
 
 ### T277. KAN-214: Email verification and recovery
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T276.
 
@@ -6056,7 +6056,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim.
 
 ### T278. KAN-214: React v3 account integration
 
@@ -6446,7 +6446,7 @@
 
 ### T294. KAN-214 PR4: PR4 regression and review handoff
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T293.
 
@@ -6467,7 +6467,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim.
 
 ## E6. Резерв и выпуск
 

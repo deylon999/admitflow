@@ -238,3 +238,16 @@ non-auth tombstone for duplicate valid proof, replacing PR1's immediate context
 removal assumption. Failed commit never deletes cookies. Peer+session PostgreSQL
 budgets remain HMAC-keyed; no forwarded-header trust. Browser single-flight/epoch
 work remains PR5, real email PR4; default auth disabled. Evidence KAN-214-PR3.md.
+
+2026-11-13 S213 KAN-214 PR4 after merged PR16/main d63a208: use stdlib authenticated
+STARTTLS/SSL with default certificate/hostname validation, finite socket timeout,
+limited capacity and one attempt (no ambiguous SMTP automatic retry). Real transport
+requires fixed HTTPS PUBLIC_ORIGIN; no mock/console environment switch. All accepted
+addresses use the same port, generic notices where no action is eligible; shared
+mail-peer20/h and mail-email3/h bound sends across registration/resend/recovery.
+24h verification and30min reset hashes, user-row serialization, latest-issued link
+only; confirm does not depend on current provider availability. Reset atomically
+updates production password hash, consumes outstanding actions and revokes all user
+sessions/refresh; never auto-login/verify/transfer guests or mutate a foreign account's
+CSRF context. SMTP failure after commit needs bounded resend, no older-token revival.
+Real inbox delivery/egress/HTTPS acceptance remains external. KAN-214-PR4.md.

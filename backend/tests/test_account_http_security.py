@@ -19,9 +19,19 @@ def test_disabled_default_is_explicit_without_mutating_guest_or_accounts(postgre
     app = create_app(Settings(database_url=postgres_engine.url.render_as_string(hide_password=False), auto_create_schema=False))
     with TestClient(app) as client:
         assert client.post('/api/v1/session', headers=HEADERS).status_code == 204
-        for path, method in [('csrf', 'GET'), ('register', 'POST'), ('login', 'POST'), ('session', 'GET'), ('refresh', 'POST'), ('logout', 'POST')]:
+        payloads = {
+            'register': {'email':'private@example.org','password':PASSWORD},
+            'login': {'email':'private@example.org','password':PASSWORD},
+            'verification/request': {'email':'private@example.org'},
+            'recovery/request': {'email':'private@example.org'},
+            'verification/confirm': {'token':'x'*43},
+            'recovery/confirm': {'token':'x'*43,'password':PASSWORD},
+        }
+        for path, method in [('csrf', 'GET'), ('register', 'POST'), ('login', 'POST'), ('session', 'GET'),
+                             ('refresh', 'POST'), ('logout', 'POST'), ('verification/request','POST'),
+                             ('verification/confirm','POST'), ('recovery/request','POST'), ('recovery/confirm','POST')]:
             response = client.request(method, '/api/v1/auth/'+path, headers=HEADERS,
-                                      json=({'email':'private@example.org','password':PASSWORD} if path in ('register', 'login') else {}) if method=='POST' else None)
+                                      json=payloads.get(path,{}) if method=='POST' else None)
             assert response.status_code == 503 and response.json()['code'] == 'auth_unavailable'
         assert client.get('/api/v1/session').status_code == 200
     with Session(postgres_engine) as db:

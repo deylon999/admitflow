@@ -124,3 +124,69 @@ SMTP polish uses the explicit normalized sender domain for Message-ID (no local
 hostname disclosure) and quoted-printable UTF8 text with ASCII wire representation
 (no 8BITMIME dependency). Current mail/config suite **35 passed**, including explicit
 connection and certificate failure cases; all TLS defaults remain strict.
+
+## Final regression, API and external delivery gate (T294)
+
+All new tests were present before full collection. Local command:
+`TEST_DATABASE_URL=<isolated PG> backend/.venv/bin/python -m pytest -q
+--require-postgres --ignore=backend/tests/test_admission_history.py
+--ignore=backend/tests/test_accreditation_registry.py
+--ignore=backend/tests/test_exam_requirements.py backend/tests`:
+**976 passed, zero skipped**, exit0,299.11s. Current dedicated email/action/security
+suite83 passed; mail/config35 passed. Framework/legacy migration warnings retained.
+Frontend lint/typecheck/build/npm test exit0, **147 passed**, all29 routes. Frontend/
+CSS/baseline untouched, generated assets unchanged; no new pixel comparison claim.
+ETL55 passed +1 explicit missing-dataset skip. pip check clean. Repository tools17,
+1 local missing-PDF-dependency skip; hosted installs those reporting dependencies.
+Fresh real PostgreSQL verifier: head0012/schema alignment pass, no new migration.
+
+Native tests owned PostgreSQL17 on loopback55439, only admitflow_test_kan214_pr4 and
+admitflow_test_kan214_pr4_migrations and random pg_support schemas. Schema count0
+before cleanup; owned container/anonymous volume removed. No user DB/volume,
+production secret, applied migration, frontend, parser, CI or compose/network edit.
+Final source SHA, PR URL, workflow URL and actually verified hosted job results are
+recorded in the review PR description for branch feat/kan-214-email-recovery;
+hosted checks are never inferred from local results. T277/T294 remain review until
+owner acceptance, T290-T293 done. No autonomous merge or PR5 implementation here.
+
+| Endpoint (/api/v1/auth) | Request -> success | Auth/CSRF/rate/errors |
+|---|---|---|
+| POST /verification/request |{email} ->202 generic acceptance |enabled, Origin/custom header+CSRF; operation peer20/h + shared mail-peer20/h/mail-email3/h;403/422/429/503 |
+| POST /verification/confirm |{token} ->204 empty |enabled+CSRF/Origin/header; peer30/15min, token10/15min;400 invalid/expired/used/purpose/user,403/422/429/503 |
+| POST /recovery/request |{email} ->202 same generic acceptance |same mail controls; only active/verified users get a reset action;403/422/429/503 |
+| POST /recovery/confirm |{token,password} ->204 empty |enabled+CSRF/Origin/header; peer30/15min/token10/15min; production password policy;400/403/422/429/503; no auto-login/cookie issuance |
+
+Token secret shape is bounded43 characters; invalid shape422 is redacted; valid
+shape with invalid proof uses the same invalid_token400 message across states.
+Authentication is not required for email actions; CSRF proof must match the current
+anonymous or account context. Request operations never disclose account ID/status.
+Quota suppression returns request acceptance only, not a claim that mail was sent.
+Already-delivered valid actions can confirm while transport is unavailable.
+
+## Configuration and real delivery acceptance procedure
+
+- Required actual SMTP fields: SMTP_HOST, SMTP_USERNAME, SMTP_PASSWORD, SMTP_FROM.
+  SMTP_SECURITY=starttls (SMTP_PORT default587) or ssl (environment default465).
+  SMTP_TIMEOUT_SECONDS1..10, default5 per socket operation, not a total SMTP deadline.
+- Fixed HTTPS PUBLIC_ORIGIN and matching ALLOWED_HOSTS required for real SMTP,
+  including development transport. Invalid/partial configuration fails closed.
+  Do not commit secrets or enable SMTP debug logs. No runtime recording/console mode.
+- Current compose does not forward SMTP fields and backend production network is
+  internal-only. Deployment/egress/secret forwarding requires CI/CD-owner agreement;
+  this PR deliberately changes none of that. Forward credentials only to backend.
+- AUTH_ENABLED remainsfalse until complete lifecycle/UI acceptance. PR5 must add
+  /auth/verify and /auth/reset UI, clear fragments immediately with replaceState and
+  use explicit POST confirmation (no auto-consumption by GET/mail scanners).
+- For actual delivery evidence, owner supplies provider/verified sender, agreed
+  isolated test recipient and HTTPS staging after UI exists. Verify real inbox mail,
+  fixed-origin link, verification/login and recovery/new-password flow; old sessions
+  must fail. Record non-secret timestamp/status and owner acceptance, never raw token,
+  password, SMTP credentials or a screenshot exposing the recovery link in Git.
+
+**External gate: NOT ACCEPTED.** Runtime/project env audit supplied no SMTP fields;
+no external recipient was contacted and no real inbox delivery verified. Fake
+protocol-client and recording-port tests prove code integration only. Full KAN-214
+requires real delivery or a separate explicit owner exception documented with this
+limitation. Next after review/merge: T278 PR5 React forms/session/fragment integration,
+then PR6 full browser/security/visual acceptance. No full auth production-readiness
+claim; existing HTTPS/proxy/client-address gates remain open.

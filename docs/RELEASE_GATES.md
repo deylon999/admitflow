@@ -51,3 +51,15 @@ T250/T254 подтверждены реальным Compose/PostgreSQL: [evidenc
 Docker-блокер локального старта снят; current=head0011,импорт/API/persistence
 и native regression tests прошли. Это не приёмка публичного staging/HTTPS,
 production restore или остальных release gates; completedGates не меняется.
+
+## KAN-214 email — S213, 2026-11-13 (внешнее условие не принято)
+
+SMTP TLS-интеграция, verification/recovery и backend security проверены изолированно:
+[PR4 отчёт](KAN-214-PR4.md), [evidence](evidence/kan-214-pr4.json). Локально976 backend
+с обязательным native PostgreSQL,147 frontend; схема0012 согласована. Точный SHA и
+проверенные hosted checks — в review PR ветки feat/kan-214-email-recovery.
+SMTP-параметры и реальный ящик для проверки не предоставлены; настоящая доставка
+не проверена. Нужны HTTPS staging, согласованные egress/секреты и sender у провайдера,
+frontend PR5 и полный PR6. AUTH_ENABLED=false; completedGates не меняется. Mock SMTP
+не принимается за production-доставку. Полная приёмка KAN-214 без фактической доставки
+возможна только отдельным явным решением владельца с этим ограничением.

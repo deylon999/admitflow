@@ -286,7 +286,7 @@
 - [x] T274 KAN-214: Password security foundation
 - [x] T275 KAN-214: Registration and login API
 - [x] T276 KAN-214: Refresh logout and CSRF
-- [ ] T277 KAN-214: Email verification and recovery
+- [ ] T277 KAN-214: Email verification and recovery — **нужна проверка / завершение**
 - [ ] T278 KAN-214: React v3 account integration
 - [ ] T279 KAN-214: Final security and acceptance
 - [x] T280 KAN-214 PR2: Merged baseline and PR2 boundaries
@@ -303,7 +303,7 @@
 - [x] T291 KAN-214 PR4: Secure SMTP transport
 - [x] T292 KAN-214 PR4: Email verification and resend
 - [x] T293 KAN-214 PR4: Password recovery and revocation
-- [ ] T294 KAN-214 PR4: PR4 regression and review handoff — **в работе**
+- [ ] T294 KAN-214 PR4: PR4 regression and review handoff — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 
