@@ -200,3 +200,16 @@ test('route exit cancels a slow form without showing success on the next route',
     await expect(page.locator('.af-inline-success')).toHaveCount(0);
     await expect(page.getByLabel('ПАРОЛЬ', { exact: true })).toHaveValue('');
 });
+
+test('BroadcastChannel synchronises account transitions when storage writes are blocked', async ({ page, context }) => {
+    const server = await mockAuth(context);
+    await context.addInitScript(() => { Storage.prototype.setItem = () => { throw new Error('Storage unavailable'); }; });
+    const other = await context.newPage(); await other.goto('/app/profile');
+    await expect(other.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
+    await signIn(page);
+    await expect(other.locator('#root')).toContainText('alice@example.org');
+    server.delay = 500;
+    await page.getByRole('button', { name: 'Выйти из аккаунта' }).click();
+    await expect(other.locator('#root')).not.toContainText('alice@example.org');
+    await expect(other.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
+});

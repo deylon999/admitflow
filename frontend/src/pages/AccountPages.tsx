@@ -62,7 +62,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) 
             <button type="submit" className="af-action af-action--primary" disabled={submission.busy}>{submission.busy ? 'Отправляем…' : mode === 'login' ? 'Войти ↗' : mode === 'register' ? 'Создать аккаунт ↗' : 'Получить инструкцию ↗'}</button>
         </form>
         {submission.notices}
-        {mode !== 'recovery' && <p><button type="button" className="af-small-link" disabled={submission.busy} onClick={() => {
+        {mode !== 'recovery' && <p><button type="button" className="af-action af-action--outline" disabled={submission.busy} onClick={() => {
             if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 320) { submission.fail('Введите email для повторного подтверждения.'); return; }
             void submission.run(signal => sendAccountEmail('verification/request', email, undefined, signal).then(() => {}), genericNotice, clear);
         }}>Повторить письмо подтверждения</button></p>}

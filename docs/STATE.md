@@ -7,16 +7,16 @@
 
 ## Продолжение
 
-- Текущая задача: T299.
+- Текущая задача: нет.
 - Следующая задача: T299.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR5 React auth T295-T299 from main3035f5e. Separate account/guest lifecycle; no secrets in storage; SMTP/full production delivery remains external. No autonomous merge.
+KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. Read docs/KAN-214-PR5.md and PR description for final SHA/hosted checks. Do not merge autonomously or start PR6 before acceptance. Real SMTP delivery and production HTTPS/proxy gate remain external.
 
 ## Последняя завершённая работа
 
-- T298: Minimal account guard/logout and cross-tab isolation verified; default172 tests, transport35, native PostgreSQL browser2 and backend976/0skip passed. Test mailbox/clock are private filesystem-only; real SMTP delivery remains unaccepted.
+- T295-T298: merged-main audit, shared account lifecycle, Live forms/email links, guard/logout, guest compatibility and native-PG browser evidence complete. T278/T299 remain review.
 
 ## Ограничения
 
@@ -28,9 +28,10 @@ KAN-214 PR5 React auth T295-T299 from main3035f5e. Separate account/guest lifecy
 
 ## Проверенное окружение
 
-- S213: all-current local --require-postgres backend976/0skip; combined action/security83; mail/config35; frontend147/lint/typecheck/build. ETL55+1 explicit dataset skip; pip check clean; native clean migration0012/head/schema check passed.
-- Repository tools17 with1 local PDF-dependency skip; hosted installs it. Exact final SHA/PR/verified hosted results in review PR description. All new tests collected before full run.
-- Owned PG17 test schemas/container/anonymous volume cleaned. User DBs/volumes untouched; no frontend/CSS/CI/compose/dependency/applied-migration changes. SMTP config absent, no external mail sent or inbox verified; auth defaults disabled.
+- S214: frontend174 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).
+- Full native-PG backend976/0skip; ETL55+1 explicit dataset skip; repository tools17+1 optional local PDF skip; clean migrations0012/head/no schema drift. Hosted results/final SHA recorded in review PR description.
+- Visual108/108 identical retained Live/Demo comparisons at390/1440, plus12 changed/technical screen captures; baseline/source comparison evidence committed. No CSS, backend product/migration/dependency/CI/Compose changes.
+- Owned PostgreSQL17 test container admitflow-kan214-pr5-db stopped; its test-only volume preserved. Random test schemas cleaned. User DBs/volumes and running services untouched. Mailbox/clock/preview processes cleaned.
 
 ## Готовность к выпуску
 

@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 const manifest=JSON.parse(await readFile('../docs/evidence/frontend-v3-exact/source-manifest.json','utf8'));
 const compared=[];
 // Explicitly scoped functional integration; all other original UI remains frozen.
-const integrated=['src/App.tsx','src/app/Shell.tsx','src/pages/PublicPages.tsx'];
+const integrated=['src/App.tsx','src/app/Shell.tsx','src/pages/PublicPages.tsx','src/pages/AuthPages.tsx','src/main.tsx'];
 const demoLabels={
   'src/components/ForecastCard.tsx':['МГУ · Прикладная математика</span>','МГУ · Прикладная математика · демо</span>'],
   'src/components/Calculator.tsx':['Ваш шанс поступить</strong>','Ваш шанс поступить · демо</strong>'],
@@ -25,4 +25,4 @@ for(const entry of manifest.filter(entry=>(entry.path.startsWith('src/')||['inde
 const directory=process.env.QA_EVIDENCE_DIR ?? 'test-results/evidence';
 await mkdir(directory,{recursive:true});
 await writeFile(directory+'/design-preservation.json',JSON.stringify({compared,integrated},null,2)+'\n');
-console.log(`Verified ${compared.length} UI/config files with four explicit demo labels; three integration compositions excluded.`);
+console.log(`Verified ${compared.length} UI/config files with four explicit demo labels; five documented functional integration entrypoints excluded; PR5 pixel comparison covers the retained Demo UI.`);

@@ -91,3 +91,133 @@ additional stale-owner retry fix; two native PostgreSQL browser scenarios passed
 (account lifecycle/refresh/logout/recovery and account switch/CSRF/wrong password).
 Full unchanged backend regression:976 passed,0 skipped,4 existing Alembic warnings,
 306.32s on Python3.14/PostgreSQL17. Backend product code/migrations are unchanged.
+
+## Final implementation and contracts (T299)
+
+The existing `shared/api.ts` remains the only browser HTTP transport. Existing guest
+session events, epoch checks after headers/body/decoder, cancellation, resources,
+public catalogs and explicit guest recovery are preserved. Auth adds a distinct
+account epoch/abort boundary and a whitelist current-user DTO. `account.ts` owns
+server reconciliation; `useAccount` reads its stable external snapshot. No account
+proof is taken from storage. Cross-tab BroadcastChannel and storage carry only a
+random ID/phase marker (deduplicated); channel also works when storage is blocked.
+Public routes do not bootstrap accounts unnecessarily. Auth/app reload does, with
+checking/anonymous/authenticated/error states; network failure is never anonymity.
+
+A named Web Lock serializes account cookie mutations, CSRF bootstrap and authoritative
+session reads. Same-tab restore is single-flight. After obtaining the lock the tab
+checks the server again before issuing at most one refresh mutation. No refresh on
+public/guest/login401; only account-protected access_expired is eligible for one
+refresh and one request retry. A terminal401 clears private state. Epochs reject
+old results during policy waits, headers, body and retry. Logout starts by hiding
+private content and ends only on backend204; failed logout is an error, never a
+claim of revocation. Cookies are managed exclusively by the existing backend.
+
+Browser support is Chromium verified. Web Locks requires HTTPS (localhost is a
+secure-context exception); without locks valid access still works, automatic
+refresh is disabled with an explicit re-login state. Other browser engines and
+production HTTPS/proxy deployment remain PR6 acceptance work. No unbounded polling,
+refresh grace period or blind retry of a POST was added.
+
+Backend password hashing, DB-backed rate budgets, CSRF binding, strict opaque
+refresh rotation and server revocation remain the reviewed PR1–4 implementation.
+No backend product code, schema, applied migration, dependency lock, Compose or
+GitHub Actions workflow changed. Account users remain separate from BrowserSession;
+no owner_hash replacement, guest/account data merge or guest deletion is performed.
+The new profile screen only shows the server-confirmed email and logout. All guest
+/app functions remain available; full profile and global redirects are KAN-215/216.
+
+Frontend uses these existing contracts (all under `/api/v1/auth/`; errors are safe
+whitelisted codes/status,429 includes Retry-After):
+
+| Method/path | Request | Success | Browser policy |
+|---|---|---|---|
+| GET csrf | none |200 csrfToken |memory only, under account lock |
+| GET session |none |200 account/id/email/emailVerified + accessExpiresAt/absoluteExpiresAt |server proof;401 renewable only with access_expired |
+| POST register |email,password |202 generic message |CSRF; no auto-login; new password15..128 codepoints/512 UTF8 bytes |
+| POST login |email,password |200 session DTO |CSRF; follow-up GET must confirm the same ID |
+| POST refresh |{} |200 session DTO |CSRF; one rotation under Web Lock, no blind retry |
+| POST logout |{} |204 |CSRF; server revocation; preserve guest cookie |
+| POST verification/request |email |202 generic message |CSRF; no account enumeration or delivery claim |
+| POST verification/confirm |token |204 |CSRF; explicit action, fragment held in memory only |
+| POST recovery/request |email |202 generic message |CSRF; no enumeration or delivery claim |
+| POST recovery/confirm |token,password |204 |CSRF; single use; then reconcile current browser account, never auto-login |
+
+Account-only future reads must use the explicit account/* scope and backend account
+ownership checks. This PR introduces no business account data endpoints. New
+account mutations must define their CSRF/transaction/idempotency contract; the
+frontend classifier alone is never resource authorization. KAN-216 can consume
+useAccount/retryAccount and the guard states without restricting guest features;
+KAN-215/225/226 can build on stable account ID and reviewed server sessions.
+
+## Reproducible validation and evidence
+
+Run npm commands from frontend. Use a disposable PostgreSQL17 database named
+admitflow_test*; never set test URLs to a working application database.
+
+```sh
+npm run lint
+npm run typecheck
+npm run build
+node --test scripts/stop-child.test.mjs
+npm test
+AUTH_BROWSER_E2E=1 TEST_DATABASE_URL='<disposable-postgresql-url>' npm test
+node scripts/check-auth-visual.mjs
+```
+
+The opt-in native-PG runner owns one random schema and removes it on shutdown; its
+mailbox/clock use a private temporary directory outside the web root/artifacts,
+removed by the Node runner. Real browser flows have tracing/screenshots/video off
+so email credentials/passwords cannot enter artifacts. Normal default CI still runs
+all existing tests plus auth unit/browser-contract cases; it has no PG browser
+service. Native-PG browser evidence is local, not a hosted full-stack delivery claim.
+
+Backend validation from repository root:
+
+```sh
+TEST_DATABASE_URL='<disposable-postgresql-url>' backend/.venv/bin/python -m pytest -q --require-postgres --ignore=backend/tests/test_admission_history.py --ignore=backend/tests/test_accreditation_registry.py --ignore=backend/tests/test_exam_requirements.py backend/tests
+backend/.venv/bin/python -m pytest -q -ra backend/tests/test_admission_history.py backend/tests/test_accreditation_registry.py backend/tests/test_exam_requirements.py
+python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report
+python scripts/roadmap.py --render --check
+```
+
+Clean-database migration gate (from backend, database name ends in _migrations):
+`PYTHONPATH=. MIGRATION_DATABASE_URL='<empty-disposable-postgresql-url>' .venv/bin/python tests/check_migrations.py`.
+It confirms emptiness before touching schema:0012/head, no new upgrade operations.
+No application databases or volumes were used. Full backend976 passed/0skip,
+4 pre-existing Alembic warnings,306.32s. ETL55 passed plus1 explicit unavailable
+external dataset skip; repository tools17 with1 local optional PDF dependency skip
+(hosted installs that dependency); pip check clean; server lifecycle3 passed.
+Frontend174 tests, including7 new transport/DTO and20 browser-contract cases, plus
+2 native-PG browser scenarios. The latter cover registration, real email-token
+consumption via the test port, login/reload, exactly one parallel-tab refresh,
+logout/stale-cookie rejection, recovery/one-use/reset/revocation, absolute expiry,
+guest cookie preservation, two-account switching, CSRF and wrong-password denial.
+Resetting account A while logged in to B preserves B's independent session.
+
+Visual comparison against reviewed main3035f5e:108/108 exact screenshot byte matches
+at390/1440 (25 retained Live routes + all29 Demo routes, both widths). The three
+Live auth forms and minimal account profile intentionally change functionality and
+have separate captures; both new technical routes captured too (12 screenshots).
+Only the coverage.generatedAt fixture is fixed equally for the two builds, since
+it otherwise differs on every API request. Comparison waits for rendered resources
+and completed font/paint frames, not an idle network (canceled competition requests
+can remain pending in the preview proxy). No threshold or historical baseline was
+changed. Auth resend uses the existing outline button style; no CSS redesign.
+
+[Machine evidence](evidence/kan-214-pr5.json),
+[108 visual comparisons](evidence/kan-214-pr5/visual-comparison.json),
+[desktop login](evidence/kan-214-pr5/login-desktop.png),
+[mobile registration](evidence/kan-214-pr5/register-mobile.png),
+[mobile account guard](evidence/kan-214-pr5/account-guard-mobile.png).
+Exact final SHA, review PR, hosted run/job conclusions and review status are recorded
+in the PR description so documentation does not create a second untested CI head.
+
+## Acceptance boundaries and handoff
+
+T295–T298 implementation steps complete; T278/T299 remain in review pending owner
+acceptance. Do not merge automatically. KAN-214 full acceptance is still PR6, real
+SMTP provider/inbox delivery or the owner's explicit documented exception, and
+production HTTPS/proxy checks. AUTH_ENABLED remains false by default. No real email
+was sent or inbox delivery verified. The isolated file mailer proves the backend
+integration and browser workflow only. No production-ready claim or gate completion.

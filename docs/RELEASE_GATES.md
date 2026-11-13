@@ -63,3 +63,10 @@ SMTP-параметры и реальный ящик для проверки н�
 frontend PR5 и полный PR6. AUTH_ENABLED=false; completedGates не меняется. Mock SMTP
 не принимается за production-доставку. Полная приёмка KAN-214 без фактической доставки
 возможна только отдельным явным решением владельца с этим ограничением.
+
+S214 / KAN-214 PR5: React подключён к реальным auth endpoints, включая минимальный
+account guard/logout и email link screens. Проверки и воспроизведение —
+[KAN-214-PR5](KAN-214-PR5.md). Новые account DTO/epoch/refresh не заменяют гостевые
+owner-bound API. AUTH_ENABLED по умолчанию false; реальная SMTP-доставка/HTTPS,
+полный PR6 и review владельца остаются условиями приёмки. Проверки через
+изолированный файловый test mailer не являются production-доставкой.

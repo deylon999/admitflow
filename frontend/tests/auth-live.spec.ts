@@ -91,7 +91,7 @@ test('PostgreSQL account lifecycle, strict refresh across tabs, guest preservati
     clock(0);
 });
 
-test('PostgreSQL two account switch, unverified/wrong password denial and backend CSRF', async ({ page, context }) => {
+test('PostgreSQL account switch, other-account recovery isolation, wrong password and CSRF', async ({ page, context }) => {
     clock(0);
     const alice = 'switch-alice@example.org', bob = 'switch-bob@example.org';
     await register(page, alice); await register(page, bob);
@@ -104,6 +104,18 @@ test('PostgreSQL two account switch, unverified/wrong password denial and backen
     const csrfDenied = await context.request.post('http://127.0.0.1:5301/api/v1/auth/logout', { headers: { 'X-Requested-With': 'abiturient', Origin: 'http://127.0.0.1:5301' }, data: {} });
     expect(csrfDenied.status()).toBe(403);
     await page.reload(); await expect(page.locator('#root')).toContainText(bob);
+    // Resetting Alice must not revoke the browser's independent Bob session.
+    await page.goto('/auth/recovery');
+    await page.getByLabel('EMAIL', { exact: true }).fill(alice);
+    await page.getByRole('button', { name: 'Получить инструкцию ↗' }).click();
+    await expect(page.getByRole('status')).toContainText('Запрос принят');
+    await page.goto('/auth/reset#token=' + token(alice, 'reset'));
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(replacement);
+    await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill(replacement);
+    await page.getByRole('button', { name: 'Сохранить пароль ↗' }).click();
+    await expect(page.getByRole('status')).toContainText('Пароль изменён');
+    await expect(other.locator('#root')).toContainText(bob);
+    await page.goto('/app/profile'); await expect(page.locator('#root')).toContainText(bob);
     await page.goto('/auth/login');
     await page.getByLabel('EMAIL', { exact: true }).fill(bob);
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('incorrect long password');

@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-13",
+  "session": "S214",
+  "baseline": "3035f5e0bd2ba1cbeb3c13c1a002e136d16661d2",
+  "backend": {
+    "passed": 976,
+    "skipped": 0,
+    "warnings": 4,
+    "seconds": 306.32,
+    "postgres": "17",
+    "python": "3.14"
+  },
+  "frontend": {
+    "passed": 174,
+    "skipped": 0,
+    "nativePostgresBrowserPassed": 2,
+    "lint": "passed",
+    "typecheck": "passed",
+    "build": "passed",
+    "serverLifetimeTestsPassed": 3
+  },
+  "visual": {
+    "compared": 108,
+    "identical": 108,
+    "widths": [
+      390,
+      1440
+    ],
+    "changedTechnicalCaptures": 12,
+    "normalizedFixtureField": "coverage.generatedAt",
+    "baselineRewritten": false
+  },
+  "migrations": {
+    "head": "0012",
+    "newUpgradeOperations": 0,
+    "newMigrations": 0,
+    "cleanPostgres": "passed"
+  },
+  "etl": {
+    "passed": 55,
+    "skipped": 1,
+    "reason": "external MICCEDU dataset unavailable"
+  },
+  "repositoryTools": {
+    "total": 17,
+    "skipped": 1,
+    "reason": "local PDF dependency absent; hosted job installs it"
+  },
+  "productionEmailDeliveryVerified": false,
+  "authEnabledByDefault": false,
+  "github": "Final SHA, PR and verified hosted results are recorded in the review PR description; owner review/merge required."
+}

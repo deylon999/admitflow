@@ -287,7 +287,7 @@
 - [x] T275 KAN-214: Registration and login API
 - [x] T276 KAN-214: Refresh logout and CSRF
 - [x] T277 KAN-214: Email verification and recovery
-- [ ] T278 KAN-214: React v3 account integration
+- [ ] T278 KAN-214: React v3 account integration — **нужна проверка / завершение**
 - [ ] T279 KAN-214: Final security and acceptance
 - [x] T280 KAN-214 PR2: Merged baseline and PR2 boundaries
 - [x] T281 KAN-214 PR2: Persistent auth rate budgets
@@ -308,7 +308,7 @@
 - [x] T296 KAN-214 PR5: Shared client and account state
 - [x] T297 KAN-214 PR5: Live forms and email link routes
 - [x] T298 KAN-214 PR5: Logout guards and browser isolation
-- [ ] T299 KAN-214 PR5: Frontend regression visual and PR handoff — **в работе**
+- [ ] T299 KAN-214 PR5: Frontend regression visual and PR handoff — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

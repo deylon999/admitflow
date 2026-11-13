@@ -8560,7 +8560,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T277"
       ],
@@ -8573,7 +8573,12 @@
       "acceptance": [
         "Implement PR5 acceptance preserving API client guest epoch, 29 routes and v3 visuals"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9195,7 +9200,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T298"
       ],
@@ -9212,7 +9217,12 @@
         "Compare current v3 desktop/mobile with main; explain auth-only differences and do not rewrite baselines",
         "Publish review PR with hosted results and explicit SMTP/production/full-browser gates, no merge"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "PR5 React account integration implemented; local frontend174, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+        }
+      ],
       "blockedReason": null
     }
   ]

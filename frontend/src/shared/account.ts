@@ -8,6 +8,8 @@ let enabled = false, revision = 0;
 let restoring: Promise<void> | undefined;
 let localQueue: Promise<unknown> = Promise.resolve();
 export const accountMarker = 'admitflow-account-operation';
+let channel: BroadcastChannel | undefined;
+try { if (typeof BroadcastChannel !== 'undefined') channel = new BroadcastChannel(accountMarker); } catch { /* Storage and focus remain available. */ }
 export const getAccount = () => state;
 export const subscribeAccount = (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener); }; };
 function publish(next: AccountState) {
@@ -17,8 +19,10 @@ function publish(next: AccountState) {
 }
 function boundary() { revision++; invalidateAccount(); publish({ status: 'checking' }); }
 function marker(phase: 'begin' | 'end' | 'expired') {
-    try { localStorage.setItem(accountMarker, JSON.stringify({ id: crypto.randomUUID(), phase })); }
-    catch { /* Focus and server checks reconcile when storage is unavailable. */ }
+    const value = { id: crypto.randomUUID(), phase };
+    try { channel?.postMessage(value); } catch { /* Also delivered through storage. */ }
+    try { localStorage.setItem(accountMarker, JSON.stringify(value)); }
+    catch { /* BroadcastChannel and focus work without storage. */ }
 }
 function lost() { revision++; invalidateAccount(); publish({ status: 'anonymous' }); marker('expired'); }
 function asError(error: unknown): Error { return error instanceof Error ? error : new ApiError(0); }
@@ -97,15 +101,27 @@ async function ready() {
 }
 configureAccountPolicy({ ready, refresh: async () => { await restoreAccount(); await ready(); }, expired: lost });
 let peerDeadline: ReturnType<typeof setTimeout> | undefined;
-window.addEventListener('storage', event => {
-    if (!enabled || (event.key !== accountMarker && event.key !== null)) return;
-    let phase: unknown;
-    try { phase = JSON.parse(event.newValue ?? 'null')?.phase; } catch { /* Reconcile unknown markers too. */ }
+const seenMarkers: string[] = [];
+function receiveMarker(value: unknown) {
+    if (!enabled) return;
+    const payload = value && typeof value === 'object' ? value as Record<string, unknown> : {};
+    if (typeof payload.id === 'string' && payload.id.length <= 64) {
+        if (seenMarkers.includes(payload.id)) return;
+        seenMarkers.push(payload.id);
+        if (seenMarkers.length > 32) seenMarkers.shift();
+    }
     clearTimeout(peerDeadline);
     boundary();
-    if (phase === 'expired') publish({ status: 'anonymous' });
-    else if (phase !== 'begin') void restoreAccount();
+    if (payload.phase === 'expired') publish({ status: 'anonymous' });
+    else if (payload.phase !== 'begin') void restoreAccount();
     else peerDeadline = setTimeout(() => { if (enabled) void restoreAccount(); }, 30000);
+}
+if (channel) channel.onmessage = event => receiveMarker(event.data);
+window.addEventListener('storage', event => {
+    if (event.key !== accountMarker && event.key !== null) return;
+    let value: unknown;
+    try { value = JSON.parse(event.newValue ?? 'null'); } catch { /* Reconcile unknown markers too. */ }
+    receiveMarker(value);
 });
 const revalidate = () => {
     if (!enabled || document.visibilityState === 'hidden') return;
