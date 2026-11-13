@@ -5902,7 +5902,7 @@
 
 ### T271. KAN-214: Guest lifecycle and integration audit
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T270.
 
@@ -5921,11 +5921,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below.
 
 ### T272. KAN-214: Security architecture and API contracts
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T271.
 

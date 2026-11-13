@@ -8347,7 +8347,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T270"
       ],
@@ -8362,7 +8362,12 @@
         "Inspect backend/frontend/infrastructure files requested by KAN-214",
         "Document ownership, destructive guest reset, KAN-212 reuse and external dependencies"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-AUTH.md",
+          "note": "Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8371,7 +8376,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T271"
       ],

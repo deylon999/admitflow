@@ -1250,3 +1250,7 @@ S209/2026-11-13/T269 review: Final public401 recovery fix verified:147 local tes
 ## S210 — T270 KAN-214 (2026-11-13)
 
 Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.
+
+## S210 — T271 KAN-214 (2026-11-13)
+
+Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below.

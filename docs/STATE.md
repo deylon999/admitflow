@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T271.
-- Следующая задача: T271.
+- Текущая задача: T272.
+- Следующая задача: T272.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR1 foundation only. PR2-6 remain open. Review/merge required before con
 
 ## Последняя завершённая работа
 
-- T270: Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.
+- T271: Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below.
 
 ## Ограничения
 
