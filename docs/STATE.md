@@ -3,23 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S212.
+Дата: 2026-11-13. Последняя сессия: S213.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: не назначена.
+- Текущая задача: T291.
+- Следующая задача: T291.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR3 review for feat/kan-214-session-lifecycle. T285-T288 done; T276/T289 review. Backend refresh rotation/replay/logout/CSRF implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check. Exact final SHA/PR/verified hosted results in PR description. Owner review/merge required before T277 PR4; do not merge autonomously. Auth disabled; SMTP/verification/recovery/frontend coordination remain later PRs.
+KAN-214 PR4 SMTP/verification/recovery T290-T294 from main d63a208. Real delivery remains externally unverified; auth disabled, frontend PR5 and no autonomous merge.
 
 ## Последняя завершённая работа
 
-- T288:47 native lifecycle/security tests passed incl deterministic refresh/logout/bootstrap races, CSRF/Origin, replay/rollback, durable limits and production cookie flags.
-- T287:Server logout and revocation preserve guest history;8 native tests passed.
-- T286:Refresh rotation, deadline policy and bound CSRF restoration;39 native refresh/login/security tests passed.
-- T285:PR15 merge/main5cddc54 and lifecycle acceptance verified.
+- T290: Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.
 
 ## Ограничения
 
@@ -28,7 +25,6 @@ KAN-214 PR3 review for feat/kan-214-session-lifecycle. T285-T288 done; T276/T289
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.
-- KAN-214 PR3 owner review/merge required before PR4. Real SMTP/verification/recovery and frontend cross-tab coordination remain unimplemented; production auth stays disabled.
 
 ## Проверенное окружение
 

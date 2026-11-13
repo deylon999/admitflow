@@ -6017,7 +6017,7 @@
 
 ### T276. KAN-214: Refresh logout and CSRF
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T275.
 
@@ -6035,6 +6035,7 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — User requested PR4; GitHub confirms PR16 merged/main d63a208; hosted867/0skip and all4 jobs success.
 
 ### T277. KAN-214: Email verification and recovery
 
@@ -6321,7 +6322,7 @@
 
 ### T289. KAN-214 PR3: PR3 verification and review delivery
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T288.
 
@@ -6343,6 +6344,130 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — User requested PR4; GitHub confirms PR16 merged/main d63a208; hosted867/0skip and all4 jobs success.
+
+### T290. KAN-214 PR4: Merged baseline and email acceptance
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T276.
+
+**Результаты/файлы:** `docs/KAN-214-PR4.md`.
+
+**Шаги:**
+
+1. Verify merged PR16/current main, isolate branch, inspect existing lifecycle and SMTP configuration presence without exposing secrets.
+2. Define provider/DB failure, anti-enumeration, token and reset revocation policy before implementation.
+
+**Критерии закрытия:**
+
+- Verify merged PR16/current main, isolate branch, inspect existing lifecycle and SMTP configuration presence without exposing secrets.
+- Define provider/DB failure, anti-enumeration, token and reset revocation policy before implementation.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.
+
+### T291. KAN-214 PR4: Secure SMTP transport
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T290.
+
+**Результаты/файлы:** `docs/KAN-214-PR4.md`.
+
+**Шаги:**
+
+1. TLS-only stdlib SMTP adapter, verified certificates, environment configuration without logged credentials.
+2. Fixed-origin fragment links, bounded network/capacity/retry policy, explicit unavailable/refused/error behavior.
+3. Isolated transport tests, no production delivery claim.
+
+**Критерии закрытия:**
+
+- TLS-only stdlib SMTP adapter, verified certificates, environment configuration without logged credentials.
+- Fixed-origin fragment links, bounded network/capacity/retry policy, explicit unavailable/refused/error behavior.
+- Isolated transport tests, no production delivery claim.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T292. KAN-214 PR4: Email verification and resend
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T291.
+
+**Результаты/файлы:** `docs/KAN-214-PR4.md`.
+
+**Шаги:**
+
+1. Typed request/confirm APIs with existing CSRF/Origin, persistent peer/email/token budgets.
+2. 24h purpose-hashed token, one use under user lock, resend invalidates older actions.
+3. Generic request responses and actual mail-port invocation on eligible/ineligible addresses; test failures and races.
+
+**Критерии закрытия:**
+
+- Typed request/confirm APIs with existing CSRF/Origin, persistent peer/email/token budgets.
+- 24h purpose-hashed token, one use under user lock, resend invalidates older actions.
+- Generic request responses and actual mail-port invocation on eligible/ineligible addresses; test failures and races.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T293. KAN-214 PR4: Password recovery and revocation
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T292.
+
+**Результаты/файлы:** `docs/KAN-214-PR4.md`.
+
+**Шаги:**
+
+1. Generic request and30min purpose-hashed one-use reset, strict server password policy.
+2. Reset atomically updates hash, consumes outstanding actions and revokes all user sessions/refresh; no auto login or guest/other-account mutation.
+3. PostgreSQL reset/reset, reset/refresh and failure/expiry/replay tests.
+
+**Критерии закрытия:**
+
+- Generic request and30min purpose-hashed one-use reset, strict server password policy.
+- Reset atomically updates hash, consumes outstanding actions and revokes all user sessions/refresh; no auto login or guest/other-account mutation.
+- PostgreSQL reset/reset, reset/refresh and failure/expiry/replay tests.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T294. KAN-214 PR4: PR4 regression and review handoff
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T293.
+
+**Результаты/файлы:** `docs/KAN-214-PR4.md`.
+
+**Шаги:**
+
+1. Full native PG backend, transport/security regression, frontend and migrations, hosted checks.
+2. Document real SMTP delivery/HTTPS/egress external gate and isolated test-mail evidence.
+3. Publish reviewable PR with actual test counts and no autonomous merge.
+
+**Критерии закрытия:**
+
+- Full native PG backend, transport/security regression, frontend and migrations, hosted checks.
+- Document real SMTP delivery/HTTPS/egress external gate and isolated test-mail evidence.
+- Publish reviewable PR with actual test counts and no autonomous merge.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

@@ -1318,3 +1318,7 @@ Server logout implemented;8 native PG tests pass for revocation, exact cookie de
 ## S212 — T276/T289 PR3 review delivery (2026-11-13)
 
 Refresh rotation/strict replay, bound CSRF restoration, logout/revocation and peer/session budgets implemented. Full local native-PG867/0skip,security47,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,clean migration0012/head/schema check pass. Repository tools17 with1 local PDF-dependency skip; hosted installs it. All tests collected before full run. Exact SHA/PR/verified hosted jobs maintained in PR description. T276/T289 review, no merge; default auth disabled, real SMTP/frontend coordination remain later PRs. Owned schemas/container/anonymous volume cleaned; user DBs/volumes untouched.
+
+## S213 — T290 KAN-214 PR4 (2026-11-13)
+
+Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.

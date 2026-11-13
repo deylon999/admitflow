@@ -1,26 +1,22 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": null,
-  "nextTask": null,
+  "currentTask": "T291",
+  "nextTask": "T291",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S212",
-  "resumeAction": "KAN-214 PR3 review for feat/kan-214-session-lifecycle. T285-T288 done; T276/T289 review. Backend refresh rotation/replay/logout/CSRF implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check. Exact final SHA/PR/verified hosted results in PR description. Owner review/merge required before T277 PR4; do not merge autonomously. Auth disabled; SMTP/verification/recovery/frontend coordination remain later PRs.",
+  "lastSession": "S213",
+  "resumeAction": "KAN-214 PR4 SMTP/verification/recovery T290-T294 from main d63a208. Real delivery remains externally unverified; auth disabled, frontend PR5 and no autonomous merge.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.",
-    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.",
-    "KAN-214 PR3 owner review/merge required before PR4. Real SMTP/verification/recovery and frontend cross-tab coordination remain unimplemented; production auth stays disabled."
+    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
   ],
   "lastCompleted": [
-    "T288:47 native lifecycle/security tests passed incl deterministic refresh/logout/bootstrap races, CSRF/Origin, replay/rollback, durable limits and production cookie flags.",
-    "T287:Server logout and revocation preserve guest history;8 native tests passed.",
-    "T286:Refresh rotation, deadline policy and bound CSRF restoration;39 native refresh/login/security tests passed.",
-    "T285:PR15 merge/main5cddc54 and lifecycle acceptance verified."
+    "T290: Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation."
   ],
   "environment": [
     "S212: full local --require-postgres backend867 passed/0skip (all new cases collected before run); lifecycle security47 passed; frontend147/lint/typecheck/build; ETL55+1 explicit dataset skip; pip check clean.",
