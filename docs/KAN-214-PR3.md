@@ -52,3 +52,22 @@ CSRF/Origin, boundaries, production cookie deletion, rate limits and secret logs
 Frontend single-flight/Web Locks, request cancellation and account epoch are PR5;
 strict backend rotation is ready to support that policy but does not claim browser
 multi-tab acceptance. No frontend design, parser, CI or production networking changes.
+
+## Refresh implementation (T286)
+
+Login now persists independent domain-hashed refresh and session-bound CSRF with
+idle7d deadline. Refresh peer120/15min plus session60/15min durable HMAC budgets
+bound both distributed single-session abuse and aggregate peer load. After ID-only
+discovery, lock user/session/refresh/context in that order. Locked ORM reads use
+populate_existing so values cached before waiting cannot bypass revocation/consumption.
+CSRF bootstrap also locks and revalidates family/credentials before attaching a
+new context, preventing resurrection through a race with refresh or logout.
+Existing expired-access denial test now expects access_expired when refresh is usable;
+other terminal cases remain not_authenticated. Cookie tests assert refresh presence
+and its narrower /api/v1/auth path. No guest or applied migration changes.
+
+Native PG command: test_account_refresh.py + test_account_login.py +
+test_account_http_security.py -> **39 passed**, exit0 (22.81s after revalidation fix).
+Coverage includes actual rotation/hashed records, expiry/reload bootstrap, no guest
+creation, strict replay revocation committed before401, concurrent refresh at most
+one rotation, every terminal session/user/refresh state and absolute deadline caps.

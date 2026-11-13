@@ -45,7 +45,8 @@ def test_production_cookies_are_secure_httponly_host_only(postgres_engine):
         assert result.status_code == 200
         assert all('Secure' in c and 'HttpOnly' in c and 'SameSite=lax' in c and 'Path=/api/v1' in c and 'Domain=' not in c
                    for c in result.headers.get_list('set-cookie'))
-        assert 'admitflow_refresh' not in client.cookies
+        assert 'admitflow_refresh' in client.cookies
+        assert any('admitflow_refresh=' in c and 'Path=/api/v1/auth' in c for c in result.headers.get_list('set-cookie'))
         assert client.get('/api/v1/auth/session').status_code == 200
 
 

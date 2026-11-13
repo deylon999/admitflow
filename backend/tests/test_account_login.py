@@ -51,7 +51,7 @@ def test_login_real_credentials_new_session_cookie_and_reload(auth_client, auth_
         session = db.scalar(select(AccountSession))
         assert session.access_hash == credential_digest('access', access)
         assert session.user_id == user_id and session.access_expires_at-session.created_at == timedelta(minutes=15)
-        assert db.scalar(select(func.count()).select_from(AccountRefreshToken)) == 0
+        assert db.scalar(select(func.count()).select_from(AccountRefreshToken)) == 1
         assert db.scalar(select(func.count()).select_from(BrowserSession)) == 1
         assert len(db.scalars(select(AccountCsrfContext)).all()) == 1
 
@@ -96,7 +96,8 @@ def test_session_checks_real_server_state_every_time(auth_client, auth_app, kind
         else: forged = 'x'*43
         auth_client.cookies.set(ACCESS_COOKIE, forged)
     response = auth_client.get('/api/v1/auth/session')
-    assert response.status_code == 401 and response.json()['code'] == 'not_authenticated'
+    assert response.status_code == 401
+    assert response.json()['code'] == ('access_expired' if kind == 'access_expired' else 'not_authenticated')
 
 
 def test_password_attempts_persist_and_forwarded_addresses_do_not_bypass(auth_client, auth_app):

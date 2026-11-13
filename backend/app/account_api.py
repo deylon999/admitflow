@@ -1,28 +1,32 @@
 """Account-only API. Guest owner/session lifecycle is deliberately independent."""
 from datetime import datetime, timedelta, timezone
+import logging
 import secrets
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, Request, Response
 from fastapi.responses import JSONResponse
 from fastapi.routing import APIRoute
-from sqlalchemy import delete, select
+from sqlalchemy import select, update
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from .account_dto import AccountRead, AccountSessionRead, CsrfRead, LoginRequest, RegistrationRead, RegistrationRequest
+from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmptyAuthRequest, LoginRequest, RegistrationRead, RegistrationRequest
 from .account_limits import AuthRateExceeded, Budget, consume_budgets
 from .account_mail import UnavailableRegistrationMailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
-from .accounts import AccountActionToken, AccountCsrfContext, AccountSession, AccountUser
+from .accounts import AccountActionToken, AccountCsrfContext, AccountRefreshToken, AccountSession, AccountUser
 from .http import permitted_origin
 
 ACCESS_COOKIE = 'admitflow_access'
 CSRF_COOKIE = 'admitflow_csrf_context'
+REFRESH_COOKIE = 'admitflow_refresh'
 ACCESS_PATH = '/api/v1'
+REFRESH_PATH = '/api/v1/auth'
 ACCESS_SECONDS = 900
+IDLE_SECONDS = 7*86400
 ANONYMOUS_CSRF_SECONDS = 1800
 
 
@@ -75,37 +79,124 @@ def digest_or_none(purpose, token):
 
 def current_account(db, request, now):
     digest = digest_or_none('access', request.cookies.get(ACCESS_COOKIE))
-    if not digest:
-        raise unauthenticated()
     # Join the user for every read: disabling or password-reset revocation is immediate.
     row = db.execute(select(AccountSession, AccountUser).join(AccountUser, AccountSession.user_id == AccountUser.id)
-                     .where(AccountSession.access_hash == digest, AccountSession.revoked_at.is_(None),
-                            AccountSession.access_expires_at > now, AccountSession.expires_at > now,
-                            AccountSession.idle_expires_at > now, AccountUser.status == 'active',
-                            AccountUser.email_verified_at.is_not(None))).first()
-    if not row:
-        raise unauthenticated()
-    return row
+                     .where(AccountSession.access_hash == digest)
+                     .execution_options(populate_existing=True)).first() if digest else None
+    if row and active_family(*row, now):
+        if utc(row[0].access_expires_at) > now:
+            return row
+        token = db.scalar(select(AccountRefreshToken).where(AccountRefreshToken.session_id == row[0].id,
+                          AccountRefreshToken.consumed_at.is_(None), AccountRefreshToken.expires_at > now))
+        supplied_refresh = request.cookies.get(REFRESH_COOKIE)
+        if token and (not supplied_refresh or digest_or_none('refresh', supplied_refresh) == token.token_hash):
+            raise access_expired()
+    if not request.cookies.get(ACCESS_COOKIE) and fresh_refresh_account(db, request, now):
+        raise access_expired()
+    raise unauthenticated()
 
 
-def csrf_context(db, request, now, *, lock=False):
+def access_expired():
+    return AuthProblem(401, 'access_expired', 'Срок доступа истёк. Обновите сессию.')
+
+
+def active_family(session, user, now):
+    return (session.revoked_at is None and utc(session.expires_at) > now
+            and utc(session.idle_expires_at) > now and user.status == 'active'
+            and user.email_verified_at is not None)
+
+
+def fresh_refresh_account(db, request, now):
+    digest = digest_or_none('refresh', request.cookies.get(REFRESH_COOKIE))
+    row = db.execute(select(AccountSession, AccountUser, AccountRefreshToken)
+                     .join(AccountUser, AccountSession.user_id == AccountUser.id)
+                     .join(AccountRefreshToken, AccountRefreshToken.session_id == AccountSession.id)
+                     .where(AccountRefreshToken.token_hash == digest)
+                     .execution_options(populate_existing=True)).first() if digest else None
+    if (row and active_family(row[0], row[1], now) and row[2].consumed_at is None
+            and utc(row[2].expires_at) > now):
+        return row
+    return None
+
+
+def read_csrf_context(db, request, now, *, lock=False):
     digest = digest_or_none('csrf_context', request.cookies.get(CSRF_COOKIE))
     query = select(AccountCsrfContext).where(AccountCsrfContext.token_hash == digest,
                                             AccountCsrfContext.expires_at > now)
     if lock:
-        query = query.with_for_update()
+        query = query.with_for_update().execution_options(populate_existing=True)
     context = db.scalar(query) if digest else None
     supplied = request.headers.get('X-CSRF-Token', '')
     if not context or len(supplied) > 64 or not secrets.compare_digest(context.csrf_token.encode(), supplied.encode()):
         raise csrf_invalid()
+    return context
+
+
+def csrf_context(db, request, now, *, lock=False):
+    context = read_csrf_context(db, request, now, lock=lock)
     if context.session_id is not None:
         try:
             session, _ = current_account(db, request, now)
         except AuthProblem:
-            raise csrf_invalid() from None
+            refreshed = fresh_refresh_account(db, request, now)
+            if not refreshed:
+                raise csrf_invalid() from None
+            session = refreshed[0]
         if context.session_id != session.id:
             raise csrf_invalid()
     return context
+
+
+def discover_family(db, request, *, refresh_only=False):
+    """Discover IDs without taking locks or caching mutable ORM objects."""
+    digest = digest_or_none('refresh', request.cookies.get(REFRESH_COOKIE))
+    found = db.execute(select(AccountSession.user_id, AccountSession.id)
+                       .join(AccountRefreshToken, AccountRefreshToken.session_id == AccountSession.id)
+                       .where(AccountRefreshToken.token_hash == digest)).first() if digest else None
+    if not found and not refresh_only:
+        access = digest_or_none('access', request.cookies.get(ACCESS_COOKIE))
+        found = db.execute(select(AccountSession.user_id, AccountSession.id)
+                           .where(AccountSession.access_hash == access)).first() if access else None
+    return found
+
+
+def lock_family(db, ids):
+    # Use the same lock order for refresh, logout and future password reset.
+    user = db.scalar(select(AccountUser).where(AccountUser.id == ids[0]).with_for_update()
+                     .execution_options(populate_existing=True))
+    session = db.scalar(select(AccountSession).where(AccountSession.id == ids[1],
+                        AccountSession.user_id == ids[0]).with_for_update()
+                        .execution_options(populate_existing=True)) if user else None
+    if not session:
+        raise unauthenticated()
+    return session, user
+
+
+def reject_mixed_access(db, request, session_id):
+    digest = digest_or_none('access', request.cookies.get(ACCESS_COOKIE))
+    other = db.scalar(select(AccountSession.id).where(AccountSession.access_hash == digest)) if digest else None
+    if other is not None and other != session_id:
+        raise csrf_invalid()
+
+
+def revoke_family(db, session, now):
+    if session.revoked_at is None:
+        session.revoked_at = now
+    db.execute(update(AccountRefreshToken).where(AccountRefreshToken.session_id == session.id,
+               AccountRefreshToken.consumed_at.is_(None)).values(consumed_at=now))
+    # A short CSRF tombstone permits authenticated duplicate logout, never access.
+    deadline = now+timedelta(seconds=ANONYMOUS_CSRF_SECONDS)
+    db.execute(update(AccountCsrfContext).where(AccountCsrfContext.session_id == session.id,
+               AccountCsrfContext.expires_at > deadline).values(expires_at=deadline))
+
+
+def set_credentials(response, access, refresh, session, config, now):
+    for name, value, path, deadline in (
+        (ACCESS_COOKIE, access, ACCESS_PATH, session.access_expires_at),
+        (REFRESH_COOKIE, refresh, REFRESH_PATH, session.idle_expires_at),
+    ):
+        response.set_cookie(name, value, path=path, max_age=max(1, int((utc(deadline)-now).total_seconds())),
+                            httponly=True, secure=config.secure_cookie, samesite='lax')
 
 
 def set_context_cookie(response, token, config, seconds):
@@ -155,19 +246,29 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
         if request.headers.get('X-Requested-With') != 'abiturient' or not permitted_origin(request, config):
             raise csrf_invalid()
         now = clock()
-        # Bootstrap never trusts a guest credential. An expired access can obtain a
-        # fresh anonymous context to log in again; it cannot become authenticated.
+        # A current refresh can restore bound CSRF after the browser drops access.
+        # A spent refresh cannot bootstrap a bound context; GET never rotates it.
         try:
             session, _ = current_account(db, request, now)
             session_id = session.id
         except AuthProblem:
-            session_id = None
+            refreshed = fresh_refresh_account(db, request, now)
+            session = refreshed[0] if refreshed else None
+            session_id = session.id if session else None
+        if session_id:
+            session, user = lock_family(db, (session.user_id, session_id))
+            now = clock()
+            access_valid = (session.access_hash == digest_or_none('access', request.cookies.get(ACCESS_COOKIE))
+                            and utc(session.access_expires_at) > now)
+            refreshed = fresh_refresh_account(db, request, now)
+            if not active_family(session, user, now) or not (access_valid or (refreshed and refreshed[0].id == session_id)):
+                session_id = None
         digest = digest_or_none('csrf_context', request.cookies.get(CSRF_COOKIE))
         context = db.scalar(select(AccountCsrfContext).where(AccountCsrfContext.token_hash == digest,
                             AccountCsrfContext.expires_at > now)) if digest else None
         if context and context.session_id == session_id:
             return CsrfRead(csrf_token=context.csrf_token)
-        seconds = min(ANONYMOUS_CSRF_SECONDS, max(1, int((utc(session.access_expires_at)-now).total_seconds()))) if session_id else ANONYMOUS_CSRF_SECONDS
+        seconds = max(1, int((utc(session.idle_expires_at)-now).total_seconds())) if session_id else ANONYMOUS_CSRF_SECONDS
         token, context = make_context(db, now, session_id=session_id, seconds=seconds)
         db.commit()
         set_context_cookie(response, token, config, seconds)
@@ -233,12 +334,56 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
                                  idle_expires_at=now+timedelta(days=7), expires_at=now+timedelta(days=30))
         db.add(session); db.flush()
         db.delete(context)
-        context_token, _ = make_context(db, now, session_id=session.id, seconds=ACCESS_SECONDS)
+        refresh = new_token()
+        db.add(AccountRefreshToken(token_hash=credential_digest('refresh', refresh), session_id=session.id,
+                                  created_at=now, expires_at=session.idle_expires_at))
+        context_token, _ = make_context(db, now, session_id=session.id, seconds=IDLE_SECONDS)
         result = session_read(session, user)
         db.commit()  # Credentials are never emitted before successful persistence.
-        response.set_cookie(ACCESS_COOKIE, access, path=ACCESS_PATH, max_age=ACCESS_SECONDS,
-                            httponly=True, secure=config.secure_cookie, samesite='lax')
-        set_context_cookie(response, context_token, config, ACCESS_SECONDS)
+        set_credentials(response, access, refresh, session, config, now)
+        set_context_cookie(response, context_token, config, IDLE_SECONDS)
+        return result
+
+    @router.post('/refresh', response_model=AccountSessionRead,
+                 dependencies=[Depends(guard('refresh', 120, 900))])
+    def refresh(body: EmptyAuthRequest, request: Request, response: Response, db: Session = Depends(database)):
+        read_csrf_context(db, request, clock())
+        ids = discover_family(db, request, refresh_only=True)
+        if not ids:
+            raise unauthenticated()
+        consume_budgets(engine, config.auth_rate_key,
+                        [Budget('refresh-session', ('session', ids[1]), 60, 900)], now=clock())
+        session, user = lock_family(db, ids)
+        digest = digest_or_none('refresh', request.cookies.get(REFRESH_COOKIE))
+        token = db.scalar(select(AccountRefreshToken).where(AccountRefreshToken.token_hash == digest,
+                          AccountRefreshToken.session_id == session.id).with_for_update())
+        now = clock()
+        context = read_csrf_context(db, request, now, lock=True)
+        if context.session_id != session.id:
+            raise csrf_invalid()
+        reject_mixed_access(db, request, session.id)
+        if not token or not active_family(session, user, now):
+            raise unauthenticated()
+        if token.consumed_at is not None:
+            revoke_family(db, session, now)
+            db.commit()  # Raising first would roll back the security response.
+            logging.getLogger('admitflow.auth').warning('Refresh credential reuse revoked an account session.')
+            raise unauthenticated()
+        if utc(token.expires_at) <= now:
+            raise unauthenticated()
+        access, refreshed = new_token(), new_token()
+        token.consumed_at = now
+        session.idle_expires_at = min(now+timedelta(seconds=IDLE_SECONDS), utc(session.expires_at))
+        session.access_expires_at = min(now+timedelta(seconds=ACCESS_SECONDS), utc(session.expires_at))
+        session.access_hash = credential_digest('access', access)
+        db.add(AccountRefreshToken(token_hash=credential_digest('refresh', refreshed), session_id=session.id,
+                                  created_at=now, expires_at=session.idle_expires_at))
+        context.expires_at = session.idle_expires_at
+        result = session_read(session, user)
+        db.commit()
+        set_credentials(response, access, refreshed, session, config, now)
+        set_context_cookie(response, request.cookies[CSRF_COOKIE], config,
+                           max(1, int((utc(session.idle_expires_at)-now).total_seconds())))
         return result
 
     @router.get('/session', response_model=AccountSessionRead,
