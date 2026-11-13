@@ -71,3 +71,24 @@ test_account_http_security.py -> **39 passed**, exit0 (22.81s after revalidation
 Coverage includes actual rotation/hashed records, expiry/reload bootstrap, no guest
 creation, strict replay revocation committed before401, concurrent refresh at most
 one rotation, every terminal session/user/refresh state and absolute deadline caps.
+
+## Server logout implementation (T287)
+
+Logout resolves current family by refresh (including spent/expired records) or
+access fallback, takes the same user/session/credential/context locks and requires
+matching bound CSRF for an active family. Unknown or already inactive credentials
+may be cleared using fresh anonymous CSRF. All refresh records become unusable by
+family revocation, and unspent records are marked consumed. Existing bound CSRF
+contexts are capped to30min tombstones for idempotent replay of the original logout
+proof; they never authorize access/refresh. Logout does not extend tombstones.
+Revocation commits before exact-path Secure/HttpOnly/Lax cookie deletion. No guest
+DELETE/session creation, no reassignment of owner_hash and no other family revoked.
+
+Native test_account_logout.py: **8 passed**, exit0 after final bulk-update handling.
+Covers current/expired-access/access-only logout, repeated original proof, fresh
+anonymous repeat, unknown/expired credentials, other account/family isolation,
+refresh/logout serialization, guest history and DB failure without cookie deletion.
+A first test fixture used global unscoped httpx cookies; corrected to actual server
+host/path scopes before validating browser deletion. Race snapshots preserve cookie
+scopes so either legal ordering (refresh200 then logout, or logout then refresh401)
+is reproducible without a test-only CookieConflict.

@@ -1306,3 +1306,7 @@ Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/l
 ## S212 — T286 KAN-214 PR3 (2026-11-13)
 
 Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout.
+
+## S212 — T287 KAN-214 PR3 (2026-11-13)
+
+Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion.

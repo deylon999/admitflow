@@ -6273,7 +6273,7 @@
 
 ### T287. KAN-214 PR3: Server logout and revocation
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T286.
 
@@ -6294,11 +6294,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion.
 
 ### T288. KAN-214 PR3: Concurrency and security regression
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T287.
 

@@ -183,11 +183,13 @@ def revoke_family(db, session, now):
     if session.revoked_at is None:
         session.revoked_at = now
     db.execute(update(AccountRefreshToken).where(AccountRefreshToken.session_id == session.id,
-               AccountRefreshToken.consumed_at.is_(None)).values(consumed_at=now))
+               AccountRefreshToken.consumed_at.is_(None)).values(consumed_at=now)
+               .execution_options(synchronize_session=False))
     # A short CSRF tombstone permits authenticated duplicate logout, never access.
     deadline = now+timedelta(seconds=ANONYMOUS_CSRF_SECONDS)
     db.execute(update(AccountCsrfContext).where(AccountCsrfContext.session_id == session.id,
-               AccountCsrfContext.expires_at > deadline).values(expires_at=deadline))
+               AccountCsrfContext.expires_at > deadline).values(expires_at=deadline)
+               .execution_options(synchronize_session=False))
 
 
 def set_credentials(response, access, refresh, session, config, now):
@@ -391,5 +393,37 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
     def session(request: Request, db: Session = Depends(database)):
         account_session, user = current_account(db, request, clock())
         return session_read(account_session, user)
+
+    @router.post('/logout', status_code=204, response_class=Response,
+                 dependencies=[Depends(guard('logout', 60, 900))])
+    def logout(body: EmptyAuthRequest, request: Request, response: Response, db: Session = Depends(database)):
+        read_csrf_context(db, request, clock())
+        ids = discover_family(db, request)
+        if ids:
+            consume_budgets(engine, config.auth_rate_key,
+                            [Budget('logout-session', ('session', ids[1]), 60, 900)], now=clock())
+            session, user = lock_family(db, ids)
+            digest = digest_or_none('refresh', request.cookies.get(REFRESH_COOKIE))
+            if digest:
+                db.scalar(select(AccountRefreshToken).where(AccountRefreshToken.token_hash == digest,
+                          AccountRefreshToken.session_id == session.id).with_for_update())
+            now = clock()
+            context = read_csrf_context(db, request, now, lock=True)
+            if context.session_id != session.id:
+                if context.session_id is not None or active_family(session, user, now):
+                    raise csrf_invalid()
+            reject_mixed_access(db, request, session.id)
+            revoke_family(db, session, now)
+            db.commit()
+        else:
+            context = read_csrf_context(db, request, clock(), lock=True)
+            if context.session_id is not None:
+                raise csrf_invalid()
+            db.rollback()  # Anonymous logout has no account/guest data to mutate.
+        # Do not emit deletion cookies until server revocation has committed.
+        for name, path in ((ACCESS_COOKIE, ACCESS_PATH), (REFRESH_COOKIE, REFRESH_PATH), (CSRF_COOKIE, ACCESS_PATH)):
+            response.delete_cookie(name, path=path, httponly=True, secure=config.secure_cookie, samesite='lax')
+        response.status_code = 204
+        return response
 
     app.include_router(router)

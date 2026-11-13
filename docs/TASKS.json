@@ -8803,7 +8803,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T286"
       ],
@@ -8820,7 +8820,12 @@
         "Expired access logout, safe repeat with CSRF, other-session/account isolation",
         "No cookie deletion or false success on DB failure"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8829,7 +8834,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T287"
       ],
