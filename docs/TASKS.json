@@ -8467,7 +8467,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T274"
       ],
@@ -8484,6 +8484,10 @@
         {
           "path": "docs/KAN-214-PR2.md",
           "note": "PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs."
+        },
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "User requested PR3; GitHub confirms PR15 merged into main5cddc54 with all4 hosted jobs green."
         }
       ],
       "blockedReason": null
@@ -8494,7 +8498,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T275"
       ],
@@ -8507,7 +8511,12 @@
       "acceptance": [
         "Implement PR3 acceptance from KAN-214 specification with concurrency/security tests and review"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8704,7 +8713,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T283"
       ],
@@ -8725,6 +8734,161 @@
         {
           "path": "docs/KAN-214-PR2.md",
           "note": "PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs."
+        },
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "User requested PR3; GitHub confirms PR15 merged into main5cddc54 with all4 hosted jobs green."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T285",
+      "title": "KAN-214 PR3: Merged baseline and lifecycle acceptance",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T275"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR3.md"
+      ],
+      "steps": [
+        "Confirm merged PR15/current main, isolated branch and PR2 acceptance",
+        "Specify refresh/logout/CSRF/replay and native PG checks before implementation"
+      ],
+      "acceptance": [
+        "Confirm merged PR15/current main, isolated branch and PR2 acceptance",
+        "Specify refresh/logout/CSRF/replay and native PG checks before implementation"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T286",
+      "title": "KAN-214 PR3: Refresh rotation and expiry",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T285"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR3.md"
+      ],
+      "steps": [
+        "Mint independent refresh at login; server checks user/session/credential deadlines",
+        "Atomic user/session/refresh/context locking, one rotation, durable family revocation on replay",
+        "Access-expired classification and session-bound CSRF restoration without creating guests"
+      ],
+      "acceptance": [
+        "Mint independent refresh at login; server checks user/session/credential deadlines",
+        "Atomic user/session/refresh/context locking, one rotation, durable family revocation on replay",
+        "Access-expired classification and session-bound CSRF restoration without creating guests"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T287",
+      "title": "KAN-214 PR3: Server logout and revocation",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T286"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR3.md"
+      ],
+      "steps": [
+        "Revoke family server-side before deleting account cookies; preserve guest history",
+        "Expired access logout, safe repeat with CSRF, other-session/account isolation",
+        "No cookie deletion or false success on DB failure"
+      ],
+      "acceptance": [
+        "Revoke family server-side before deleting account cookies; preserve guest history",
+        "Expired access logout, safe repeat with CSRF, other-session/account isolation",
+        "No cookie deletion or false success on DB failure"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T288",
+      "title": "KAN-214 PR3: Concurrency and security regression",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T287"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR3.md"
+      ],
+      "steps": [
+        "Native PG simultaneous refresh/replay/logout races and rollback behavior",
+        "CSRF/Origin/cookie tampering, expired/revoked credentials, trusted-peer budgets and secret redaction"
+      ],
+      "acceptance": [
+        "Native PG simultaneous refresh/replay/logout races and rollback behavior",
+        "CSRF/Origin/cookie tampering, expired/revoked credentials, trusted-peer budgets and secret redaction"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T289",
+      "title": "KAN-214 PR3: PR3 verification and review delivery",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T288"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR3.md"
+      ],
+      "steps": [
+        "Full native backend, frontend regression, migrations and hosted checks",
+        "Document browser coordination reserved for PR5, external SMTP/HTTPS gates and no production readiness claim",
+        "Publish small reviewable PR, update STATE/TASKS/LOG, no autonomous merge"
+      ],
+      "acceptance": [
+        "Full native backend, frontend regression, migrations and hosted checks",
+        "Document browser coordination reserved for PR5, external SMTP/HTTPS gates and no production readiness claim",
+        "Publish small reviewable PR, update STATE/TASKS/LOG, no autonomous merge"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR3.md",
+          "note": "PR3 backend refresh/logout/CSRF lifecycle implemented; local native-PG867/0skip,security47,frontend147,migrations0012 check pass. Final SHA/hosted run/results recorded in review PR for feat/kan-214-session-lifecycle. Owner acceptance required; no SMTP/frontend/full KAN-214 claim."
         }
       ],
       "blockedReason": null

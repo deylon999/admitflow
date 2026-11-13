@@ -83,3 +83,15 @@ DTOs, statuses, rate policy, CSRF and safe rollout: [KAN-214-PR2.md](KAN-214-PR2
 No refresh/logout/confirmation/recovery endpoint yet. Without a registration mail
 transport, register returns503 globally rather than claiming email delivery.
 Do not enable the incomplete lifecycle for production users before PR3-6 acceptance.
+
+## KAN-214 PR3 account lifecycle
+
+POST `/api/v1/auth/refresh` with body{} rotates access/refresh under server locks.
+POST `/api/v1/auth/logout` with body{} revokes the current family and deletes only
+account cookies after commit. Both require bound CSRF, Origin/custom header and
+persistent budgets. GET auth/session classifies recoverable401 as access_expired;
+GET auth/csrf can re-bootstrap bound CSRF with a current refresh after access expiry.
+Exact DTO/cookie/deadline/replay/idempotency/error policy and tested boundaries:
+[KAN-214-PR3.md](KAN-214-PR3.md). This supersedes PR2's temporary no-refresh/logout
+boundary; SMTP/confirmation/recovery and frontend integration remain unavailable.
+AUTH_ENABLED remainsfalse by default; full production acceptance is not claimed.

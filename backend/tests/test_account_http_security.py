@@ -19,9 +19,9 @@ def test_disabled_default_is_explicit_without_mutating_guest_or_accounts(postgre
     app = create_app(Settings(database_url=postgres_engine.url.render_as_string(hide_password=False), auto_create_schema=False))
     with TestClient(app) as client:
         assert client.post('/api/v1/session', headers=HEADERS).status_code == 204
-        for path, method in [('csrf', 'GET'), ('register', 'POST'), ('login', 'POST'), ('session', 'GET')]:
+        for path, method in [('csrf', 'GET'), ('register', 'POST'), ('login', 'POST'), ('session', 'GET'), ('refresh', 'POST'), ('logout', 'POST')]:
             response = client.request(method, '/api/v1/auth/'+path, headers=HEADERS,
-                                      json={'email':'private@example.org','password':PASSWORD} if method=='POST' else None)
+                                      json=({'email':'private@example.org','password':PASSWORD} if path in ('register', 'login') else {}) if method=='POST' else None)
             assert response.status_code == 503 and response.json()['code'] == 'auth_unavailable'
         assert client.get('/api/v1/session').status_code == 200
     with Session(postgres_engine) as db:
@@ -45,7 +45,8 @@ def test_production_cookies_are_secure_httponly_host_only(postgres_engine):
         assert result.status_code == 200
         assert all('Secure' in c and 'HttpOnly' in c and 'SameSite=lax' in c and 'Path=/api/v1' in c and 'Domain=' not in c
                    for c in result.headers.get_list('set-cookie'))
-        assert 'admitflow_refresh' not in client.cookies
+        assert 'admitflow_refresh' in client.cookies
+        assert any('admitflow_refresh=' in c and 'Path=/api/v1/auth' in c for c in result.headers.get_list('set-cookie'))
         assert client.get('/api/v1/auth/session').status_code == 200
 
 

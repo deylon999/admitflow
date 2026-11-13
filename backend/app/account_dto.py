@@ -42,5 +42,9 @@ class CsrfRead(CamelModel):
     csrf_token: str
 
 
+class EmptyAuthRequest(CamelModel):
+    pass
+
+
 class RegistrationRead(CamelModel):
     message: str = 'Запрос принят. Если регистрация доступна, проверьте почту.'

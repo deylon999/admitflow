@@ -301,3 +301,12 @@ PR2 implementation and current endpoint/CSRF/disabled-rollout details are in
 [KAN-214-PR2.md](KAN-214-PR2.md). Earlier “no endpoints” statements describe PR1's
 historical state. PR2 issues access only, never refresh until PR3; it brings forward
 synchronizer CSRF for safe login/registration. Actual mail unavailable until PR4.
+
+## S212 lifecycle continuation after owner merged PR15
+
+PR3 implementation, cookie/replay/logout contracts and evidence:
+[KAN-214-PR3.md](KAN-214-PR3.md). Refresh now minted at login and rotated under
+server locks; logout revokes the family before exact-path cookie deletion. A short
+CSRF tombstone replaces immediate context deletion solely for idempotent logout;
+revoked families cannot authorize account data or refresh. Browser coordination and
+real SMTP/verification/recovery remain subsequent PRs; default auth stays disabled.

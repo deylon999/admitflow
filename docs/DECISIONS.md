@@ -228,3 +228,13 @@ unavailable globally503; invoke delivery on accepted duplicate addresses too wit
 a safe existing-account notice, preventing provider-error account enumeration.
 No new duplicate verification token/password mutation. Real SMTP/confirmation
 remains PR4; port tests never claim production delivery. Details: KAN-214-PR2.md.
+
+2026-11-13 S212 KAN-214 PR3 after merged PR15/main5cddc54: strict opaque refresh
+rotation with user->session->credential->context row locks; replay commits durable
+family revocation before401. Access15min, idle7d renewed within fixed absolute30d.
+Stable bound CSRF renewed with refresh; bootstrap locks/re-reads family to avoid a
+logout resurrection race. Logout preserves guest data and keeps <=30min CSRF
+non-auth tombstone for duplicate valid proof, replacing PR1's immediate context
+removal assumption. Failed commit never deletes cookies. Peer+session PostgreSQL
+budgets remain HMAC-keyed; no forwarded-header trust. Browser single-flight/epoch
+work remains PR5, real email PR4; default auth disabled. Evidence KAN-214-PR3.md.

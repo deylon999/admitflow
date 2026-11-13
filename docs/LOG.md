@@ -1298,3 +1298,23 @@ T280-T283 done; registration/login/current account/CSRF and durable HMAC budgets
 ## S211 — T275/T284 hosted confirmation (2026-11-13)
 
 PR15 source7a90d60/run43413656989 all4 jobs success. Backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check,repository tools17/0skip. PR ready for owner review, no merge. Update factual STATE/evidence; final documentation SHA/checks maintained in PR15 description.
+
+## S212 — T285 KAN-214 PR3 (2026-11-13)
+
+Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation.
+
+## S212 — T286 KAN-214 PR3 (2026-11-13)
+
+Refresh source51975ee verified:39 native PG refresh/login/security tests pass. Rotation, bound CSRF restoration, strict replay family revocation, locks and deadlines implemented. Temporary helper was recreated after session interruption; registry updated to completed refresh and current logout.
+
+## S212 — T287 KAN-214 PR3 (2026-11-13)
+
+Server logout implemented;8 native PG tests pass for revocation, exact cookie deletion, safe repeat/expired access, other-family isolation, preserved guest history, refresh/logout race and failed commit without deletion.
+
+## S212 — T288 KAN-214 PR3 (2026-11-13)
+
+47 native PostgreSQL refresh/logout/security tests passed, including CSRF/Origin, mixed credentials, deterministic bootstrap/logout and refresh races, rollback, fresh-engine revocation, durable budgets, production cookies and absolute/idle policy.
+
+## S212 — T276/T289 PR3 review delivery (2026-11-13)
+
+Refresh rotation/strict replay, bound CSRF restoration, logout/revocation and peer/session budgets implemented. Full local native-PG867/0skip,security47,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,clean migration0012/head/schema check pass. Repository tools17 with1 local PDF-dependency skip; hosted installs it. All tests collected before full run. Exact SHA/PR/verified hosted jobs maintained in PR description. T276/T289 review, no merge; default auth disabled, real SMTP/frontend coordination remain later PRs. Owned schemas/container/anonymous volume cleaned; user DBs/volumes untouched.
