@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T303.
-- Следующая задача: T303.
+- Текущая задача: T304.
+- Следующая задача: T304.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR6 final acceptance from owner-merged main12c78e4. Five tasks T300-T304
 
 ## Последняя завершённая работа
 
-- T302: Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19.
+- T303: Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes.
 
 ## Ограничения
 

@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 277 из 300 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 278 из 300 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -312,8 +312,8 @@
 - [x] T300 KAN-214 PR6: Merged baseline and acceptance audit
 - [x] T301 KAN-214 PR6: Security regression and evidence
 - [x] T302 KAN-214 PR6: Native PostgreSQL cross-browser acceptance
-- [ ] T303 KAN-214 PR6: Migration visual and full regression — **в работе**
-- [ ] T304 KAN-214 PR6: Final report and review handoff
+- [x] T303 KAN-214 PR6: Migration visual and full regression
+- [ ] T304 KAN-214 PR6: Final report and review handoff — **в работе**
 
 ## Резерв и выпуск
 

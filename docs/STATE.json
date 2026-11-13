@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T303",
-  "nextTask": "T303",
+  "currentTask": "T304",
+  "nextTask": "T304",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -16,7 +16,7 @@
     "KAN-214 real SMTP/provider inbox delivery and production HTTPS/proxy/egress gate remain unaccepted after code-only PR4 merge. Backend auth defaults disabled; frontend must show actual503 without fake success."
   ],
   "lastCompleted": [
-    "T302: Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19."
+    "T303: Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes."
   ],
   "environment": [
     "S214: frontend175 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).",

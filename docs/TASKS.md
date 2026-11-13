@@ -6667,7 +6667,7 @@
 
 ### T303. KAN-214 PR6: Migration visual and full regression
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T302.
 
@@ -6686,11 +6686,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes.
 
 ### T304. KAN-214 PR6: Final report and review handoff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T303.
 

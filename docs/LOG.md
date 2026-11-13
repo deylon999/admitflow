@@ -1372,3 +1372,5 @@ S215 T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest life
 S215 T301: Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.
 
 S215 T302: Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19.
+
+S215 T303: Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes.
