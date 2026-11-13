@@ -1338,3 +1338,27 @@ Recovery/reset implemented;18 native recovery and83 combined action/security tes
 ## S213 — T277/T294 PR4 review handoff (2026-11-13)
 
 TLS SMTP/verification/resend/recovery implemented. Full current local backend976/0skip mandatory native PG; action/security83,mail/config35,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,fresh migration0012/head/check. Repository tools17 with1 local missing-PDF skip; hosted installs it. Final SHA/PR/verified hosted checks in PR description. T277/T294 review; no merge. SMTP parameters absent, no real inbox delivery verified or external recipient contacted. RELEASE_GATES records explicit unaccepted delivery condition; full KAN-214 cannot be accepted from mock delivery. Owned PG schemas/container/anonymous volume cleaned; user DB/volumes untouched.
+
+## S214 — T295 KAN-214 PR5 (2026-11-13)
+
+Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation.
+
+## S214 — T296 KAN-214 PR5 (2026-11-13)
+
+Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.
+
+## S214 — T297 KAN-214 PR5 (2026-11-13)
+
+Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed.
+
+## S214 — T298 KAN-214 PR5 (2026-11-13)
+
+Minimal account guard/logout and cross-tab isolation verified; default172 tests, transport35, native PostgreSQL browser2 and backend976/0skip passed. Test mailbox/clock are private filesystem-only; real SMTP delivery remains unaccepted.
+
+## S214 — T299 KAN-214 PR5 review handoff (2026-11-13)
+
+React integration complete in five implementation steps. Local174 frontend tests,2 native-PG browser scenarios,976 backend/0skip,3 server lifecycle tests, clean migration0012 and108/108 exact retained visual comparisons. Evidence docs/KAN-214-PR5.md and docs/evidence/kan-214-pr5.json. No CSS/product-backend/CI/Compose/dependency/migration changes; guest ownership retained. T278/T299 review pending owner; final SHA/PR/hosted results recorded in PR description. Real SMTP/HTTPS/PR6 gates unaccepted; auth defaults disabled. Owned test PG container stopped, test volume preserved; disposable schemas and private mailbox/preview processes cleaned. No autonomous merge.
+
+S214 PR5 mobile follow-up: wrap long account email in the new account summary;175 frontend tests passed (22.6s), lint/typecheck clean. No CSS files or retained visual routes changed. Final hosted verification remains in PR18 description; review/production gates unchanged.
+
+S214 PR5 URL boundary follow-up: canonicalize a trailing slash consistently with App before capturing/erasing email fragments. Existing browser case extended;175 tests passed (22.5s), lint/typecheck clean. Review/gates unchanged; final PR description records the updated head and hosted run.

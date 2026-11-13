@@ -9,7 +9,7 @@ export function navigate(to: string): void {
     window.history.pushState({}, '', target.pathname + target.search + target.hash);
     window.dispatchEvent(new PopStateEvent('popstate'));
   }
-  if (target.hash) {
+  if (target.hash && !['/auth/verify', '/auth/reset'].includes(target.pathname)) {
     window.requestAnimationFrame(() => document.getElementById(target.hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   } else window.scrollTo({ top: 0, behavior: 'instant' });
 }

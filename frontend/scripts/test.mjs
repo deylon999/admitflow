@@ -1,13 +1,17 @@
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdtempSync, rmSync } from 'node:fs';
 import { createServer } from 'node:net';
 import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { build, preview } from 'vite';
 import { stopChild } from './stop-child.mjs';
 
 // Own server lifetimes directly. Playwright's Windows webServer teardown can
 // hang when WMI/taskkill are unavailable in managed environments.
 const visual = process.argv.includes('--visual');
+const auth = process.env.AUTH_BROWSER_E2E === '1';
+if (auth && (!process.env.TEST_DATABASE_URL || process.env.QA_API_TARGET || visual)) throw Error('Auth E2E requires its own disposable PostgreSQL runtime.');
+const authDirectory = auth ? mkdtempSync(resolve(tmpdir(), 'admitflow-auth-')) : undefined;
 // Opt-in integration against the existing local PostgreSQL stack. The default
 // ephemeral browser-contract runtime remains unchanged for regular CI.
 const existingApi = process.env.QA_API_TARGET;
@@ -34,8 +38,8 @@ try {
   const typecheck = spawnSync(process.execPath, ['node_modules/typescript/bin/tsc', '-b'], { stdio: 'inherit' });
   if (typecheck.status !== 0) throw Error('TypeScript failed before browser tests.');
   await build({ configFile: false });
-  if (!existingApi) api = spawn(python, ['tests/catalog_runtime.py'], {
-      cwd: backend, env: { ...process.env, CATALOG_CONTROL_STDIN: '1' }, stdio: ['pipe', 'inherit', 'inherit'],
+  if (!existingApi) api = spawn(python, [auth ? 'tests/auth_runtime.py' : 'tests/catalog_runtime.py'], {
+      cwd: backend, env: { ...process.env, CATALOG_CONTROL_STDIN: '1', ...(authDirectory ? { AUTH_TEST_DIRECTORY: authDirectory } : {}) }, stdio: ['pipe', 'inherit', 'inherit'],
     });
   let startupError;
   api?.on('error', error => { startupError = error; });
@@ -59,7 +63,7 @@ try {
     previews.push(await preview({ ...reference, configFile: false }));
   }
   const test = spawn(process.execPath, ['node_modules/@playwright/test/cli.js', 'test'], {
-    stdio: 'inherit', env: { ...process.env, QA_EXTERNAL_SERVERS: '1', COMPARE_REFERENCE: visual ? '1' : '0' },
+    stdio: 'inherit', env: { ...process.env, QA_EXTERNAL_SERVERS: '1', ...(authDirectory ? { AUTH_TEST_DIRECTORY: authDirectory } : {}), COMPARE_REFERENCE: visual ? '1' : '0' },
   });
   process.exitCode = await new Promise((done, reject) => {
     test.once('error', reject);
@@ -74,4 +78,5 @@ try {
     await new Promise(done => server.httpServer.close(done));
   }
   await stopChild(api);
+  if (authDirectory) rmSync(authDirectory, { recursive: true, force: true });
 }
