@@ -1266,3 +1266,7 @@ Six independent account tables and additive0012 implemented.39 tests pass incl n
 ## S210 — T274 KAN-214 (2026-11-13)
 
 Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+
+## S210 — T270-T274 regression and PR14 handoff (2026-11-13)
+
+Final local backend763 passed/0skip with required native PostgreSQL; focused48; frontend147 plus ci/lint/typecheck/build; ETL55+1 explicit dataset skip; clean PostgreSQL migration0012/head/check. Initial full run760+2 historical head failures fixed and full rerun green. PR14 foundation only awaiting owner review; no merge or PR2 started. Owned test schemas/container/anonymous volume cleaned, user DB/volumes untouched. Latest source SHA/hosted checks in PR14 description. SMTP/HTTPS/proxy/egress remain external acceptance requirements.

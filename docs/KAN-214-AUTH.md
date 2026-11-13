@@ -263,3 +263,34 @@ Regression adjustment: historical catalog migration test correctly exercises
 0010/0011; its final schema check now upgrades to head first, so it can still compare
 current metadata after0012. No catalog/source logic or applied revision changed.
 Frontend source, CSS, dependencies, routes and visual baselines unchanged.
+
+## Regression and handoff
+
+- npm ci/lint/typecheck/build: exit0; existing npm test **147 passed** (all29
+  route/history checks and browser/API/DTO scenarios). Browser runtime uses isolated
+  SQLite fixtures; this is not substituted for native PG proof above.
+- Frontend/CSS/baselines/workflows/compose diff against main: zero files changed.
+  No new pixel-comparator run claimed; auth-form visual comparison remains PR5/6.
+- ETL: **55 passed, 1 explicit missing-dataset skip**, exit0. No ETL source changed.
+- Repository tools: 17 tests, 1 local missing-PDF-dependency skip; hosted CI installs
+  its required reporting dependencies. roadmap render/check and git diff --check pass.
+- Initial full native-guard run: 760 passed, two historical catalog head-check
+  failures. Both corrected without removing assertions; focused current rerun
+  foundation/password/catalog: **48 passed** incl absolute-expiry credential purge
+  preserving the account, cascade cleanup and idempotence. Final full native-guard run: **763 passed, zero skipped**, exit0 (194.75s).
+- Clean migration verifier requires its own fresh `admitflow_test*_migrations` DB;
+  ran successfully against isolated `admitflow_test_kan214_migrations`, head0012,
+  no schema drift. An initial invocation with the non-migrations test DB name was
+  correctly rejected by its guard before migration; it did not modify that DB.
+
+PR: https://github.com/deylon999/admitflow/pull/14 (PR1/6 only).
+Initial source701e5ce workflow: https://github.com/deylon999/admitflow/actions/runs/43409888388.
+Latest source SHA and hosted results are maintained in the PR description to avoid
+an evidence-only commit invalidating its own final SHA. Owner review not received;
+agent never merges. No registration/login/refresh/logout/email/recovery endpoint
+exists yet, and no account auth acceptance or production delivery is claimed.
+Next work after review/merge: T275 / PR2, register/login and persistent rate budgets
+using the target contracts above. T276-279 remain open; no next-stage implementation
+started before review. No production secrets, user DB, volumes or deployed stack changed.
+
+Final local command: `TEST_DATABASE_URL=<isolated PG> backend/.venv/bin/python -m pytest -q --require-postgres --ignore=backend/tests/test_admission_history.py --ignore=backend/tests/test_accreditation_registry.py --ignore=backend/tests/test_exam_requirements.py backend/tests`. ETL runs separately above, as in CI. Final local PostgreSQL schemas cleaned; owned test container and its anonymous volume removed. User volumes untouched.

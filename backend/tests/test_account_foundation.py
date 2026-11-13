@@ -103,3 +103,19 @@ def test_additive_migration_preserves_all_guest_tables(postgres_engine):
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.downgrade(cfg, '0011'); command.upgrade(cfg, 'head'); command.check(cfg)
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
+
+
+def test_absolute_expiry_purges_session_credentials_without_deleting_user(postgres_engine):
+    with Session(postgres_engine) as db:
+        u = user(); db.add(u); db.flush(); s = session(u.id); db.add(s); db.flush()
+        db.add(AccountRefreshToken(token_hash='b'*64, session_id=s.id, created_at=NOW,
+                                   expires_at=NOW+timedelta(days=7)))
+        db.add(AccountCsrfContext(token_hash='c'*64, csrf_token='synthetic-csrf', session_id=s.id,
+                                  created_at=NOW, expires_at=s.expires_at)); db.commit()
+    counts = cleanup_expired_accounts(postgres_engine, now=NOW+timedelta(days=30))
+    assert counts['account_sessions'] == 1
+    with Session(postgres_engine) as db:
+        assert len(db.scalars(select(AccountUser)).all()) == 1
+        assert db.scalars(select(AccountRefreshToken)).all() == []
+        assert db.scalars(select(AccountCsrfContext)).all() == []
+    assert not any(cleanup_expired_accounts(postgres_engine, now=NOW+timedelta(days=30)).values())

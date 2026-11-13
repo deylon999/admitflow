@@ -5991,6 +5991,7 @@
 **Доказательства:**
 
 - [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+- [docs/evidence/kan-214-foundation.json](../docs/evidence/kan-214-foundation.json) — Final local backend763/0skip,frontend147,migrations0012 clean,ETL55+1 dataset skip; PR14 foundation only, owner review pending.
 
 ### T275. KAN-214: Registration and login API
 
