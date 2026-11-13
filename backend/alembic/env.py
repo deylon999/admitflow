@@ -1,3 +1,4 @@
+from app import accounts  # Register independent account metadata.
 from alembic import context
 
 from app import admissions  # Register the complete target schema.

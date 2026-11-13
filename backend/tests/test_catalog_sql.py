@@ -69,6 +69,8 @@ def verify_migration(engine):
                 if revision=='0011':
                     assert db.scalar(text('SELECT search_name FROM universities'))=='Ёж Straße ΟΣ'.casefold()
                     assert db.scalar(text('SELECT search_text FROM competition_groups'))=='Программа Straße Q%_'.casefold()
+        # Verify current metadata after exercising the historical search revision.
+        command.upgrade(config, 'head')
         command.check(config)
     finally:config.attributes['connection'].close()
 

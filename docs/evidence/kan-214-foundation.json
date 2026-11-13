@@ -1,0 +1,45 @@
+{
+  "date": "2026-11-13",
+  "task": "KAN-214 PR1/6 only",
+  "base": "3708d901642727cacf5590bc2f6183884880b286",
+  "pr": "https://github.com/deylon999/admitflow/pull/14",
+  "local": {
+    "backend": {
+      "passed": 763,
+      "skipped": 0,
+      "postgresRequired": true,
+      "exitCode": 0
+    },
+    "frontend": {
+      "passed": 147,
+      "lint": 0,
+      "typecheck": 0,
+      "build": 0
+    },
+    "etl": {
+      "passed": 55,
+      "skipped": 1,
+      "reason": "existing missing full dataset"
+    },
+    "migration": {
+      "head": "0012",
+      "alignment": true,
+      "freshPostgres": true
+    },
+    "focused": {
+      "passed": 48
+    }
+  },
+  "dataSafety": {
+    "userDatabaseTouched": false,
+    "userVolumesTouched": false,
+    "guestRowsPreserved": true,
+    "ownedTestContainerRemoved": true
+  },
+  "limitations": [
+    "PR1 foundation only; auth endpoints and React integration are not implemented",
+    "No real SMTP provider or production delivery verified",
+    "Owner review/merge required before PR2",
+    "Latest SHA/hosted checks maintained in PR description"
+  ]
+}

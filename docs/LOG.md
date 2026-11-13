@@ -1246,3 +1246,27 @@ S209/2026-11-13/T269 review: PR13 open for owner review; implementation dc5205c 
 S209/T269 follow-up: final inspection found public401 was offered guest recovery although public resources ignore session changes. Reopen for explicit session-bound error semantics and regression; no new feature API.
 
 S209/2026-11-13/T269 review: Final public401 recovery fix verified:147 local tests against PostgreSQL,116 fresh visual pairs equal,58 nginx openings; public401 GET retry creates0 sessions. Initial dc5205c hosted four jobs success, final source SHA/latest checks recorded in PR13. Owner acceptance pending; no merge, user history/volumes retained.
+
+## S210 — T270 KAN-214 (2026-11-13)
+
+Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.
+
+## S210 — T271 KAN-214 (2026-11-13)
+
+Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below.
+
+## S210 — T272 KAN-214 (2026-11-13)
+
+Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs.
+
+## S210 — T273 KAN-214 (2026-11-13)
+
+Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
+
+## S210 — T274 KAN-214 (2026-11-13)
+
+Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+
+## S210 — T270-T274 regression and PR14 handoff (2026-11-13)
+
+Final local backend763 passed/0skip with required native PostgreSQL; focused48; frontend147 plus ci/lint/typecheck/build; ETL55+1 explicit dataset skip; clean PostgreSQL migration0012/head/check. Initial full run760+2 historical head failures fixed and full rerun green. PR14 foundation only awaiting owner review; no merge or PR2 started. Owned test schemas/container/anonymous volume cleaned, user DB/volumes untouched. Latest source SHA/hosted checks in PR14 description. SMTP/HTTPS/proxy/egress remain external acceptance requirements.

@@ -2,28 +2,26 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
   "currentTask": null,
-  "nextTask": null,
+  "nextTask": "T275",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S209",
-  "resumeAction": "KAN-212 delivered in PR13; T265-T268 done,T269 review. Owner acceptance required; do not mark Done or merge autonomously. Initial dc5205c/run43313647129 all jobs green. Final public401 recovery fix: local147 tests and visual116 passed; final source SHA/latest hosted checks in PR13 description. User PostgreSQL stack healthy at http://127.0.0.1:8080,volumes/history preserved. After acceptance next feature KAN-223; no EGE/auth implementation started.",
+  "lastSession": "S210",
+  "resumeAction": "KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final local backend763/0skip, frontend147, ETL55+1 explicit dataset skip, native migration0012/head/check pass. Latest hosted status/source SHA in PR14. No auth endpoints or frontend integration yet. After review/merge continue T275 PR2; never merge autonomously.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
-    "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены."
+    "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.",
+    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.",
+    "PR14 owner review/merge required before PR2; KAN-214 full acceptance remains open."
   ],
   "lastCompleted": [
-    "T268: All29 direct/reload/internal/Back/Forward checks and dynamic/auth/unknown/query/hash boundaries passed; saved link and URL filters fixed. Full143 tests pass, lint/typecheck pass. Malformed percent encoding tested through SPA because Vite rejects it before React; nginx HTTP check remains T269.",
-    "T267: Session-aware resource invalidation and cancelled private mutations implemented; explicit guest recovery, cross-tab expiry without loops, bounded group pagination and metadata errors verified. lint/typecheck and131 tests passed. PostgreSQL local_smoke exit0 with backup and persistence; frontend against PG next.",
-    "T266: Reused request and concrete decoders; safe JSON/Headers, strict dates/IDs/ranks/nested fields, provenance and scoped catalog validation. 27 unit tests and full121 passed; lint/typecheck/build pass. First run had transient browser ERR_NO_BUFFER_SPACE before app; unchanged repeat passed.",
-    "T265: Audit completed before code: current main07526c3 and merged PR12/11/9 checked, 29-route API/DTO/mode/navigation matrix and ten minimal fixes recorded. npm ci and baseline94 browser tests passed; SQLite browser stand is not PostgreSQL evidence."
+    "T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented."
   ],
   "environment": [
-    "S209: npm ci/lint/typecheck/build exit0;147 current Chromium/unit tests against real existing PostgreSQL API passed. Initial hosted dc5205c:frontend146,backend719/0skip,ETL55+1 explicit dataset skip,migrations0011/head/check success. Final hosted SHA/run in PR13 description.",
-    "After final public401 fix:116 screenshot pairs identical to main07526c3 across29 routes x390/1440 xdefault/demo; text equal,no overflow/pageerrors. Viewport galleries inspected.58 direct nginx openings with current JS asset passed.",
-    "Real FastAPI/PostgreSQL guest->lookup->confirm201->subscription->rows50->page/reload51->summary above2 passed with explicit archive fixture in an isolated DB. All owned API containers/test DBs/previews removed; no source activated in user DB.",
-    "User Docker PostgreSQL/backend/frontend healthy on127.0.0.1:8080. Protected history fingerprint unchanged; Alembic0011=head; named volumes retained. No backend source, applied migration,CSS,dependency or workflow changes. PR13 open,no review submitted,no merge; no HTTPS production/live2027 claim."
+    "S210: final local required-native-PostgreSQL backend763 passed/0skip; frontend npm ci/lint/typecheck/build/test147 passed; ETL55 passed+1 explicit missing-dataset skip; migrations0012/head/schema check passed.",
+    "Focused foundation/password/catalog48 passed. Real PostgreSQL17 random schemas prove uniqueness races, constraints, guest preservation and account cleanup. Owned test DB container/anonymous volume removed after tests; no AdmitFlow user DB/volume modified.",
+    "PR14 first workflow43409888388; final SHA/latest hosted status maintained in PR14 description. No frontend/CSS/baseline/workflow/compose changes. No production email or HTTPS claim."
   ]
 }

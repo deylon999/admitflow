@@ -5879,6 +5879,227 @@
 - [docs/KAN-212-FRONTEND-REPORT.md](../docs/KAN-212-FRONTEND-REPORT.md) — Final public401 recovery fix verified:147 local tests against PostgreSQL,116 fresh visual pairs equal,58 nginx openings; public401 GET retry creates0 sessions. Initial dc5205c hosted four jobs success, final source SHA/latest checks recorded in PR13. Owner acceptance pending; no merge, user history/volumes retained.
 - [docs/evidence/kan-212-stabilization.json](../docs/evidence/kan-212-stabilization.json) — Compact hosted/local/visual/PostgreSQL/nginx/history evidence. Final documentation-only checks are tracked in PR13 description. Owner acceptance pending.
 
+### T270. KAN-214: Baseline and merged PR audit
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Record current main and merged KAN-212/CI PRs; verify clean isolated branch.
+
+**Критерии закрытия:**
+
+- Record current main and merged KAN-212/CI PRs; verify clean isolated branch.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Verified main3708d90 and merged PR13/12 via GitHub; isolated clean branch, roadmap check passed. No runtime code changed.
+
+### T271. KAN-214: Guest lifecycle and integration audit
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T270.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Inspect backend/frontend/infrastructure files requested by KAN-214.
+2. Document ownership, destructive guest reset, KAN-212 reuse and external dependencies.
+
+**Критерии закрытия:**
+
+- Inspect backend/frontend/infrastructure files requested by KAN-214.
+- Document ownership, destructive guest reset, KAN-212 reuse and external dependencies.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Audited requested backend/frontend/infra and guest ownership cascade; recorded KAN-212 reuse, proxy/SMTP constraints. Baseline session/API tests recorded below.
+
+### T272. KAN-214: Security architecture and API contracts
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T271.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Document threat model, cookies, CSRF, rotation/replay and transaction locking.
+2. Specify endpoints, expiry, errors, rate limits and six PR review sequence.
+
+**Критерии закрытия:**
+
+- Document threat model, cookies, CSRF, rotation/replay and transaction locking.
+- Specify endpoints, expiry, errors, rate limits and six PR review sequence.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs.
+
+### T273. KAN-214: PostgreSQL account foundation
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T272.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Add independent user/session/refresh/action-token/rate-budget models and additive migration.
+2. Prove native PostgreSQL uniqueness races, FK integrity and guest history preservation.
+
+**Критерии закрытия:**
+
+- Add independent user/session/refresh/action-token/rate-budget models and additive migration.
+- Prove native PostgreSQL uniqueness races, FK integrity and guest history preservation.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
+
+### T274. KAN-214: Password security foundation
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T273.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Pin Argon2id library with RFC9106 low-memory parameters and rehash support.
+2. Test email/password policy, unique salts, invalid hashes and guest regression.
+
+**Критерии закрытия:**
+
+- Pin Argon2id library with RFC9106 low-memory parameters and rehash support.
+- Test email/password policy, unique salts, invalid hashes and guest regression.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+- [docs/evidence/kan-214-foundation.json](../docs/evidence/kan-214-foundation.json) — Final local backend763/0skip,frontend147,migrations0012 clean,ETL55+1 dataset skip; PR14 foundation only, owner review pending.
+
+### T275. KAN-214: Registration and login API
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T274.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Implement PR2 acceptance from KAN-214 specification with PostgreSQL tests and review.
+
+**Критерии закрытия:**
+
+- Implement PR2 acceptance from KAN-214 specification with PostgreSQL tests and review.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T276. KAN-214: Refresh logout and CSRF
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T275.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Implement PR3 acceptance from KAN-214 specification with concurrency/security tests and review.
+
+**Критерии закрытия:**
+
+- Implement PR3 acceptance from KAN-214 specification with concurrency/security tests and review.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T277. KAN-214: Email verification and recovery
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T276.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Implement PR4 acceptance; test transport is isolated; production delivery remains external gate.
+
+**Критерии закрытия:**
+
+- Implement PR4 acceptance; test transport is isolated; production delivery remains external gate.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T278. KAN-214: React v3 account integration
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T277.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Implement PR5 acceptance preserving API client guest epoch, 29 routes and v3 visuals.
+
+**Критерии закрытия:**
+
+- Implement PR5 acceptance preserving API client guest epoch, 29 routes and v3 visuals.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T279. KAN-214: Final security and acceptance
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T278.
+
+**Результаты/файлы:** `docs/KAN-214-AUTH.md`.
+
+**Шаги:**
+
+1. Implement PR6 acceptance: PostgreSQL E2E/security/browser/visual/hosted CI and owner review.
+2. Require real email delivery or explicit documented owner exception.
+
+**Критерии закрытия:**
+
+- Implement PR6 acceptance: PostgreSQL E2E/security/browser/visual/hosted CI and owner review.
+- Require real email delivery or explicit documented owner exception.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.
