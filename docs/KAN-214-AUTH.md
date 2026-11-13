@@ -220,3 +220,27 @@ use production parameters. Remaining PRs test listed CSRF/replay/reset concurren
 real browser flow with isolated test mailbox, private stale-state, all29 routes and
 390/1440 visual comparator. Full backend/native guard and hosted four jobs required.
 Review and owner acceptance remain external; SMTP mock is never production evidence.
+
+## PR1 implementation evidence (T273)
+
+Added six account ORM tables in app/accounts.py and frozen additive Alembic0012
+(no runtime model imports in revision). Registered metadata in standalone Alembic
+and migration callers. Hourly cleanup and cleanup-accounts CLI delete only expired
+actions/contexts/buckets/absolute-expired account sessions; spent refresh records
+remain until session deletion so replay can still be detected. Users never purged
+by this command; guest cleanup semantics unchanged. Actual API enforcement follows
+in PR2-4, not inferred from table availability.
+
+Isolated PostgreSQL17 container `admitflow-kan214-test-db`, database
+`admitflow_test_kan214`, loopback55439; no existing project volume/database touched.
+Native tests allocate/drop their own random schemas through existing pg_support.
+Command (TEST_DATABASE_URL points only to that disposable DB):
+`backend/.venv/bin/python -m pytest -q backend/tests/test_account_foundation.py
+backend/tests/test_migrations.py backend/tests/test_migration_metadata.py
+backend/tests/test_database_diagnostics.py` -> **39 passed**, no skips, exit0.
+Foundation cases include native two-transaction unique email race, six invalid
+security-state constraints, expired-record cleanup retaining spent refresh,
+account/guest deletion independence, all existing table rows identical across
+0011->head and downgrade/re-upgrade, and standalone Alembic schema agreement.
+Historical head assertions updated0011->0012 and table count20->26; no check removed.
+Three existing framework/legacy migration deprecation warnings remain.

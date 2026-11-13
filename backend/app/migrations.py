@@ -1,3 +1,4 @@
+from . import accounts  # Register account tables for non-HTTP migration callers.
 from pathlib import Path
 from functools import lru_cache
 

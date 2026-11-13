@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 248 из 275 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 249 из 275 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -282,8 +282,8 @@
 - [x] T270 KAN-214: Baseline and merged PR audit
 - [x] T271 KAN-214: Guest lifecycle and integration audit
 - [x] T272 KAN-214: Security architecture and API contracts
-- [ ] T273 KAN-214: PostgreSQL account foundation — **в работе**
-- [ ] T274 KAN-214: Password security foundation
+- [x] T273 KAN-214: PostgreSQL account foundation
+- [ ] T274 KAN-214: Password security foundation — **в работе**
 - [ ] T275 KAN-214: Registration and login API
 - [ ] T276 KAN-214: Refresh logout and CSRF
 - [ ] T277 KAN-214: Email verification and recovery

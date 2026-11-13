@@ -8405,7 +8405,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T272"
       ],
@@ -8420,7 +8420,12 @@
         "Add independent user/session/refresh/action-token/rate-budget models and additive migration",
         "Prove native PostgreSQL uniqueness races, FK integrity and guest history preservation"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-AUTH.md",
+          "note": "Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8429,7 +8434,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T273"
       ],

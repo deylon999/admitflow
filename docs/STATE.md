@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T273.
-- Следующая задача: T273.
+- Текущая задача: T274.
+- Следующая задача: T274.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR1 foundation only. PR2-6 remain open. Review/merge required before con
 
 ## Последняя завершённая работа
 
-- T272: Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs.
+- T273: Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
 
 ## Ограничения
 

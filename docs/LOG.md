@@ -1258,3 +1258,7 @@ Audited requested backend/frontend/infra and guest ownership cascade; recorded K
 ## S210 — T272 KAN-214 (2026-11-13)
 
 Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs.
+
+## S210 — T273 KAN-214 (2026-11-13)
+
+Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.

@@ -20,7 +20,7 @@ from .calculation import CalculationInput, calculate_versioned
 from .config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
-from .maintenance import cleanup_expired_sessions
+from .maintenance import cleanup_expired_accounts, cleanup_expired_sessions
 from .catalog import search_universities, seed_catalog
 from .schemas import CatalogRead, CoverageRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus, ValidationProblem
 from .coverage import coverage
@@ -61,12 +61,14 @@ def create_app(settings: Settings | None = None):
         if config.auto_create_schema:
             upgrade_schema(engine)
             cleanup_expired_sessions(engine)
+            cleanup_expired_accounts(engine)
         seed_catalog(engine)
         async def cleanup_loop():
             while True:
                 await asyncio.sleep(3600)
                 try:
                     await asyncio.to_thread(cleanup_expired_sessions, engine)
+                    await asyncio.to_thread(cleanup_expired_accounts, engine)
                 except Exception:
                     logging.getLogger(__name__).error('Expired-session cleanup failed; retry in one hour')
 

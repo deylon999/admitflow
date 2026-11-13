@@ -5948,7 +5948,7 @@
 
 ### T273. KAN-214: PostgreSQL account foundation
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T272.
 
@@ -5967,11 +5967,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
 
 ### T274. KAN-214: Password security foundation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T273.
 
