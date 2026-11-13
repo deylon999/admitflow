@@ -82,6 +82,10 @@ test('email fragment is erased before requests, explicit confirmation only, no p
     await expect(page.getByRole('status')).toContainText('Email подтверждён');
     expect(server.posts).toEqual(['verification/confirm']);
     await page.reload(); await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
+    await page.goto('/auth/verify/#token=' + 'v'.repeat(43));
+    await expect(page).toHaveURL(/\/auth\/verify$/);
+    await expect(page.getByRole('button', { name: 'Подтвердить email ↗' })).toBeVisible();
+    expect(server.posts).toEqual(['verification/confirm']);
 });
 test('reset accepts a fragment and requires matching password before backend mutation', async ({ page, context }) => {
     const server = await mockAuth(context);

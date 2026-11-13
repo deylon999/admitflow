@@ -1,7 +1,8 @@
 // Email credentials live only in memory. Strip the fragment before React or API work.
 let link: { path: string; token: string } | undefined;
 export function captureAuthLink(): boolean {
-    const { pathname, hash, search } = window.location;
+    const { hash, search } = window.location;
+    const pathname = window.location.pathname.replace(/\/$/, '');
     if (pathname !== '/auth/verify' && pathname !== '/auth/reset') return false;
     if (!hash && !search) return false;
     const params = new URLSearchParams(hash.slice(1));

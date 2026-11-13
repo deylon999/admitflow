@@ -226,3 +226,8 @@ Final mobile follow-up: account email uses scoped overflow-wrap so a valid64-cha
 local part stays inside a390px screen. Added a browser assertion for this boundary;
 full frontend175 passed (22.6s), lint/typecheck clean. This only affects the new live
 account summary, not the108 retained comparison routes. No CSS file changed.
+
+Final privacy boundary: the link capture canonicalizes the same trailing slash
+accepted by App, so `/auth/verify/#token=...` is also erased before rendering/API.
+Extended the fragment browser scenario with this accepted route variant. Full175
+frontend tests passed again (22.5s), lint/typecheck clean; no extra auth mutation.
