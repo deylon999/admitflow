@@ -8434,7 +8434,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T273"
       ],
@@ -8449,7 +8449,12 @@
         "Pin Argon2id library with RFC9106 low-memory parameters and rehash support",
         "Test email/password policy, unique salts, invalid hashes and guest regression"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-AUTH.md",
+          "note": "Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented."
+        }
+      ],
       "blockedReason": null
     },
     {

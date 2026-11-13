@@ -244,3 +244,22 @@ account/guest deletion independence, all existing table rows identical across
 0011->head and downgrade/re-upgrade, and standalone Alembic schema agreement.
 Historical head assertions updated0011->0012 and table count20->26; no check removed.
 Three existing framework/legacy migration deprecation warnings remain.
+
+## Password primitives (T274)
+
+Pinned argon2-cffi25.1.0 and resolved runtime dependencies in requirements/constraints;
+no existing dependency upgraded. `app/account_security.py` implements documented
+email/password policy, production-parameter hashing, bounded two-slot hashing,
+dummy verification, rehash signalling, random tokens and purpose-separated digests.
+This is a primitive library; login rate limiting/rehash transactions are PR2 work.
+`pytest -q backend/tests/test_account_security.py backend/tests/test_sessions.py
+backend/tests/test_api.py`: **52 passed**, exit0; `pip check`: no broken requirements.
+Tests cover normalization boundaries, invalid input, actual Argon2id parameters,
+unique salts, wrong/missing/malformed hashes, stronger historical rehash signalling,
+128-codepoint Unicode passwords/whitespace preservation, capacity release and token
+entropy/purpose separation. No weaker development/test hashing profile.
+
+Regression adjustment: historical catalog migration test correctly exercises
+0010/0011; its final schema check now upgrades to head first, so it can still compare
+current metadata after0012. No catalog/source logic or applied revision changed.
+Frontend source, CSS, dependencies, routes and visual baselines unchanged.

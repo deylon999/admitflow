@@ -5971,7 +5971,7 @@
 
 ### T274. KAN-214: Password security foundation
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T273.
 
@@ -5990,7 +5990,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
 
 ### T275. KAN-214: Registration and login API
 

@@ -1262,3 +1262,7 @@ Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contrac
 ## S210 — T273 KAN-214 (2026-11-13)
 
 Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
+
+## S210 — T274 KAN-214 (2026-11-13)
+
+Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.

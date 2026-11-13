@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T274",
-  "nextTask": "T274",
+  "currentTask": null,
+  "nextTask": "T275",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -15,7 +15,7 @@
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены."
   ],
   "lastCompleted": [
-    "T273: Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched."
+    "T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented."
   ],
   "environment": [
     "S209: npm ci/lint/typecheck/build exit0;147 current Chromium/unit tests against real existing PostgreSQL API passed. Initial hosted dc5205c:frontend146,backend719/0skip,ETL55+1 explicit dataset skip,migrations0011/head/check success. Final hosted SHA/run in PR13 description.",

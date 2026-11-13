@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T274.
-- Следующая задача: T274.
+- Текущая задача: нет.
+- Следующая задача: T275.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR1 foundation only. PR2-6 remain open. Review/merge required before con
 
 ## Последняя завершённая работа
 
-- T273: Six independent account tables and additive0012 implemented.39 tests pass incl native PG uniqueness race, constraints, cleanup/replay retention, guest preservation and standalone schema agreement; no user DB/volume touched.
+- T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
 
 ## Ограничения
 
