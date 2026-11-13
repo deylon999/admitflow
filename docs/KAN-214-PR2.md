@@ -52,3 +52,31 @@ Subjects stored only as HMAC digests. AUTH_ENABLED defaultsfalse and enabling re
 HTTPS/PostgreSQL requirements unchanged. Native tests cover12 concurrent requests,
 exact5 grants, new engine persistence, next window, soft-budget suppression,
 no refund after later rollback and independent operation/subject scopes.
+
+## Registration and CSRF (T282)
+
+Implemented strict camelCase DTOs with SecretStr passwords; sanitized existing
+validation responses. Synchronizer context stored separately; cookie HttpOnly/Lax,
+/api/v1, Secure per config, no Domain. Same-origin/custom-header bootstrap and all
+write protections retained; compare CSRF in constant time, reject absent/foreign/
+expired contexts. Bootstrap does not create guests or promote their cookies.
+Registration uses Argon2id on every valid request, including duplicates. Atomic
+ON CONFLICT(email) DO NOTHING creates at most one user and one24h verification hash.
+No email_verified_at/session/refresh assigned by registration. Commit before mail;
+DB or transport failure never claims202 success. Missing transport503 before lookup.
+
+Clarification to initial wording “one delivery”: racing duplicates may send a safe
+existing-account notice, but only the winning insert gets a verification token.
+The mail port is invoked for both cases to avoid an account-existence oracle on
+provider failure. Email-only3/h soft budget caps all such deliveries uniformly;
+existing password/action token is not changed. This supersedes only the stricter
+initial delivery-count assumption, not the unique-user/action acceptance.
+SMTP delivery and usable confirmation links remain PR4 and external verification.
+
+Native registration tests: **20 passed**, exit0. Covers actual hash/action persistence,
+duplicate response equality, two-transaction registration race, invalid/oversized/
+non-string/escaped-surrogate input redaction, CSRF/Origin/cross-site/header failures,
+mail unavailable/failure for both new/existing email and durable mail suppression.
+Initial surrogate test failed in httpx encoding before reaching the API; corrected
+by sending escaped JSON bytes, then the real server rejection passed.
+Persistent-budget/config test command: **12 passed**, exit0.

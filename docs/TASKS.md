@@ -6148,7 +6148,7 @@
 
 ### T282. KAN-214 PR2: Registration and CSRF prerequisite
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T281.
 
@@ -6169,11 +6169,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification.
 
 ### T283. KAN-214 PR2: Login and current account session
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T282.
 

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T282",
-  "nextTask": "T282",
+  "currentTask": "T283",
+  "nextTask": "T283",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -16,7 +16,7 @@
     "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
   ],
   "lastCompleted": [
-    "T281: Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report)."
+    "T282: Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification."
   ],
   "environment": [
     "S210: final local required-native-PostgreSQL backend763 passed/0skip; frontend npm ci/lint/typecheck/build/test147 passed; ETL55 passed+1 explicit missing-dataset skip; migrations0012/head/schema check passed.",

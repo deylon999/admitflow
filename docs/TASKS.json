@@ -8637,7 +8637,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T281"
       ],
@@ -8654,7 +8654,12 @@
         "Create normalized unverified user and purpose-hashed action transactionally; generic duplicate response",
         "No mail port means503 without false success; injectable isolated test transport only"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8663,7 +8668,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T282"
       ],
