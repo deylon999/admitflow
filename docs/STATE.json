@@ -1,23 +1,22 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": null,
-  "nextTask": "T275",
+  "currentTask": "T281",
+  "nextTask": "T281",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S210",
-  "resumeAction": "KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final local backend763/0skip, frontend147, ETL55+1 explicit dataset skip, native migration0012/head/check pass. Latest hosted status/source SHA in PR14. No auth endpoints or frontend integration yet. After review/merge continue T275 PR2; never merge autonomously.",
+  "lastSession": "S211",
+  "resumeAction": "KAN-214 PR2 implementation from main494d270. T280-T284; no merge. Real SMTP and full lifecycle remain PR3-6; auth disabled by default.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.",
-    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.",
-    "PR14 owner review/merge required before PR2; KAN-214 full acceptance remains open."
+    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
   ],
   "lastCompleted": [
-    "T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented."
+    "T280: Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation."
   ],
   "environment": [
     "S210: final local required-native-PostgreSQL backend763 passed/0skip; frontend npm ci/lint/typecheck/build/test147 passed; ETL55 passed+1 explicit missing-dataset skip; migrations0012/head/schema check passed.",

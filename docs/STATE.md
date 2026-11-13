@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S210.
+Дата: 2026-11-13. Последняя сессия: S211.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T275.
+- Текущая задача: T281.
+- Следующая задача: T281.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final local backend763/0skip, frontend147, ETL55+1 explicit dataset skip, native migration0012/head/check pass. Latest hosted status/source SHA in PR14. No auth endpoints or frontend integration yet. After review/merge continue T275 PR2; never merge autonomously.
+KAN-214 PR2 implementation from main494d270. T280-T284; no merge. Real SMTP and full lifecycle remain PR3-6; auth disabled by default.
 
 ## Последняя завершённая работа
 
-- T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+- T280: Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
 
 ## Ограничения
 
@@ -25,7 +25,6 @@ KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final 
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.
-- PR14 owner review/merge required before PR2; KAN-214 full acceptance remains open.
 
 ## Проверенное окружение
 
