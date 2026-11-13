@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 251 из 280 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 252 из 280 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -290,8 +290,8 @@
 - [ ] T278 KAN-214: React v3 account integration
 - [ ] T279 KAN-214: Final security and acceptance
 - [x] T280 KAN-214 PR2: Merged baseline and PR2 boundaries
-- [ ] T281 KAN-214 PR2: Persistent auth rate budgets — **в работе**
-- [ ] T282 KAN-214 PR2: Registration and CSRF prerequisite
+- [x] T281 KAN-214 PR2: Persistent auth rate budgets
+- [ ] T282 KAN-214 PR2: Registration and CSRF prerequisite — **в работе**
 - [ ] T283 KAN-214 PR2: Login and current account session
 - [ ] T284 KAN-214 PR2: PR2 regression and review delivery
 

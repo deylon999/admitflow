@@ -6125,7 +6125,7 @@
 
 ### T281. KAN-214 PR2: Persistent auth rate budgets
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T280.
 
@@ -6144,11 +6144,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report).
 
 ### T282. KAN-214 PR2: Registration and CSRF prerequisite
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T281.
 

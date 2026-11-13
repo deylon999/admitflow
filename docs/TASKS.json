@@ -8608,7 +8608,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T280"
       ],
@@ -8623,7 +8623,12 @@
         "Atomic committed HMAC-keyed database counters before hashing/mail",
         "Native PG concurrent limits, restart persistence, windows and no forwarded-header trust"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report)."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8632,7 +8637,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T281"
       ],

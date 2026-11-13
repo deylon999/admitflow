@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T281.
-- Следующая задача: T281.
+- Текущая задача: T282.
+- Следующая задача: T282.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR2 implementation from main494d270. T280-T284; no merge. Real SMTP and 
 
 ## Последняя завершённая работа
 
-- T280: Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
+- T281: Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report).
 
 ## Ограничения
 

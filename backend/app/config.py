@@ -1,6 +1,6 @@
 import os
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from urllib.parse import urlsplit
 from sqlalchemy.engine import make_url
 from sqlalchemy.exc import ArgumentError
@@ -14,8 +14,14 @@ class Settings:
     auto_create_schema: bool = True
     allowed_hosts: tuple[str, ...] = ('localhost','127.0.0.1','testserver')
     public_origin: str | None = None
+    auth_enabled: bool = False
+    auth_rate_key: str | None = field(default=None, repr=False)
 
     def __post_init__(self):
+        if type(self.auth_enabled) is not bool:
+            raise RuntimeError('AUTH_ENABLED must be a boolean.')
+        if self.auth_enabled and (not isinstance(self.auth_rate_key, str) or not 32 <= len(self.auth_rate_key.encode('utf-8')) <= 1024):
+            raise RuntimeError('Enabled authentication requires AUTH_RATE_KEY of32..1024 UTF8 bytes.')
         if self.environment not in ('development','production'):
             raise RuntimeError('ENVIRONMENT must be development or production.')
         if type(self.secure_cookie) is not bool or type(self.auto_create_schema) is not bool:
@@ -64,5 +70,7 @@ class Settings:
             auto_create_schema=auto,
             allowed_hosts=tuple(host.strip().lower() for host in os.getenv('ALLOWED_HOSTS','' if production else 'localhost,127.0.0.1,testserver').split(',') if host.strip()),
             public_origin=os.getenv('PUBLIC_ORIGIN') or None,
+            auth_enabled=boolean('AUTH_ENABLED', 'false'),
+            auth_rate_key=os.getenv('AUTH_RATE_KEY') or None,
         )
         return config

@@ -1278,3 +1278,7 @@ Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rol
 ## S211 — T280 KAN-214 PR2 (2026-11-13)
 
 Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
+
+## S211 — T281 KAN-214 PR2 (2026-11-13)
+
+Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report).

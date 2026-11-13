@@ -40,3 +40,15 @@ user, deadlines and revocation on server. Sensitive validation input never echoe
 Native PostgreSQL verification is mandatory; tests own random schemas in a disposable
 admitflow_test* DB. Existing guest and applied migrations unchanged. Add tests to
 existing CI collection, not a workflow rewrite. Review/merge remains owner action.
+
+## Persistent budgets implemented (T281)
+
+AccountRateBucket upsert increments atomically under each operation/subject/window
+key, caps denied counters, commits independently of the user transaction, and returns
+Retry-After from the server window. Multiple budgets ordered consistently. Soft
+email-only delivery budget suppresses mail uniformly without a new account oracle.
+Subjects stored only as HMAC digests. AUTH_ENABLED defaultsfalse and enabling requires
+32..1024-byte stable AUTH_RATE_KEY; Settings repr omits that key. Existing production
+HTTPS/PostgreSQL requirements unchanged. Native tests cover12 concurrent requests,
+exact5 grants, new engine persistence, next window, soft-budget suppression,
+no refund after later rollback and independent operation/subject scopes.
