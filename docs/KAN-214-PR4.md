@@ -56,3 +56,22 @@ accepted by this PR's tests.
 Sources checked2026-11-13:
 [Python3.12 smtplib](https://docs.python.org/3.12/library/smtplib.html),
 [OWASP recovery](https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html).
+
+## SMTP adapter (T291)
+
+stdlib SMTP adapter selected from Settings when all SMTP fields are configured;
+otherwise the unavailable port remains explicit. Both STARTTLS and implicit SSL
+use create_default_context with CERT_REQUIRED/check_hostname. Authentication occurs
+only after TLS; missing STARTTLS/refused recipients/provider errors fail closed.
+One attempt/request, socket timeout1..10s (default5s per socket operation), two sends
+per worker; no promise of a total5s transaction deadline. QUIT failure after DATA
+acceptance does not trigger retry or falsely report send rejection. SMTP acceptance
+is distinct from verified inbox delivery. Username/password/from are hidden in repr;
+no debug logging or insecure TLS switch. Even development real SMTP requires fixed
+HTTPS PUBLIC_ORIGIN; test recording ports remain isolated code injection only.
+
+`pytest -q test_account_mail.py test_config.py test_config_strict.py`:
+**33 passed**, exit0. Fake protocol clients inspect actual MIME/envelope, TLS context,
+auth/send ordering, fragment-only links, generic notices, capacity, no retries,
+connection/auth/send/refusal/QUIT errors and fail-closed configuration. This is NOT
+a real provider/inbox delivery test. No dependency or infrastructure service added.

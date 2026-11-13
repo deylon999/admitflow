@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 
 from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmptyAuthRequest, LoginRequest, RegistrationRead, RegistrationRequest
 from .account_limits import AuthRateExceeded, Budget, consume_budgets
-from .account_mail import UnavailableRegistrationMailer
+from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
 from .accounts import AccountActionToken, AccountCsrfContext, AccountRefreshToken, AccountSession, AccountUser
 from .http import permitted_origin
@@ -220,7 +220,7 @@ def session_read(session, user):
 
 
 def install(app, database, config, engine, *, mailer=None, clock=None):
-    mailer = mailer if mailer is not None else UnavailableRegistrationMailer()
+    mailer = mailer if mailer is not None else configured_mailer(config)
     clock = clock or (lambda: datetime.now(timezone.utc))
     router = APIRouter(prefix='/api/v1/auth', route_class=AuthRoute)
 

@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 263 из 290 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 264 из 290 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -300,8 +300,8 @@
 - [x] T288 KAN-214 PR3: Concurrency and security regression
 - [x] T289 KAN-214 PR3: PR3 verification and review delivery
 - [x] T290 KAN-214 PR4: Merged baseline and email acceptance
-- [ ] T291 KAN-214 PR4: Secure SMTP transport — **в работе**
-- [ ] T292 KAN-214 PR4: Email verification and resend
+- [x] T291 KAN-214 PR4: Secure SMTP transport
+- [ ] T292 KAN-214 PR4: Email verification and resend — **в работе**
 - [ ] T293 KAN-214 PR4: Password recovery and revocation
 - [ ] T294 KAN-214 PR4: PR4 regression and review handoff
 

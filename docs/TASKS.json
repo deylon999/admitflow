@@ -8936,7 +8936,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T290"
       ],
@@ -8953,7 +8953,12 @@
         "Fixed-origin fragment links, bounded network/capacity/retry policy, explicit unavailable/refused/error behavior",
         "Isolated transport tests, no production delivery claim"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR4.md",
+          "note": "TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8962,7 +8967,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T291"
       ],

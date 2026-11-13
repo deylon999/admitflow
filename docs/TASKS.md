@@ -6371,7 +6371,7 @@
 
 ### T291. KAN-214 PR4: Secure SMTP transport
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T290.
 
@@ -6392,11 +6392,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes.
 
 ### T292. KAN-214 PR4: Email verification and resend
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T291.
 

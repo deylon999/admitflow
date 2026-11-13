@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T291.
-- Следующая задача: T291.
+- Текущая задача: T292.
+- Следующая задача: T292.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR4 SMTP/verification/recovery T290-T294 from main d63a208. Real deliver
 
 ## Последняя завершённая работа
 
-- T290: Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.
+- T291: TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes.
 
 ## Ограничения
 

@@ -1322,3 +1322,7 @@ Refresh rotation/strict replay, bound CSRF restoration, logout/revocation and pe
 ## S213 — T290 KAN-214 PR4 (2026-11-13)
 
 Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fields without exposing values. Defined TLS/mail-error/oracle/token/reset-race acceptance before implementation.
+
+## S213 — T291 KAN-214 PR4 (2026-11-13)
+
+TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes.
