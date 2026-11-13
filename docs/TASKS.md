@@ -5925,7 +5925,7 @@
 
 ### T272. KAN-214: Security architecture and API contracts
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T271.
 
@@ -5944,11 +5944,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-AUTH.md](../docs/KAN-214-AUTH.md) — Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs.
 
 ### T273. KAN-214: PostgreSQL account foundation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T272.
 

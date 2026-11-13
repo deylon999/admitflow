@@ -8376,7 +8376,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T271"
       ],
@@ -8391,7 +8391,12 @@
         "Document threat model, cookies, CSRF, rotation/replay and transaction locking",
         "Specify endpoints, expiry, errors, rate limits and six PR review sequence"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-AUTH.md",
+          "note": "Documented threat model, six-table schema, endpoint DTO/status/CSRF/rate contracts, rotation lock ordering, email dependencies and six review boundaries; sources checked against RFC/OWASP/library docs."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8400,7 +8405,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T272"
       ],
