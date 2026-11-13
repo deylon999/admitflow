@@ -1326,3 +1326,7 @@ Verified PR16 merged/main d63a208; audited port/lifecycle and absence of SMTP fi
 ## S213 — T291 KAN-214 PR4 (2026-11-13)
 
 TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes.
+
+## S213 — T292 KAN-214 PR4 (2026-11-13)
+
+Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim.

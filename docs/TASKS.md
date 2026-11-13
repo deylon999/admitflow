@@ -6396,7 +6396,7 @@
 
 ### T292. KAN-214 PR4: Email verification and resend
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T291.
 
@@ -6417,11 +6417,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim.
 
 ### T293. KAN-214 PR4: Password recovery and revocation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T292.
 

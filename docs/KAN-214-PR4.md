@@ -75,3 +75,25 @@ HTTPS PUBLIC_ORIGIN; test recording ports remain isolated code injection only.
 auth/send ordering, fragment-only links, generic notices, capacity, no retries,
 connection/auth/send/refusal/QUIT errors and fail-closed configuration. This is NOT
 a real provider/inbox delivery test. No dependency or infrastructure service added.
+
+## Verification/resend implementation (T292)
+
+Verification request/confirm APIs reuse existing CSRF/Origin guards and safe DTOs.
+Shared mail-peer20/h and mail-email3/h now cover registration and both email action
+requests, alongside existing operation budgets. Per-purpose hashed-token budget10
+attempts/15min and confirmation peer30/15min commit independently. Missing provider
+is503 before target lookup; every accepted eligible/ineligible address invokes the
+same port, with tokenNone generic notices where no action is authorized.
+Issuance locks/rechecks user ID AND normalized email (safe if a future email change
+races the initial lookup), invalidates older same-purpose actions, persists a24h
+purpose hash and commits before delivery. No raw action token outbox exists.
+Confirmation consumes under the user/action lock and never creates an auth session.
+Future email-change code must invalidate outstanding actions and sessions under
+that same user lock; this PR does not implement profile/email changes.
+
+Native test_account_email_verification.py + existing registration regression:
+**43 passed**, exit0. Real register→confirm→login proves no auto-verification bypass;
+tests cover resend invalidation/password preservation, unknown/verified/disabled
+requests, forged/expired/used/wrong-purpose/deleted-user/disabled tokens, simultaneous
+confirm/resend, missing/failing provider and confirmation during provider outage.
+Mock/protocol acceptance is not real SMTP inbox delivery.

@@ -17,6 +17,8 @@ class RecordingMailer:
 
     def __init__(self):
         self.deliveries = []
+        self.verification_deliveries = []
+        self.recovery_deliveries = []
         self.lock = Lock()
         self.fail = False
 
@@ -25,6 +27,15 @@ class RecordingMailer:
             raise RuntimeError('Synthetic provider failure with private details')
         with self.lock:
             self.deliveries.append((email, verification_token))
+
+
+    def deliver_verification(self, email, verification_token):
+        if self.fail: raise RuntimeError('Synthetic provider failure with private details')
+        with self.lock: self.verification_deliveries.append((email, verification_token))
+
+    def deliver_recovery(self, email, recovery_token):
+        if self.fail: raise RuntimeError('Synthetic provider failure with private details')
+        with self.lock: self.recovery_deliveries.append((email, recovery_token))
 
 
 @pytest.fixture

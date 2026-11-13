@@ -13,7 +13,8 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmptyAuthRequest, LoginRequest, RegistrationRead, RegistrationRequest
+from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
+from .account_actions import InvalidActionToken, action_identity, confirm_verification, issue_action
 from .account_limits import AuthRateExceeded, Budget, consume_budgets
 from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
@@ -60,6 +61,8 @@ class AuthRoute(APIRoute):
                                     status_code=429, headers={'Retry-After': str(exc.retry_after)})
             except InvalidAccountInput:
                 return JSONResponse({'code': 'invalid_input', 'detail': 'Проверьте формат и значения запроса.'}, status_code=422)
+            except InvalidActionToken as exc:
+                return JSONResponse({'code': 'invalid_token', 'detail': str(exc)}, status_code=400)
             except (PasswordCapacityError, SQLAlchemyError):
                 return JSONResponse({'code': 'auth_unavailable', 'detail': 'Авторизация временно недоступна.'},
                                     status_code=503, headers={'Retry-After': '5'})
@@ -243,6 +246,16 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
             rate(request, operation, limit, seconds)
         return check
 
+    def mail_budget(request, email, *, extra=()):
+        return consume_budgets(engine, config.auth_rate_key,
+                [Budget('mail-peer', ('peer', peer(request)), 20, 3600),
+                 Budget('mail-email', ('email', email), 3, 3600, soft=True), *extra], now=clock())
+
+    def token_budget(request, purpose, raw_token):
+        digest = credential_digest(purpose, raw_token)
+        consume_budgets(engine, config.auth_rate_key,
+                        [Budget('action-token', (purpose, digest), 10, 900)], now=clock())
+
     @router.get('/csrf', response_model=CsrfRead, dependencies=[Depends(guard('csrf', 120, 900))])
     def csrf(request: Request, response: Response, db: Session = Depends(database)):
         if request.headers.get('X-Requested-With') != 'abiturient' or not permitted_origin(request, config):
@@ -283,8 +296,8 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
         csrf_context(db, request, now)
         if not mailer.available:
             raise unavailable()  # Same result before user lookup for every address.
-        allowed = consume_budgets(engine, config.auth_rate_key,
-                                 [Budget('register-email', ('email', body.email), 3, 3600, soft=True)], now=now)
+        allowed = mail_budget(request, body.email,
+                              extra=[Budget('register-email', ('email', body.email), 3, 3600, soft=True)])
         encoded = hash_password(body.password.get_secret_value())  # Same expensive path on duplicates.
         if not allowed:
             return RegistrationRead()
@@ -306,6 +319,36 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
         except Exception:
             raise unavailable() from None
         return RegistrationRead()
+
+    def request_action(body, request, db, purpose):
+        csrf_context(db, request, clock())
+        if not mailer.available:
+            raise unavailable()
+        if not mail_budget(request, body.email):
+            return EmailActionRead()
+        token = issue_action(db, body.email, purpose, clock)
+        try:
+            if purpose == 'verify_email': mailer.deliver_verification(body.email, token)
+            else: mailer.deliver_recovery(body.email, token)
+        except Exception:
+            raise unavailable() from None
+        return EmailActionRead()
+
+    @router.post('/verification/request', response_model=EmailActionRead, status_code=202,
+                 dependencies=[Depends(guard('verification-request', 20, 3600))])
+    def verification_request(body: EmailActionRequest, request: Request, db: Session = Depends(database)):
+        return request_action(body, request, db, 'verify_email')
+
+    @router.post('/verification/confirm', status_code=204, response_class=Response,
+                 dependencies=[Depends(guard('verification-confirm', 30, 900))])
+    def verification_confirm(body: TokenConfirmation, request: Request, db: Session = Depends(database)):
+        csrf_context(db, request, clock())
+        raw = body.token.get_secret_value()
+        token_budget(request, 'verify_email', raw)
+        identity = action_identity(db, 'verify_email', raw)
+        db.rollback()
+        confirm_verification(db, identity, clock, lambda now: csrf_context(db, request, now))
+        return Response(status_code=204)
 
     @router.post('/login', response_model=AccountSessionRead,
                  dependencies=[Depends(guard('login', 30, 900))])

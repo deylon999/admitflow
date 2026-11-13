@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T292",
-  "nextTask": "T292",
+  "currentTask": "T293",
+  "nextTask": "T293",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -16,7 +16,7 @@
     "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
   ],
   "lastCompleted": [
-    "T291: TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified contexts/order, MIME fragment links, bounded attempts/capacity, refusal/errors and unavailable default. No real provider/delivery or infrastructure changes."
+    "T292: Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim."
   ],
   "environment": [
     "S212: full local --require-postgres backend867 passed/0skip (all new cases collected before run); lifecycle security47 passed; frontend147/lint/typecheck/build; ETL55+1 explicit dataset skip; pip check clean.",

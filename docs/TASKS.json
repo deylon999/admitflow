@@ -8967,7 +8967,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T291"
       ],
@@ -8984,7 +8984,12 @@
         "24h purpose-hashed token, one use under user lock, resend invalidates older actions",
         "Generic request responses and actual mail-port invocation on eligible/ineligible addresses; test failures and races"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR4.md",
+          "note": "Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8993,7 +8998,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T292"
       ],
