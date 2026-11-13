@@ -1338,3 +1338,7 @@ Recovery/reset implemented;18 native recovery and83 combined action/security tes
 ## S213 — T277/T294 PR4 review handoff (2026-11-13)
 
 TLS SMTP/verification/resend/recovery implemented. Full current local backend976/0skip mandatory native PG; action/security83,mail/config35,frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check,fresh migration0012/head/check. Repository tools17 with1 local missing-PDF skip; hosted installs it. Final SHA/PR/verified hosted checks in PR description. T277/T294 review; no merge. SMTP parameters absent, no real inbox delivery verified or external recipient contacted. RELEASE_GATES records explicit unaccepted delivery condition; full KAN-214 cannot be accepted from mock delivery. Owned PG schemas/container/anonymous volume cleaned; user DB/volumes untouched.
+
+## S214 — T295 KAN-214 PR5 (2026-11-13)
+
+Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation.

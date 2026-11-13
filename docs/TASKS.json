@@ -8529,7 +8529,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T276"
       ],
@@ -8546,6 +8546,10 @@
         {
           "path": "docs/KAN-214-PR4.md",
           "note": "PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim."
+        },
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "User requested PR5; GitHub confirms PR17 merged/main3035f5e. Backend976/0skip and all4 hosted jobs green; real email delivery gate remains unaccepted."
         }
       ],
       "blockedReason": null
@@ -9034,7 +9038,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T293"
       ],
@@ -9055,8 +9059,145 @@
         {
           "path": "docs/KAN-214-PR4.md",
           "note": "PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim."
+        },
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "User requested PR5; GitHub confirms PR17 merged/main3035f5e. Backend976/0skip and all4 hosted jobs green; real email delivery gate remains unaccepted."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T295",
+      "title": "KAN-214 PR5: Merged baseline and frontend auth audit",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T277"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR5.md"
+      ],
+      "steps": [
+        "Confirm PR17 merge/current main, audit API/guest epoch/router/design/tests",
+        "Define account transport/state/lock/secret/Demo boundaries and verification before code"
+      ],
+      "acceptance": [
+        "Confirm PR17 merge/current main, audit API/guest epoch/router/design/tests",
+        "Define account transport/state/lock/secret/Demo boundaries and verification before code"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T296",
+      "title": "KAN-214 PR5: Shared client and account state",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T295"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR5.md"
+      ],
+      "steps": [
+        "Reuse shared/api.ts with explicit public/guest/auth/account classification and safe errors/decoders",
+        "Server-verified reload, one bounded refresh, single-flight/Web Locks and separate account epoch/abort",
+        "No secrets/account proof in browser storage; network unavailable is not anonymous"
+      ],
+      "acceptance": [
+        "Reuse shared/api.ts with explicit public/guest/auth/account classification and safe errors/decoders",
+        "Server-verified reload, one bounded refresh, single-flight/Web Locks and separate account epoch/abort",
+        "No secrets/account proof in browser storage; network unavailable is not anonymous"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T297",
+      "title": "KAN-214 PR5: Live forms and email link routes",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T296"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR5.md"
+      ],
+      "steps": [
+        "Real register/login/recovery/verification/resend/reset forms with loading/validation/abort and server-confirmed outcomes",
+        "Consume fragments before network/render, memory-only single-use link state and no auto confirm/login",
+        "Preserve v3 form/CSS and inert explicit Demo"
+      ],
+      "acceptance": [
+        "Real register/login/recovery/verification/resend/reset forms with loading/validation/abort and server-confirmed outcomes",
+        "Consume fragments before network/render, memory-only single-use link state and no auto confirm/login",
+        "Preserve v3 form/CSS and inert explicit Demo"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T298",
+      "title": "KAN-214 PR5: Logout guards and browser isolation",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T297"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR5.md"
+      ],
+      "steps": [
+        "Real server logout, private state clear/abort and cross-tab markers without credentials",
+        "Minimal current-account/profile guard, preserve guest-only /app functionality and defer KAN-215/216 business logic",
+        "Browser tests for errors, slow/double/cancel, expired sessions, tabs/account switch and real native-PG auth flow with isolated mailbox"
+      ],
+      "acceptance": [
+        "Real server logout, private state clear/abort and cross-tab markers without credentials",
+        "Minimal current-account/profile guard, preserve guest-only /app functionality and defer KAN-215/216 business logic",
+        "Browser tests for errors, slow/double/cancel, expired sessions, tabs/account switch and real native-PG auth flow with isolated mailbox"
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T299",
+      "title": "KAN-214 PR5: Frontend regression visual and PR handoff",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T298"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR5.md"
+      ],
+      "steps": [
+        "Keep all29 original routes plus2 technical routes, lint/typecheck/build/tests and relevant backend/native checks",
+        "Compare current v3 desktop/mobile with main; explain auth-only differences and do not rewrite baselines",
+        "Publish review PR with hosted results and explicit SMTP/production/full-browser gates, no merge"
+      ],
+      "acceptance": [
+        "Keep all29 original routes plus2 technical routes, lint/typecheck/build/tests and relevant backend/native checks",
+        "Compare current v3 desktop/mobile with main; explain auth-only differences and do not rewrite baselines",
+        "Publish review PR with hosted results and explicit SMTP/production/full-browser gates, no merge"
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

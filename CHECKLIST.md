@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 266 из 290 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 269 из 295 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -286,7 +286,7 @@
 - [x] T274 KAN-214: Password security foundation
 - [x] T275 KAN-214: Registration and login API
 - [x] T276 KAN-214: Refresh logout and CSRF
-- [ ] T277 KAN-214: Email verification and recovery — **нужна проверка / завершение**
+- [x] T277 KAN-214: Email verification and recovery
 - [ ] T278 KAN-214: React v3 account integration
 - [ ] T279 KAN-214: Final security and acceptance
 - [x] T280 KAN-214 PR2: Merged baseline and PR2 boundaries
@@ -303,7 +303,12 @@
 - [x] T291 KAN-214 PR4: Secure SMTP transport
 - [x] T292 KAN-214 PR4: Email verification and resend
 - [x] T293 KAN-214 PR4: Password recovery and revocation
-- [ ] T294 KAN-214 PR4: PR4 regression and review handoff — **нужна проверка / завершение**
+- [x] T294 KAN-214 PR4: PR4 regression and review handoff
+- [x] T295 KAN-214 PR5: Merged baseline and frontend auth audit
+- [ ] T296 KAN-214 PR5: Shared client and account state — **в работе**
+- [ ] T297 KAN-214 PR5: Live forms and email link routes
+- [ ] T298 KAN-214 PR5: Logout guards and browser isolation
+- [ ] T299 KAN-214 PR5: Frontend regression visual and PR handoff
 
 ## Резерв и выпуск
 

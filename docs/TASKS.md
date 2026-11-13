@@ -6039,7 +6039,7 @@
 
 ### T277. KAN-214: Email verification and recovery
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T276.
 
@@ -6057,6 +6057,7 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — User requested PR5; GitHub confirms PR17 merged/main3035f5e. Backend976/0skip and all4 hosted jobs green; real email delivery gate remains unaccepted.
 
 ### T278. KAN-214: React v3 account integration
 
@@ -6446,7 +6447,7 @@
 
 ### T294. KAN-214 PR4: PR4 regression and review handoff
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T293.
 
@@ -6468,6 +6469,130 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — PR4 SMTP/verification/recovery implemented. Local native-PG976/0skip,action/security83,mail/config35,frontend147,migrations0012 passed. Final SHA/PR/verified hosted results in review PR description. Actual SMTP inbox delivery remains an explicit external acceptance gate; no merge/production readiness claim.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — User requested PR5; GitHub confirms PR17 merged/main3035f5e. Backend976/0skip and all4 hosted jobs green; real email delivery gate remains unaccepted.
+
+### T295. KAN-214 PR5: Merged baseline and frontend auth audit
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T277.
+
+**Результаты/файлы:** `docs/KAN-214-PR5.md`.
+
+**Шаги:**
+
+1. Confirm PR17 merge/current main, audit API/guest epoch/router/design/tests.
+2. Define account transport/state/lock/secret/Demo boundaries and verification before code.
+
+**Критерии закрытия:**
+
+- Confirm PR17 merge/current main, audit API/guest epoch/router/design/tests.
+- Define account transport/state/lock/secret/Demo boundaries and verification before code.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/router and test runtime. Defined classification, independent account epoch, lock/retry/secret/Demo and real-PG browser acceptance before implementation.
+
+### T296. KAN-214 PR5: Shared client and account state
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T295.
+
+**Результаты/файлы:** `docs/KAN-214-PR5.md`.
+
+**Шаги:**
+
+1. Reuse shared/api.ts with explicit public/guest/auth/account classification and safe errors/decoders.
+2. Server-verified reload, one bounded refresh, single-flight/Web Locks and separate account epoch/abort.
+3. No secrets/account proof in browser storage; network unavailable is not anonymous.
+
+**Критерии закрытия:**
+
+- Reuse shared/api.ts with explicit public/guest/auth/account classification and safe errors/decoders.
+- Server-verified reload, one bounded refresh, single-flight/Web Locks and separate account epoch/abort.
+- No secrets/account proof in browser storage; network unavailable is not anonymous.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T297. KAN-214 PR5: Live forms and email link routes
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T296.
+
+**Результаты/файлы:** `docs/KAN-214-PR5.md`.
+
+**Шаги:**
+
+1. Real register/login/recovery/verification/resend/reset forms with loading/validation/abort and server-confirmed outcomes.
+2. Consume fragments before network/render, memory-only single-use link state and no auto confirm/login.
+3. Preserve v3 form/CSS and inert explicit Demo.
+
+**Критерии закрытия:**
+
+- Real register/login/recovery/verification/resend/reset forms with loading/validation/abort and server-confirmed outcomes.
+- Consume fragments before network/render, memory-only single-use link state and no auto confirm/login.
+- Preserve v3 form/CSS and inert explicit Demo.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T298. KAN-214 PR5: Logout guards and browser isolation
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T297.
+
+**Результаты/файлы:** `docs/KAN-214-PR5.md`.
+
+**Шаги:**
+
+1. Real server logout, private state clear/abort and cross-tab markers without credentials.
+2. Minimal current-account/profile guard, preserve guest-only /app functionality and defer KAN-215/216 business logic.
+3. Browser tests for errors, slow/double/cancel, expired sessions, tabs/account switch and real native-PG auth flow with isolated mailbox.
+
+**Критерии закрытия:**
+
+- Real server logout, private state clear/abort and cross-tab markers without credentials.
+- Minimal current-account/profile guard, preserve guest-only /app functionality and defer KAN-215/216 business logic.
+- Browser tests for errors, slow/double/cancel, expired sessions, tabs/account switch and real native-PG auth flow with isolated mailbox.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T299. KAN-214 PR5: Frontend regression visual and PR handoff
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T298.
+
+**Результаты/файлы:** `docs/KAN-214-PR5.md`.
+
+**Шаги:**
+
+1. Keep all29 original routes plus2 technical routes, lint/typecheck/build/tests and relevant backend/native checks.
+2. Compare current v3 desktop/mobile with main; explain auth-only differences and do not rewrite baselines.
+3. Publish review PR with hosted results and explicit SMTP/production/full-browser gates, no merge.
+
+**Критерии закрытия:**
+
+- Keep all29 original routes plus2 technical routes, lint/typecheck/build/tests and relevant backend/native checks.
+- Compare current v3 desktop/mobile with main; explain auth-only differences and do not rewrite baselines.
+- Publish review PR with hosted results and explicit SMTP/production/full-browser gates, no merge.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 
