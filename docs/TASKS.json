@@ -9164,7 +9164,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T297"
       ],
@@ -9181,7 +9181,12 @@
         "Minimal current-account/profile guard, preserve guest-only /app functionality and defer KAN-215/216 business logic",
         "Browser tests for errors, slow/double/cancel, expired sessions, tabs/account switch and real native-PG auth flow with isolated mailbox"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "Minimal account guard/logout and cross-tab isolation verified; default172 tests, transport35, native PostgreSQL browser2 and backend976/0skip passed. Test mailbox/clock are private filesystem-only; real SMTP delivery remains unaccepted."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9190,7 +9195,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T298"
       ],

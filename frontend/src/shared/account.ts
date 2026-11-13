@@ -67,7 +67,10 @@ export function restoreAccount(): Promise<void> {
             observed = revision;
             try {
                 const session = await locked(readSession);
-                if (observed === revision && enabled) publish(session ? { status: 'authenticated', session } : { status: 'anonymous' });
+                if (observed === revision && enabled) {
+                    if (!session || (state.status === 'authenticated' && state.session.account.id !== session.account.id)) invalidateAccount();
+                    publish(session ? { status: 'authenticated', session } : { status: 'anonymous' });
+                }
             } catch (error) {
                 if (observed === revision && enabled) {
                     invalidateAccount();

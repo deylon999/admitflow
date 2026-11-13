@@ -6546,7 +6546,7 @@
 
 ### T298. KAN-214 PR5: Logout guards and browser isolation
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T297.
 
@@ -6567,11 +6567,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — Minimal account guard/logout and cross-tab isolation verified; default172 tests, transport35, native PostgreSQL browser2 and backend976/0skip passed. Test mailbox/clock are private filesystem-only; real SMTP delivery remains unaccepted.
 
 ### T299. KAN-214 PR5: Frontend regression visual and PR handoff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T298.
 

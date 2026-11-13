@@ -43,3 +43,43 @@ test('account boundary rejects a response whose body completed after owner chang
         await expect(result).rejects.toMatchObject({ status: 401, code: 'account_changed', requiresSession: false });
     } finally { globalThis.fetch = original; }
 });
+
+test('only account access_expired retries once; public, guest and login 401 never refresh', async () => {
+    const original = globalThis.fetch;
+    let refreshes = 0, expired = 0;
+    api.configureAccountPolicy({ ready: async () => {}, refresh: async () => { refreshes++; }, expired: () => { expired++; } });
+    globalThis.fetch = async () => new Response(JSON.stringify({ code: 'access_expired' }), { status: 401 });
+    try {
+        for (const path of ['catalog/programs', 'subscriptions', 'auth/login']) await expect(api.request(path, v => v)).rejects.toMatchObject({ status: 401 });
+        expect(refreshes).toBe(0);
+        await expect(api.request('account/example', v => v)).rejects.toMatchObject({ status: 401 });
+        expect(refreshes).toBe(1); expect(expired).toBe(1);
+    } finally { globalThis.fetch = original; }
+});
+test('account scope rejects success when owner changes while waiting for policy', async () => {
+    let release!: () => void, calls = 0;
+    const original = globalThis.fetch;
+    const waiting = new Promise<void>(done => { release = done; });
+    api.configureAccountPolicy({ ready: () => waiting, refresh: async () => {}, expired: () => {} });
+    globalThis.fetch = async () => { calls++; return new Response('{}'); };
+    try {
+        const result = api.request('account/example', v => v);
+        api.invalidateAccount(); release();
+        await expect(result).rejects.toMatchObject({ code: 'account_changed' });
+        expect(calls).toBe(0);
+    } finally { globalThis.fetch = original; }
+});
+test('owner change during retry cannot expire the newly selected account', async () => {
+    let calls = 0, expired = 0;
+    const original = globalThis.fetch;
+    api.configureAccountPolicy({ ready: async () => {}, refresh: async () => {}, expired: () => { expired++; } });
+    globalThis.fetch = async () => {
+        calls++;
+        if (calls === 2) api.invalidateAccount();
+        return new Response(JSON.stringify({ code: 'access_expired' }), { status: 401 });
+    };
+    try {
+        await expect(api.request('account/example', v => v)).rejects.toMatchObject({ code: 'account_changed' });
+        expect(expired).toBe(0);
+    } finally { globalThis.fetch = original; }
+});

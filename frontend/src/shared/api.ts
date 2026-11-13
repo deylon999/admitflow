@@ -73,7 +73,7 @@ export async function request<T>(path: string, decode: Decoder<T>, init: Request
         if (ownerBefore !== accountEpoch) throw new ApiError(401, 'Состояние аккаунта изменилось.', false, 'account_changed');
         try { return await performRequest(path, decode, init); }
         catch (retryError) {
-            if (retryError instanceof ApiError && retryError.status === 401) accountPolicy.expired();
+            if (retryError instanceof ApiError && retryError.status === 401 && retryError.code !== 'account_changed') accountPolicy.expired();
             throw retryError;
         }
     }

@@ -1350,3 +1350,7 @@ Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, 
 ## S214 — T297 KAN-214 PR5 (2026-11-13)
 
 Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed.
+
+## S214 — T298 KAN-214 PR5 (2026-11-13)
+
+Minimal account guard/logout and cross-tab isolation verified; default172 tests, transport35, native PostgreSQL browser2 and backend976/0skip passed. Test mailbox/clock are private filesystem-only; real SMTP delivery remains unaccepted.

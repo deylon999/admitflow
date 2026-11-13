@@ -123,3 +123,80 @@ test('unavailable session is distinct from anonymous and Demo sends no auth requ
     await expect(page.locator('.af-inline-success')).toContainText('вход пока не подключён');
     expect(calls).toBe(before);
 });
+
+test('invalid credentials never refresh, create guest access or show a successful login', async ({ page, context }) => {
+    const server = await mockAuth(context);
+    await context.route('**/api/v1/auth/login', route => route.fulfill({ status: 401, json: { code: 'not_authenticated', detail: 'private@example.org' } }));
+    let guestWrites = 0;
+    page.on('request', req => { if (req.url().endsWith('/api/v1/session') && req.method() !== 'GET') guestWrites++; });
+    await page.goto('/auth/login');
+    await page.getByLabel('EMAIL', { exact: true }).fill('invalid@example.org');
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('wrong-password');
+    await page.getByRole('button', { name: 'Войти ↗' }).click();
+    await expect(page.getByRole('alert')).toContainText('Не удалось войти');
+    await expect(page.getByLabel('ПАРОЛЬ', { exact: true })).toHaveValue('');
+    expect(server.refreshes).toBe(0); expect(guestWrites).toBe(0);
+    await expect(page).toHaveURL(/\/auth\/login$/);
+});
+test('login does not trust POST when subsequent server session belongs to another user', async ({ page, context }) => {
+    await mockAuth(context);
+    await context.route('**/api/v1/auth/login', route => route.fulfill({ status: 200, json: { account: { id: 'claimed', email: 'claimed@example.org', emailVerified: true }, accessExpiresAt: '2026-11-13T12:15:00Z', absoluteExpiresAt: '2026-12-13T12:00:00Z' } }));
+    await page.goto('/auth/login');
+    await page.getByLabel('EMAIL', { exact: true }).fill('claimed@example.org');
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('wrong-password');
+    await page.getByRole('button', { name: 'Войти ↗' }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page).toHaveURL(/\/auth\/login$/);
+    await expect(page.locator('#root')).not.toContainText('Мой аккаунт');
+});
+test('peer clears private content before a slow logout completes', async ({ page, context }) => {
+    const server = await mockAuth(context);
+    await signIn(page);
+    const other = await context.newPage(); await other.goto('/app/profile');
+    await expect(other.locator('#root')).toContainText('alice@example.org');
+    server.delay = 800;
+    await page.getByRole('button', { name: 'Выйти из аккаунта' }).click();
+    await expect(other.locator('#root')).not.toContainText('alice@example.org');
+    await expect(other.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
+});
+test('expired refresh is terminal, a failed refresh is never looped', async ({ page, context }) => {
+    const server = await mockAuth(context); server.user = 'alice'; server.expired = true;
+    let refreshes = 0;
+    await context.route('**/api/v1/auth/refresh', route => { refreshes++; return route.fulfill({ status: 401, json: { code: 'not_authenticated' } }); });
+    await page.goto('/app/profile');
+    await expect(page.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
+    expect(refreshes).toBe(1);
+    await expect(page.locator('#root')).not.toContainText('alice@example.org');
+});
+test('without cross-tab locking expired access requires re-login rather than unsafe refresh', async ({ page, context }) => {
+    const server = await mockAuth(context); server.user = 'alice'; server.expired = true;
+    await page.addInitScript(() => Object.defineProperty(navigator, 'locks', { value: undefined, configurable: true }));
+    await page.goto('/app/profile');
+    await expect(page.getByRole('alert')).toContainText('Web Locks');
+    expect(server.refreshes).toBe(0);
+});
+test('failed logout hides private state but does not claim server revocation', async ({ page, context }) => {
+    const server = await mockAuth(context); await signIn(page); server.failure = 503;
+    await page.getByRole('button', { name: 'Выйти из аккаунта' }).click();
+    await expect(page.getByRole('heading', { name: 'Не удалось проверить аккаунт' })).toBeVisible();
+    expect(server.user).toBe('alice');
+    await expect(page.locator('#root')).not.toContainText('alice@example.org');
+});
+for (const url of ['/auth/verify?token=unsafe', '/auth/reset#token=short', '/auth/verify#token=' + 'x'.repeat(43) + '&token=' + 'y'.repeat(43)]) test(`malformed or query credential is removed and cannot submit: ${url.slice(0, 40)}`, async ({ page, context }) => {
+    const server = await mockAuth(context);
+    await page.goto(url);
+    await expect(page).toHaveURL(/\/auth\/(verify|reset)$/);
+    await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
+    await expect(page.locator('form')).toHaveCount(0);
+    expect(server.posts).toEqual([]);
+});
+test('route exit cancels a slow form without showing success on the next route', async ({ page, context }) => {
+    const server = await mockAuth(context); server.delay = 600;
+    await page.goto('/auth/recovery');
+    await page.getByLabel('EMAIL', { exact: true }).fill('slow@example.org');
+    await page.getByRole('button', { name: 'Получить инструкцию ↗' }).click();
+    await page.getByRole('link', { name: 'Войти', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'С возвращением!' })).toBeVisible();
+    await expect(page.locator('.af-inline-success')).toHaveCount(0);
+    await expect(page.getByLabel('ПАРОЛЬ', { exact: true })).toHaveValue('');
+});

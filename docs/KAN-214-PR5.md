@@ -73,3 +73,21 @@ Initial full browser run: all9 new auth scenarios passed; three regressions expo
 an unnecessary account bootstrap on public catalog pages and changed public401
 wording. Fixed by lazy bootstrap on auth/app routes and preserving the public error
 contract. No existing guest assertion was relaxed.
+
+T298: minimal current-account guard and server logout preserve guest identity. Peer
+begin markers clear old account content before slow logout, end markers reconcile
+under Web Locks; a bounded fallback handles a tab closing before its end marker.
+Focus/pageshow revalidation also drops old private state first. A terminal session
+read invalidates pending private reads; an account change during an API retry cannot
+expire the new account. No refresh without Web Locks (HTTPS/localhost browser API).
+Default browser suite extended with credential denial, failed POST/session mismatch,
+slow logout/route cancellation, malformed links, expired refresh and no-lock fallback.
+Native-PG browser runtime lives only in backend/tests: random disposable schema,
+private ephemeral file mailbox/clock outside artifacts and web root, no debug HTTP
+routes or runtime product flags. Credentials excluded from E2E trace/screenshots.
+
+Validation T298: default Playwright172 passed; targeted transport/DTO35 passed after
+additional stale-owner retry fix; two native PostgreSQL browser scenarios passed
+(account lifecycle/refresh/logout/recovery and account switch/CSRF/wrong password).
+Full unchanged backend regression:976 passed,0 skipped,4 existing Alembic warnings,
+306.32s on Python3.14/PostgreSQL17. Backend product code/migrations are unchanged.
