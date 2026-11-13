@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": null,
-  "nextTask": "T299",
+  "currentTask": "T301",
+  "nextTask": "T301",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S214",
-  "resumeAction": "KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. Read docs/KAN-214-PR5.md and PR description for final SHA/hosted checks. Do not merge autonomously or start PR6 before acceptance. Real SMTP delivery and production HTTPS/proxy gate remain external.",
+  "lastSession": "S215",
+  "resumeAction": "KAN-214 PR6 final acceptance from owner-merged main12c78e4. Five tasks T300-T304: audit, security matrix, native-PG cross-browser/CI, regression/migration/visual, report/review. Do not merge autonomously or mark full acceptance without real delivery/owner decision.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -16,7 +16,7 @@
     "KAN-214 real SMTP/provider inbox delivery and production HTTPS/proxy/egress gate remain unaccepted after code-only PR4 merge. Backend auth defaults disabled; frontend must show actual503 without fake success."
   ],
   "lastCompleted": [
-    "T295-T298: merged-main audit, shared account lifecycle, Live forms/email links, guard/logout, guest compatibility and native-PG browser evidence complete. T278/T299 remain review."
+    "T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged."
   ],
   "environment": [
     "S214: frontend175 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).",

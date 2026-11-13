@@ -1362,3 +1362,9 @@ React integration complete in five implementation steps. Local174 frontend tests
 S214 PR5 mobile follow-up: wrap long account email in the new account summary;175 frontend tests passed (22.6s), lint/typecheck clean. No CSS files or retained visual routes changed. Final hosted verification remains in PR18 description; review/production gates unchanged.
 
 S214 PR5 URL boundary follow-up: canonicalize a trailing slash consistently with App before capturing/erasing email fragments. Existing browser case extended;175 tests passed (22.5s), lint/typecheck clean. Review/gates unchanged; final PR description records the updated head and hosted run.
+
+## S215 — KAN-214 PR6 acceptance plan (2026-11-13)
+
+Owner requested PR6. PR18 merge confirmed by GitHub and fresh origin/main12c78e4. Clean branch feat/kan-214-final-acceptance. Five tasks T300-T304 acceptance defined before implementation; no autonomous merge or production acceptance. SMTP/HTTPS remain external until actual evidence.
+
+S215 T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.

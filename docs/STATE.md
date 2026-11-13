@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S214.
+Дата: 2026-11-13. Последняя сессия: S215.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T299.
+- Текущая задача: T301.
+- Следующая задача: T301.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. Read docs/KAN-214-PR5.md and PR description for final SHA/hosted checks. Do not merge autonomously or start PR6 before acceptance. Real SMTP delivery and production HTTPS/proxy gate remain external.
+KAN-214 PR6 final acceptance from owner-merged main12c78e4. Five tasks T300-T304: audit, security matrix, native-PG cross-browser/CI, regression/migration/visual, report/review. Do not merge autonomously or mark full acceptance without real delivery/owner decision.
 
 ## Последняя завершённая работа
 
-- T295-T298: merged-main audit, shared account lifecycle, Live forms/email links, guard/logout, guest compatibility and native-PG browser evidence complete. T278/T299 remain review.
+- T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
 
 ## Ограничения
 

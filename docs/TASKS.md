@@ -6061,7 +6061,7 @@
 
 ### T278. KAN-214: React v3 account integration
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T277.
 
@@ -6079,6 +6079,7 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — PR18 owner-merged into main12c78e4; final source6ae95ad/run43474248315 all4 jobs green, backend976/0skip and frontend175. Delivery/production gate remains unaccepted.
 
 ### T279. KAN-214: Final security and acceptance
 
@@ -6571,7 +6572,7 @@
 
 ### T299. KAN-214 PR5: Frontend regression visual and PR handoff
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T298.
 
@@ -6593,6 +6594,127 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted.
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — PR18 owner-merged into main12c78e4; final source6ae95ad/run43474248315 all4 jobs green, backend976/0skip and frontend175. Delivery/production gate remains unaccepted.
+
+### T300. KAN-214 PR6: Merged baseline and acceptance audit
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T278.
+
+**Результаты/файлы:** `docs/KAN-214-PR6.md`.
+
+**Шаги:**
+
+1. Confirm PR18 owner merge and audit current auth models/API/browser/security/infrastructure.
+2. Define critical-case matrix and distinguish code verification from external production acceptance.
+
+**Критерии закрытия:**
+
+- Confirm PR18 owner merge and audit current auth models/API/browser/security/infrastructure.
+- Define critical-case matrix and distinguish code verification from external production acceptance.
+- Общая Definition of Done: docs/QUALITY.md..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
+
+### T301. KAN-214 PR6: Security regression and evidence
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T300.
+
+**Результаты/файлы:** `docs/KAN-214-PR6.md`.
+
+**Шаги:**
+
+1. Map every critical auth threat to reproducible tests; close material gaps without weakening existing checks.
+2. Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation.
+
+**Критерии закрытия:**
+
+- Map every critical auth threat to reproducible tests; close material gaps without weakening existing checks.
+- Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation.
+- Общая Definition of Done: docs/QUALITY.md..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T302. KAN-214 PR6: Native PostgreSQL cross-browser acceptance
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T301.
+
+**Результаты/файлы:** `docs/KAN-214-PR6.md`.
+
+**Шаги:**
+
+1. Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport.
+2. Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service.
+
+**Критерии закрытия:**
+
+- Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport.
+- Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service.
+- Общая Definition of Done: docs/QUALITY.md..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T303. KAN-214 PR6: Migration visual and full regression
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T302.
+
+**Результаты/файлы:** `docs/KAN-214-PR6.md`.
+
+**Шаги:**
+
+1. Verify additive migration with guest history preserved, clean head/schema and all existing backend/frontend routes/tests.
+2. Compare approved v3 Live/Demo desktop/mobile without rewriting baselines and record actual outcomes.
+
+**Критерии закрытия:**
+
+- Verify additive migration with guest history preserved, clean head/schema and all existing backend/frontend routes/tests.
+- Compare approved v3 Live/Demo desktop/mobile without rewriting baselines and record actual outcomes.
+- Общая Definition of Done: docs/QUALITY.md..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T304. KAN-214 PR6: Final report and review handoff
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T303.
+
+**Результаты/файлы:** `docs/KAN-214-PR6.md`.
+
+**Шаги:**
+
+1. Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR.
+2. Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception.
+
+**Критерии закрытия:**
+
+- Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR.
+- Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception.
+- Общая Definition of Done: docs/QUALITY.md..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 
