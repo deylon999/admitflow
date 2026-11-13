@@ -1298,3 +1298,7 @@ T280-T283 done; registration/login/current account/CSRF and durable HMAC budgets
 ## S211 — T275/T284 hosted confirmation (2026-11-13)
 
 PR15 source7a90d60/run43413656989 all4 jobs success. Backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check,repository tools17/0skip. PR ready for owner review, no merge. Update factual STATE/evidence; final documentation SHA/checks maintained in PR15 description.
+
+## S212 — T285 KAN-214 PR3 (2026-11-13)
+
+Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation.

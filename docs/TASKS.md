@@ -5995,7 +5995,7 @@
 
 ### T275. KAN-214: Registration and login API
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T274.
 
@@ -6013,6 +6013,7 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — User requested PR3; GitHub confirms PR15 merged into main5cddc54 with all4 hosted jobs green.
 
 ### T276. KAN-214: Refresh logout and CSRF
 
@@ -6198,7 +6199,7 @@
 
 ### T284. KAN-214 PR2: PR2 regression and review delivery
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T283.
 
@@ -6220,6 +6221,128 @@
 **Доказательства:**
 
 - [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — User requested PR3; GitHub confirms PR15 merged into main5cddc54 with all4 hosted jobs green.
+
+### T285. KAN-214 PR3: Merged baseline and lifecycle acceptance
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T275.
+
+**Результаты/файлы:** `docs/KAN-214-PR3.md`.
+
+**Шаги:**
+
+1. Confirm merged PR15/current main, isolated branch and PR2 acceptance.
+2. Specify refresh/logout/CSRF/replay and native PG checks before implementation.
+
+**Критерии закрытия:**
+
+- Confirm merged PR15/current main, isolated branch and PR2 acceptance.
+- Specify refresh/logout/CSRF/replay and native PG checks before implementation.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR3.md](../docs/KAN-214-PR3.md) — Confirmed PR15 merged/main5cddc54; PR2 accepted, lifecycle/CSRF/locking/replay/logout and real PostgreSQL acceptance documented before implementation.
+
+### T286. KAN-214 PR3: Refresh rotation and expiry
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T285.
+
+**Результаты/файлы:** `docs/KAN-214-PR3.md`.
+
+**Шаги:**
+
+1. Mint independent refresh at login; server checks user/session/credential deadlines.
+2. Atomic user/session/refresh/context locking, one rotation, durable family revocation on replay.
+3. Access-expired classification and session-bound CSRF restoration without creating guests.
+
+**Критерии закрытия:**
+
+- Mint independent refresh at login; server checks user/session/credential deadlines.
+- Atomic user/session/refresh/context locking, one rotation, durable family revocation on replay.
+- Access-expired classification and session-bound CSRF restoration without creating guests.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T287. KAN-214 PR3: Server logout and revocation
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T286.
+
+**Результаты/файлы:** `docs/KAN-214-PR3.md`.
+
+**Шаги:**
+
+1. Revoke family server-side before deleting account cookies; preserve guest history.
+2. Expired access logout, safe repeat with CSRF, other-session/account isolation.
+3. No cookie deletion or false success on DB failure.
+
+**Критерии закрытия:**
+
+- Revoke family server-side before deleting account cookies; preserve guest history.
+- Expired access logout, safe repeat with CSRF, other-session/account isolation.
+- No cookie deletion or false success on DB failure.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T288. KAN-214 PR3: Concurrency and security regression
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T287.
+
+**Результаты/файлы:** `docs/KAN-214-PR3.md`.
+
+**Шаги:**
+
+1. Native PG simultaneous refresh/replay/logout races and rollback behavior.
+2. CSRF/Origin/cookie tampering, expired/revoked credentials, trusted-peer budgets and secret redaction.
+
+**Критерии закрытия:**
+
+- Native PG simultaneous refresh/replay/logout races and rollback behavior.
+- CSRF/Origin/cookie tampering, expired/revoked credentials, trusted-peer budgets and secret redaction.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T289. KAN-214 PR3: PR3 verification and review delivery
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T288.
+
+**Результаты/файлы:** `docs/KAN-214-PR3.md`.
+
+**Шаги:**
+
+1. Full native backend, frontend regression, migrations and hosted checks.
+2. Document browser coordination reserved for PR5, external SMTP/HTTPS gates and no production readiness claim.
+3. Publish small reviewable PR, update STATE/TASKS/LOG, no autonomous merge.
+
+**Критерии закрытия:**
+
+- Full native backend, frontend regression, migrations and hosted checks.
+- Document browser coordination reserved for PR5, external SMTP/HTTPS gates and no production readiness claim.
+- Publish small reviewable PR, update STATE/TASKS/LOG, no autonomous merge.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 
