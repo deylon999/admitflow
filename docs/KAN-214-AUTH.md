@@ -294,3 +294,10 @@ using the target contracts above. T276-279 remain open; no next-stage implementa
 started before review. No production secrets, user DB, volumes or deployed stack changed.
 
 Final local command: `TEST_DATABASE_URL=<isolated PG> backend/.venv/bin/python -m pytest -q --require-postgres --ignore=backend/tests/test_admission_history.py --ignore=backend/tests/test_accreditation_registry.py --ignore=backend/tests/test_exam_requirements.py backend/tests`. ETL runs separately above, as in CI. Final local PostgreSQL schemas cleaned; owned test container and its anonymous volume removed. User volumes untouched.
+
+## S211 continuation after owner merged PR14
+
+PR2 implementation and current endpoint/CSRF/disabled-rollout details are in
+[KAN-214-PR2.md](KAN-214-PR2.md). Earlier “no endpoints” statements describe PR1's
+historical state. PR2 issues access only, never refresh until PR3; it brings forward
+synchronizer CSRF for safe login/registration. Actual mail unavailable until PR4.

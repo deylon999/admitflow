@@ -5995,7 +5995,7 @@
 
 ### T275. KAN-214: Registration and login API
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T274.
 
@@ -6012,7 +6012,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
 
 ### T276. KAN-214: Refresh logout and CSRF
 
@@ -6099,6 +6099,127 @@
 **Доказательства:**
 
 Пока нет.
+
+### T280. KAN-214 PR2: Merged baseline and PR2 boundaries
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T274.
+
+**Результаты/файлы:** `docs/KAN-214-PR2.md`.
+
+**Шаги:**
+
+1. Verify merged PR14 and clean main branch.
+2. Specify implemented API, mail boundary, CSRF prerequisite and verification evidence.
+
+**Критерии закрытия:**
+
+- Verify merged PR14 and clean main branch.
+- Specify implemented API, mail boundary, CSRF prerequisite and verification evidence.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
+
+### T281. KAN-214 PR2: Persistent auth rate budgets
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T280.
+
+**Результаты/файлы:** `docs/KAN-214-PR2.md`.
+
+**Шаги:**
+
+1. Atomic committed HMAC-keyed database counters before hashing/mail.
+2. Native PG concurrent limits, restart persistence, windows and no forwarded-header trust.
+
+**Критерии закрытия:**
+
+- Atomic committed HMAC-keyed database counters before hashing/mail.
+- Native PG concurrent limits, restart persistence, windows and no forwarded-header trust.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report).
+
+### T282. KAN-214 PR2: Registration and CSRF prerequisite
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T281.
+
+**Результаты/файлы:** `docs/KAN-214-PR2.md`.
+
+**Шаги:**
+
+1. Bounded strict DTOs and synchronizer context; preserve Origin/custom header.
+2. Create normalized unverified user and purpose-hashed action transactionally; generic duplicate response.
+3. No mail port means503 without false success; injectable isolated test transport only.
+
+**Критерии закрытия:**
+
+- Bounded strict DTOs and synchronizer context; preserve Origin/custom header.
+- Create normalized unverified user and purpose-hashed action transactionally; generic duplicate response.
+- No mail port means503 without false success; injectable isolated test transport only.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification.
+
+### T283. KAN-214 PR2: Login and current account session
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T282.
+
+**Результаты/файлы:** `docs/KAN-214-PR2.md`.
+
+**Шаги:**
+
+1. Real Argon2id verification, uniform credential denial and user lock recheck.
+2. Independent access credential, session CSRF rotation and current-account dependency.
+3. Expiry/revocation/status checked server-side; no guest mutation or refresh issuance.
+
+**Критерии закрытия:**
+
+- Real Argon2id verification, uniform credential denial and user lock recheck.
+- Independent access credential, session CSRF rotation and current-account dependency.
+- Expiry/revocation/status checked server-side; no guest mutation or refresh issuance.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.
+
+### T284. KAN-214 PR2: PR2 regression and review delivery
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T283.
+
+**Результаты/файлы:** `docs/KAN-214-PR2.md`.
+
+**Шаги:**
+
+1. Native PG registration/login/CSRF/rate/concurrency/guest tests.
+2. Full backend, migration, frontend and hosted checks; reviewable PR, no merge.
+3. Document unfinished refresh/logout/email delivery and safe disabled-by-default rollout.
+
+**Критерии закрытия:**
+
+- Native PG registration/login/CSRF/rate/concurrency/guest tests.
+- Full backend, migration, frontend and hosted checks; reviewable PR, no merge.
+- Document unfinished refresh/logout/email delivery and safe disabled-by-default rollout.
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
 
 ## E6. Резерв и выпуск
 

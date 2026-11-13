@@ -3,20 +3,23 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S210.
+Дата: 2026-11-13. Последняя сессия: S211.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T275.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final local backend763/0skip, frontend147, ETL55+1 explicit dataset skip, native migration0012/head/check pass. Latest hosted status/source SHA in PR14. No auth endpoints or frontend integration yet. After review/merge continue T275 PR2; never merge autonomously.
+KAN-214 PR2 in PR15 ready for owner review/merge. T280-T283 done; T275/T284 review. Source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check. Latest documentation SHA/checks maintained in PR15 description. After owner merge continue T276 PR3; never merge autonomously. Auth disabled by default; real SMTP,refresh/logout and frontend remain later PRs.
 
 ## Последняя завершённая работа
 
-- T274: Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy verification, rehash and purpose-separated tokens implemented;52 primitive/guest/API tests pass,pip check clean. PR1 awaiting review; PR2-6 not implemented.
+- T283: Real verified-account login and current-session API, server-state checks, CSRF rotation, safe cookies, password-change/concurrent-login races and guest isolation verified.
+- T282: Registration, unique-user/action persistence, CSRF/Origin and explicit mail failures verified.
+- T281: Persistent HMAC budgets verified against native PostgreSQL concurrency/restart/windows.
+- T280: PR14 merge/main494d270 and PR2 boundaries verified.
 
 ## Ограничения
 
@@ -25,13 +28,13 @@ KAN-214 PR1/6 in PR14 awaiting owner review/merge. T270-T274 implemented; final 
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.
-- PR14 owner review/merge required before PR2; KAN-214 full acceptance remains open.
+- KAN-214 PR2 owner review/merge required before PR3. Real SMTP/confirmation/recovery and refresh/logout remain unimplemented; production auth must stay disabled.
 
 ## Проверенное окружение
 
-- S210: final local required-native-PostgreSQL backend763 passed/0skip; frontend npm ci/lint/typecheck/build/test147 passed; ETL55 passed+1 explicit missing-dataset skip; migrations0012/head/schema check passed.
-- Focused foundation/password/catalog48 passed. Real PostgreSQL17 random schemas prove uniqueness races, constraints, guest preservation and account cleanup. Owned test DB container/anonymous volume removed after tests; no AdmitFlow user DB/volume modified.
-- PR14 first workflow43409888388; final SHA/latest hosted status maintained in PR14 description. No frontend/CSS/baseline/workflow/compose changes. No production email or HTTPS claim.
+- S211: hosted source7a90d60/run43413656989 all4 jobs success:backend820 passed/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check; repository tools17/0skip. Local full811/0skip plus16 targeted cases documented separately; final SHA/latest checks in PR15 description.
+- Frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check pass; native clean migration0012/head/schema alignment pass; repository tools17 with1 local missing-PDF-dependency skip.
+- Owned PostgreSQL17 test container/databases/random schemas removed; user DBs/volumes/other containers untouched. No frontend/CSS/CI/compose/applied-migration changes. Auth disabled by default; no real email or full auth acceptance.
 
 ## Готовность к выпуску
 

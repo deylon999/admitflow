@@ -48,7 +48,7 @@ def token_hash(token):
     return hashlib.sha256(token.encode()).hexdigest()
 
 
-def create_app(settings: Settings | None = None):
+def create_app(settings: Settings | None = None, *, registration_mailer=None):
     config = settings or Settings.from_env()
     from .sources.registry import runtime_registry,identity_key
     source_registry=runtime_registry()
@@ -117,6 +117,9 @@ def create_app(settings: Settings | None = None):
     def database():
         with Session(engine) as session:
             yield session
+
+    from .account_api import install as install_accounts
+    install_accounts(app, database, config, engine, mailer=registration_mailer)
 
     def identify_owner(request, db, *, lock=False):
         token = request.cookies.get(COOKIE, '')

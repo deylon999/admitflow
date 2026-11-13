@@ -8467,7 +8467,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T274"
       ],
@@ -8480,7 +8480,12 @@
       "acceptance": [
         "Implement PR2 acceptance from KAN-214 specification with PostgreSQL tests and review"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8571,6 +8576,157 @@
         "Require real email delivery or explicit documented owner exception"
       ],
       "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T280",
+      "title": "KAN-214 PR2: Merged baseline and PR2 boundaries",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T274"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR2.md"
+      ],
+      "steps": [
+        "Verify merged PR14 and clean main branch",
+        "Specify implemented API, mail boundary, CSRF prerequisite and verification evidence"
+      ],
+      "acceptance": [
+        "Verify merged PR14 and clean main branch",
+        "Specify implemented API, mail boundary, CSRF prerequisite and verification evidence"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T281",
+      "title": "KAN-214 PR2: Persistent auth rate budgets",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T280"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR2.md"
+      ],
+      "steps": [
+        "Atomic committed HMAC-keyed database counters before hashing/mail",
+        "Native PG concurrent limits, restart persistence, windows and no forwarded-header trust"
+      ],
+      "acceptance": [
+        "Atomic committed HMAC-keyed database counters before hashing/mail",
+        "Native PG concurrent limits, restart persistence, windows and no forwarded-header trust"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report)."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T282",
+      "title": "KAN-214 PR2: Registration and CSRF prerequisite",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T281"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR2.md"
+      ],
+      "steps": [
+        "Bounded strict DTOs and synchronizer context; preserve Origin/custom header",
+        "Create normalized unverified user and purpose-hashed action transactionally; generic duplicate response",
+        "No mail port means503 without false success; injectable isolated test transport only"
+      ],
+      "acceptance": [
+        "Bounded strict DTOs and synchronizer context; preserve Origin/custom header",
+        "Create normalized unverified user and purpose-hashed action transactionally; generic duplicate response",
+        "No mail port means503 without false success; injectable isolated test transport only"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T283",
+      "title": "KAN-214 PR2: Login and current account session",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T282"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR2.md"
+      ],
+      "steps": [
+        "Real Argon2id verification, uniform credential denial and user lock recheck",
+        "Independent access credential, session CSRF rotation and current-account dependency",
+        "Expiry/revocation/status checked server-side; no guest mutation or refresh issuance"
+      ],
+      "acceptance": [
+        "Real Argon2id verification, uniform credential denial and user lock recheck",
+        "Independent access credential, session CSRF rotation and current-account dependency",
+        "Expiry/revocation/status checked server-side; no guest mutation or refresh issuance"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T284",
+      "title": "KAN-214 PR2: PR2 regression and review delivery",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T283"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR2.md"
+      ],
+      "steps": [
+        "Native PG registration/login/CSRF/rate/concurrency/guest tests",
+        "Full backend, migration, frontend and hosted checks; reviewable PR, no merge",
+        "Document unfinished refresh/logout/email delivery and safe disabled-by-default rollout"
+      ],
+      "acceptance": [
+        "Native PG registration/login/CSRF/rate/concurrency/guest tests",
+        "Full backend, migration, frontend and hosted checks; reviewable PR, no merge",
+        "Document unfinished refresh/logout/email delivery and safe disabled-by-default rollout"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs."
+        }
+      ],
       "blockedReason": null
     }
   ]

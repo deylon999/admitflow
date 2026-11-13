@@ -1270,3 +1270,31 @@ Argon2id RFC9106 production parameters, input policy, bounded capacity, dummy ve
 ## S210 — T270-T274 regression and PR14 handoff (2026-11-13)
 
 Final local backend763 passed/0skip with required native PostgreSQL; focused48; frontend147 plus ci/lint/typecheck/build; ETL55+1 explicit dataset skip; clean PostgreSQL migration0012/head/check. Initial full run760+2 historical head failures fixed and full rerun green. PR14 foundation only awaiting owner review; no merge or PR2 started. Owned test schemas/container/anonymous volume cleaned, user DB/volumes untouched. Latest source SHA/hosted checks in PR14 description. SMTP/HTTPS/proxy/egress remain external acceptance requirements.
+
+## S210 — T280 KAN-214 (2026-11-13)
+
+Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
+
+## S211 — T280 KAN-214 PR2 (2026-11-13)
+
+Verified PR14 merged/main494d270; PR2 acceptance and safe mail/CSRF/disabled-rollout boundaries recorded before implementation.
+
+## S211 — T281 KAN-214 PR2 (2026-11-13)
+
+Persistent HMAC-keyed atomic database budgets implemented; native PG concurrency/restart/window/soft-policy tests and existing config tests passed (results recorded in report).
+
+## S211 — T282 KAN-214 PR2 (2026-11-13)
+
+Registration/CSRF implemented;20 native PG tests pass including real persistence, duplicate race, token hashes, redacted validation, CSRF/Origin and mail failure/suppression. No real SMTP or automatic email verification.
+
+## S211 — T283 KAN-214 PR2 (2026-11-13)
+
+Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.
+
+## S211 — T275/T284 PR2 review delivery (2026-11-13)
+
+T280-T283 done; registration/login/current account/CSRF and durable HMAC budgets. Local full811/0skip native PG before nine added tests; final negatives16 pass. Frontend147/lint/typecheck/build,ETL55+1 dataset skip,pip check,clean migration0012/head/check pass. Final hosted/source/PR in PR description. T275/T284 review, no merge; default auth disabled and no actual SMTP/refresh/logout/confirmation/recovery. Owned test schemas/container/anonymous volume cleaned, user DB/volumes untouched. Initial T280 helper entry used historical S210 tag by mistake; actual work belongs to S211 and corrected state/evidence follow it.
+
+## S211 — T275/T284 hosted confirmation (2026-11-13)
+
+PR15 source7a90d60/run43413656989 all4 jobs success. Backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check,repository tools17/0skip. PR ready for owner review, no merge. Update factual STATE/evidence; final documentation SHA/checks maintained in PR15 description.
