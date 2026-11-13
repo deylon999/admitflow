@@ -160,3 +160,7 @@ then PR4 real SMTP/confirmation/recovery, PR5 React and PR6 final acceptance.
 KAN-214 is NOT done. AUTH_ENABLED defaultsfalse; real provider absent means503.
 Peer counters behind current proxy are aggregate, not real per-client IP. Production
 HTTPS/proxy/SMTP-egress and actual delivery remain explicit external release gates.
+
+## Hosted confirmation
+
+PR15 https://github.com/deylon999/admitflow/pull/15 ready for owner review. Source7a90d60fdd7f5bcbc6270e354a3a79087bd7b9ac: run43413656989 https://github.com/deylon999/admitflow/actions/runs/43413656989 all4 jobs success. Backend **820 passed/0 skipped** (312.47s), frontend147, ETL55+1 explicit dataset skip, migrations0012/head/check, repository tools17/0skip. This executes all final test cases together. Final documentation SHA/latest hosted results maintained in PR15 description. Owner review/merge remains pending; no full KAN-214/SMTP acceptance.

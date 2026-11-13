@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR2 on feat/kan-214-register-login awaiting hosted checks and owner review/merge. T280-T283 done; T275/T284 review. Local811 backend+16 final negatives,frontend147,migrations0012 pass. Final SHA/run/PR in GitHub PR description. After owner merge continue T276 PR3, never merge autonomously. Auth disabled by default; real mail/refresh/logout not implemented.
+KAN-214 PR2 in PR15 ready for owner review/merge. T280-T283 done; T275/T284 review. Source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check. Latest documentation SHA/checks maintained in PR15 description. After owner merge continue T276 PR3; never merge autonomously. Auth disabled by default; real SMTP,refresh/logout and frontend remain later PRs.
 
 ## Последняя завершённая работа
 
@@ -32,7 +32,7 @@ KAN-214 PR2 on feat/kan-214-register-login awaiting hosted checks and owner revi
 
 ## Проверенное окружение
 
-- S211: local required-native-PG backend811 passed/0skip (collection before nine final test cases); current targeted16 passed covers those changes. Hosted expected820; final exact SHA/run/results in PR description.
+- S211: hosted source7a90d60/run43413656989 all4 jobs success:backend820 passed/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012/head/check; repository tools17/0skip. Local full811/0skip plus16 targeted cases documented separately; final SHA/latest checks in PR15 description.
 - Frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check pass; native clean migration0012/head/schema alignment pass; repository tools17 with1 local missing-PDF-dependency skip.
 - Owned PostgreSQL17 test container/databases/random schemas removed; user DBs/volumes/other containers untouched. No frontend/CSS/CI/compose/applied-migration changes. Auth disabled by default; no real email or full auth acceptance.
 

@@ -37,5 +37,21 @@
     "Auth disabled by default; no refresh/logout/verification/recovery endpoints",
     "Peer behind current proxy is aggregate; arbitrary forwarded headers ignored",
     "Frontend auth integration and full KAN-214 acceptance remain later PRs"
-  ]
+  ],
+  "hosted": {
+    "pr": "https://github.com/deylon999/admitflow/pull/15",
+    "source": "7a90d60fdd7f5bcbc6270e354a3a79087bd7b9ac",
+    "run": "https://github.com/deylon999/admitflow/actions/runs/43413656989",
+    "jobs": {
+      "frontend": "success",
+      "backend": "success",
+      "migrations": "success",
+      "etl": "success"
+    },
+    "backendPassed": 820,
+    "backendSkipped": 0,
+    "frontendPassed": 147,
+    "repositoryToolsPassed": 17,
+    "note": "Final documentation SHA/latest hosted checks maintained in PR15 description"
+  }
 }

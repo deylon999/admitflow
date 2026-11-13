@@ -6012,7 +6012,7 @@
 
 **Доказательства:**
 
-- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
 
 ### T276. KAN-214: Refresh logout and CSRF
 
@@ -6219,7 +6219,7 @@
 
 **Доказательства:**
 
-- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR15 ready for owner review; source7a90d60 hosted run43413656989 all4 jobs success:backend820/0skip,frontend147,ETL55+1 explicit dataset skip,migrations0012 check. Exact latest documentation SHA/checks in PR15 description. No merge; auth defaults disabled, SMTP/full lifecycle remain later PRs.
 
 ## E6. Резерв и выпуск
 
