@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T293.
-- Следующая задача: T293.
+- Текущая задача: T294.
+- Следующая задача: T294.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR4 SMTP/verification/recovery T290-T294 from main d63a208. Real deliver
 
 ## Последняя завершённая работа
 
-- T292: Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim.
+- T293: Recovery/reset implemented;18 native recovery and83 combined action/security tests pass. Atomic hash/action/session/refresh update, one use, no auto-login, reset/refresh orderings, rollback, guest/other-account isolation verified. Mail/config35 passed; real delivery still unverified.
 
 ## Ограничения
 

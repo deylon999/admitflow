@@ -97,3 +97,30 @@ tests cover resend invalidation/password preservation, unknown/verified/disabled
 requests, forged/expired/used/wrong-purpose/deleted-user/disabled tokens, simultaneous
 confirm/resend, missing/failing provider and confirmation during provider outage.
 Mock/protocol acceptance is not real SMTP inbox delivery.
+
+## Recovery and transactional revocation (T293)
+
+Recovery request issues only for active/verified users and otherwise delivers a
+safe generic notice through the same port. Confirm validates a purpose-separated
+30min action, hashes the new server-validated password without holding the DB user
+lock, then locks user -> ordered user sessions -> action, revalidates CSRF and
+commits password/timestamps, every target session revocation, unspent refresh
+consumption and all outstanding action-token retirement in one transaction.
+No automatic login/verification or auth cookie issuance. Another logged-in account
+and guest history remain untouched. CSRF rows are not bulk-mutated by reset:
+foreign-context locking could deadlock cross-account resets, and revocation already
+denies old access/refresh. Fresh CSRF bootstrap handles subsequent writes safely.
+
+Native recovery suite: **18 passed**, exit0; current verification/recovery/security
+suite: **83 passed**, exit0. Includes real register-confirm-login-reset-new-login,
+all target device sessions revoked, other-account/guest preservation, eligible/
+ineligible requests, invalid/expired/used/cross-purpose/deleted/disabled/unverified
+tokens, resend/weak-password behavior, simultaneous reset and both deterministic
+reset/refresh serializations, failed commit rollback and provider failure/outage.
+An API-to-configured-SMTP test exercises MIME link consumption with a fake protocol
+client; no runtime mock transport or production inbox delivery is claimed.
+
+SMTP polish uses the explicit normalized sender domain for Message-ID (no local
+hostname disclosure) and quoted-printable UTF8 text with ASCII wire representation
+(no 8BITMIME dependency). Current mail/config suite **35 passed**, including explicit
+connection and certificate failure cases; all TLS defaults remain strict.

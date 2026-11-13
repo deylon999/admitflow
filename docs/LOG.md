@@ -1330,3 +1330,7 @@ TLS-only SMTP transport/config implemented;33 mail/config tests pass. Verified c
 ## S213 — T292 KAN-214 PR4 (2026-11-13)
 
 Verification/resend implemented;43 native PG verification+registration tests pass including real register-confirm-login, token purpose/expiry/one-use, races, uniform public responses and provider outage/failure. No automatic login or real delivery claim.
+
+## S213 — T293 KAN-214 PR4 (2026-11-13)
+
+Recovery/reset implemented;18 native recovery and83 combined action/security tests pass. Atomic hash/action/session/refresh update, one use, no auto-login, reset/refresh orderings, rollback, guest/other-account isolation verified. Mail/config35 passed; real delivery still unverified.

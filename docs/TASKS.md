@@ -6421,7 +6421,7 @@
 
 ### T293. KAN-214 PR4: Password recovery and revocation
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T292.
 
@@ -6442,11 +6442,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR4.md](../docs/KAN-214-PR4.md) — Recovery/reset implemented;18 native recovery and83 combined action/security tests pass. Atomic hash/action/session/refresh update, one use, no auto-login, reset/refresh orderings, rollback, guest/other-account isolation verified. Mail/config35 passed; real delivery still unverified.
 
 ### T294. KAN-214 PR4: PR4 regression and review handoff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T293.
 

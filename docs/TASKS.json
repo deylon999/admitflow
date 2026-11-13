@@ -8998,7 +8998,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T292"
       ],
@@ -9015,7 +9015,12 @@
         "Reset atomically updates hash, consumes outstanding actions and revokes all user sessions/refresh; no auto login or guest/other-account mutation",
         "PostgreSQL reset/reset, reset/refresh and failure/expiry/replay tests"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR4.md",
+          "note": "Recovery/reset implemented;18 native recovery and83 combined action/security tests pass. Atomic hash/action/session/refresh update, one use, no auto-login, reset/refresh orderings, rollback, guest/other-account isolation verified. Mail/config35 passed; real delivery still unverified."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9024,7 +9029,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T293"
       ],

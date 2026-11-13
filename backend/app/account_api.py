@@ -13,8 +13,8 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
-from .account_actions import InvalidActionToken, action_identity, confirm_verification, issue_action
+from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, PasswordResetRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
+from .account_actions import InvalidActionToken, action_identity, confirm_reset, confirm_verification, issue_action
 from .account_limits import AuthRateExceeded, Budget, consume_budgets
 from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
@@ -348,6 +348,23 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
         identity = action_identity(db, 'verify_email', raw)
         db.rollback()
         confirm_verification(db, identity, clock, lambda now: csrf_context(db, request, now))
+        return Response(status_code=204)
+
+    @router.post('/recovery/request', response_model=EmailActionRead, status_code=202,
+                 dependencies=[Depends(guard('recovery-request', 20, 3600))])
+    def recovery_request(body: EmailActionRequest, request: Request, db: Session = Depends(database)):
+        return request_action(body, request, db, 'reset_password')
+
+    @router.post('/recovery/confirm', status_code=204, response_class=Response,
+                 dependencies=[Depends(guard('recovery-confirm', 30, 900))])
+    def recovery_confirm(body: PasswordResetRequest, request: Request, db: Session = Depends(database)):
+        csrf_context(db, request, clock())
+        raw = body.token.get_secret_value()
+        token_budget(request, 'reset_password', raw)
+        identity = action_identity(db, 'reset_password', raw)
+        db.rollback()  # Argon2id runs without holding the user/action connection lock.
+        encoded = hash_password(body.password.get_secret_value())
+        confirm_reset(db, identity, encoded, clock, lambda now: csrf_context(db, request, now))
         return Response(status_code=204)
 
     @router.post('/login', response_model=AccountSessionRead,

@@ -59,7 +59,7 @@ class SmtpAccountMailer:
         message['To'] = recipient
         message['Subject'] = 'AdmitFlow: запрос для аккаунта'
         message['Date'] = formatdate(localtime=False)
-        message['Message-ID'] = make_msgid(domain='admitflow.invalid')
+        message['Message-ID'] = make_msgid(domain=str(message['From']).split('@', 1)[1])
         if token is None:
             content = ('Получен запрос для этого адреса в AdmitFlow. Если операция доступна, '
                        'используйте ранее полученную ссылку или запросите новую в приложении. '
@@ -72,7 +72,8 @@ class SmtpAccountMailer:
                         else 'Установите новый пароль. Ссылка действует30 минут.')
                        +'\n\n'+link+'\n\nНовый запрос делает предыдущую ссылку недействительной. '
                        'Если вы не отправляли запрос, не переходите по ссылке и проигнорируйте письмо.')
-        message.set_content(content)
+        # ASCII wire representation also works with relays lacking 8BITMIME.
+        message.set_content(content, cte='quoted-printable')
         if not _SEND_SLOTS.acquire(blocking=False):
             raise MailDeliveryError()
         client = None

@@ -23,6 +23,7 @@ class FakeSMTP:
     def starttls(self, *, context):
         self.events.append('tls'); self.context = context
         if self.failure == 'tls': raise smtplib.SMTPNotSupportedError('private provider detail')
+        if self.failure == 'cert': raise ssl.SSLCertVerificationError('private certificate detail')
         self.tls = True
     def login(self, user, password):
         assert self.tls
@@ -55,6 +56,8 @@ def test_smtp_tls_and_fixed_fragment_links(monkeypatch, mode, operation, path):
     assert client.events.index('send') > client.events.index('login')
     if mode=='starttls': assert client.events == ['ehlo','tls','ehlo','login','send','quit']
     message, envelope = client.messages[0]
+    assert str(message['Message-ID']).endswith('@mailer.example.net>')
+    assert message.as_bytes().isascii() and message.get_content_charset() == 'utf-8'
     text = message.get_content(); link = next(line for line in text.splitlines() if line.startswith('https://'))
     parts = urlsplit(link)
     assert parts.netloc == 'example.org' and parts.path == path and not parts.query and parts.fragment == 'token='+token
@@ -63,11 +66,13 @@ def test_smtp_tls_and_fixed_fragment_links(monkeypatch, mode, operation, path):
     assert 'не переходите' in text
 
 
-@pytest.mark.parametrize('failure', ['tls', 'auth', 'send', 'refused'])
+@pytest.mark.parametrize('failure', ['connect', 'tls', 'cert', 'auth', 'send', 'refused'])
 def test_smtp_failure_is_explicit_sanitized_and_not_retried(monkeypatch, failure, caplog):
     clients = []
     def connect(*args, **kwargs):
-        client = FakeSMTP(failure=failure); clients.append(client); return client
+        client = FakeSMTP(failure=failure); clients.append(client)
+        if failure == 'connect': raise TimeoutError('private connect detail')
+        return client
     monkeypatch.setattr(account_mail.smtplib, 'SMTP', connect)
     with pytest.raises(MailDeliveryError) as error:
         SmtpAccountMailer(Settings(**BASE)).deliver_recovery('person@example.org', new_token())

@@ -3,7 +3,7 @@ from datetime import timedelta
 
 from sqlalchemy import select, update
 
-from .accounts import AccountActionToken, AccountUser
+from .accounts import AccountActionToken, AccountRefreshToken, AccountSession, AccountUser
 from .account_security import credential_digest, new_token
 
 
@@ -78,3 +78,29 @@ def confirm_verification(db, identity, clock, check_csrf):
     db.commit()
 
 
+def confirm_reset(db, identity, encoded_password, clock, check_csrf):
+    user_id, digest = identity
+    user = _lock_user(db, user_id)
+    sessions = db.scalars(select(AccountSession).where(AccountSession.user_id == user_id)
+                          .order_by(AccountSession.id).with_for_update()
+                          .execution_options(populate_existing=True)).all()
+    now = clock()
+    _active_action(db, user_id, 'reset_password', digest, now)
+    if user.status != 'active' or user.email_verified_at is None:
+        raise InvalidActionToken()
+    # CSRF is immutable proof, not modified here. Do not lock or bulk-update a
+    # foreign account's context: cross-account reset requests could otherwise form
+    # a cycle through the other request's CSRF row. Revoked sessions deny all auth.
+    check_csrf(now)
+    user.password_hash = encoded_password
+    user.password_changed_at = now; user.updated_at = now
+    for session in sessions:
+        if session.revoked_at is None: session.revoked_at = now
+    db.execute(update(AccountRefreshToken).where(
+               AccountRefreshToken.session_id.in_(select(AccountSession.id).where(AccountSession.user_id == user_id)),
+               AccountRefreshToken.consumed_at.is_(None)).values(consumed_at=now)
+               .execution_options(synchronize_session=False))
+    db.execute(update(AccountActionToken).where(AccountActionToken.user_id == user_id,
+               AccountActionToken.used_at.is_(None)).values(used_at=now)
+               .execution_options(synchronize_session=False))
+    db.commit()
