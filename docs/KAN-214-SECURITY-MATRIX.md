@@ -1,0 +1,47 @@
+# KAN-214 — матрица критических security-критериев
+
+S215: наличие теста не является доказательством его прохождения.
+`scripts/check_auth_acceptance.py` проверяет полный backend JUnit (без failures/skips)
+и фактические native-PG browser результаты всех трёх engines. Внешние gates
+в manifest остаются not_verified независимо от успешного exit code скрипта.
+
+| Контроль | Критерий | Воспроизведение (pytest selector) |
+|---|---|---|
+| password_hash | Argon2id, параметры, salt, verification/rehash | `backend/tests/test_account_security.py::test_argon2id_unique_salts_and_full_password_verification` |
+| input_bounds | Длинные Unicode пароли, неверный email и bounded input | `backend/tests/test_account_security.py::test_unicode_whitespace_and_boundaries_preserved`<br>`backend/tests/test_account_registration.py::test_invalid_payload_is_redacted_and_never_persisted` |
+| registration_race | Нормализация/уникальность и конкурентная регистрация | `backend/tests/test_account_security.py::test_email_identity_policy`<br>`backend/tests/test_account_registration.py::test_concurrent_registration_creates_one_user_and_action` |
+| login_denials | Несуществующий, unverified, disabled и неверный пароль | `backend/tests/test_account_login.py::test_sensitive_login_denials_are_uniform` |
+| login_transactions | Не выдавать сессию до commit; пароль не устаревает при гонке | `backend/tests/test_account_http_security.py::test_commit_failure_never_sets_session_cookie`<br>`backend/tests/test_account_login.py::test_password_change_during_verification_cannot_issue_stale_session` |
+| fixation | Guest credential не повышается до account; новый контекст | `backend/tests/test_account_login.py::test_login_retains_guest_history_and_cannot_promote_guest_token` |
+| server_state | Сроки/отзыв/disabled проверяются сервером | `backend/tests/test_account_login.py::test_session_checks_real_server_state_every_time` |
+| refresh_rotation | Сроки, новая пара opaque credentials, bound CSRF | `backend/tests/test_account_refresh.py::test_rotation_replaces_credentials_and_keeps_csrf_and_identity`<br>`backend/tests/test_account_refresh.py::test_access_expiry_and_missing_cookie_restore_through_refresh` |
+| refresh_race_replay | Один конкурентный refresh; повтор отзывает семейство | `backend/tests/test_account_refresh.py::test_simultaneous_refresh_can_rotate_only_once_then_revokes`<br>`backend/tests/test_account_refresh.py::test_replay_commits_family_revocation_and_logs_no_secrets` |
+| refresh_absolute | Абсолютный срок не продлевается, idle ограничен | `backend/tests/test_account_refresh.py::test_absolute_deadline_caps_access_idle_refresh_and_csrf`<br>`backend/tests/test_account_lifecycle_security.py::test_refresh_extends_idle_within_unchanged_absolute_deadline` |
+| refresh_rollback | Ошибка commit не потребляет refresh и не выдаёт cookies | `backend/tests/test_account_lifecycle_security.py::test_failed_rotation_rolls_back_consumption_and_never_sets_cookies` |
+| logout | Серверный отзыв, exact cookie deletion, guest сохранён | `backend/tests/test_account_logout.py::test_logout_revokes_family_deletes_exact_cookies_and_preserves_guest` |
+| logout_race | Logout/refresh не воскрешают сессию; failure не успех | `backend/tests/test_account_logout.py::test_simultaneous_refresh_logout_never_resurrects_family`<br>`backend/tests/test_account_logout.py::test_failed_revocation_never_deletes_cookies_or_claims_success` |
+| csrf_origin | Нет/неверный/чужой CSRF, Origin, cross-site, custom header | `backend/tests/test_account_lifecycle_security.py::test_sensitive_writes_reject_csrf_and_origin_without_revocation`<br>`backend/tests/test_account_email_security.py::test_action_endpoints_reject_csrf_origin_and_headers_without_changes` |
+| csrf_sessions | CSRF/credentials другой сессии и mixed cookies | `backend/tests/test_account_login.py::test_session_and_csrf_are_not_transferable_between_accounts`<br>`backend/tests/test_account_lifecycle_security.py::test_mixed_valid_account_cookies_never_mutate_either_family` |
+| csrf_revoked | Отозванные credentials не bootstrap CSRF/доступ | `backend/tests/test_account_lifecycle_security.py::test_spent_refresh_alone_cannot_bootstrap_bound_csrf`<br>`backend/tests/test_account_lifecycle_security.py::test_csrf_bootstrap_waiting_on_logout_cannot_rebind_revoked_family` |
+| durable_limits | Лимиты атомарны и переживают engine/process restart | `backend/tests/test_account_limits.py::test_parallel_budget_is_atomic_and_survives_engine_restart`<br>`backend/tests/test_account_login.py::test_password_attempts_persist_and_forwarded_addresses_do_not_bypass` |
+| mail_limits | Общий лимит писем, токенов, не доверять spoofed XFF | `backend/tests/test_account_email_security.py::test_email_budget_is_shared_by_register_verify_and_recovery`<br>`backend/tests/test_account_email_security.py::test_shared_mail_peer_budget_ignores_forwarding_headers`<br>`backend/tests/test_account_email_security.py::test_attempt_budget_is_durable_without_revealing_token` |
+| verification | Одноразовая, истёкшая, fake, missing user, concurrent ссылка | `backend/tests/test_account_email_verification.py::test_invalid_confirmation_is_uniform_and_never_confirms`<br>`backend/tests/test_account_email_verification.py::test_concurrent_confirmation_consumes_one_token` |
+| resend | Новая verification ссылка инвалидирует старую | `backend/tests/test_account_email_verification.py::test_resend_invalidates_older_links_and_preserves_password` |
+| token_purpose | Криптография/разделение назначения, malformed input | `backend/tests/test_account_security.py::test_tokens_are_random_purpose_separated_and_never_echoed`<br>`backend/tests/test_account_email_security.py::test_malformed_action_token_is_bounded_and_not_echoed` |
+| recovery_privacy | Единый ответ для несуществующих/неподходящих аккаунтов | `backend/tests/test_account_recovery.py::test_recovery_ineligible_addresses_are_uniform_and_deliver_generic_notice` |
+| recovery_once | Истёкшая/поддельная/used ссылка, конкурентный reset | `backend/tests/test_account_recovery.py::test_reset_invalid_tokens_are_uniform_and_do_not_change_password`<br>`backend/tests/test_account_recovery.py::test_simultaneous_reset_consumes_token_once` |
+| recovery_revocation | Новый пароль отзывает все сессии target, сохраняет B/guest | `backend/tests/test_account_recovery.py::test_reset_revokes_all_target_sessions_but_not_other_account_or_guest`<br>`backend/tests/test_account_recovery.py::test_reset_refresh_serializations_never_restore_old_credentials` |
+| recovery_atomic | Ошибка commit откатывает пароль/token/revocation | `backend/tests/test_account_recovery.py::test_reset_commit_failure_rolls_back_hash_token_and_revocation` |
+| transport | TLS SMTP без downgrade/retry, generic ошибки провайдера | `backend/tests/test_account_mail.py::test_smtp_tls_and_fixed_fragment_links`<br>`backend/tests/test_account_mail.py::test_smtp_failure_is_explicit_sanitized_and_not_retried`<br>`backend/tests/test_account_recovery.py::test_recovery_provider_failure_is_generic_and_never_changes_password` |
+| no_secrets | Пароли/credentials не в response/log; Cache-Control no-store | `backend/tests/test_account_acceptance.py::test_auth_responses_and_http_logs_are_noncacheable_and_secret_free`<br>`backend/tests/test_account_email_security.py::test_action_secrets_and_passwords_never_appear_in_http_logs` |
+| production_cookies | Secure/HttpOnly/Lax/host-only/path и deletion | `backend/tests/test_account_http_security.py::test_production_cookies_are_secure_httponly_host_only`<br>`backend/tests/test_account_lifecycle_security.py::test_production_rotation_and_deletion_keep_cookie_security_contract` |
+| guest_graph | Заполненная цепочка guest subscription/assessment/event не переносится | `backend/tests/test_account_acceptance.py::test_account_transitions_preserve_full_guest_graph_and_do_not_transfer_ownership` |
+| migration_preservation | Миграция сохраняет populated guest history | `backend/tests/test_account_acceptance.py::test_additive_migration_preserves_populated_subscription_and_change_history` |
+| cleanup | Истёкшие токены очищаются; replay tombstone до absolute expiry | `backend/tests/test_account_foundation.py::test_account_cleanup_retains_spent_refresh_and_guest_history`<br>`backend/tests/test_account_foundation.py::test_absolute_expiry_purges_session_credentials_without_deleting_user` |
+| unavailable | AUTH disabled/DB failure явные503, не anonymous/success | `backend/tests/test_account_http_security.py::test_disabled_default_is_explicit_without_mutating_guest_or_accounts`<br>`backend/tests/test_account_http_security.py::test_temporary_database_failure_is_503_not_missing_account` |
+
+Browser-case mapping: lifecycle/replay/logout/recovery/expiry; account switch and resetA/currentB isolation; unverified/resend/invalid/expired action links; CSRF/cookie isolation/replay; private-state/storage/network failures. См. `frontend/tests/auth-live.spec.ts` и `auth.spec.ts`.
+
+Production gate: SMTP inbox/HTTPS/trusted proxy/egress и review владельца не заменяются mock, TestClient или localhost. `compose.prod.yaml` не получает auth/mail env и backend находится только во внутренней сети. Не включать auth до согласованного deployment и smoke.
+
+Политика паролей: Argon2id64MiB/t3/p4, salt16/hash32;15..128 Unicode codepoints,<=512 UTF8 bytes, без обрезки/нормализации. Небольшой offline common-password denylist не является полной базой утечек; внешняя breach-проверка не подключалась и пароли наружу не передавались.

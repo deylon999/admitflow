@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-13",
+  "session": "S215",
+  "scope": "automated-acceptance-only",
+  "productionReady": false,
+  "baseline": "12c78e4bf10dbc69d6558d91da85a040c7798a28",
+  "local": {
+    "backendPassed": 979,
+    "backendSkipped": 0,
+    "backendWarnings": 4,
+    "backendSeconds": 315.55,
+    "frontendPassed": 175,
+    "securitySelectionPassed": 112,
+    "validatorTestsPassed": 3,
+    "chromiumNativePassed": 5,
+    "firefoxNativePassed": 5,
+    "webkitLocal": "unavailable: Fedora lacks Ubuntu libicu74/libjpeg-turbo8; mandatory Ubuntu CI run verified",
+    "migrations": "0012/head/check passed",
+    "newMigrations": 0,
+    "etlPassed": 55,
+    "etlSkipped": 1,
+    "etlSkipReason": "external MICCEDU dataset missing",
+    "repositoryTests": 20,
+    "repositoryTestsLocalSkipped": 1,
+    "repositorySkipReason": "optional local PDF dependency missing; hosted installs it",
+    "lifecycleTestsPassed": 3
+  },
+  "hostedMilestone": {
+    "source": "79a40fc914a712e96e9bbb99507dab3f96909b90",
+    "run": 43478500035,
+    "jobs": "all4 success",
+    "backendPassed": 979,
+    "backendSkipped": 0,
+    "chromiumPassed": 5,
+    "firefoxPassed": 5,
+    "webkitPassed": 5,
+    "controlsVerified": 32,
+    "repositoryTestsPassed": 20,
+    "repositoryTestsSkipped": 0
+  },
+  "visual": {
+    "compared": 124,
+    "exactMatches": 123,
+    "diagnostics": [
+      {
+        "route": "/programs",
+        "mode": "live",
+        "width": 1440,
+        "pixelsDifferent": 15,
+        "bounds": [
+          301,
+          391,
+          304,
+          399
+        ],
+        "maximumChannelDelta": 1,
+        "thresholdChanged": false,
+        "baselineUpdated": false
+      }
+    ],
+    "sourceTrees": {
+      "baseline": "0b245e8e108d5c1a0b93e9a8290969bd6321c021",
+      "current": "0b245e8e108d5c1a0b93e9a8290969bd6321c021",
+      "workingTreeClean": true
+    },
+    "comparatorExitCode": 1,
+    "ownerReviewPending": true
+  },
+  "finalGithubEvidence": "Final head/run/job results maintained in PR19 description; no autonomous merge",
+  "externalGates": [
+    "actual SMTP acceptance and inbox delivery or explicit owner exception",
+    "production HTTPS/Origin/Secure cookies/trusted proxy and SMTP egress",
+    "owner review/acceptance and visual variance review"
+  ]
+}

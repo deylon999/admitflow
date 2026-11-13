@@ -1,0 +1,1006 @@
+{
+  "baseline": "12c78e4bf10dbc69d6558d91da85a040c7798a28",
+  "normalizedFixtureField": "coverage.generatedAt",
+  "renderer": "chromium headless",
+  "sourceTrees": {
+    "baseline": "0b245e8e108d5c1a0b93e9a8290969bd6321c021",
+    "current": "0b245e8e108d5c1a0b93e9a8290969bd6321c021",
+    "workingTreeClean": true
+  },
+  "results": [
+    {
+      "route": "/",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "aa4401c5c3721e9746914d2a8a8b135f11b4c2b7db6d26bbf275e2d01761721f",
+      "after": "aa4401c5c3721e9746914d2a8a8b135f11b4c2b7db6d26bbf275e2d01761721f"
+    },
+    {
+      "route": "/universities",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "5c334d5756860f01c0f4fc68858314e0caab315f2c7a863fa09bdab0aee5e639",
+      "after": "5c334d5756860f01c0f4fc68858314e0caab315f2c7a863fa09bdab0aee5e639"
+    },
+    {
+      "route": "/universities/sgu-saratov",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "2586c79108d1b3b494da9dd6f78f256354fde3fd0ada7411376c8a319418203f",
+      "after": "2586c79108d1b3b494da9dd6f78f256354fde3fd0ada7411376c8a319418203f"
+    },
+    {
+      "route": "/programs",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "d9b2201d6308fa5da89e433e0e01abc59e9554507daf121019e4fbf2d48457a8",
+      "after": "d9b2201d6308fa5da89e433e0e01abc59e9554507daf121019e4fbf2d48457a8"
+    },
+    {
+      "route": "/programs/sgu-2026-4588",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "1644bb0a99ce76e5227bd589556a0b587c103ac7ae44e31a6620b92440354764",
+      "after": "1644bb0a99ce76e5227bd589556a0b587c103ac7ae44e31a6620b92440354764"
+    },
+    {
+      "route": "/ege-analytics",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/how-it-works",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "521c6c4a95b9a78b35163a8b022bc0f04f0ac5d865d94260ab819070a2272e29",
+      "after": "521c6c4a95b9a78b35163a8b022bc0f04f0ac5d865d94260ab819070a2272e29"
+    },
+    {
+      "route": "/faq",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "759b6c3f384eddc4705650259a149a7837dcb2c8a06f48d48d2300158666549f",
+      "after": "759b6c3f384eddc4705650259a149a7837dcb2c8a06f48d48d2300158666549f"
+    },
+    {
+      "route": "/auth/login",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "6ecf2adfe6ac872c3128f89dc3e6b618531296378f9a48a703a6b59c9f027edb",
+      "after": "6ecf2adfe6ac872c3128f89dc3e6b618531296378f9a48a703a6b59c9f027edb"
+    },
+    {
+      "route": "/auth/register",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "445ddb15113e846d63ed1877433d5853c885df88df5def1e115e9080bb89458d",
+      "after": "445ddb15113e846d63ed1877433d5853c885df88df5def1e115e9080bb89458d"
+    },
+    {
+      "route": "/auth/recovery",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "8f3483f6da47aae56544d417d000948649192f40cb4863d754c4ba3e132ca79e",
+      "after": "8f3483f6da47aae56544d417d000948649192f40cb4863d754c4ba3e132ca79e"
+    },
+    {
+      "route": "/app",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "123b9446e46dcd3f1b78eb8fa467d58f83fe85cf0c0c9872ee3e50a849d39fa6",
+      "after": "123b9446e46dcd3f1b78eb8fa467d58f83fe85cf0c0c9872ee3e50a849d39fa6"
+    },
+    {
+      "route": "/app/profile",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "b17cab360d787eda1f39d3a372830fe503a73ff8e2881c2c55f38cc72bd559c5",
+      "after": "b17cab360d787eda1f39d3a372830fe503a73ff8e2881c2c55f38cc72bd559c5"
+    },
+    {
+      "route": "/app/forecast",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "caf0d72c61ca1d49f53e16cb6174db4064a814257ecfd30160316b3c0b15ec62",
+      "after": "caf0d72c61ca1d49f53e16cb6174db4064a814257ecfd30160316b3c0b15ec62"
+    },
+    {
+      "route": "/app/forecast/example",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/watchlist",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "434f303a67629fcee3a978e43c9cb79154b4cbc2fd16c7194fd11bfb347397b6",
+      "after": "434f303a67629fcee3a978e43c9cb79154b4cbc2fd16c7194fd11bfb347397b6"
+    },
+    {
+      "route": "/app/watchlist/add",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "3752433d876f0b926c424b4516ba1ec41bdda6d9566615f9c4f128bd9470bbd7",
+      "after": "3752433d876f0b926c424b4516ba1ec41bdda6d9566615f9c4f128bd9470bbd7"
+    },
+    {
+      "route": "/app/competitions/mtuci-se",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "85c300a2ad0c124fbaca163fb8f1de2f3505f359b74ca2e16bfe907287c7cf9f",
+      "after": "85c300a2ad0c124fbaca163fb8f1de2f3505f359b74ca2e16bfe907287c7cf9f"
+    },
+    {
+      "route": "/app/competitions/mtuci-se/competitors",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/compare",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/history",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c",
+      "after": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c"
+    },
+    {
+      "route": "/app/notifications",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c",
+      "after": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c"
+    },
+    {
+      "route": "/app/settings",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/sources",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "507df1c898ca8af46ad64c53a722bca27d589ac5d33f2fa6a7272b2eaff8597b",
+      "after": "507df1c898ca8af46ad64c53a722bca27d589ac5d33f2fa6a7272b2eaff8597b"
+    },
+    {
+      "route": "/app/states/empty",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/states/error",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/app/states/success",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9",
+      "after": "ce16ffb47e127472041cc21e2173ef0d50529454ff94764e70e98fe0dd925bf9"
+    },
+    {
+      "route": "/not-found",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "d03b066f42ce97704d3ef1c9235c5413a8dbc92d3db7a388d545b2a7c6a1c8a5",
+      "after": "d03b066f42ce97704d3ef1c9235c5413a8dbc92d3db7a388d545b2a7c6a1c8a5"
+    },
+    {
+      "route": "/auth/verify",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "c72236bf791ed71cf6dd1e59e881c6d9c6996eab0b3ba346955ffd867cc53652",
+      "after": "c72236bf791ed71cf6dd1e59e881c6d9c6996eab0b3ba346955ffd867cc53652"
+    },
+    {
+      "route": "/auth/reset",
+      "mode": "live",
+      "width": 390,
+      "equal": true,
+      "before": "2ea73e5bd113e28a2cd864ae3bfb5621a22827114c9fd0d5e5db006a63981bff",
+      "after": "2ea73e5bd113e28a2cd864ae3bfb5621a22827114c9fd0d5e5db006a63981bff"
+    },
+    {
+      "route": "/",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "aa4401c5c3721e9746914d2a8a8b135f11b4c2b7db6d26bbf275e2d01761721f",
+      "after": "aa4401c5c3721e9746914d2a8a8b135f11b4c2b7db6d26bbf275e2d01761721f"
+    },
+    {
+      "route": "/universities",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "5c334d5756860f01c0f4fc68858314e0caab315f2c7a863fa09bdab0aee5e639",
+      "after": "5c334d5756860f01c0f4fc68858314e0caab315f2c7a863fa09bdab0aee5e639"
+    },
+    {
+      "route": "/universities/sgu-saratov",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "2586c79108d1b3b494da9dd6f78f256354fde3fd0ada7411376c8a319418203f",
+      "after": "2586c79108d1b3b494da9dd6f78f256354fde3fd0ada7411376c8a319418203f"
+    },
+    {
+      "route": "/programs",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "d9b2201d6308fa5da89e433e0e01abc59e9554507daf121019e4fbf2d48457a8",
+      "after": "d9b2201d6308fa5da89e433e0e01abc59e9554507daf121019e4fbf2d48457a8"
+    },
+    {
+      "route": "/programs/sgu-2026-4588",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "1644bb0a99ce76e5227bd589556a0b587c103ac7ae44e31a6620b92440354764",
+      "after": "1644bb0a99ce76e5227bd589556a0b587c103ac7ae44e31a6620b92440354764"
+    },
+    {
+      "route": "/ege-analytics",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "b4bab3368dfb64a84f3ede3cac9ebfe53e56f198a60da3db7ea6e83499dd1507",
+      "after": "b4bab3368dfb64a84f3ede3cac9ebfe53e56f198a60da3db7ea6e83499dd1507"
+    },
+    {
+      "route": "/how-it-works",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "521c6c4a95b9a78b35163a8b022bc0f04f0ac5d865d94260ab819070a2272e29",
+      "after": "521c6c4a95b9a78b35163a8b022bc0f04f0ac5d865d94260ab819070a2272e29"
+    },
+    {
+      "route": "/faq",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "759b6c3f384eddc4705650259a149a7837dcb2c8a06f48d48d2300158666549f",
+      "after": "759b6c3f384eddc4705650259a149a7837dcb2c8a06f48d48d2300158666549f"
+    },
+    {
+      "route": "/auth/login",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "99497667e733c95ed57d5221ecadc1c2c76294fd53368b7127c6553efc964193",
+      "after": "99497667e733c95ed57d5221ecadc1c2c76294fd53368b7127c6553efc964193"
+    },
+    {
+      "route": "/auth/register",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "63afcdb5002da16927fd157bccfdeecc2ee5415e650d85f7e54c0013d1c62d21",
+      "after": "63afcdb5002da16927fd157bccfdeecc2ee5415e650d85f7e54c0013d1c62d21"
+    },
+    {
+      "route": "/auth/recovery",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "95472e0cb2779ada7b5565f7b01cc975266e91bfbefd4d93f6d86d92ccd8476e",
+      "after": "95472e0cb2779ada7b5565f7b01cc975266e91bfbefd4d93f6d86d92ccd8476e"
+    },
+    {
+      "route": "/app",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "acfc20b8ce4e10f1f839645cb9402a4dddcd3abe947242b66e862923af0e73b0",
+      "after": "acfc20b8ce4e10f1f839645cb9402a4dddcd3abe947242b66e862923af0e73b0"
+    },
+    {
+      "route": "/app/profile",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "5288a11fe8ddf85de727277557193f2de6b1820e6b5bfd904ddc78fb2c457339",
+      "after": "5288a11fe8ddf85de727277557193f2de6b1820e6b5bfd904ddc78fb2c457339"
+    },
+    {
+      "route": "/app/forecast",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "1a4a0d4aaddf1212c8f88a0d52326ceefd023cba610d1ce7f456e0cadd1ede23",
+      "after": "1a4a0d4aaddf1212c8f88a0d52326ceefd023cba610d1ce7f456e0cadd1ede23"
+    },
+    {
+      "route": "/app/forecast/example",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "4c2b4d11162c5483b97e1c3dee65f826ffab4cdbbc0ad7722bec5f04bf725729",
+      "after": "4c2b4d11162c5483b97e1c3dee65f826ffab4cdbbc0ad7722bec5f04bf725729"
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "b738f3feafe817397aefedaef53c42e0dc7a5ab3552388a3a31d03ad49cd621a",
+      "after": "b738f3feafe817397aefedaef53c42e0dc7a5ab3552388a3a31d03ad49cd621a"
+    },
+    {
+      "route": "/app/watchlist",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "4a7d54440a00f7610f05fce3bf21aaa9dba4be2ec8c6e2f18de601448fe72b7c",
+      "after": "4a7d54440a00f7610f05fce3bf21aaa9dba4be2ec8c6e2f18de601448fe72b7c"
+    },
+    {
+      "route": "/app/watchlist/add",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "11064702d056fd405f32bab7ea37913709ac984e131e6316da96fa9261f55b39",
+      "after": "11064702d056fd405f32bab7ea37913709ac984e131e6316da96fa9261f55b39"
+    },
+    {
+      "route": "/app/competitions/mtuci-se",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "3787460605c8fe4b901bdf37b75f84c48082ec6256e0b7e9965cf8a4a1a9bcda",
+      "after": "3787460605c8fe4b901bdf37b75f84c48082ec6256e0b7e9965cf8a4a1a9bcda"
+    },
+    {
+      "route": "/app/competitions/mtuci-se/competitors",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "62104839280b6b08df95a11b756b5b3e534d5a5ec81702ce3b3108413838b415",
+      "after": "62104839280b6b08df95a11b756b5b3e534d5a5ec81702ce3b3108413838b415"
+    },
+    {
+      "route": "/app/compare",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "b3a38eed94b8b5a67547a449d14c9c6cdf7b65b6ef41c4398e881bbe40ada70d",
+      "after": "b3a38eed94b8b5a67547a449d14c9c6cdf7b65b6ef41c4398e881bbe40ada70d"
+    },
+    {
+      "route": "/app/history",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c",
+      "after": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c"
+    },
+    {
+      "route": "/app/notifications",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c",
+      "after": "75ec025d8881e891d8830a4fe48623205481e13ac181ccaf4cebf8ea4b40ff9c"
+    },
+    {
+      "route": "/app/settings",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "19b795f5dbf9b5432bbd290ccbb796f12149a92d87eadfe0814d6923f3cfe169",
+      "after": "19b795f5dbf9b5432bbd290ccbb796f12149a92d87eadfe0814d6923f3cfe169"
+    },
+    {
+      "route": "/app/sources",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "507df1c898ca8af46ad64c53a722bca27d589ac5d33f2fa6a7272b2eaff8597b",
+      "after": "507df1c898ca8af46ad64c53a722bca27d589ac5d33f2fa6a7272b2eaff8597b"
+    },
+    {
+      "route": "/app/states/empty",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "cfdcb7f784472500e461c997d3b35ef5bbcbffd5e30930cb5e2ad9719b73ead1",
+      "after": "cfdcb7f784472500e461c997d3b35ef5bbcbffd5e30930cb5e2ad9719b73ead1"
+    },
+    {
+      "route": "/app/states/error",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "cfff492d9f6fa3bddca5992ed5e4979ec23191f2dfd2f7e569507b2b43337f01",
+      "after": "cfff492d9f6fa3bddca5992ed5e4979ec23191f2dfd2f7e569507b2b43337f01"
+    },
+    {
+      "route": "/app/states/success",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "5b2cbc2c59aa308604d2364444fa05eb2a668a83e51063beb7e136bce45e5b6d",
+      "after": "5b2cbc2c59aa308604d2364444fa05eb2a668a83e51063beb7e136bce45e5b6d"
+    },
+    {
+      "route": "/not-found",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "d03b066f42ce97704d3ef1c9235c5413a8dbc92d3db7a388d545b2a7c6a1c8a5",
+      "after": "d03b066f42ce97704d3ef1c9235c5413a8dbc92d3db7a388d545b2a7c6a1c8a5"
+    },
+    {
+      "route": "/auth/verify",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "9215c8cfe362067f8c56d29a5eeebd2eae3ae3fb7a30b14e03a2aa904b48c397",
+      "after": "9215c8cfe362067f8c56d29a5eeebd2eae3ae3fb7a30b14e03a2aa904b48c397"
+    },
+    {
+      "route": "/auth/reset",
+      "mode": "demo",
+      "width": 390,
+      "equal": true,
+      "before": "9215c8cfe362067f8c56d29a5eeebd2eae3ae3fb7a30b14e03a2aa904b48c397",
+      "after": "9215c8cfe362067f8c56d29a5eeebd2eae3ae3fb7a30b14e03a2aa904b48c397"
+    },
+    {
+      "route": "/",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "97d13b085fff2bef472be1f5d23b9cd7b49770a533933665198085f30bfe78f5",
+      "after": "97d13b085fff2bef472be1f5d23b9cd7b49770a533933665198085f30bfe78f5"
+    },
+    {
+      "route": "/universities",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "547dd8daa20a1b5ad2fb5552d6e69ec4e674fca976cdff824177937be0f20be6",
+      "after": "547dd8daa20a1b5ad2fb5552d6e69ec4e674fca976cdff824177937be0f20be6"
+    },
+    {
+      "route": "/universities/sgu-saratov",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "ca953765325104b6a5322174fd333c08a295a79434a044fc7498868836c2430a",
+      "after": "ca953765325104b6a5322174fd333c08a295a79434a044fc7498868836c2430a"
+    },
+    {
+      "route": "/programs",
+      "mode": "live",
+      "width": 1440,
+      "equal": false,
+      "before": "80ae3c6e482a2100eb44325efa92c776a3e81c08cf0c63eda644564cdf32f3b2",
+      "after": "616d4cdcefd48403fb6be122efcf8966598a8cdebf3420c7cc260f91e94731fb",
+      "repeatBefore": "80ae3c6e482a2100eb44325efa92c776a3e81c08cf0c63eda644564cdf32f3b2",
+      "repeatAfter": "616d4cdcefd48403fb6be122efcf8966598a8cdebf3420c7cc260f91e94731fb"
+    },
+    {
+      "route": "/programs/sgu-2026-4588",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "4eb7e99917fcd8687c37a07a71099746bd4ae4e133357478b4eda339d5deb1e6",
+      "after": "4eb7e99917fcd8687c37a07a71099746bd4ae4e133357478b4eda339d5deb1e6"
+    },
+    {
+      "route": "/ege-analytics",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "b77d4abeaa25f3cd9acd246c6f110c7fa1609b25653b5927933423b06f877803",
+      "after": "b77d4abeaa25f3cd9acd246c6f110c7fa1609b25653b5927933423b06f877803"
+    },
+    {
+      "route": "/how-it-works",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "be63f46b64aab3e6527b99746060fe5761815060cc44a4d6b9586cfc21f7bd21",
+      "after": "be63f46b64aab3e6527b99746060fe5761815060cc44a4d6b9586cfc21f7bd21"
+    },
+    {
+      "route": "/faq",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "75d3399fa9f9f86ab95cbd17832a237e6e3bc6f31a100b80b1452c2871b1c3fb",
+      "after": "75d3399fa9f9f86ab95cbd17832a237e6e3bc6f31a100b80b1452c2871b1c3fb"
+    },
+    {
+      "route": "/auth/login",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "ab138221d8ec53279d6faf87985d8cd55100dff6357bdcfa991dd8efaee0e793",
+      "after": "ab138221d8ec53279d6faf87985d8cd55100dff6357bdcfa991dd8efaee0e793"
+    },
+    {
+      "route": "/auth/register",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "cfdb35bc9f304ce61cd3304be1c2579e9e5c4f5265904eea064551ca70d60d91",
+      "after": "cfdb35bc9f304ce61cd3304be1c2579e9e5c4f5265904eea064551ca70d60d91"
+    },
+    {
+      "route": "/auth/recovery",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "f97fb6e27ff8455d1a387363b3176a60353a0fb22a2cafaf67b802b0d9a92676",
+      "after": "f97fb6e27ff8455d1a387363b3176a60353a0fb22a2cafaf67b802b0d9a92676"
+    },
+    {
+      "route": "/app",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "4c757bf577ac2502051463b29a80c9c3ae543312a5f482fc8bb90905c7e97d98",
+      "after": "4c757bf577ac2502051463b29a80c9c3ae543312a5f482fc8bb90905c7e97d98"
+    },
+    {
+      "route": "/app/profile",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "0e594fc2ae04f01d765603ba3c798a2755fcb4919ac37d726ca7c25c3eed73fe",
+      "after": "0e594fc2ae04f01d765603ba3c798a2755fcb4919ac37d726ca7c25c3eed73fe"
+    },
+    {
+      "route": "/app/forecast",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840",
+      "after": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840"
+    },
+    {
+      "route": "/app/forecast/example",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840",
+      "after": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840"
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840",
+      "after": "6a96ff0d0a8a72cb26fb881070d1d7fdadec67ff08f35f89913167aa0e1e9840"
+    },
+    {
+      "route": "/app/watchlist",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "0fd9a8dc1d8c4db51e0f7d59b5c773670dd89b6589879926ab1e990d021be9fd",
+      "after": "0fd9a8dc1d8c4db51e0f7d59b5c773670dd89b6589879926ab1e990d021be9fd"
+    },
+    {
+      "route": "/app/watchlist/add",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "0620eef728eb7d6d05846f1cc57c48b961c623255a07702fa48f1689108afb43",
+      "after": "0620eef728eb7d6d05846f1cc57c48b961c623255a07702fa48f1689108afb43"
+    },
+    {
+      "route": "/app/competitions/mtuci-se",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "96e7a2769da7a99482c949f12ad031aa563749706a4d64b2fd13b352aa14451c",
+      "after": "96e7a2769da7a99482c949f12ad031aa563749706a4d64b2fd13b352aa14451c"
+    },
+    {
+      "route": "/app/competitions/mtuci-se/competitors",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "224d7e732cc4be081d51e66f0e3dd026bdc175d29e1522437a5b54e8795c4036",
+      "after": "224d7e732cc4be081d51e66f0e3dd026bdc175d29e1522437a5b54e8795c4036"
+    },
+    {
+      "route": "/app/compare",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "9d41242fefd4d989df06c88d0608c806ea80668e7922b47f4fcd01e3b9ceac63",
+      "after": "9d41242fefd4d989df06c88d0608c806ea80668e7922b47f4fcd01e3b9ceac63"
+    },
+    {
+      "route": "/app/history",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "7a6322009ed0ad37c077afe6409366a716718c646332efc36ef217dd85c41432",
+      "after": "7a6322009ed0ad37c077afe6409366a716718c646332efc36ef217dd85c41432"
+    },
+    {
+      "route": "/app/notifications",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "0a9ab484699085b71e06e0662f67e7911e69aed3faf2347146ba189d4c9dfd05",
+      "after": "0a9ab484699085b71e06e0662f67e7911e69aed3faf2347146ba189d4c9dfd05"
+    },
+    {
+      "route": "/app/settings",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "6c106f180d9199de23ed11471bddc1f3f15bc2df908f08ee52b5fb08fe643bdf",
+      "after": "6c106f180d9199de23ed11471bddc1f3f15bc2df908f08ee52b5fb08fe643bdf"
+    },
+    {
+      "route": "/app/sources",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "31ed6e39722729e0d0cdbc752612f910724508f46d806ccd2f6f1a6e6ba8f218",
+      "after": "31ed6e39722729e0d0cdbc752612f910724508f46d806ccd2f6f1a6e6ba8f218"
+    },
+    {
+      "route": "/app/states/empty",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d",
+      "after": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d"
+    },
+    {
+      "route": "/app/states/error",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d",
+      "after": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d"
+    },
+    {
+      "route": "/app/states/success",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d",
+      "after": "221b65f01affcf116ec3fb22d64921e165e50969df9e5d863f8cb671113f594d"
+    },
+    {
+      "route": "/not-found",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "b0e1b1fde113ebe4f076bf2a81a48636afaa669c4a3eb77b360fd342a5112e1a",
+      "after": "b0e1b1fde113ebe4f076bf2a81a48636afaa669c4a3eb77b360fd342a5112e1a"
+    },
+    {
+      "route": "/auth/verify",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "7b5353d59dc94ca079b8f4c847147d7578e2065fd9b8e0b03913afde6daa519b",
+      "after": "7b5353d59dc94ca079b8f4c847147d7578e2065fd9b8e0b03913afde6daa519b"
+    },
+    {
+      "route": "/auth/reset",
+      "mode": "live",
+      "width": 1440,
+      "equal": true,
+      "before": "a54b96c40cdc583206d89388e7071f6e06434311907b0147529edbf9b85d6588",
+      "after": "a54b96c40cdc583206d89388e7071f6e06434311907b0147529edbf9b85d6588"
+    },
+    {
+      "route": "/",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "97d13b085fff2bef472be1f5d23b9cd7b49770a533933665198085f30bfe78f5",
+      "after": "97d13b085fff2bef472be1f5d23b9cd7b49770a533933665198085f30bfe78f5"
+    },
+    {
+      "route": "/universities",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "547dd8daa20a1b5ad2fb5552d6e69ec4e674fca976cdff824177937be0f20be6",
+      "after": "547dd8daa20a1b5ad2fb5552d6e69ec4e674fca976cdff824177937be0f20be6"
+    },
+    {
+      "route": "/universities/sgu-saratov",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "ca953765325104b6a5322174fd333c08a295a79434a044fc7498868836c2430a",
+      "after": "ca953765325104b6a5322174fd333c08a295a79434a044fc7498868836c2430a"
+    },
+    {
+      "route": "/programs",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "80ae3c6e482a2100eb44325efa92c776a3e81c08cf0c63eda644564cdf32f3b2",
+      "after": "80ae3c6e482a2100eb44325efa92c776a3e81c08cf0c63eda644564cdf32f3b2"
+    },
+    {
+      "route": "/programs/sgu-2026-4588",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "4eb7e99917fcd8687c37a07a71099746bd4ae4e133357478b4eda339d5deb1e6",
+      "after": "4eb7e99917fcd8687c37a07a71099746bd4ae4e133357478b4eda339d5deb1e6"
+    },
+    {
+      "route": "/ege-analytics",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "ebb619ec87f912a62bc2b6d3e5f6ea6647c6dfb5d7c499f0216549d2259c8cad",
+      "after": "ebb619ec87f912a62bc2b6d3e5f6ea6647c6dfb5d7c499f0216549d2259c8cad"
+    },
+    {
+      "route": "/how-it-works",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "be63f46b64aab3e6527b99746060fe5761815060cc44a4d6b9586cfc21f7bd21",
+      "after": "be63f46b64aab3e6527b99746060fe5761815060cc44a4d6b9586cfc21f7bd21"
+    },
+    {
+      "route": "/faq",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "75d3399fa9f9f86ab95cbd17832a237e6e3bc6f31a100b80b1452c2871b1c3fb",
+      "after": "75d3399fa9f9f86ab95cbd17832a237e6e3bc6f31a100b80b1452c2871b1c3fb"
+    },
+    {
+      "route": "/auth/login",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "bed99f1f5c86804d132cd6446fd32e6845cc4710715ea8bea01e32d281e4cf10",
+      "after": "bed99f1f5c86804d132cd6446fd32e6845cc4710715ea8bea01e32d281e4cf10"
+    },
+    {
+      "route": "/auth/register",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "bc742aa09aab20cfca244d990dccddd8ffb2078930c39924e28decf47a15f77a",
+      "after": "bc742aa09aab20cfca244d990dccddd8ffb2078930c39924e28decf47a15f77a"
+    },
+    {
+      "route": "/auth/recovery",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "a1150428213f765e21154fa2a0e7a8a3824abb487af84c518dc0cd994b9ed075",
+      "after": "a1150428213f765e21154fa2a0e7a8a3824abb487af84c518dc0cd994b9ed075"
+    },
+    {
+      "route": "/app",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "5bb3883b4eed981c9cdc4c11d3a945b1bff95b103db4ffc8aee6a69a3f051d14",
+      "after": "5bb3883b4eed981c9cdc4c11d3a945b1bff95b103db4ffc8aee6a69a3f051d14"
+    },
+    {
+      "route": "/app/profile",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "be58826f930d78848af087ce1d3756dc8e472ab1ac74e6286bc48a1b0e0b7c00",
+      "after": "be58826f930d78848af087ce1d3756dc8e472ab1ac74e6286bc48a1b0e0b7c00"
+    },
+    {
+      "route": "/app/forecast",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "8d5167edacc5ef86cda50b256edd6ae8a64890cf87f63b8a14d56afc106c62f1",
+      "after": "8d5167edacc5ef86cda50b256edd6ae8a64890cf87f63b8a14d56afc106c62f1"
+    },
+    {
+      "route": "/app/forecast/example",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "cc7ea70038546f52806c0d519dc00be2f37858a819800307c82e5e42be02ca49",
+      "after": "cc7ea70038546f52806c0d519dc00be2f37858a819800307c82e5e42be02ca49"
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "ea55f8b1e6a83e85630209ae2f1acfdaa1b6b5a2866cd4e155398c9df0103fc3",
+      "after": "ea55f8b1e6a83e85630209ae2f1acfdaa1b6b5a2866cd4e155398c9df0103fc3"
+    },
+    {
+      "route": "/app/watchlist",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "261334b2b513296e66264ff1e635aa084bc7bcd7150f3d011c8ae3f9ca27635f",
+      "after": "261334b2b513296e66264ff1e635aa084bc7bcd7150f3d011c8ae3f9ca27635f"
+    },
+    {
+      "route": "/app/watchlist/add",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "ddfb07cf496353fd256a1b6bb41944cb1b9e0e4da4a35b598283bbc7adfb6c59",
+      "after": "ddfb07cf496353fd256a1b6bb41944cb1b9e0e4da4a35b598283bbc7adfb6c59"
+    },
+    {
+      "route": "/app/competitions/mtuci-se",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "5c8b3328399ac2ca16dc5b13832e699d5d295d8fbc43a8e2f9dc596d7c3ab494",
+      "after": "5c8b3328399ac2ca16dc5b13832e699d5d295d8fbc43a8e2f9dc596d7c3ab494"
+    },
+    {
+      "route": "/app/competitions/mtuci-se/competitors",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "f433973f4369c2f3d93e74d7244ead676c2999e6f595b0d352e98989c89c716b",
+      "after": "f433973f4369c2f3d93e74d7244ead676c2999e6f595b0d352e98989c89c716b"
+    },
+    {
+      "route": "/app/compare",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "d4cfe517f486f57482dd8776081967ceff396694b72f5584fbeffef1cb0e63e7",
+      "after": "d4cfe517f486f57482dd8776081967ceff396694b72f5584fbeffef1cb0e63e7"
+    },
+    {
+      "route": "/app/history",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "7a6322009ed0ad37c077afe6409366a716718c646332efc36ef217dd85c41432",
+      "after": "7a6322009ed0ad37c077afe6409366a716718c646332efc36ef217dd85c41432"
+    },
+    {
+      "route": "/app/notifications",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "0a9ab484699085b71e06e0662f67e7911e69aed3faf2347146ba189d4c9dfd05",
+      "after": "0a9ab484699085b71e06e0662f67e7911e69aed3faf2347146ba189d4c9dfd05"
+    },
+    {
+      "route": "/app/settings",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "374a8c9076d126a02dccbd05da8a4d0f053d75960ce78b40003d313618f8977b",
+      "after": "374a8c9076d126a02dccbd05da8a4d0f053d75960ce78b40003d313618f8977b"
+    },
+    {
+      "route": "/app/sources",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "31ed6e39722729e0d0cdbc752612f910724508f46d806ccd2f6f1a6e6ba8f218",
+      "after": "31ed6e39722729e0d0cdbc752612f910724508f46d806ccd2f6f1a6e6ba8f218"
+    },
+    {
+      "route": "/app/states/empty",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "3c4ddbacea1f24c9fcb5766d2ddcee4ee49774b2e21a1216b2ae1b7f30584d67",
+      "after": "3c4ddbacea1f24c9fcb5766d2ddcee4ee49774b2e21a1216b2ae1b7f30584d67"
+    },
+    {
+      "route": "/app/states/error",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "db32da6a945dc8da3ba212b3f2a7f7b2b1032a7f67a4b2db03318a0d624586cf",
+      "after": "db32da6a945dc8da3ba212b3f2a7f7b2b1032a7f67a4b2db03318a0d624586cf"
+    },
+    {
+      "route": "/app/states/success",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "1ef9b2e2a21f43bb7b56d994b2c45bc94e76763979dfc627eb60c4feabdf6a4c",
+      "after": "1ef9b2e2a21f43bb7b56d994b2c45bc94e76763979dfc627eb60c4feabdf6a4c"
+    },
+    {
+      "route": "/not-found",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "b0e1b1fde113ebe4f076bf2a81a48636afaa669c4a3eb77b360fd342a5112e1a",
+      "after": "b0e1b1fde113ebe4f076bf2a81a48636afaa669c4a3eb77b360fd342a5112e1a"
+    },
+    {
+      "route": "/auth/verify",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "2392f02a16350dc0c6d728d4fbcda68c985dd210b3dc5b4191469ec0082d19e9",
+      "after": "2392f02a16350dc0c6d728d4fbcda68c985dd210b3dc5b4191469ec0082d19e9"
+    },
+    {
+      "route": "/auth/reset",
+      "mode": "demo",
+      "width": 1440,
+      "equal": true,
+      "before": "2392f02a16350dc0c6d728d4fbcda68c985dd210b3dc5b4191469ec0082d19e9",
+      "after": "2392f02a16350dc0c6d728d4fbcda68c985dd210b3dc5b4191469ec0082d19e9"
+    }
+  ]
+}

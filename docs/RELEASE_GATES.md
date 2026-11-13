@@ -70,3 +70,21 @@ account guard/logout и email link screens. Проверки и воспроиз
 owner-bound API. AUTH_ENABLED по умолчанию false; реальная SMTP-доставка/HTTPS,
 полный PR6 и review владельца остаются условиями приёмки. Проверки через
 изолированный файловый test mailer не являются production-доставкой.
+
+## KAN-214 S215 / PR6 — automated evidence, внешний gate не принят
+
+[Итоговый отчёт](KAN-214-PR6.md), [machine evidence](evidence/kan-214-pr6.json),
+[матрица32 контролей](KAN-214-SECURITY-MATRIX.md). Hosted source79a40fc/run43478500035:
+четыре jobs success, backend979/0skip, frontend175, native-PG Chromium/Firefox/WebKit
+по5, validator32, repository tools20/0skip. Final head/run recorded in PR19 description.
+Frontend src/CSS идентичны merged PR5; визуальная диагностика123/124 exact с15px
+RGBdelta1 border variance сохранена для review, без baseline/threshold изменения.
+
+ProductionReady=false: реальные SMTP provider/inbox verification/recovery delivery
+не подтверждены; HTTPS/Origin/Secure-cookie deployment smoke, trusted-proxy client-IP
+policy и SMTP egress требуют согласованного окружения. compose.prod не передаёт auth/
+mail env backend и подключает его только к internal network. Никакие production
+networks/secrets/flags не изменены. [Процедура проверки](KAN-214-DELIVERY-SMOKE.md)
+подготовлена, но не выполнялась. Нужны owner review/принятие PR19 и фактические внешние
+доказательства (либо явное решение о допустимом ограничении по доставке). completedGates
+не изменяется; code/CI acceptance не равна полной приёмке KAN-214/релиза.

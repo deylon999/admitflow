@@ -27,6 +27,8 @@ def main():
     mailbox.touch(mode=0o600, exist_ok=False)
     clock_file = directory / 'clock.json'
     clock_file.write_text('0')
+    mail_mode = directory / 'mail-mode.json'
+    mail_mode.write_text('available')
 
     class TestClock:
         @staticmethod
@@ -39,6 +41,8 @@ def main():
         lock = threading.Lock()
 
         def deliver(self, email, token, purpose):
+            if mail_mode.read_text() == 'fail':
+                raise RuntimeError('Synthetic isolated mail transport failure.')
             with self.lock:
                 with mailbox.open('a') as output:
                     output.write(json.dumps(dict(email=email, token=token, purpose=purpose)) + '\n')

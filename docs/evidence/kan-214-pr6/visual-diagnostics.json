@@ -1,0 +1,17 @@
+[
+  {
+    "route": "/programs",
+    "mode": "live",
+    "width": 1440,
+    "pixelsDifferent": 15,
+    "bounds": [
+      301,
+      391,
+      304,
+      399
+    ],
+    "maximumChannelDelta": 1,
+    "thresholdChanged": false,
+    "baselineUpdated": false
+  }
+]

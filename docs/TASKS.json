@@ -8560,7 +8560,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T277"
       ],
@@ -8577,6 +8577,10 @@
         {
           "path": "docs/KAN-214-PR5.md",
           "note": "PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+        },
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR18 owner-merged into main12c78e4; final source6ae95ad/run43474248315 all4 jobs green, backend976/0skip and frontend175. Delivery/production gate remains unaccepted."
         }
       ],
       "blockedReason": null
@@ -8587,7 +8591,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T278"
       ],
@@ -8602,7 +8606,12 @@
         "Implement PR6 acceptance: PostgreSQL E2E/security/browser/visual/hosted CI and owner review",
         "Require real email delivery or explicit documented owner exception"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9200,7 +9209,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T298"
       ],
@@ -9221,6 +9230,155 @@
         {
           "path": "docs/KAN-214-PR5.md",
           "note": "PR5 React account integration implemented; local frontend175, native-PG browser2, backend976/0skip, visual108/108, migrations0012 passed. Final SHA/review PR/hosted results in PR description; owner review/merge and production delivery remain unaccepted."
+        },
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR18 owner-merged into main12c78e4; final source6ae95ad/run43474248315 all4 jobs green, backend976/0skip and frontend175. Delivery/production gate remains unaccepted."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T300",
+      "title": "KAN-214 PR6: Merged baseline and acceptance audit",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T278"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR6.md"
+      ],
+      "steps": [
+        "Confirm PR18 owner merge and audit current auth models/API/browser/security/infrastructure",
+        "Define critical-case matrix and distinguish code verification from external production acceptance"
+      ],
+      "acceptance": [
+        "Confirm PR18 owner merge and audit current auth models/API/browser/security/infrastructure",
+        "Define critical-case matrix and distinguish code verification from external production acceptance"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T301",
+      "title": "KAN-214 PR6: Security regression and evidence",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T300"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR6.md"
+      ],
+      "steps": [
+        "Map every critical auth threat to reproducible tests; close material gaps without weakening existing checks",
+        "Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation"
+      ],
+      "acceptance": [
+        "Map every critical auth threat to reproducible tests; close material gaps without weakening existing checks",
+        "Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T302",
+      "title": "KAN-214 PR6: Native PostgreSQL cross-browser acceptance",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T301"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR6.md"
+      ],
+      "steps": [
+        "Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport",
+        "Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service"
+      ],
+      "acceptance": [
+        "Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport",
+        "Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T303",
+      "title": "KAN-214 PR6: Migration visual and full regression",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T302"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR6.md"
+      ],
+      "steps": [
+        "Verify additive migration with guest history preserved, clean head/schema and all existing backend/frontend routes/tests",
+        "Compare approved v3 Live/Demo desktop/mobile without rewriting baselines and record actual outcomes"
+      ],
+      "acceptance": [
+        "Verify additive migration with guest history preserved, clean head/schema and all existing backend/frontend routes/tests",
+        "Compare approved v3 Live/Demo desktop/mobile without rewriting baselines and record actual outcomes"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T304",
+      "title": "KAN-214 PR6: Final report and review handoff",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T303"
+      ],
+      "deliverables": [
+        "docs/KAN-214-PR6.md"
+      ],
+      "steps": [
+        "Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR",
+        "Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception"
+      ],
+      "acceptance": [
+        "Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR",
+        "Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception"
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR6.md",
+          "note": "PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done."
         }
       ],
       "blockedReason": null

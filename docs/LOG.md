@@ -1362,3 +1362,19 @@ React integration complete in five implementation steps. Local174 frontend tests
 S214 PR5 mobile follow-up: wrap long account email in the new account summary;175 frontend tests passed (22.6s), lint/typecheck clean. No CSS files or retained visual routes changed. Final hosted verification remains in PR18 description; review/production gates unchanged.
 
 S214 PR5 URL boundary follow-up: canonicalize a trailing slash consistently with App before capturing/erasing email fragments. Existing browser case extended;175 tests passed (22.5s), lint/typecheck clean. Review/gates unchanged; final PR description records the updated head and hosted run.
+
+## S215 — KAN-214 PR6 acceptance plan (2026-11-13)
+
+Owner requested PR6. PR18 merge confirmed by GitHub and fresh origin/main12c78e4. Clean branch feat/kan-214-final-acceptance. Five tasks T300-T304 acceptance defined before implementation; no autonomous merge or production acceptance. SMTP/HTTPS remain external until actual evidence.
+
+S215 T300: Confirmed owner merge PR18/main12c78e4 and audited account/guest lifecycle, tests and infrastructure. Defined T300-T304 acceptance and gaps: native-PG browser hosted coverage, engine isolation, actual SMTP/HTTPS/egress; production compose remains unchanged.
+
+S215 T301: Added populated guest graph/migration/privacy native-PG acceptance (3 passed), security selection112 passed and evidence validator3 passed. Published32 critical controls with actual test selectors; validator refuses incomplete results and never accepts external release gates.
+
+S215 T302: Hosted source79a40fc/run43478500035 all4 jobs success: native-PG Chromium5 Firefox5 WebKit5, backend979/0skip, validator32 controls. Added engine identity proof and stale-report protection; local Chromium/Firefox5 each repeated after guest-cookie wait fix. Final head CI recorded in PR19.
+
+S215 T303: Full native-PG979/0skip, frontend175, clean migration0012/head/schema, ETL55+1 explicit skip, tools20+1 local PDF skip; hosted tools20/0skip. All31 Live/Demo routes compared at390/1440:123/124 exact; 15px RGBdelta1 border variance and identical frontend/src trees preserved for review; no baseline/threshold/source changes.
+
+## S215 T304 / T279 PR6 review handoff (2026-11-13)
+
+PR19 technical report,32-control manifest and external delivery/HTTPS smoke procedure prepared. Local979 backend/0skip,175 frontend,security112,validator3,lifecycle3,migrations0012; hosted milestone79a40fc/run43478500035 all4 jobs success incl native-PG Chromium/Firefox/WebKit5 each and tools20/0skip. Final head/results recorded in PR19 description. UI source tree identical to merged PR5;124 comparisons,123 exact and15px RGBdelta1 border variance kept raw for review (no threshold/baseline rewrite). T300-T303 done;T279/T304 review, not full acceptance. No provider delivery/owner exception/HTTPS-proxy-egress verified; production auth disabled. No autonomous merge. Owned test PG container stopped, volume preserved; user data untouched.

@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S214.
+Дата: 2026-11-13. Последняя сессия: S215.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T299.
+- Следующая задача: T304.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. Read docs/KAN-214-PR5.md and PR description for final SHA/hosted checks. Do not merge autonomously or start PR6 before acceptance. Real SMTP delivery and production HTTPS/proxy gate remain external.
+KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 description for final head/hosted results. Do not merge or mark full KAN-214 done; actual SMTP delivery (or explicit owner exception), production HTTPS/trusted proxy/egress and visual variance review remain unaccepted.
 
 ## Последняя завершённая работа
 
-- T295-T298: merged-main audit, shared account lifecycle, Live forms/email links, guard/logout, guest compatibility and native-PG browser evidence complete. T278/T299 remain review.
+- T300-T303: main/guest audit,32 security controls, populated graph migration/isolation, native-PG3 engines x5 hosted, full979/175 regression and visual diagnostics complete. T279/T304 remain review.
 
 ## Ограничения
 
@@ -24,14 +24,14 @@ KAN-214 PR5 React implementation complete; T278/T299 await owner review/merge. R
 - Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
-- KAN-214 real SMTP/provider inbox delivery and production HTTPS/proxy/egress gate remain unaccepted after code-only PR4 merge. Backend auth defaults disabled; frontend must show actual503 without fake success.
+- KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.
 
 ## Проверенное окружение
 
-- S214: frontend175 default tests/lint/typecheck/build, server lifecycle3; native PostgreSQL browser2 (private file mailer, no production delivery).
-- Full native-PG backend976/0skip; ETL55+1 explicit dataset skip; repository tools17+1 optional local PDF skip; clean migrations0012/head/no schema drift. Hosted results/final SHA recorded in review PR description.
-- Visual108/108 identical retained Live/Demo comparisons at390/1440, plus12 changed/technical screen captures; baseline/source comparison evidence committed. No CSS, backend product/migration/dependency/CI/Compose changes.
-- Owned PostgreSQL17 test container admitflow-kan214-pr5-db stopped; its test-only volume preserved. Random test schemas cleaned. User DBs/volumes and running services untouched. Mailbox/clock/preview processes cleaned.
+- S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.
+- Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.
+- Visual124 Live/Demo pairs at390/1440:123 exact;15px maxRGBdelta1 /programs border variance, repeats/raw images preserved. Identical frontend/src tree0b245e8e108d5c1a0b93e9a8290969bd6321c021; no CSS/product code/baseline changes.
+- Owned local PG container admitflow-kan214-pr5-db stopped after tests; test-only volume preserved, random schema/private mailbox/runtime processes cleaned. User data and other services untouched.
 
 ## Готовность к выпуску
 

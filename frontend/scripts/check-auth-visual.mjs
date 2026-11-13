@@ -8,9 +8,10 @@ import { chromium } from '@playwright/test';
 import { build, preview } from 'vite';
 import { stopChild } from './stop-child.mjs';
 
-const baseline = '3035f5e0bd2ba1cbeb3c13c1a002e136d16661d2';
+const acceptance = process.argv.includes('--acceptance');
+const baseline = acceptance ? '12c78e4bf10dbc69d6558d91da85a040c7798a28' : '3035f5e0bd2ba1cbeb3c13c1a002e136d16661d2';
 const temporary = mkdtempSync(resolve(tmpdir(), 'admitflow-auth-visual-'));
-const evidence = resolve('test-results/pr5-visual'); rmSync(evidence, { recursive: true, force: true }); mkdirSync(evidence, { recursive: true });
+const evidence = resolve(acceptance ? 'test-results/pr6-visual' : 'test-results/pr5-visual'); rmSync(evidence, { recursive: true, force: true }); mkdirSync(evidence, { recursive: true });
 const servers = [];
 let api, browser;
 try {
@@ -31,7 +32,9 @@ try {
     for (const [root, port] of [[original, 5300], [process.cwd(), 5301]]) servers.push(await preview({ root, configFile: false, logLevel: 'warn', preview: { host: '127.0.0.1', port, strictPort: true, proxy: { '/api': { target: 'http://127.0.0.1:5303' } } } }));
     browser = await chromium.launch();
     const routes = [...readFileSync('SCREEN_INVENTORY.md', 'utf8').matchAll(/^\|[^\n]*?\|\s*`(\/[^`]*)`\s*\|/gm)].map(match => match[1]);
-    const changed = ['/auth/login', '/auth/register', '/auth/recovery', '/app/profile'];
+    const authRoutes = ['/auth/login', '/auth/register', '/auth/recovery', '/app/profile'];
+    const changed = acceptance ? [] : authRoutes;
+    if (acceptance) routes.push('/auth/verify', '/auth/reset');
     const results = [];
     const hash = bytes => createHash('sha256').update(bytes).digest('hex');
     for (const width of [390, 1440]) {
@@ -64,12 +67,22 @@ try {
             const a = await screenshot(before, 5300, target), b = await screenshot(after, 5301, target);
             const equal = a.equals(b), name = `${mode}-${width}-${route.replaceAll('/', '_') || 'root'}`;
             if (!equal) { writeFileSync(resolve(evidence, name + '-before.png'), a); writeFileSync(resolve(evidence, name + '-after.png'), b); }
-            results.push({ route, mode, width, equal, before: hash(a), after: hash(b) });
+            let repeatBefore, repeatAfter;
+            if (!equal) {
+                // Diagnose repaint variance with unchanged sources; never change
+                // the failed comparison, mask pixels or loosen its threshold.
+                const againA = await before.screenshot({ fullPage: true, animations: 'disabled' });
+                const againB = await after.screenshot({ fullPage: true, animations: 'disabled' });
+                writeFileSync(resolve(evidence, name + '-repeat-before.png'), againA);
+                writeFileSync(resolve(evidence, name + '-repeat-after.png'), againB);
+                repeatBefore = hash(againA); repeatAfter = hash(againB);
+            }
+            results.push({ route, mode, width, equal, before: hash(a), after: hash(b), repeatBefore, repeatAfter });
         }
-        for (const route of [...changed, '/auth/verify', '/auth/reset']) writeFileSync(resolve(evidence, `${width}-${route.replaceAll('/', '_')}.png`), await screenshot(after, 5301, route));
+        for (const route of [...authRoutes, '/auth/verify', '/auth/reset']) writeFileSync(resolve(evidence, `${width}-${route.replaceAll('/', '_')}.png`), await screenshot(after, 5301, route));
         await context.close();
     }
-    writeFileSync(resolve(evidence, 'comparison.json'), JSON.stringify({ baseline, normalizedFixtureField: 'coverage.generatedAt', results }, null, 2));
+    writeFileSync(resolve(evidence, 'comparison.json'), JSON.stringify({ baseline, normalizedFixtureField: 'coverage.generatedAt', renderer: 'chromium headless', sourceTrees: { baseline: execFileSync('git', ['rev-parse', `${baseline}:frontend/src`], { cwd: '..' }).toString().trim(), current: execFileSync('git', ['rev-parse', 'HEAD:frontend/src'], { cwd: '..' }).toString().trim(), workingTreeClean: !execFileSync('git', ['status', '--porcelain', '--', 'frontend/src'], { cwd: '..' }).toString().trim() }, results }, null, 2));
     console.log(`Visual comparison: ${results.filter(item => item.equal).length}/${results.length} identical; 12 changed/technical screen captures.`);
     if (results.some(item => !item.equal)) process.exitCode = 1;
 } catch (error) { console.error(error.message); process.exitCode = 1; }
