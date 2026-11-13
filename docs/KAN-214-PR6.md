@@ -68,3 +68,24 @@ failure/error/skip и успешные JSON результаты каждого 
 (42.34s,1 существующий Starlette/httpx deprecation warning); validator unit3 passed.
 Начальная ошибка нового теста GET subscription была исправлена на существующий
 `/subscriptions/{id}/history` (вместо несуществующего GET detail); контракт API не менялся.
+
+## T302 — native PostgreSQL browser acceptance (в работе)
+
+Набор расширен до5 реальных сценариев на engine: lifecycle/parallel refresh/logout/
+recovery/revocation; переключение A/B и resetA при текущемB; unverified login,
+resend, purpose separation и истёкшая verification; CSRF/Origin/чужой synchronizer,
+HttpOnly/path/storage и refresh replay; uniform recovery, expired reset и503 от
+настоящего изолированного test-mail port. Fragment навигация обёрнута так, чтобы
+ошибка теста не выводила raw ссылку. Trace/video/screenshots этого набора выключены.
+
+`npm run test:auth` последовательно создаёт независимые runtime/schema/mailbox/clock
+для Chromium/Firefox/WebKit, сохраняет отдельные JSON/JUnit и не использует старый
+успешный JSON при ошибке старта. Default175 frontend tests не заменяются этим набором.
+CI дополнен только test steps в существующем backend job: его существующий PG17,
+Node24/Playwright engines, пять сценариев на каждый engine и проверка исполненной
+матрицы. Сервисы, networks, production compose и dependencies не изменены.
+
+Локально Chromium5 passed (8.8s), Firefox5 passed (14.7s), lint/typecheck passed.
+На Fedora44 WebKit не запускается без libicu74/libjpeg-turbo8; это не skip/успех.
+Обязательный WebKit run подготовлен в Ubuntu24.04 CI с `install --with-deps`.
+T302 остаётся in_progress до фактического результата всех трёх engines.

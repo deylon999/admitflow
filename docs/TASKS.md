@@ -6613,7 +6613,6 @@
 
 - Confirm PR18 owner merge and audit current auth models/API/browser/security/infrastructure.
 - Define critical-case matrix and distinguish code verification from external production acceptance.
-- Общая Definition of Done: docs/QUALITY.md..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
@@ -6637,7 +6636,6 @@
 
 - Map every critical auth threat to reproducible tests; close material gaps without weakening existing checks.
 - Verify isolation, durable limits, CSRF/replay/revocation, credentials/logging and guest data preservation.
-- Общая Definition of Done: docs/QUALITY.md..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
@@ -6661,7 +6659,6 @@
 
 - Run real lifecycle and negative cases in Chromium Firefox WebKit with isolated disposable PostgreSQL and private mail transport.
 - Add native PostgreSQL browser checks to the existing CI job using its existing PostgreSQL service; no CI rewrite/new service.
-- Общая Definition of Done: docs/QUALITY.md..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
@@ -6685,7 +6682,6 @@
 
 - Verify additive migration with guest history preserved, clean head/schema and all existing backend/frontend routes/tests.
 - Compare approved v3 Live/Demo desktop/mobile without rewriting baselines and record actual outcomes.
-- Общая Definition of Done: docs/QUALITY.md..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
@@ -6709,7 +6705,6 @@
 
 - Publish complete architecture/security/API/guest/email/tests/migration/GitHub/handoff report and review PR.
 - Leave real SMTP/HTTPS and owner acceptance open unless supported by actual evidence or explicit owner exception.
-- Общая Definition of Done: docs/QUALITY.md..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**

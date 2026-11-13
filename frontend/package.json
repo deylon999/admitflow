@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node scripts/test.mjs",
     "test:e2e": "node scripts/test.mjs",
+    "test:auth": "node scripts/test-auth-browsers.mjs",
     "test:visual": "node scripts/run-visual-tests.mjs",
     "verify:source": "node scripts/verify-source.mjs",
     "lint": "eslint src tests scripts/*.mjs *.ts *.mjs"
