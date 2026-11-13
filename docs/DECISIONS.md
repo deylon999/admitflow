@@ -219,3 +219,12 @@ and owner_hash unchanged, no automatic guest migration. Additive account schema,
 Argon2id RFC9106 low-memory, synchronizer CSRF and strict refresh-family replay
 revocation. Target contracts/threats/review sequence in KAN-214-AUTH.md. PR1 enables
 no auth endpoint; PR2-6 and production SMTP/HTTPS acceptance remain open.
+
+2026-11-13 S211 KAN-214 PR2 after merged PR14/main494d270: bring forward synchronizer
+CSRF to protect login/register immediately; default-disable auth pending full
+lifecycle. Issue access only until PR3 refresh/replay/logout. Persistent HMAC budgets
+use peer only (proxy aggregate, no arbitrary forwarded-header trust). Mail port
+unavailable globally503; invoke delivery on accepted duplicate addresses too with
+a safe existing-account notice, preventing provider-error account enumeration.
+No new duplicate verification token/password mutation. Real SMTP/confirmation
+remains PR4; port tests never claim production delivery. Details: KAN-214-PR2.md.

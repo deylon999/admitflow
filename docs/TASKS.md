@@ -5995,7 +5995,7 @@
 
 ### T275. KAN-214: Registration and login API
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T274.
 
@@ -6012,7 +6012,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance.
 
 ### T276. KAN-214: Refresh logout and CSRF
 
@@ -6198,7 +6198,7 @@
 
 ### T284. KAN-214 PR2: PR2 regression and review delivery
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T283.
 
@@ -6219,7 +6219,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR2.md](../docs/KAN-214-PR2.md) — PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance.
 
 ## E6. Резерв и выпуск
 

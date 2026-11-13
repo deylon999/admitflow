@@ -8467,7 +8467,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T274"
       ],
@@ -8480,7 +8480,12 @@
       "acceptance": [
         "Implement PR2 acceptance from KAN-214 specification with PostgreSQL tests and review"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -8699,7 +8704,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T283"
       ],
@@ -8716,7 +8721,12 @@
         "Full backend, migration, frontend and hosted checks; reviewable PR, no merge",
         "Document unfinished refresh/logout/email delivery and safe disabled-by-default rollout"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR2.md",
+          "note": "PR2 register/login/current-session, CSRF and persistent budgets implemented. Local811 native-guard backend +16 final targeted tests,frontend147,migrations0012 pass. Final hosted820 expected; exact hosted/PR/source in PR description. Owner review required; no production SMTP/lifecycle acceptance."
+        }
+      ],
       "blockedReason": null
     }
   ]

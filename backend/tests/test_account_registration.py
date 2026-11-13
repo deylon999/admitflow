@@ -40,8 +40,9 @@ def test_real_registration_hash_action_and_generic_duplicate(auth_client, auth_a
     assert token not in response.text and original_hash not in response.text
 
 
+@pytest.mark.parametrize('operation', ['register', 'login'])
 @pytest.mark.parametrize('kind', ['missing', 'wrong', 'other_context', 'expired', 'origin', 'cross_site', 'write_header'])
-def test_registration_csrf_and_origin_fail_closed(auth_client, auth_app, kind):
+def test_auth_write_csrf_and_origin_fail_closed(auth_client, auth_app, kind, operation):
     headers = csrf(auth_client)
     if kind == 'missing': headers.pop('X-CSRF-Token')
     elif kind == 'wrong': headers['X-CSRF-Token'] = 'x'*43
@@ -56,7 +57,9 @@ def test_registration_csrf_and_origin_fail_closed(auth_client, auth_app, kind):
     elif kind == 'origin': headers['Origin'] = 'http://evil.example'
     elif kind == 'cross_site': headers['Sec-Fetch-Site'] = 'cross-site'
     else: headers.pop('X-Requested-With')
-    assert register(auth_client, headers=headers).status_code == 403
+    response = auth_client.post('/api/v1/auth/'+operation, headers=headers,
+                                json=dict(email='person@example.org', password=PASSWORD))
+    assert response.status_code == 403
     with Session(auth_app.state.engine) as db:
         assert db.scalar(select(func.count()).select_from(AccountUser)) == 0
     assert auth_app.state.test_mailer.deliveries == []
@@ -129,3 +132,21 @@ def test_csrf_bootstrap_requires_same_origin_header_and_does_not_use_guest(auth_
     assert CSRF_COOKIE in cookie and 'HttpOnly' in cookie and 'Path=/api/v1' in cookie and 'SameSite=lax' in cookie
     assert 'Domain=' not in cookie
     assert 'abiturient_session' not in auth_client.cookies
+
+
+def test_registration_commit_failure_rolls_back_and_never_sends(auth_client, auth_app, monkeypatch):
+    from sqlalchemy.exc import SQLAlchemyError
+    headers = csrf(auth_client)
+    original = Session.commit
+    def fail_user_transaction(db):
+        if any(isinstance(obj, AccountActionToken) for obj in db.new):
+            raise SQLAlchemyError('private insert failure')
+        return original(db)
+    monkeypatch.setattr(Session, 'commit', fail_user_transaction)
+    response = register(auth_client, headers=headers)
+    assert response.status_code == 503 and 'private insert' not in response.text
+    assert auth_app.state.test_mailer.deliveries == []
+    with Session(auth_app.state.engine) as db:
+        assert db.scalar(select(func.count()).select_from(AccountUser)) == 0
+        assert db.scalar(select(func.count()).select_from(AccountActionToken)) == 0
+        assert db.scalar(select(AccountRateBucket).where(AccountRateBucket.operation == 'register-email')).used == 1

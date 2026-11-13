@@ -86,3 +86,16 @@ def test_auth_config_requires_stable_secret_and_hides_it(monkeypatch):
     assert Settings.from_env().auth_rate_key == KEY
     monkeypatch.setenv('AUTH_ENABLED','yes')
     with pytest.raises(RuntimeError): Settings.from_env()
+
+
+def test_temporary_database_failure_is_503_not_missing_account(auth_client, auth_app, monkeypatch):
+    from app import account_api
+    from sqlalchemy.exc import SQLAlchemyError
+    verified(auth_client, auth_app); assert login(auth_client).status_code == 200
+    access = auth_client.cookies.get(ACCESS_COOKIE)
+    def fail_read(*args): raise SQLAlchemyError('private backend failure')
+    monkeypatch.setattr(account_api, 'current_account', fail_read)
+    response = auth_client.get('/api/v1/auth/session')
+    assert response.status_code == 503 and response.json()['code'] == 'auth_unavailable'
+    assert 'private backend' not in response.text
+    assert auth_client.cookies.get(ACCESS_COOKIE) == access

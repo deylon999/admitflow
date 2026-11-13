@@ -284,7 +284,7 @@
 - [x] T272 KAN-214: Security architecture and API contracts
 - [x] T273 KAN-214: PostgreSQL account foundation
 - [x] T274 KAN-214: Password security foundation
-- [ ] T275 KAN-214: Registration and login API
+- [ ] T275 KAN-214: Registration and login API — **нужна проверка / завершение**
 - [ ] T276 KAN-214: Refresh logout and CSRF
 - [ ] T277 KAN-214: Email verification and recovery
 - [ ] T278 KAN-214: React v3 account integration
@@ -293,7 +293,7 @@
 - [x] T281 KAN-214 PR2: Persistent auth rate budgets
 - [x] T282 KAN-214 PR2: Registration and CSRF prerequisite
 - [x] T283 KAN-214 PR2: Login and current account session
-- [ ] T284 KAN-214 PR2: PR2 regression and review delivery — **в работе**
+- [ ] T284 KAN-214 PR2: PR2 regression and review delivery — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

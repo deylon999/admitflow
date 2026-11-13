@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-13",
+  "task": "KAN-214 PR2",
+  "base": "494d270f5f44fefc2f295d442b4b9691d5f11610",
+  "branch": "feat/kan-214-register-login",
+  "local": {
+    "backend": {
+      "passed": 811,
+      "skipped": 0,
+      "postgresRequired": true,
+      "exitCode": 0,
+      "note": "before nine final added cases"
+    },
+    "finalNegativeTests": 16,
+    "expectedFinalBackendCollection": 820,
+    "frontend": 147,
+    "etl": {
+      "passed": 55,
+      "skipped": 1,
+      "reason": "existing unavailable full dataset"
+    },
+    "migration": {
+      "head": "0012",
+      "freshPostgres": true,
+      "aligned": true
+    },
+    "pipCheck": 0
+  },
+  "dataSafety": {
+    "userDatabaseTouched": false,
+    "userVolumesTouched": false,
+    "testContainerRemoved": true
+  },
+  "limitations": [
+    "Owner review required; latest SHA/PR/hosted results maintained in PR description",
+    "No real email transport or delivery; register503 when absent",
+    "Auth disabled by default; no refresh/logout/verification/recovery endpoints",
+    "Peer behind current proxy is aggregate; arbitrary forwarded headers ignored",
+    "Frontend auth integration and full KAN-214 acceptance remain later PRs"
+  ]
+}

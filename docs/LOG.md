@@ -1290,3 +1290,7 @@ Registration/CSRF implemented;20 native PG tests pass including real persistence
 ## S211 — T283 KAN-214 PR2 (2026-11-13)
 
 Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default.
+
+## S211 — T275/T284 PR2 review delivery (2026-11-13)
+
+T280-T283 done; registration/login/current account/CSRF and durable HMAC budgets. Local full811/0skip native PG before nine added tests; final negatives16 pass. Frontend147/lint/typecheck/build,ETL55+1 dataset skip,pip check,clean migration0012/head/check pass. Final hosted/source/PR in PR description. T275/T284 review, no merge; default auth disabled and no actual SMTP/refresh/logout/confirmation/recovery. Owned test schemas/container/anonymous volume cleaned, user DB/volumes untouched. Initial T280 helper entry used historical S210 tag by mistake; actual work belongs to S211 and corrected state/evidence follow it.

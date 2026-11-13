@@ -126,3 +126,37 @@ with Retry-After, auth_unavailable503. Existing safe validation and Origin rejec
 formats retained. No tokens in URLs or auth secrets in JSON; csrfToken is the
 non-auth synchronizer value, intended only for JS memory. No frontend/storage code
 changed. Missing real mail is explicitly503 even when AUTH_ENABLED=true.
+
+## Regression, evidence and remaining review (T284)
+
+Full local backend `TEST_DATABASE_URL=<isolated PG> backend/.venv/bin/python -m
+pytest -q --require-postgres --ignore=backend/tests/test_admission_history.py
+--ignore=backend/tests/test_accreditation_registry.py
+--ignore=backend/tests/test_exam_requirements.py backend/tests`: **811 passed,
+zero skipped**, exit0,223.67s. Nine further test cases were added after collection
+(two failure cases + seven extra login CSRF/Origin cases); focused current rerun:
+**16 passed**, exit0. Hosted CI must execute all820 cases on the final source.
+Do not represent811 as a full run containing those nine added cases.
+
+Existing frontend `npm run lint`, `npm run typecheck`, `npm run build`, `npm test`:
+exit0, **147 passed** (all29 routes), unchanged JS/CSS asset hashes. No frontend,
+CSS or visual baseline edits; no new pixel-comparator acceptance claimed. ETL:
+**55 passed, one explicit missing-dataset skip**, exit0. `pip check` clean.
+Repository tools17 tests, one local missing-PDF-dependency skip; hosted installs
+those dependencies. Clean native PostgreSQL migration verifier: head0012 matches,
+no new upgrade operations, exit0. No new or changed applied migration.
+
+Tests used owned PostgreSQL17 container admitflow-kan214-pr2-db, loopback55439,
+admitflow_test_kan214_pr2 and admitflow_test_kan214_pr2_migrations, random schemas
+via pg_support. All schemas cleaned; owned container/anonymous volume removed.
+User DBs/volumes, other containers, deployment/CI workflows and production secrets
+untouched. Final SHA, PR URL, hosted run and exact job results are maintained in
+PR description (avoids an evidence-only commit invalidating its own checked SHA).
+
+T275 and T284 remain review until owner acceptance; implementation stepsT280-T283
+done. Hosted results not inferred from local checks. No autonomous merge.
+After review/merge: T276 PR3 refresh rotation/replay, logout and full revocation,
+then PR4 real SMTP/confirmation/recovery, PR5 React and PR6 final acceptance.
+KAN-214 is NOT done. AUTH_ENABLED defaultsfalse; real provider absent means503.
+Peer counters behind current proxy are aggregate, not real per-client IP. Production
+HTTPS/proxy/SMTP-egress and actual delivery remain explicit external release gates.

@@ -72,3 +72,14 @@ ISO calendar dates, идентификаторы, rank/count/null и обяза�
 nested поля; catalog ID/year/universityId ответа должны соответствовать запросу.
 Неизвестные admission факты остаются null. HTTP 401 не создаёт гостя автоматически.
 Актуальные 29 маршрутов и негативные сценарии: [отчёт](KAN-212-FRONTEND-REPORT.md).
+
+## KAN-214 PR2 account API (disabled by default)
+
+`AUTH_ENABLED=false` by default. Enabled auth requires a stable `AUTH_RATE_KEY`;
+existing production HTTPS/PostgreSQL/Secure guards remain. Separate guest API
+`/api/v1/session` and owner_hash contracts are unchanged.
+Implemented `/api/v1/auth/csrf` GET, `/register` POST, `/login` POST, `/session` GET.
+DTOs, statuses, rate policy, CSRF and safe rollout: [KAN-214-PR2.md](KAN-214-PR2.md).
+No refresh/logout/confirmation/recovery endpoint yet. Without a registration mail
+transport, register returns503 globally rather than claiming email delivery.
+Do not enable the incomplete lifecycle for production users before PR3-6 acceptance.

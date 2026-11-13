@@ -1,26 +1,30 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T284",
-  "nextTask": "T284",
+  "currentTask": null,
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S211",
-  "resumeAction": "KAN-214 PR2 implementation from main494d270. T280-T284; no merge. Real SMTP and full lifecycle remain PR3-6; auth disabled by default.",
+  "resumeAction": "KAN-214 PR2 on feat/kan-214-register-login awaiting hosted checks and owner review/merge. T280-T283 done; T275/T284 review. Local811 backend+16 final negatives,frontend147,migrations0012 pass. Final SHA/run/PR in GitHub PR description. After owner merge continue T276 PR3, never merge autonomously. Auth disabled by default; real mail/refresh/logout not implemented.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.",
-    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement."
+    "KAN-214: real SMTP provider/from/credentials and delivery verification absent; production HTTPS/trusted-proxy contract and SMTP egress require deployment owner agreement.",
+    "KAN-214 PR2 owner review/merge required before PR3. Real SMTP/confirmation/recovery and refresh/logout remain unimplemented; production auth must stay disabled."
   ],
   "lastCompleted": [
-    "T283: Real login/current-account sessions implemented;25 native PG login/HTTP security tests pass including race rechecks, CSRF isolation, production cookies, guest preservation, rate persistence and secret redaction. Refresh/logout/SMTP remain later PRs; auth disabled by default."
+    "T283: Real verified-account login and current-session API, server-state checks, CSRF rotation, safe cookies, password-change/concurrent-login races and guest isolation verified.",
+    "T282: Registration, unique-user/action persistence, CSRF/Origin and explicit mail failures verified.",
+    "T281: Persistent HMAC budgets verified against native PostgreSQL concurrency/restart/windows.",
+    "T280: PR14 merge/main494d270 and PR2 boundaries verified."
   ],
   "environment": [
-    "S210: final local required-native-PostgreSQL backend763 passed/0skip; frontend npm ci/lint/typecheck/build/test147 passed; ETL55 passed+1 explicit missing-dataset skip; migrations0012/head/schema check passed.",
-    "Focused foundation/password/catalog48 passed. Real PostgreSQL17 random schemas prove uniqueness races, constraints, guest preservation and account cleanup. Owned test DB container/anonymous volume removed after tests; no AdmitFlow user DB/volume modified.",
-    "PR14 first workflow43409888388; final SHA/latest hosted status maintained in PR14 description. No frontend/CSS/baseline/workflow/compose changes. No production email or HTTPS claim."
+    "S211: local required-native-PG backend811 passed/0skip (collection before nine final test cases); current targeted16 passed covers those changes. Hosted expected820; final exact SHA/run/results in PR description.",
+    "Frontend147/lint/typecheck/build,ETL55+1 explicit dataset skip,pip check pass; native clean migration0012/head/schema alignment pass; repository tools17 with1 local missing-PDF-dependency skip.",
+    "Owned PostgreSQL17 test container/databases/random schemas removed; user DBs/volumes/other containers untouched. No frontend/CSS/CI/compose/applied-migration changes. Auth disabled by default; no real email or full auth acceptance."
   ]
 }
