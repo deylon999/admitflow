@@ -1346,3 +1346,7 @@ Confirmed PR17 merged/main3035f5e; audited shared client, guest ownership, UI/ro
 ## S214 — T296 KAN-214 PR5 (2026-11-13)
 
 Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.
+
+## S214 — T297 KAN-214 PR5 (2026-11-13)
+
+Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed.

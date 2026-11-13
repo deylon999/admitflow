@@ -93,13 +93,16 @@ async function ready() {
     if (state.status !== 'authenticated') throw new ApiError(401, 'Войдите в аккаунт.', false, 'not_authenticated');
 }
 configureAccountPolicy({ ready, refresh: async () => { await restoreAccount(); await ready(); }, expired: lost });
+let peerDeadline: ReturnType<typeof setTimeout> | undefined;
 window.addEventListener('storage', event => {
     if (!enabled || (event.key !== accountMarker && event.key !== null)) return;
     let phase: unknown;
     try { phase = JSON.parse(event.newValue ?? 'null')?.phase; } catch { /* Reconcile unknown markers too. */ }
+    clearTimeout(peerDeadline);
     boundary();
     if (phase === 'expired') publish({ status: 'anonymous' });
     else if (phase !== 'begin') void restoreAccount();
+    else peerDeadline = setTimeout(() => { if (enabled) void restoreAccount(); }, 30000);
 });
 const revalidate = () => {
     if (!enabled || document.visibilityState === 'hidden') return;
@@ -119,7 +122,10 @@ export async function login(email: string, password: string, signal?: AbortSigna
             return current;
         });
         if (observed === revision) publish({ status: 'authenticated', session: verified });
-        else await restoreAccount();
+        else {
+            await restoreAccount();
+            if (state.status !== 'authenticated' || state.session.account.id !== verified.account.id) throw new ApiError(401, 'Состояние аккаунта изменилось. Повторите вход.', false);
+        }
     } catch (error) {
         if (observed === revision) publish({ status: 'error', error: asError(error) });
         throw error;

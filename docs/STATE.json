@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-13",
-  "currentTask": "T297",
-  "nextTask": "T297",
+  "currentTask": "T298",
+  "nextTask": "T298",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -16,7 +16,7 @@
     "KAN-214 real SMTP/provider inbox delivery and production HTTPS/proxy/egress gate remain unaccepted after code-only PR4 merge. Backend auth defaults disabled; frontend must show actual503 without fake success."
   ],
   "lastCompleted": [
-    "T296: Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination."
+    "T297: Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed."
   ],
   "environment": [
     "S213: all-current local --require-postgres backend976/0skip; combined action/security83; mail/config35; frontend147/lint/typecheck/build. ETL55+1 explicit dataset skip; pip check clean; native clean migration0012/head/schema check passed.",

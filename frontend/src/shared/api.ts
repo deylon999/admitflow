@@ -59,8 +59,10 @@ type RequestOptions = Omit<RequestInit, 'body'> & { expectedStatus?: number } & 
 
 export async function request<T>(path: string, decode: Decoder<T>, init: RequestOptions = {}): Promise<T> {
     if (apiScope(path) !== 'account' || !accountPolicy) return performRequest(path, decode, init);
+    const ownerBefore = accountEpoch;
     await accountPolicy.ready();
     init.signal?.throwIfAborted();
+    if (ownerBefore !== accountEpoch) throw new ApiError(401, 'Состояние аккаунта изменилось.', false, 'account_changed');
     try { return await performRequest(path, decode, init); }
     catch (error) {
         if (!(error instanceof ApiError) || error.status !== 401) throw error;
@@ -68,6 +70,7 @@ export async function request<T>(path: string, decode: Decoder<T>, init: Request
         if (error.code !== 'access_expired') { accountPolicy.expired(); throw error; }
         await accountPolicy.refresh();
         init.signal?.throwIfAborted();
+        if (ownerBefore !== accountEpoch) throw new ApiError(401, 'Состояние аккаунта изменилось.', false, 'account_changed');
         try { return await performRequest(path, decode, init); }
         catch (retryError) {
             if (retryError instanceof ApiError && retryError.status === 401) accountPolicy.expired();
@@ -142,7 +145,7 @@ async function performRequest<T>(path: string, decode: Decoder<T>, init: Request
             check();
             const retry = response.headers.get('Retry-After');
             const retryAfter = retry && /^\d{1,6}$/.test(retry) ? Math.min(Number(retry), 86400) : undefined;
-            const message = code ? authMessages[code] : response.status === 401 && !sessionBound(path) ? 'Не удалось получить доступ к аккаунту. Войдите снова.' : undefined;
+            const message = code ? authMessages[code] : response.status === 401 && scope === 'public' ? 'Не удалось получить доступ к данным. Повторите запрос позже.' : response.status === 401 && !sessionBound(path) ? 'Не удалось получить доступ к аккаунту. Войдите снова.' : response.status === 403 && scope === 'auth' ? 'Не удалось подтвердить безопасность запроса. Повторите действие.' : undefined;
             throw new ApiError(response.status, message, sessionBound(path), code, retryAfter);
         }
         if (expectedStatus !== undefined && response.status !== expectedStatus) invalid();
@@ -167,6 +170,7 @@ async function performRequest<T>(path: string, decode: Decoder<T>, init: Request
     }
     catch (error) {
         if (init.signal?.aborted) throw new DOMException('Request cancelled', 'AbortError');
+        if (accountRead && ownerEpoch !== accountEpoch) throw new ApiError(401, 'Состояние аккаунта изменилось.', false, 'account_changed');
         if (error instanceof ApiError) throw error;
         throw new ApiError(0, controller.signal.aborted ? 'Ответ занимает слишком много времени. Повторите запрос.' : 'Не удалось связаться с сервером. Повторите запрос.');
     }

@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T297.
-- Следующая задача: T297.
+- Текущая задача: T298.
+- Следующая задача: T298.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -16,7 +16,7 @@ KAN-214 PR5 React auth T295-T299 from main3035f5e. Separate account/guest lifecy
 
 ## Последняя завершённая работа
 
-- T296: Shared transport/account store and whitelist DTO implemented; 32 API/DTO tests, typecheck and lint passed. Guest epoch preserved; independent account invalidation, locked refresh and nonsecret cross-tab coordination.
+- T297: Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed.
 
 ## Ограничения
 

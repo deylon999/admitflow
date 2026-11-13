@@ -15,7 +15,10 @@ import { FinalCTA } from './components/FinalCTA';
 import { AppShell } from './app/Shell';
 import { decodeRouteId, interceptInternalLinks } from './app/navigation';
 import { Action, EmptyMessage } from './shared/UI';
-import { AuthPage } from './pages/AuthPages';
+import { DemoAuthPage } from './pages/AuthPages';
+import { AccountPage, AuthPage, EmailActionPage } from './pages/AccountPages';
+import { enableAccount } from './shared/account';
+import { captureAuthLink } from './shared/authLink';
 import { ExamAnalytics, FaqPage, HowItWorks } from './pages/PublicPages';
 import { AddWatch, Dashboard, Compare, CompetitionList, Competitors, ForecastForm, ForecastMethod, ForecastResult, ProfilePage, SettingsPage, StatusPage, Watchlist } from './pages/AppPages';
 import { ProgramsCatalog, UniversityCatalog } from './catalog/CatalogPages';
@@ -24,11 +27,14 @@ import './catalog/catalog.css';
 import './styles.css';
 import './internal.css';
 
-function usePathname(): string {
-  const [path, setPath] = useState(() => (window.location.pathname.replace(/\/$/, '') || '/') + window.location.search);
+function usePathname(): { path: string; version: number } {
+  const [path, setPath] = useState(() => ({ path: (window.location.pathname.replace(/\/$/, '') || '/') + window.location.search, version: 0 }));
 
   useEffect(() => {
-    const onRouteChange = () => setPath((window.location.pathname.replace(/\/$/, '') || '/') + window.location.search);
+    const onRouteChange = () => {
+      captureAuthLink();
+      setPath(previous => ({ path: (window.location.pathname.replace(/\/$/, '') || '/') + window.location.search, version: previous.version + 1 }));
+    };
     window.addEventListener('popstate', onRouteChange);
     document.addEventListener('click', interceptInternalLinks);
     return () => {
@@ -105,7 +111,7 @@ function PrivateRoute({ path, tracked, onToggle }: {
   switch (path) {
     case '/app': return new URLSearchParams(location.search).get('mode')==='demo' ? <Unsupported><Dashboard tracked={tracked}/></Unsupported> : <LiveDirections />;
     case '/app/competitions': return <CompetitionsIndex />;
-    case '/app/profile': return <Unsupported><ProfilePage /></Unsupported>;
+    case '/app/profile': return new URLSearchParams(location.search).get('mode') === 'demo' ? <Unsupported><ProfilePage /></Unsupported> : <AccountPage />;
     case '/app/forecast': return <Unsupported><ForecastForm /></Unsupported>;
     case '/app/forecast/example': return <Unsupported><ForecastResult /></Unsupported>;
     case '/app/forecast/method': return <Unsupported><ForecastMethod /></Unsupported>;
@@ -149,15 +155,20 @@ function PublicRoute({ path }: { path: string }) {
 }
 
 export default function App() {
-  const routeKey = usePathname();
+  const route = usePathname();
+  const routeKey = route.path;
   const pathname = routeKey.split('?')[0];
   const [tracked, onToggle] = useTracked();
+  const demo = new URLSearchParams(routeKey.split('?')[1]).get('mode') === 'demo';
+  const accountRoute = pathname === '/app' || pathname.startsWith('/app/') || pathname.startsWith('/auth/');
+  useEffect(() => { enableAccount(!demo && accountRoute); }, [demo, accountRoute]);
 
   if (pathname === '/') return <LandingPage />;
   if (pathname === '/auth/login' || pathname === '/auth/register' || pathname === '/auth/recovery') {
     const mode = pathname === '/auth/register' ? 'register' : pathname === '/auth/recovery' ? 'recovery' : 'login';
-    return <Unsupported key={pathname}><AuthPage mode={mode} /></Unsupported>;
+    return demo ? <Unsupported key={pathname}><DemoAuthPage mode={mode}/></Unsupported> : <AuthPage key={pathname} mode={mode}/>;
   }
+  if (pathname === '/auth/verify' || pathname === '/auth/reset') return demo ? <Unsupported><p>Техническая ссылка доступна в рабочем режиме.</p></Unsupported> : <EmailActionPage key={`${pathname}:${route.version}`} reset={pathname === '/auth/reset'}/>;
   const content = pathname === '/app' || pathname.startsWith('/app/')
     ? <PrivateRoute key={pathname} path={pathname} tracked={tracked} onToggle={onToggle} />
     : <PublicRoute path={pathname} />;

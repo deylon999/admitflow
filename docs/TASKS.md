@@ -6521,7 +6521,7 @@
 
 ### T297. KAN-214 PR5: Live forms and email link routes
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T296.
 
@@ -6542,11 +6542,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-214-PR5.md](../docs/KAN-214-PR5.md) — Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed.
 
 ### T298. KAN-214 PR5: Logout guards and browser isolation
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T297.
 

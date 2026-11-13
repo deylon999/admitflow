@@ -62,3 +62,14 @@ checks both headers and body and aborts private reads. External account store us
 server session proof, one refresh mutation under Web Locks, same-tab single flight,
 nonsecret cross-tab markers and explicit unavailable state. Guest epoch remains intact.
 Validation: frontend typecheck/lint and 32 transport/DTO tests passed locally.
+
+T297 implementation: Live forms use the existing v3 auth frame/styles; controlled
+fields, matching long password validation, bounded input, safe errors/429 and abort
+on route exit. Generic202 is shown as a conditional accepted request, not account
+creation/delivery proof. Live login confirms the returned identity via GET session.
+Resend/verification/reset are explicit actions; fragment credentials are erased
+before rendering/API and never persisted. Demo stays inert with its original preview.
+Initial full browser run: all9 new auth scenarios passed; three regressions exposed
+an unnecessary account bootstrap on public catalog pages and changed public401
+wording. Fixed by lazy bootstrap on auth/app routes and preserving the public error
+contract. No existing guest assertion was relaxed.

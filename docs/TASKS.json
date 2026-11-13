@@ -9133,7 +9133,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T296"
       ],
@@ -9150,7 +9150,12 @@
         "Consume fragments before network/render, memory-only single-use link state and no auto confirm/login",
         "Preserve v3 form/CSS and inert explicit Demo"
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-214-PR5.md",
+          "note": "Live controlled auth/email-link forms implemented; nine new browser scenarios passed, typecheck/lint passed. Preserved public error contract and lazy auth/app bootstrap; real PostgreSQL lifecycle browser scenario also passed."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9159,7 +9164,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T297"
       ],

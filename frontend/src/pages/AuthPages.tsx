@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { RouteLink } from '../app/RouteLink';
 import { Action, PageTitle, Surface } from '../shared/UI';
 
-export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) {
+export function DemoAuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) {
   const [sent, setSent] = useState(false);
   const titles = {
     login: 'С возвращением!',
@@ -42,3 +42,5 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) 
     </div>
   );
 }
+
+// The Demo above keeps the approved v3 preview and never calls account endpoints.

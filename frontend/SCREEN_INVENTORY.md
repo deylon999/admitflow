@@ -10,11 +10,11 @@
 | Аналитика ЕГЭ | `/ege-analytics` | Нет feature API; opt-in demo, без серверного успеха |
 | Как работает прогноз | `/how-it-works` | Реализован |
 | FAQ | `/faq` | Реализован |
-| Вход | `/auth/login` | Нет feature API; opt-in demo, без серверного успеха |
-| Регистрация | `/auth/register` | Нет feature API; opt-in demo, без серверного успеха |
-| Восстановление | `/auth/recovery` | Нет feature API; opt-in demo, без серверного успеха |
+| Вход | `/auth/login` | Live API, серверная проверка account session; opt-in Demo отдельно |
+| Регистрация | `/auth/register` | Live API, подтверждение email обязательно; SMTP external gate |
+| Восстановление | `/auth/recovery` | Live API, одноразовая ссылка; SMTP external gate |
 | Обзор кабинета | `/app` | Live subscriptions; явный гостевой доступ |
-| Профиль | `/app/profile` | Нет feature API; opt-in demo, без серверного успеха |
+| Профиль | `/app/profile` | Минимальный account guard, email/logout; полный профиль KAN-215, Demo сохранён |
 | Ввод баллов/прогноз | `/app/forecast` | Нет feature API; opt-in demo, без серверного успеха |
 | Результат прогноза | `/app/forecast/example` | Нет feature API; opt-in demo, без серверного успеха |
 | Объяснение прогноза | `/app/forecast/method` | Нет feature API; opt-in demo, без серверного успеха |
@@ -43,3 +43,7 @@ S202: все 29 исходных URL сохранены. Дополнитель�
 S209/KAN-212: актуальная матрица — [отчёт](../docs/KAN-212-FRONTEND-REPORT.md).
 Конкурсы `/app/competitions/{id}` используют group ID; сохранённое направление
 `/app/watchlist/{id}` — subscription ID. Все 29 исходных URL сохранены.
+
+KAN-214 PR5: дополнительные технические маршруты `/auth/verify` и `/auth/reset`.
+Токен принимается только из fragment письма, немедленно удаляется из URL и хранится
+в памяти до отправки/ухода. Подтверждение выполняется явной кнопкой. Исходные29 URL сохранены.
