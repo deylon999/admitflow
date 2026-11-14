@@ -41,7 +41,7 @@ async function register(page: Page, email: string) {
     await openEmailAction(page, 'verify', token(email, 'verify'));
     await expect.poll(() => new URL(page.url()).hash.length).toBe(0);
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Email подтверждён');
+    await expect(page.getByRole('status')).toContainText('Теперь можно войти');
 }
 
 test('PostgreSQL dispatch receipt drives UI resend; replaced verification link is unusable', async ({ page }) => {
@@ -75,7 +75,7 @@ test('PostgreSQL dispatch receipt drives UI resend; replaced verification link i
     await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
     await openEmailAction(page, 'verify', replacementToken);
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Email подтверждён');
+    await expect(page.getByRole('status')).toContainText('Теперь можно войти');
     await login(page, email);
 });
 test('PostgreSQL account lifecycle, strict refresh across tabs, guest preservation and recovery revocation', async ({ page, context }) => {
@@ -119,7 +119,7 @@ test('PostgreSQL account lifecycle, strict refresh across tabs, guest preservati
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(replacement);
     await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill(replacement);
     await page.getByRole('button', { name: 'Сохранить пароль ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Пароль изменён');
+    await expect(page.getByRole('status')).toContainText('Войдите с новым паролем');
     await expect(other.getByRole('heading', { name: 'Войдите в аккаунт' })).toBeVisible();
     const revoked = await context.browser()!.newContext(); await revoked.addCookies(activeCookies);
     expect((await revoked.request.get('http://127.0.0.1:5301/api/v1/auth/session', { headers: { 'X-Requested-With': 'abiturient' } })).status()).toBe(401); await revoked.close();
@@ -159,7 +159,7 @@ test('PostgreSQL account switch, other-account recovery isolation, wrong passwor
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(replacement);
     await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill(replacement);
     await page.getByRole('button', { name: 'Сохранить пароль ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Пароль изменён');
+    await expect(page.getByRole('status')).toContainText('Войдите с новым паролем');
     await expect(other.locator('#root')).toContainText(bob);
     await page.goto('/app/profile'); await expect(page.locator('#root')).toContainText(bob);
     await page.goto('/auth/login');
@@ -209,7 +209,7 @@ test('PostgreSQL unverified login, resend, token purpose separation and expired 
     await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
     await openEmailAction(page, 'verify', current);
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Email подтверждён');
+    await expect(page.getByRole('status')).toContainText('Теперь можно войти');
     expect((await context.cookies()).some(cookie => cookie.name === 'admitflow_access')).toBe(false);
     await login(page, email);
     // A separately registered unverified account gets an actually expired link.

@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S221.
+Дата: 2026-11-15. Последняя сессия: S222.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-PR21 is merged. Review/merge PR22 into main first, then PR23 (both now target main); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.
+T309 auth UI polish prepared for owner review on fresh main8f29692. Read docs/AUTH-UI-POLISH.md and PR checks for exact source/evidence. No screenshot reference was attached; unchanged mobile grid can redistribute hero height for short forms. Do not mark live SMTP/HTTPS/inbox release gates accepted.
 
 ## Последняя завершённая работа
 
-- S221: resolved remaining PR22/PR23 conflicts, merged T305 with T306-T308 registry entries and preserved S216-S220 logs. Final local checks and hosted CI recorded in PR descriptions; live delivery remains unverified.
+- S222 T309 review: shared right-side auth layout, truthful reset/verify completion CTA;359 frontend tests +9 native subset, lint/typecheck/build pass; before/after PNGs and7-width matrix recorded. No backend/auth helper changes.
 
 ## Ограничения
 
