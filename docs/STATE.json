@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-14",
+  "updatedAt": "2026-11-15",
   "currentTask": null,
   "nextTask": "T304",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S219",
-  "resumeAction": "Review stacked SMTP deployment/dispatch/frontend draft PRs (T306-T308). PR20 overlapping UX remains unmerged. Supply real SMTP/verified sender/HTTPS staging/controlled inbox via private env and perform AUTH-SMTP-DEPLOYMENT.md checklist. No live delivery gate accepted. Linux CI must confirm full worker/backend/WebKit coverage; Windows limitations are documented.",
+  "lastSession": "S221",
+  "resumeAction": "PR21 is merged. Review/merge PR22 into main first, then PR23 (base: dispatch branch); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,7 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "T306-T308 code prepared for review: private SMTP overlay/smoke command, explicit account-notice dispatch, persistent resend cooldown and centered frontend UX; native auth274 and frontend201 pass. External SMTP delivery remains unverified."
+    "S221: resolved remaining PR22/PR23 conflicts, merged T305 with T306-T308 registry entries and preserved S216-S220 logs. Final local checks and hosted CI recorded in PR descriptions; live delivery remains unverified."
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

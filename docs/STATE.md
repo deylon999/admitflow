@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-14. Последняя сессия: S219.
+Дата: 2026-11-15. Последняя сессия: S221.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review stacked SMTP deployment/dispatch/frontend draft PRs (T306-T308). PR20 overlapping UX remains unmerged. Supply real SMTP/verified sender/HTTPS staging/controlled inbox via private env and perform AUTH-SMTP-DEPLOYMENT.md checklist. No live delivery gate accepted. Linux CI must confirm full worker/backend/WebKit coverage; Windows limitations are documented.
+PR21 is merged. Review/merge PR22 into main first, then PR23 (base: dispatch branch); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.
 
 ## Последняя завершённая работа
 
-- T306-T308 code prepared for review: private SMTP overlay/smoke command, explicit account-notice dispatch, persistent resend cooldown and centered frontend UX; native auth274 and frontend201 pass. External SMTP delivery remains unverified.
+- S221: resolved remaining PR22/PR23 conflicts, merged T305 with T306-T308 registry entries and preserved S216-S220 logs. Final local checks and hosted CI recorded in PR descriptions; live delivery remains unverified.
 
 ## Ограничения
 

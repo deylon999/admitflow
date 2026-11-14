@@ -6711,6 +6711,32 @@
 
 - [docs/KAN-214-PR6.md](../docs/KAN-214-PR6.md) — PR6 report and code acceptance prepared: backend979/0skip, frontend175, hosted native-PG3 engines x5,32 controls, migration0012; final SHA/hosted outcomes in PR19 description. Source UI unchanged; raw15px RGBdelta1 visual variance preserved for review. Real SMTP/HTTPS/proxy/egress and owner review remain unaccepted; full KAN-214 not done.
 
+### T305. Auth form UX: safe resend visibility and repeatable error feedback
+
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** S.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/AUTH-FORM-UX.md`.
+
+**Шаги:**
+
+1. Audit anonymous mail acceptance; hide resend without safe dispatch proof..
+2. Scope red error styling and repeatable reduced-motion-aware animation to auth forms..
+3. Run frontend checks and inspect 390/1440 feedback; document API limitation..
+
+**Критерии закрытия:**
+
+- No anonymous 202, first-send failure or arbitrary email reveals resend or claims delivery..
+- Errors retain role=alert, repeat animation for identical errors, remain stable on ordinary renders and differ from success..
+- Lint, typecheck and frontend tests pass; responsive feedback verified at 390/1440..
+- Delivery-gated resend and centering remain explicitly unimplemented until a separately reviewed safe backend contract exists..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/AUTH-FORM-UX.md](../docs/AUTH-FORM-UX.md) — 186 frontend tests pass, lint/typecheck/build pass; 11 new cases and four inspected responsive screenshots. Backend contract reviewed; no backend/security changes. Resend success/centering/busy/error scenarios unavailable under current anonymous API.
+
 ### T306. KAN-214 real SMTP deployment preparation
 
 **Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
