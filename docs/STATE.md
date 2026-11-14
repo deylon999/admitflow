@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S215.
+Дата: 2026-11-14. Последняя сессия: S216.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 description for final head/hosted results. Do not merge or mark full KAN-214 done; actual SMTP delivery (or explicit owner exception), production HTTPS/trusted proxy/egress and visual variance review remain unaccepted.
+Review the separate auth-form UX PR (T305, docs/AUTH-FORM-UX.md). Anonymous 202 cannot prove verification mail dispatch; resend remains hidden. Any future delivery-gated resend needs a separately reviewed ownership-proven backend flow. Existing SMTP/HTTPS release constraints remain open.
 
 ## Последняя завершённая работа
 
-- T300-T303: main/guest audit,32 security controls, populated graph migration/isolation, native-PG3 engines x5 hosted, full979/175 regression and visual diagnostics complete. T279/T304 remain review.
+- T305 frontend UX patch prepared for review: 186 tests, lint/typecheck/build pass; error animation and 390/1440 feedback checked. Delivery-gated resend is explicitly unavailable with the current contract.
 
 ## Ограничения
 

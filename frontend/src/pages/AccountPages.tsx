@@ -14,24 +14,29 @@ function AuthFrame({ title, children }: { title: string; children: ReactNode }) 
     </div>;
 }
 function useSubmission() {
-    const [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [failure, setFailure] = useState('');
+    const [busy, setBusy] = useState(false), [message, setMessage] = useState(''), [failure, setFailure] = useState<{ id: number; text: string } | null>(null);
+    const noticeId = useRef(0);
+    function fail(text: string) {
+        setMessage('');
+        setFailure({ id: ++noticeId.current, text });
+    }
     const controller = useRef<AbortController | null>(null), active = useRef(false), pending = useRef(false);
     useEffect(() => { active.current = true; return () => { active.current = false; controller.current?.abort(); }; }, []);
     async function run(operation: (signal: AbortSignal) => Promise<void>, success: string, clear?: () => void) {
         if (pending.current) return;
-        pending.current = true; setBusy(true); setMessage(''); setFailure('');
+        pending.current = true; setBusy(true); setMessage(''); setFailure(null);
         const abort = new AbortController(); controller.current = abort;
         try {
             await operation(abort.signal);
             if (active.current) setMessage(success);
         } catch (error) {
-            if (active.current && !abort.signal.aborted) setFailure(error instanceof ApiError ? error.message + (error.retryAfter ? ` Повторите через ${error.retryAfter} сек.` : '') : 'Не удалось выполнить запрос. Повторите позже.');
+            if (active.current && !abort.signal.aborted) fail(error instanceof ApiError ? error.message + (error.retryAfter ? ` Повторите через ${error.retryAfter} сек.` : '') : 'Не удалось выполнить запрос. Повторите позже.');
         } finally {
             pending.current = false;
             if (active.current) { setBusy(false); clear?.(); }
         }
     }
-    return { busy, run, fail: setFailure, notices: <>{failure && <p role="alert">{failure}</p>}{message && <p role="status" className="af-inline-success">{message}</p>}</> };
+    return { busy, run, fail, notices: <>{failure && <p key={failure.id} role="alert" className="af-auth-notice--error">{failure.text}</p>}{message && <p role="status" className="af-inline-success">{message}</p>}</> };
 }
 export function passwordProblem(password: string, confirmation: string): string | null {
     const length = Array.from(password).length;
@@ -62,10 +67,8 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) 
             <button type="submit" className="af-action af-action--primary" disabled={submission.busy}>{submission.busy ? 'Отправляем…' : mode === 'login' ? 'Войти ↗' : mode === 'register' ? 'Создать аккаунт ↗' : 'Получить инструкцию ↗'}</button>
         </form>
         {submission.notices}
-        {mode !== 'recovery' && <p><button type="button" className="af-action af-action--outline" disabled={submission.busy} onClick={() => {
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 320) { submission.fail('Введите email для повторного подтверждения.'); return; }
-            void submission.run(signal => sendAccountEmail('verification/request', email, undefined, signal).then(() => {}), genericNotice, clear);
-        }}>Повторить письмо подтверждения</button></p>}
+        {/* Anonymous 202 responses also cover suppressed mail. Keep resend hidden
+            until the API can safely prove delivery; never infer it from acceptance. */}
         <div className="af-auth-links">{mode !== 'login' && <RouteLink to="/auth/login">Войти</RouteLink>}{mode !== 'register' && <RouteLink to="/auth/register">Зарегистрироваться</RouteLink>}{mode !== 'recovery' && <RouteLink to="/auth/recovery">Забыли пароль?</RouteLink>}</div>
     </AuthFrame>;
 }
@@ -77,7 +80,7 @@ export function EmailActionPage({ reset }: { reset: boolean }) {
     const submission = useSubmission();
     useEffect(() => { forgetAuthLink(); return () => { forgetAuthLink(); }; }, []);
     return <AuthFrame title={reset ? 'Новый пароль' : 'Подтвердить email'}>
-        {!token && !complete && <p role="alert">Ссылка недействительна или уже закрыта. Откройте ссылку из письма заново либо запросите новую.</p>}
+        {!token && !complete && <p role="alert" className="af-auth-notice--error">Ссылка недействительна или уже закрыта. Откройте ссылку из письма заново либо запросите новую.</p>}
         {token && <form className="af-auth-form" onSubmit={event => {
             event.preventDefault();
             const problem = reset ? passwordProblem(password, confirmation) : null;
