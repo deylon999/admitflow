@@ -1382,3 +1382,7 @@ PR19 technical report,32-control manifest and external delivery/HTTPS smoke proc
 ## S217 ? 2026-11-14 ? KAN-214 SMTP deployment preparation
 
 Acceptance: opt-in backend SMTP env/egress, TLS/HTTPS retained, no secret/data-volume changes; actual receipt remains external. Added compose.auth.yaml and explicit real-transport smoke command; 29 adapter/CLI tests and compose config --quiet pass. No credentials/domain/inbox provided and Docker daemon unavailable; real SMTP/inbox lifecycle not claimed. See AUTH-SMTP-DEPLOYMENT.md. Next: safe dispatch contract and UI in separate stacked PRs.
+
+## S218 ? 2026-11-14 ? KAN-214 dispatch contract
+
+Acceptance/evidence in AUTH-MAIL-CONTRACT.md: additive account-notice provider dispatch/suppressed contract, no eligibility disclosure, rolling persistent60s verification cooldown; old CSRF/cookie/session/token/limit behavior preserved. Native PostgreSQL auth regression274 passed/0skip,147.52s. Full backend collection cannot run on Windows (13 worker modules require resource); not hidden as success. No existing user DB or Docker volumes accessed. Real SMTP/inbox proof still requires owner inputs. Next: separate frontend PR consuming explicit receipt.

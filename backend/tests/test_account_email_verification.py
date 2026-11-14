@@ -66,7 +66,7 @@ def test_ineligible_requests_use_same_public_response_and_delivery_path(auth_cli
             db.commit()
     response = request_verification(auth_client)
     assert response.status_code == 202
-    assert response.json() == dict(message='Запрос принят. Если операция доступна для этого адреса, проверьте почту.')
+    assert response.json() == dict(message='Запрос принят. Если операция доступна для этого адреса, проверьте почту.', dispatch='accepted', retryAfterSeconds=60)
     assert auth_app.state.test_mailer.verification_deliveries[-1] == ('person@example.org', None)
 
 
@@ -101,17 +101,17 @@ def test_concurrent_confirmation_consumes_one_token(auth_client, auth_app):
         assert db.scalar(select(func.count()).select_from(AccountSession)) == 0
 
 
-def test_concurrent_resend_leaves_only_latest_action_usable(auth_client, auth_app):
+def test_concurrent_resend_obeys_cooldown_and_leaves_one_action_usable(auth_client, auth_app):
     registered(auth_client, auth_app); barrier = Barrier(2)
     def attempt(_):
         with TestClient(auth_app) as client:
             headers = csrf(client); barrier.wait(timeout=10)
             return request_verification(client, headers=headers).status_code
-    with ThreadPoolExecutor(2) as pool: assert list(pool.map(attempt, range(2))) == [202, 202]
+    with ThreadPoolExecutor(2) as pool: assert sorted(pool.map(attempt, range(2))) == [202, 429]
     tokens = [token for _, token in auth_app.state.test_mailer.verification_deliveries]
-    assert len(tokens) == 2
+    assert len(tokens) == 1
     outcomes = [confirm(auth_client, token).status_code for token in tokens]
-    assert sorted(outcomes) == [204, 400]
+    assert outcomes == [204]
 
 
 def test_unavailable_and_failed_provider_never_claim_confirmation(auth_client, auth_app, postgres_engine):

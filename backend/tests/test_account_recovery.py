@@ -91,7 +91,7 @@ def test_recovery_ineligible_addresses_are_uniform_and_deliver_generic_notice(au
                 user.status = 'disabled'; db.commit()
     response = request_recovery(auth_client)
     assert response.status_code == 202
-    assert response.json() == dict(message='Запрос принят. Если операция доступна для этого адреса, проверьте почту.')
+    assert response.json() == dict(message='Запрос принят. Если операция доступна для этого адреса, проверьте почту.', dispatch='accepted', retryAfterSeconds=60)
     assert auth_app.state.test_mailer.recovery_deliveries[-1] == ('person@example.org', None)
     with Session(auth_app.state.engine) as db:
         assert db.scalar(select(func.count()).select_from(AccountActionToken).where(AccountActionToken.purpose == 'reset_password')) == 0
