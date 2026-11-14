@@ -67,7 +67,8 @@ def test_email_budget_is_shared_by_register_verify_and_recovery(auth_client, aut
     assert request_verification(auth_client).status_code == 202  # Second mail.
     token = auth_app.state.test_mailer.verification_deliveries[-1][1]
     assert request_recovery(auth_client).status_code == 202  # Third, generic notice (unverified).
-    assert request_verification(auth_client).status_code == 202  # Suppressed, no false delivery claim.
+    response = request_recovery(auth_client)  # Shared hourly budget suppresses mail.
+    assert response.status_code == 202 and response.json()['dispatch'] == 'suppressed'
     assert len(auth_app.state.test_mailer.deliveries)+len(auth_app.state.test_mailer.verification_deliveries)+len(auth_app.state.test_mailer.recovery_deliveries) == 3
     assert confirm(auth_client, token).status_code == 204  # Suppressed request did not retire the valid link.
 

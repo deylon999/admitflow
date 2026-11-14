@@ -39,6 +39,9 @@ class PasswordResetRequest(TokenConfirmation):
 
 
 class EmailActionRead(CamelModel):
+    # Provider acceptance of a real account notice, never inbox arrival or eligibility.
+    dispatch: Literal['accepted', 'suppressed'] = 'suppressed'
+    retry_after_seconds: int = Field(default=3600, ge=0, le=3600)
     message: str = 'Запрос принят. Если операция доступна для этого адреса, проверьте почту.'
 
 
@@ -62,5 +65,5 @@ class EmptyAuthRequest(CamelModel):
     pass
 
 
-class RegistrationRead(CamelModel):
+class RegistrationRead(EmailActionRead):
     message: str = 'Запрос принят. Если регистрация доступна, проверьте почту.'

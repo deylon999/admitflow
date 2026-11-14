@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 
 from .account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, PasswordResetRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
 from .account_actions import InvalidActionToken, action_identity, confirm_reset, confirm_verification, issue_action
-from .account_limits import AuthRateExceeded, Budget, consume_budgets
+from .account_limits import AuthRateExceeded, Budget, consume_budgets, consume_mail_cooldown
 from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
 from .accounts import AccountActionToken, AccountCsrfContext, AccountRefreshToken, AccountSession, AccountUser
@@ -318,12 +318,14 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
             mailer.deliver_registration(body.email, token if created else None)
         except Exception:
             raise unavailable() from None
-        return RegistrationRead()
+        return RegistrationRead(dispatch='accepted', retry_after_seconds=60)
 
     def request_action(body, request, db, purpose):
         csrf_context(db, request, clock())
         if not mailer.available:
             raise unavailable()
+        if purpose == 'verify_email':
+            consume_mail_cooldown(engine, config.auth_rate_key, body.email, now=clock())
         if not mail_budget(request, body.email):
             return EmailActionRead()
         token = issue_action(db, body.email, purpose, clock)
@@ -332,7 +334,7 @@ def install(app, database, config, engine, *, mailer=None, clock=None):
             else: mailer.deliver_recovery(body.email, token)
         except Exception:
             raise unavailable() from None
-        return EmailActionRead()
+        return EmailActionRead(dispatch='accepted', retry_after_seconds=60)
 
     @router.post('/verification/request', response_model=EmailActionRead, status_code=202,
                  dependencies=[Depends(guard('verification-request', 20, 3600))])

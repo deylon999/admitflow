@@ -6,6 +6,7 @@ import hmac
 import json
 import math
 
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 
@@ -57,3 +58,30 @@ def consume_budgets(engine, key: str, budgets: list[Budget], *, now=None) -> boo
     if blocked:
         raise AuthRateExceeded(max(blocked))
     return allowed
+
+
+def consume_mail_cooldown(engine, key, email, *, now):
+    """Rolling60-second, all-peer verification cooldown; independent of user lookup.
+
+    A stable bucket key plus atomic conditional upsert serializes parallel requests.
+    Only the HMAC of the address is stored; registration/recovery hourly budgets remain.
+    """
+    table = AccountRateBucket.__table__
+    operation = 'verification-cooldown'
+    subject = hmac.new(key.encode('utf-8'), json.dumps(('email', email), separators=(',', ':')).encode(), hashlib.sha256).hexdigest()
+    start = datetime(1970, 1, 1, tzinfo=timezone.utc)
+    insert = pg_insert if engine.dialect.name == 'postgresql' else sqlite_insert
+    with engine.begin() as connection:
+        query = insert(table).values(operation=operation, subject_hash=subject, window_start=start,
+                                     used=1, expires_at=now+timedelta(seconds=60))
+        query = query.on_conflict_do_update(
+            index_elements=[table.c.operation, table.c.subject_hash, table.c.window_start],
+            set_={'expires_at': now+timedelta(seconds=60)}, where=table.c.expires_at <= now,
+        ).returning(table.c.used)
+        if connection.scalar(query) is not None:
+            return
+        deadline = connection.scalar(select(table.c.expires_at).where(
+            table.c.operation == operation, table.c.subject_hash == subject, table.c.window_start == start))
+        if deadline.tzinfo is None:
+            deadline = deadline.replace(tzinfo=timezone.utc)
+    raise AuthRateExceeded(max(1, math.ceil((deadline-now).total_seconds())))
