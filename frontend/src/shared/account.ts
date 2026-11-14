@@ -1,5 +1,5 @@
 import { accountChanged, ApiError, configureAccountPolicy, invalidateAccount, request, type Decoder } from './api';
-import { accepted, accountSession, csrfToken, noContent, type AccountSession } from './authDto';
+import { accountMail, accountSession, csrfToken, noContent, type AccountSession } from './authDto';
 
 export type AccountState = { status: 'idle' | 'checking' | 'anonymous' } | { status: 'authenticated'; session: AccountSession } | { status: 'error'; error: Error };
 let state: AccountState = { status: 'idle' };
@@ -164,7 +164,7 @@ export async function logout() {
 }
 export function sendAccountEmail(kind: 'register' | 'verification/request' | 'recovery/request', email: string, password?: string, signal?: AbortSignal) {
     const json: Record<string, string> = password === undefined ? { email } : { email, password };
-    return locked(() => mutation(kind, json, accepted, 202, signal));
+    return locked(() => mutation(kind, json, accountMail, 202, signal));
 }
 export function confirmEmail(token: string, signal?: AbortSignal) { return locked(() => mutation('verification/confirm', { token }, noContent, 204, signal)); }
 export async function resetPassword(token: string, password: string, signal?: AbortSignal) {

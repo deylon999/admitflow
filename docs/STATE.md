@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S215.
+Дата: 2026-11-14. Последняя сессия: S219.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 description for final head/hosted results. Do not merge or mark full KAN-214 done; actual SMTP delivery (or explicit owner exception), production HTTPS/trusted proxy/egress and visual variance review remain unaccepted.
+Review stacked SMTP deployment/dispatch/frontend draft PRs (T306-T308). PR20 overlapping UX remains unmerged. Supply real SMTP/verified sender/HTTPS staging/controlled inbox via private env and perform AUTH-SMTP-DEPLOYMENT.md checklist. No live delivery gate accepted. Linux CI must confirm full worker/backend/WebKit coverage; Windows limitations are documented.
 
 ## Последняя завершённая работа
 
-- T300-T303: main/guest audit,32 security controls, populated graph migration/isolation, native-PG3 engines x5 hosted, full979/175 regression and visual diagnostics complete. T279/T304 remain review.
+- T306-T308 code prepared for review: private SMTP overlay/smoke command, explicit account-notice dispatch, persistent resend cooldown and centered frontend UX; native auth274 and frontend201 pass. External SMTP delivery remains unverified.
 
 ## Ограничения
 
@@ -25,6 +25,7 @@ KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 de
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.
+- 2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending.
 
 ## Проверенное окружение
 

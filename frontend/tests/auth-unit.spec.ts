@@ -7,6 +7,15 @@ test.beforeAll(async () => {
     dto = await import('../src/shared/authDto');
 });
 const session = { account: { id: 'user-a', email: 'a@example.org', emailVerified: true, passwordHash: 'secret' }, accessExpiresAt: '2026-11-13T12:15:00Z', absoluteExpiresAt: '2026-12-13T12:00:00Z', refreshToken: 'secret' };
+
+test('mail dispatch requires explicit bounded receipt and never infers it from a message', () => {
+    expect(dto.accountMail({ message: 'Accepted' })).toBeNull();
+    expect(dto.accountMail({ message: 'Accepted', dispatch: 'accepted', retryAfterSeconds: 60 })).toEqual({ dispatch: 'accepted', retryAfterSeconds: 60 });
+    expect(dto.accountMail({ message: 'Accepted', dispatch: 'suppressed', retryAfterSeconds: 3600 })).toEqual({ dispatch: 'suppressed', retryAfterSeconds: 3600 });
+    for (const receipt of [{ dispatch: true, retryAfterSeconds: 60 }, { dispatch: 'sent', retryAfterSeconds: 60 }, { dispatch: 'accepted' }, { dispatch: 'accepted', retryAfterSeconds: -1 }, { dispatch: 'accepted', retryAfterSeconds: 3601 }, { dispatch: 'accepted', retryAfterSeconds: 1.2 }]) {
+        expect(() => dto.accountMail({ message: 'Accepted', ...receipt })).toThrow();
+    }
+});
 test('explicit public/guest/auth/account scopes preserve guest ownership', () => {
     for (const path of ['catalog/programs', 'groups', 'coverage', 'sources/example/status']) expect(api.apiScope(path)).toBe('public');
     for (const path of ['session', 'subscriptions', 'competitions/example']) expect(api.apiScope(path)).toBe('guest');

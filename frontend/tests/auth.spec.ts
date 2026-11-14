@@ -18,7 +18,7 @@ async function mockAuth(context: BrowserContext) {
         if (path === 'logout') { server.user = null; return reply(204); }
         if (path === 'refresh') { server.expired = false; server.refreshes++; return reply(200, dto()); }
         if (path === 'verification/confirm' || path === 'recovery/confirm') return reply(204);
-        return reply(202, { message: 'Accepted' });
+        return reply(202, { message: 'Accepted', dispatch: 'accepted', retryAfterSeconds: 60 });
     });
     return server;
 }
@@ -225,4 +225,174 @@ test('a long valid account email stays inside the mobile layout', async ({ page,
     await page.goto('/app/profile');
     await expect(page.locator('#root')).toContainText(server.user + '@example.org');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
+// The anonymous contract returns 202 even when mail is suppressed by a soft budget.
+for (const mode of ['login', 'register'] as const) {
+    for (const outcome of [202, 200, 503, 403, 429, 'network'] as const) test(`${mode}: resend hidden before and after ${outcome}`, async ({ page, context }) => {
+        const server = await mockAuth(context);
+        await context.route(`**/api/v1/auth/${mode}`, route => outcome === 'network' ? route.abort('failed') : route.fulfill({ status: outcome, json: outcome === 202 ? { message: 'Accepted' } : { code: 'auth_unavailable' } }));
+        await page.goto(`/auth/${mode}`);
+        const resend = page.getByRole('button', { name: /Повторить письмо|Отправить письмо повторно/ });
+        await expect(resend).toHaveCount(0);
+        await page.getByLabel('EMAIL', { exact: true }).fill('arbitrary@example.org');
+        await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('a sufficiently long password');
+        if (mode === 'register') await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill('a sufficiently long password');
+        await page.locator('button[type="submit"]').click();
+        if (outcome === 202 && mode === 'register') await expect(page.getByRole('status')).toContainText('Запрос принят');
+        else {
+            await expect(page.getByRole('alert')).toBeVisible();
+            await expect(page.locator('.af-inline-success')).toHaveCount(0);
+        }
+        await expect(resend).toHaveCount(0);
+        await page.getByLabel('EMAIL', { exact: true }).fill('another@example.org');
+        await expect(resend).toHaveCount(0);
+        expect(server.posts).not.toContain('verification/request');
+    });
+}
+
+for (const width of [390, 1440]) test(`auth feedback at ${width}px distinguishes errors from acceptance`, async ({ page, context }, testInfo) => {
+    const server = await mockAuth(context); server.failure = 503;
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/auth/recovery');
+    await page.getByLabel('EMAIL', { exact: true }).fill('arbitrary@example.org');
+    await page.locator('button[type="submit"]').click();
+    const alert = page.getByRole('alert');
+    await expect(alert).toHaveCSS('color', 'rgb(161, 38, 34)');
+    await expect(alert).toHaveCSS('background-color', 'rgb(255, 242, 241)');
+    await expect(alert).toHaveCSS('border-top-color', 'rgb(239, 197, 194)');
+    await expect(alert).toHaveCSS('animation-name', 'none');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await testInfo.attach(`auth-error-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+    server.failure = undefined;
+    await page.locator('button[type="submit"]').click();
+    await expect(alert).toHaveCount(0);
+    const accepted = page.locator('.af-inline-success');
+    await expect(accepted).toContainText('Запрос принят');
+    await expect(accepted).not.toHaveCSS('background-color', 'rgb(255, 242, 241)');
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await testInfo.attach(`auth-accepted-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+    // An error following acceptance must remove the stale success notice.
+    server.failure = 503;
+    await page.locator('button[type="submit"]').click();
+    await expect(alert).toBeVisible();
+    await expect(accepted).toHaveCount(0);
+});
+
+test('identical errors animate twice and ordinary edits preserve the notice node', async ({ page, context }) => {
+    const server = await mockAuth(context); server.failure = 503;
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/auth/recovery');
+    await page.evaluate(() => {
+        document.documentElement.dataset.authAnimations = '0';
+        document.addEventListener('animationstart', event => {
+            if ((event as AnimationEvent).animationName === 'af-auth-notice-in') {
+                document.documentElement.dataset.authAnimations = String(Number(document.documentElement.dataset.authAnimations) + 1);
+            }
+        });
+    });
+    await page.getByLabel('EMAIL', { exact: true }).fill('arbitrary@example.org');
+    for (const count of [1, 2]) {
+        await page.locator('button[type="submit"]').click();
+        await expect(page.getByRole('alert')).toContainText('Авторизация временно недоступна');
+        await expect(page.getByRole('alert')).toHaveCSS('animation-duration', '0.225s');
+        await expect(page.locator('html')).toHaveAttribute('data-auth-animations', String(count));
+    }
+    const first = await page.getByRole('alert').elementHandle();
+    await page.getByLabel('EMAIL', { exact: true }).fill('edited@example.org');
+    expect(await first!.evaluate(node => node === document.querySelector('[role="alert"]'))).toBe(true);
+    await expect(page.locator('html')).toHaveAttribute('data-auth-animations', '2');
+    await page.goto('/auth/register');
+    await page.getByLabel('EMAIL', { exact: true }).fill('arbitrary@example.org');
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('a sufficiently long password');
+    await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill('different long password');
+    await page.locator('button[type="submit"]').click();
+    await expect(page.getByRole('alert')).toContainText('Пароли не совпадают');
+    const validation = await page.getByRole('alert').elementHandle();
+    await page.locator('button[type="submit"]').click();
+    expect(await validation!.evaluate(node => node.isConnected)).toBe(false);
+    await expect(page.getByRole('alert')).toContainText('Пароли не совпадают');
+});
+
+async function submitRegistration(page: Page) {
+    await page.goto('/auth/register');
+    await page.getByLabel('EMAIL', { exact: true }).fill('controlled@example.org');
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('a sufficiently long password');
+    await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill('a sufficiently long password');
+    await page.getByRole('button', { name: 'Создать аккаунт ↗' }).click();
+    await expect(page.getByRole('status')).toContainText('Запрос принят');
+}
+
+for (const width of [390, 1440]) test(`explicit receipt enables centered resend after cooldown at ${width}px`, async ({ page, context }, testInfo) => {
+    const server = await mockAuth(context);
+    await page.setViewportSize({ width, height: 900 });
+    await page.clock.install();
+    await submitRegistration(page);
+    const resend = page.getByRole('button', { name: 'Отправить письмо повторно', exact: true });
+    await expect(resend).toBeVisible();
+    await expect(resend).toBeDisabled();
+    const button = await resend.boundingBox(), form = await page.locator('.af-auth-form').boundingBox();
+    expect(Math.abs(button!.x + button!.width / 2 - form!.x - form!.width / 2)).toBeLessThan(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await testInfo.attach(`auth-resend-${width}`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
+    await page.clock.fastForward(61000);
+    await expect(resend).toBeEnabled();
+    server.delay = 300;
+    await resend.click();
+    await expect(resend).toBeDisabled();
+    await expect(page.locator('.af-inline-success')).toContainText('Почтовый сервер принял письмо');
+    expect(server.posts).toEqual(['register', 'verification/request']);
+    await expect(resend).toBeDisabled();
+    // A new address must not inherit the previous address's dispatch stage.
+    await page.getByLabel('EMAIL', { exact: true }).fill('another@example.org');
+    await expect(resend).toHaveCount(0);
+    await page.reload();
+    await expect(resend).toHaveCount(0);
+});
+
+for (const outcome of ['503', '429', 'network', 'suppressed', 'legacy'] as const) test(`resend ${outcome} never claims another successful submission`, async ({ page, context }) => {
+    const server = await mockAuth(context);
+    await page.clock.install();
+    await submitRegistration(page);
+    const resend = page.getByRole('button', { name: 'Отправить письмо повторно', exact: true });
+    await page.clock.fastForward(61000);
+    await expect(resend).toBeEnabled();
+    await context.route('**/api/v1/auth/verification/request', route => {
+        if (outcome === 'network') return route.abort('failed');
+        if (outcome === 'legacy') return route.fulfill({ status: 202, json: { message: 'Accepted' } });
+        if (outcome === 'suppressed') return route.fulfill({ status: 202, json: { message: 'Accepted', dispatch: 'suppressed', retryAfterSeconds: 3600 } });
+        return route.fulfill({ status: Number(outcome), json: { code: outcome === '429' ? 'rate_limited' : 'auth_unavailable' }, headers: { 'Retry-After': '60' } });
+    });
+    await resend.click();
+    if (outcome === 'suppressed') await expect(page.getByRole('status')).toContainText('письмо сейчас не отправлено');
+    else if (outcome === 'legacy') await expect(page.getByRole('status')).toContainText('Если адрес подходит');
+    else await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page.locator('.af-inline-success')).toHaveCount(0);
+    await expect(resend).toBeDisabled();
+    expect(server.posts).toEqual(['register']);
+    // Receipt remains usable for a later retry after a temporary failure.
+    await context.unroute('**/api/v1/auth/verification/request');
+    await page.clock.fastForward(outcome === 'suppressed' ? 3601000 : 61000);
+    await expect(resend).toBeEnabled();
+    await resend.click();
+    await expect(page.locator('.af-inline-success')).toContainText('Почтовый сервер принял письмо');
+    await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+for (const receipt of [
+    { dispatch: 'suppressed', retryAfterSeconds: 3600 },
+    { dispatch: 'accepted', retryAfterSeconds: -1 },
+    { dispatch: 'accepted' },
+]) test(`initial receipt ${JSON.stringify(receipt)} cannot unlock resend`, async ({ page, context }) => {
+    await mockAuth(context);
+    await context.route('**/api/v1/auth/register', route => route.fulfill({ status: 202, json: { message: 'Accepted', ...receipt } }));
+    await page.goto('/auth/register');
+    await page.getByLabel('EMAIL', { exact: true }).fill('controlled@example.org');
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('a sufficiently long password');
+    await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill('a sufficiently long password');
+    await page.getByRole('button', { name: 'Создать аккаунт ↗' }).click();
+    if (receipt.dispatch === 'suppressed') await expect(page.getByRole('status')).toContainText('письмо сейчас не отправлено');
+    else await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Отправить письмо повторно' })).toHaveCount(0);
+    await expect(page.locator('.af-inline-success')).toHaveCount(0);
 });
