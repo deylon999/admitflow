@@ -1,0 +1,15 @@
+# Opt-in only: use together with compose.prod.yaml on the HTTPS staging host.
+# Supplies SMTP credentials only to backend; existing networks/volumes stay intact.
+services:
+  backend:
+    environment:
+      AUTH_ENABLED: "true"
+      AUTH_RATE_KEY: ${AUTH_RATE_KEY:?set a stable random AUTH_RATE_KEY}
+      SMTP_HOST: ${SMTP_HOST:?set SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_SECURITY: ${SMTP_SECURITY:-starttls}
+      SMTP_USERNAME: ${SMTP_USERNAME:?set SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:?set SMTP_PASSWORD in the private environment}
+      SMTP_FROM: ${SMTP_FROM:?set a provider-verified SMTP_FROM}
+      SMTP_TIMEOUT_SECONDS: ${SMTP_TIMEOUT_SECONDS:-5}
+    networks: [internal, egress]
