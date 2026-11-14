@@ -43,6 +43,41 @@ async function register(page: Page, email: string) {
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
     await expect(page.getByRole('status')).toContainText('Email подтверждён');
 }
+
+test('PostgreSQL dispatch receipt drives UI resend; replaced verification link is unusable', async ({ page }) => {
+    clock(0);
+    const email = 'pg-resend-contract@example.org';
+    await page.clock.install();
+    await page.goto('/auth/register');
+    const resend = page.getByRole('button', { name: 'Отправить письмо повторно', exact: true });
+    await expect(resend).toHaveCount(0);
+    await page.getByLabel('EMAIL', { exact: true }).fill(email);
+    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(password);
+    await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill(password);
+    await page.getByRole('button', { name: 'Создать аккаунт ↗' }).click();
+    await expect(page.getByRole('status')).toContainText('Почтовый сервер принял письмо');
+    const original = token(email, 'verify');
+    await expect(resend).toBeDisabled();
+    clock(61);
+    await page.clock.fastForward(61000);
+    await expect(resend).toBeEnabled();
+    const [response] = await Promise.all([
+        page.waitForResponse(res => res.url().endsWith('/auth/verification/request') && res.request().method() === 'POST'),
+        resend.click(),
+    ]);
+    expect(response.status()).toBe(202);
+    expect((await response.json()).dispatch).toBe('accepted');
+    await expect(page.getByRole('status')).toContainText('Почтовый сервер принял письмо');
+    const replacementToken = token(email, 'verify');
+    expect(replacementToken === original).toBe(false);
+    await openEmailAction(page, 'verify', original);
+    await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
+    await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
+    await openEmailAction(page, 'verify', replacementToken);
+    await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
+    await expect(page.getByRole('status')).toContainText('Email подтверждён');
+    await login(page, email);
+});
 test('PostgreSQL account lifecycle, strict refresh across tabs, guest preservation and recovery revocation', async ({ page, context }) => {
     test.setTimeout(90000); clock(0);
     const email = 'pg-browser@example.org';
@@ -142,6 +177,7 @@ test.afterEach(() => { clock(0); mailMode('available'); });
 
 test('PostgreSQL unverified login, resend, token purpose separation and expired verification', async ({ page, context }) => {
     const email = 'unverified-browser@example.org';
+    await page.clock.install();
     await page.goto('/auth/register');
     await page.getByLabel('EMAIL', { exact: true }).fill(email);
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(password);
@@ -149,23 +185,18 @@ test('PostgreSQL unverified login, resend, token purpose separation and expired 
     await page.getByRole('button', { name: 'Создать аккаунт ↗' }).click();
     await expect(page.getByRole('status')).toContainText('Запрос принят');
     const original = token(email, 'verify');
-    await page.goto('/auth/login');
-    await page.getByLabel('EMAIL', { exact: true }).fill(email);
-    await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(password);
-    await page.getByRole('button', { name: 'Войти ↗' }).click();
-    await expect(page.getByRole('alert')).toContainText('Не удалось войти');
-    // PR20 hides anonymous resend until the receipt-driven UI is available.
-    // Exercise the real resend endpoint with CSRF; do not wait for a removed control.
-    await expect(page.getByRole('button', { name: /Повторить письмо подтверждения|Отправить письмо повторно/ })).toHaveCount(0);
-    const origin = new URL(page.url()).origin;
-    const headers = { 'X-Requested-With': 'abiturient', Origin: origin };
-    const csrfResponse = await context.request.get(`${origin}/api/v1/auth/csrf`, { headers });
-    expect(csrfResponse.status()).toBe(200);
-    const proof = (await csrfResponse.json()).csrfToken as string;
-    const resent = await context.request.post(`${origin}/api/v1/auth/verification/request`, {
-        headers: { ...headers, 'X-CSRF-Token': proof }, data: { email },
-    });
-    expect(resent.status()).toBe(202);
+    const denied = await context.newPage();
+    await denied.goto('/auth/login');
+    await denied.getByLabel('EMAIL', { exact: true }).fill(email);
+    await denied.getByLabel('ПАРОЛЬ', { exact: true }).fill(password);
+    await denied.getByRole('button', { name: 'Войти ↗' }).click();
+    await expect(denied.getByRole('alert')).toContainText('Не удалось войти');
+    await expect(denied.getByRole('button', { name: 'Отправить письмо повторно' })).toHaveCount(0);
+    await denied.close();
+    clock(61);
+    await page.clock.fastForward(61000);
+    await page.getByRole('button', { name: 'Отправить письмо повторно' }).click();
+    await expect(page.getByRole('status')).toContainText('Запрос принят');
     const current = token(email, 'verify');
     expect(current !== original).toBe(true);
     await openEmailAction(page, 'verify', original);
@@ -189,7 +220,7 @@ test('PostgreSQL unverified login, resend, token purpose separation and expired 
     await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill(password);
     await page.getByRole('button', { name: 'Создать аккаунт ↗' }).click();
     await expect(page.getByRole('status')).toContainText('Запрос принят');
-    clock(86401);
+    clock(86500);
     await openEmailAction(page, 'verify', token(expiredEmail, 'verify'));
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
     await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');

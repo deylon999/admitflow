@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 278 из 301 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 278 из 304 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -315,6 +315,9 @@
 - [x] T303 KAN-214 PR6: Migration visual and full regression
 - [ ] T304 KAN-214 PR6: Final report and review handoff — **нужна проверка / завершение**
 - [ ] T305 Auth form UX: safe resend visibility and repeatable error feedback — **нужна проверка / завершение**
+- [ ] T306 KAN-214 real SMTP deployment preparation — **нужна проверка / завершение**
+- [ ] T307 KAN-214 safe account-mail dispatch contract — **нужна проверка / завершение**
+- [ ] T308 KAN-214 receipt-driven resend frontend — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

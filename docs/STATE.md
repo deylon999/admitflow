@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S220.
+Дата: 2026-11-15. Последняя сессия: S221.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-PR21 native auth test updated for merged PR20: assert anonymous resend is absent and exercise real CSRF-protected verification endpoint. Review PR21/22/23 in stack order; UI resend belongs to PR23. Real SMTP/HTTPS/inbox acceptance still requires owner inputs; no release gate accepted.
+PR21 is merged. Review/merge PR22 into main first, then PR23 (both now target main); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.
 
 ## Последняя завершённая работа
 
-- S220: fixed PR21 stale login resend locator without restoring removed UI or changing timeouts. Targeted native-PG scenario passed Chromium/Firefox/WebKit; frontend lint/typecheck pass. Other native scenarios/full CI not rerun locally for this test-only fix.
+- S221: resolved remaining PR22/PR23 conflicts, merged T305 with T306-T308 registry entries and preserved S216-S220 logs. Final local checks and hosted CI recorded in PR descriptions; live delivery remains unverified.
 
 ## Ограничения
 
@@ -25,6 +25,7 @@ PR21 native auth test updated for merged PR20: assert anonymous resend is absent
 - Нужны живые тестеры для T052.
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.
+- 2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending.
 
 ## Проверенное окружение
 

@@ -6737,6 +6737,81 @@
 
 - [docs/AUTH-FORM-UX.md](../docs/AUTH-FORM-UX.md) — 186 frontend tests pass, lint/typecheck/build pass; 11 new cases and four inspected responsive screenshots. Backend contract reviewed; no backend/security changes. Resend success/centering/busy/error scenarios unavailable under current anonymous API.
 
+### T306. KAN-214 real SMTP deployment preparation
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/AUTH-SMTP-DEPLOYMENT.md`.
+
+**Шаги:**
+
+1. Prepare opt-in private SMTP env/TLS/HTTPS/egress without changing user volumes..
+2. Provide explicit real-send smoke command and controlled-inbox lifecycle checklist..
+3. Actual SMTP receipt requires owner-supplied provider credentials, verified sender, HTTPS staging and controlled inbox; do not mark live delivery accepted..
+
+**Критерии закрытия:**
+
+- Prepare opt-in private SMTP env/TLS/HTTPS/egress without changing user volumes..
+- Provide explicit real-send smoke command and controlled-inbox lifecycle checklist..
+- Actual SMTP receipt requires owner-supplied provider credentials, verified sender, HTTPS staging and controlled inbox; do not mark live delivery accepted..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/AUTH-SMTP-DEPLOYMENT.md](../docs/AUTH-SMTP-DEPLOYMENT.md) — Prepared in separate stacked draft PR; automated evidence and external limitations in report. Real SMTP/inbox/HTTPS acceptance remains open.
+
+### T307. KAN-214 safe account-mail dispatch contract
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/AUTH-MAIL-CONTRACT.md`.
+
+**Шаги:**
+
+1. Acknowledge real transport acceptance separately from soft-budget suppression, without exposing account eligibility..
+2. Persist rolling60-second resend cooldown and preserve shared limits/token/session security..
+3. Run native PostgreSQL auth regression; treat recording transport as logic evidence only..
+
+**Критерии закрытия:**
+
+- Acknowledge real transport acceptance separately from soft-budget suppression, without exposing account eligibility..
+- Persist rolling60-second resend cooldown and preserve shared limits/token/session security..
+- Run native PostgreSQL auth regression; treat recording transport as logic evidence only..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/AUTH-MAIL-CONTRACT.md](../docs/AUTH-MAIL-CONTRACT.md) — Prepared in separate stacked draft PR; automated evidence and external limitations in report. Real SMTP/inbox/HTTPS acceptance remains open.
+
+### T308. KAN-214 receipt-driven resend frontend
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/AUTH-MAIL-UX.md`.
+
+**Шаги:**
+
+1. Show centered resend only for an explicit address-bound submitted registration stage, with pending/cooldown..
+2. Never infer dispatch from ordinary202, suppression, HTTP/network error or malformed proof; clear stage on address/route change..
+3. Retain local error UX, verify390/1440, lint/typecheck/frontend and native backend browser scenarios; report failures and external gates..
+
+**Критерии закрытия:**
+
+- Show centered resend only for an explicit address-bound submitted registration stage, with pending/cooldown..
+- Never infer dispatch from ordinary202, suppression, HTTP/network error or malformed proof; clear stage on address/route change..
+- Retain local error UX, verify390/1440, lint/typecheck/frontend and native backend browser scenarios; report failures and external gates..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/AUTH-MAIL-UX.md](../docs/AUTH-MAIL-UX.md) — Prepared in separate stacked draft PR; automated evidence and external limitations in report. Real SMTP/inbox/HTTPS acceptance remains open.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

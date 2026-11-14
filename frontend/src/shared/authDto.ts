@@ -20,3 +20,14 @@ export function csrfToken(value: unknown): string {
 }
 export function accepted(value: unknown): null { text(object(value).message); return null; }
 export function noContent(value: unknown): null { return value === null ? null : invalid(); }
+
+export type AccountMailResult = { dispatch: 'accepted' | 'suppressed'; retryAfterSeconds: number };
+// Old message-only202 is accepted as a request, never as dispatch evidence.
+export function accountMail(value: unknown): AccountMailResult | null {
+    accepted(value);
+    const v = object(value);
+    if (v.dispatch === undefined) return null;
+    if (v.dispatch !== 'accepted' && v.dispatch !== 'suppressed') return invalid();
+    if (typeof v.retryAfterSeconds !== 'number' || !Number.isInteger(v.retryAfterSeconds) || v.retryAfterSeconds < 0 || v.retryAfterSeconds > 3600) return invalid();
+    return { dispatch: v.dispatch, retryAfterSeconds: v.retryAfterSeconds };
+}
