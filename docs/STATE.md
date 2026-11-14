@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-PR21 is merged. Review/merge PR22 into main first, then PR23 (base: dispatch branch); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.
+PR21 is merged. Review/merge PR22 into main first, then PR23 (both now target main); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.
 
 ## Последняя завершённая работа
 
