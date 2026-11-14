@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-14",
+  "updatedAt": "2026-11-15",
   "currentTask": null,
   "nextTask": "T304",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S216",
-  "resumeAction": "Review the separate auth-form UX PR (T305, docs/AUTH-FORM-UX.md). Anonymous 202 cannot prove verification mail dispatch; resend remains hidden. Any future delivery-gated resend needs a separately reviewed ownership-proven backend flow. Existing SMTP/HTTPS release constraints remain open.",
+  "lastSession": "S220",
+  "resumeAction": "PR21 native auth test updated for merged PR20: assert anonymous resend is absent and exercise real CSRF-protected verification endpoint. Review PR21/22/23 in stack order; UI resend belongs to PR23. Real SMTP/HTTPS/inbox acceptance still requires owner inputs; no release gate accepted.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -16,7 +16,7 @@
     "KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending."
   ],
   "lastCompleted": [
-    "T305 frontend UX patch prepared for review: 186 tests, lint/typecheck/build pass; error animation and 390/1440 feedback checked. Delivery-gated resend is explicitly unavailable with the current contract."
+    "S220: fixed PR21 stale login resend locator without restoring removed UI or changing timeouts. Targeted native-PG scenario passed Chromium/Firefox/WebKit; frontend lint/typecheck pass. Other native scenarios/full CI not rerun locally for this test-only fix."
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

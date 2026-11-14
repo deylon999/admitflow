@@ -37,3 +37,7 @@ External proof remains pending until these steps are performed. No test user is 
 ## Local checks
 
 2026-11-14: mail adapter + smoke-command unit tests:29 passed (exit0). Compose overlay `config --quiet` passed (exit0) using synthetic configuration-only variables; this does not test egress or delivery. Docker daemon unavailable, SMTP/HTTPS/inbox data absent; no real send attempted.
+
+## PR20 merge compatibility (2026-11-15)
+
+The native auth test previously waited for a login resend control that PR20 intentionally removed. The test now asserts that the control is absent and exercises the real CSRF-protected verification/request endpoint with the browser context cookies. It still requires a new recorded token, rejects the original/wrong-purpose/expired token, confirms email and logs in. No UI restoration, mock API, skipped assertions or longer timeout. Targeted native-PG test passes in Chromium/Firefox/WebKit (1 each), lint/typecheck pass. These recording-mailbox tests do not prove external mail delivery. Full hosted results for the new head are maintained in PR21 description/checks.

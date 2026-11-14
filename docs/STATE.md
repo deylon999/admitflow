@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-14. Последняя сессия: S216.
+Дата: 2026-11-15. Последняя сессия: S220.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review the separate auth-form UX PR (T305, docs/AUTH-FORM-UX.md). Anonymous 202 cannot prove verification mail dispatch; resend remains hidden. Any future delivery-gated resend needs a separately reviewed ownership-proven backend flow. Existing SMTP/HTTPS release constraints remain open.
+PR21 native auth test updated for merged PR20: assert anonymous resend is absent and exercise real CSRF-protected verification endpoint. Review PR21/22/23 in stack order; UI resend belongs to PR23. Real SMTP/HTTPS/inbox acceptance still requires owner inputs; no release gate accepted.
 
 ## Последняя завершённая работа
 
-- T305 frontend UX patch prepared for review: 186 tests, lint/typecheck/build pass; error animation and 390/1440 feedback checked. Delivery-gated resend is explicitly unavailable with the current contract.
+- S220: fixed PR21 stale login resend locator without restoring removed UI or changing timeouts. Targeted native-PG scenario passed Chromium/Firefox/WebKit; frontend lint/typecheck pass. Other native scenarios/full CI not rerun locally for this test-only fix.
 
 ## Ограничения
 

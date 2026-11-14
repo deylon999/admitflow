@@ -154,8 +154,18 @@ test('PostgreSQL unverified login, resend, token purpose separation and expired 
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill(password);
     await page.getByRole('button', { name: 'Войти ↗' }).click();
     await expect(page.getByRole('alert')).toContainText('Не удалось войти');
-    await page.getByRole('button', { name: 'Повторить письмо подтверждения' }).click();
-    await expect(page.getByRole('status')).toContainText('Запрос принят');
+    // PR20 hides anonymous resend until the receipt-driven UI is available.
+    // Exercise the real resend endpoint with CSRF; do not wait for a removed control.
+    await expect(page.getByRole('button', { name: /Повторить письмо подтверждения|Отправить письмо повторно/ })).toHaveCount(0);
+    const origin = new URL(page.url()).origin;
+    const headers = { 'X-Requested-With': 'abiturient', Origin: origin };
+    const csrfResponse = await context.request.get(`${origin}/api/v1/auth/csrf`, { headers });
+    expect(csrfResponse.status()).toBe(200);
+    const proof = (await csrfResponse.json()).csrfToken as string;
+    const resent = await context.request.post(`${origin}/api/v1/auth/verification/request`, {
+        headers: { ...headers, 'X-CSRF-Token': proof }, data: { email },
+    });
+    expect(resent.status()).toBe(202);
     const current = token(email, 'verify');
     expect(current !== original).toBe(true);
     await openEmailAction(page, 'verify', original);
