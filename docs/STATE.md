@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-13. Последняя сессия: S215.
+Дата: 2026-11-15. Последняя сессия: S220.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 description for final head/hosted results. Do not merge or mark full KAN-214 done; actual SMTP delivery (or explicit owner exception), production HTTPS/trusted proxy/egress and visual variance review remain unaccepted.
+PR21 native auth test updated for merged PR20: assert anonymous resend is absent and exercise real CSRF-protected verification endpoint. Review PR21/22/23 in stack order; UI resend belongs to PR23. Real SMTP/HTTPS/inbox acceptance still requires owner inputs; no release gate accepted.
 
 ## Последняя завершённая работа
 
-- T300-T303: main/guest audit,32 security controls, populated graph migration/isolation, native-PG3 engines x5 hosted, full979/175 regression and visual diagnostics complete. T279/T304 remain review.
+- S220: fixed PR21 stale login resend locator without restoring removed UI or changing timeouts. Targeted native-PG scenario passed Chromium/Firefox/WebKit; frontend lint/typecheck pass. Other native scenarios/full CI not rerun locally for this test-only fix.
 
 ## Ограничения
 
