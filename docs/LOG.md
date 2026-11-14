@@ -1379,6 +1379,10 @@ S215 T303: Full native-PG979/0skip, frontend175, clean migration0012/head/schema
 
 PR19 technical report,32-control manifest and external delivery/HTTPS smoke procedure prepared. Local979 backend/0skip,175 frontend,security112,validator3,lifecycle3,migrations0012; hosted milestone79a40fc/run43478500035 all4 jobs success incl native-PG Chromium/Firefox/WebKit5 each and tools20/0skip. Final head/results recorded in PR19 description. UI source tree identical to merged PR5;124 comparisons,123 exact and15px RGBdelta1 border variance kept raw for review (no threshold/baseline rewrite). T300-T303 done;T279/T304 review, not full acceptance. No provider delivery/owner exception/HTTPS-proxy-egress verified; production auth disabled. No autonomous merge. Owned test PG container stopped, volume preserved; user data untouched.
 
+## S216 ? 2026-11-14 ? auth form feedback (T305 review)
+
+Acceptance and evidence: [AUTH-FORM-UX.md](AUTH-FORM-UX.md). Scoped red alerts, 225ms repeatable animation/reduced motion, neutral acceptance retained; unconditional resend removed because soft budgets return 202 without sending. No backend/security/global CSS changes. Frontend lint/typecheck exit0; npm test exit0,186 passed including11 new cases; four 390/1440 screenshots inspected. First test launch failed on missing uvicorn; isolated ignored backend/.venv dependencies installed and successful rerun recorded. Delivery-gated resend/centering/retry scenarios remain unavailable, not marked done; proposed ownership-proven capability contract is documented. T305 review; no release gates accepted. Next: review separate PR; actual SMTP/HTTPS constraints remain open.
+
 ## S217 ? 2026-11-14 ? KAN-214 SMTP deployment preparation
 
 Acceptance: opt-in backend SMTP env/egress, TLS/HTTPS retained, no secret/data-volume changes; actual receipt remains external. Added compose.auth.yaml and explicit real-transport smoke command; 29 adapter/CLI tests and compose config --quiet pass. No credentials/domain/inbox provided and Docker daemon unavailable; real SMTP/inbox lifecycle not claimed. See AUTH-SMTP-DEPLOYMENT.md. Next: safe dispatch contract and UI in separate stacked PRs.

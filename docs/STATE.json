@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-14",
   "currentTask": null,
   "nextTask": "T304",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S215",
-  "resumeAction": "KAN-214 PR6 PR19 awaits owner review/merge. Read docs/KAN-214-PR6.md and PR19 description for final head/hosted results. Do not merge or mark full KAN-214 done; actual SMTP delivery (or explicit owner exception), production HTTPS/trusted proxy/egress and visual variance review remain unaccepted.",
+  "lastSession": "S216",
+  "resumeAction": "Review the separate auth-form UX PR (T305, docs/AUTH-FORM-UX.md). Anonymous 202 cannot prove verification mail dispatch; resend remains hidden. Any future delivery-gated resend needs a separately reviewed ownership-proven backend flow. Existing SMTP/HTTPS release constraints remain open.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -16,7 +16,7 @@
     "KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending."
   ],
   "lastCompleted": [
-    "T300-T303: main/guest audit,32 security controls, populated graph migration/isolation, native-PG3 engines x5 hosted, full979/175 regression and visual diagnostics complete. T279/T304 remain review."
+    "T305 frontend UX patch prepared for review: 186 tests, lint/typecheck/build pass; error animation and 390/1440 feedback checked. Delivery-gated resend is explicitly unavailable with the current contract."
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",
