@@ -13,11 +13,13 @@ for (const width of [390, 1440]) {
     const errors: string[] = [];
     page.on('pageerror', error => errors.push(error.message));
     page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+    const institution = await (await page.request.get('/api/v1/catalog/universities/sgu-saratov')).json();
     await page.goto('/universities?q=СГУ+Чернышевского');
     await expect(page.locator('.af-program-card')).toHaveCount(1);
     await page.locator('.af-program-card h3 a').click();
     await expect(page).toHaveURL(new RegExp(`${university}$`));
-    await expect(page.locator('.af-profile-hero')).toContainText('СГУ имени');
+    await expect(page.locator('.af-profile-hero h1')).toHaveText(institution.displayName);
+    await expect(page.locator('.af-profile-hero p').first()).toHaveText(institution.legalName);
     await expect(page.locator('.af-program-card')).toHaveCount(2);
     await page.locator(`a[href="${program}"]`).first().click();
     await expect(page).toHaveURL(new RegExp(`${program}$`));
@@ -56,6 +58,7 @@ for (const width of [390, 1440]) {
 }
 
 test('real search, region, sorting, pages and browser history', async ({ page }) => {
+  const institution = await (await page.request.get('/api/v1/catalog/universities/sgu-saratov')).json();
   await page.goto('/universities');
   await expect(page.locator('.af-program-card')).toHaveCount(12);
   const first = await page.locator('.af-program-card h3').allTextContents();
@@ -71,7 +74,8 @@ test('real search, region, sorting, pages and browser history', async ({ page })
   await expect(page.locator('.af-program-card').first()).toContainText('Саратовская область');
   await page.locator('.af-search-panel input').fill('Программная');
   await expect(page.locator('.af-program-card')).toHaveCount(1);
-  await expect(page.locator('.af-program-card')).toContainText('СГУ имени');
+  await expect(page.locator('.af-program-card h3')).toHaveText(institution.displayName);
+  await expect(page.locator('.af-program-card h3 a')).toHaveAttribute('href', university);
   await page.locator('.af-search-panel input').fill('no-such-university');
   await expect(page.locator('.af-empty')).toContainText('Ничего не нашлось');
 });

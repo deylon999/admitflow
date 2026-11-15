@@ -1,7 +1,7 @@
 import { Action, EmptyMessage, PageTitle, Pill, Surface } from '../shared/UI';
 import { RouteLink } from '../app/RouteLink';
 import { YearField } from './CatalogPages';
-import { AccreditationNote, CatalogCard, ExamRequirementsView, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, unknown } from './parts';
+import { AccreditationNote, branchDescription, CatalogCard, ExamRequirementsView, formName, fundingName, MissingExams, Pagination, ResourceState, SourceNote, universityPath, universityTitle, unknown } from './parts';
 import { useCatalog, useCatalogFilters } from './state';
 import { program, programResults, university as decodeUniversity } from './decode';
 
@@ -16,11 +16,12 @@ export function UniversityPage({ id }: { id: string }) {
   return <div className="af-catalog-detail">
     <ResourceState {...university}>
       {university.data && <>
-        <div className={`af-profile-hero ${university.data.name.length > 16 ? 'af-profile-hero--long-name' : ''}`}>
-          <div><span>УНИВЕРСИТЕТ · {university.data.region.toUpperCase()}</span><h1>{university.data.name}</h1><p>{university.data.legalName}</p>
+        <div className={`af-profile-hero ${universityTitle(university.data).length > 16 ? 'af-profile-hero--long-name' : ''}`}>
+          <div><span>{university.data.isBranch ? 'ФИЛИАЛ' : 'УНИВЕРСИТЕТ'} · {university.data.region.toUpperCase()}</span><h1>{universityTitle(university.data)}</h1><p>{university.data.legalName}</p>
+            {university.data.isBranch && <p>{branchDescription(university.data)}</p>}
             <Action to={`/programs?universityId=${encodeURIComponent(id)}`} variant="lime">Программы университета ↗</Action>
           </div>
-          <div className="af-profile-hero__circle">{university.data.name.slice(0, 1)}</div>
+          <div className="af-profile-hero__circle">{universityTitle(university.data).slice(0, 1)}</div>
         </div>
         <div className="af-grid-metrics">
           <Surface tone="lime"><strong className="af-big-number">{university.data.knownProgramCount}</strong><p>Подтверждено программ</p></Surface>
@@ -28,6 +29,11 @@ export function UniversityPage({ id }: { id: string }) {
           <Surface><strong className="af-big-number">{university.data.provenance.edition ?? 'Реестр'}</strong><p>{university.data.provenance.kind === 'accreditation' ? 'Источник записи' : 'Редакция справочника'}</p></Surface>
         </div>
         <SourceNote source={university.data.provenance} />
+        {university.data.displayNameSource && <p className="af-caption af-catalog-source af-university-name-source">
+          <a href={university.data.displayNameSource.url} target="_blank" rel="noreferrer">{({ official: 'Официальное краткое наименование', normalized: 'Название без юридической формы', manual: 'Проверенное название', original: 'Исходное наименование' })[university.data.displayNameSource.kind]} ↗</a>
+          {' · '}Проверено: <time dateTime={university.data.displayNameSource.verifiedAt}>{new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(university.data.displayNameSource.verifiedAt))}</time>
+        </p>}
+        {university.data.branchInfo && <p className="af-caption af-catalog-source"><a href={university.data.branchInfo.url} target="_blank" rel="noreferrer">Сведения о филиале ↗</a>{' · '}Проверено: <time dateTime={university.data.branchInfo.verifiedAt}>{new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(university.data.branchInfo.verifiedAt))}</time></p>}
         <AccreditationNote university={university.data} />
         {university.data.officialUrl && <a className="af-small-link" href={university.data.officialUrl} target="_blank" rel="noreferrer">Официальный сайт ↗</a>}
         <div className="af-section-heading"><h2>Программы университета</h2><Pill tone="blue">{courses.data?.total ?? '…'} направления</Pill></div>

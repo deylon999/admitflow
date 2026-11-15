@@ -19,8 +19,15 @@ export function SourceNote({ source }: { source: Provenance }) {
 
 export { ResourceState } from '../shared/ResourceState';
 
+export const universityTitle = (university: University) => university.displayName ?? university.legalName;
+export function branchDescription(university: University) {
+  if (!university.isBranch) return 'Образовательная организация';
+  const branch = university.branchInfo;
+  return ['Филиал', branch?.parentUniversityName, branch?.city].filter(Boolean).join(' · ');
+}
+
 export function CatalogCard({ university, program }: { university?: University; program?: CatalogProgram }) {
-  const name = program?.universityName ?? university?.name ?? '';
+  const name = program?.universityName ?? (university ? universityTitle(university) : '');
   const href = program ? programPath(program.id) : universityPath(university!.id);
   return <article className={`af-program-card af-catalog-card${program ? '' : ' af-university-card'}`}>
     <div className="af-program-card__logo af-program-card__logo--blue">{name.slice(0, 2)}</div>
@@ -29,8 +36,8 @@ export function CatalogCard({ university, program }: { university?: University; 
         {program ? <RouteLink to={universityPath(program.universityId)}>{name}</RouteLink> : 'Университет'}
         <span> · {program?.region ?? university?.region}</span>
       </div>
-      <h3><RouteLink to={href} tabIndex={program ? undefined : 0}>{program?.title ?? name}</RouteLink></h3>
-      <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${program.seats ?? unknown} мест` : university?.isBranch ? 'Филиал' : 'Образовательная организация'}</p>
+      <h3><RouteLink to={href} tabIndex={program ? undefined : 0} title={program ? undefined : university?.legalName}>{program?.title ?? name}</RouteLink></h3>
+      <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${program.seats ?? unknown} мест` : branchDescription(university!)}</p>
     </div>
     <div className="af-program-card__stats">
       <span>{program ? 'КАМПАНИЯ' : university?.provenance.kind === 'accreditation' ? 'ИСТОЧНИК' : 'РЕДАКЦИЯ'}</span>

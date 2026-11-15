@@ -25,6 +25,13 @@ export type University = {
   id: string;
   name: string;
   legalName: string;
+  displayName: string | null;
+  displayNameSource: {
+    kind: 'official' | 'normalized' | 'manual' | 'original';
+    url: string; verifiedAt: string; sha256: string; ruleVersion: string | null;
+  } | null;
+  nameAliases: string[];
+  branchInfo: { parentUniversityName: string | null; city: string | null; url: string; verifiedAt: string; sha256: string } | null;
   region: string;
   isBranch: boolean;
   officialUrl: string | null;

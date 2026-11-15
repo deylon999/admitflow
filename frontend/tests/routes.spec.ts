@@ -54,8 +54,10 @@ for (const route of ['/auth/missing?mode=demo', '/auth/nested/register', '/appli
 }
 
 test('encoded public IDs decode exactly once and unknown live IDs never show demo records', async ({ page }) => {
+  const institution = await (await page.request.get('/api/v1/catalog/universities/sgu-saratov')).json();
   await page.goto('/universities/%73gu-saratov');
-  await expect(page.locator('.af-profile-hero')).toContainText('СГУ имени');
+  await expect(page.locator('.af-profile-hero h1')).toHaveText(institution.displayName);
+  await expect(page.locator('.af-profile-hero p').first()).toHaveText(institution.legalName);
   await page.goto('/programs/%73gu-2026-4588');
   await expect(page.locator('h1')).toContainText('Программная инженерия');
   await page.goto('/app/competitions/does-not-exist?mode=demo');

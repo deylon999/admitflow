@@ -13,7 +13,20 @@ function accreditation(value: unknown): Accreditation {
 }
 export function university(value: unknown): University {
     const p = object(value);
-    return { ...p, id: identifier(p.id), name: text(p.name), legalName: text(p.legalName), region: text(p.region), isBranch: bool(p.isBranch), officialUrl: nullable(p.officialUrl, url), knownProgramCount: count(p.knownProgramCount), years: array(p.years, year), provenance: provenance(p.provenance), accreditation: nullable(p.accreditation, accreditation) };
+    // Older servers may omit the additive naming projection during rollout.
+    const displayNameSource = nullable(p.displayNameSource ?? null, value => {
+        const s = object(value);
+        return { kind: oneOf(s.kind, ['official', 'normalized', 'manual', 'original']), url: url(s.url), verifiedAt: date(s.verifiedAt), sha256: checksum(s.sha256), ruleVersion: nullable(s.ruleVersion, text) };
+    });
+    const branchInfo = nullable(p.branchInfo ?? null, value => {
+        const b = object(value);
+        return { parentUniversityName: nullable(b.parentUniversityName, text), city: nullable(b.city, text), url: url(b.url), verifiedAt: date(b.verifiedAt), sha256: checksum(b.sha256) };
+    });
+    if ((p.displayName != null) !== (displayNameSource !== null)) invalid();
+    if (displayNameSource?.kind === 'original' && p.displayName !== p.legalName) invalid();
+    if (displayNameSource?.kind === 'normalized' && !displayNameSource.ruleVersion) invalid();
+    if (branchInfo && !bool(p.isBranch)) invalid();
+    return { ...p, id: identifier(p.id), name: text(p.name), legalName: text(p.legalName), displayName: nullable(p.displayName ?? null, text), displayNameSource, nameAliases: p.nameAliases === undefined ? [] : array(p.nameAliases, text), branchInfo, region: text(p.region), isBranch: bool(p.isBranch), officialUrl: nullable(p.officialUrl, url), knownProgramCount: count(p.knownProgramCount), years: array(p.years, year), provenance: provenance(p.provenance), accreditation: nullable(p.accreditation, accreditation) };
 }
 function examTests(value: unknown): ExamTest[] {
     const tests = array(value, item => {

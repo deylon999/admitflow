@@ -10,7 +10,7 @@ async function universities(page: Page) {
     return data;
 }
 
-for (const width of widths) test(`real university cards preserve full API data and align at ${width}px`, async ({ page }, info) => {
+for (const width of widths) test(`real university cards preserve sourced API data with three-line titles and align at ${width}px`, async ({ page }, info) => {
     await page.setViewportSize({ width, height: 900 });
     const data = await universities(page);
     const catalog = page.locator('.af-university-catalog');
@@ -27,7 +27,10 @@ for (const width of widths) test(`real university cards preserve full API data a
     for (const [index, item] of data.items.entries()) {
         const card = catalog.locator('.af-university-card').nth(index);
         const heading = card.locator('h3');
-        await expect(heading).toHaveText(item.name);
+        await expect(heading).toHaveText(item.displayName ?? item.legalName);
+        await expect(heading.locator('a')).toHaveAttribute('title', item.legalName);
+        const titleSize = await heading.locator('a').evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight) }));
+        expect(titleSize.height).toBeLessThanOrEqual(titleSize.line * 3 + 1);
         await expect(card.locator('.af-program-card__university')).toContainText(item.region);
         await expect(card.locator('.af-program-card__stats strong')).toHaveText(item.provenance.kind === 'accreditation' ? 'Реестр' : String(item.provenance.edition));
         expect(await card.locator('.af-program-card__stats strong').evaluate(node => node.scrollWidth <= node.clientWidth + 1)).toBe(true);
@@ -100,4 +103,71 @@ test('university loading does not invent a count; card links support keyboard an
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(new RegExp(destination + '$'));
     await expect(page.locator('.af-catalog-detail h1')).toBeVisible();
+});
+
+for (const width of [390, 1440]) for (const [id, kind] of [
+    ['miccedu-1593', 'official'], ['miccedu-101', 'normalized'], ['miccedu-10006765', 'original'], ['miccedu-140143824', 'official'],
+] as const) test(`sourced ${id} title, branch facts and complete detail at ${width}px`, async ({ page, request }, info) => {
+    await page.setViewportSize({ width, height: 900 });
+    const data = await (await request.get(`/api/v1/catalog/universities/${id}`)).json() as UniversityResults['items'][number];
+    expect(data.displayNameSource?.kind).toBe(kind);
+    await page.goto(`/universities?q=${id}`);
+    const card = page.locator('.af-university-card').filter({ has: page.locator(`h3 a[href="/universities/${id}"]`) });
+    await expect(card).toHaveCount(1);
+    await expect(card.locator('h3')).toHaveText(data.displayName!);
+    await expect(card.locator('h3 a')).toHaveAttribute('title', data.legalName);
+    if (data.isBranch) {
+        const description = card.locator('.af-program-card__main > p');
+        if (data.branchInfo) {
+            await expect(description).toContainText(data.branchInfo.parentUniversityName!);
+            await expect(description).toContainText(data.branchInfo.city!);
+        } else await expect(description).toHaveText('Филиал');
+    }
+    const size = await card.locator('h3 a').evaluate(node => ({ height: node.getBoundingClientRect().height, line: parseFloat(getComputedStyle(node).lineHeight) }));
+    expect(size.height).toBeLessThanOrEqual(size.line * 3 + 1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await card.getByRole('link', { name: 'Университет ↗', exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`/universities/${id}$`));
+    await expect(page.locator('.af-profile-hero h1')).toHaveText(data.displayName!);
+    await expect(page.locator('.af-profile-hero p').first()).toHaveText(data.legalName);
+    const source = page.locator('.af-university-name-source a');
+    await expect(source).toHaveAttribute('href', data.displayNameSource!.url);
+    if (data.branchInfo) await expect(page.getByRole('link', { name: 'Сведения о филиале ↗' })).toHaveAttribute('href', data.branchInfo.url);
+    const full = page.locator('.af-profile-hero p').first();
+    expect(await full.evaluate(node => node.scrollHeight <= node.clientHeight + 1)).toBe(true);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await info.attach(`${id}-${width}`, { body: await page.screenshot({ fullPage: true, animations: 'disabled' }), contentType: 'image/png' });
+});
+
+test('older API without name projection safely falls back to the complete legal name', async ({ page }) => {
+    let fullName = '';
+    await page.route('**/api/v1/catalog/universities?**', async route => {
+        const response = await route.fetch(), body = await response.json();
+        for (const item of body.items) {
+            fullName = item.legalName;
+            for (const field of ['displayName', 'displayNameSource', 'nameAliases', 'branchInfo']) delete item[field];
+        }
+        await route.fulfill({ response, json: body });
+    });
+    await page.goto('/universities?q=miccedu-1593');
+    await expect.poll(() => fullName).not.toBe('');
+    await expect(page.locator('.af-university-card h3')).toHaveText(fullName);
+    await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
+for (const [name, damage] of [
+    ['missing source', (p: Record<string, unknown>) => { p.displayNameSource = null; }],
+    ['invalid checksum', (p: Record<string, unknown>) => { (p.displayNameSource as Record<string, unknown>).sha256 = 'wrong'; }],
+    ['false original', (p: Record<string, unknown>) => { (p.displayNameSource as Record<string, unknown>).kind = 'original'; }],
+    ['normalization without rule', (p: Record<string, unknown>) => { Object.assign(p.displayNameSource!, { kind: 'normalized', ruleVersion: null }); }],
+    ['branch facts on head', (p: Record<string, unknown>) => { p.branchInfo = { parentUniversityName: 'invalid', city: null, ...(p.displayNameSource as object) }; }],
+] as const) test(`invalid naming DTO is an error: ${name}`, async ({ page }) => {
+    await page.route('**/api/v1/catalog/universities?**', async route => {
+        const response = await route.fetch(), body = await response.json();
+        damage(body.items[0]);
+        await route.fulfill({ response, json: body });
+    });
+    await page.goto('/universities?q=miccedu-1593');
+    await expect(page.getByRole('alert')).toContainText('Не удалось загрузить данные');
+    await expect(page.locator('.af-university-card')).toHaveCount(0);
 });
