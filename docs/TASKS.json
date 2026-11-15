@@ -9499,6 +9499,39 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T309",
+      "title": "Polish right-side authentication layouts and truthful completion states",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/AUTH-UI-POLISH.md"
+      ],
+      "steps": [
+        "Audit live/demo auth architecture and capture baseline screenshots.",
+        "Reuse a common layout and scope right-panel styling without changing hero/other pages.",
+        "Present real verification/reset completion with distinct heading, no form and primary login link.",
+        "Verify all auth states at320/375/390/768/1024/1440/1920 and retain existing security tests.",
+        "Run required frontend checks and publish a separate PR with before/after evidence and limitations."
+      ],
+      "acceptance": [
+        "Left hero DOM/styles and responsive rules unchanged; other product routes remain unchanged.",
+        "Right content uses responsive420-460px column, token-based card/spacing, keyboard focus and robust wrapping.",
+        "Completion UI appears only after the existing backend operation resolves; API/request/security behavior unchanged.",
+        "Typecheck/lint/build/npm test pass; browser states and before/after screenshots cover all required widths.",
+        "PR targets current main with requested title; absent reference screenshot and lack of live SMTP evidence are explicit."
+      ],
+      "evidence": [
+        {
+          "path": "docs/AUTH-UI-POLISH.md",
+          "note": "Right-panel shared layout and backend-driven completion presentation;359 frontend tests, typecheck/lint/build,9 native PG/browser subset pass. Seven requested widths and before/after evidence; hero source unchanged, inherited short-mobile grid height redistribution and absent visual reference explicit."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }

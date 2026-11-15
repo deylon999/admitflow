@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RouteLink } from '../app/RouteLink';
 import { navigate } from '../app/navigation';
 import { ApiError } from '../shared/api';
@@ -6,13 +6,7 @@ import { confirmEmail, login, logout, resetPassword, retryAccount, sendAccountEm
 import { forgetAuthLink, readAuthLink } from '../shared/authLink';
 import { useAccount } from '../shared/useAccount';
 import { Action, EmptyMessage, PageTitle, Surface } from '../shared/UI';
-
-function AuthFrame({ title, children }: { title: string; children: ReactNode }) {
-    return <div className="af-auth-layout">
-        <div className="af-auth-hero"><RouteLink to="/" className="af-auth-hero__logo">■ Абитуриент</RouteLink><div><span className="af-eyebrow">ADMITFLOW · 2027</span><h1>Поступление —<br />не гадание.</h1><p>Прогнозы, конкурсные списки и твои решения в одной системе.</p></div><span className="af-auth-hero__shape" /></div>
-        <div className="af-auth-form-wrap"><PageTitle kicker="ЛИЧНЫЙ КАБИНЕТ" title={title} description="Войдите, чтобы продолжить работу с направлениями."/><Surface>{children}</Surface><div className="af-auth-preview-link"><Action to="/app" variant="outline">Продолжить без входа ↗</Action></div></div>
-    </div>;
-}
+import { AuthLayout, authDescriptions } from '../shared/AuthLayout';
 type SubmissionNotice = { text: string; kind: 'success' | 'neutral' };
 function useSubmission() {
     const [busy, setBusy] = useState(false), [message, setMessage] = useState<SubmissionNotice | null>(null), [failure, setFailure] = useState<{ id: number; text: string } | null>(null);
@@ -81,8 +75,8 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) 
     }
     const clear = () => { setPassword(''); setConfirmation(''); };
     const title = mode === 'login' ? 'С возвращением!' : mode === 'register' ? 'Создать аккаунт' : 'Восстановить доступ';
-    return <AuthFrame title={title}>
-        <form className="af-auth-form" onSubmit={event => {
+    return <AuthLayout title={title} description={authDescriptions[mode]}>
+        <form className="af-auth-form" aria-busy={submission.busy} onSubmit={event => {
             event.preventDefault();
             const problem = mode === 'register' ? passwordProblem(password, confirmation) : mode === 'login' && (Array.from(password).length > 128 || new TextEncoder().encode(password).length > 512) ? 'Пароль слишком длинный.' : null;
             if (problem) { submission.fail(problem); return; }
@@ -112,7 +106,7 @@ export function AuthPage({ mode }: { mode: 'login' | 'register' | 'recovery' }) 
             {remaining > 0 && <p className="af-auth-resend__hint">{cooldownLabel} {remaining} сек.</p>}
         </div>}
         <div className="af-auth-links">{mode !== 'login' && <RouteLink to="/auth/login">Войти</RouteLink>}{mode !== 'register' && <RouteLink to="/auth/register">Зарегистрироваться</RouteLink>}{mode !== 'recovery' && <RouteLink to="/auth/recovery">Забыли пароль?</RouteLink>}</div>
-    </AuthFrame>;
+    </AuthLayout>;
 }
 export function EmailActionPage({ reset }: { reset: boolean }) {
     const path = reset ? '/auth/reset' : '/auth/verify';
@@ -121,22 +115,26 @@ export function EmailActionPage({ reset }: { reset: boolean }) {
     const [complete, setComplete] = useState(false);
     const submission = useSubmission();
     useEffect(() => { forgetAuthLink(); return () => { forgetAuthLink(); }; }, []);
-    return <AuthFrame title={reset ? 'Новый пароль' : 'Подтвердить email'}>
+    const title = complete ? reset ? 'Пароль успешно изменён' : 'Email подтверждён' : !token ? 'Нужна новая ссылка' : reset ? 'Новый пароль' : 'Подтвердить email';
+    const description = complete ? 'Всё готово для продолжения работы с AdmitFlow.' : !token ? 'Запросите новую ссылку для работы с аккаунтом.' : reset ? 'Придумайте новый пароль для безопасного входа в аккаунт.' : 'Подтвердите адрес из письма, чтобы открыть доступ к аккаунту.';
+    return <AuthLayout title={title} description={description}>
+        {complete && <div className="af-auth-complete-mark" aria-hidden="true">✓</div>}
         {!token && !complete && <p role="alert" className="af-auth-notice--error">Ссылка недействительна или уже закрыта. Откройте ссылку из письма заново либо запросите новую.</p>}
-        {token && <form className="af-auth-form" onSubmit={event => {
+        {token && <form className="af-auth-form" aria-busy={submission.busy} onSubmit={event => {
             event.preventDefault();
             const problem = reset ? passwordProblem(password, confirmation) : null;
             if (problem) { submission.fail(problem); return; }
             void submission.run(async signal => {
                 if (reset) await resetPassword(token, password, signal); else await confirmEmail(token, signal);
                 signal.throwIfAborted(); setComplete(true); setToken('');
-            }, reset ? 'Пароль изменён. Войдите с новым паролем.' : 'Email подтверждён. Теперь можно войти.', () => { setPassword(''); setConfirmation(''); });
+            }, reset ? 'Войдите с новым паролем, чтобы продолжить работу.' : 'Теперь можно войти в аккаунт и сохранить свои направления.', () => { setPassword(''); setConfirmation(''); });
         }}>
             {reset && <PasswordFields password={password} setPassword={setPassword} confirmation={confirmation} setConfirmation={setConfirmation} busy={submission.busy}/>}
             <button type="submit" className="af-action af-action--primary" disabled={submission.busy}>{submission.busy ? 'Проверяем…' : reset ? 'Сохранить пароль ↗' : 'Подтвердить email ↗'}</button>
         </form>}
-        {submission.notices}<div className="af-auth-links"><RouteLink to="/auth/login">Войти</RouteLink><RouteLink to={reset ? '/auth/recovery' : '/auth/register'}>Запросить новую ссылку</RouteLink></div>
-    </AuthFrame>;
+        {submission.notices}
+        {complete ? <div className="af-auth-complete"><Action to="/auth/login">Войти в аккаунт</Action></div> : <div className="af-auth-links"><RouteLink to="/auth/login">Войти</RouteLink><RouteLink to={reset ? '/auth/recovery' : '/auth/register'}>Запросить новую ссылку</RouteLink></div>}
+    </AuthLayout>;
 }
 export function AccountPage() {
     const account = useAccount(), submission = useSubmission();

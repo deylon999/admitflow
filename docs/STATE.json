@@ -6,8 +6,8 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S221",
-  "resumeAction": "PR21 is merged. Review/merge PR22 into main first, then PR23 (both now target main); both synchronized with the latest main without rewriting history. Current code keeps receipt-driven resend, error animation, security checks and all roadmap/log records. Latest CI results are maintained in PR descriptions. Real SMTP/HTTPS/inbox gates still require owner inputs; no release gates accepted.",
+  "lastSession": "S222",
+  "resumeAction": "T309 auth UI polish prepared for owner review on fresh main8f29692. Read docs/AUTH-UI-POLISH.md and PR checks for exact source/evidence. No screenshot reference was attached; unchanged mobile grid can redistribute hero height for short forms. Do not mark live SMTP/HTTPS/inbox release gates accepted.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,7 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "S221: resolved remaining PR22/PR23 conflicts, merged T305 with T306-T308 registry entries and preserved S216-S220 logs. Final local checks and hosted CI recorded in PR descriptions; live delivery remains unverified."
+    "S222 T309 review: shared right-side auth layout, truthful reset/verify completion CTA;359 frontend tests +9 native subset, lint/typecheck/build pass; before/after PNGs and7-width matrix recorded. No backend/auth helper changes."
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

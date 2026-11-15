@@ -6812,6 +6812,35 @@
 
 - [docs/AUTH-MAIL-UX.md](../docs/AUTH-MAIL-UX.md) — Prepared in separate stacked draft PR; automated evidence and external limitations in report. Real SMTP/inbox/HTTPS acceptance remains open.
 
+### T309. Polish right-side authentication layouts and truthful completion states
+
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/AUTH-UI-POLISH.md`.
+
+**Шаги:**
+
+1. Audit live/demo auth architecture and capture baseline screenshots..
+2. Reuse a common layout and scope right-panel styling without changing hero/other pages..
+3. Present real verification/reset completion with distinct heading, no form and primary login link..
+4. Verify all auth states at320/375/390/768/1024/1440/1920 and retain existing security tests..
+5. Run required frontend checks and publish a separate PR with before/after evidence and limitations..
+
+**Критерии закрытия:**
+
+- Left hero DOM/styles and responsive rules unchanged; other product routes remain unchanged..
+- Right content uses responsive420-460px column, token-based card/spacing, keyboard focus and robust wrapping..
+- Completion UI appears only after the existing backend operation resolves; API/request/security behavior unchanged..
+- Typecheck/lint/build/npm test pass; browser states and before/after screenshots cover all required widths..
+- PR targets current main with requested title; absent reference screenshot and lack of live SMTP evidence are explicit..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/AUTH-UI-POLISH.md](../docs/AUTH-UI-POLISH.md) — Right-panel shared layout and backend-driven completion presentation;359 frontend tests, typecheck/lint/build,9 native PG/browser subset pass. Seven requested widths and before/after evidence; hero source unchanged, inherited short-mobile grid height redistribution and absent visual reference explicit.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

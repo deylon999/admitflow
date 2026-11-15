@@ -79,7 +79,7 @@ test('email fragment is erased before requests, explicit confirmation only, no p
     await expect(page.locator('input')).toHaveCount(0);
     expect(await page.evaluate(() => JSON.stringify({ ...localStorage, ...sessionStorage }))).not.toContain(token);
     await page.getByRole('button', { name: 'Подтвердить email ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Email подтверждён');
+    await expect(page.getByRole('status')).toContainText('Теперь можно войти');
     expect(server.posts).toEqual(['verification/confirm']);
     await page.reload(); await expect(page.getByRole('alert')).toContainText('Ссылка недействительна');
     await page.goto('/auth/verify/#token=' + 'v'.repeat(43));
@@ -94,7 +94,7 @@ test('reset accepts a fragment and requires matching password before backend mut
     await page.getByLabel('ПАРОЛЬ', { exact: true }).fill('a new password phrase');
     await page.getByLabel('ПОДТВЕРЖДЕНИЕ ПАРОЛЯ').fill('a new password phrase');
     await page.getByRole('button', { name: 'Сохранить пароль ↗' }).click();
-    await expect(page.getByRole('status')).toContainText('Пароль изменён');
+    await expect(page.getByRole('status')).toContainText('Войдите с новым паролем');
     expect(server.posts).toEqual(['recovery/confirm']);
 });
 test('parallel tabs refresh once and reconcile logout and account switching', async ({ page, context }) => {
