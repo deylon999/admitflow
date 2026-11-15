@@ -6,8 +6,8 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S223",
-  "resumeAction": "T310 university catalog UI prepared for owner review from main8f6f3b0. Read docs/UNIVERSITY-CARDS-UI.md and PR checks. All local requested checks pass; reference screenshot/link absent, so exact reference matching remains unverified. No automatic merge or data/state changes.",
+  "lastSession": "S224",
+  "resumeAction": "T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DISPLAY-NAMES.md and exact PR checks. Original593 names remain intentionally unshortened; official fields may contain multiple literal variants. No automatic merge.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,7 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "S223 T310 review: university-only header/real API total and responsive subgrid cards;370frontend tests, Firefox11/WebKit11, typecheck/lint/build pass; before/after and3 unchanged-page pixel guards recorded. No backend/data/state/route changes."
+    "S224 T311 review: independent reviewed name overlay/strict official matching/legal-prefix-v1/branch facts; additive DTO and search; three-line titles and full sourced detail. Real1366 coverage, backend85/0skip nativePG, frontend384, FF25/WK25, requested frontend checks pass."
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 278 из 306 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 278 из 307 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -320,6 +320,7 @@
 - [ ] T308 KAN-214 receipt-driven resend frontend — **нужна проверка / завершение**
 - [ ] T309 Polish right-side authentication layouts and truthful completion states — **нужна проверка / завершение**
 - [ ] T310 University catalog cards and responsive grid redesign — **нужна проверка / завершение**
+- [ ] T311 Verified university display names and conservative normalization — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

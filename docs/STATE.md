@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S223.
+Дата: 2026-11-15. Последняя сессия: S224.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T310 university catalog UI prepared for owner review from main8f6f3b0. Read docs/UNIVERSITY-CARDS-UI.md and PR checks. All local requested checks pass; reference screenshot/link absent, so exact reference matching remains unverified. No automatic merge or data/state changes.
+T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DISPLAY-NAMES.md and exact PR checks. Original593 names remain intentionally unshortened; official fields may contain multiple literal variants. No automatic merge.
 
 ## Последняя завершённая работа
 
-- S223 T310 review: university-only header/real API total and responsive subgrid cards;370frontend tests, Firefox11/WebKit11, typecheck/lint/build pass; before/after and3 unchanged-page pixel guards recorded. No backend/data/state/route changes.
+- S224 T311 review: independent reviewed name overlay/strict official matching/legal-prefix-v1/branch facts; additive DTO and search; three-line titles and full sourced detail. Real1366 coverage, backend85/0skip nativePG, frontend384, FF25/WK25, requested frontend checks pass.
 
 ## Ограничения
 
