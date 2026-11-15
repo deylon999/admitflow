@@ -22,14 +22,14 @@ export { ResourceState } from '../shared/ResourceState';
 export function CatalogCard({ university, program }: { university?: University; program?: CatalogProgram }) {
   const name = program?.universityName ?? university?.name ?? '';
   const href = program ? programPath(program.id) : universityPath(university!.id);
-  return <article className="af-program-card af-catalog-card">
+  return <article className={`af-program-card af-catalog-card${program ? '' : ' af-university-card'}`}>
     <div className="af-program-card__logo af-program-card__logo--blue">{name.slice(0, 2)}</div>
     <div className="af-program-card__main">
       <div className="af-program-card__university">
         {program ? <RouteLink to={universityPath(program.universityId)}>{name}</RouteLink> : 'Университет'}
         <span> · {program?.region ?? university?.region}</span>
       </div>
-      <h3><RouteLink to={href}>{program?.title ?? name}</RouteLink></h3>
+      <h3><RouteLink to={href} tabIndex={program ? undefined : 0}>{program?.title ?? name}</RouteLink></h3>
       <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${program.seats ?? unknown} мест` : university?.isBranch ? 'Филиал' : 'Образовательная организация'}</p>
     </div>
     <div className="af-program-card__stats">
@@ -38,7 +38,7 @@ export function CatalogCard({ university, program }: { university?: University; 
       <small>{program ? formName(program.studyForm) : university?.accreditation ? 'Аккредитация действует' : 'Мониторинг'}</small>
     </div>
     <div className="af-program-card__actions">
-      <RouteLink to={href} className="af-small-link">{program ? 'Направление ↗' : 'Университет ↗'}</RouteLink>
+      <RouteLink to={href} className="af-small-link" tabIndex={program ? undefined : 0}>{program ? 'Направление ↗' : 'Университет ↗'}</RouteLink>
     </div>
   </article>;
 }

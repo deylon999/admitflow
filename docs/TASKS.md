@@ -6841,6 +6841,32 @@
 
 - [docs/AUTH-UI-POLISH.md](../docs/AUTH-UI-POLISH.md) — Right-panel shared layout and backend-driven completion presentation;359 frontend tests, typecheck/lint/build,9 native PG/browser subset pass. Seven requested widths and before/after evidence; hero source unchanged, inherited short-mobile grid height redistribution and absent visual reference explicit.
 
+### T310. University catalog cards and responsive grid redesign
+
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/UNIVERSITY-CARDS-UI.md`.
+
+**Шаги:**
+
+1. Capture live local API baseline and inspect catalog architecture..
+2. Scope university grid/card/header styling without changing program cards/data/filters/pagination..
+3. Verify short/very-long names, empty/error/loading/pagination and seven responsive widths..
+4. Run requested frontend checks and publish PR with before/after evidence and limitations..
+
+**Критерии закрытия:**
+
+- University heading and API total badge, two desktop columns/one mobile, aligned card footers and untruncated full names..
+- No demo/real-catalog buttons added; no other-page design or API/state/data/status/route changes..
+- Typecheck/lint/build/npm test and seven-width browser checks pass; reference-image absence explicitly recorded if unresolved..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/UNIVERSITY-CARDS-UI.md](../docs/UNIVERSITY-CARDS-UI.md) — Scoped university-only header/grid/cards; actual API data and state preserved. Typecheck/lint/build and370frontend checks pass;11 university checks each Firefox/WebKit pass. Seven widths,3 pixel guards, paired PNGs; absent design reference explicitly recorded.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

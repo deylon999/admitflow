@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S222.
+Дата: 2026-11-15. Последняя сессия: S223.
 
 ## Продолжение
 
@@ -12,11 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T309 auth UI polish prepared for owner review on fresh main8f29692. Read docs/AUTH-UI-POLISH.md and PR checks for exact source/evidence. No screenshot reference was attached; unchanged mobile grid can redistribute hero height for short forms. Do not mark live SMTP/HTTPS/inbox release gates accepted.
+T310 university catalog UI prepared for owner review from main8f6f3b0. Read docs/UNIVERSITY-CARDS-UI.md and PR checks. All local requested checks pass; reference screenshot/link absent, so exact reference matching remains unverified. No automatic merge or data/state changes.
 
 ## Последняя завершённая работа
 
-- S222 T309 review: shared right-side auth layout, truthful reset/verify completion CTA;359 frontend tests +9 native subset, lint/typecheck/build pass; before/after PNGs and7-width matrix recorded. No backend/auth helper changes.
+- S223 T310 review: university-only header/real API total and responsive subgrid cards;370frontend tests, Firefox11/WebKit11, typecheck/lint/build pass; before/after and3 unchanged-page pixel guards recorded. No backend/data/state/route changes.
 
 ## Ограничения
 
