@@ -25,8 +25,9 @@ export function UniversityCatalog() {
   const query = new URLSearchParams({ q: search, region, sort, offset: String(offset) });
   const requestKey = useDebounced(query.toString());
   const resource = useCatalog(`universities?${requestKey}`, universityResults);
-  return <>
-    <PageTitle kicker="КАТАЛОГ ВУЗОВ" title="Найди место, где тебе понравится учиться." description="Вузы и подтверждённые конкурсные программы — на одном экране." />
+  return <section className="af-university-catalog">
+    <PageTitle kicker="КАТАЛОГ ВУЗОВ" title="Университеты по твоему запросу" description="Вузы и подтверждённые конкурсные программы — на одном экране."
+      action={resource.data && <span className="af-university-count" aria-live="polite"><Pill tone="lime">{resource.data.total} вузов</Pill></span>} />
     <div className="af-search-panel af-catalog-controls">
       <label className="af-field af-field--grow"><span>НАЙТИ ВУЗ ИЛИ НАПРАВЛЕНИЕ</span>
         <input value={search} maxLength={120} onChange={e => update('q', e.target.value)} placeholder="Например, программная инженерия" />
@@ -39,13 +40,12 @@ export function UniversityCatalog() {
     </div>
     <ResourceState {...resource} loading={resource.loading || requestKey !== query.toString()}>
       {resource.data && <>
-        <div className="af-section-heading"><h2>Университеты по твоему запросу</h2><Pill tone="lime">{resource.data.total} вузов</Pill></div>
-        {resource.data.items.length ? <div className="af-program-grid">{resource.data.items.map(item => <CatalogCard key={item.id} university={item} />)}</div>
+        {resource.data.items.length ? <div className="af-program-grid af-university-grid">{resource.data.items.map(item => <CatalogCard key={item.id} university={item} />)}</div>
           : <EmptyMessage title="Ничего не нашлось" description="Измени поисковый запрос или выбери другой регион." />}
         <Pagination page={resource.data} offset={offset} onOffset={value => update('offset', String(value))} />
       </>}
     </ResourceState>
-  </>;
+  </section>;
 }
 
 export function ProgramsCatalog() {

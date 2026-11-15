@@ -9532,6 +9532,36 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T310",
+      "title": "University catalog cards and responsive grid redesign",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/UNIVERSITY-CARDS-UI.md"
+      ],
+      "steps": [
+        "Capture live local API baseline and inspect catalog architecture.",
+        "Scope university grid/card/header styling without changing program cards/data/filters/pagination.",
+        "Verify short/very-long names, empty/error/loading/pagination and seven responsive widths.",
+        "Run requested frontend checks and publish PR with before/after evidence and limitations."
+      ],
+      "acceptance": [
+        "University heading and API total badge, two desktop columns/one mobile, aligned card footers and untruncated full names.",
+        "No demo/real-catalog buttons added; no other-page design or API/state/data/status/route changes.",
+        "Typecheck/lint/build/npm test and seven-width browser checks pass; reference-image absence explicitly recorded if unresolved."
+      ],
+      "evidence": [
+        {
+          "path": "docs/UNIVERSITY-CARDS-UI.md",
+          "note": "Scoped university-only header/grid/cards; actual API data and state preserved. Typecheck/lint/build and370frontend checks pass;11 university checks each Firefox/WebKit pass. Seven widths,3 pixel guards, paired PNGs; absent design reference explicitly recorded."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }
