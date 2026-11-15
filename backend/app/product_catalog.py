@@ -14,8 +14,9 @@ from .national_catalog import load_catalog
 from .exam_requirements import SUBJECTS, for_group
 from .product_catalog_schemas import (
     Accreditation, CatalogProgram, CatalogUniversity, ExamOption, ExamRequirements, ExamSource, ExamTest, ProgramPage,
-    Provenance, UniversityPage,
+    Provenance, UniversityPage, UniversityNameSource, BranchInfo,
 )
+from .university_names import choose_name
 
 
 def programs(db):
@@ -97,6 +98,27 @@ def registry_only(snapshot, registry):
     ) for org in registry.registry_only]
 
 
+def with_display_names(rows, snapshot, registry):
+    matched = registry.by_catalog_id
+    by_id = {row.id: row for row in snapshot.institutions}
+    only = {org.id: org for org in registry.registry_only}
+    for row in rows:
+        institution = by_id.get(row.id)
+        org = matched.get(institution.registry_id) if institution else only.get(row.id)
+        choice = choose_name(identifier=row.id, full_name=row.legal_name, is_branch=row.is_branch,
+                             provenance=row.provenance, source_sha256=snapshot.sha256 if institution else registry.archive_sha256,
+                             registry_org=org, registry=registry)
+        row.display_name = choice.value
+        row.display_name_source = UniversityNameSource(kind=choice.kind, url=choice.source_url, verified_at=choice.verified_at,
+                                                      sha256=choice.source_sha256, rule_version=choice.rule_version)
+        row.name_aliases = list(choice.aliases)
+        if choice.branch_source_url:
+            row.branch_info = BranchInfo(parent_university_name=choice.parent_name, city=choice.city,
+                                         url=choice.branch_source_url, verified_at=choice.branch_verified_at,
+                                         sha256=choice.branch_source_sha256)
+    return rows
+
+
 def universities(db):
     snapshot = load_catalog()
     registry = load_registry()
@@ -104,7 +126,7 @@ def universities(db):
     by_university = {}
     for program in programs(db):
         by_university.setdefault(program.university_id, []).append(program)
-    return [CatalogUniversity(
+    rows = [CatalogUniversity(
         id=row.id, name=by_university[row.id][0].university_name if row.id in by_university else row.name,
         legal_name=row.name, region=row.region, is_branch=row.is_branch,
         official_url=row.official_url,
@@ -115,6 +137,7 @@ def universities(db):
         accreditation=accreditation(matched[row.registry_id], registry, matched[row.registry_id].match_method)
         if row.registry_id in matched and not row.is_branch else None,
     ) for row in snapshot.institutions] + registry_only(snapshot, registry)
+    return with_display_names(rows, snapshot, registry)
 
 
 def paginate(rows, offset, limit):
@@ -137,7 +160,7 @@ def install(app, database):
             for program in programs(db):
                 course_text[program.university_id] = course_text.get(program.university_id, '') + ' ' + program.title
         matches = [row for row in rows if (not region or row.region == region)
-                   and all(token in f'{row.name} {row.legal_name} {row.region} {row.id} {course_text.get(row.id, "")}'.casefold() for token in tokens)]
+                   and all(token in f'{row.name} {row.legal_name} {row.display_name or ""} {" ".join(row.name_aliases)} {row.region} {row.id} {course_text.get(row.id, "")}'.casefold() for token in tokens)]
         matches.sort(key=lambda row: (row.name.casefold(), row.id), reverse=sort == 'name-desc')
         items, after = paginate(matches, offset, limit)
         return UniversityPage(items=items, total=len(matches), next_offset=after,
