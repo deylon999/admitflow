@@ -6867,6 +6867,34 @@
 
 - [docs/UNIVERSITY-CARDS-UI.md](../docs/UNIVERSITY-CARDS-UI.md) — Scoped university-only header/grid/cards; actual API data and state preserved. Typecheck/lint/build and370frontend checks pass;11 university checks each Firefox/WebKit pass. Seven widths,3 pixel guards, paired PNGs; absent design reference explicitly recorded.
 
+### T311. Verified university display names and conservative normalization
+
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/UNIVERSITY-DISPLAY-NAMES.md`.
+
+**Шаги:**
+
+1. Audit sources and add identity-bound reviewed name records and conservative rules..
+2. Extend product DTO/search additively while retaining names/IDs/imports and PostgreSQL schema..
+3. Show bounded titles and sourced branch/detail metadata in the existing design..
+4. Measure real catalog coverage and run backend/native-PG/frontend/browser checks..
+5. Publish report and review PR without merge..
+
+**Критерии закрытия:**
+
+- Official source names outrank safe rules, reviewed manual names and original fallback; every published change has provenance..
+- No guessed branch parents/cities/abbreviations, no live LLM/network dependency; full originals and import idempotence preserved..
+- Additive DTO, full/short/alias search, three-line cards and full detail; filters/routes remain functional..
+- Computed real catalog coverage and relevant backend/frontend/native PostgreSQL evidence reported honestly..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/UNIVERSITY-DISPLAY-NAMES.md](../docs/UNIVERSITY-DISPLAY-NAMES.md) — Offline identity-bound official/rule/manual/original projection, sourced branch overlay, unchanged originals/schema/imports. Real1366: official688 (630 shorter), normalized85, manual0, original/review593. Backend85/0skip with nativePG; frontend384; FF25/WK25; typecheck/lint/build and7width checks pass. Hosted CI tracked in PR; no automatic merge.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

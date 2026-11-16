@@ -29,10 +29,31 @@ class Accreditation(CamelModel):
     source_url: str
 
 
+class UniversityNameSource(CamelModel):
+    kind: Literal['official', 'normalized', 'manual', 'original']
+    url: str
+    verified_at: datetime
+    sha256: str
+    rule_version: str | None = None
+
+
+class BranchInfo(CamelModel):
+    parent_university_name: str | None = None
+    city: str | None = None
+    url: str
+    verified_at: datetime
+    sha256: str
+
+
 class CatalogUniversity(CamelModel):
     id: str
     name: str
     legal_name: str
+    # Additive UI projection; name/legal_name retain their existing semantics.
+    display_name: str | None = None
+    display_name_source: UniversityNameSource | None = None
+    name_aliases: list[str] = []
+    branch_info: BranchInfo | None = None
     region: str
     is_branch: bool
     official_url: str | None

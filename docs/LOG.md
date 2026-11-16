@@ -1410,3 +1410,9 @@ Acceptance and evidence in AUTH-UI-POLISH.md. Shared AuthLayout for Live/Demo, s
 ## S223 - 2026-11-15 - T310 university catalog card/grid redesign
 
 Acceptance/evidence: UNIVERSITY-CARDS-UI.md. Fresh main8f6f3b0; scoped university header/API total, responsive2/1 columns, full legal names, source divider, subgrid-aligned tracks/footer, explicit natural tabIndex0 and48px footer links. Request/search/filter/sort/pagination/routes/source/status expressions unchanged; no demo buttons added, no unrelated removal. Typecheck/lint/build exit0, npm test370pass(1.4min); Firefox11pass20.6s, WebKit11pass24.0s. Widths320/375/390/768/1024/1440/1920; actual local reviewed API positive cases, empty/error/retry/pagination/focus/hover/Enter; before/after DTOs equal,3 other-page PNGs identical. Four paired PNGs committed. Visual/extra-engine review fixed source wrapping, paired title/info alignment, floating-point target-size margin via larger actual target, and WebKit link tab traversal via explicit0; no relaxed/skipped assertions. Reference image absent despite request; exact visual matching not claimed. T310 review; no automatic merge or user DB/volume/data changes. Next: owner review and hosted CI checks.
+
+## S224 - T311 verified university names
+
+Started identity/provenance audit and conservative offline name overlay from merged main591fa99. No database or user-data mutation.
+
+S224 completion - T311 review: docs/UNIVERSITY-DISPLAY-NAMES.md records1366 actual organizations:688 official fields (630 shorter),85 normalized,0 manual,593 original/review; only1 of521 branches has confirmed parent/city. Backend85/0skip with native PostgreSQL, frontend384, Firefox25/WebKit25, typecheck/lint/build and7width checks pass. Independent overlay cannot be overwritten by existing imports; unchanged legal names, DB schema, source artifacts, IDs and original sort/routes. Separate PR prepared without merge.

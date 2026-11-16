@@ -45,6 +45,7 @@
 .af-university-catalog .af-university-card .af-small-link { display: inline-flex; align-items: center; min-height: 48px; line-height: 1.5; font-size: 13px; }
 .af-university-catalog a:hover { color: var(--af-electric-dark); }
 .af-university-catalog a:focus-visible { outline: 3px solid var(--af-electric); outline-offset: 3px; border-radius: 4px; }
+.af-university-catalog .af-university-card h3 a { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
 @supports (grid-template-rows: subgrid) {
   @media (min-width: 931px) {
     .af-university-catalog .af-university-card { grid-row: span 4; grid-template-rows: subgrid; }
