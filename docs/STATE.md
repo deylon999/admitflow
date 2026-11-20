@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue current card; target campaign 2027. No coverage acceptance, DTO agreement or automatic merge.
+Review PR27 (KAN-218 PR1), check exact head CI in PR description; no automatic merge. After owner merge, new main -> T317 official-source import and concrete KAN-223 DTO agreement. Target2027 >=471/785 remains unmet.
 
 ## Последняя завершённая работа
 
@@ -32,6 +32,7 @@ KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue cur
 
 ## Проверенное окружение
 
+- S225: PostgreSQL17 storage/migrations/identity88 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Full Linux CI tracked in PR27; Windows full backend collection needs existing Linux resource module. No product DTO/frontend/workflow changes.
 - S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.
 - Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.
 - Visual124 Live/Demo pairs at390/1440:123 exact;15px maxRGBdelta1 /programs border variance, repeats/raw images preserved. Identical frontend/src tree0b245e8e108d5c1a0b93e9a8290969bd6321c021; no CSS/product code/baseline changes.

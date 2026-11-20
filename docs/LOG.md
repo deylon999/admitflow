@@ -1469,4 +1469,3 @@ evidence/kan-218-pr1.md document all boundaries, baseline2027 zero, archive SGU
 only, no automatic merge. T312–315 done; T316 review; KAN-218 remains incomplete.
 Next: review/merge PR1, new main, T317 verified official import and concrete
 KAN-223 DTO agreement before any contract change.
-
