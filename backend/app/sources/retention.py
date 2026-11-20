@@ -9,6 +9,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..admissions import SourceSnapshot
+from ..program_catalog_models import ProgramCatalogRevision
 from ..config import Settings
 from ..database import make_engine
 from .storage import RawStore
@@ -23,6 +24,7 @@ def cleanup_raw(engine,store,*,days=7,apply=False,now=None):
         # Failure to read references must happen before considering any deletion.
         with Session(engine) as db:
             referenced=set(db.scalars(select(SourceSnapshot.payload_hash)))
+            referenced.update(db.scalars(select(ProgramCatalogRevision.original_sha256)))
         for path in sorted(store.root.iterdir()):
             if not re.fullmatch('[a-f0-9]{64}',path.name):
                 continue

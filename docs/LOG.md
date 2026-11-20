@@ -1478,3 +1478,88 @@ No auth code or workflows changed. Strengthened new scope tests to avoid duplica
 PK masking the FK and added missing-campaign-membership rejection. New nativePG
 selection100passed/0skip(31.72s); full CI required for the new head. PR stays draft
 until observed pass. Schema/production code unchanged in this correction.
+# S226 / T322 — 2026-11-21: resume PR2 after owner merge
+
+Verified PR27 merged as46adc5b; fetched main and created separate
+feat/kan-218-verified-program-import. T316 done by observed owner merge and exact
+01428f6 CI success in PR27; registered five scoped PR2 steps T322–T326 with
+acceptance before implementation. T322 current: official documents, campaign
+year and bounded provenance. T317/full KAN-218 remain incomplete. No user DB writes.
+
+# S226 / T322 — 2026-11-21: bounded official HTML captures
+
+Captured HSE design2027 and SGU seats2026 original HTML after allowed robots,
+4total HTTPS requests, finite2s delay, no retries. SHA/time/bytes metadata and
+reproducible CLI/passports recorded; originals/private page contacts remain
+outside Git. CLI policy tests5passed/0skip. REA PDF not fetched: current fetcher
+does not accept PDF MIME, search text is not original evidence. T322 done; T323
+independent review and requested concrete DTO agreement next. No public data added.
+# S226 / T323 — 2026-11-21: four reviewed programme facts and concrete DTO proposal
+
+Original SHA matches independently read official web text and selected DOM scope:
+HSE Moscow2027 fashion/art; SGU head full-time2026 biology/geography. No2026
+conditions transferred; no fake groups/general seats from budget totals. Added
+closed reviewed package and structure/year/campus/hash/fact validation; capture+
+review tests15passed/0skip; all4real records extracted from original checksums.
+Concrete response proposal saved; owner question pending. Split explicit agreement
+into T327 (open), leaving required agreement in parent acceptance; T323 bounded
+review/proposal step complete, T324 storage independent. No DTO/frontend changes.
+# S226 / T324 — 2026-11-21: versioned programme provenance and publication storage
+
+Additive0014 adds6tables on existing Base/identities: documents/revisions/facts/
+explicit group-facts/publications/import-attempts. NativePG81passed/0skip45.45s:
+populated0013→0014, metadata, identity/history/source preservation, append-only
+facts/audit, correct M:N FK, publication counts, old-revision sealing and identity
+guards. Updated exact head/table-set expectations incl. account-foundation while
+preserving guest assertions. No auth code, public DTO/frontend/workflows changes.
+T324 done, T325 atomic reviewed import current; T327 owner agreement still open.
+# S226 / T325 — 2026-11-21: atomic reviewed import backend step
+
+Added source-scoped import/RawStore/catalog-lock pipeline, immutable revisions,
+idempotency and explicit failure journal; partial batch isolates universities,
+old payload replay/set drops refused. Synthetic nativePG selection44passed/0skip
+17.33s. Two initial compatibility failures corrected: exact reviewed university
+name/URL pairs and known campaign IDs reused in either import order. No legacy
+rows renamed, no new fake groups/source activation. Actual-original rehearsal
+script prepared. T325 remains in_progress: public API requires open T327 DTO
+agreement; API/frontend are unchanged and no new public coverage is claimed.
+# S226 / T325 — 2026-11-21: real originals and raw retention integrity
+
+Real rehearsal407dfd4 imported4canonical facts from2official-original SHA-matched
+documents in owned PG17.11; repeat unchanged and both public SGU records preserved.
+Public target2027 still0 because DTO agreement pending. Audit found raw retention/
+SQLite backup references omitted programme originals and import lacked store-wide
+publication lock. Extended reference union and matched existing store→DB lock
+order; native capture/review/storage/import/backup/retention54passed0skip22.92s
+before final raw-write error case. Added explicit raw-write failure retry check;
+no production config/shell or public API changes. Final verification follows.
+
+# S226 / T325 — 2026-11-21: final backend safety selection
+
+NativePG extended selection125passed0skip61.75s. Added explicit document type/
+verification state and unverified/conflict publication refusal; CLI refuses
+SQLite and old schema without writes. Raw retention includes all programme
+history, store lock spans DB commit, raw failure retry preserves pointer.
+Last bounded input-read test verifies one denied file does not abort other
+universities. Public DTO/frontend remain unchanged pending T327.
+# S226 / T325 — 2026-11-21: verified backend handoff, public contract remains open
+
+Final real-original rehearsal eecba42: PG17.11/schema0014,4canonical programmes/
+4facts/2internal source publications, repeat2unchanged; explicit verified status
+and document types; legacy public2 unchanged, public2027 count0. Evidence JSON
+saved without raw/private page contacts. New API DTO approval remains open
+T327; T325/T326/T317/KAN-218 not done. Draft PR/mandatory CI prepared for concrete
+backend review, exact final head/results in PR metadata; no automatic merge.
+
+# S226 / T325 — 2026-11-21: repair CI backup/restore regression
+
+Owner reported6/8 checks. Both backend jobs on3b7bc1d failed5existing restore/
+source-size tests (1126passed); migration/frontend/ETL jobs succeeded. SQLite
+backup verifier rejected legitimate protection triggers introduced by pending0014.
+Verifier now compares exact type/name/table/SQL against frozen trusted migration
+DDL, preserving rejection of unknown/modified/missing triggers and extra views.
+No checks removed, applied0001–0013/PostgreSQL DDL/workflows unchanged.
+Backup/restore14passed7.74s; disposablePG17 extended selection101passed0skip
+59.42s. Initial local command without TEST_DATABASE_URL skipped native checks;
+the recorded acceptance run uses scripts/test_postgres.py and requires PostgreSQL.
+Final CI/exact SHA follows in PR28. T325 public part/T326/T327 remain open.

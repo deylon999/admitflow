@@ -5,10 +5,21 @@ import sqlite3
 import pytest
 
 from app.backup import BackupError, create_backup, file_hash
+from app.backup import raw_references
 from app.sources.publishing import publish
 from app.sources.storage import RawStore, StorageError
 from source_helpers import NOW, parsed, raw, registry, seed_source
 from test_api import create, start
+
+
+def test_programme_and_snapshot_raw_reference_union_keeps_old_schema_support():
+    with sqlite3.connect(':memory:') as db:
+        db.execute('CREATE TABLE source_snapshots (payload_hash TEXT)')
+        db.execute('INSERT INTO source_snapshots VALUES (?)',('a'*64,))
+        assert raw_references(db)==['a'*64]
+        db.execute('CREATE TABLE program_catalog_revisions (original_sha256 TEXT)')
+        db.executemany('INSERT INTO program_catalog_revisions VALUES (?)',[('a'*64,),('b'*64,)])
+        assert raw_references(db)==['a'*64,'b'*64]
 
 
 def test_online_backup_includes_manual_history_and_all_raw_refs(client,application,tmp_path):

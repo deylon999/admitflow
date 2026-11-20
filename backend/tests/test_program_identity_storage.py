@@ -176,7 +176,7 @@ def test_upgrade_populated_0012_preserves_sources_snapshots_ids_and_public_api(p
         command.check(alembic_config(connection))
     assert legacy_rows(engine) == before
     with engine.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0013'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0014'
         assert db.scalar(select(func.count()).select_from(Program)) == 0  # No inferred 1:1 backfill.
     with Session(engine) as db:
         assert {p.id: p for p in programs(db)} == public_before

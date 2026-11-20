@@ -1,0 +1,28 @@
+{
+  "id": "4184800b-7007-5006-8350-c7f8568955dd",
+  "programId": "d93d6db6-f4dd-5da1-8b03-43c9445fef25",
+  "universityId": "miccedu-1766",
+  "universityName": "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский университет «Высшая школа экономики»",
+  "region": "г.Москва",
+  "campaignId": "7c52857a-2cc3-586d-9ffd-f930e729326e",
+  "year": 2027,
+  "level": "bachelor",
+  "code": null,
+  "title": "Мода",
+  "studyForm": null,
+  "funding": null,
+  "category": null,
+  "seats": null,
+  "competitionGroups": [],
+  "historicalCutoff": null,
+  "examRequirements": null,
+  "forecast": null,
+  "provenance": {
+    "url": "https://design.hse.ru/ba/join",
+    "verifiedAt": "2026-11-20T21:38:19.273139+00:00",
+    "sourceUpdatedAt": null,
+    "kind": "admissions",
+    "edition": null,
+    "originalSha256": "8518a05c7a817ae2a69f2f3a8f32810a97ffca8fa59b618a7e3a9cd935fc6609"
+  }
+}
