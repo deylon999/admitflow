@@ -119,6 +119,8 @@ EXTRACTORS = {'hse-moscow-announcement-v1': hse_announcement, 'sgu-head-full-tim
 
 
 def extract_reviewed(body, review):
+    if not review['selection'] or len({s['source_key'] for s in review['selection']}) != len(review['selection']):
+        raise ValueError('catalog_incomplete_document')
     if not isinstance(body, bytes) or not 1 <= len(body) <= 5 * 1024 * 1024:
         raise ValueError('catalog_invalid_document_size')
     if hashlib.sha256(body).hexdigest() != review['original_sha256']:
@@ -139,4 +141,7 @@ def load_reviews():
     data = json.loads(REVIEWS.read_text(encoding='utf-8'))
     if data['format'] != 'reviewed-program-catalog-v1' or not data['sources']:
         raise ValueError('catalog_invalid_review_package')
+    if (len({r['key'] for r in data['sources']}) != len(data['sources'])
+            or len({(r['university_id'], r['year'], r['level'], r['source_namespace']) for r in data['sources']}) != len(data['sources'])):
+        raise ValueError('catalog_duplicate_review_scope')
     return data['sources']

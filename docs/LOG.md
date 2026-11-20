@@ -1513,3 +1513,13 @@ facts/audit, correct M:N FK, publication counts, old-revision sealing and identi
 guards. Updated exact head/table-set expectations incl. account-foundation while
 preserving guest assertions. No auth code, public DTO/frontend/workflows changes.
 T324 done, T325 atomic reviewed import current; T327 owner agreement still open.
+# S226 / T325 — 2026-11-21: atomic reviewed import backend step
+
+Added source-scoped import/RawStore/catalog-lock pipeline, immutable revisions,
+idempotency and explicit failure journal; partial batch isolates universities,
+old payload replay/set drops refused. Synthetic nativePG selection44passed/0skip
+17.33s. Two initial compatibility failures corrected: exact reviewed university
+name/URL pairs and known campaign IDs reused in either import order. No legacy
+rows renamed, no new fake groups/source activation. Actual-original rehearsal
+script prepared. T325 remains in_progress: public API requires open T327 DTO
+agreement; API/frontend are unchanged and no new public coverage is claimed.
