@@ -6960,7 +6960,7 @@
 
 ### T315. KAN-218 PR1: add compatible Program and competition relationships
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T314.
 
@@ -6977,11 +6977,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history.
 
 ### T316. KAN-218 PR1: PostgreSQL regression and review handoff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T315.
 

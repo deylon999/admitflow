@@ -30,6 +30,7 @@ class Campaign(Base):
     __tablename__ = 'campaigns'
     __table_args__ = (
         UniqueConstraint('university_id', 'year', 'level', name='uq_campaign_identity'),
+        UniqueConstraint('id', 'university_id', 'level', name='uq_campaign_program_scope'),
         CheckConstraint('year >= 2000 AND year <= 2100', name='campaign_year'),
         CheckConstraint("level IN ('bachelor', 'specialist', 'master')", name='campaign_level'),
     )
@@ -39,10 +40,52 @@ class Campaign(Base):
     level: Mapped[str] = mapped_column(String(24))
 
 
+class Program(Base):
+    """Reviewed identity anchor, not a published programme fact or a contest.
+
+    New identities start in one campaign. Cross-year continuity must be reviewed
+    before adding CampaignProgram; source numbers and names alone are not proof.
+    """
+    __tablename__ = 'programs'
+    __table_args__ = (
+        UniqueConstraint('origin_campaign_id', 'source_namespace', 'source_key', name='uq_program_origin_identity'),
+        UniqueConstraint('id', 'university_id', 'level', name='uq_program_scope'),
+        ForeignKeyConstraint(['origin_campaign_id', 'university_id', 'level'],
+                             ['campaigns.id', 'campaigns.university_id', 'campaigns.level'],
+                             name='fk_program_origin_scope', ondelete='RESTRICT'),
+        CheckConstraint("level IN ('bachelor', 'specialist')", name='program_level'),
+        CheckConstraint('length(trim(source_namespace)) > 0 AND length(trim(source_key)) > 0', name='program_source_identity'),
+    )
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    university_id: Mapped[str] = mapped_column(String(80))
+    level: Mapped[str] = mapped_column(String(24))
+    origin_campaign_id: Mapped[str] = mapped_column(String(36))
+    source_namespace: Mapped[str] = mapped_column(String(160))
+    source_key: Mapped[str] = mapped_column(String(300))
+
+
+class CampaignProgram(Base):
+    """A programme in a campaign, whether or not a contest is confirmed."""
+    __tablename__ = 'campaign_programs'
+    __table_args__ = (
+        ForeignKeyConstraint(['program_id', 'university_id', 'level'],
+                             ['programs.id', 'programs.university_id', 'programs.level'],
+                             name='fk_campaign_program_scope', ondelete='RESTRICT'),
+        ForeignKeyConstraint(['campaign_id', 'university_id', 'level'],
+                             ['campaigns.id', 'campaigns.university_id', 'campaigns.level'],
+                             name='fk_program_campaign_scope', ondelete='RESTRICT'),
+    )
+    program_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    campaign_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    university_id: Mapped[str] = mapped_column(String(80))
+    level: Mapped[str] = mapped_column(String(24))
+
+
 class CompetitionGroup(Base):
     __tablename__ = 'competition_groups'
     __table_args__ = (
         UniqueConstraint('campaign_id', 'official_id', name='uq_group_identity'),
+        UniqueConstraint('id', 'campaign_id', name='uq_group_campaign_scope'),
         CheckConstraint('seats IS NULL OR seats >= 0', name='group_seats'),
         CheckConstraint("coverage IN ('candidate', 'manual', 'automatic', 'suspended')", name='group_coverage'),
         CheckConstraint("coverage != 'automatic' OR rules_version IS NOT NULL", name='automatic_requires_rules'),
@@ -58,6 +101,22 @@ class CompetitionGroup(Base):
     seats: Mapped[int | None] = mapped_column(Integer)
     coverage: Mapped[str] = mapped_column(String(24), default='candidate')
     rules_version: Mapped[str | None] = mapped_column(String(80))
+
+
+class CompetitionGroupProgram(Base):
+    """M:N link, constrained to the same campaign on both sides."""
+    __tablename__ = 'competition_group_programs'
+    __table_args__ = (
+        ForeignKeyConstraint(['group_id', 'campaign_id'],
+                             ['competition_groups.id', 'competition_groups.campaign_id'],
+                             name='fk_group_program_campaign', ondelete='RESTRICT'),
+        ForeignKeyConstraint(['program_id', 'campaign_id'],
+                             ['campaign_programs.program_id', 'campaign_programs.campaign_id'],
+                             name='fk_group_campaign_program', ondelete='RESTRICT'),
+    )
+    group_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    program_id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    campaign_id: Mapped[str] = mapped_column(String(36))
 
 
 class Source(Base):

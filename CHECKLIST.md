@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 281 из 317 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 282 из 317 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -324,8 +324,8 @@
 - [x] T312 KAN-218 PR1: audit current main, catalog and source pipeline
 - [x] T313 KAN-218 PR1: define identity, campaign and publication architecture
 - [x] T314 KAN-218 PR1: implement reproducible scoped identity keys
-- [ ] T315 KAN-218 PR1: add compatible Program and competition relationships — **в работе**
-- [ ] T316 KAN-218 PR1: PostgreSQL regression and review handoff
+- [x] T315 KAN-218 PR1: add compatible Program and competition relationships
+- [ ] T316 KAN-218 PR1: PostgreSQL regression and review handoff — **в работе**
 - [ ] T317 KAN-218 PR2: verified official program import and stable API publication
 - [ ] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
 - [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination

@@ -9680,7 +9680,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T314"
       ],
@@ -9693,7 +9693,12 @@
       "acceptance": [
         "Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9702,7 +9707,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T315"
       ],

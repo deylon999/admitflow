@@ -3,12 +3,12 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-20. Последняя сессия: S225.
+Дата: 2026-11-21. Последняя сессия: S225.
 
 ## Продолжение
 
-- Текущая задача: T315.
-- Следующая задача: T315.
+- Текущая задача: T316.
+- Следующая задача: T316.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -19,6 +19,7 @@ KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue cur
 - KAN-218 PR1: audit current main, catalog and source pipeline
 - KAN-218 PR1: define identity, campaign and publication architecture
 - KAN-218 PR1: implement reproducible scoped identity keys
+- KAN-218 PR1: add compatible Program and competition relationships
 
 ## Ограничения
 

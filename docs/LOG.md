@@ -1445,3 +1445,15 @@ these helpers do not verify source facts or publish records. Fixed EOF whitespac
 reported by diff --check after T313; no functional changes to prior documentation.
 Next T315 additive storage and nativePG populated-schema upgrade.
 
+# S225 / T315 — 2026-11-21: additive programme storage, native migration rehearsal
+
+Added Program/CampaignProgram/CompetitionGroupProgram and migration0013 with
+composite scope FKs; no legacy backfill/ID changes. Native PostgreSQL17 subset88
+passed/0skip,26.16s: populated0012→0013 twice, exact old rows and snapshots,
+unchanged SGU public path, repeat import, M:N/standalone, cross-scope rejection,
+transaction rollback, isolated downgrade/re-upgrade and metadata alignment.
+Two earlier87/1 runs exposed new test assumptions (unordered rows, startup
+reference seed), corrected without relaxing preservation assertions or changing
+migration behavior. Updated old revision/count assertions to0013/29. Frontend
+typecheck/lint/build exit0. Next T316 full regression, final report and review PR.
+
