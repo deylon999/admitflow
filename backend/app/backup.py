@@ -2,9 +2,11 @@
 import argparse
 from contextlib import closing
 from datetime import datetime, timezone
+from functools import lru_cache
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import sqlite3
@@ -47,6 +49,30 @@ def raw_references(db):
         if exists:
             references.update(row[0] for row in db.execute(f'SELECT {column} FROM {table}'))
     return sorted(references)
+
+
+@lru_cache(maxsize=16)
+def expected_schema_objects(revision):
+    """Exact trusted migration DDL, never SQL taken from a backup or user input."""
+    from alembic.config import Config
+    from alembic.script import ScriptDirectory
+    try:
+        scripts=ScriptDirectory.from_config(Config(str(Path(__file__).resolve().parents[1]/'alembic.ini')))
+        current=scripts.get_revision(revision)
+        if current is None or current.revision!=revision:
+            raise ValueError('unknown revision')
+        lineage={r.revision for r in scripts.walk_revisions(base='base',head=revision)}
+        result=set()
+        if '0014' in lineage:
+            for statement in scripts.get_revision('0014').module.sqlite_guard_statements():
+                sql=statement.strip().rstrip(';')
+                match=re.match(r'CREATE TRIGGER ([a-z0-9_]+) BEFORE (?:UPDATE|DELETE|INSERT) ON ([a-z0-9_]+)\b',sql)
+                if match is None:
+                    raise ValueError('invalid trusted DDL')
+                result.add(('trigger',match[1],match[2],sql))
+        return frozenset(result)
+    except Exception:
+        raise BackupError('unsupported_backup_schema') from None
 
 
 def write_private(path,body):
@@ -129,13 +155,15 @@ def verify_backup(folder):
         db.execute('PRAGMA trusted_schema=OFF')
         if db.execute('PRAGMA integrity_check').fetchall()!=[('ok',)] or db.execute('PRAGMA foreign_key_check').fetchone():
             raise BackupError('backup_integrity_failed')
-        if db.execute("SELECT 1 FROM sqlite_master WHERE type IN ('trigger','view') LIMIT 1").fetchone():
-            raise BackupError('unexpected_backup_schema')
         tables={row[0] for row in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
         if not {'browser_sessions','watches','snapshots','sources','source_snapshots','alembic_version'}<=tables:
             raise BackupError('unsupported_backup_schema')
         if db.execute('SELECT version_num FROM alembic_version').fetchone()[0]!=manifest.schema_revision:
             raise BackupError('backup_revision_mismatch')
+        actual_objects=frozenset((kind,name,table,sql.strip().rstrip(';')) for kind,name,table,sql in
+            db.execute("SELECT type,name,tbl_name,sql FROM sqlite_master WHERE type IN ('trigger','view')"))
+        if actual_objects!=expected_schema_objects(manifest.schema_revision):
+            raise BackupError('unexpected_backup_schema')
         if raw_references(db)!=sorted(manifest.raw_hashes):
             raise BackupError('backup_references_mismatch')
     store=RawStore(folder/'raw')

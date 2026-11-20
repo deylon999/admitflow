@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Draft PR28 contains verified programme-import backend; final CI/exact head in PR description. T327 owner agreement on response-proposal.json required before DTO/frontend/publication changes. T325/public API and T326/fullPR2 remain incomplete; public2027 coverage0/785. No automatic merge.
+Draft PR28: fix backup verifier rejecting legitimate0014 triggers (both backend jobs failed at3b7bc1d). Exact trusted DDL verification and tampering checks now pass local nativePG101/0skip; final CI/exact SHA in PR description. T327 owner agreement on response-proposal.json remains required before DTO/frontend/publication changes. T325/T326 incomplete; public2027 coverage0/785. No automatic merge.
 
 ## Последняя завершённая работа
 
@@ -30,6 +30,7 @@ Draft PR28 contains verified programme-import backend; final CI/exact head in PR
 
 ## Проверенное окружение
 
+- S226 CI correction: backup/restore14pass; disposable PostgreSQL17 migration/storage/import/identity/backup/restore101passed0skip59.42s. Only exact reviewed migration trigger definitions accepted; modified/missing/extra objects rejected. Final Linux CI tracked in PR28.
 - S226: nativePG extended125/0skip + final importer20/0skip; actual originals rehearsal eecba42 on PG17.11/0014 creates4canonical facts and repeat unchanged. Old public SGU2 preserved; public2027 coverage0 pending DTO agreement. Full Linux CI/exact SHA maintained in draft PR. Own containers/schemas only.
 - S225: PostgreSQL17 identity/storage/migrations/account-foundation100 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Initial full CI1075pass/1 stale added-table expectation corrected; final Linux CI/exact SHA tracked in PR27. Windows full backend needs existing Linux resource module. No product DTO/frontend/workflow changes.
 - S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.

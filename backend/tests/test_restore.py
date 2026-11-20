@@ -111,3 +111,30 @@ def test_partial_restore_is_not_ready_and_app_refuses_to_start(client,applicatio
         with TestClient(create_app(Settings(database_url=f"sqlite:///{target/'database.sqlite3'}"))):
             pass
     assert not (target/'database.sqlite3').exists()
+
+
+@pytest.mark.parametrize('change',['missing','modified','extra-trigger','extra-view'])
+def test_backup_requires_exact_reviewed_trigger_definitions(client,application,tmp_path,change):
+    folder=create_backup(application.state.engine,RawStore(tmp_path/'raw'),tmp_path/'backups')
+    database=folder/'database.sqlite3'
+    with sqlite3.connect(database) as db:
+        name='immutable_program_catalog_facts_update'
+        if change in ('missing','modified'):
+            db.execute(f'DROP TRIGGER {name}')
+        if change=='modified':
+            db.execute(f"CREATE TRIGGER {name} BEFORE UPDATE ON program_catalog_facts BEGIN SELECT 1; END")
+        elif change=='extra-trigger':
+            db.execute('CREATE TRIGGER unexpected_guard BEFORE UPDATE ON watches BEGIN SELECT 1; END')
+        elif change=='extra-view':
+            db.execute('CREATE VIEW unexpected_view AS SELECT 1')
+    path=folder/'manifest.json'
+    manifest=json.loads(path.read_text())
+    path.write_text(json.dumps(manifest|{'databaseHash':file_hash(database)}))
+    with pytest.raises(BackupError,match='unexpected_backup_schema'):
+        verify_backup(folder)
+
+
+def test_frozen_legacy_revision_has_no_allowed_backup_triggers():
+    from app.backup import expected_schema_objects
+    assert expected_schema_objects('0013')==frozenset()
+    assert len(expected_schema_objects('0014'))==12

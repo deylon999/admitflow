@@ -131,25 +131,34 @@ def downgrade():
         op.execute('DROP FUNCTION program_catalog_publication_check()')
 
 
-def _guards():
+def sqlite_guard_statements():
+    """Frozen DDL also used to verify this revision's legitimate backup objects."""
     immutable = ('program_catalog_revisions', 'program_catalog_facts', 'program_catalog_group_facts', 'program_catalog_import_attempts')
-    if op.get_bind().dialect.name == 'sqlite':
-        for table in immutable:
-            for action in ('UPDATE', 'DELETE'):
-                op.execute(f"CREATE TRIGGER immutable_{table}_{action.lower()} BEFORE {action} ON {table} BEGIN SELECT RAISE(ABORT, 'program_catalog_immutable'); END")
-        for table in ('program_catalog_facts', 'program_catalog_group_facts'):
-            op.execute(f"""CREATE TRIGGER sealed_{table} BEFORE INSERT ON {table}
+    statements = []
+    for table in immutable:
+        for action in ('UPDATE', 'DELETE'):
+            statements.append(f"CREATE TRIGGER immutable_{table}_{action.lower()} BEFORE {action} ON {table} BEGIN SELECT RAISE(ABORT, 'program_catalog_immutable'); END")
+    for table in ('program_catalog_facts', 'program_catalog_group_facts'):
+        statements.append(f"""CREATE TRIGGER sealed_{table} BEFORE INSERT ON {table}
                 WHEN EXISTS (SELECT 1 FROM program_catalog_publications WHERE revision_id=NEW.revision_id)
                   OR EXISTS (SELECT 1 FROM program_catalog_import_attempts WHERE revision_id=NEW.revision_id AND outcome IN ('published','unchanged'))
                 BEGIN SELECT RAISE(ABORT, 'program_catalog_revision_sealed'); END""")
-        for action in ('INSERT', 'UPDATE'):
-            op.execute(f"""CREATE TRIGGER complete_publication_{action.lower()} BEFORE {action} ON program_catalog_publications
+    for action in ('INSERT', 'UPDATE'):
+        statements.append(f"""CREATE TRIGGER complete_publication_{action.lower()} BEFORE {action} ON program_catalog_publications
                 WHEN (SELECT verification_status FROM program_catalog_revisions WHERE id=NEW.revision_id) IS NOT 'verified'
                   OR (SELECT program_count FROM program_catalog_revisions WHERE id=NEW.revision_id)
                        != (SELECT count(*) FROM program_catalog_facts WHERE revision_id=NEW.revision_id)
                   OR (SELECT group_count FROM program_catalog_revisions WHERE id=NEW.revision_id)
                        != (SELECT count(DISTINCT group_id) FROM program_catalog_group_facts WHERE revision_id=NEW.revision_id)
                 BEGIN SELECT RAISE(ABORT, 'program_catalog_publication_incomplete'); END""")
+    return tuple(statements)
+
+
+def _guards():
+    immutable = ('program_catalog_revisions', 'program_catalog_facts', 'program_catalog_group_facts', 'program_catalog_import_attempts')
+    if op.get_bind().dialect.name == 'sqlite':
+        for statement in sqlite_guard_statements():
+            op.execute(statement)
         return
     op.execute("""CREATE FUNCTION program_catalog_immutable() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN RAISE EXCEPTION 'program_catalog_immutable' USING ERRCODE='23514'; RETURN NULL; END $$""")

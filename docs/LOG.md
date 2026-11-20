@@ -1550,3 +1550,16 @@ and document types; legacy public2 unchanged, public2027 count0. Evidence JSON
 saved without raw/private page contacts. New API DTO approval remains open
 T327; T325/T326/T317/KAN-218 not done. Draft PR/mandatory CI prepared for concrete
 backend review, exact final head/results in PR metadata; no automatic merge.
+
+# S226 / T325 — 2026-11-21: repair CI backup/restore regression
+
+Owner reported6/8 checks. Both backend jobs on3b7bc1d failed5existing restore/
+source-size tests (1126passed); migration/frontend/ETL jobs succeeded. SQLite
+backup verifier rejected legitimate protection triggers introduced by pending0014.
+Verifier now compares exact type/name/table/SQL against frozen trusted migration
+DDL, preserving rejection of unknown/modified/missing triggers and extra views.
+No checks removed, applied0001–0013/PostgreSQL DDL/workflows unchanged.
+Backup/restore14passed7.74s; disposablePG17 extended selection101passed0skip
+59.42s. Initial local command without TEST_DATABASE_URL skipped native checks;
+the recorded acceptance run uses scripts/test_postgres.py and requires PostgreSQL.
+Final CI/exact SHA follows in PR28. T325 public part/T326/T327 remain open.

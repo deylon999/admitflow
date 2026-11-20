@@ -212,3 +212,24 @@ PDF/филиалы/специалитет и массовое подключен
 Обязательный Linux CI и exact final head фиксируются в draft PR, чтобы
 добавление результата в отчёт не создавало ещё один непроверенный SHA.
 Backend draft: [PR28](https://github.com/deylon999/admitflow/pull/28).
+
+### Исправление регрессии backup/restore в CI
+
+На `3b7bc1d` оба backend job упали на пяти существующих тестах restore/source-size:
+1126 passed, 5 failed. [PR run](https://github.com/deylon999/admitflow/actions/runs/44828963792)
+и [push run](https://github.com/deylon999/admitflow/actions/runs/44828955034).
+Причина: verifier SQLite backup запрещал любые triggers/views, а новая0014
+добавляет защитные триггеры неизменяемости и согласованности публикации.
+
+Verifier теперь сверяет полный набор type/name/table/SQL с доверенным DDL
+соответствующей миграции. Неизвестные, изменённые и отсутствующие триггеры,
+а также дополнительные views отклоняются. Проверки checksum, revision, raw
+references, integrity, foreign keys и `trusted_schema=OFF` сохранены.
+В ещё не объединённой0014 выделен экспорт точного SQLite DDL без изменения
+создаваемых объектов; применённые0001–0013 и PostgreSQL DDL не менялись.
+Добавлены четыре проверки подмены схемы и проверка допустимых объектов0013/0014.
+Локальные backup/restore: **14 passed, 0 skipped, 7.74s**.
+`backend/.venv/Scripts/python.exe scripts/test_postgres.py tests/test_program_catalog_storage.py tests/test_program_catalog_import.py tests/test_migrations.py tests/test_migration_metadata.py tests/test_program_identity_storage.py tests/test_backup.py tests/test_restore.py`:
+**101 passed, 0 skipped, 59.42s**, собственный disposable PostgreSQL17.
+Финальный Linux CI и точный SHA после исправления фиксируются в PR,
+без объявления успеха заранее.
