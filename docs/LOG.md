@@ -1478,3 +1478,19 @@ No auth code or workflows changed. Strengthened new scope tests to avoid duplica
 PK masking the FK and added missing-campaign-membership rejection. New nativePG
 selection100passed/0skip(31.72s); full CI required for the new head. PR stays draft
 until observed pass. Schema/production code unchanged in this correction.
+# S226 / T322 — 2026-11-21: resume PR2 after owner merge
+
+Verified PR27 merged as46adc5b; fetched main and created separate
+feat/kan-218-verified-program-import. T316 done by observed owner merge and exact
+01428f6 CI success in PR27; registered five scoped PR2 steps T322–T326 with
+acceptance before implementation. T322 current: official documents, campaign
+year and bounded provenance. T317/full KAN-218 remain incomplete. No user DB writes.
+
+# S226 / T322 — 2026-11-21: bounded official HTML captures
+
+Captured HSE design2027 and SGU seats2026 original HTML after allowed robots,
+4total HTTPS requests, finite2s delay, no retries. SHA/time/bytes metadata and
+reproducible CLI/passports recorded; originals/private page contacts remain
+outside Git. CLI policy tests5passed/0skip. REA PDF not fetched: current fetcher
+does not accept PDF MIME, search text is not original evidence. T322 done; T323
+independent review and requested concrete DTO agreement next. No public data added.

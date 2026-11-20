@@ -3,23 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S225.
+Дата: 2026-11-21. Последняя сессия: S226.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T316.
+- Текущая задача: T323.
+- Следующая задача: T323.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review PR27 (KAN-218 PR1), check exact head CI in PR description; no automatic merge. After owner merge, new main -> T317 official-source import and concrete KAN-223 DTO agreement. Target2027 >=471/785 remains unmet.
+KAN-218 PR2 from main46adc5b; official HSE2027 and SGU2026 originals captured with robots/SHA. Continue current card; requested DTO agreement pending. No 2026 conditions copied into2027.
 
 ## Последняя завершённая работа
 
-- KAN-218 PR1: audit current main, catalog and source pipeline
-- KAN-218 PR1: define identity, campaign and publication architecture
-- KAN-218 PR1: implement reproducible scoped identity keys
-- KAN-218 PR1: add compatible Program and competition relationships
+- T316 / KAN-218 PR1 accepted by owner merge PR27:46adc5b; exact01428f6 CI both runs success.
 
 ## Ограничения
 

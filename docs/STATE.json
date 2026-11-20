@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
-  "currentTask": null,
-  "nextTask": "T316",
+  "currentTask": "T323",
+  "nextTask": "T323",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S225",
-  "resumeAction": "Review PR27 (KAN-218 PR1), check exact head CI in PR description; no automatic merge. After owner merge, new main -> T317 official-source import and concrete KAN-223 DTO agreement. Target2027 >=471/785 remains unmet.",
+  "lastSession": "S226",
+  "resumeAction": "KAN-218 PR2 from main46adc5b; official HSE2027 and SGU2026 originals captured with robots/SHA. Continue current card; requested DTO agreement pending. No 2026 conditions copied into2027.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,10 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "KAN-218 PR1: audit current main, catalog and source pipeline",
-    "KAN-218 PR1: define identity, campaign and publication architecture",
-    "KAN-218 PR1: implement reproducible scoped identity keys",
-    "KAN-218 PR1: add compatible Program and competition relationships"
+    "T316 / KAN-218 PR1 accepted by owner merge PR27:46adc5b; exact01428f6 CI both runs success."
   ],
   "environment": [
     "S225: PostgreSQL17 identity/storage/migrations/account-foundation100 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Initial full CI1075pass/1 stale added-table expectation corrected; final Linux CI/exact SHA tracked in PR27. Windows full backend needs existing Linux resource module. No product DTO/frontend/workflow changes.",

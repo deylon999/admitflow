@@ -6981,7 +6981,7 @@
 
 ### T316. KAN-218 PR1: PostgreSQL regression and review handoff
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T315.
 
@@ -6998,7 +6998,7 @@
 
 **Доказательства:**
 
-- [docs/evidence/kan-218-pr1.md](../docs/evidence/kan-218-pr1.md) — Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge.
+- [docs/evidence/kan-218-pr1.md](../docs/evidence/kan-218-pr1.md) — Owner merged PR27 as46adc5b; exact01428f6 push/PR CI success:1077 backend,384 frontend,3x6 native browsers,32controls. Migration0013 preserved data. Final results linked in PR27.
 
 ### T317. KAN-218 PR2: verified official program import and stable API publication
 
@@ -7099,6 +7099,111 @@
 **Критерии закрытия:**
 
 - All KAN-218 user acceptance and DoD including actual target-year coverage, native PG, API/frontend states, exact SHA CI, reviewed PRs and owner acceptance; complete reproducible report and stable KAN-227 linkage..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T322. KAN-218 PR2: select official documents and capture bounded source evidence
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T316.
+
+**Результаты/файлы:** `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. Verify current main/merged PR27; select official university documents with explicit campaign years, capture originals with URL/time/SHA256 and access/robots policy; unavailable and unreviewed sources remain distinct..
+
+**Критерии закрытия:**
+
+- Verify current main/merged PR27; select official university documents with explicit campaign years, capture originals with URL/time/SHA256 and access/robots policy; unavailable and unreviewed sources remain distinct..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Verify current main/merged PR27; select official university documents with explicit campaign years, capture originals with URL/time/SHA256 and access/robots policy; unavailable and unreviewed sources remain distinct.
+
+### T323. KAN-218 PR2: independently review programme facts and public response proposal
+
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T322.
+
+**Результаты/файлы:** `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change..
+
+**Критерии закрытия:**
+
+- Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T324. KAN-218 PR2: persist source revisions and publication provenance
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T323.
+
+**Результаты/файлы:** `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. Justify a new additive migration for immutable document/fact versions and source-scoped published pointers; preserve0013 identity links and existing snapshots; unknowns and partial completeness remain explicit; nativePG upgrade/alignment verified..
+
+**Критерии закрытия:**
+
+- Justify a new additive migration for immutable document/fact versions and source-scoped published pointers; preserve0013 identity links and existing snapshots; unknowns and partial completeness remain explicit; nativePG upgrade/alignment verified..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T325. KAN-218 PR2: atomically import and publish reviewed programme records
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T324.
+
+**Результаты/файлы:** `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. Verified records from several universities reach existing endpoints with approved compatible contract; repeat import deduplicates, errors/conflicts/incomplete sets preserve previous pointers, each fact/group link has source provenance; no applicant parsing or fake groups..
+
+**Критерии закрытия:**
+
+- Verified records from several universities reach existing endpoints with approved compatible contract; repeat import deduplicates, errors/conflicts/incomplete sets preserve previous pointers, each fact/group link has source provenance; no applicant parsing or fake groups..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T326. KAN-218 PR2: native PostgreSQL API regression and review handoff
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T325.
+
+**Результаты/файлы:** `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. NativePG repeat/update/conflict/failure/history/API tests; frontend loading/error/empty/unknown checks as needed; full CI on exact SHA, reproducible source/coverage report and small review PR; target2027 >=471/785 remains open unless actually achieved..
+
+**Критерии закрытия:**
+
+- NativePG repeat/update/conflict/failure/history/API tests; frontend loading/error/empty/unknown checks as needed; full CI on exact SHA, reproducible source/coverage report and small review PR; target2027 >=471/785 remains open unless actually achieved..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
