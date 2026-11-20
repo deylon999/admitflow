@@ -3,20 +3,23 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S224.
+Дата: 2026-11-21. Последняя сессия: S225.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T304.
+- Следующая задача: T316.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DISPLAY-NAMES.md and exact PR checks. Original593 names remain intentionally unshortened; official fields may contain multiple literal variants. No automatic merge.
+Review PR27 (KAN-218 PR1), check exact head CI in PR description; no automatic merge. After owner merge, new main -> T317 official-source import and concrete KAN-223 DTO agreement. Target2027 >=471/785 remains unmet.
 
 ## Последняя завершённая работа
 
-- S224 T311 review: independent reviewed name overlay/strict official matching/legal-prefix-v1/branch facts; additive DTO and search; three-line titles and full sourced detail. Real1366 coverage, backend85/0skip nativePG, frontend384, FF25/WK25, requested frontend checks pass.
+- KAN-218 PR1: audit current main, catalog and source pipeline
+- KAN-218 PR1: define identity, campaign and publication architecture
+- KAN-218 PR1: implement reproducible scoped identity keys
+- KAN-218 PR1: add compatible Program and competition relationships
 
 ## Ограничения
 
@@ -29,6 +32,7 @@ T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DI
 
 ## Проверенное окружение
 
+- S225: PostgreSQL17 identity/storage/migrations/account-foundation100 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Initial full CI1075pass/1 stale added-table expectation corrected; final Linux CI/exact SHA tracked in PR27. Windows full backend needs existing Linux resource module. No product DTO/frontend/workflow changes.
 - S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.
 - Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.
 - Visual124 Live/Demo pairs at390/1440:123 exact;15px maxRGBdelta1 /programs border variance, repeats/raw images preserved. Identical frontend/src tree0b245e8e108d5c1a0b93e9a8290969bd6321c021; no CSS/product code/baseline changes.

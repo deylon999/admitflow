@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 278 из 307 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 282 из 317 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -321,6 +321,16 @@
 - [ ] T309 Polish right-side authentication layouts and truthful completion states — **нужна проверка / завершение**
 - [ ] T310 University catalog cards and responsive grid redesign — **нужна проверка / завершение**
 - [ ] T311 Verified university display names and conservative normalization — **нужна проверка / завершение**
+- [x] T312 KAN-218 PR1: audit current main, catalog and source pipeline
+- [x] T313 KAN-218 PR1: define identity, campaign and publication architecture
+- [x] T314 KAN-218 PR1: implement reproducible scoped identity keys
+- [x] T315 KAN-218 PR1: add compatible Program and competition relationships
+- [ ] T316 KAN-218 PR1: PostgreSQL regression and review handoff — **нужна проверка / завершение**
+- [ ] T317 KAN-218 PR2: verified official program import and stable API publication
+- [ ] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
+- [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
+- [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
+- [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
 
 ## Резерв и выпуск
 

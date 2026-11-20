@@ -6895,6 +6895,216 @@
 
 - [docs/UNIVERSITY-DISPLAY-NAMES.md](../docs/UNIVERSITY-DISPLAY-NAMES.md) — Offline identity-bound official/rule/manual/original projection, sourced branch overlay, unchanged originals/schema/imports. Real1366: official688 (630 shorter), normalized85, manual0, original/review593. Backend85/0skip with nativePG; frontend384; FF25/WK25; typecheck/lint/build and7width checks pass. Hosted CI tracked in PR; no automatic merge.
 
+### T312. KAN-218 PR1: audit current main, catalog and source pipeline
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence..
+
+**Критерии закрытия:**
+
+- Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence.
+
+### T313. KAN-218 PR1: define identity, campaign and publication architecture
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T312.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries..
+
+**Критерии закрытия:**
+
+- Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries.
+
+### T314. KAN-218 PR1: implement reproducible scoped identity keys
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T313.
+
+**Результаты/файлы:** `backend/app/catalog_identity.py`.
+
+**Шаги:**
+
+1. Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries..
+
+**Критерии закрытия:**
+
+- Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries.
+
+### T315. KAN-218 PR1: add compatible Program and competition relationships
+
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T314.
+
+**Результаты/файлы:** `backend/app/admissions.py`.
+
+**Шаги:**
+
+1. Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history..
+
+**Критерии закрытия:**
+
+- Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history.
+
+### T316. KAN-218 PR1: PostgreSQL regression and review handoff
+
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T315.
+
+**Результаты/файлы:** `docs/evidence/kan-218-pr1.md`.
+
+**Шаги:**
+
+1. Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge..
+
+**Критерии закрытия:**
+
+- Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/evidence/kan-218-pr1.md](../docs/evidence/kan-218-pr1.md) — Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge.
+
+### T317. KAN-218 PR2: verified official program import and stable API publication
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T316.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. Reviewed original official records from several universities reach existing endpoints with provenance and atomic repeatable import; compatible DTO agreed before any required public change; source errors preserve published data..
+
+**Критерии закрытия:**
+
+- Reviewed original official records from several universities reach existing endpoints with provenance and atomic repeatable import; compatible DTO agreed before any required public change; source errors preserve published data..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T318. KAN-218 PR3: resumable bounded batch acquisition and publication
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T317.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete..
+
+**Критерии закрытия:**
+
+- Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T318.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved..
+
+**Критерии закрытия:**
+
+- SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T320. KAN-218 PR5: target-year national coverage and independent source audit
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T319.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. 2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit..
+
+**Критерии закрытия:**
+
+- 2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T321. KAN-218 PR6: full acceptance and KAN-227 handoff
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+
+**Зависимости:** T320.
+
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+
+**Шаги:**
+
+1. All KAN-218 user acceptance and DoD including actual target-year coverage, native PG, API/frontend states, exact SHA CI, reviewed PRs and owner acceptance; complete reproducible report and stable KAN-227 linkage..
+
+**Критерии закрытия:**
+
+- All KAN-218 user acceptance and DoD including actual target-year coverage, native PG, API/frontend states, exact SHA CI, reviewed PRs and owner acceptance; complete reproducible report and stable KAN-227 linkage..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

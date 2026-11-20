@@ -1416,3 +1416,65 @@ Acceptance/evidence: UNIVERSITY-CARDS-UI.md. Fresh main8f6f3b0; scoped universit
 Started identity/provenance audit and conservative offline name overlay from merged main591fa99. No database or user-data mutation.
 
 S224 completion - T311 review: docs/UNIVERSITY-DISPLAY-NAMES.md records1366 actual organizations:688 official fields (630 shorter),85 normalized,0 manual,593 original/review; only1 of521 branches has confirmed parent/city. Backend85/0skip with native PostgreSQL, frontend384, Firefox25/WebKit25, typecheck/lint/build and7width checks pass. Independent overlay cannot be overwritten by existing imports; unchanged legal names, DB schema, source artifacts, IDs and original sort/routes. Separate PR prepared without merge.
+# S225 / T312 — 2026-11-20: KAN-218 current-main audit
+
+Fetched main e121d5d, checked latest merged PR24/25/26, clean starting tree,
+created feat/kan-218-catalog-architecture. Audited required catalog/source
+modules, migrations0001–0012 and v3 DTO decoder. Confirmed two-SGU allowlist,
+group-as-program projection, Python full-catalog pagination and cross-year
+coverage union. Details: KAN-218-ARCHITECTURE.md. No user DB changes or live
+coverage claims. roadmap --render --check and git diff --check exit0.
+Registered T312–T321 with explicit acceptance; next T313 technical plan before code.
+
+# S225 / T313 — 2026-11-20: identity and migration plan before implementation
+
+Recorded target2027,471/785, separate historical/partial coverage, additive
+Program/CampaignProgram/CompetitionGroupProgram integrity and unchanged legacy
+IDs. Planned0013, populated0012→head nativePG and exact DTO/source regressions.
+PR2 requires provenance/staging/publication and concrete KAN-223 contract review;
+no invented groups. PRODUCT/DATA_RULES/DECISIONS updated without removing history.
+Audit roadmap check passed after S225 log registration (initial pre-log check
+correctly refused missing session). T313 docs reviewed against real manifest.
+
+# S225 / T314 — 2026-11-20: versioned catalog identity keys
+
+Added catalog_identity.py and35 passing unit tests: cross-process repeatability,
+university/branch/year/level/source/condition discriminators, literal IDs,
+compound encoding, missing conditions and invalid inputs. Existing IDs untouched;
+these helpers do not verify source facts or publish records. Fixed EOF whitespace
+reported by diff --check after T313; no functional changes to prior documentation.
+Next T315 additive storage and nativePG populated-schema upgrade.
+
+# S225 / T315 — 2026-11-21: additive programme storage, native migration rehearsal
+
+Added Program/CampaignProgram/CompetitionGroupProgram and migration0013 with
+composite scope FKs; no legacy backfill/ID changes. Native PostgreSQL17 subset88
+passed/0skip,26.16s: populated0012→0013 twice, exact old rows and snapshots,
+unchanged SGU public path, repeat import, M:N/standalone, cross-scope rejection,
+transaction rollback, isolated downgrade/re-upgrade and metadata alignment.
+Two earlier87/1 runs exposed new test assumptions (unordered rows, startup
+reference seed), corrected without relaxing preservation assertions or changing
+migration behavior. Updated old revision/count assertions to0013/29. Frontend
+typecheck/lint/build exit0. Next T316 full regression, final report and review PR.
+
+# S225 / T316 — 2026-11-21: PR1 regression and review handoff
+
+Source commit9aae16a: nativePG88/0skip including populated0012 upgrade, complete
+frontend384passed(1.3min), typecheck/lint/build and roadmap-unit10 pass. No diff
+to main in frontend/src/publicDTO/product_catalog/workflows. Full Windows backend
+attempt failed collection13errors due to existing Linux-only resource import;
+no test exclusions/checks changed. Full mandatory Linux CI and final SHA tracked
+in PR metadata; no successful CI claim before observed results. Architecture and
+evidence/kan-218-pr1.md document all boundaries, baseline2027 zero, archive SGU
+only, no automatic merge. T312–315 done; T316 review; KAN-218 remains incomplete.
+Next: review/merge PR1, new main, T317 verified official import and concrete
+KAN-223 DTO agreement before any contract change.
+# S225 / T316 — 2026-11-21: full CI schema expectation correction
+
+CI44817126757 on e71e5c6:1075passed/1failed. The exact added-table assertion in
+test_account_foundation still described head0012; extended it by the three0013
+tables while retaining all guest-row preservation and downgrade/re-upgrade checks.
+No auth code or workflows changed. Strengthened new scope tests to avoid duplicate
+PK masking the FK and added missing-campaign-membership rejection. New nativePG
+selection100passed/0skip(31.72s); full CI required for the new head. PR stays draft
+until observed pass. Schema/production code unchanged in this correction.

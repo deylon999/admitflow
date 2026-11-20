@@ -161,3 +161,16 @@ is not consent. Only the explicit reviewed enrollment text is enrolled; absence
 is unknown. Contract capacity20 is not a budget quota and enables no budget model.
 Date text without timezone leaves sourceUpdatedAt null. This archive is never
 fresh; exact default GET support does not attest other selections or POST states.
+# KAN-218: идентичность каталога и кампания, 2026-11-20
+
+Целевая кампания 2027; подтверждённые данные 2026 остаются только 2026.
+Program и CompetitionGroup — разные сущности, M:N связь создаётся только
+при подтверждении источником. Программа может не иметь подтверждённого
+конкурса. Начальная Program identity ограничена origin campaign; связь
+между годами требует явной проверки преемственности. Названия не являются
+ключами тождества. Существующие UUID/legacy ID групп и кампаний сохраняются.
+Ключ нового конкурса включает кампанию, область источника, подтверждённый
+ключ, форму, финансирование и категорию; места — изменяемый факт, не часть ID.
+Неизвестные условия не создают фиктивную группу; неизвестные места — null.
+Таблицы идентичности не подтверждают и не публикуют факты. Политика и
+проверки: [KAN-218](KAN-218-ARCHITECTURE.md).

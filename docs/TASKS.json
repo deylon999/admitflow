@@ -9594,6 +9594,249 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T312",
+      "title": "KAN-218 PR1: audit current main, catalog and source pipeline",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence."
+      ],
+      "acceptance": [
+        "Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence."
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Audit main SHA and latest merged PRs, required modules, migrations, source pipeline and v3 consumers; distinguish code findings from live data evidence."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T313",
+      "title": "KAN-218 PR1: define identity, campaign and publication architecture",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T312"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries."
+      ],
+      "acceptance": [
+        "Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries."
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T314",
+      "title": "KAN-218 PR1: implement reproducible scoped identity keys",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T313"
+      ],
+      "deliverables": [
+        "backend/app/catalog_identity.py"
+      ],
+      "steps": [
+        "Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries."
+      ],
+      "acceptance": [
+        "Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries."
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T315",
+      "title": "KAN-218 PR1: add compatible Program and competition relationships",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "done",
+      "dependsOn": [
+        "T314"
+      ],
+      "deliverables": [
+        "backend/app/admissions.py"
+      ],
+      "steps": [
+        "Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history."
+      ],
+      "acceptance": [
+        "Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history."
+      ],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Program, Campaign and CompetitionGroup remain distinct with M:N links; DB rejects cross-organisation/level/campaign links; new migration preserves existing identities and history."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T316",
+      "title": "KAN-218 PR1: PostgreSQL regression and review handoff",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "review",
+      "dependsOn": [
+        "T315"
+      ],
+      "deliverables": [
+        "docs/evidence/kan-218-pr1.md"
+      ],
+      "steps": [
+        "Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge."
+      ],
+      "acceptance": [
+        "Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge."
+      ],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-218-pr1.md",
+          "note": "Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T317",
+      "title": "KAN-218 PR2: verified official program import and stable API publication",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T316"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "Reviewed original official records from several universities reach existing endpoints with provenance and atomic repeatable import; compatible DTO agreed before any required public change; source errors preserve published data."
+      ],
+      "acceptance": [
+        "Reviewed original official records from several universities reach existing endpoints with provenance and atomic repeatable import; compatible DTO agreed before any required public change; source errors preserve published data."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T318",
+      "title": "KAN-218 PR3: resumable bounded batch acquisition and publication",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T317"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete."
+      ],
+      "acceptance": [
+        "Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T319",
+      "title": "KAN-218 PR4: measured PostgreSQL catalog search and pagination",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T318"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
+      ],
+      "acceptance": [
+        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T320",
+      "title": "KAN-218 PR5: target-year national coverage and independent source audit",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T319"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit."
+      ],
+      "acceptance": [
+        "2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T321",
+      "title": "KAN-218 PR6: full acceptance and KAN-227 handoff",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T320"
+      ],
+      "deliverables": [
+        "docs/KAN-218-ARCHITECTURE.md"
+      ],
+      "steps": [
+        "All KAN-218 user acceptance and DoD including actual target-year coverage, native PG, API/frontend states, exact SHA CI, reviewed PRs and owner acceptance; complete reproducible report and stable KAN-227 linkage."
+      ],
+      "acceptance": [
+        "All KAN-218 user acceptance and DoD including actual target-year coverage, native PG, API/frontend states, exact SHA CI, reviewed PRs and owner acceptance; complete reproducible report and stable KAN-227 linkage."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }
