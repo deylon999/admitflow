@@ -2,24 +2,26 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
   "currentTask": "T325",
-  "nextTask": "T325",
+  "nextTask": "T327",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S226",
-  "resumeAction": "KAN-218 PR2 from main46adc5b; official HSE2027 and SGU2026 originals captured with robots/SHA. Continue current card; requested DTO agreement pending. No 2026 conditions copied into2027.",
+  "resumeAction": "KAN-218 PR2 backend prepared from main46adc5b. Read docs/KAN-218-PR2.md and response-proposal.json. T327 owner agreement is required before changing DTO/frontend or publishing standalone programmes; T325/API and T326/fullPR2 remain incomplete. Exact final CI is tracked in draft PR metadata. No automatic merge.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
     "Нужны живые тестеры для T052.",
     "Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.",
     "KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.",
-    "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
+    "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending.",
+    "KAN-218 T327: explicit agreement on docs/sources/program-catalog/response-proposal.json pending; initial task requires KAN-223 contract agreement before nullable conditions/new provenance kind and minimal decoder changes. Public API remains unchanged until answer."
   ],
   "lastCompleted": [
-    "T316 / KAN-218 PR1 accepted by owner merge PR27:46adc5b; exact01428f6 CI both runs success."
+    "T322 bounded source captures; T323 independent fact review/proposal; T324 additive0014 storage/nativePG. T325 backend import verified; public part remains open."
   ],
   "environment": [
+    "S226: nativePG extended125/0skip + final importer20/0skip; actual originals rehearsal eecba42 on PG17.11/0014 creates4canonical facts and repeat unchanged. Old public SGU2 preserved; public2027 coverage0 pending DTO agreement. Full Linux CI/exact SHA maintained in draft PR. Own containers/schemas only.",
     "S225: PostgreSQL17 identity/storage/migrations/account-foundation100 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Initial full CI1075pass/1 stale added-table expectation corrected; final Linux CI/exact SHA tracked in PR27. Windows full backend needs existing Linux resource module. No product DTO/frontend/workflow changes.",
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",
     "Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.",

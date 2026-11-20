@@ -7187,7 +7187,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Backend atomic import implemented and nativePG-tested;4real facts from2originals, repeat unchanged, old SGU responses preserved. Public API/frontend remain unchanged pending explicit T327 agreement; T325 not done.
+- [docs/evidence/kan-218-pr2-real-import.json](../docs/evidence/kan-218-pr2-real-import.json) — Owned PG17.11, code eecba42, schema0014,4canonical programmes/2source revisions; target2027 public API still0. Internal publication is not public coverage.
 
 ### T326. KAN-218 PR2: native PostgreSQL API regression and review handoff
 

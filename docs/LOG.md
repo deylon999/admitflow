@@ -1542,3 +1542,11 @@ SQLite and old schema without writes. Raw retention includes all programme
 history, store lock spans DB commit, raw failure retry preserves pointer.
 Last bounded input-read test verifies one denied file does not abort other
 universities. Public DTO/frontend remain unchanged pending T327.
+# S226 / T325 — 2026-11-21: verified backend handoff, public contract remains open
+
+Final real-original rehearsal eecba42: PG17.11/schema0014,4canonical programmes/
+4facts/2internal source publications, repeat2unchanged; explicit verified status
+and document types; legacy public2 unchanged, public2027 count0. Evidence JSON
+saved without raw/private page contacts. New DOI/API DTO approval remains open
+T327; T325/T326/T317/KAN-218 not done. Draft PR/mandatory CI prepared for concrete
+backend review, exact final head/results in PR metadata; no automatic merge.

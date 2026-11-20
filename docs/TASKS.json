@@ -9938,7 +9938,16 @@
       "acceptance": [
         "Verified records from several universities reach existing endpoints with approved compatible contract; repeat import deduplicates, errors/conflicts/incomplete sets preserve previous pointers, each fact/group link has source provenance; no applicant parsing or fake groups."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR2.md",
+          "note": "Backend atomic import implemented and nativePG-tested;4real facts from2originals, repeat unchanged, old SGU responses preserved. Public API/frontend remain unchanged pending explicit T327 agreement; T325 not done."
+        },
+        {
+          "path": "docs/evidence/kan-218-pr2-real-import.json",
+          "note": "Owned PG17.11, code eecba42, schema0014,4canonical programmes/2source revisions; target2027 public API still0. Internal publication is not public coverage."
+        }
+      ],
       "blockedReason": null
     },
     {
