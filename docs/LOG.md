@@ -1523,3 +1523,22 @@ name/URL pairs and known campaign IDs reused in either import order. No legacy
 rows renamed, no new fake groups/source activation. Actual-original rehearsal
 script prepared. T325 remains in_progress: public API requires open T327 DTO
 agreement; API/frontend are unchanged and no new public coverage is claimed.
+# S226 / T325 — 2026-11-21: real originals and raw retention integrity
+
+Real rehearsal407dfd4 imported4canonical facts from2official-original SHA-matched
+documents in owned PG17.11; repeat unchanged and both public SGU records preserved.
+Public target2027 still0 because DTO agreement pending. Audit found raw retention/
+SQLite backup references omitted programme originals and import lacked store-wide
+publication lock. Extended reference union and matched existing store→DB lock
+order; native capture/review/storage/import/backup/retention54passed0skip22.92s
+before final raw-write error case. Added explicit raw-write failure retry check;
+no production config/shell or public API changes. Final verification follows.
+
+# S226 / T325 — 2026-11-21: final backend safety selection
+
+NativePG extended selection125passed0skip61.75s. Added explicit document type/
+verification state and unverified/conflict publication refusal; CLI refuses
+SQLite and old schema without writes. Raw retention includes all programme
+history, store lock spans DB commit, raw failure retry preserves pointer.
+Last bounded input-read test verifies one denied file does not abort other
+universities. Public DTO/frontend remain unchanged pending T327.

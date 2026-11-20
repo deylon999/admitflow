@@ -51,7 +51,9 @@
           "admission_totals": null,
           "groups": []
         }
-      ]
+      ],
+      "document_type": "programme-announcement",
+      "verification_status": "verified"
     },
     {
       "key": "sgu-seats-2026",
@@ -115,7 +117,9 @@
           },
           "groups": []
         }
-      ]
+      ],
+      "document_type": "admission-plan",
+      "verification_status": "verified"
     }
   ]
 }

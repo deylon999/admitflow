@@ -20,6 +20,7 @@ NOW = datetime(2026, 11, 21, tzinfo=timezone.utc)
 def revision(rid, document='doc', campaign='c27'):
     return dict(id=rid, document_id=document, campaign_id=campaign, original_url='https://example.org/plan',
         final_url='https://example.org/plan', content_type='text/html', publication_date=None, fetched_at=NOW,
+        document_type='synthetic-plan', verification_status='verified',
         checked_at=NOW, original_sha256=('a' if rid == 'r1' else 'b')*64, extractor_version='synthetic-v1',
         review_sha256='c'*64, normalized_sha256='d'*64, completeness='partial', program_count=1, group_count=1,
         university_name='Synthetic university')
@@ -73,6 +74,16 @@ def test_incomplete_revision_cannot_replace_previous_pointer(published):
         db.execute(update(Publication).values(revision_id='r2'))
     with published.connect() as db:
         assert db.scalar(select(Publication.revision_id)) == 'r1'
+
+
+@pytest.mark.parametrize('status',['unverified','conflict'])
+def test_unverified_revision_cannot_publish_even_when_counts_match(published,status):
+    with published.begin() as db:
+        db.execute(insert(Revision).values(**{**revision('r2'), 'verification_status':status}))
+        db.execute(insert(Fact).values(**fact('r2')))
+        db.execute(insert(GroupFact).values(revision_id='r2',program_id=pid('P1'),group_id='g1',campaign_id='c27',facts={}))
+    with pytest.raises(IntegrityError,match='publication_incomplete'), published.begin() as db:
+        db.execute(update(Publication).values(revision_id='r2'))
 
 
 def test_new_complete_revision_publishes_atomically_and_seals_old_history(published):

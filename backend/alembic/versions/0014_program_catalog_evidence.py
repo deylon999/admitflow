@@ -33,6 +33,8 @@ def _schema():
         sa.Column('original_url', sa.String(length=2048), nullable=False, primary_key=False),
         sa.Column('final_url', sa.String(length=2048), nullable=False, primary_key=False),
         sa.Column('content_type', sa.String(length=100), nullable=False, primary_key=False),
+        sa.Column('document_type', sa.String(length=40), nullable=False, primary_key=False),
+        sa.Column('verification_status', sa.String(length=16), nullable=False, primary_key=False),
         sa.Column('publication_date', sa.Date(), nullable=True, primary_key=False),
         sa.Column('fetched_at', sa.DateTime(timezone=True), nullable=False, primary_key=False),
         sa.Column('checked_at', sa.DateTime(timezone=True), nullable=False, primary_key=False),
@@ -48,6 +50,7 @@ def _schema():
         sa.CheckConstraint("completeness IN ('partial', 'complete')", name='program_revision_completeness'),
         sa.CheckConstraint('program_count > 0 AND group_count >= 0', name='program_revision_counts'),
         sa.CheckConstraint('fetched_at <= checked_at', name='program_revision_times'),
+        sa.CheckConstraint("verification_status IN ('verified', 'unverified', 'conflict')", name='program_revision_verification'),
         sa.UniqueConstraint('id', 'campaign_id', name='uq_program_revision_campaign'),
         sa.UniqueConstraint('document_id', 'original_sha256', 'extractor_version', 'review_sha256', name='uq_program_revision_content'),
         sa.UniqueConstraint('document_id', 'id', name='uq_program_revision_document'),
@@ -141,7 +144,8 @@ def _guards():
                 BEGIN SELECT RAISE(ABORT, 'program_catalog_revision_sealed'); END""")
         for action in ('INSERT', 'UPDATE'):
             op.execute(f"""CREATE TRIGGER complete_publication_{action.lower()} BEFORE {action} ON program_catalog_publications
-                WHEN (SELECT program_count FROM program_catalog_revisions WHERE id=NEW.revision_id)
+                WHEN (SELECT verification_status FROM program_catalog_revisions WHERE id=NEW.revision_id) IS NOT 'verified'
+                  OR (SELECT program_count FROM program_catalog_revisions WHERE id=NEW.revision_id)
                        != (SELECT count(*) FROM program_catalog_facts WHERE revision_id=NEW.revision_id)
                   OR (SELECT group_count FROM program_catalog_revisions WHERE id=NEW.revision_id)
                        != (SELECT count(DISTINCT group_id) FROM program_catalog_group_facts WHERE revision_id=NEW.revision_id)
@@ -162,11 +166,12 @@ def _guards():
     for table in ('program_catalog_facts', 'program_catalog_group_facts'):
         op.execute(f'CREATE TRIGGER program_catalog_fact_insert BEFORE INSERT ON {table} FOR EACH ROW EXECUTE FUNCTION program_catalog_fact_insert()')
     op.execute("""CREATE FUNCTION program_catalog_publication_check() RETURNS trigger LANGUAGE plpgsql AS $$
-        DECLARE expected_programs integer; expected_groups integer;
+        DECLARE expected_programs integer; expected_groups integer; verified_state text;
         BEGIN
-          SELECT program_count, group_count INTO expected_programs, expected_groups
+          SELECT program_count, group_count, verification_status INTO expected_programs, expected_groups, verified_state
              FROM program_catalog_revisions WHERE id=NEW.revision_id FOR UPDATE;
-          IF expected_programs IS DISTINCT FROM (SELECT count(*) FROM program_catalog_facts WHERE revision_id=NEW.revision_id)
+          IF verified_state IS DISTINCT FROM 'verified'
+             OR expected_programs IS DISTINCT FROM (SELECT count(*) FROM program_catalog_facts WHERE revision_id=NEW.revision_id)
              OR expected_groups IS DISTINCT FROM (SELECT count(DISTINCT group_id) FROM program_catalog_group_facts WHERE revision_id=NEW.revision_id)
           THEN RAISE EXCEPTION 'program_catalog_publication_incomplete' USING ERRCODE='23514'; END IF;
           RETURN NEW;

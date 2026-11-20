@@ -41,8 +41,12 @@ def file_hash(path):
 
 
 def raw_references(db):
-    exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='source_snapshots'").fetchone()
-    return sorted({row[0] for row in db.execute('SELECT payload_hash FROM source_snapshots')}) if exists else []
+    references=set()
+    for table,column in [('source_snapshots','payload_hash'), ('program_catalog_revisions','original_sha256')]:
+        exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?",(table,)).fetchone()
+        if exists:
+            references.update(row[0] for row in db.execute(f'SELECT {column} FROM {table}'))
+    return sorted(references)
 
 
 def write_private(path,body):

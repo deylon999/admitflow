@@ -50,6 +50,9 @@ def _ensure(db, model, identifier, fields, **defaults):
 
 
 def _validate(review, body):
+    if review.get('verification_status') != 'verified':
+        raise ValueError('catalog_unreviewed_document')
+    identity_text(review['document_type'], 40)
     if body is None:
         raise ValueError('catalog_raw_unavailable')
     if review['completeness'] != 'partial':
@@ -115,7 +118,7 @@ def _scope(db, review):
     if document is None:
         document = _ensure(db, Document, scoped_id('program-document', org.id, review['year'], review['level'], review['source_namespace']),
             dict(campaign_id=campaign.id, source_namespace=review['source_namespace']))
-    return university, campaign, document
+    return university, campaign, document, org
 
 
 def _program(db, campaign, review, record):
@@ -148,8 +151,35 @@ def _group_links(db, campaign, program, records):
     db.flush()
 
 
+def _rejected(engine, review, body, document_id, now, stage, error):
+    code = str(error) if isinstance(error, ValueError) and re.fullmatch(r'catalog_[a-z_]+', str(error)) else 'catalog_import_failed'
+    if isinstance(error, StorageError):
+        code = 'catalog_' + error.code
+    with Session(engine) as db:
+        lock_catalog(db, engine)
+        document = db.get(Document, document_id)
+        if document:
+            document.last_checked_at = now
+            document.last_error_code = code
+        db.add(Attempt(document_id=document_id, attempted_at=now, stage=stage, outcome='rejected', error_code=code,
+            original_sha256=hashlib.sha256(body).hexdigest() if isinstance(body, bytes) and len(body) <= 5*1024*1024 else None))
+        db.commit()
+    return dict(documentId=document_id, outcome='rejected', stage=stage, error=code)
+
+
 def import_document(engine, review, body, raw_store):
     """Internal trusted-review entry point; CLI only selects shipped review keys."""
+    try:
+        # Match snapshot publication/backup/retention lock order. Referenced raw
+        # cannot be collected between writing it and committing its revision.
+        with raw_store.locked():
+            return _import_document_locked(engine, review, body, raw_store)
+    except StorageError as error:
+        document_id = scoped_id('program-document', review['university_id'], review['year'], review['level'], review['source_namespace'])
+        return _rejected(engine, review, body, document_id, datetime.now(timezone.utc), 'validation', error)
+
+
+def _import_document_locked(engine, review, body, raw_store):
     now = datetime.now(timezone.utc)
     document_id = scoped_id('program-document', review['university_id'], review['year'], review['level'], review['source_namespace'])
     stage = 'validation'
@@ -161,7 +191,7 @@ def import_document(engine, review, body, raw_store):
         with Session(engine) as db:
             lock_catalog(db, engine)
             stage = 'identity'
-            university, campaign, document = _scope(db, review)
+            university, campaign, document, org = _scope(db, review)
             document_id = document.id
             pointer = db.get(Publication, document.id)
             previous = db.get(Revision, pointer.revision_id) if pointer else None
@@ -184,6 +214,7 @@ def import_document(engine, review, body, raw_store):
                 revision = Revision(id=scoped_id('program-revision', document.id, review['original_sha256'], review['extractor_version'], review_hash),
                     document_id=document.id, campaign_id=campaign.id, original_url=review['url'], final_url=review['final_url'],
                     content_type=review['content_type'], publication_date=date.fromisoformat(review['publication_date']) if review['publication_date'] else None,
+                    document_type=review['document_type'], verification_status='verified',
                     fetched_at=_timestamp(review['fetched_at']), checked_at=_timestamp(review['checked_at']), original_sha256=review['original_sha256'],
                     extractor_version=review['extractor_version'], review_sha256=review_hash, normalized_sha256=normalized,
                     completeness=review['completeness'], program_count=len(records), group_count=len({g['id'] for r in records for g in r['groups']}), university_name=university.name)
@@ -195,7 +226,8 @@ def import_document(engine, review, body, raw_store):
                     db.add(Fact(revision_id=revision.id, program_id=program.id, campaign_id=campaign.id,
                         public_id=scoped_id('program-scope', program.id, campaign.id), **fact_fields,
                         evidence=dict(selection=record['source_key'], originalSha256=review['original_sha256'],
-                            organizationCatalogSha256=load_catalog().sha256, organizationCatalogUrl=university.provenance_url),
+                            organizationCatalogSha256=load_catalog().sha256, organizationCatalogUrl=org.provenance_url,
+                            universityRowOriginUrl=university.provenance_url),
                         search_text=f'{record["title"]} {record["code"] or ""} {university.name}'.casefold(), sort_text=record['title'].casefold()))
                     db.flush()
                     db.add_all([GroupFact(revision_id=revision.id, program_id=program.id, group_id=g['id'], campaign_id=campaign.id, facts=g) for g in record['groups']])
@@ -215,19 +247,7 @@ def import_document(engine, review, body, raw_store):
             db.commit()
         return dict(documentId=document_id, revisionId=revision_id, outcome=outcome, programs=len(records), completeUniversityCatalog=False)
     except (ValueError, KeyError, TypeError, SQLAlchemyError, StorageError) as error:
-        code = str(error) if isinstance(error, ValueError) and re.fullmatch(r'catalog_[a-z_]+', str(error)) else 'catalog_import_failed'
-        if isinstance(error, StorageError):
-            code = 'catalog_' + error.code
-        with Session(engine) as db:
-            lock_catalog(db, engine)
-            document = db.get(Document, document_id)
-            if document:
-                document.last_checked_at = now
-                document.last_error_code = code
-            db.add(Attempt(document_id=document_id, attempted_at=now, stage=stage, outcome='rejected', error_code=code,
-                original_sha256=hashlib.sha256(body).hexdigest() if isinstance(body, bytes) and len(body) <= 5*1024*1024 else None))
-            db.commit()
-        return dict(documentId=document_id, outcome='rejected', stage=stage, error=code)
+        return _rejected(engine, review, body, document_id, now, stage, error)
 
 
 def import_sources(engine, raw_directory, raw_store, *, keys=None):
@@ -240,9 +260,14 @@ def import_sources(engine, raw_directory, raw_store, *, keys=None):
     for review in reviews:
         path = Path(raw_directory) / (review['original_sha256'] + '.html')
         body = None
-        if path.is_file() and not path.is_symlink():
-            with path.open('rb') as file:
-                body = file.read(5*1024*1024+1)
+        try:
+            if path.is_file() and not path.is_symlink():
+                with path.open('rb') as file:
+                    body = file.read(5*1024*1024+1)
+        except OSError:
+            # Diagnose this source and continue the finite batch; never turn
+            # missing/unreadable bytes into an empty successful catalogue.
+            body = None
         results.append(import_document(engine, review, body, raw_store))
     return dict(atomicPerDocument=True, allSourcesSucceeded=all(r['outcome'] != 'rejected' for r in results), items=results)
 
@@ -251,6 +276,8 @@ def main(argv=None):
     from .config import Settings
     from .database import make_engine
     from .sources.storage import RawStore
+    from .migrations import schema_heads
+    from sqlalchemy import text
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--raw-directory', required=True, type=Path)
     parser.add_argument('--source', action='append', dest='keys', choices=[r['key'] for r in load_reviews()])
@@ -258,6 +285,17 @@ def main(argv=None):
     args = parser.parse_args(argv)
     engine = make_engine(Settings.from_env().database_url)
     try:
+        if engine.dialect.name != 'postgresql':
+            print(json.dumps({'error':'catalog_import_requires_postgresql'}))
+            return 1
+        try:
+            with engine.connect() as connection:
+                revisions=set(connection.scalars(text('SELECT version_num FROM alembic_version')))
+            if revisions != schema_heads():
+                raise ValueError('catalog_schema_not_current')
+        except (SQLAlchemyError, ValueError):
+            print(json.dumps({'error':'catalog_schema_not_current'}))
+            return 1
         result = import_sources(engine, args.raw_directory, RawStore(args.raw_store), keys=args.keys)
         print(json.dumps(result))
         return 0 if result['allSourcesSucceeded'] else 1

@@ -19,6 +19,7 @@ from app.program_catalog_models import (ProgramCatalogDocument as Document, Prog
 from app.program_catalog_import import import_document, import_sources
 from app.program_catalog_review import EXTRACTORS, load_reviews
 from app.sources.storage import RawStore, StorageError
+from app.sources.retention import cleanup_raw
 from native_support import postgres_engine  # noqa: F401
 from test_program_catalog_review import package
 
@@ -89,7 +90,7 @@ def test_approved_new_version_preserves_ids_and_old_facts(postgres_engine,store)
         assert db.get(Publication,first['documentId']).revision_id == second['revisionId']
 
 
-@pytest.mark.parametrize('failure', ['hash','dropped-program','empty','unsupported-extractor'])
+@pytest.mark.parametrize('failure', ['hash','dropped-program','empty','unsupported-extractor','unverified'])
 def test_rejected_source_keeps_previous_revision(postgres_engine,store,failure):
     body, review = source()
     first = import_document(postgres_engine,review,body,store)
@@ -99,6 +100,7 @@ def test_rejected_source_keeps_previous_revision(postgres_engine,store,failure):
         changed['selection'] = changed['selection'][:1]
         changed['programs'] = changed['programs'][:1]
     elif failure == 'empty': changed['selection'] = []
+    elif failure == 'unverified': changed['verification_status'] = 'unverified'
     else: changed['extractor_version'] = 'unknown'
     rejected = import_document(postgres_engine,changed,body,store)
     assert rejected['outcome'] == 'rejected'
@@ -204,3 +206,116 @@ def test_one_confirmed_group_can_link_multiple_programmes_without_new_identity(p
         assert db.scalar(select(func.count()).select_from(GroupFact))==2
         assert db.scalar(select(func.count()).select_from(CompetitionGroupProgram))==2
         assert db.scalar(select(func.count()).select_from(CompetitionGroup))==1
+
+
+def test_retention_preserves_programme_originals_and_old_revisions(postgres_engine,store):
+    import os
+    from datetime import timezone
+    body,review=source()
+    assert import_document(postgres_engine,review,body,store)['outcome']=='published'
+    changed=deepcopy(review)
+    new_body=body.replace(b'Example Fashion',b'Updated Fashion')
+    changed['original_sha256']=hashlib.sha256(new_body).hexdigest()
+    changed['programs'][0]['title']='Updated Fashion'
+    assert import_document(postgres_engine,changed,new_body,store)['outcome']=='published'
+    orphan=store.put(b'Synthetic unreferenced document')
+    now=datetime.now(timezone.utc)
+    old=(now-timedelta(days=10)).timestamp()
+    for key in [review['original_sha256'],changed['original_sha256'],orphan]:
+        os.utime(store.root/key,(old,old))
+    result=cleanup_raw(postgres_engine,store,now=now,apply=True)
+    assert result['deleted']==1 and result['retained']==2
+    assert store.read(review['original_sha256'])==body
+    assert store.read(changed['original_sha256'])==new_body
+
+
+def test_retention_waits_for_programme_publication_commit(postgres_engine,store,monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor, TimeoutError
+    from datetime import timezone
+    import os
+    import threading
+    body,review=source()
+    key=store.put(body)
+    now=datetime.now(timezone.utc)
+    old=(now-timedelta(days=10)).timestamp(); os.utime(store.root/key,(old,old))
+    entered,release=threading.Event(),threading.Event()
+    original=Session.commit
+    def paused(db):
+        if db.scalar(select(func.count()).select_from(Publication)):
+            entered.set()
+            assert release.wait(5)
+        return original(db)
+    monkeypatch.setattr(Session,'commit',paused)
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        publisher=pool.submit(import_document,postgres_engine,review,body,store)
+        assert entered.wait(5)
+        cleaner=pool.submit(cleanup_raw,postgres_engine,RawStore(store.root),now=now,apply=True)
+        try:
+            with pytest.raises(TimeoutError): cleaner.result(timeout=0.05)
+        finally:
+            release.set()
+        assert publisher.result()['outcome']=='published'
+        assert cleaner.result()['deleted']==0
+    assert store.read(key)==body
+
+
+def test_raw_write_failure_is_diagnostic_and_keeps_previous_pointer(postgres_engine,store,monkeypatch):
+    body,review=source()
+    first=import_document(postgres_engine,review,body,store)
+    def failed(*args,**kwargs):
+        raise StorageError('raw_write_failed')
+    with monkeypatch.context() as patch:
+        patch.setattr(store,'put',failed)
+        result=import_document(postgres_engine,review,body,store)
+    assert result['outcome']=='rejected' and result['error']=='catalog_raw_write_failed'
+    with Session(postgres_engine) as db:
+        assert db.get(Publication,first['documentId']).revision_id==first['revisionId']
+    assert import_document(postgres_engine,review,body,store)['outcome']=='unchanged'
+
+
+def test_cli_refuses_sqlite_before_creating_a_database_or_raw_store(tmp_path,monkeypatch,capsys):
+    from app.program_catalog_import import main
+    import json
+    path=tmp_path/'must-not-exist.db'
+    monkeypatch.setenv('DATABASE_URL',f'sqlite:///{path}')
+    monkeypatch.setenv('ENVIRONMENT','development')
+    assert main(['--raw-directory',str(tmp_path/'originals'),'--raw-store',str(tmp_path/'raw')])==1
+    assert json.loads(capsys.readouterr().out)['error']=='catalog_import_requires_postgresql'
+    assert not path.exists() and not (tmp_path/'raw').exists()
+
+
+def test_cli_refuses_old_schema_without_upgrading_it(postgres_engine,tmp_path,monkeypatch,capsys):
+    from alembic import command
+    from sqlalchemy import text, inspect
+    import json
+    from app.program_catalog_import import main
+    from test_program_identity_storage import alembic_config
+    with postgres_engine.connect() as connection:
+        command.downgrade(alembic_config(connection),'0013')
+    monkeypatch.setenv('DATABASE_URL',postgres_engine.url.render_as_string(hide_password=False))
+    monkeypatch.setenv('ENVIRONMENT','development')
+    assert main(['--raw-directory',str(tmp_path/'originals'),'--raw-store',str(tmp_path/'raw')])==1
+    assert json.loads(capsys.readouterr().out)['error']=='catalog_schema_not_current'
+    with postgres_engine.connect() as connection:
+        assert connection.scalar(text('SELECT version_num FROM alembic_version'))=='0013'
+    assert 'program_catalog_documents' not in inspect(postgres_engine).get_table_names()
+    assert not (tmp_path/'raw').exists()
+
+
+def test_unreadable_original_does_not_abort_other_sources(postgres_engine,store,tmp_path,monkeypatch):
+    from pathlib import Path
+    import app.program_catalog_import as importer
+    hbody,hreview=source(); sbody,sreview=source('sgu')
+    monkeypatch.setattr(importer,'load_reviews',lambda:[hreview,sreview])
+    for body,review in [(hbody,hreview),(sbody,sreview)]:
+        (tmp_path/(review['original_sha256']+'.html')).write_bytes(body)
+    original=Path.open
+    def guarded(path,*args,**kwargs):
+        if path.name==hreview['original_sha256']+'.html':
+            raise PermissionError('Synthetic denied original')
+        return original(path,*args,**kwargs)
+    monkeypatch.setattr(Path,'open',guarded)
+    result=import_sources(postgres_engine,tmp_path,store)
+    assert not result['allSourcesSucceeded']
+    assert [r['outcome'] for r in result['items']]==['rejected','published']
+    assert result['items'][0]['error']=='catalog_raw_unavailable'

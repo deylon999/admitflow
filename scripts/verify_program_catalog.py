@@ -1,7 +1,7 @@
 """Rehearse real reviewed programme import in an owned disposable PostgreSQL.
 
 Requires original content-addressed HTML captured outside Git. Does not access
-DATABASE_URL, the working DB, applicant sources or production configuration.
+the working DATABASE_URL, applicant sources or production configuration.
 """
 import argparse
 from datetime import datetime, timezone
@@ -62,6 +62,7 @@ def main(argv=None):
                 sources.append(dict(key=review['key'],universityId=review['university_id'],year=review['year'],url=review['url'],
                     originalSha256=revision.original_sha256,reviewSha256=revision.review_sha256,normalizedSha256=revision.normalized_sha256,
                     fetchedAt=revision.fetched_at.isoformat(),checkedAt=revision.checked_at.isoformat(),completeness=revision.completeness,
+                    documentType=revision.document_type,verificationStatus=revision.verification_status,
                     groupCount=revision.group_count,programmes=[dict(programId=f.program_id,publicId=f.public_id,title=f.title,code=f.code,
                         studyForm=f.study_form,funding=f.funding,category=f.category,seats=f.seats,admissionTotals=f.admission_totals) for f in facts]))
             report['sources']=sources

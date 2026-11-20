@@ -31,6 +31,7 @@ class ProgramCatalogRevision(Base):
         CheckConstraint("completeness IN ('partial', 'complete')", name='program_revision_completeness'),
         CheckConstraint('program_count > 0 AND group_count >= 0', name='program_revision_counts'),
         CheckConstraint('fetched_at <= checked_at', name='program_revision_times'),
+        CheckConstraint("verification_status IN ('verified', 'unverified', 'conflict')", name='program_revision_verification'),
     )
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
     document_id: Mapped[str] = mapped_column(String(36))
@@ -38,6 +39,8 @@ class ProgramCatalogRevision(Base):
     original_url: Mapped[str] = mapped_column(String(2048))
     final_url: Mapped[str] = mapped_column(String(2048))
     content_type: Mapped[str] = mapped_column(String(100))
+    document_type: Mapped[str] = mapped_column(String(40))
+    verification_status: Mapped[str] = mapped_column(String(16))
     publication_date: Mapped[date | None] = mapped_column(Date)
     fetched_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     checked_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

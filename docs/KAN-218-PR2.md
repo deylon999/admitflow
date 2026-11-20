@@ -145,4 +145,34 @@ source profiles, без fuzzy/URL merge и без изменения стары�
 
 Публичная часть T325 пока не выполнена: требуется T327. Реальный rehearsal
 подготовлен в `scripts/verify_program_catalog.py`; он использует только
-собственный disposable PostgreSQL и не читает рабочий DATABASE_URL.
+собственный disposable PostgreSQL и не подключается к рабочему DATABASE_URL.
+
+### Проверка настоящих оригиналов и удержание provenance
+
+`backend/.venv/Scripts/python.exe scripts/verify_program_catalog.py --output docs/evidence/kan-218-pr2-real-import.json`
+проверяет оба оригинала закрытого review package в собственном PostgreSQL17.11.
+Получены2 внутренние document publications/4 канонические программы/4 facts;
+повтор обеих публикаций unchanged. Старые2 публичные программы/2 конкурса СГУ
+сохранены. Это **backend rehearsal, не расширение публичного каталога**:
+2027 Public API по-прежнему0, T327 не согласована.
+
+Обнаруженная при проверке reuse-компонентов опасность устранена: raw retention
+и SQLite backup reference enumeration теперь учитывают все ProgrammeRevision
+оригиналы, включая прошлые версии. Новая публикация держит тот же RawStore
+lock, что GC/backup, до commit, поэтому старый cached raw не может быть удалён
+между проверкой и сохранением ссылки в БД. NativePG тест проверяет эту гонку
+и сохранность обеих исторических версий. Production PostgreSQL backup уже
+архивирует целиком raw store; его существующее требование остановить **всех**
+writers распространяется и на новый operator CLI. Production настройки,
+backup shell и release gates этим шагом не менялись/не принимались.
+
+Финальная расширенная локальная проверка storage/import/retention/backup и
+существующих миграций/identity/account-foundation: **125 passed,0skip,61.75s**
+до последнего теста недоступного файла. Модель ревизии явно хранит тип документа
+и verification_status; unverified/conflict запрещено публиковать даже при
+совпавших counts. Operator CLI требует PostgreSQL и уже применённый текущий
+head; он не создаёт SQLite и не обновляет схему пользовательской БД сам.
+Ошибки чтения одного raw не прерывают обработку остальных источников.
+После последнего изменения чтения raw весь importer-набор: **20 passed,0skip,
+11.74s**. Расширение публичного API, DTO/frontend, национального отчёта и массовое
+подключение источников не заявляются выполненными этим backend шагом.
