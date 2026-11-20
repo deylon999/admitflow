@@ -97,6 +97,9 @@ def test_invalid_program_origin_is_rejected(populated, changes):
 @pytest.mark.parametrize('cid,uid,level', [('co', 'other', 'bachelor'), ('cb', 'branch', 'bachelor'),
     ('csp', 'head', 'specialist'), ('c27', 'other', 'bachelor'), ('c27', 'head', 'specialist')])
 def test_campaign_program_cannot_mix_institutions_branches_or_levels(populated, cid, uid, level):
+    # A duplicate PK must not mask the scope FK under test.
+    with populated.begin() as db:
+        db.execute(delete(CampaignProgram).where(CampaignProgram.program_id == pid('P1')))
     with pytest.raises(IntegrityError), populated.begin() as db:
         db.execute(insert(CampaignProgram).values(program_id=pid('P1'), campaign_id=cid, university_id=uid, level=level))
 
@@ -105,6 +108,12 @@ def test_campaign_program_cannot_mix_institutions_branches_or_levels(populated, 
 def test_group_program_cannot_mix_years_or_institutions(populated, group_id, campaign_id):
     with pytest.raises(IntegrityError), populated.begin() as db:
         db.execute(insert(CompetitionGroupProgram).values(group_id=group_id, program_id=pid('P1'), campaign_id=campaign_id))
+
+
+def test_group_program_requires_program_membership_in_that_campaign(populated):
+    # The group/campaign pair exists; only the programme/campaign link is missing.
+    with pytest.raises(IntegrityError), populated.begin() as db:
+        db.execute(insert(CompetitionGroupProgram).values(group_id='gold', program_id=pid('P1'), campaign_id='c26'))
 
 
 def test_natural_identity_collision_rolls_back_and_keeps_previous_links(populated):

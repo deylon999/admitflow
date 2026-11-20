@@ -1469,3 +1469,12 @@ evidence/kan-218-pr1.md document all boundaries, baseline2027 zero, archive SGU
 only, no automatic merge. T312–315 done; T316 review; KAN-218 remains incomplete.
 Next: review/merge PR1, new main, T317 verified official import and concrete
 KAN-223 DTO agreement before any contract change.
+# S225 / T316 — 2026-11-21: full CI schema expectation correction
+
+CI44817126757 on e71e5c6:1075passed/1failed. The exact added-table assertion in
+test_account_foundation still described head0012; extended it by the three0013
+tables while retaining all guest-row preservation and downgrade/re-upgrade checks.
+No auth code or workflows changed. Strengthened new scope tests to avoid duplicate
+PK masking the FK and added missing-campaign-membership rejection. New nativePG
+selection100passed/0skip(31.72s); full CI required for the new head. PR stays draft
+until observed pass. Schema/production code unchanged in this correction.

@@ -99,7 +99,12 @@ def test_additive_migration_preserves_all_guest_tables(postgres_engine):
         tables = [t for t in inspect(conn).get_table_names() if t != 'alembic_version']
         before = {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.upgrade(cfg, 'head'); command.check(cfg)
-        assert set(inspect(conn).get_table_names()) - set(tables) == {'alembic_version', 'account_users', 'account_sessions', 'account_refresh_tokens', 'account_action_tokens', 'account_csrf_contexts', 'account_rate_buckets'}
+        # Upgrade to head includes the additive programme identity migration0013.
+        assert set(inspect(conn).get_table_names()) - set(tables) == {
+            'alembic_version', 'account_users', 'account_sessions', 'account_refresh_tokens',
+            'account_action_tokens', 'account_csrf_contexts', 'account_rate_buckets',
+            'programs', 'campaign_programs', 'competition_group_programs',
+        }
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.downgrade(cfg, '0011'); command.upgrade(cfg, 'head'); command.check(cfg)
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
