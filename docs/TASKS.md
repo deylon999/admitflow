@@ -7172,7 +7172,7 @@
 
 **Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T324.
+**Зависимости:** T324, T327.
 
 **Результаты/файлы:** `docs/KAN-218-PR2.md`.
 
@@ -7194,7 +7194,7 @@
 
 **Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
 
-**Зависимости:** T325.
+**Зависимости:** T325, T328.
 
 **Результаты/файлы:** `docs/KAN-218-PR2.md`.
 
@@ -7213,7 +7213,7 @@
 
 ### T327. KAN-218 PR2: owner agreement on compatible programme DTO extension
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** S.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** S.
 
 **Зависимости:** T323.
 
@@ -7226,6 +7226,27 @@
 **Критерии закрытия:**
 
 - Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/sources/program-catalog/contract.md](../docs/sources/program-catalog/contract.md) — Explicit owner approval on2026-11-21; exact proposal/current DTO comparison. Preserve old IDs/semantics; legacy programId nullable without an explicit unique M:N link; reviewed groups only; nullable unknowns and admissions provenance authorized.
+
+### T328. KAN-218 PR2: compatible frontend for programmes without contests
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+
+**Зависимости:** T325.
+
+**Результаты/файлы:** `frontend/src/catalog/types.ts`; `docs/KAN-218-PR2.md`.
+
+**Шаги:**
+
+1. Update catalog DTO/decoder and existing pages for approved admissions/null/groups; old-server additive-field fallback, same routes/design, no fabricated form/funding/seats, loading/error/empty and no-contest browser checks; typecheck/lint/build/frontend tests pass..
+
+**Критерии закрытия:**
+
+- Update catalog DTO/decoder and existing pages for approved admissions/null/groups; old-server additive-field fallback, same routes/design, no fabricated form/funding/seats, loading/error/empty and no-contest browser checks; typecheck/lint/build/frontend tests pass..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**

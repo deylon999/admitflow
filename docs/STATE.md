@@ -3,21 +3,21 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S227.
+Дата: 2026-11-21. Последняя сессия: S228.
 
 ## Продолжение
 
 - Текущая задача: T325.
-- Следующая задача: T327.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Серверная часть PR #28 уже в main (0449e66). Для публичной выдачи проверенных программ нужен согласованный DTO из T327. T325 и T326 остаются открытыми. В штатной публичной выдаче за 2027 год покрытие составляет 0 из 785 головных вузов.
+Owner explicitly approved T327 DTO direction. Implement current-publication SQL facade in existing PR28 branch, then frontend/null/group compatibility, nativePG/API/browser checks and exact-SHA CI. PR28 already merged at0449e66; new commits cannot enter its diff. No new PR/auto-merge per user instruction; continuation must be clearly labelled in closed PR report.
 
 ## Последняя завершённая работа
 
 - Обновлён корневой README по текущей версии main, включая фактическое покрытие, доступные сценарии и локальный запуск.
-- T322 bounded source captures; T323 independent fact review/proposal; T324 additive0014 storage/nativePG. T325 backend import verified; public part remains open.
+- T327: explicit owner DTO direction approval, exact comparison and safe legacy-null programId contract recorded. Existing T322–T324 backend reused; API/frontend acceptance remains open.
 
 ## Ограничения
 
@@ -27,7 +27,6 @@
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.
 - 2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending.
-- KAN-218 T327: explicit agreement on docs/sources/program-catalog/response-proposal.json pending; initial task requires KAN-223 contract agreement before nullable conditions/new provenance kind and minimal decoder changes. Public API remains unchanged until answer.
 
 ## Проверенное окружение
 

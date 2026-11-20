@@ -1573,3 +1573,14 @@ Final CI/exact SHA follows in PR28. T325 public part/T326/T327 remain open.
 `python scripts/local_smoke.py` остановился на `docker info` из-за отсутствия работающего Docker Engine. Проверки были выполнены в отдельных временных окружениях проекта.
 
 Backend на отдельном PostgreSQL 17.11 с `pytest -q --require-postgres` для каталога, покрытия, конкурсов, импорта программ, резервных копий, восстановления и миграций. Результат 118 passed, 0 skipped, 151.21 s, exit 0. Проверки `scripts/tests/test_roadmap.py` прошли, 10 passed.
+
+# S228 / T327 — 2026-11-21: owner approves compatible DTO direction
+
+Compared response-proposal.json with backend and frontend DTOs/decoders. Owner
+explicitly approved null unknowns, separate programme identity, reviewed contest
+links and admissions provenance; prior pending agreement is satisfied. Safe
+additive clarification: old contest scopes keep IDs and nullable programId when
+no explicit unique M:N link exists. No name-based matching/backfill.
+Fetched main: owner already merged PR28 at0449e66; fast-forwarded its existing
+branch. New PR prohibited; subsequent commits cannot change merged PR diff and
+will be labelled as post-merge continuation. T327 done, T325 current.

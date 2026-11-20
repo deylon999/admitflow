@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-13",
+  "updatedAt": "2026-11-21",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -9927,7 +9927,8 @@
       "size": "M",
       "status": "in_progress",
       "dependsOn": [
-        "T324"
+        "T324",
+        "T327"
       ],
       "deliverables": [
         "docs/KAN-218-PR2.md"
@@ -9958,7 +9959,8 @@
       "size": "M",
       "status": "todo",
       "dependsOn": [
-        "T325"
+        "T325",
+        "T328"
       ],
       "deliverables": [
         "docs/KAN-218-PR2.md"
@@ -9978,7 +9980,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "S",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T323"
       ],
@@ -9990,6 +9992,34 @@
       ],
       "acceptance": [
         "Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement."
+      ],
+      "evidence": [
+        {
+          "path": "docs/sources/program-catalog/contract.md",
+          "note": "Explicit owner approval on2026-11-21; exact proposal/current DTO comparison. Preserve old IDs/semantics; legacy programId nullable without an explicit unique M:N link; reviewed groups only; nullable unknowns and admissions provenance authorized."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T328",
+      "title": "KAN-218 PR2: compatible frontend for programmes without contests",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T325"
+      ],
+      "deliverables": [
+        "frontend/src/catalog/types.ts",
+        "docs/KAN-218-PR2.md"
+      ],
+      "steps": [
+        "Update catalog DTO/decoder and existing pages for approved admissions/null/groups; old-server additive-field fallback, same routes/design, no fabricated form/funding/seats, loading/error/empty and no-contest browser checks; typecheck/lint/build/frontend tests pass."
+      ],
+      "acceptance": [
+        "Update catalog DTO/decoder and existing pages for approved admissions/null/groups; old-server additive-field fallback, same routes/design, no fabricated form/funding/seats, loading/error/empty and no-contest browser checks; typecheck/lint/build/frontend tests pass."
       ],
       "evidence": [],
       "blockedReason": null

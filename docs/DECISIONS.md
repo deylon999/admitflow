@@ -261,3 +261,14 @@ Real inbox delivery/egress/HTTPS acceptance remains external. KAN-214-PR4.md.
 не даёт права публикации: provenance/revisions и согласованный DTO потребуются
 в PR2. Цель 2027 >=471/785; архив не переносится. Технический план, риски,
 миграция0013 и проверки до реализации: [KAN-218](KAN-218-ARCHITECTURE.md).
+
+# ADR KAN-218 / 2026-11-21: approved compatible public programme projection
+
+Owner explicitly authorized T327/KAN-223 direction. Keep old IDs/routes/field
+semantics; nullable conditions and admissions provenance, separate programId and
+reviewed competitionGroups. Legacy programId remains null without one explicit
+canonical programme link; never manufacture a Program from a contest/name.
+Exact contract and rollout limits: [contract](sources/program-catalog/contract.md).
+PR28 was already merged; continuation stays on its branch with no new PR and
+requires a clearly labelled post-merge report, never a claim that its new diff
+is part of the merged PR.
