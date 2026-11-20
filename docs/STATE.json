@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-15",
-  "currentTask": null,
-  "nextTask": "T304",
+  "updatedAt": "2026-11-20",
+  "currentTask": "T313",
+  "nextTask": "T313",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S224",
-  "resumeAction": "T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DISPLAY-NAMES.md and exact PR checks. Original593 names remain intentionally unshortened; official fields may contain multiple literal variants. No automatic merge.",
+  "lastSession": "S225",
+  "resumeAction": "KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue current card; target campaign 2027. No coverage acceptance, DTO agreement or automatic merge.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,7 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "S224 T311 review: independent reviewed name overlay/strict official matching/legal-prefix-v1/branch facts; additive DTO and search; three-line titles and full sourced detail. Real1366 coverage, backend85/0skip nativePG, frontend384, FF25/WK25, requested frontend checks pass."
+    "KAN-218 PR1: audit current main, catalog and source pipeline"
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

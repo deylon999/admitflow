@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-15. Последняя сессия: S224.
+Дата: 2026-11-20. Последняя сессия: S225.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T304.
+- Текущая задача: T313.
+- Следующая задача: T313.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T311 verified display names prepared from main591fa99. Review docs/UNIVERSITY-DISPLAY-NAMES.md and exact PR checks. Original593 names remain intentionally unshortened; official fields may contain multiple literal variants. No automatic merge.
+KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue current card; target campaign 2027. No coverage acceptance, DTO agreement or automatic merge.
 
 ## Последняя завершённая работа
 
-- S224 T311 review: independent reviewed name overlay/strict official matching/legal-prefix-v1/branch facts; additive DTO and search; three-line titles and full sourced detail. Real1366 coverage, backend85/0skip nativePG, frontend384, FF25/WK25, requested frontend checks pass.
+- KAN-218 PR1: audit current main, catalog and source pipeline
 
 ## Ограничения
 

@@ -1416,3 +1416,13 @@ Acceptance/evidence: UNIVERSITY-CARDS-UI.md. Fresh main8f6f3b0; scoped universit
 Started identity/provenance audit and conservative offline name overlay from merged main591fa99. No database or user-data mutation.
 
 S224 completion - T311 review: docs/UNIVERSITY-DISPLAY-NAMES.md records1366 actual organizations:688 official fields (630 shorter),85 normalized,0 manual,593 original/review; only1 of521 branches has confirmed parent/city. Backend85/0skip with native PostgreSQL, frontend384, Firefox25/WebKit25, typecheck/lint/build and7width checks pass. Independent overlay cannot be overwritten by existing imports; unchanged legal names, DB schema, source artifacts, IDs and original sort/routes. Separate PR prepared without merge.
+# S225 / T312 — 2026-11-20: KAN-218 current-main audit
+
+Fetched main e121d5d, checked latest merged PR24/25/26, clean starting tree,
+created feat/kan-218-catalog-architecture. Audited required catalog/source
+modules, migrations0001–0012 and v3 DTO decoder. Confirmed two-SGU allowlist,
+group-as-program projection, Python full-catalog pagination and cross-year
+coverage union. Details: KAN-218-ARCHITECTURE.md. No user DB changes or live
+coverage claims. roadmap --render --check and git diff --check exit0.
+Registered T312–T321 with explicit acceptance; next T313 technical plan before code.
+
