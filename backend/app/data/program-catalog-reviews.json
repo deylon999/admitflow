@@ -1,0 +1,121 @@
+{
+  "format": "reviewed-program-catalog-v1",
+  "sources": [
+    {
+      "key": "hse-design-2027",
+      "university_id": "miccedu-1766",
+      "year": 2027,
+      "level": "bachelor",
+      "source_namespace": "design-moscow-admissions",
+      "university_name": "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский университет «Высшая школа экономики»",
+      "university_url": "http://www.hse.ru",
+      "region": "г.Москва",
+      "url": "https://design.hse.ru/ba/join",
+      "final_url": "https://design.hse.ru/ba/join",
+      "original_sha256": "8518a05c7a817ae2a69f2f3a8f32810a97ffca8fa59b618a7e3a9cd935fc6609",
+      "fetched_at": "2026-11-20T21:31:08.614343+00:00",
+      "checked_at": "2026-11-20T21:38:19.273139+00:00",
+      "publication_date": null,
+      "content_type": "text/html",
+      "extractor_version": "hse-moscow-announcement-v1",
+      "completeness": "partial",
+      "selection": [
+        {
+          "source_key": "/ba/program/fashion"
+        },
+        {
+          "source_key": "/ba/program/art"
+        }
+      ],
+      "review_method": "Independent web text vs original DOM selectors and explicit year/campus/column review; no human owner acceptance claimed",
+      "programs": [
+        {
+          "source_key": "/ba/program/fashion",
+          "title": "Мода",
+          "code": null,
+          "study_form": null,
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": null,
+          "groups": []
+        },
+        {
+          "source_key": "/ba/program/art",
+          "title": "Современное искусство",
+          "code": null,
+          "study_form": null,
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": null,
+          "groups": []
+        }
+      ]
+    },
+    {
+      "key": "sgu-seats-2026",
+      "university_id": "sgu-saratov",
+      "year": 2026,
+      "level": "bachelor",
+      "source_namespace": "head-full-time-admission-plan",
+      "university_name": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Саратовский национальный исследовательский государственный университет имени Н.Г. Чернышевского»",
+      "university_url": "http://www.sgu.ru",
+      "region": "Саратовская область",
+      "url": "https://www.sgu.ru/node/240763",
+      "final_url": "https://www.sgu.ru/node/240763",
+      "original_sha256": "61f7c938d2d11cc815cf591482e82a2ecd79557e62db32796af82fdb47c3821d",
+      "fetched_at": "2026-11-20T21:31:10.917505+00:00",
+      "checked_at": "2026-11-20T21:38:19.580099+00:00",
+      "publication_date": null,
+      "content_type": "text/html",
+      "extractor_version": "sgu-head-full-time-plan-v1",
+      "completeness": "partial",
+      "selection": [
+        {
+          "source_key": "06.03.01"
+        },
+        {
+          "source_key": "05.03.02"
+        }
+      ],
+      "review_method": "Independent web text vs original DOM selectors and explicit year/campus/column review; no human owner acceptance claimed",
+      "programs": [
+        {
+          "source_key": "06.03.01",
+          "title": "Биология",
+          "code": "06.03.01",
+          "study_form": "full-time",
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": {
+            "budget_total": 50,
+            "target_quota": null,
+            "special_quota": 5,
+            "separate_quota": 5,
+            "paid_total": 15
+          },
+          "groups": []
+        },
+        {
+          "source_key": "05.03.02",
+          "title": "География",
+          "code": "05.03.02",
+          "study_form": "full-time",
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": {
+            "budget_total": 15,
+            "target_quota": null,
+            "special_quota": 2,
+            "separate_quota": 2,
+            "paid_total": 15
+          },
+          "groups": []
+        }
+      ]
+    }
+  ]
+}

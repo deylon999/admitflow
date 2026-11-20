@@ -9871,7 +9871,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T322"
       ],
@@ -9879,12 +9879,17 @@
         "docs/KAN-218-PR2.md"
       ],
       "steps": [
-        "Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change."
+        "Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327."
       ],
       "acceptance": [
-        "Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change."
+        "Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR2.md",
+          "note": "Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9893,7 +9898,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T323"
       ],
@@ -9949,6 +9954,28 @@
       ],
       "acceptance": [
         "NativePG repeat/update/conflict/failure/history/API tests; frontend loading/error/empty/unknown checks as needed; full CI on exact SHA, reproducible source/coverage report and small review PR; target2027 >=471/785 remains open unless actually achieved."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T327",
+      "title": "KAN-218 PR2: owner agreement on compatible programme DTO extension",
+      "phase": "E5",
+      "priority": "P0",
+      "size": "S",
+      "status": "todo",
+      "dependsOn": [
+        "T323"
+      ],
+      "deliverables": [
+        "docs/sources/program-catalog/response-proposal.json"
+      ],
+      "steps": [
+        "Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement."
+      ],
+      "acceptance": [
+        "Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement."
       ],
       "evidence": [],
       "blockedReason": null

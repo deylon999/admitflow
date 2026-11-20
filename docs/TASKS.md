@@ -7128,7 +7128,7 @@
 
 ### T323. KAN-218 PR2: independently review programme facts and public response proposal
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T322.
 
@@ -7136,20 +7136,20 @@
 
 **Шаги:**
 
-1. Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change..
+1. Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327..
 
 **Критерии закрытия:**
 
-- Cross-check records against official originals from several universities; identify codes/year/forms/funding/categories/seats without inference, distinguish unconfirmed groups; prepare real response sample and obtain agreement before a necessary DTO change..
+- Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Cross-check records against official originals from several universities with explicit year/campus/column scope; distinguish unknown conditions and unconfirmed groups; prepare a real concrete public response proposal. Required DTO agreement remains separately open in T327.
 
 ### T324. KAN-218 PR2: persist source revisions and publication provenance
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T323.
 
@@ -7204,6 +7204,27 @@
 **Критерии закрытия:**
 
 - NativePG repeat/update/conflict/failure/history/API tests; frontend loading/error/empty/unknown checks as needed; full CI on exact SHA, reproducible source/coverage report and small review PR; target2027 >=471/785 remains open unless actually achieved..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T327. KAN-218 PR2: owner agreement on compatible programme DTO extension
+
+**Статус:** `todo` · **Приоритет:** P0 · **Размер:** S.
+
+**Зависимости:** T323.
+
+**Результаты/файлы:** `docs/sources/program-catalog/response-proposal.json`.
+
+**Шаги:**
+
+1. Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement..
+
+**Критерии закрытия:**
+
+- Obtain deylon999 agreement on concrete response-proposal.json before implementing required API/frontend contract changes; no elapsed-time or PR1-merge inference of agreement..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**

@@ -1494,3 +1494,13 @@ reproducible CLI/passports recorded; originals/private page contacts remain
 outside Git. CLI policy tests5passed/0skip. REA PDF not fetched: current fetcher
 does not accept PDF MIME, search text is not original evidence. T322 done; T323
 independent review and requested concrete DTO agreement next. No public data added.
+# S226 / T323 — 2026-11-21: four reviewed programme facts and concrete DTO proposal
+
+Original SHA matches independently read official web text and selected DOM scope:
+HSE Moscow2027 fashion/art; SGU head full-time2026 biology/geography. No2026
+conditions transferred; no fake groups/general seats from budget totals. Added
+closed reviewed package and structure/year/campus/hash/fact validation; capture+
+review tests15passed/0skip; all4real records extracted from original checksums.
+Concrete response proposal saved; owner question pending. Split explicit agreement
+into T327 (open), leaving required agreement in parent acceptance; T323 bounded
+review/proposal step complete, T324 storage independent. No DTO/frontend changes.

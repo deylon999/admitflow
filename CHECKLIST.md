@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 284 из 322 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 285 из 323 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -332,10 +332,11 @@
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
 - [x] T322 KAN-218 PR2: select official documents and capture bounded source evidence
-- [ ] T323 KAN-218 PR2: independently review programme facts and public response proposal — **в работе**
-- [ ] T324 KAN-218 PR2: persist source revisions and publication provenance
+- [x] T323 KAN-218 PR2: independently review programme facts and public response proposal
+- [ ] T324 KAN-218 PR2: persist source revisions and publication provenance — **в работе**
 - [ ] T325 KAN-218 PR2: atomically import and publish reviewed programme records
 - [ ] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff
+- [ ] T327 KAN-218 PR2: owner agreement on compatible programme DTO extension
 
 ## Резерв и выпуск
 
