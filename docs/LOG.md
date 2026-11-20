@@ -1504,3 +1504,12 @@ review tests15passed/0skip; all4real records extracted from original checksums.
 Concrete response proposal saved; owner question pending. Split explicit agreement
 into T327 (open), leaving required agreement in parent acceptance; T323 bounded
 review/proposal step complete, T324 storage independent. No DTO/frontend changes.
+# S226 / T324 — 2026-11-21: versioned programme provenance and publication storage
+
+Additive0014 adds6tables on existing Base/identities: documents/revisions/facts/
+explicit group-facts/publications/import-attempts. NativePG81passed/0skip45.45s:
+populated0013→0014, metadata, identity/history/source preservation, append-only
+facts/audit, correct M:N FK, publication counts, old-revision sealing and identity
+guards. Updated exact head/table-set expectations incl. account-foundation while
+preserving guest assertions. No auth code, public DTO/frontend/workflows changes.
+T324 done, T325 atomic reviewed import current; T327 owner agreement still open.

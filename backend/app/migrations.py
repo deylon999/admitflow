@@ -1,4 +1,5 @@
 from . import accounts  # Register account tables for non-HTTP migration callers.
+from . import program_catalog_models  # Register programme evidence without HTTP imports.
 from pathlib import Path
 from functools import lru_cache
 

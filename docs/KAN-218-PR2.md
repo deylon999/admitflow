@@ -62,3 +62,58 @@ provenance.kind=admissions для приёмного документа; сущ�
 **T327 остаётся открытой до явного ответа.** Без согласования можно продолжать
 provenance/storage/import, но нельзя реализовывать изменённую публичную выдачу
 и frontend decoder. Разделение шага не ослабляет acceptance T317/T325.
+
+## T324: обоснование схемы до реализации
+
+0013 хранит только идентичность, поэтому новая аддитивная0014 добавит шесть
+таблиц на той же Base и существующих Campaign/Program/CompetitionGroup:
+документ заданной кампании; неизменяемую ревизию оригинала/проверки;
+версионированные факты программы; подтверждённые связи с конкурсами и снимок
+их опубликованных условий; атомарный указатель опубликованной ревизии;
+журнал попыток импорта. SourceSnapshot/CandidateEntry относятся к спискам
+поступающих и для программы без конкурса неприменимы; они не заменяются.
+
+Ревизия хранит original/final URL, MIME, публикацию или null, fetched/checked UTC,
+SHA256 оригинала, extractor/review/normalized hashes, partial/complete и counts.
+Факт хранит Program/Campaign scope, стабильный ID проекции, известные поля и
+отдельные totals; группа добавляется только по явной сверенной связи.
+Composite FK защищают кампанию и существующие identity links. PostgreSQL
+запрещает UPDATE/DELETE опубликованных исторических фактов и ревизий; публикация
+создаёт новые версии и переключает только source-scoped pointer. Прямые
+ручные группы не становятся source-backed программами.
+
+Импорт из closed reviewed package проверяет оригинал и извлечение до публикации.
+На документ — одна транзакция под существующим catalog lock; успехи разных
+источников изолированы. Повтор raw/extractor/review не дублирует ревизию;
+изменение approved факта даёт новую версию, конфликт ключа/кампании — отказ.
+Неполный/пустой/непроверенный пакет не переключает pointer. Ошибка журналируется
+отдельно после rollback, не удаляя прежнюю ревизию. RawStore сохраняет оригинал
+без его публикации в Git. Новая схема сама не меняет публичный API.
+
+Проверка: nativePG upgrade заполненной0013→0014, metadata alignment, старые
+identity/source/snapshot связи; immutable история, wrong-scope FK, repeat import,
+approved revision update, конфликт, rollback, изоляция источников. Старые
+assertions текущего head/table set обновляются точно; auth/runtime/workflows
+не меняются. Массовая performance приёмка остаётся отдельным этапом.
+
+Реализованы шесть таблиц и новая0014; applied0001–0013 не менялись.
+Publication trigger сверяет counts программ и distinct конкурсов перед
+переключением указателя. После публикации нельзя дописать факты в текущую
+или прежнюю ревизию; PostgreSQL сериализует проверку через row lock ревизии.
+Программа/кампания/конкурс/документ с историческими фактами защищены от
+переназначения идентичности; изменяемые журнальные summary поля документа
+не затрагивают исходные версии.
+
+NativePG команда из корня:
+
+```text
+python scripts/test_postgres.py --python backend/.venv/Scripts/python.exe tests/test_program_catalog_storage.py tests/test_migration_metadata.py tests/test_migrations.py tests/test_account_foundation.py tests/test_program_identity_storage.py tests/test_database_diagnostics.py
+```
+
+**81 passed,0skip,45.45s,exit0.** Изолированный PostgreSQL17, upgrade заполненной
+0013 с Program/M:N, repeated head0014 и metadata check; существующая проверка
+заполненной0012 сохраняет также source snapshots/pointers. Проверены immutable
+UPDATE/DELETE, FK явной связи с конкурсом, запрет неполной публикации, новая
+согласованная версия и защита прошлой после переключения. SQLite — только
+дополнительная compatibility часть существующего migration набора. Рабочая БД
+и volumes не использовались. T324 завершена; API/DTO ещё прежние.

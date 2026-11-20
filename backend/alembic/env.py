@@ -2,6 +2,7 @@ from app import accounts  # Register independent account metadata.
 from alembic import context
 
 from app import admissions  # Register the complete target schema.
+from app import program_catalog_models  # Programme evidence and publication metadata.
 from app import jobs
 from app import observability  # Register worker_heartbeats for standalone Alembic.
 from app.config import Settings

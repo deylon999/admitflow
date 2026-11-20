@@ -9898,7 +9898,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T323"
       ],
@@ -9911,7 +9911,12 @@
       "acceptance": [
         "Justify a new additive migration for immutable document/fact versions and source-scoped published pointers; preserve0013 identity links and existing snapshots; unknowns and partial completeness remain explicit; nativePG upgrade/alignment verified."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR2.md",
+          "note": "Justify a new additive migration for immutable document/fact versions and source-scoped published pointers; preserve0013 identity links and existing snapshots; unknowns and partial completeness remain explicit; nativePG upgrade/alignment verified."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9920,7 +9925,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T324"
       ],

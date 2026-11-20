@@ -7149,7 +7149,7 @@
 
 ### T324. KAN-218 PR2: persist source revisions and publication provenance
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T323.
 
@@ -7166,11 +7166,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Justify a new additive migration for immutable document/fact versions and source-scoped published pointers; preserve0013 identity links and existing snapshots; unknowns and partial completeness remain explicit; nativePG upgrade/alignment verified.
 
 ### T325. KAN-218 PR2: atomically import and publish reviewed programme records
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T324.
 
