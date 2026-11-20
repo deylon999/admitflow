@@ -251,3 +251,14 @@ updates production password hash, consumes outstanding actions and revokes all u
 sessions/refresh; never auto-login/verify/transfer guests or mutate a foreign account's
 CSRF context. SMTP failure after commit needs bounded resend, no older-token revival.
 Real inbox delivery/egress/HTTPS acceptance remains external. KAN-214-PR4.md.
+# ADR KAN-218 / 2026-11-20: additive program identity before mass import
+
+Принято для PR1: сохранить University/Campaign/CompetitionGroup и все
+исторические ссылки, добавить Program и M:N связи с DB integrity по вузу,
+уровню и кампании. Не превращать старые группы в программы автоматически.
+Обоснование: публичный Program сейчас является проекцией группы и не
+выражает объединённый конкурс или программу без конкурса. Схема идентичности
+не даёт права публикации: provenance/revisions и согласованный DTO потребуются
+в PR2. Цель 2027 >=471/785; архив не переносится. Технический план, риски,
+миграция0013 и проверки до реализации: [KAN-218](KAN-218-ARCHITECTURE.md).
+

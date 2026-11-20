@@ -9626,7 +9626,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T312"
       ],
@@ -9639,7 +9639,12 @@
       "acceptance": [
         "Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9648,7 +9653,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T313"
       ],

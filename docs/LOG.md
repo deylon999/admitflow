@@ -1426,3 +1426,13 @@ coverage union. Details: KAN-218-ARCHITECTURE.md. No user DB changes or live
 coverage claims. roadmap --render --check and git diff --check exit0.
 Registered T312–T321 with explicit acceptance; next T313 technical plan before code.
 
+# S225 / T313 — 2026-11-20: identity and migration plan before implementation
+
+Recorded target2027,471/785, separate historical/partial coverage, additive
+Program/CampaignProgram/CompetitionGroupProgram integrity and unchanged legacy
+IDs. Planned0013, populated0012→head nativePG and exact DTO/source regressions.
+PR2 requires provenance/staging/publication and concrete KAN-223 contract review;
+no invented groups. PRODUCT/DATA_RULES/DECISIONS updated without removing history.
+Audit roadmap check passed after S225 log registration (initial pre-log check
+correctly refused missing session). T313 docs reviewed against real manifest.
+

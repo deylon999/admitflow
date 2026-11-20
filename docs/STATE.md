@@ -7,8 +7,8 @@
 
 ## Продолжение
 
-- Текущая задача: T313.
-- Следующая задача: T313.
+- Текущая задача: T314.
+- Следующая задача: T314.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
@@ -17,6 +17,7 @@ KAN-218 PR1 from main e121d5d: audit and additive identity/storage. Continue cur
 ## Последняя завершённая работа
 
 - KAN-218 PR1: audit current main, catalog and source pipeline
+- KAN-218 PR1: define identity, campaign and publication architecture
 
 ## Ограничения
 

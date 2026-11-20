@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-20",
-  "currentTask": "T313",
-  "nextTask": "T313",
+  "currentTask": "T314",
+  "nextTask": "T314",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
@@ -17,7 +17,8 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "KAN-218 PR1: audit current main, catalog and source pipeline"
+    "KAN-218 PR1: audit current main, catalog and source pipeline",
+    "KAN-218 PR1: define identity, campaign and publication architecture"
   ],
   "environment": [
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",

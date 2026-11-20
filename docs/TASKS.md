@@ -6918,7 +6918,7 @@
 
 ### T313. KAN-218 PR1: define identity, campaign and publication architecture
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T312.
 
@@ -6935,11 +6935,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Document concrete additive changes, justified migration, risks and verification before implementation; target year 2027 and 471/785 heads; preserve legacy IDs and KAN-223/227 boundaries.
 
 ### T314. KAN-218 PR1: implement reproducible scoped identity keys
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T313.
 
