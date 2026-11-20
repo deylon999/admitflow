@@ -211,3 +211,4 @@ PDF/филиалы/специалитет и массовое подключен
 
 Обязательный Linux CI и exact final head фиксируются в draft PR, чтобы
 добавление результата в отчёт не создавало ещё один непроверенный SHA.
+Backend draft: [PR28](https://github.com/deylon999/admitflow/pull/28).

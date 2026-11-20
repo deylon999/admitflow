@@ -202,4 +202,3 @@ def _guards():
         END $$""")
     for table in ('campaigns', 'programs', 'competition_groups', 'program_catalog_documents'):
         op.execute(f'CREATE TRIGGER program_catalog_identity_guard BEFORE UPDATE ON {table} FOR EACH ROW EXECUTE FUNCTION program_catalog_identity()')
-

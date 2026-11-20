@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-218 PR2 backend prepared from main46adc5b. Read docs/KAN-218-PR2.md and response-proposal.json. T327 owner agreement is required before changing DTO/frontend or publishing standalone programmes; T325/API and T326/fullPR2 remain incomplete. Exact final CI is tracked in draft PR metadata. No automatic merge.
+Draft PR28 contains verified programme-import backend; final CI/exact head in PR description. T327 owner agreement on response-proposal.json required before DTO/frontend/publication changes. T325/public API and T326/fullPR2 remain incomplete; public2027 coverage0/785. No automatic merge.
 
 ## Последняя завершённая работа
 
