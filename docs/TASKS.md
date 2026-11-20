@@ -6981,7 +6981,7 @@
 
 ### T316. KAN-218 PR1: PostgreSQL regression and review handoff
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T315.
 
@@ -6998,7 +6998,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/kan-218-pr1.md](../docs/evidence/kan-218-pr1.md) — Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge.
 
 ### T317. KAN-218 PR2: verified official program import and stable API publication
 

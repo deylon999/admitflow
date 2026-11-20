@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
-  "currentTask": "T316",
+  "currentTask": null,
   "nextTask": "T316",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,

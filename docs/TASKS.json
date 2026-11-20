@@ -9707,7 +9707,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T315"
       ],
@@ -9720,7 +9720,12 @@
       "acceptance": [
         "Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-218-pr1.md",
+          "note": "Native PostgreSQL upgrade from populated 0012, metadata alignment and regression; exact tested SHA and CI checks recorded; small PR opened without automatic merge."
+        }
+      ],
       "blockedReason": null
     },
     {

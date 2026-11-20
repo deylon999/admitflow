@@ -1457,3 +1457,16 @@ reference seed), corrected without relaxing preservation assertions or changing
 migration behavior. Updated old revision/count assertions to0013/29. Frontend
 typecheck/lint/build exit0. Next T316 full regression, final report and review PR.
 
+# S225 / T316 — 2026-11-21: PR1 regression and review handoff
+
+Source commit9aae16a: nativePG88/0skip including populated0012 upgrade, complete
+frontend384passed(1.3min), typecheck/lint/build and roadmap-unit10 pass. No diff
+to main in frontend/src/publicDTO/product_catalog/workflows. Full Windows backend
+attempt failed collection13errors due to existing Linux-only resource import;
+no test exclusions/checks changed. Full mandatory Linux CI and final SHA tracked
+in PR metadata; no successful CI claim before observed results. Architecture and
+evidence/kan-218-pr1.md document all boundaries, baseline2027 zero, archive SGU
+only, no automatic merge. T312–315 done; T316 review; KAN-218 remains incomplete.
+Next: review/merge PR1, new main, T317 verified official import and concrete
+KAN-223 DTO agreement before any contract change.
+
