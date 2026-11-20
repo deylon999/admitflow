@@ -6939,7 +6939,7 @@
 
 ### T314. KAN-218 PR1: implement reproducible scoped identity keys
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T313.
 
@@ -6956,11 +6956,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-ARCHITECTURE.md](../docs/KAN-218-ARCHITECTURE.md) — Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries.
 
 ### T315. KAN-218 PR1: add compatible Program and competition relationships
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T314.
 

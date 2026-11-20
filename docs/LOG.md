@@ -1436,3 +1436,12 @@ no invented groups. PRODUCT/DATA_RULES/DECISIONS updated without removing histor
 Audit roadmap check passed after S225 log registration (initial pre-log check
 correctly refused missing session). T313 docs reviewed against real manifest.
 
+# S225 / T314 — 2026-11-20: versioned catalog identity keys
+
+Added catalog_identity.py and35 passing unit tests: cross-process repeatability,
+university/branch/year/level/source/condition discriminators, literal IDs,
+compound encoding, missing conditions and invalid inputs. Existing IDs untouched;
+these helpers do not verify source facts or publish records. Fixed EOF whitespace
+reported by diff --check after T313; no functional changes to prior documentation.
+Next T315 additive storage and nativePG populated-schema upgrade.
+

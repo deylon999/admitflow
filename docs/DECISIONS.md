@@ -261,4 +261,3 @@ Real inbox delivery/egress/HTTPS acceptance remains external. KAN-214-PR4.md.
 не даёт права публикации: provenance/revisions и согласованный DTO потребуются
 в PR2. Цель 2027 >=471/785; архив не переносится. Технический план, риски,
 миграция0013 и проверки до реализации: [KAN-218](KAN-218-ARCHITECTURE.md).
-

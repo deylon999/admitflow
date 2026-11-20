@@ -183,3 +183,12 @@ parser персональных строк, snapshots, ranks, consent, subscript
 product_catalog/national_coverage/source publication regressions; затем
 обязательные CI проверки на фактическом SHA. SQLite допускается только как
 дополнительная регрессия совместимости, не замена PostgreSQL.
+
+## 3. Выполненные проверки ключей
+
+`cd backend; .venv/Scripts/python.exe -m pytest -q tests/test_catalog_identity.py`:
+35 passed (2026-11-20). Включены новый Python process/hash seed, независимые
+компоненты Program/Group, все категории квот, literal case/leading zeroes,
+канонический составной ключ, пустые/неизвестные значения и отказ name-only.
+Функции не проводят проверку источника: это обязанность reviewed adapter и
+последующего импорта. Они не подключены к публичной выдаче в PR1.

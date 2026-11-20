@@ -9653,7 +9653,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T313"
       ],
@@ -9666,7 +9666,12 @@
       "acceptance": [
         "Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-ARCHITECTURE.md",
+          "note": "Versioned deterministic keys separate university/branch, campaign, form, funding and category; no name-based merge; ambiguous/missing identity rejected; unit tests fix repeatability and boundaries."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9675,7 +9680,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T314"
       ],
