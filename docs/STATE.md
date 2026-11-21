@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-22. Последняя сессия: S243.
+Дата: 2026-11-22. Последняя сессия: S244.
 
 ## Продолжение
 
@@ -12,10 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
+Backend organization PRs #38–#42 await owner review in dependency order. All verification data and initial Checks are in the final report. The next independent roadmap task is T319.
 
 ## Последняя завершённая работа
 
+- Backend organization PRs #38–#42 await owner review in dependency order. All verification data and initial Checks are in the final report. The next independent roadmap task is T319.
 - T340 All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
 - T339 Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
 - T338 Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.
@@ -41,6 +42,7 @@ All five implementation stages are ready for review. Final code 8b4d481: Linux P
 
 ## Проверенное окружение
 
+- S244: disposable PostgreSQL 17.11, 1278 full final pytest passes, 387 native cases, one inherited external skip. Browser 387 plus native 6/6/6 and 32 automated auth controls. All five PRs published as a stack.
 - S233: full frontend architecture with 387 Chromium tests, 10 catalogue repeat checks, 3 lifecycle tests and 490 exact main comparisons per stage. Five inherited mobile overflows documented.
 - S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.

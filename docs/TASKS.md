@@ -7429,6 +7429,7 @@
 **Доказательства:**
 
 - [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.
+- [docs/BACKEND_ORGANIZATION_FINAL_REPORT.md](../docs/BACKEND_ORGANIZATION_FINAL_REPORT.md) — PR #38 ready for review. Linux PostgreSQL 1227 passed, one inherited skip. Both Checks events passed at a579518de239.
 
 ### T337. Backend organization: catalog
 
@@ -7450,6 +7451,7 @@
 **Доказательства:**
 
 - [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.
+- [docs/BACKEND_ORGANIZATION_FINAL_REPORT.md](../docs/BACKEND_ORGANIZATION_FINAL_REPORT.md) — PR #39 ready for review. Linux PostgreSQL 1246 passed, one inherited skip. Both Checks events passed at c8d869ee7370.
 
 ### T338. Backend organization: competitions
 
@@ -7471,6 +7473,7 @@
 **Доказательства:**
 
 - [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.
+- [docs/BACKEND_ORGANIZATION_FINAL_REPORT.md](../docs/BACKEND_ORGANIZATION_FINAL_REPORT.md) — PR #40 ready for review. Linux PostgreSQL 1252 passed, one inherited skip. Both Checks events passed at 6840f96035f6.
 
 ### T339. Backend organization: watchlist
 
@@ -7492,6 +7495,7 @@
 **Доказательства:**
 
 - [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
+- [docs/BACKEND_ORGANIZATION_FINAL_REPORT.md](../docs/BACKEND_ORGANIZATION_FINAL_REPORT.md) — PR #41 ready for review. Linux PostgreSQL 1262 passed, one inherited skip. Both Checks events passed at ee8d246198a6.
 
 ### T340. Backend organization: operations and final verification
 
@@ -7513,6 +7517,7 @@
 **Доказательства:**
 
 - [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
+- [docs/BACKEND_ORGANIZATION_FINAL_REPORT.md](../docs/BACKEND_ORGANIZATION_FINAL_REPORT.md) — PR #42 ready for review. Linux PostgreSQL 1278 passed, one inherited skip. Both Checks events passed at 1c7a9f1f753e.
 
 ## E6. Резерв и выпуск
 

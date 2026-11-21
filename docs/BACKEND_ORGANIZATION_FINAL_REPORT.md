@@ -46,17 +46,19 @@ Linux Python 3.12.16, PostgreSQL 17.11 и браузерный контейне�
 
 `backend/tests/snapshot_backend_contract.py` сохраняет routes, OpenAPI, зависимости и metadata. `backend/tests/snapshot_backend_organization.py` сохраняет весь DTO inventory и контрольные HTTP-запросы. Снимки выполняются в checked-out `backend/` через `PYTHONPATH=. python tests/<скрипт>.py <каталог>`. Первый скрипт использует `DATABASE_URL` postgres для offline Alembic DDL. Независимая проверка `MIGRATION_DATABASE_URL=<empty-test-URL> PYTHONPATH=. python tests/check_migrations.py` проверяет upgrade и drift. Дамп снимается `pg_dump --schema-only --no-owner --no-privileges --restrict-key=admitflowBackendOrganizationContract`.
 
-Проверены legacy `python -m app.*` для backup, catalog_import, diagnostics, maintenance, national_catalog, national_coverage, observability, program_catalog_import, program_catalog_batch, smtp_check, university_name_report, worker и существующий `app.sources.cli`. Проверка cleanup выполнялась на временной БД. SMTP диагностика проверила fixture-конфигурацию. `python -m app.worker once` на пустой очереди вернул `idle`. FastAPI/Uvicorn отдал live 200, health 200 и OpenAPI 200. Compose с `--profile automation` поднял PostgreSQL, backend, frontend и worker, затем завершил тестовый проект. Тестовые данные расположены в tmpfs. Конфигурация production + auth overlay прошла `config --quiet` с фиктивными параметрами. `roadmap.py --render --check` и `check_doc_links.py` прошли. Проверки tooling дали 20 passed и 16 subtests passed.
+Проверены legacy `python -m app.*` для backup, catalog_import, diagnostics, maintenance, national_catalog, national_coverage, observability, program_catalog_import, program_catalog_batch, smtp_check, university_name_report, worker и существующий `app.sources.cli`. Проверка cleanup выполнялась на временной БД. SMTP диагностика проверила fixture-конфигурацию. `python -m app.worker once` на пустой очереди вернул `idle`. FastAPI/Uvicorn отдал live 200, health 200 и OpenAPI 200. Compose с `--profile automation` поднял PostgreSQL, backend, frontend и worker, затем завершил тестовый проект. Тестовые данные расположены в tmpfs. Конфигурация production + auth overlay прошла `config --quiet` с фиктивными параметрами. `roadmap.py --render --check` и `check_doc_links.py` прошли. Проверки tooling дали 20 passed и 16 subtests passed. Отдельная CI-выборка backend дала 1223 passed. Проектный валидатор подтвердил все 32 automated auth controls. Исходные XML и логи доступны в локальном worktree в `.qa-tools/backend-org/`.
 
 ## Pull Requests и порядок ревью
 
 | Этап | PR | Статус | Ветка базы | Проверенный SHA кода | GitHub Actions |
 | --- | --- | --- | --- | --- |
-| Core | [#38](https://github.com/deylon999/admitflow/pull/38) | open | `main` | `a579518de239` | [pull_request 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44956188160), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956181989) |
-| Catalog | [#39](https://github.com/deylon999/admitflow/pull/39) | open | `refactor/backend-core` | `c8d869ee7370` | [pull_request 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44956680749), [push 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44956675833) |
-| Competitions | [#40](https://github.com/deylon999/admitflow/pull/40) | open | `refactor/backend-catalog` | `6840f96035f6` | [pull_request 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44956796382), [push 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44956792139) |
-| Watchlist | [#41](https://github.com/deylon999/admitflow/pull/41) | open | `refactor/backend-competitions` | `ee8d246198a6` | [pull_request 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44957040210), [push 3/4 · in_progress](https://github.com/deylon999/admitflow/actions/runs/44957035212) |
-| Operations | `refactor/backend-operations` | локально | `refactor/backend-watchlist` | `8b4d4818a446` | До публикации |
+| Core | [#38](https://github.com/deylon999/admitflow/pull/38) | open | `main` | `a579518de239` | [pull_request 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956188160), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956181989) |
+| Catalog | [#39](https://github.com/deylon999/admitflow/pull/39) | open | `refactor/backend-core` | `c8d869ee7370` | [pull_request 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956680749), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956675833) |
+| Competitions | [#40](https://github.com/deylon999/admitflow/pull/40) | open | `refactor/backend-catalog` | `6840f96035f6` | [pull_request 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956796382), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44956792139) |
+| Watchlist | [#41](https://github.com/deylon999/admitflow/pull/41) | open | `refactor/backend-competitions` | `ee8d246198a6` | [pull_request 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44957040210), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44957035212) |
+| Operations | [#42](https://github.com/deylon999/admitflow/pull/42) | open | `refactor/backend-watchlist` | `8b4d4818a446` | [pull_request 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44957412539), [push 4/4 · success](https://github.com/deylon999/admitflow/actions/runs/44957378370) |
+
+Таблица фиксирует успешные прогоны опубликованного кода и первого отчётного коммита. Проверки текущего head отчёта доступны в [Checks PR #42](https://github.com/deylon999/admitflow/pull/42/checks).
 
 ## Перемещённые модули
 
@@ -107,20 +109,20 @@ Linux Python 3.12.16, PostgreSQL 17.11 и браузерный контейне�
 | `database.py (гостевые модели)` | `watchlist/models.py` | [#41](https://github.com/deylon999/admitflow/pull/41) |
 | `operations.py (идемпотентность)` | `watchlist/idempotency.py` | [#41](https://github.com/deylon999/admitflow/pull/41) |
 | `main.py (гостевые маршруты)` | `watchlist/api.py` | [#41](https://github.com/deylon999/admitflow/pull/41) |
-| `backup.py` | `operations/backup.py` | `refactor/backend-operations` |
-| `diagnostics.py` | `operations/diagnostics.py` | `refactor/backend-operations` |
-| `jobs.py` | `operations/jobs.py` | `refactor/backend-operations` |
-| `maintenance.py` | `operations/maintenance.py` | `refactor/backend-operations` |
-| `migration_checks.py` | `operations/migration_checks.py` | `refactor/backend-operations` |
-| `migrations.py` | `operations/migrations.py` | `refactor/backend-operations` |
-| `observability.py` | `operations/observability.py` | `refactor/backend-operations` |
-| `smtp_check.py` | `operations/smtp_check.py` | `refactor/backend-operations` |
-| `worker.py` | `operations/worker.py` | `refactor/backend-operations` |
-| `jobs.py (SourceJob, SourceCheck)` | `operations/source_job_models.py` | `refactor/backend-operations` |
-| `source_operations.py` | `sources/source_operations.py` | `refactor/backend-operations` |
-| `account_actions.py` | `auth/account_actions.py` | `refactor/backend-operations` |
-| `account_dto.py` | `auth/account_dto.py` | `refactor/backend-operations` |
-| `account_limits.py` | `auth/account_limits.py` | `refactor/backend-operations` |
+| `backup.py` | `operations/backup.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `diagnostics.py` | `operations/diagnostics.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `jobs.py` | `operations/jobs.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `maintenance.py` | `operations/maintenance.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `migration_checks.py` | `operations/migration_checks.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `migrations.py` | `operations/migrations.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `observability.py` | `operations/observability.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `smtp_check.py` | `operations/smtp_check.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `worker.py` | `operations/worker.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `jobs.py (SourceJob, SourceCheck)` | `operations/source_job_models.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `source_operations.py` | `sources/source_operations.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `account_actions.py` | `auth/account_actions.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `account_dto.py` | `auth/account_dto.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
+| `account_limits.py` | `auth/account_limits.py` | [#42](https://github.com/deylon999/admitflow/pull/42) |
 
 ## Поддержка границ и оставшиеся условия
 
