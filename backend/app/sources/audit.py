@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from ..admissions import Campaign,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot
-from ..config import Settings
+from app.core.config import Settings
 from ..diagnostics import read_engine
 from .contracts import AdapterError,SourceBinding
 from .fetcher import FetchResult

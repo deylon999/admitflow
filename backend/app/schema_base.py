@@ -1,7 +1,6 @@
-"""Shared JSON DTO conventions, independent of admission calculations."""
-from pydantic import BaseModel, ConfigDict
-from pydantic.alias_generators import to_camel
+"""Compatibility path for app.core.schema_base."""
+import sys
 
+from app.core import schema_base
 
-class CamelModel(BaseModel):
-    model_config = ConfigDict(alias_generator=to_camel, populate_by_name=True, extra='forbid')
+sys.modules[__name__] = schema_base

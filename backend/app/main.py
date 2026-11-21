@@ -17,7 +17,7 @@ from sqlalchemy.exc import TimeoutError as SQLAlchemyTimeoutError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from .calculation import CalculationInput, calculate_versioned
-from .config import Settings
+from app.core.config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_accounts, cleanup_expired_sessions
@@ -30,7 +30,7 @@ from .observability import system_status
 from .national_coverage import national_coverage, with_checksum
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import ensure_restore_complete, schema_heads, upgrade_schema
-from .http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
+from app.core.http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
 
 COOKIE = 'abiturient_session'
 SESSION_DAYS = 30

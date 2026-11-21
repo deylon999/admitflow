@@ -10267,6 +10267,122 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T336",
+      "title": "Backend organization: audit, baseline and core",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "review",
+      "dependsOn": [
+        "T334"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md"
+      ],
+      "steps": [
+        "Inventory every backend module and consumer. Pin pre-auth and current main behavior. Separate shared settings, DB infrastructure and transport primitives. Verify contracts on Linux/PostgreSQL and publish the first PR."
+      ],
+      "acceptance": [
+        "Inventory every backend module and consumer. Pin pre-auth and current main behavior. Separate shared settings, DB infrastructure and transport primitives. Verify contracts on Linux/PostgreSQL and publish the first PR."
+      ],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T337",
+      "title": "Backend organization: catalog",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T334"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md"
+      ],
+      "steps": [
+        "Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR."
+      ],
+      "acceptance": [
+        "Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T338",
+      "title": "Backend organization: competitions",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T334"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md"
+      ],
+      "steps": [
+        "Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR."
+      ],
+      "acceptance": [
+        "Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T339",
+      "title": "Backend organization: watchlist",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T334"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md"
+      ],
+      "steps": [
+        "Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR."
+      ],
+      "acceptance": [
+        "Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T340",
+      "title": "Backend organization: operations and final verification",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "todo",
+      "dependsOn": [
+        "T334"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+        "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md"
+      ],
+      "steps": [
+        "Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions."
+      ],
+      "acceptance": [
+        "Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

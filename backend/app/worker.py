@@ -17,7 +17,7 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, ValidationErro
 from sqlalchemy.orm import Session
 
 from .admissions import Source
-from .config import Settings
+from app.core.config import Settings
 from .database import make_engine
 from .jobs import LostLease, claim, clock, complete, fail, guard_lease, renew
 from .observability import beat, log_event

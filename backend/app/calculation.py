@@ -2,7 +2,7 @@ from typing import Literal
 from types import MappingProxyType
 
 from pydantic import Field, model_validator
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 
 
 class CalculationInput(CamelModel):

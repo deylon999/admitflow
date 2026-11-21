@@ -159,7 +159,7 @@ def with_checksum(report):
 
 
 def main(argv=None):
-    from .config import Settings
+    from app.core.config import Settings
     from .database import make_engine
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', help='Write the JSON report to this file instead of stdout')

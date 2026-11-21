@@ -16,8 +16,8 @@ from uuid import uuid4
 
 from pydantic import AwareDatetime, Field
 
-from .config import Settings
-from .schema_base import CamelModel
+from app.core.config import Settings
+from app.core.schema_base import CamelModel
 from .database import make_engine
 from .sources.storage import RawStore
 

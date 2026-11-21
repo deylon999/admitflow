@@ -16,7 +16,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .admissions import Campaign, CandidateEntry, CompetitionGroup, PublishedSnapshot, Source, SourceSnapshot, Subscription, University
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 from .sources.publishing import utc
 from .sources.registry import PRODUCTION_REGISTRY
 from .sources.status import source_status

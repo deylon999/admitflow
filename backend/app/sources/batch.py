@@ -1,7 +1,7 @@
 """Local operator batch: exact closed-manifest IDs, one atomic transaction."""
 import argparse
 import json
-from ..config import Settings
+from app.core.config import Settings
 from ..database import make_engine
 from .contracts import AdapterError
 from .profile_registration import register_profiles,select_profiles

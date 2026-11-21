@@ -286,7 +286,7 @@ def publish_batch(engine, sources, raw_store, *, captured=None, originals=None):
 
 
 def main(argv=None):
-    from .config import Settings
+    from app.core.config import Settings
     from .database import make_engine
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest='phase', required=True)

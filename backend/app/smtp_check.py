@@ -4,7 +4,7 @@ import os
 
 from .auth.account_mail import MailDeliveryError, configured_mailer
 from .auth.account_security import InvalidAccountInput, normalize_email
-from .config import Settings
+from app.core.config import Settings
 
 
 def main(argv=None):

@@ -19,7 +19,7 @@ from ..account_limits import AuthRateExceeded, Budget, consume_budgets, consume_
 from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
 from .accounts import AccountActionToken, AccountCsrfContext, AccountRefreshToken, AccountSession, AccountUser
-from ..http import permitted_origin
+from app.core.http import permitted_origin
 
 ACCESS_COOKIE = 'admitflow_access'
 CSRF_COOKIE = 'admitflow_csrf_context'

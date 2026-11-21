@@ -3,19 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-22. Последняя сессия: S238.
+Дата: 2026-11-22. Последняя сессия: S239.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T319.
+- Следующая задача: T337.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review T335 in frontend app/live PR #37 after the demo PR #36 merge. See docs/frontend-architecture-result.md.
+Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.
 
 ## Последняя завершённая работа
 
+- T336 Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.
 - T335 full frontend refactoring implemented and verified against main 5ca1cca. Two PRs await owner review.
 - S235: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.
 - S234: организация scripts по назначению с совместимыми CLI. См. scripts/AUDIT.md.

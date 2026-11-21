@@ -7409,6 +7409,111 @@
 - [docs/evidence/frontend-architecture-visual.json](../docs/evidence/frontend-architecture-visual.json) — Final comparison with main 5ca1cca: 490/490 byte-identical pairs and matching routes and API traces, five inherited overflow cases.
 - [docs/evidence/frontend-architecture-dependencies.json](../docs/evidence/frontend-architecture-dependencies.json) — 87 TypeScript modules; no missing local paths or cycles. 54 moved declarations and six render returns match baseline.
 
+### T336. Backend organization: audit, baseline and core
+
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T334.
+
+**Результаты/файлы:** `docs/BACKEND_ORGANIZATION_MASTER_PLAN.md`.
+
+**Шаги:**
+
+1. Inventory every backend module and consumer. Pin pre-auth and current main behavior. Separate shared settings, DB infrastructure and transport primitives. Verify contracts on Linux/PostgreSQL and publish the first PR..
+
+**Критерии закрытия:**
+
+- Inventory every backend module and consumer. Pin pre-auth and current main behavior. Separate shared settings, DB infrastructure and transport primitives. Verify contracts on Linux/PostgreSQL and publish the first PR..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.
+
+### T337. Backend organization: catalog
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T334.
+
+**Результаты/файлы:** `docs/BACKEND_ORGANIZATION_MASTER_PLAN.md`.
+
+**Шаги:**
+
+1. Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR..
+
+**Критерии закрытия:**
+
+- Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T338. Backend organization: competitions
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T334.
+
+**Результаты/файлы:** `docs/BACKEND_ORGANIZATION_MASTER_PLAN.md`.
+
+**Шаги:**
+
+1. Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR..
+
+**Критерии закрытия:**
+
+- Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T339. Backend organization: watchlist
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T334.
+
+**Результаты/файлы:** `docs/BACKEND_ORGANIZATION_MASTER_PLAN.md`.
+
+**Шаги:**
+
+1. Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR..
+
+**Критерии закрытия:**
+
+- Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
+### T340. Backend organization: operations and final verification
+
+**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** T334.
+
+**Результаты/файлы:** `docs/BACKEND_ORGANIZATION_MASTER_PLAN.md`; `docs/BACKEND_ORGANIZATION_FINAL_REPORT.md`.
+
+**Шаги:**
+
+1. Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions..
+
+**Критерии закрытия:**
+
+- Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

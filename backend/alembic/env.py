@@ -5,7 +5,7 @@ from app import admissions  # Register the complete target schema.
 from app import program_catalog_models  # Programme evidence and publication metadata.
 from app import jobs
 from app import observability  # Register worker_heartbeats for standalone Alembic.
-from app.config import Settings
+from app.core.config import Settings
 from app.database import Base, make_engine
 
 settings = Settings.from_env()

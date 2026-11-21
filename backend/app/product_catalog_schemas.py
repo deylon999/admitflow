@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Literal
 
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 
 
 class Provenance(CamelModel):
