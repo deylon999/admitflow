@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S229.
+Дата: 2026-11-21. Последняя сессия: S230.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T318.
+- Текущая задача: T329.
+- Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Stage 3 implemented and staged for review in feat/kan-218-batch-import. T318 is review until owner merge. Batch can resume capture and safely publish verified originals by year. CI on PR head; stage 4 depends on merged T318. Rehearsal2027 1/785. No working database import.
+Documentation Cleanup PR1 starts from main a3f5078. T329 is documentation-only. KAN-218 PR31 was merged; T318 verified, T319 remains next outside this PR.
 
 ## Последняя завершённая работа
 
-- T317/T326 stage 2 merged through PR30. T318 implementation and local verification complete, review pending.
+- KAN-218 Stage 3 merged through PR31, CI 8/8 at a648be5. No new verified coverage in the rehearsal.
 
 ## Ограничения
 

@@ -7024,7 +7024,7 @@
 
 ### T318. KAN-218 PR3: resumable bounded batch acquisition and publication
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T317.
 
@@ -7043,6 +7043,7 @@
 
 - [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Resumable operator capture/publish CLI, exact URLs and robots, durable retries, confirmed-only atomic publishing. PG101 selection and final16 batch tests. CI and owner review follow in PR.
 - [docs/evidence/kan-218-pr3-batch.json](../docs/evidence/kan-218-pr3-batch.json) — On code57cf6a8, three real captures reused without network and quarantined; PG17.11 publishes existing HSE2027 and SGU2026 in separate commands. Repeat unchanged and previous SGU ID/16 seats preserved. Rehearsal2027 coverage1/785.
+- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — PR31 merged in a3f5078. CI on a648be5 passed 8/8, backend 1161, frontend 387. National rollout remains separate.
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
@@ -7256,6 +7257,27 @@
 
 - [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Typecheck/lint/build and Playwright387 passed; decoder accepts additive fields from old servers and rejects wrong-campaign groups.
 - [docs/evidence/kan-218-pr2-public-api.json](../docs/evidence/kan-218-pr2-public-api.json) — Real-source Playwright journey finds HSE Fashion2027, shows unknown conditions and links to university.
+
+### T329. Documentation cleanup PR 1: audit, navigation and current instructions
+
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/README.md`; `docs/documentation-audit.md`.
+
+**Шаги:**
+
+1. Audit and classify tracked docs; synchronize main architecture/API/operations; archive legacy runbook and preserve machine paths, evidence and checksums; check Markdown links, roadmap, and review separate documentation PR..
+
+**Критерии закрытия:**
+
+- Audit and classify tracked docs; synchronize main architecture/API/operations; archive legacy runbook and preserve machine paths, evidence and checksums; check Markdown links, roadmap, and review separate documentation PR..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+Пока нет.
 
 ## E6. Резерв и выпуск
 

@@ -9765,7 +9765,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T317"
       ],
@@ -9787,6 +9787,10 @@
         {
           "path": "docs/evidence/kan-218-pr3-batch.json",
           "note": "On code57cf6a8, three real captures reused without network and quarantined; PG17.11 publishes existing HSE2027 and SGU2026 in separate commands. Repeat unchanged and previous SGU ID/16 seats preserved. Rehearsal2027 coverage1/785."
+        },
+        {
+          "path": "docs/KAN-218-PR3.md",
+          "note": "PR31 merged in a3f5078. CI on a648be5 passed 8/8, backend 1161, frontend 387. National rollout remains separate."
         }
       ],
       "blockedReason": null
@@ -10059,6 +10063,27 @@
           "note": "Real-source Playwright journey finds HSE Fashion2027, shows unknown conditions and links to university."
         }
       ],
+      "blockedReason": null
+    },
+    {
+      "id": "T329",
+      "title": "Documentation cleanup PR 1: audit, navigation and current instructions",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/README.md",
+        "docs/documentation-audit.md"
+      ],
+      "steps": [
+        "Audit and classify tracked docs; synchronize main architecture/API/operations; archive legacy runbook and preserve machine paths, evidence and checksums; check Markdown links, roadmap, and review separate documentation PR."
+      ],
+      "acceptance": [
+        "Audit and classify tracked docs; synchronize main architecture/API/operations; archive legacy runbook and preserve machine paths, evidence and checksums; check Markdown links, roadmap, and review separate documentation PR."
+      ],
+      "evidence": [],
       "blockedReason": null
     }
   ]

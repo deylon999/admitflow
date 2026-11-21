@@ -1616,3 +1616,9 @@ Native PostgreSQL selection101 and final16 pass without skips; CLI proof uses
 real historical originals and an owned temporary schema. HSE2027 published
 and repeated unchanged; SGU2026 separate; three candidates remain review_required.
 2027 rehearsal1/785. T318 review; CI on PR head and owner merge remain open.
+
+# S230 / T329 — 2026-11-21: audit documentation on main
+
+Verified PR31 merged at a3f5078 and updated T318. Audited 665 tracked docs files,
+code, migration heads, CI and machine readers. Classified KEEP/MOVE/UPDATE/ARCHIVE/DELETE
+in docs/documentation-audit.md. T329 is a separate documentation-only task.
