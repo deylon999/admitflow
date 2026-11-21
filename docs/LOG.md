@@ -1563,3 +1563,13 @@ Backup/restore14passed7.74s; disposablePG17 extended selection101passed0skip
 59.42s. Initial local command without TEST_DATABASE_URL skipped native checks;
 the recorded acceptance run uses scripts/test_postgres.py and requires PostgreSQL.
 Final CI/exact SHA follows in PR28. T325 public part/T326/T327 remain open.
+
+# S227 — 2026-11-21. Проверка main и обновление README
+
+Сверены README, маршруты React, каталог и импорт на `main@0449e66` после слияния PR #28. В README описаны доступные сценарии, охват кампаний, запуск и проверки. Состояние T325, T326 и T327 сверено с реестром. Для новой публичной выдачи требуется согласование контракта T327.
+
+На Node.js 24 прошли `npm ci`, `npm run typecheck`, `npm run lint` и `npm run build`. `npm test` с временной SQLite и Chromium завершился с 380 успешными и четырьмя неуспешными проверками. На страницах `miccedu-1593`, `miccedu-101`, `miccedu-10006765` и `miccedu-140143824` отдельно измерен `scrollWidth=400` при viewport 390 px. За границу выходит надпись «Нет данных» в блоке приёмной кампании. Результат указан в README.
+
+`python scripts/local_smoke.py` остановился на `docker info` из-за отсутствия работающего Docker Engine. Проверки были выполнены в отдельных временных окружениях проекта.
+
+Backend на отдельном PostgreSQL 17.11 с `pytest -q --require-postgres` для каталога, покрытия, конкурсов, импорта программ, резервных копий, восстановления и миграций. Результат 118 passed, 0 skipped, 151.21 s, exit 0. Проверки `scripts/tests/test_roadmap.py` прошли, 10 passed.
