@@ -5,21 +5,19 @@ from contextlib import suppress
 from datetime import datetime, timezone
 from uuid import uuid4
 
-from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from sqlalchemy import text
 from sqlalchemy.orm import Session
-from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import TimeoutError as SQLAlchemyTimeoutError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.core.config import Settings
-from .maintenance import cleanup_expired_accounts, cleanup_expired_sessions
+from app.operations.maintenance import cleanup_expired_accounts, cleanup_expired_sessions
 from .catalog import seed_catalog
 from .catalog.api import install_legacy_catalog
-from .observability import system_status
-from .migrations import ensure_restore_complete, schema_heads, upgrade_schema
+from app.operations.api import install_status_routes
+from app.operations.migrations import ensure_restore_complete, upgrade_schema
 from app.core.http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
 from .core.database import make_engine
 from .core.time import utc as utc
@@ -119,29 +117,7 @@ def create_app(settings: Settings | None = None, *, registration_mailer=None):
     from app.watchlist.changes import install as install_changes
     install_changes(app,database,owner,write_owner,clock)
 
-    @app.get('/api/live')
-    def live():
-        return {'status':'ok','version':'0.2.0'}
-
-    @app.get('/api/health')
-    @app.get('/api/ready')
-    def health(db: Session = Depends(database)):
-        try:
-            revisions = db.execute(text('SELECT version_num FROM alembic_version')).scalars().all()
-        except SQLAlchemyError:
-            raise HTTPException(503,'База данных временно недоступна.') from None
-        if set(revisions) != schema_heads():
-            raise HTTPException(503,'База данных требует совместимой версии миграций.')
-        return {'status': 'ok', 'version': '0.2.0'}
-
-    @app.get('/api/status')
-    def operational_status(db: Session = Depends(database)):
-        # Aggregates only. /api/health stays independent of worker and source state.
-        try:
-            return system_status(db,registry=app.state.source_registry)
-        except SQLAlchemyError:
-            raise HTTPException(503,'База данных временно недоступна.') from None
-
+    install_status_routes(app, database)
     install_legacy_catalog(app, database, source_registry)
 
     install_watchlist(app, database, owner, write_owner, config.secure_cookie, clock, lambda: uuid4())

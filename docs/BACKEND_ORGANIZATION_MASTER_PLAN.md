@@ -30,10 +30,20 @@
 
 | Problem | Before | After | Proof of equivalence |
 | --- | --- | --- | --- |
-| Обратная зависимость истории от HTTP | История импортирует `candidate_fact` из router во время записи | Целевой общий DTO и mapper принадлежат проекции подписок | Сравнить DTO, публикацию и историю |
-| Эксплуатационный журнал и расписание | Jobs импортируют `record`, а контроль источника лениво загружает jobs | Целевая граница между моделью запланированных работ и их исполнением | Сравнить регистрацию и тесты lease/worker/операций |
+| Обратная зависимость истории от HTTP | История импортирует `candidate_fact` из router во время записи | Общий DTO и mapper находятся в `watchlist/candidate.py`, отдельно от HTTP и каталога | DTO и тесты публикации и истории совпадают |
+| Эксплуатационный журнал и расписание | Jobs импортируют `record`, а контроль источника лениво загружает jobs | Планировщик, status и source controls используют одну `operations/source_job_models.py` | Metadata, lease, worker и операции проверены |
 | Два bounded-fetch runtime | Worker загружает конкурсные списки, batch fetch загружает документы приёма | Оба остаются со своими лимитами, IPC-контрактами и обработкой ошибок | Доказанной эквивалентности нет |
 | Идемпотентность ручных и автоматических записей | Разные fingerprint, replay и retirement правила | Общие функции используются только в исходных местах | Native PostgreSQL проверяет обе семантики |
+
+| Преобразование UTC | Две одинаковые реализации в `main.py` и `sources/publishing.py` | Один `core/time.py`, исторические импорты сохранены | Тест покрывает naive и смещённый aware datetime |
+
+## Реализация
+
+В финальном графе 148 модулей с учётом новых пакетов и совместимых импортов. Граф eager imports остаётся ацикличным. При учёте deferred imports число простых циклов сократилось с 27 до 8. Остались связи между публикацией и сценариями, а также ленивое подключение адаптеров и профилей. Это сохраняет их исходные транзакционные и загрузочные границы.
+
+`main.py` устанавливает функциональные роутеры на прежних позициях. `app.catalog` остаётся действующим публичным модулем после перехода в пакет. Исторический `app.operations` предоставляет функции гостевой идемпотентности, реализация находится в `watchlist/idempotency.py`. Runtime worker остаётся владельцем IPC bounded fetch, поскольку репозиторные patch-тесты проверяют его через старый модуль. В `sources` перенесён операционный журнал источника, связанные импорты обновлены.
+
+В узлах графа baseline перечислены исходные пути. В секции `after.modules` перечислены актуальные зависимости. Точные SHA, хеши контрактов, команды, PR и результаты приведены в [итоговом отчёте](BACKEND_ORGANIZATION_FINAL_REPORT.md).
 
 ## Инвентаризация исходных модулей
 
@@ -79,7 +89,7 @@
 | `backend/app/national_catalog.py` | National university dataset and CLI | — | `catalog` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |
 | `backend/app/national_coverage.py` | National programme coverage and audit CLI | `accreditation_registry`, `admissions`, `national_catalog`, `observability`, `product_catalog`, `sources.publishing`, `sources.registry`, `sources.status`; deferred: `config`, `database` | `catalog` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |
 | `backend/app/observability.py` | Worker heartbeat, status and event logging CLI | `admissions`, `database`, `jobs`, `sources.publishing`, `sources.status`; deferred: `config`, `database` | `operations` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |
-| `backend/app/operations.py` | Legacy watch-write idempotency and retirement | `database` | `operations` | REFACTOR | Preserve the old idempotency namespace and make it the compatibility surface for the package. |
+| `backend/app/operations.py` | Legacy watch-write idempotency and retirement | `database` | `watchlist` | REFACTOR | Put guest writes with watchlist and retain the old import surface in the operations package. |
 | `backend/app/product_catalog.py` | Public universities, programmes and EGE routers/projections | `accreditation_registry`, `admissions`, `catalog_import`, `exam_requirements`, `national_catalog`, `product_catalog_schemas`, `program_catalog_models`, `university_names` | `catalog` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |
 | `backend/app/product_catalog_schemas.py` | Public catalogue DTOs | `schema_base` | `catalog` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |
 | `backend/app/program_catalog_batch.py` | Durable reviewed programme capture/publish CLI | `program_catalog_batch_fetch`, `program_catalog_import`, `program_catalog_sources`, `sources.fetcher`, `sources.storage`; deferred: `config`, `database` | `catalog` | MOVE | Place implementation with its owner; retain the legacy import and CLI as applicable. |

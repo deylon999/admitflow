@@ -273,7 +273,7 @@ def read_original(raw_directory, review):
 
 
 def require_import_schema(engine):
-    from app.migrations import schema_heads
+    from app.operations.migrations import schema_heads
     from sqlalchemy import text
     if engine.dialect.name != 'postgresql':
         raise ValueError('catalog_import_requires_postgresql')
@@ -288,7 +288,7 @@ def require_import_schema(engine):
 
 def main(argv=None):
     from app.core.config import Settings
-    from app.database import make_engine
+    from app.core.database import make_engine
     from app.sources.storage import RawStore
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--raw-directory', required=True, type=Path)

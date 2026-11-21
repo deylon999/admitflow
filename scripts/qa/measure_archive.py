@@ -19,9 +19,9 @@ from scripts.ops.postgres_runtime import disposable_postgres
 from fastapi.testclient import TestClient
 from sqlalchemy import event
 from app.config import Settings
-from app.database import make_engine
+from app.core.database import make_engine
 from app.main import create_app
-from app.migrations import upgrade_schema
+from app.operations.migrations import upgrade_schema
 from app.sources.pilots import register_sgu
 from app.sources.publishing import publish
 from app.sources.storage import RawStore

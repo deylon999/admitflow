@@ -14,8 +14,8 @@ import time
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'backend'))
 from sqlalchemy import MetaData,select,text
 from sqlalchemy.engine import make_url
-from app.database import make_engine
-from app.migrations import upgrade_schema
+from app.core.database import make_engine
+from app.operations.migrations import upgrade_schema
 
 
 def facts(connection,table,columns):

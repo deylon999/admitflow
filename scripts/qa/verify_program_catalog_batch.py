@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 from app.catalog.catalog_import import import_reviewed
 from app.config import Settings
 from app.main import create_app
-from app.migrations import upgrade_schema
+from app.operations.migrations import upgrade_schema
 from app.catalog.national_coverage import national_coverage, with_checksum
 from app.catalog.program_catalog_models import ProgramCatalogPublication
 from pg_support import isolated_postgres

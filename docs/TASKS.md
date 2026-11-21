@@ -7495,7 +7495,7 @@
 
 ### T340. Backend organization: operations and final verification
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** T334.
 

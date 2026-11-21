@@ -3,10 +3,11 @@ from alembic import context
 
 from app import admissions  # Register the complete target schema.
 from app.catalog import program_catalog_models  # Programme evidence and publication metadata.
-from app import jobs
-from app import observability  # Register worker_heartbeats for standalone Alembic.
+from app.operations import source_job_models  # Register source queue and check rows.
+from app.operations import observability  # Register worker_heartbeats for standalone Alembic.
 from app.core.config import Settings
-from app.database import Base, make_engine
+from app.core.database import Base, make_engine
+from app.watchlist import models  # Register guest session and watch rows.
 
 settings = Settings.from_env()
 

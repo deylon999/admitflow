@@ -27,7 +27,7 @@ def _register(db,profile,*,enable,registry):
     if enable and source.last_error_code=='operator_quarantine':raise AdapterError('operator_quarantine')
     if enable:
         registry.resolve(SourceBinding(source.id,source.group_id,profile.year,source.url,source.domain,profile.version,profile.kind,True));source.enabled=True
-    from ..source_operations import record as journal
+    from app.sources.source_operations import record as journal
     journal(db,source,'enable' if enable else 'register','created' if created else 'updated')
     return dict(sourceId=source.id,groupId=source.group_id,created=created,enabled=source.enabled,year=profile.year,kind=profile.kind,adapterVersion=profile.version)
 

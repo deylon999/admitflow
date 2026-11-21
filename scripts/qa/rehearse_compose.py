@@ -92,7 +92,7 @@ from datetime import datetime,timezone
 from sqlalchemy.orm import Session
 from app.admissions import University,Campaign,CompetitionGroup,Source
 from app.config import Settings
-from app.database import make_engine
+from app.core.database import make_engine
 from app.jobs import enqueue
 from app.sources.storage import RawStore
 engine=make_engine(Settings.from_env().database_url)
@@ -139,7 +139,7 @@ from sqlalchemy import select,func
 from sqlalchemy.orm import Session
 from app.admissions import SourceSnapshot
 from app.config import Settings
-from app.database import make_engine
+from app.core.database import make_engine
 from app.jobs import SourceJob
 engine=make_engine(Settings.from_env().database_url)
 with Session(engine) as db:

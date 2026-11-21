@@ -9,7 +9,7 @@ from uuid import uuid4
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, ValidationError
 
-from ..worker import bounded_fetch
+from app.operations.worker import bounded_fetch
 from .contracts import SourceBinding
 from .fetcher import FetchError
 

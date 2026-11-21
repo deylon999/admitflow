@@ -3894,5 +3894,1155 @@
         "app.sources.capture"
       ]
     }
+  },
+  "after": {
+    "module_count": 148,
+    "eager_cycles": [],
+    "all_cycles": [
+      [
+        "app.competitions.scenario_storage",
+        "app.sources.publishing"
+      ],
+      [
+        "app.competitions.scenario_storage",
+        "app.sources.source_operations",
+        "app.sources.publishing"
+      ],
+      [
+        "app.sources.adapters.sgu2026",
+        "app.sources.registry"
+      ],
+      [
+        "app.sources.profile_catalog",
+        "app.sources.table_profiles"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.structured_family"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_family"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_profiles"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_profiles",
+        "app.sources.table_family"
+      ]
+    ],
+    "modules": {
+      "app": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.account_actions": {
+        "eager": [
+          "app.auth.account_actions"
+        ],
+        "deferred": []
+      },
+      "app.account_api": {
+        "eager": [
+          "app.auth.account_api"
+        ],
+        "deferred": []
+      },
+      "app.account_dto": {
+        "eager": [
+          "app.auth.account_dto"
+        ],
+        "deferred": []
+      },
+      "app.account_limits": {
+        "eager": [
+          "app.auth.account_limits"
+        ],
+        "deferred": []
+      },
+      "app.account_mail": {
+        "eager": [
+          "app.auth.account_mail"
+        ],
+        "deferred": []
+      },
+      "app.account_security": {
+        "eager": [
+          "app.auth.account_security"
+        ],
+        "deferred": []
+      },
+      "app.accounts": {
+        "eager": [
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.accreditation_registry": {
+        "eager": [
+          "app.catalog.accreditation_registry"
+        ],
+        "deferred": []
+      },
+      "app.admissions": {
+        "eager": [
+          "app.catalog_search",
+          "app.database"
+        ],
+        "deferred": []
+      },
+      "app.auth": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.auth.account_actions": {
+        "eager": [
+          "app.auth.account_security",
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_api": {
+        "eager": [
+          "app.auth.account_actions",
+          "app.auth.account_dto",
+          "app.auth.account_limits",
+          "app.auth.account_mail",
+          "app.auth.account_security",
+          "app.auth.accounts",
+          "app.core.http"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_dto": {
+        "eager": [
+          "app.auth.account_security",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_limits": {
+        "eager": [
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_mail": {
+        "eager": [
+          "app.auth.account_security"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_security": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.auth.accounts": {
+        "eager": [
+          "app.database"
+        ],
+        "deferred": []
+      },
+      "app.backup": {
+        "eager": [
+          "app.operations.backup"
+        ],
+        "deferred": []
+      },
+      "app.calculation": {
+        "eager": [
+          "app.competitions.calculation"
+        ],
+        "deferred": []
+      },
+      "app.catalog": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.catalog.national_catalog",
+          "app.schemas"
+        ],
+        "deferred": []
+      },
+      "app.catalog.accreditation_registry": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.catalog.api": {
+        "eager": [
+          "app.catalog",
+          "app.catalog.coverage",
+          "app.catalog.national_coverage",
+          "app.catalog.source_catalog",
+          "app.schemas",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.catalog.catalog_identity": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.catalog_import": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.core.config",
+          "app.core.database",
+          "app.sources.table_profiles"
+        ],
+        "deferred": []
+      },
+      "app.catalog.catalog_lock": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.coverage": {
+        "eager": [
+          "app.admissions",
+          "app.catalog",
+          "app.catalog.accreditation_registry",
+          "app.catalog.national_catalog",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.catalog.exam_requirements": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.catalog.national_catalog": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.national_coverage": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.accreditation_registry",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog",
+          "app.operations.observability",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.catalog.product_catalog": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.accreditation_registry",
+          "app.catalog.catalog_import",
+          "app.catalog.exam_requirements",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog_schemas",
+          "app.catalog.program_catalog_models",
+          "app.catalog.university_names"
+        ],
+        "deferred": []
+      },
+      "app.catalog.product_catalog_schemas": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_batch": {
+        "eager": [
+          "app.catalog.program_catalog_batch_fetch",
+          "app.catalog.program_catalog_import",
+          "app.catalog.program_catalog_sources",
+          "app.sources.fetcher",
+          "app.sources.storage"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.catalog.program_catalog_batch_fetch": {
+        "eager": [
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_import": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_identity",
+          "app.catalog.catalog_import",
+          "app.catalog.catalog_lock",
+          "app.catalog.national_catalog",
+          "app.catalog.program_catalog_models",
+          "app.catalog.program_catalog_review",
+          "app.sources.storage",
+          "app.sources.table_profiles"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database",
+          "app.operations.migrations",
+          "app.sources.storage"
+        ]
+      },
+      "app.catalog.program_catalog_models": {
+        "eager": [
+          "app.admissions",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_review": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_sources": {
+        "eager": [
+          "app.catalog.national_catalog",
+          "app.catalog.program_catalog_review",
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.catalog.source_catalog": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.admissions",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.catalog.university_name_report": {
+        "eager": [
+          "app.catalog.accreditation_registry",
+          "app.catalog.catalog_import",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.catalog.university_names": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": [
+          "app.catalog.accreditation_registry"
+        ]
+      },
+      "app.catalog_identity": {
+        "eager": [
+          "app.catalog.catalog_identity"
+        ],
+        "deferred": []
+      },
+      "app.catalog_import": {
+        "eager": [
+          "app.catalog.catalog_import"
+        ],
+        "deferred": []
+      },
+      "app.catalog_lock": {
+        "eager": [
+          "app.catalog.catalog_lock"
+        ],
+        "deferred": []
+      },
+      "app.catalog_search": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.changes": {
+        "eager": [
+          "app.watchlist.changes"
+        ],
+        "deferred": []
+      },
+      "app.competition_api": {
+        "eager": [
+          "app.competitions.competition_api"
+        ],
+        "deferred": []
+      },
+      "app.competitions": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.competitions.calculation": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.competitions.competition_api": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_api": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenario_explanations",
+          "app.competitions.scenarios",
+          "app.core.schema_base",
+          "app.core.time",
+          "app.watchlist.archive"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_explanations": {
+        "eager": [
+          "app.competitions.scenarios",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_storage": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenarios"
+        ],
+        "deferred": [
+          "app.admissions",
+          "app.competitions.scenario_explanations",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.source_operations",
+          "app.sources.table_profiles",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.competitions.scenarios": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.config": {
+        "eager": [
+          "app.core.config"
+        ],
+        "deferred": []
+      },
+      "app.core": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.config": {
+        "eager": [],
+        "deferred": [
+          "app.auth.account_security"
+        ]
+      },
+      "app.core.database": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.http": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.schema_base": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.time": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.coverage": {
+        "eager": [
+          "app.catalog.coverage"
+        ],
+        "deferred": []
+      },
+      "app.database": {
+        "eager": [
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.diagnostics": {
+        "eager": [
+          "app.operations.diagnostics"
+        ],
+        "deferred": []
+      },
+      "app.direction_budget": {
+        "eager": [
+          "app.watchlist.direction_budget"
+        ],
+        "deferred": []
+      },
+      "app.exam_requirements": {
+        "eager": [
+          "app.catalog.exam_requirements"
+        ],
+        "deferred": []
+      },
+      "app.http": {
+        "eager": [
+          "app.core.http"
+        ],
+        "deferred": []
+      },
+      "app.importing": {
+        "eager": [
+          "app.watchlist.importing"
+        ],
+        "deferred": []
+      },
+      "app.jobs": {
+        "eager": [
+          "app.operations.jobs"
+        ],
+        "deferred": []
+      },
+      "app.main": {
+        "eager": [
+          "app.catalog",
+          "app.catalog.api",
+          "app.core.config",
+          "app.core.database",
+          "app.core.http",
+          "app.core.time",
+          "app.operations.api",
+          "app.operations.maintenance",
+          "app.operations.migrations",
+          "app.schemas",
+          "app.watchlist.api"
+        ],
+        "deferred": [
+          "app.auth.account_api",
+          "app.catalog.product_catalog",
+          "app.competitions.competition_api",
+          "app.competitions.scenario_api",
+          "app.sources.registry",
+          "app.watchlist.changes",
+          "app.watchlist.source_api"
+        ]
+      },
+      "app.maintenance": {
+        "eager": [
+          "app.operations.maintenance"
+        ],
+        "deferred": []
+      },
+      "app.migration_checks": {
+        "eager": [
+          "app.operations.migration_checks"
+        ],
+        "deferred": []
+      },
+      "app.migrations": {
+        "eager": [
+          "app.operations.migrations"
+        ],
+        "deferred": []
+      },
+      "app.national_catalog": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.national_coverage": {
+        "eager": [
+          "app.catalog.national_coverage"
+        ],
+        "deferred": []
+      },
+      "app.observability": {
+        "eager": [
+          "app.operations.observability"
+        ],
+        "deferred": []
+      },
+      "app.operations": {
+        "eager": [
+          "app.watchlist.idempotency"
+        ],
+        "deferred": []
+      },
+      "app.operations.api": {
+        "eager": [
+          "app.operations.migrations",
+          "app.operations.observability"
+        ],
+        "deferred": []
+      },
+      "app.operations.backup": {
+        "eager": [
+          "app.core.config",
+          "app.core.database",
+          "app.core.schema_base",
+          "app.sources.storage"
+        ],
+        "deferred": []
+      },
+      "app.operations.diagnostics": {
+        "eager": [
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.operations.jobs": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.publishing",
+          "app.sources.source_operations"
+        ],
+        "deferred": [
+          "app.sources.contracts",
+          "app.sources.publishing"
+        ]
+      },
+      "app.operations.maintenance": {
+        "eager": [
+          "app.auth.accounts",
+          "app.core.config",
+          "app.core.database",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.operations.migration_checks": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.operations.migrations": {
+        "eager": [
+          "app.auth.accounts",
+          "app.catalog.program_catalog_models"
+        ],
+        "deferred": []
+      },
+      "app.operations.observability": {
+        "eager": [
+          "app.admissions",
+          "app.core.database",
+          "app.operations.source_job_models",
+          "app.sources.publishing",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.operations.smtp_check": {
+        "eager": [
+          "app.auth.account_mail",
+          "app.auth.account_security",
+          "app.core.config"
+        ],
+        "deferred": []
+      },
+      "app.operations.source_job_models": {
+        "eager": [
+          "app.admissions",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.operations.worker": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.core.database",
+          "app.operations.jobs",
+          "app.operations.observability",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": [
+          "app.sources.page_cache"
+        ]
+      },
+      "app.product_catalog": {
+        "eager": [
+          "app.catalog.product_catalog"
+        ],
+        "deferred": []
+      },
+      "app.product_catalog_schemas": {
+        "eager": [
+          "app.catalog.product_catalog_schemas"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_batch": {
+        "eager": [
+          "app.catalog.program_catalog_batch"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_batch_fetch": {
+        "eager": [
+          "app.catalog.program_catalog_batch_fetch"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_import": {
+        "eager": [
+          "app.catalog.program_catalog_import"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_models": {
+        "eager": [
+          "app.catalog.program_catalog_models"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_review": {
+        "eager": [
+          "app.catalog.program_catalog_review"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_sources": {
+        "eager": [
+          "app.catalog.program_catalog_sources"
+        ],
+        "deferred": []
+      },
+      "app.scenario_api": {
+        "eager": [
+          "app.competitions.scenario_api"
+        ],
+        "deferred": []
+      },
+      "app.scenario_explanations": {
+        "eager": [
+          "app.competitions.scenario_explanations"
+        ],
+        "deferred": []
+      },
+      "app.scenario_storage": {
+        "eager": [
+          "app.competitions.scenario_storage"
+        ],
+        "deferred": []
+      },
+      "app.scenarios": {
+        "eager": [
+          "app.competitions.scenarios"
+        ],
+        "deferred": []
+      },
+      "app.schema_base": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.schemas": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.smtp_check": {
+        "eager": [
+          "app.operations.smtp_check"
+        ],
+        "deferred": []
+      },
+      "app.source_api": {
+        "eager": [
+          "app.watchlist.source_api"
+        ],
+        "deferred": []
+      },
+      "app.source_catalog": {
+        "eager": [
+          "app.catalog.source_catalog"
+        ],
+        "deferred": []
+      },
+      "app.source_history": {
+        "eager": [
+          "app.watchlist.source_history"
+        ],
+        "deferred": []
+      },
+      "app.source_operations": {
+        "eager": [
+          "app.sources.source_operations"
+        ],
+        "deferred": []
+      },
+      "app.source_tokens": {
+        "eager": [
+          "app.watchlist.source_tokens"
+        ],
+        "deferred": []
+      },
+      "app.sources": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.adapters": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.adapters.sgu2026": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.html_inspection",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.audit": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.operations.diagnostics",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": []
+      },
+      "app.sources.batch": {
+        "eager": [
+          "app.core.config",
+          "app.core.database",
+          "app.sources.contracts",
+          "app.sources.profile_registration",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.capture": {
+        "eager": [
+          "app.operations.worker",
+          "app.sources.contracts",
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.sources.cli": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.core.database",
+          "app.operations.jobs",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.operations.jobs",
+          "app.sources.pilots",
+          "app.sources.profile_registration",
+          "app.sources.source_operations",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.contracts": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.fetcher": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.html_inspection": {
+        "eager": [
+          "app.sources.contracts"
+        ],
+        "deferred": []
+      },
+      "app.sources.navigation": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.page_cache": {
+        "eager": [
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.sources.pilots": {
+        "eager": [
+          "app.admissions",
+          "app.catalog",
+          "app.catalog.catalog_lock",
+          "app.sources.adapters.sgu2026",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.source_operations"
+        ]
+      },
+      "app.sources.profile_catalog": {
+        "eager": [],
+        "deferred": [
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.profile_registration": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.sources.contracts",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.source_operations",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.publishing": {
+        "eager": [
+          "app.admissions",
+          "app.core.time",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.sources.registry": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.fetcher"
+        ],
+        "deferred": [
+          "app.sources.adapters.sgu2026",
+          "app.sources.structured_family",
+          "app.sources.table_family",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.retention": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.program_catalog_models",
+          "app.core.config",
+          "app.core.database",
+          "app.sources.storage"
+        ],
+        "deferred": []
+      },
+      "app.sources.source_operations": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing"
+        ],
+        "deferred": []
+      },
+      "app.sources.status": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.storage": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.structured_family": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.table_family": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.html_inspection",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.fetcher"
+        ]
+      },
+      "app.sources.table_profiles": {
+        "eager": [
+          "app.sources.profile_catalog",
+          "app.sources.registry",
+          "app.sources.table_family"
+        ],
+        "deferred": []
+      },
+      "app.sources.validation": {
+        "eager": [
+          "app.sources.contracts"
+        ],
+        "deferred": []
+      },
+      "app.university_name_report": {
+        "eager": [
+          "app.catalog.university_name_report"
+        ],
+        "deferred": []
+      },
+      "app.university_names": {
+        "eager": [
+          "app.catalog.university_names"
+        ],
+        "deferred": []
+      },
+      "app.watchlist": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.watchlist.api": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.core.time",
+          "app.schemas",
+          "app.watchlist.direction_budget",
+          "app.watchlist.idempotency",
+          "app.watchlist.importing",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.archive": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.source_catalog",
+          "app.core.schema_base",
+          "app.core.time",
+          "app.watchlist.candidate"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.candidate": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.changes": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenario_api",
+          "app.core.schema_base",
+          "app.sources.publishing"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.direction_budget": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.idempotency": {
+        "eager": [
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.importing": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.schemas",
+          "app.watchlist.models"
+        ],
+        "deferred": [
+          "app.watchlist.direction_budget"
+        ]
+      },
+      "app.watchlist.models": {
+        "eager": [
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.source_api": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.source_catalog",
+          "app.core.schema_base",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.watchlist.archive",
+          "app.watchlist.candidate",
+          "app.watchlist.direction_budget",
+          "app.watchlist.idempotency",
+          "app.watchlist.models",
+          "app.watchlist.source_tokens"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.operations.source_job_models",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.watchlist.source_history": {
+        "eager": [
+          "app.admissions",
+          "app.watchlist.candidate"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.source_tokens": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.worker": {
+        "eager": [
+          "app.operations.worker"
+        ],
+        "deferred": []
+      }
+    }
   }
 }

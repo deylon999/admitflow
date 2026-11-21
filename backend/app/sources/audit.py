@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from ..admissions import Campaign,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot
 from app.core.config import Settings
-from ..diagnostics import read_engine
+from app.operations.diagnostics import read_engine
 from .contracts import AdapterError,SourceBinding
 from .fetcher import FetchResult
 from .publishing import stored_list,utc

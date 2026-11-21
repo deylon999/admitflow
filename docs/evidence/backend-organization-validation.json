@@ -1,0 +1,303 @@
+{
+  "date": "2026-11-22",
+  "environment": {
+    "backend": "Linux Python 3.12.16",
+    "postgresql": "17.11",
+    "browser_node": "26.13.0",
+    "playwright": "1.64.1",
+    "compose": "5.1.4"
+  },
+  "pre_auth": {
+    "revision": "29c5902c02d05dd16c03070a74173d3460b365b7",
+    "contract_sha256": {
+      "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+      "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+      "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+      "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+      "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+      "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+      "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+      "auth-off-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+      "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+      "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+      "auth-on-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+      "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+    },
+    "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5"
+  },
+  "stages": {
+    "main": {
+      "revision": "1e7693ebc4ae1761aaba8dcbf659ff5793235813",
+      "application_tree": "72201dcef34421173152cdd82d74fea8dbd70168",
+      "backend": {
+        "tests": 1224,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1223,
+        "seconds": 549.62
+      },
+      "unchanged_baseline_cases": 1224,
+      "backend_selected_passed": null,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": null,
+      "hosted": {}
+    },
+    "core": {
+      "revision": "a579518de239696447352f64633b8f51c755158f",
+      "application_tree": "232c08cbf944fc8394cf9c1219196411ab804434",
+      "backend": {
+        "tests": 1228,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1227,
+        "seconds": 747.57
+      },
+      "unchanged_baseline_cases": 1224,
+      "backend_selected_passed": 16,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "cc3098b4310dc22f3db84bdb4d50543abf44bb5cd99e28df211611c2078e34b4",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": {
+        "number": 38,
+        "url": "https://github.com/deylon999/admitflow/pull/38",
+        "base": "main",
+        "head": "a579518de239696447352f64633b8f51c755158f",
+        "state": "open"
+      },
+      "hosted": {}
+    },
+    "catalog": {
+      "revision": "c8d869ee7370f5dbe9fce134abc016ee57cabe11",
+      "application_tree": "0b90ddd6e4b2ab887c5883f5d46e21fbbb69f6af",
+      "backend": {
+        "tests": 1247,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1246,
+        "seconds": 792.73
+      },
+      "unchanged_baseline_cases": 1224,
+      "backend_selected_passed": 107,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "25e7678ab94e5c92194cf0e9b283205d7a22e72e39d0983296147e039f531b78",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "25e7678ab94e5c92194cf0e9b283205d7a22e72e39d0983296147e039f531b78",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": null,
+      "hosted": {}
+    },
+    "competitions": {
+      "revision": "6840f96035f624991140e2751626836758958876",
+      "application_tree": "b9be28505c0318cc28d5aa663081394e43bb4e11",
+      "backend": {},
+      "unchanged_baseline_cases": null,
+      "backend_selected_passed": 68,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 0,
+        "catalog": 0,
+        "competitions": 0,
+        "watchlist": 0,
+        "sources": 0,
+        "operations": 0,
+        "migrations": 0
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "25e7678ab94e5c92194cf0e9b283205d7a22e72e39d0983296147e039f531b78",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "25e7678ab94e5c92194cf0e9b283205d7a22e72e39d0983296147e039f531b78",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": null,
+      "hosted": {}
+    },
+    "watchlist": {
+      "revision": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
+      "application_tree": "a0886209f1be33b4e78145e69efc8ee276079ca2",
+      "backend": {},
+      "unchanged_baseline_cases": null,
+      "backend_selected_passed": 88,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 0,
+        "catalog": 0,
+        "competitions": 0,
+        "watchlist": 0,
+        "sources": 0,
+        "operations": 0,
+        "migrations": 0
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "0b4642344e60b8132c3d6d273e745e713db4498f1ac209f1cb60fb4b841f9745",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "0b4642344e60b8132c3d6d273e745e713db4498f1ac209f1cb60fb4b841f9745",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": null,
+      "hosted": {}
+    },
+    "operations": {
+      "revision": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
+      "application_tree": "a0886209f1be33b4e78145e69efc8ee276079ca2",
+      "backend": {},
+      "unchanged_baseline_cases": null,
+      "backend_selected_passed": 120,
+      "backend_subsystem_passed": {
+        "account_security_smtp": 0,
+        "catalog": 0,
+        "competitions": 0,
+        "watchlist": 0,
+        "sources": 0,
+        "operations": 0,
+        "migrations": 0
+      },
+      "frontend": {
+        "regular": 387,
+        "native_auth": {
+          "chromium": 6,
+          "firefox": 6,
+          "webkit": 6
+        }
+      },
+      "contract_sha256": {
+        "alembic-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "alembic.json": "5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48",
+        "all-dtos.json": "b273e27284360a646d02c97a2d89b3c5f6422854c2fab60699569944c506d505",
+        "app-metadata.json": "295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae",
+        "auth-dtos.json": "82d68a864b4189049aee412f29e4434741a77d6dd3f458493490d49fc52f7acf",
+        "auth-off-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-off-responses.json": "8c1b1be7ec874e7309a48321b4858a317cd3269f5866fb5dbf022a9b24048652",
+        "auth-off-routes.json": "9cdd70efee49aadb86dcad655fc6f1db24e9a2d97a28778c0492c2fc123d439b",
+        "auth-on-openapi.json": "50e66758c9fa32b5d516aa126df566fb566a439ee1f6d926916a2d3a19bb81cd",
+        "auth-on-responses.json": "9c7460f09480f4252aee70a883b6b8cedafa9ae56084fd83443987e7aaf9284a",
+        "auth-on-routes.json": "9cdd70efee49aadb86dcad655fc6f1db24e9a2d97a28778c0492c2fc123d439b",
+        "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
+      },
+      "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
+      "pr": null,
+      "hosted": {}
+    }
+  }
+}

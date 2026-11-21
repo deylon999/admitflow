@@ -7,12 +7,12 @@
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T340.
+- Текущая задача: T340.
+- Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
+Implement and verify T340. Review the dependency graph and stage evidence before publishing.
 
 ## Последняя завершённая работа
 

@@ -21,10 +21,10 @@ from sqlalchemy import inspect, select, text
 
 from app.admissions import SourceSnapshot
 from app.config import Settings
-from app.database import make_engine
-from app.jobs import enqueue
+from app.core.database import make_engine
+from app.operations.jobs import enqueue
 from app.main import create_app
-from app.migrations import upgrade_schema
+from app.operations.migrations import upgrade_schema
 from app.sources.publishing import publish
 from app.sources.storage import RawStore, StorageError
 from source_helpers import NOW, parsed, raw, registry, seed_source

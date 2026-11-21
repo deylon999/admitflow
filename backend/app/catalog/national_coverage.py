@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 from app.catalog.accreditation_registry import SOURCE_URL as REGISTRY_URL, load_registry
 from app.admissions import Campaign, CompetitionGroup, PublishedSnapshot, Source, SourceSnapshot, University
 from app.catalog.national_catalog import load_catalog
-from app.observability import system_status
+from app.operations.observability import system_status
 from app.catalog.product_catalog import programs, region_key
 from app.sources.publishing import utc
 from app.sources.registry import PRODUCTION_REGISTRY
@@ -160,7 +160,7 @@ def with_checksum(report):
 
 def main(argv=None):
     from app.core.config import Settings
-    from app.database import make_engine
+    from app.core.database import make_engine
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', help='Write the JSON report to this file instead of stdout')
     args = parser.parse_args(argv)

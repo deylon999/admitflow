@@ -10,9 +10,9 @@ from scripts.ops.postgres_runtime import disposable_postgres
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 from app.admissions import CandidateEntry,SourceSnapshot,PublishedSnapshot
-from app.database import make_engine
-from app.jobs import enqueue
-from app.migrations import upgrade_schema
+from app.core.database import make_engine
+from app.operations.jobs import enqueue
+from app.operations.migrations import upgrade_schema
 from app.sources.table_profiles import PROFILES
 from app.sources.profile_registration import register_profile
 from app.sources.registry import runtime_registry
