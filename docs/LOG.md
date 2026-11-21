@@ -1652,7 +1652,13 @@ Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data ski
 
 PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 
-## S232 — 2026-11-21: evidence housekeeping
+## S234 — 2026-11-21: организация служебных скриптов
+
+Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
+разложены по назначению, старые точки входа сохранены. Карта и аудит
+потребителей находятся в scripts/README.md и scripts/AUDIT.md.
+
+## S235 — 2026-11-21: evidence housekeeping
 
 База main a3f5078. Аудит SHA‑256: 580 файлов evidence, 171 группа совпадений,
 173 дополнительных пути. Убраны 168 повторных путей PNG после проверки
@@ -1662,13 +1668,8 @@ security evidence сохранены. Манифест, правила хран�
 
 Ветка PR #33 обновлена от main 5ca1cca после PR #32 и #34.
 
-## S234 — 2026-11-21: организация служебных скриптов
-
-Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
-разложены по назначению, старые точки входа сохранены. Карта и аудит
-потребителей находятся в scripts/README.md и scripts/AUDIT.md.
-
-## S235 — 2026-11-22: синхронизация Evidence Housekeeping
+## S236 — 2026-11-22: синхронизация Evidence Housekeeping
 
 Ветка PR #33 обновлена от main 587f5bc после слияния PR #35.
-Записи S232 и S234 сохранены, состояние и оглавление согласованы.
+Запись Evidence Housekeeping получила номер S235. Номер S232
+используется параллельным frontend PR #36. Запись S234 сохранена.
