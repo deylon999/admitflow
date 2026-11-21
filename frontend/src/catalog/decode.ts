@@ -1,9 +1,9 @@
 import { array, bool, checksum, count, date, identifier, invalid, nullable, object, oneOf, positive, text, url, year } from '../shared/api';
-import type { Accreditation, CatalogProgram, ExamRequirements, ExamTest, ProgramResults, Provenance, University, UniversityResults } from './types';
+import type { Accreditation, CatalogCompetitionGroup, CatalogProgram, ExamRequirements, ExamTest, ProgramResults, Provenance, University, UniversityResults } from './types';
 
 function provenance(value: unknown): Provenance {
     const p = object(value);
-    return { ...p, url: url(p.url), verifiedAt: date(p.verifiedAt), sourceUpdatedAt: nullable(p.sourceUpdatedAt, date), kind: oneOf(p.kind, ['archive', 'monitoring', 'accreditation']), edition: nullable(p.edition, year), originalSha256: nullable(p.originalSha256, checksum) };
+    return { ...p, url: url(p.url), verifiedAt: date(p.verifiedAt), sourceUpdatedAt: nullable(p.sourceUpdatedAt, date), kind: oneOf(p.kind, ['archive', 'monitoring', 'accreditation', 'admissions']), edition: nullable(p.edition, year), originalSha256: nullable(p.originalSha256, checksum) };
 }
 function accreditation(value: unknown): Accreditation {
     const p = object(value);
@@ -52,10 +52,22 @@ function examRequirements(value: unknown): ExamRequirements {
     const s = object(p.source);
     return { tests, additionalTests: nullable(p.additionalTests, examTests), benefits: null, notes: array(p.notes, text), source: { ...s, url: url(s.url), title: text(s.title), documentDate: date(s.documentDate), checkedAt: date(s.checkedAt), sha256: checksum(s.sha256), crossCheckUrl: nullable(s.crossCheckUrl, url) } };
 }
+function competitionGroup(value: unknown): CatalogCompetitionGroup {
+    const g = object(value);
+    return { id: identifier(g.id), campaignId: identifier(g.campaignId), officialId: text(g.officialId),
+        title: text(g.title), studyForm: text(g.studyForm), funding: text(g.funding), category: text(g.category),
+        seats: nullable(g.seats, count), provenance: provenance(g.provenance) };
+}
 export function program(value: unknown): CatalogProgram {
     const p = object(value);
     if (p.historicalCutoff !== null || p.forecast !== null) invalid();
-    return { ...p, id: identifier(p.id), title: text(p.title), universityId: identifier(p.universityId), universityName: text(p.universityName), region: text(p.region), campaignId: identifier(p.campaignId), level: text(p.level), studyForm: text(p.studyForm), funding: text(p.funding), category: text(p.category), year: year(p.year), code: nullable(p.code, text), seats: nullable(p.seats, count), historicalCutoff: null, forecast: null, examRequirements: nullable(p.examRequirements, examRequirements), provenance: provenance(p.provenance) };
+    const campaignId = identifier(p.campaignId);
+    const source = provenance(p.provenance);
+    const programId = nullable(p.programId ?? null, identifier);
+    const competitionGroups = p.competitionGroups === undefined ? [] : array(p.competitionGroups, competitionGroup);
+    if (competitionGroups.some(g => g.campaignId !== campaignId) || new Set(competitionGroups.map(g => g.id)).size !== competitionGroups.length) invalid();
+    if (source.kind === 'admissions' && (!programId || !source.originalSha256 || p.competitionGroups === undefined)) invalid();
+    return { ...p, id: identifier(p.id), programId, competitionGroups, title: text(p.title), universityId: identifier(p.universityId), universityName: text(p.universityName), region: text(p.region), campaignId, level: text(p.level), studyForm: nullable(p.studyForm, text), funding: nullable(p.funding, text), category: nullable(p.category, text), year: year(p.year), code: nullable(p.code, text), seats: nullable(p.seats, count), historicalCutoff: null, forecast: null, examRequirements: nullable(p.examRequirements, examRequirements), provenance: source };
 }
 function page(value: unknown) {
     const p = object(value);

@@ -9,6 +9,8 @@ import { stopChild } from './stop-child.mjs';
 // Own server lifetimes directly. Playwright's Windows webServer teardown can
 // hang when WMI/taskkill are unavailable in managed environments.
 const visual = process.argv.includes('--visual');
+const separator = process.argv.indexOf('--');
+const playwrightArgs = separator === -1 ? [] : process.argv.slice(separator + 1);
 const auth = process.env.AUTH_BROWSER_E2E === '1';
 if (auth && (!process.env.TEST_DATABASE_URL || process.env.QA_API_TARGET || visual)) throw Error('Auth E2E requires its own disposable PostgreSQL runtime.');
 const authDirectory = auth ? mkdtempSync(resolve(tmpdir(), 'admitflow-auth-')) : undefined;
@@ -62,7 +64,7 @@ try {
     await build({ ...reference, configFile: false });
     previews.push(await preview({ ...reference, configFile: false }));
   }
-  const test = spawn(process.execPath, ['node_modules/@playwright/test/cli.js', 'test'], {
+  const test = spawn(process.execPath, ['node_modules/@playwright/test/cli.js', 'test', ...playwrightArgs], {
     stdio: 'inherit', env: { ...process.env, QA_EXTERNAL_SERVERS: '1', ...(authDirectory ? { AUTH_TEST_DIRECTORY: authDirectory } : {}), COMPARE_REFERENCE: visual ? '1' : '0' },
   });
   process.exitCode = await new Promise((done, reject) => {

@@ -9,7 +9,7 @@ class Provenance(CamelModel):
     url: str
     verified_at: datetime
     source_updated_at: datetime | None = None
-    kind: Literal['monitoring', 'archive', 'accreditation']
+    kind: Literal['monitoring', 'archive', 'accreditation', 'admissions']
     edition: int | None = None
     original_sha256: str | None = None
 
@@ -96,8 +96,23 @@ class ExamRequirements(CamelModel):
     source: ExamSource
 
 
+class CatalogCompetitionGroup(CamelModel):
+    id: str
+    campaign_id: str
+    official_id: str
+    title: str
+    study_form: str
+    funding: str
+    category: str
+    seats: int | None
+    provenance: Provenance
+
+
 class CatalogProgram(CamelModel):
     id: str
+    # Legacy archive entries need an explicit unique M:N link before this is known.
+    program_id: str | None = None
+    competition_groups: list[CatalogCompetitionGroup] = []
     university_id: str
     university_name: str
     region: str
@@ -106,9 +121,9 @@ class CatalogProgram(CamelModel):
     level: str
     code: str | None
     title: str
-    study_form: str
-    funding: str
-    category: str
+    study_form: str | None
+    funding: str | None
+    category: str | None
     seats: int | None
     # No verified dataset yet. The schema forbids inferred cutoffs and model probabilities.
     historical_cutoff: None = None

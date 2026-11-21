@@ -3,9 +3,49 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { evidenceDirectory } from './routes';
+import fashion from '../../docs/sources/program-catalog/response-proposal.json' with { type: 'json' };
 
 const university = '/universities/sgu-saratov';
 const program = '/programs/sgu-2026-4588';
+
+test('published admissions programme can be found and opened without a contest', async ({ page }) => {
+  const rehearsal = process.env.CATALOG_REAL_REHEARSAL === '1';
+  if (!rehearsal) {
+    // The regular CI runtime keeps its original archive-only seed. The same
+    // browser assertions can run against the real PostgreSQL import rehearsal.
+    await page.route('**/api/v1/catalog/programs?**', async route => {
+      const params = new URL(route.request().url()).searchParams;
+      const found = (!params.get('q') || params.get('q') === 'Мода') && params.get('year') === '2027';
+      await route.fulfill({ json: { items: found ? [fashion] : [], total: found ? 1 : 0, nextOffset: null, years: [2027], subjects: [] } });
+    });
+    await page.route(`**/api/v1/catalog/programs/${fashion.id}`, route => route.fulfill({ json: fashion }));
+  }
+  await page.goto('/programs?year=2027&universityId=miccedu-1766');
+  await page.getByPlaceholder('Поиск по названию или коду').fill('Мода');
+  await expect(page.getByLabel('ГОД ПОСТУПЛЕНИЯ')).toHaveValue('2027');
+  await expect(page.locator('.af-program-card')).toHaveCount(1);
+  const card = page.locator('.af-program-card');
+  await expect(card).toContainText('Нет данных');
+  await expect(card).not.toContainText(/0 мест|Бюджет|Платное|Очная/);
+  await card.getByRole('link', { name: 'Мода', exact: true }).click();
+  await expect(page).toHaveURL(new RegExp(`/programs/${fashion.id}$`));
+  await expect(page.getByRole('heading', { name: 'Мода', exact: true })).toBeVisible();
+  for (const label of ['Мест', 'Форма обучения', 'Конкурс']) {
+    await expect(page.locator('.af-info-row').filter({ hasText: new RegExp(`^${label}`) })).toContainText('Нет данных');
+  }
+  await expect(page.locator('.af-info-row').filter({ hasText: 'Приёмная кампания' }).locator('b')).toHaveText('2027');
+  await expect(page.locator('.af-catalog-source')).toContainText('Документ о приёме');
+  await expect(page.getByRole('link', { name: 'Источник ↗' })).toHaveAttribute('href', fashion.provenance.url);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Мода', exact: true })).toBeVisible();
+  if (rehearsal) {
+    await page.getByRole('link', { name: 'Университет ↗', exact: true }).click();
+    await expect(page).toHaveURL(/\/universities\/miccedu-1766$/);
+    await expect(page.locator('.af-program-card')).toHaveCount(2);
+    await expect(page.locator('.af-program-card').getByRole('link', { name: 'Мода', exact: true })).toBeVisible();
+  }
+});
 
 for (const width of [390, 1440]) {
   test(`real catalog journey, stable IDs and reload at ${width}px`, async ({ page }) => {

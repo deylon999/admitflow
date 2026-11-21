@@ -6,7 +6,8 @@ from alembic import command
 from sqlalchemy import delete, func, insert, select, text, update
 from sqlalchemy.exc import IntegrityError
 
-from app.admissions import Campaign, CampaignProgram, CompetitionGroup, CompetitionGroupProgram, Program
+from app.admissions import Campaign, CampaignProgram, CompetitionGroup, CompetitionGroupProgram, Program, Subscription, University
+from app.database import BrowserSession
 from app.program_catalog_models import (ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision,
     ProgramCatalogFact as Fact, ProgramCatalogGroupFact as GroupFact, ProgramCatalogPublication as Publication,
     ProgramCatalogImportAttempt as Attempt)
@@ -114,9 +115,14 @@ def test_upgrade_populated0013_keeps_program_and_group_identity(postgres_engine)
     seed(engine)
     with engine.begin() as db:
         db.execute(insert(CompetitionGroupProgram).values(group_id='g1', program_id=pid('P1'), campaign_id='c27'))
+        db.execute(insert(BrowserSession).values(token_hash='e'*64, expires_at=NOW))
+        db.execute(insert(Subscription).values(id='migration-subscription', owner_hash='e'*64,
+            group_id='g1', candidate_key='synthetic', created_at=NOW))
     def identities():
         with engine.connect() as db:
-            return {m.__tablename__:db.execute(select(m.__table__).order_by(*m.__table__.primary_key)).all() for m in [Program,CampaignProgram,CompetitionGroupProgram]}
+            models = (University, Campaign, CompetitionGroup, Program, CampaignProgram,
+                      CompetitionGroupProgram, BrowserSession, Subscription)
+            return {m.__tablename__:db.execute(select(m.__table__).order_by(*m.__table__.primary_key)).all() for m in models}
     before = identities()
     with engine.connect() as connection:
         command.upgrade(alembic_config(connection),'head')

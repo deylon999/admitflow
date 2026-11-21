@@ -3,21 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S227.
+Дата: 2026-11-21. Последняя сессия: S228.
 
 ## Продолжение
 
-- Текущая задача: T325.
-- Следующая задача: T327.
+- Текущая задача: нет.
+- Следующая задача: T326.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Серверная часть PR #28 уже в main (0449e66). Для публичной выдачи проверенных программ нужен согласованный DTO из T327. T325 и T326 остаются открытыми. В штатной публичной выдаче за 2027 год покрытие составляет 0 из 785 головных вузов.
+T327 approved. API/frontend continuation of already-merged PR28 is implemented in its existing branch based on main@06fc988. T325/T328 done; T326/T317 review, exact branch CI and comparison in PR28 description. New review merge requires owner decision as merged PR28 cannot accept more commits. No new PR requested. Isolated2027 rehearsal1/785, national target471 remains open.
 
 ## Последняя завершённая работа
 
-- Обновлён корневой README по текущей версии main, включая фактическое покрытие, доступные сценарии и локальный запуск.
-- T322 bounded source captures; T323 independent fact review/proposal; T324 additive0014 storage/nativePG. T325 backend import verified; public part remains open.
+- T327 approved contract; T325 verified current-publication API; T328 compatible frontend. API/browser proof with two verified HSE2027 programmes and preserved legacy SGU IDs.
 
 ## Ограничения
 
@@ -27,10 +26,10 @@
 - Знаменатель вузов взят из выгрузки реестра аккредитации 2026-11-10; программы, правила ЕГЭ и живые списки по стране не собраны. Живая кампания 2027 и суточное наблюдение не подтверждены.
 - KAN-214 PR6: no real SMTP provider/inbox delivery verified or owner exception; production HTTPS/Origin/cookies/trusted-proxy rate-limit policy/SMTP egress unverified. AUTH_ENABLED remains false. compose.prod auth/mail env and backend egress need reviewed deployment overlay. PR19/visual variance owner review pending.
 - 2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending.
-- KAN-218 T327: explicit agreement on docs/sources/program-catalog/response-proposal.json pending; initial task requires KAN-223 contract agreement before nullable conditions/new provenance kind and minimal decoder changes. Public API remains unchanged until answer.
 
 ## Проверенное окружение
 
+- S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.
 - S227 на main@0449e66: backend 118 успешных проверок с PostgreSQL 17.11 и --require-postgres. Сборка, проверка типов и линтер прошли. Chromium: 380 успешных и 4 неуспешных проверки из-за горизонтальной прокрутки страниц вузов при 390 px. Полный Compose-прогон остановился на docker info.
 - S226 CI correction: backup/restore14pass; disposable PostgreSQL17 migration/storage/import/identity/backup/restore101passed0skip59.42s. Only exact reviewed migration trigger definitions accepted; modified/missing/extra objects rejected. Final Linux CI tracked in PR28.
 - S226: nativePG extended125/0skip + final importer20/0skip; actual originals rehearsal eecba42 on PG17.11/0014 creates4canonical facts and repeat unchanged. Old public SGU2 preserved; public2027 coverage0 pending DTO agreement. Own containers/schemas only.
