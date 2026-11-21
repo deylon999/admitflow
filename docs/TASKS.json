@@ -9765,7 +9765,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T317"
       ],
@@ -9782,7 +9782,11 @@
       "evidence": [
         {
           "path": "docs/KAN-218-PR3.md",
-          "note": "Audit and batch acceptance recorded before implementation. Owner merged pilot through PR30."
+          "note": "Resumable operator capture/publish CLI, exact URLs and robots, durable retries, confirmed-only atomic publishing. PG101 selection and final16 batch tests. CI and owner review follow in PR."
+        },
+        {
+          "path": "docs/evidence/kan-218-pr3-batch.json",
+          "note": "On code57cf6a8, three real captures reused without network and quarantined; PG17.11 publishes existing HSE2027 and SGU2026 in separate commands. Repeat unchanged and previous SGU ID/16 seats preserved. Rehearsal2027 coverage1/785."
         }
       ],
       "blockedReason": null

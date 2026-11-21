@@ -7024,7 +7024,7 @@
 
 ### T318. KAN-218 PR3: resumable bounded batch acquisition and publication
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T317.
 
@@ -7041,7 +7041,8 @@
 
 **Доказательства:**
 
-- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Audit and batch acceptance recorded before implementation. Owner merged pilot through PR30.
+- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Resumable operator capture/publish CLI, exact URLs and robots, durable retries, confirmed-only atomic publishing. PG101 selection and final16 batch tests. CI and owner review follow in PR.
+- [docs/evidence/kan-218-pr3-batch.json](../docs/evidence/kan-218-pr3-batch.json) — On code57cf6a8, three real captures reused without network and quarantined; PG17.11 publishes existing HSE2027 and SGU2026 in separate commands. Repeat unchanged and previous SGU ID/16 seats preserved. Rehearsal2027 coverage1/785.
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
