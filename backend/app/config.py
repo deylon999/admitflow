@@ -38,7 +38,7 @@ class Settings:
             for value in (self.smtp_username, self.smtp_password):
                 if not isinstance(value, str) or not 1 <= len(value) <= 4096 or any(ord(c) < 32 or ord(c) == 127 for c in value):
                     raise RuntimeError('Configured SMTP requires valid username and password.')
-            from .account_security import InvalidAccountInput, normalize_email
+            from .auth.account_security import InvalidAccountInput, normalize_email
             try:
                 normalize_email(self.smtp_from)
             except InvalidAccountInput:

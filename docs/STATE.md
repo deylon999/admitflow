@@ -7,15 +7,16 @@
 
 ## Продолжение
 
-- Текущая задача: T332.
+- Текущая задача: T333.
 - Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Relocate auth using shared compatibility module objects
+Verify native PostgreSQL, browser and Docker behavior
 
 ## Последняя завершённая работа
 
+- Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
 - Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
 - Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
 - KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending.

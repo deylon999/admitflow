@@ -10149,7 +10149,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T331"
       ],
@@ -10162,7 +10162,12 @@
       "acceptance": [
         "Move auth API, persistence, security and mail without changing their implementation; update production imports and prove old imports, mocks and model registration still work."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ARCHITECTURE_PR3.md",
+          "note": "Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10171,7 +10176,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T332"
       ],

@@ -118,7 +118,7 @@ def create_app(settings: Settings | None = None, *, registration_mailer=None):
         with Session(engine) as session:
             yield session
 
-    from .account_api import install as install_accounts
+    from .auth.account_api import install as install_accounts
     install_accounts(app, database, config, engine, mailer=registration_mailer)
 
     def identify_owner(request, db, *, lock=False):

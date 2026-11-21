@@ -7323,7 +7323,7 @@
 
 ### T332. Backend architecture PR 3: relocate auth modules with compatible imports
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T331.
 
@@ -7340,11 +7340,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
 
 ### T333. Backend architecture PR 3: verify behavior and document the results
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T332.
 

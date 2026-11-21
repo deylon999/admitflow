@@ -1639,3 +1639,7 @@ Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth in
 # S231 / T331 — 2026-11-21: Relocate auth using shared compatibility module objects
 
 Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
+
+# S231 / T332 — 2026-11-21: Verify native PostgreSQL, browser and Docker behavior
+
+Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
