@@ -1651,3 +1651,9 @@ Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data ski
 # S231 / T334 — 2026-11-21: PR 34 published and verified; owner code review follows
 
 PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
+
+## S234 — 2026-11-21: организация служебных скриптов
+
+Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
+разложены по назначению, старые точки входа сохранены. Карта и аудит
+потребителей находятся в scripts/README.md и scripts/AUDIT.md.
