@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT/'backend'), str(ROOT/'backend/tests'), str(ROOT)]
 
 from sqlalchemy import event, insert, select, text
+from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
 
@@ -105,14 +106,29 @@ def percentile(values, p):
     return sorted(values)[max(0,math.ceil(len(values)*p)-1)]
 
 
-def measure(engine, params, repeats):
+def measure(engine, params, repeats, timeout_ms):
     statements=[]
     def query(conn,cursor,statement,parameters,context,executemany):
         statements.append((statement,parameters))
     def run():
         with Session(engine) as db:
+            db.execute(text(f'SET LOCAL statement_timeout={timeout_ms}'))
             return program_page(db,**params)
-    run()  # warm caches and mapper metadata before timing
+    event.listen(engine,'before_cursor_execute',query)
+    start=time.perf_counter()
+    try:
+        run()  # warm caches and mapper metadata before timing
+    except DBAPIError as error:
+        if getattr(error.orig,'sqlstate',None)!='57014':
+            raise
+        sql,parameters=statements[-1]
+        with engine.connect() as db:
+            plan=db.exec_driver_sql('EXPLAIN (FORMAT JSON) '+sql,parameters).scalar()
+        return dict(params=params,timedOut=True,statementTimeoutMs=timeout_ms,
+            elapsedMs=(time.perf_counter()-start)*1000,plans=[dict(sql=sql,plan=plan,analyze=False)])
+    finally:
+        event.remove(engine,'before_cursor_execute',query)
+    statements.clear()
     samples=[]
     for _ in range(repeats):
         start=time.perf_counter()
@@ -133,6 +149,7 @@ def measure(engine, params, repeats):
         event.remove(Session,'loaded_as_persistent',loaded)
     plans=[]
     with engine.connect() as db:
+        db.execute(text(f'SET LOCAL statement_timeout={timeout_ms}'))
         for sql,parameters in statements:
             if 'count(*)' in sql.lower() or ('LIMIT' in sql and 'program_catalog_facts' in sql):
                 plan=db.exec_driver_sql('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '+sql,parameters).scalar()
@@ -151,9 +168,10 @@ def main(argv=None):
     parser.add_argument('--branches',type=int,default=215)
     parser.add_argument('--history',type=int,default=2)
     parser.add_argument('--repeats',type=int,default=9)
+    parser.add_argument('--statement-timeout-ms',type=int,default=10000)
     args=parser.parse_args(argv)
     if not (1<=args.per_campaign<=1000 and 1<=args.heads<=785 and 0<=args.branches<=215
-            and 0<=args.history<=5 and 3<=args.repeats<=100):
+            and 0<=args.history<=5 and 3<=args.repeats<=100 and 1000<=args.statement_timeout_ms<=60000):
         parser.error('benchmark dimensions outside bounded synthetic profile')
     report=dict(generatedAt=datetime.now(timezone.utc).isoformat(),sourceCommit=subprocess.check_output(
         ['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),platform=platform.platform(),python=platform.python_version(),
@@ -177,16 +195,18 @@ def main(argv=None):
         report['cases']={}
         for name,params in cases.items():
             print('Measuring '+name,flush=True)
-            report['cases'][name]=measure(engine,params,args.repeats)
-        app=create_app(Settings(database_url=engine.url.render_as_string(hide_password=False),auto_create_schema=False))
-        with TestClient(app) as client:
+            report['cases'][name]=measure(engine,params,args.repeats,args.statement_timeout_ms)
+            args.output.parent.mkdir(parents=True,exist_ok=True)
+            args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+        url=engine.url.update_query_dict({'options':engine.url.query['options']+f' -cstatement_timeout={args.statement_timeout_ms}'})
+        app=create_app(Settings(database_url=url.render_as_string(hide_password=False),auto_create_schema=False))
+        with TestClient(app,raise_server_exceptions=False) as client:
             report['http']={}
             for path,params in [('/programs',{'year':2027,'limit':12}),('/programs/sgu-2026-4588',{}),
                     ('/universities',{'q':'уникальный'}),('/universities/'+uid,{})]:
                 start=time.perf_counter()
                 response=client.get('/api/v1/catalog'+path,params=params)
-                assert response.status_code==200,(path,response.text)
-                body=response.json()
+                body=response.json() if response.status_code==200 else {}
                 report['http'][path]=dict(status=response.status_code,latencyMs=(time.perf_counter()-start)*1000,
                     total=body.get('total'),seats=body.get('seats'),knownProgramCount=body.get('knownProgramCount'))
     args.output.parent.mkdir(parents=True,exist_ok=True)
