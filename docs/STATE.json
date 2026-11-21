@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
-  "currentTask": null,
+  "currentTask": "T335",
   "nextTask": "T319",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S236",
-  "resumeAction": "PR 34 published and verified; owner code review follows",
+  "lastSession": "S237",
+  "resumeAction": "T335 in review across demo PR #36 and stacked app/live PR #37. PR #36 incorporates main after PR #33 and #35.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

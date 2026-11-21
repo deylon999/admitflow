@@ -21,7 +21,8 @@ if __name__ == '__main__':
         upgrade_schema(app.state.engine)
         seed_catalog(app.state.engine)
         import_reviewed(app.state.engine)
-        server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=5303, log_level='warning'))
+        port = int(os.getenv('CATALOG_RUNTIME_PORT', '5303'))
+        server = uvicorn.Server(uvicorn.Config(app, host='127.0.0.1', port=port, log_level='warning'))
         if os.getenv('CATALOG_CONTROL_STDIN') == '1':
             # The owned Node runner can stop this process gracefully on Windows,
             # without taskkill/WMI or an HTTP shutdown endpoint in product code.

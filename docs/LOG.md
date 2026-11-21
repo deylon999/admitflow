@@ -1652,6 +1652,10 @@ Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data ski
 
 PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 
+# S232 / T335 — 2026-11-21: frontend architecture audit and baseline
+
+Audited all 46 main frontend sources and mapped route, feature, API and CSS boundaries. Tagged baseline 5ca1cca after PR34; archived frontend and passed 387 Chromium tests on unchanged main. Planned demo extraction and stacked live/app changes.
+
 ## S234 — 2026-11-21: организация служебных скриптов
 
 Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
@@ -1673,3 +1677,8 @@ security evidence сохранены. Манифест, правила хран�
 Ветка PR #33 обновлена от main 587f5bc после слияния PR #35.
 Запись Evidence Housekeeping получила номер S235. Номер S232
 используется параллельным frontend PR #36. Запись S234 сохранена.
+
+## S237 — 2026-11-22: синхронизация frontend demo
+
+PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #35.
+Сохранены исходная запись S232, история main и текущая задача T335.
