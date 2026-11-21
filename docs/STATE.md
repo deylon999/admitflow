@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S229.
+Дата: 2026-11-21. Последняя сессия: S230.
 
 ## Продолжение
 
@@ -16,6 +16,7 @@ Stage 3 implemented and staged for review in feat/kan-218-batch-import. T318 is 
 
 ## Последняя завершённая работа
 
+- S230: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.
 - T317/T326 stage 2 merged through PR30. T318 implementation and local verification complete, review pending.
 
 ## Ограничения
