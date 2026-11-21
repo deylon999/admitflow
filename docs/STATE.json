@@ -6,7 +6,7 @@
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S229",
+  "lastSession": "S230",
   "resumeAction": "Stage 3 implemented and staged for review in feat/kan-218-batch-import. T318 is review until owner merge. Batch can resume capture and safely publish verified originals by year. CI on PR head; stage 4 depends on merged T318. Rehearsal2027 1/785. No working database import.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
@@ -17,6 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
+    "S230: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.",
     "T317/T326 stage 2 merged through PR30. T318 implementation and local verification complete, review pending."
   ],
   "environment": [

@@ -84,14 +84,15 @@ v3 не менялись; отличие src — только dead route map.
 Production build names/sizes совпадают с предыдущим зафиксированным билдом:
 JS index-CjjI_tS8.js 304.54 kB, CSS index-CdCUn9di.css 53.08 kB.
 На старте dist отсутствовал, поэтому byte identity со старым dist не заявляется.
-Render hashes и реальные PNG являются доказательствами сохранения интерфейса.
+Кадры каталога побайтово совпадают со снимками предыдущего этапа и с PNG
+из Git-эталона `2a7835f`. Ниже даны ссылки на сохранённые кадры каталога.
 
 | Страница | Desktop | Mobile |
 | --- | --- | --- |
-| Каталог вузов | [1440](foundation-cleanup/1440/universities.png) | [390](foundation-cleanup/390/universities.png) |
-| Вуз | [1440](foundation-cleanup/1440/university.png) | [390](foundation-cleanup/390/university.png) |
-| Направления | [1440](foundation-cleanup/1440/programs.png) | [390](foundation-cleanup/390/programs.png) |
-| Направление | [1440](foundation-cleanup/1440/program.png) | [390](foundation-cleanup/390/program.png) |
+| Каталог вузов | [1440](catalog-vertical-slice/1440/universities.png) | [390](catalog-vertical-slice/390/universities.png) |
+| Вуз | [1440](catalog-vertical-slice/1440/university.png) | [390](catalog-vertical-slice/390/university.png) |
+| Направления | [1440](catalog-vertical-slice/1440/programs.png) | [390](catalog-vertical-slice/390/programs.png) |
+| Направление | [1440](catalog-vertical-slice/1440/program.png) | [390](catalog-vertical-slice/390/program.png) |
 
 ## Проверки и фактические границы
 

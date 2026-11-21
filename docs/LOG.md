@@ -1616,3 +1616,11 @@ Native PostgreSQL selection101 and final16 pass without skips; CLI proof uses
 real historical originals and an owned temporary schema. HSE2027 published
 and repeated unchanged; SGU2026 separate; three candidates remain review_required.
 2027 rehearsal1/785. T318 review; CI on PR head and owner merge remain open.
+
+## S230 — 2026-11-21: evidence housekeeping
+
+База main a3f5078. Аудит SHA‑256: 580 файлов evidence, 171 группа совпадений,
+173 дополнительных пути. Убраны 168 повторных путей PNG после проверки
+отчётов, галерей, тестов и CI. Оригиналы, хеши, результаты проверок и
+security evidence сохранены. Манифест, правила хранения и команда
+повторного аудита находятся в docs/evidence/README.md.
