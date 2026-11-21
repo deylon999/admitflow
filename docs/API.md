@@ -14,15 +14,24 @@ unknown facts — null. Dev OpenAPI: `/api/openapi.json`; production docs зак
 | GET `/api/v1/catalog/programs/{id}` | campaign-scoped ID, вуз/код/название, year, форма/funding/category/seats, provenance; examRequirements: испытания по порядку документа, варианты на выбор, minScore или null, additionalTests ([] = нет, null = не собрано), benefits всегда null, notes, source (url, дата документа, sha256, дата проверки, сверка). null, если проверенных правил для этого года, кода и формы нет. historicalCutoff/forecast пока null |
 
 Unknown ID →404, invalid filters →422. Year 2000..2100, отсутствие совпадения
-не подменяется другой кампанией. knownProgramCount — число подтверждённых
-импортированных конкурсов, не весь перечень программ вуза. Требования ЕГЭ
-неизвестны: subjects пуст, заданный предмет не совпадает с unknown.
+не подменяется другой кампанией. `knownProgramCount` и `years` учитывают
+записи публичного каталога, включая сохранённые архивные конкурсы. Это
+подтверждённая часть перечня вуза. `subjects` пока пуст, заданный предмет
+не совпадает с unknown.
 
-Provenance: url, verifiedAt, sourceUpdatedAt nullable, kind monitoring/archive,
-edition и originalSha256 при наличии. Review/capture date не называется
+Provenance: url, verifiedAt, sourceUpdatedAt nullable, kind monitoring/archive/
+accreditation/admissions, edition и originalSha256 при наличии. Review/capture date не называется
 датой публикации. MICCEDU edition 2025 не равен кампании поступления 2026.
-Явный атомарный metadata import: `python -m app.catalog_import` из backend
-после миграций. Без него программы пусты; sources/worker не включаются.
+`id` остаётся ключом маршрута. `programId` — отдельная идентичность программы
+или null для старого архивного конкурса без одной явной связи. `competitionGroups`
+содержит подтверждённые конкурсы с собственными ID и provenance или `[]`.
+`code`, `studyForm`, `funding`, `category` и `seats` допускают null, если
+условие не подтверждено. [Согласование и полный пример](sources/program-catalog/contract.md).
+
+После миграций старый архивный набор устанавливает `python -m app.catalog_import`.
+Оператор публикует проверенный документ через `python -m app.program_catalog_import`.
+Только текущие verified-ревизии участвуют в публичном чтении. Исходные документы,
+черновики, заменённые ревизии и ошибки разбора остаются внутри системы.
 
 ## Сохранённые механизмы
 

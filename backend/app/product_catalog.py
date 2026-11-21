@@ -4,22 +4,24 @@ import re
 from typing import Literal
 
 from fastapi import Depends, HTTPException, Query
-from sqlalchemy import select
+from sqlalchemy import func, inspect, literal, select, tuple_, union_all
 from sqlalchemy.orm import Session
 
-from .admissions import Campaign, CompetitionGroup, University
-from .catalog_import import expected_fields, reviewed_profiles
+from .admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
+from .catalog_import import REVIEWED_IDS, expected_fields, reviewed_profiles
 from .accreditation_registry import SOURCE_URL as ACCREDITATION_URL, load_registry
 from .national_catalog import load_catalog
 from .exam_requirements import SUBJECTS, for_group
 from .product_catalog_schemas import (
-    Accreditation, CatalogProgram, CatalogUniversity, ExamOption, ExamRequirements, ExamSource, ExamTest, ProgramPage,
+    Accreditation, CatalogCompetitionGroup, CatalogProgram, CatalogUniversity, ExamOption, ExamRequirements, ExamSource, ExamTest, ProgramPage,
     Provenance, UniversityPage, UniversityNameSource, BranchInfo,
 )
 from .university_names import choose_name
+from .program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
 
 
-def programs(db):
+def legacy_programs(db, *, with_program_links=True):
+    """The bounded, independently reviewed archive slice retains all old values."""
     profiles = {p.group_id: p for p in reviewed_profiles()}
     institutions = {r.id: r for r in load_catalog().institutions}
     rows = db.execute(select(CompetitionGroup, Campaign, University)
@@ -27,6 +29,11 @@ def programs(db):
                       .join(University, University.id == Campaign.university_id)
                       .where(CompetitionGroup.id.in_(profiles))).all()
     result = []
+    links = {}
+    if with_program_links:
+        for group_id, program_id in db.execute(select(CompetitionGroupProgram.group_id, CompetitionGroupProgram.program_id)
+                                              .where(CompetitionGroupProgram.group_id.in_(profiles))):
+            links.setdefault(group_id, []).append(program_id)
     for group, campaign, university in rows:
         profile = profiles[group.id]
         meta = dict(profile.catalog)
@@ -39,17 +46,108 @@ def programs(db):
                 or university.id not in institutions):
             continue
         code = re.match(r'^\d{2}\.\d{2}\.\d{2}\b', group.title)
+        source = Provenance(url=profile.url, verified_at=profile.proof.verified_at,
+                            kind='archive', original_sha256=profile.proof.original_sha256)
+        linked = links.get(group.id, [])
         result.append(CatalogProgram(
-            id=group.id, university_id=university.id, university_name=university.name,
+            id=group.id, program_id=linked[0] if len(linked) == 1 else None,
+            competition_groups=[CatalogCompetitionGroup(id=group.id, campaign_id=campaign.id,
+                official_id=group.official_id, title=group.title, study_form=group.study_form,
+                funding=group.funding, category=group.category, seats=group.seats, provenance=source)],
+            university_id=university.id, university_name=university.name,
             region=institutions[university.id].region, campaign_id=campaign.id,
             year=campaign.year, level=campaign.level, code=code[0] if code else None,
             title=group.title, study_form=group.study_form, funding=group.funding,
             category=group.category, seats=group.seats,
             exam_requirements=exam_requirements(group, campaign, code[0] if code else None),
-            provenance=Provenance(url=profile.url, verified_at=profile.proof.verified_at,
-                                  kind='archive', original_sha256=profile.proof.original_sha256),
+            provenance=source,
         ))
     return result
+
+
+def program_index(db):
+    """SQL projection of current verified publications plus the bounded archive.
+
+    Identity collisions are quarantined, never resolved by title or latest date.
+    Queries materialize only requested pages; no applicant/raw data is selected.
+    """
+    legacy = {row.id: row for row in legacy_programs(db)}
+    known = [r.id for r in load_catalog().institutions] + [r.id for r in load_registry().registry_only]
+    current = (select(Fact.public_id.label('id'), Fact.program_id.label('pid'), Fact.revision_id.label('rid'),
+        Campaign.university_id, Campaign.year, Fact.sort_text, Fact.search_text,
+        func.count().over(partition_by=Fact.public_id).label('public_count'),
+        func.count().over(partition_by=(Fact.program_id, Fact.campaign_id)).label('scope_count'))
+        .join(Revision, Revision.id == Fact.revision_id)
+        .join(Publication, Publication.revision_id == Revision.id)
+        .join(Campaign, Campaign.id == Fact.campaign_id)
+        .where(Revision.verification_status == 'verified', Campaign.university_id.in_(known)).subquery())
+    published = select(*(current.c[k] for k in ('id','pid','rid','university_id','year','sort_text','search_text'))).where(
+        current.c.public_count == 1, current.c.scope_count == 1)
+    published = published.where(current.c.id.not_in(REVIEWED_IDS))
+    if legacy:
+        archive = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'), literal(None).label('rid'),
+            literal(p.university_id).label('university_id'), literal(p.year).label('year'),
+            literal(p.title.casefold()).label('sort_text'),
+            literal(f'{p.title} {p.code or ""} {p.university_name}'.casefold()).label('search_text')) for p in legacy.values()]
+        return union_all(published, *archive).subquery(), legacy
+    return published.subquery(), legacy
+
+
+def hydrate_programs(db, keys, legacy):
+    """Hydrate only the selected programme page and its explicitly reviewed links."""
+    selected = [(r.rid, r.pid) for r in keys if r.rid is not None]
+    result = dict(legacy)
+    if selected:
+        groups = {}
+        for value in db.scalars(select(GroupFact).where(tuple_(GroupFact.revision_id, GroupFact.program_id).in_(selected))):
+            groups.setdefault((value.revision_id, value.program_id), []).append(value.facts)
+        regions = {r.id:r.region for r in load_catalog().institutions}
+        regions.update({r.id:r.region or 'Регион не указан' for r in load_registry().registry_only})
+        for fact, revision, campaign in db.execute(select(Fact, Revision, Campaign)
+                .join(Revision, Revision.id == Fact.revision_id).join(Campaign, Campaign.id == Fact.campaign_id)
+                .where(tuple_(Fact.revision_id, Fact.program_id).in_(selected))):
+            source = Provenance(url=revision.original_url, verified_at=revision.checked_at,
+                                kind='admissions', original_sha256=revision.original_sha256)
+            result[fact.public_id] = CatalogProgram(id=fact.public_id, program_id=fact.program_id,
+                university_id=campaign.university_id, university_name=revision.university_name,
+                region=regions[campaign.university_id], campaign_id=campaign.id, year=campaign.year, level=campaign.level,
+                code=fact.code, title=fact.title, study_form=fact.study_form, funding=fact.funding,
+                category=fact.category, seats=fact.seats, provenance=source,
+                competition_groups=[CatalogCompetitionGroup(campaign_id=campaign.id, provenance=source,
+                    **{key:g[key] for key in ('id','official_id','title','study_form','funding','category','seats')})
+                    for g in sorted(groups.get((fact.revision_id, fact.program_id), []), key=lambda g:g['id'])])
+    return [result[r.id] for r in keys]
+
+
+def programs(db):
+    """Full export for coverage and offline checks against pre-upgrade schemas."""
+    schema = inspect(db.connection())
+    if not schema.has_table(Publication.__tablename__):
+        return legacy_programs(db, with_program_links=schema.has_table(CompetitionGroupProgram.__tablename__))
+    index, legacy = program_index(db)
+    result = []
+    for keys in db.execute(select(index).order_by(index.c.sort_text, index.c.id)).partitions(1000):
+        result.extend(hydrate_programs(db, keys, legacy))
+    return result
+
+
+def program_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
+    index, legacy = program_index(db)
+    base = select(index).where(index.c.university_id == university_id) if university_id else select(index)
+    scope = base.subquery()
+    years = list(db.scalars(select(scope.c.year).distinct().order_by(scope.c.year.desc())))
+    matches = base
+    if year is not None:
+        matches = matches.where(index.c.year == year)
+    if subject:
+        matches = matches.where(literal(False))
+    for token in q.casefold().split():
+        matches = matches.where(index.c.search_text.contains(token, autoescape=True))
+    total = db.scalar(select(func.count()).select_from(matches.subquery()))
+    order = (index.c.sort_text.desc(), index.c.id.desc()) if sort == 'name-desc' else (index.c.sort_text, index.c.id)
+    keys = db.execute(matches.order_by(*order).offset(offset).limit(limit)).all()
+    return ProgramPage(items=hydrate_programs(db, keys, legacy), total=total,
+                       next_offset=offset+limit if offset+limit < total else None, years=years, subjects=[])
 
 
 def exam_requirements(group, campaign, code):
@@ -119,24 +217,32 @@ def with_display_names(rows, snapshot, registry):
     return rows
 
 
-def universities(db):
+def universities(db, projection=None):
     snapshot = load_catalog()
     registry = load_registry()
     matched = registry.by_catalog_id
+    index, legacy = projection if projection is not None else program_index(db)
     by_university = {}
-    for program in programs(db):
-        by_university.setdefault(program.university_id, []).append(program)
+    for uid, year, count in db.execute(select(index.c.university_id, index.c.year, func.count())
+                                      .group_by(index.c.university_id, index.c.year)):
+        stats = by_university.setdefault(uid, dict(count=0, years=[]))
+        stats['count'] += count
+        stats['years'].append(year)
+    legacy_names = {p.university_id:p.university_name for p in legacy.values()}
     rows = [CatalogUniversity(
-        id=row.id, name=by_university[row.id][0].university_name if row.id in by_university else row.name,
+        id=row.id, name=legacy_names.get(row.id, row.name),
         legal_name=row.name, region=row.region, is_branch=row.is_branch,
         official_url=row.official_url,
         provenance=Provenance(url=row.provenance_url, verified_at=snapshot.captured_at,
                               kind='monitoring', edition=snapshot.edition),
-        known_program_count=len(by_university.get(row.id, [])),
-        years=sorted({p.year for p in by_university.get(row.id, [])}, reverse=True),
+        known_program_count=0, years=[],
         accreditation=accreditation(matched[row.registry_id], registry, matched[row.registry_id].match_method)
         if row.registry_id in matched and not row.is_branch else None,
     ) for row in snapshot.institutions] + registry_only(snapshot, registry)
+    for row in rows:
+        if row.id in by_university:
+            row.known_program_count = by_university[row.id]['count']
+            row.years = sorted(by_university[row.id]['years'], reverse=True)
     return with_display_names(rows, snapshot, registry)
 
 
@@ -146,21 +252,31 @@ def paginate(rows, offset, limit):
 
 
 def install(app, database):
+    def catalog_database(db: Session = Depends(database)):
+        # Counts, page IDs, facts and links must see one publication snapshot.
+        if db.get_bind().dialect.name == 'postgresql':
+            db.connection(execution_options={'isolation_level': 'REPEATABLE READ'})
+        yield db
+
     @app.get('/api/v1/catalog/universities', response_model=UniversityPage)
     def university_list(
         q: str = Query('', max_length=120), region: str = Query('', max_length=120),
         offset: int = Query(0, ge=0, le=100000), limit: int = Query(12, ge=1, le=50),
-        sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(database),
+        sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(catalog_database),
     ):
-        rows = universities(db)
+        projection = program_index(db)
+        rows = universities(db, projection)
         regions = sorted({row.region for row in rows})
         tokens = q.casefold().split()
-        course_text = {}
+        course_matches = {}
         if tokens:
-            for program in programs(db):
-                course_text[program.university_id] = course_text.get(program.university_id, '') + ' ' + program.title
+            index, _ = projection
+            for token in tokens:
+                course_matches[token] = set(db.scalars(select(index.c.university_id).distinct()
+                    .where(index.c.search_text.contains(token, autoescape=True))))
         matches = [row for row in rows if (not region or row.region == region)
-                   and all(token in f'{row.name} {row.legal_name} {row.display_name or ""} {" ".join(row.name_aliases)} {row.region} {row.id} {course_text.get(row.id, "")}'.casefold() for token in tokens)]
+                   and all(token in f'{row.name} {row.legal_name} {row.display_name or ""} {" ".join(row.name_aliases)} {row.region} {row.id}'.casefold()
+                           or row.id in course_matches.get(token, ()) for token in tokens)]
         matches.sort(key=lambda row: (row.name.casefold(), row.id), reverse=sort == 'name-desc')
         items, after = paginate(matches, offset, limit)
         return UniversityPage(items=items, total=len(matches), next_offset=after,
@@ -168,7 +284,7 @@ def install(app, database):
                               accreditation_date=load_registry().dataset_date.isoformat())
 
     @app.get('/api/v1/catalog/universities/{university_id}', response_model=CatalogUniversity)
-    def university_detail(university_id: str, db: Session = Depends(database)):
+    def university_detail(university_id: str, db: Session = Depends(catalog_database)):
         row = next((row for row in universities(db) if row.id == university_id), None)
         if row is None:
             raise HTTPException(404, 'Университет не найден.')
@@ -179,20 +295,15 @@ def install(app, database):
         q: str = Query('', max_length=120), university_id: str = Query('', alias='universityId', max_length=80),
         year: int | None = Query(None, ge=2000, le=2100), subject: str = Query('', max_length=120),
         offset: int = Query(0, ge=0, le=100000), limit: int = Query(12, ge=1, le=50),
-        sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(database),
+        sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(catalog_database),
     ):
-        rows = [row for row in programs(db) if not university_id or row.university_id == university_id]
-        years = sorted({row.year for row in rows}, reverse=True)
-        tokens = q.casefold().split()
-        matches = [row for row in rows if (year is None or row.year == year) and not subject
-                   and all(token in f'{row.title} {row.code or ""} {row.university_name}'.casefold() for token in tokens)]
-        matches.sort(key=lambda row: (row.title.casefold(), row.id), reverse=sort == 'name-desc')
-        items, after = paginate(matches, offset, limit)
-        return ProgramPage(items=items, total=len(matches), next_offset=after, years=years, subjects=[])
+        return program_page(db, q=q, university_id=university_id, year=year, subject=subject,
+                            offset=offset, limit=limit, sort=sort)
 
     @app.get('/api/v1/catalog/programs/{program_id}', response_model=CatalogProgram)
-    def program_detail(program_id: str, db: Session = Depends(database)):
-        row = next((row for row in programs(db) if row.id == program_id), None)
-        if row is None:
+    def program_detail(program_id: str, db: Session = Depends(catalog_database)):
+        index, legacy = program_index(db)
+        keys = db.execute(select(index).where(index.c.id == program_id)).all()
+        if not keys:
             raise HTTPException(404, 'Направление не найдено.')
-        return row
+        return hydrate_programs(db, keys, legacy)[0]
