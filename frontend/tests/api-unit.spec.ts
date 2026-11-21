@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { mock } from 'node:test';
+import fashion from '../../docs/sources/program-catalog/response-proposal.json' with { type: 'json' };
 
 // Isolated transport/decoder tests, no production endpoint or browser fixtures.
 test.describe.configure({ mode: 'default' });
@@ -119,6 +120,27 @@ test('catalog decoder returns concrete typed DTO and retains official provenance
     expect(catalog.university(record).provenance.originalSha256).toBe(provenance.originalSha256);
     expect(() => catalog.university({ ...record, provenance: { ...provenance, originalSha256: 'bad' } })).toThrow();
     expect(() => catalog.university({ ...record, years: [0] })).toThrow();
+});
+
+test('programme decoder preserves nulls and reads old servers during rollout', () => {
+    expect(catalog.program(fashion)).toEqual(fashion);
+    const { programId, competitionGroups, ...old } = fashion;
+    const archive = { ...old, id: 'sgu-2026-4588', year: 2026, studyForm: 'full-time', funding: 'budget', category: 'general', seats: 16,
+        provenance: { ...fashion.provenance, kind: 'archive' } };
+    expect(catalog.program(archive)).toEqual({ ...archive, programId: null, competitionGroups: [] });
+    expect(() => catalog.program({ ...fashion, programId: null })).toThrow();
+    expect(() => catalog.program({ ...fashion, competitionGroups: null })).toThrow();
+    expect(() => catalog.program({ ...fashion, seats: -1 })).toThrow();
+    expect(programId).toBe(fashion.programId);
+    expect(competitionGroups).toEqual([]);
+});
+
+test('programme decoder rejects a contest from a different campaign', () => {
+    const group = { id: 'test-contest', campaignId: fashion.campaignId, officialId: '2027/01', title: 'Fixture',
+        studyForm: 'full-time', funding: 'budget', category: 'separate-quota', seats: 0, provenance: fashion.provenance };
+    expect(catalog.program({ ...fashion, competitionGroups: [group] }).competitionGroups).toEqual([group]);
+    expect(() => catalog.program({ ...fashion, competitionGroups: [{ ...group, campaignId: 'other' }] })).toThrow();
+    expect(() => catalog.program({ ...fashion, competitionGroups: [group, group] })).toThrow();
 });
 
 test('demo links merge query and hash while explicit exit and real catalog remain live', async () => {

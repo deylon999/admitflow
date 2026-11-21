@@ -3,8 +3,9 @@ import { Surface } from '../shared/UI';
 import type { CatalogPage, CatalogProgram, ExamRequirements, ExamTest, Provenance, University } from './types';
 
 export const unknown = 'Нет данных';
-export const formName = (value: string) => ({ 'full-time': 'Очная', 'part-time': 'Очно-заочная', mixed: 'Смешанная' }[value] ?? unknown);
-export const fundingName = (value: string) => ({ budget: 'Бюджет', contract: 'Платное' }[value] ?? unknown);
+export const formName = (value: string | null) => ({ 'full-time': 'Очная', 'part-time': 'Очно-заочная', mixed: 'Смешанная' }[value ?? ''] ?? unknown);
+export const fundingName = (value: string | null) => ({ budget: 'Бюджет', contract: 'Платное', paid: 'Платное' }[value ?? ''] ?? unknown);
+export const seatText = (value: number | null) => value === null ? unknown : `${value} мест`;
 export const universityPath = (id: string) => `/universities/${encodeURIComponent(id)}`;
 export const programPath = (id: string) => `/programs/${encodeURIComponent(id)}`;
 
@@ -12,7 +13,7 @@ export function SourceNote({ source }: { source: Provenance }) {
   const date = new Intl.DateTimeFormat('ru-RU', { timeZone: 'UTC' }).format(new Date(source.verifiedAt));
   return <p className="af-caption af-catalog-source">
     <a href={source.url} target="_blank" rel="noreferrer">Источник ↗</a>
-    {' · '}{source.kind === 'archive' ? 'Архив' : source.kind === 'accreditation' ? 'Реестр аккредитации Рособрнадзора' : `Мониторинг ${source.edition}`}
+    {' · '}{source.kind === 'archive' ? 'Архив' : source.kind === 'admissions' ? 'Документ о приёме' : source.kind === 'accreditation' ? 'Реестр аккредитации Рособрнадзора' : `Мониторинг ${source.edition}`}
     {' · '}Проверено: <time dateTime={source.verifiedAt}>{date}</time>
   </p>;
 }
@@ -37,7 +38,7 @@ export function CatalogCard({ university, program }: { university?: University; 
         <span> · {program?.region ?? university?.region}</span>
       </div>
       <h3><RouteLink to={href} tabIndex={program ? undefined : 0} title={program ? undefined : university?.legalName}>{program?.title ?? name}</RouteLink></h3>
-      <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${program.seats ?? unknown} мест` : branchDescription(university!)}</p>
+      <p>{program ? `${program.code ?? unknown} · ${fundingName(program.funding)} · ${seatText(program.seats)}` : branchDescription(university!)}</p>
     </div>
     <div className="af-program-card__stats">
       <span>{program ? 'КАМПАНИЯ' : university?.provenance.kind === 'accreditation' ? 'ИСТОЧНИК' : 'РЕДАКЦИЯ'}</span>

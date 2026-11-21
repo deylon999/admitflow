@@ -2,7 +2,7 @@ export type Provenance = {
   url: string;
   verifiedAt: string;
   sourceUpdatedAt: string | null;
-  kind: 'monitoring' | 'archive' | 'accreditation';
+  kind: 'monitoring' | 'archive' | 'accreditation' | 'admissions';
   edition: number | null;
   originalSha256: string | null;
 };
@@ -51,8 +51,22 @@ export type ExamRequirements = {
   source: { url: string; title: string; documentDate: string; sha256: string; checkedAt: string; crossCheckUrl: string | null };
 };
 
+export type CatalogCompetitionGroup = {
+  id: string;
+  campaignId: string;
+  officialId: string;
+  title: string;
+  studyForm: string;
+  funding: string;
+  category: string;
+  seats: number | null;
+  provenance: Provenance;
+};
+
 export type CatalogProgram = {
   id: string;
+  programId: string | null;
+  competitionGroups: CatalogCompetitionGroup[];
   universityId: string;
   universityName: string;
   region: string;
@@ -61,9 +75,9 @@ export type CatalogProgram = {
   level: string;
   code: string | null;
   title: string;
-  studyForm: string;
-  funding: string;
-  category: string;
+  studyForm: string | null;
+  funding: string | null;
+  category: string | null;
   seats: number | null;
   historicalCutoff: null;
   examRequirements: ExamRequirements | null;
