@@ -184,7 +184,10 @@
       "consumers": [],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.account_actions": {
       "path": "backend/app/account_actions.py",
@@ -211,7 +214,12 @@
       "patch_references": [],
       "inbound": [
         "app.auth.account_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "InvalidActionToken"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.account_api": {
       "path": "backend/app/account_api.py",
@@ -249,7 +257,17 @@
       "patch_references": [
         "backend/tests/test_auth_import_compatibility.py:54"
       ],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_account_email_security.py:81",
+        "backend/tests/test_account_http_security.py:108",
+        "backend/tests/test_account_lifecycle_security.py:134",
+        "backend/tests/test_account_lifecycle_security.py:200",
+        "backend/tests/test_account_lifecycle_security.py:229",
+        "backend/tests/test_account_login.py:137"
+      ]
     },
     "app.account_dto": {
       "path": "backend/app/account_dto.py",
@@ -280,7 +298,22 @@
       "patch_references": [],
       "inbound": [
         "app.auth.account_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "RegistrationRequest",
+        "LoginRequest",
+        "EmailActionRequest",
+        "TokenConfirmation",
+        "PasswordResetRequest",
+        "EmailActionRead",
+        "AccountRead",
+        "AccountSessionRead",
+        "CsrfRead",
+        "EmptyAuthRequest",
+        "RegistrationRead"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.account_limits": {
       "path": "backend/app/account_limits.py",
@@ -314,7 +347,18 @@
       "patch_references": [],
       "inbound": [
         "app.auth.account_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "Budget",
+        "AuthRateExceeded"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Budget",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.account_mail": {
       "path": "backend/app/account_mail.py",
@@ -340,7 +384,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.account_security": {
       "path": "backend/app/account_security.py",
@@ -371,7 +418,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.accounts": {
       "path": "backend/app/accounts.py",
@@ -408,7 +458,10 @@
       "patch_references": [],
       "inbound": [
         "app.migrations"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.accreditation_registry": {
       "path": "backend/app/accreditation_registry.py",
@@ -454,7 +507,26 @@
         "app.product_catalog",
         "app.university_name_report",
         "app.university_names"
-      ]
+      ],
+      "module_class_definitions": [
+        "Organisation",
+        "Registry"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Organisation",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Registry",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_registry",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.admissions": {
       "path": "backend/app/admissions.py",
@@ -566,7 +638,42 @@
         "app.sources.retention",
         "app.sources.status",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "University",
+        "Campaign",
+        "Program",
+        "CampaignProgram",
+        "CompetitionGroup",
+        "CompetitionGroupProgram",
+        "Source",
+        "SourceSnapshot",
+        "CandidateEntry",
+        "PublishedSnapshot",
+        "Subscription",
+        "Assessment",
+        "ChangeEvent",
+        "SourceOperation"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "normalize_university_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_university_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_group_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_group_search",
+          "decorator": "event.listens_for"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.auth": {
       "path": "backend/app/auth/__init__.py",
@@ -589,7 +696,10 @@
         "backend/tests/test_auth_import_compatibility.py:42"
       ],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.auth.account_api": {
       "path": "backend/app/auth/account_api.py",
@@ -635,7 +745,13 @@
       "inbound": [
         "app.account_api",
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "AuthProblem",
+        "AuthRoute"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.auth.account_mail": {
       "path": "backend/app/auth/account_mail.py",
@@ -666,7 +782,15 @@
         "app.account_mail",
         "app.auth.account_api",
         "app.smtp_check"
-      ]
+      ],
+      "module_class_definitions": [
+        "MailDeliveryError",
+        "RegistrationMailer",
+        "UnavailableRegistrationMailer",
+        "SmtpAccountMailer"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.auth.account_security": {
       "path": "backend/app/auth/account_security.py",
@@ -708,7 +832,23 @@
         "app.auth.account_mail",
         "app.config",
         "app.smtp_check"
-      ]
+      ],
+      "module_class_definitions": [
+        "InvalidAccountInput",
+        "PasswordCapacityError",
+        "PasswordCheck"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "_hash_slot",
+          "decorator": "contextmanager"
+        },
+        {
+          "symbol": "PasswordCheck",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.auth.accounts": {
       "path": "backend/app/auth/accounts.py",
@@ -737,7 +877,17 @@
         "app.accounts",
         "app.auth.account_api",
         "app.maintenance"
-      ]
+      ],
+      "module_class_definitions": [
+        "AccountUser",
+        "AccountSession",
+        "AccountRefreshToken",
+        "AccountActionToken",
+        "AccountCsrfContext",
+        "AccountRateBucket"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.backup": {
       "path": "backend/app/backup.py",
@@ -784,7 +934,18 @@
       "patch_references": [
         "backend/tests/test_restore.py:104"
       ],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [
+        "BackupError",
+        "BackupManifest"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "expected_schema_objects",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.calculation": {
       "path": "backend/app/calculation.py",
@@ -819,6 +980,14 @@
         "app.importing",
         "app.main",
         "app.schemas"
+      ],
+      "module_class_definitions": [
+        "CalculationInput",
+        "CalculationResult"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_history_versions.py:14"
       ]
     },
     "app.catalog": {
@@ -859,7 +1028,10 @@
         "app.coverage",
         "app.main",
         "app.sources.pilots"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.catalog_identity": {
       "path": "backend/app/catalog_identity.py",
@@ -892,7 +1064,10 @@
       "patch_references": [],
       "inbound": [
         "app.program_catalog_import"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.catalog_import": {
       "path": "backend/app/catalog_import.py",
@@ -938,7 +1113,10 @@
         "app.product_catalog",
         "app.program_catalog_import",
         "app.university_name_report"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.catalog_lock": {
       "path": "backend/app/catalog_lock.py",
@@ -963,7 +1141,10 @@
         "app.program_catalog_import",
         "app.sources.pilots",
         "app.sources.profile_registration"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.catalog_search": {
       "path": "backend/app/catalog_search.py",
@@ -982,7 +1163,10 @@
       "patch_references": [],
       "inbound": [
         "app.admissions"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.changes": {
       "path": "backend/app/changes.py",
@@ -1010,7 +1194,13 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "ChangeRead",
+        "ChangePage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.competition_api": {
       "path": "backend/app/competition_api.py",
@@ -1044,7 +1234,19 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "SnapshotMeta",
+        "SnapshotHistoryItem",
+        "CompetitionRead",
+        "CompetitionRow",
+        "CompetitionRows",
+        "Bin",
+        "Above",
+        "CompetitionSummary"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.config": {
       "path": "backend/app/config.py",
@@ -1127,7 +1329,17 @@
         "app.sources.cli",
         "app.sources.retention",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "Settings"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Settings",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.coverage": {
       "path": "backend/app/coverage.py",
@@ -1165,7 +1377,10 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.database": {
       "path": "backend/app/database.py",
@@ -1256,7 +1471,17 @@
         "app.sources.retention",
         "app.university_name_report",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "Base",
+        "BrowserSession",
+        "Watch",
+        "LookupBudget",
+        "Snapshot",
+        "OperationRecord"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.diagnostics": {
       "path": "backend/app/diagnostics.py",
@@ -1293,7 +1518,10 @@
       ],
       "inbound": [
         "app.sources.audit"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.direction_budget": {
       "path": "backend/app/direction_budget.py",
@@ -1322,7 +1550,12 @@
         "app.importing",
         "app.main",
         "app.source_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "DirectionBudget"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.exam_requirements": {
       "path": "backend/app/exam_requirements.py",
@@ -1362,7 +1595,41 @@
       "patch_references": [],
       "inbound": [
         "app.product_catalog"
-      ]
+      ],
+      "module_class_definitions": [
+        "Option",
+        "Test",
+        "Source",
+        "GroupRules",
+        "Artifact"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Option",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Test",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Source",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "GroupRules",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Artifact",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.http": {
       "path": "backend/app/http.py",
@@ -1398,7 +1665,14 @@
       "inbound": [
         "app.auth.account_api",
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "BodyTooLarge",
+        "RequestBudgetMiddleware",
+        "RequestDiagnosticsMiddleware"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.importing": {
       "path": "backend/app/importing.py",
@@ -1429,7 +1703,10 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.jobs": {
       "path": "backend/app/jobs.py",
@@ -1497,7 +1774,20 @@
         "app.sources.cli",
         "app.sources.status",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "SourceJob",
+        "SourceCheck",
+        "Lease",
+        "LostLease"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Lease",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.main": {
       "path": "backend/app/main.py",
@@ -1620,7 +1910,10 @@
         "backend/tests/test_source_security.py:31",
         "backend/tests/test_subscriptions.py:70"
       ],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.maintenance": {
       "path": "backend/app/maintenance.py",
@@ -1651,7 +1944,10 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.migration_checks": {
       "path": "backend/app/migration_checks.py",
@@ -1677,7 +1973,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.migrations": {
       "path": "backend/app/migrations.py",
@@ -1721,7 +2020,15 @@
       "inbound": [
         "app.main",
         "app.program_catalog_import"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [
+        {
+          "symbol": "schema_heads",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.national_catalog": {
       "path": "backend/app/national_catalog.py",
@@ -1775,7 +2082,26 @@
         "app.program_catalog_sources",
         "app.university_name_report",
         "app.university_names"
-      ]
+      ],
+      "module_class_definitions": [
+        "Institution",
+        "CatalogSnapshot"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Institution",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "CatalogSnapshot",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_catalog",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.national_coverage": {
       "path": "backend/app/national_coverage.py",
@@ -1820,7 +2146,10 @@
       "patch_references": [],
       "inbound": [
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.observability": {
       "path": "backend/app/observability.py",
@@ -1868,7 +2197,12 @@
         "app.main",
         "app.national_coverage",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "WorkerHeartbeat"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.operations": {
       "path": "backend/app/operations.py",
@@ -1897,7 +2231,10 @@
       "inbound": [
         "app.main",
         "app.source_api"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.product_catalog": {
       "path": "backend/app/product_catalog.py",
@@ -1938,6 +2275,11 @@
         "app.main",
         "app.national_coverage",
         "app.university_name_report"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_program_publication_api.py:152"
       ]
     },
     "app.product_catalog_schemas": {
@@ -1964,7 +2306,24 @@
       "patch_references": [],
       "inbound": [
         "app.product_catalog"
-      ]
+      ],
+      "module_class_definitions": [
+        "Provenance",
+        "Accreditation",
+        "UniversityNameSource",
+        "BranchInfo",
+        "CatalogUniversity",
+        "ExamOption",
+        "ExamTest",
+        "ExamSource",
+        "ExamRequirements",
+        "CatalogCompetitionGroup",
+        "CatalogProgram",
+        "UniversityPage",
+        "ProgramPage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.program_catalog_batch": {
       "path": "backend/app/program_catalog_batch.py",
@@ -2015,7 +2374,10 @@
         "scripts/qa/verify_program_catalog_batch.py:32"
       ],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.program_catalog_batch_fetch": {
       "path": "backend/app/program_catalog_batch_fetch.py",
@@ -2049,7 +2411,10 @@
       ],
       "inbound": [
         "app.program_catalog_batch"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.program_catalog_import": {
       "path": "backend/app/program_catalog_import.py",
@@ -2100,6 +2465,12 @@
       "patch_references": [],
       "inbound": [
         "app.program_catalog_batch"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_program_catalog_import.py:134",
+        "backend/tests/test_program_catalog_import.py:309"
       ]
     },
     "app.program_catalog_models": {
@@ -2136,7 +2507,17 @@
         "app.product_catalog",
         "app.program_catalog_import",
         "app.sources.retention"
-      ]
+      ],
+      "module_class_definitions": [
+        "ProgramCatalogDocument",
+        "ProgramCatalogRevision",
+        "ProgramCatalogFact",
+        "ProgramCatalogGroupFact",
+        "ProgramCatalogPublication",
+        "ProgramCatalogImportAttempt"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.program_catalog_review": {
       "path": "backend/app/program_catalog_review.py",
@@ -2171,7 +2552,10 @@
       "inbound": [
         "app.program_catalog_import",
         "app.program_catalog_sources"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.program_catalog_sources": {
       "path": "backend/app/program_catalog_sources.py",
@@ -2202,7 +2586,17 @@
       "patch_references": [],
       "inbound": [
         "app.program_catalog_batch"
-      ]
+      ],
+      "module_class_definitions": [
+        "ProgrammeSource"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "ProgrammeSource",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.scenario_api": {
       "path": "backend/app/scenario_api.py",
@@ -2235,7 +2629,14 @@
       "inbound": [
         "app.changes",
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "Change",
+        "ScenarioRead",
+        "ScenarioPage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.scenario_explanations": {
       "path": "backend/app/scenario_explanations.py",
@@ -2267,7 +2668,12 @@
       "inbound": [
         "app.scenario_api",
         "app.scenario_storage"
-      ]
+      ],
+      "module_class_definitions": [
+        "Explanation"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.scenario_storage": {
       "path": "backend/app/scenario_storage.py",
@@ -2312,7 +2718,10 @@
         "app.source_api",
         "app.sources.cli",
         "app.sources.publishing"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.scenarios": {
       "path": "backend/app/scenarios.py",
@@ -2347,7 +2756,14 @@
         "app.scenario_api",
         "app.scenario_explanations",
         "app.scenario_storage"
-      ]
+      ],
+      "module_class_definitions": [
+        "ScenarioNumbers",
+        "ScenarioResult",
+        "PreparedRows"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.schema_base": {
       "path": "backend/app/schema_base.py",
@@ -2380,7 +2796,12 @@
         "app.schemas",
         "app.source_api",
         "app.source_catalog"
-      ]
+      ],
+      "module_class_definitions": [
+        "CamelModel"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.schemas": {
       "path": "backend/app/schemas.py",
@@ -2414,7 +2835,25 @@
         "app.catalog",
         "app.importing",
         "app.main"
-      ]
+      ],
+      "module_class_definitions": [
+        "ValidationProblem",
+        "WatchCreate",
+        "SessionRead",
+        "UniversityRead",
+        "CatalogRead",
+        "SnapshotRead",
+        "WatchRead",
+        "WatchDetail",
+        "DataExport",
+        "ImportRequest",
+        "ImportResult",
+        "CoverageRead",
+        "HistoryPage",
+        "SourceStatus"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.smtp_check": {
       "path": "backend/app/smtp_check.py",
@@ -2440,7 +2879,13 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_smtp_check.py:15",
+        "backend/tests/test_smtp_check.py:25"
+      ]
     },
     "app.source_api": {
       "path": "backend/app/source_api.py",
@@ -2485,6 +2930,22 @@
         "app.main",
         "app.scenario_api",
         "app.source_history"
+      ],
+      "module_class_definitions": [
+        "LookupInput",
+        "CandidateFact",
+        "LookupResult",
+        "ConfirmInput",
+        "SubscriptionSaved",
+        "ArchiveDirection",
+        "ArchiveHistoryItem",
+        "ArchiveHistoryPage",
+        "SourceCheckRead",
+        "ArchiveExport"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_source_security.py:19"
       ]
     },
     "app.source_catalog": {
@@ -2520,7 +2981,15 @@
       "inbound": [
         "app.main",
         "app.source_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "GroupRead",
+        "BranchRead",
+        "CatalogFacets",
+        "GroupCatalog"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.source_history": {
       "path": "backend/app/source_history.py",
@@ -2556,7 +3025,10 @@
         "app.scenario_storage",
         "app.source_api",
         "app.sources.publishing"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.source_operations": {
       "path": "backend/app/source_operations.py",
@@ -2595,7 +3067,10 @@
         "app.sources.cli",
         "app.sources.pilots",
         "app.sources.profile_registration"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.source_tokens": {
       "path": "backend/app/source_tokens.py",
@@ -2623,7 +3098,13 @@
       "patch_references": [],
       "inbound": [
         "app.source_api"
-      ]
+      ],
+      "module_class_definitions": [
+        "Confirmation",
+        "ConfirmationError"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources": {
       "path": "backend/app/sources/__init__.py",
@@ -2642,7 +3123,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.adapters": {
       "path": "backend/app/sources/adapters/__init__.py",
@@ -2659,7 +3143,10 @@
       "consumers": [],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.adapters.sgu2026": {
       "path": "backend/app/sources/adapters/sgu2026.py",
@@ -2705,7 +3192,10 @@
       "inbound": [
         "app.sources.pilots",
         "app.sources.registry"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.audit": {
       "path": "backend/app/sources/audit.py",
@@ -2747,7 +3237,15 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [
+        {
+          "symbol": "readonly_connection",
+          "decorator": "contextmanager"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.batch": {
       "path": "backend/app/sources/batch.py",
@@ -2778,7 +3276,10 @@
         "backend/tests/test_profile_batch.py:52",
         "backend/tests/test_profile_batch.py:60"
       ],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.capture": {
       "path": "backend/app/sources/capture.py",
@@ -2813,7 +3314,13 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [
+        "CaptureError",
+        "Manifest"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.cli": {
       "path": "backend/app/sources/cli.py",
@@ -2853,7 +3360,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.contracts": {
       "path": "backend/app/sources/contracts.py",
@@ -2928,7 +3438,20 @@
         "app.sources.table_family",
         "app.sources.validation",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "CandidateRow",
+        "ParsedList",
+        "SourceBinding",
+        "AdapterError"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "SourceBinding",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.fetcher": {
       "path": "backend/app/sources/fetcher.py",
@@ -3005,7 +3528,31 @@
         "app.sources.registry",
         "app.sources.table_family",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "FetchError",
+        "FetchPolicy",
+        "RawResponse",
+        "FetchResult",
+        "PinnedHTTPSConnection",
+        "HTTPSReader",
+        "Fetcher"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "FetchPolicy",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "RawResponse",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "FetchResult",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.html_inspection": {
       "path": "backend/app/sources/html_inspection.py",
@@ -3034,7 +3581,10 @@
       "inbound": [
         "app.sources.adapters.sgu2026",
         "app.sources.table_family"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.navigation": {
       "path": "backend/app/sources/navigation.py",
@@ -3063,7 +3613,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.page_cache": {
       "path": "backend/app/sources/page_cache.py",
@@ -3094,7 +3647,12 @@
       "patch_references": [],
       "inbound": [
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "PageFetchCache"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.pilots": {
       "path": "backend/app/sources/pilots.py",
@@ -3143,7 +3701,10 @@
       "patch_references": [],
       "inbound": [
         "app.sources.cli"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.profile_catalog": {
       "path": "backend/app/sources/profile_catalog.py",
@@ -3184,7 +3745,10 @@
       "patch_references": [],
       "inbound": [
         "app.sources.table_profiles"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.profile_registration": {
       "path": "backend/app/sources/profile_registration.py",
@@ -3229,7 +3793,10 @@
       "inbound": [
         "app.sources.batch",
         "app.sources.cli"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.publishing": {
       "path": "backend/app/sources/publishing.py",
@@ -3303,7 +3870,10 @@
         "app.sources.pilots",
         "app.sources.status",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.registry": {
       "path": "backend/app/sources/registry.py",
@@ -3391,7 +3961,23 @@
         "app.sources.table_family",
         "app.sources.table_profiles",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "Attestation",
+        "Adapter",
+        "Registry"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Attestation",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Adapter",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.retention": {
       "path": "backend/app/sources/retention.py",
@@ -3425,7 +4011,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.status": {
       "path": "backend/app/sources/status.py",
@@ -3464,7 +4053,10 @@
         "app.observability",
         "app.source_catalog",
         "app.sources.cli"
-      ]
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.sources.storage": {
       "path": "backend/app/sources/storage.py",
@@ -3552,7 +4144,19 @@
         "app.sources.publishing",
         "app.sources.retention",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "LockState",
+        "StorageError",
+        "RawStore"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "thread_lock",
+          "decorator": "contextmanager"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.structured_family": {
       "path": "backend/app/sources/structured_family.py",
@@ -3592,7 +4196,17 @@
       "patch_references": [],
       "inbound": [
         "app.sources.registry"
-      ]
+      ],
+      "module_class_definitions": [
+        "StructuredProfile"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "StructuredProfile",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.table_family": {
       "path": "backend/app/sources/table_family.py",
@@ -3640,7 +4254,17 @@
       "inbound": [
         "app.sources.registry",
         "app.sources.table_profiles"
-      ]
+      ],
+      "module_class_definitions": [
+        "TableProfile"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "TableProfile",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.sources.table_profiles": {
       "path": "backend/app/sources/table_profiles.py",
@@ -3700,6 +4324,11 @@
         "app.sources.profile_catalog",
         "app.sources.profile_registration",
         "app.sources.registry"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_profile_batch.py:121"
       ]
     },
     "app.sources.validation": {
@@ -3733,7 +4362,23 @@
         "app.sources.audit",
         "app.sources.publishing",
         "app.worker"
-      ]
+      ],
+      "module_class_definitions": [
+        "Quarantined",
+        "QualityPolicy",
+        "ValidatedList"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "QualityPolicy",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "ValidatedList",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.university_name_report": {
       "path": "backend/app/university_name_report.py",
@@ -3765,7 +4410,10 @@
       ],
       "string_references": [],
       "patch_references": [],
-      "inbound": []
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     },
     "app.university_names": {
       "path": "backend/app/university_names.py",
@@ -3805,7 +4453,21 @@
       ],
       "inbound": [
         "app.product_catalog"
-      ]
+      ],
+      "module_class_definitions": [
+        "NameChoice"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "NameChoice",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_reviews",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
     },
     "app.worker": {
       "path": "backend/app/worker.py",
@@ -3892,7 +4554,12 @@
       ],
       "inbound": [
         "app.sources.capture"
-      ]
+      ],
+      "module_class_definitions": [
+        "FetchMetadata"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
     }
   },
   "after": {

@@ -10382,7 +10382,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10396,7 +10396,12 @@
       "acceptance": [
         "Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report."
+        }
+      ],
       "blockedReason": null
     }
   ]

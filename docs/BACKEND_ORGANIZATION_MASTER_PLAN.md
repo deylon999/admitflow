@@ -8,7 +8,7 @@
 
 ## Граф и ресурсы
 
-[Машиночитаемый аудит](evidence/backend-organization-dependencies.json) содержит для каждого из 88 исходных Python-модулей исходящие eager и deferred imports, обратные зависимости, внешние библиотеки, entrypoints, статические внешние ссылки, строковые ссылки, точки подмены и присваивания на уровне модуля. Ссылки в JSON относятся к строкам исходного SHA.
+[Машиночитаемый аудит](evidence/backend-organization-dependencies.json) содержит для каждого из 88 исходных Python-модулей исходящие eager и deferred imports, обратные зависимости, внешние библиотеки, entrypoints, статические внешние ссылки, строковые ссылки, строковые и объектные точки подмены, регистрации ORM и присваивания на уровне модуля. Ссылки в JSON относятся к строкам исходного SHA.
 
 - Alembic регистрирует отдельно auth, общие admissions, catalogue publications, jobs и worker heartbeats. Старый импорт `app.database` регистрирует гостевые модели. При переносе регистрация остаётся явной.
 - Docker копирует `backend/app` и ресурсы; Compose запускает `app.main:app` и `python -m app.worker`. Linux runtime использует `resource`. CLI и QA runners находятся также в `scripts/`, `backend/tests/` и `frontend/scripts/`.
@@ -34,7 +34,6 @@
 | Эксплуатационный журнал и расписание | Jobs импортируют `record`, а контроль источника лениво загружает jobs | Планировщик, status и source controls используют одну `operations/source_job_models.py` | Metadata, lease, worker и операции проверены |
 | Два bounded-fetch runtime | Worker загружает конкурсные списки, batch fetch загружает документы приёма | Оба остаются со своими лимитами, IPC-контрактами и обработкой ошибок | Доказанной эквивалентности нет |
 | Идемпотентность ручных и автоматических записей | Разные fingerprint, replay и retirement правила | Общие функции используются только в исходных местах | Native PostgreSQL проверяет обе семантики |
-
 | Преобразование UTC | Две одинаковые реализации в `main.py` и `sources/publishing.py` | Один `core/time.py`, исторические импорты сохранены | Тест покрывает naive и смещённый aware datetime |
 
 ## Реализация

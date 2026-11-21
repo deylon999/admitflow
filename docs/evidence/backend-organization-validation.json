@@ -25,6 +25,19 @@
     },
     "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5"
   },
+  "comparison_notes": {
+    "route_callable_relocations": [
+      "install_legacy_catalog",
+      "guest_dependencies",
+      "install_watchlist",
+      "install_status_routes"
+    ],
+    "volatile_fields": [
+      "diagnostics.generatedAt",
+      "session deletion cookie expiry at response time"
+    ],
+    "comparison_inputs": "11 JSON snapshots, schema-only dump, runtime response, legacy CLI stdout, SMTP configuration output, cleanup counts and idle worker"
+  },
   "stages": {
     "main": {
       "revision": "1e7693ebc4ae1761aaba8dcbf659ff5793235813",
@@ -126,7 +139,43 @@
         "head": "a579518de239696447352f64633b8f51c755158f",
         "state": "open"
       },
-      "hosted": {}
+      "hosted": {
+        "head": "a579518de239696447352f64633b8f51c755158f",
+        "state": "open",
+        "base": "main",
+        "runs": [
+          {
+            "id": 44956188160,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956188160",
+            "event": "pull_request",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "frontend": "success",
+              "etl": "success",
+              "backend": "in_progress",
+              "migrations": "success"
+            }
+          },
+          {
+            "id": 44956181989,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956181989",
+            "event": "push",
+            "status": "completed",
+            "conclusion": "success",
+            "jobs": 4,
+            "success_jobs": 4,
+            "job_status": {
+              "frontend": "success",
+              "backend": "success",
+              "etl": "success",
+              "migrations": "success"
+            }
+          }
+        ]
+      }
     },
     "catalog": {
       "revision": "c8d869ee7370f5dbe9fce134abc016ee57cabe11",
@@ -173,23 +222,72 @@
         "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
       },
       "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
-      "pr": null,
-      "hosted": {}
+      "pr": {
+        "number": 39,
+        "url": "https://github.com/deylon999/admitflow/pull/39",
+        "base": "refactor/backend-core",
+        "head": "c8d869ee7370f5dbe9fce134abc016ee57cabe11",
+        "state": "open"
+      },
+      "hosted": {
+        "head": "c8d869ee7370f5dbe9fce134abc016ee57cabe11",
+        "state": "open",
+        "base": "refactor/backend-core",
+        "runs": [
+          {
+            "id": 44956680749,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956680749",
+            "event": "pull_request",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "etl": "success",
+              "migrations": "success",
+              "frontend": "success",
+              "backend": "in_progress"
+            }
+          },
+          {
+            "id": 44956675833,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956675833",
+            "event": "push",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "etl": "success",
+              "migrations": "success",
+              "backend": "in_progress",
+              "frontend": "success"
+            }
+          }
+        ]
+      }
     },
     "competitions": {
       "revision": "6840f96035f624991140e2751626836758958876",
       "application_tree": "b9be28505c0318cc28d5aa663081394e43bb4e11",
-      "backend": {},
-      "unchanged_baseline_cases": null,
+      "backend": {
+        "tests": 1253,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1252,
+        "seconds": 751.36
+      },
+      "unchanged_baseline_cases": 1224,
       "backend_selected_passed": 68,
       "backend_subsystem_passed": {
-        "account_security_smtp": 0,
-        "catalog": 0,
-        "competitions": 0,
-        "watchlist": 0,
-        "sources": 0,
-        "operations": 0,
-        "migrations": 0
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
       },
       "frontend": {
         "regular": 387,
@@ -214,23 +312,72 @@
         "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
       },
       "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
-      "pr": null,
-      "hosted": {}
+      "pr": {
+        "number": 40,
+        "url": "https://github.com/deylon999/admitflow/pull/40",
+        "base": "refactor/backend-catalog",
+        "head": "6840f96035f624991140e2751626836758958876",
+        "state": "open"
+      },
+      "hosted": {
+        "head": "6840f96035f624991140e2751626836758958876",
+        "state": "open",
+        "base": "refactor/backend-catalog",
+        "runs": [
+          {
+            "id": 44956796382,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956796382",
+            "event": "pull_request",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "backend": "in_progress",
+              "frontend": "success",
+              "etl": "success",
+              "migrations": "success"
+            }
+          },
+          {
+            "id": 44956792139,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44956792139",
+            "event": "push",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "frontend": "success",
+              "etl": "success",
+              "migrations": "success",
+              "backend": "in_progress"
+            }
+          }
+        ]
+      }
     },
     "watchlist": {
       "revision": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
       "application_tree": "a0886209f1be33b4e78145e69efc8ee276079ca2",
-      "backend": {},
-      "unchanged_baseline_cases": null,
+      "backend": {
+        "tests": 1263,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1262,
+        "seconds": 692.21
+      },
+      "unchanged_baseline_cases": 1224,
       "backend_selected_passed": 88,
       "backend_subsystem_passed": {
-        "account_security_smtp": 0,
-        "catalog": 0,
-        "competitions": 0,
-        "watchlist": 0,
-        "sources": 0,
-        "operations": 0,
-        "migrations": 0
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
       },
       "frontend": {
         "regular": 387,
@@ -255,23 +402,72 @@
         "domain-responses.json": "6228b6200966e85358ca336fa71fa2ee0413bf3debeb7897a254179183b58941"
       },
       "schema_sha256": "1daaa808313e8e1321d0a946582e9ed9839242e9d44f5abc25761a14927bd3f5",
-      "pr": null,
-      "hosted": {}
+      "pr": {
+        "number": 41,
+        "url": "https://github.com/deylon999/admitflow/pull/41",
+        "base": "refactor/backend-competitions",
+        "head": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
+        "state": "open"
+      },
+      "hosted": {
+        "head": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
+        "state": "open",
+        "base": "refactor/backend-competitions",
+        "runs": [
+          {
+            "id": 44957040210,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44957040210",
+            "event": "pull_request",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "frontend": "success",
+              "etl": "success",
+              "backend": "in_progress",
+              "migrations": "success"
+            }
+          },
+          {
+            "id": 44957035212,
+            "url": "https://github.com/deylon999/admitflow/actions/runs/44957035212",
+            "event": "push",
+            "status": "in_progress",
+            "conclusion": null,
+            "jobs": 4,
+            "success_jobs": 3,
+            "job_status": {
+              "backend": "in_progress",
+              "migrations": "success",
+              "etl": "success",
+              "frontend": "success"
+            }
+          }
+        ]
+      }
     },
     "operations": {
-      "revision": "ee8d246198a65fb0ab487c1a8b98ab6ffdbe23eb",
-      "application_tree": "a0886209f1be33b4e78145e69efc8ee276079ca2",
-      "backend": {},
-      "unchanged_baseline_cases": null,
+      "revision": "8b4d4818a4469932967c47551b6f125c5c1d0c2a",
+      "application_tree": "09716be44e90743b51bf3ba85580179eabe28b36",
+      "backend": {
+        "tests": 1279,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1278,
+        "seconds": 580.46
+      },
+      "unchanged_baseline_cases": 1224,
       "backend_selected_passed": 120,
       "backend_subsystem_passed": {
-        "account_security_smtp": 0,
-        "catalog": 0,
-        "competitions": 0,
-        "watchlist": 0,
-        "sources": 0,
-        "operations": 0,
-        "migrations": 0
+        "account_security_smtp": 283,
+        "catalog": 178,
+        "competitions": 39,
+        "watchlist": 38,
+        "sources": 163,
+        "operations": 40,
+        "migrations": 24
       },
       "frontend": {
         "regular": 387,

@@ -7495,7 +7495,7 @@
 
 ### T340. Backend organization: operations and final verification
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** T334.
 
@@ -7512,7 +7512,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
 
 ## E6. Резерв и выпуск
 

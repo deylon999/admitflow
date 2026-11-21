@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
-  "currentTask": "T340",
+  "currentTask": null,
   "nextTask": "T319",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S242",
-  "resumeAction": "Implement and verify T340. Review the dependency graph and stage evidence before publishing.",
+  "lastSession": "S243",
+  "resumeAction": "All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,6 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
+    "T340 All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.",
     "T339 Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.",
     "T338 Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.",
     "T337 Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.",

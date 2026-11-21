@@ -3,19 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-22. Последняя сессия: S242.
+Дата: 2026-11-22. Последняя сессия: S243.
 
 ## Продолжение
 
-- Текущая задача: T340.
+- Текущая задача: нет.
 - Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Implement and verify T340. Review the dependency graph and stage evidence before publishing.
+All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
 
 ## Последняя завершённая работа
 
+- T340 All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
 - T339 Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
 - T338 Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.
 - T337 Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.
