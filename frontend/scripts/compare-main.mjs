@@ -79,7 +79,7 @@ function relativeUrl(raw) {
   return url.pathname + url.search + url.hash;
 }
 
-async function capture(page, route, demo, port, screenshot, errors) {
+async function settle(page, route, demo, port, errors) {
   const httpErrors = [], requests = [], responses = [];
   page.on('pageerror', error => errors.push(error.message));
   if (matrix) {
@@ -107,7 +107,6 @@ async function capture(page, route, demo, port, screenshot, errors) {
   return {
     text: await page.locator('#root').innerText(),
     overflow: await page.evaluate(() => Math.max(0, globalThis.document.documentElement.scrollWidth - globalThis.innerWidth)),
-    buffer: await page.screenshot({ path: screenshot, fullPage: true, animations: 'disabled', caret: 'hide' }),
     status: navigation?.status(), url: relativeUrl(page.url()),
     requests: requests.sort(), responses: responses.sort(), httpErrors: httpErrors.sort(),
   };
@@ -115,10 +114,11 @@ async function capture(page, route, demo, port, screenshot, errors) {
 
 try {
   if (ownsApi) await startIsolatedApi();
-  await build({ root: reference, configFile: false, logLevel: 'error' });
-  await build({ root: frontend, configFile: false, logLevel: 'error' });
-  for (const [source, port] of [[reference, 5300], [frontend, 5301]]) {
-    servers.push(await preview({ root: source, configFile: false,
+  for (const [source, port, label] of [[reference, 5300, 'main'], [frontend, 5301, 'current']]) {
+    const config = { root: source, configFile: false };
+    if (matrix) config.build = { outDir: resolve(directory, `dist-${label}`) };
+    await build({ ...config, logLevel: 'error' });
+    servers.push(await preview({ ...config,
       preview: { host: '127.0.0.1', port: matrix ? 0 : port, strictPort: true } }));
   }
   const ports = servers.map(server => server.httpServer.address().port);
@@ -141,13 +141,22 @@ try {
         const errors = [];
         try {
           const name = `${width}-${demo ? 'demo' : 'default'}-${route === '/' ? 'landing' : route.slice(1).replaceAll('/', '__')}`;
-          const take = (page, index) => capture(page, route, demo, ports[index],
-            resolve(directory, `${name}-${index ? 'current' : 'main'}.png`), errors);
-          const [before, after] = matrix ? await Promise.all(pages.map(take)) : [await take(pages[0], 0), await take(pages[1], 1)];
-          const equal = before.buffer.equals(after.buffer);
+          const navigate = (page, index) => settle(page, route, demo, ports[index], errors);
+          const screenshot = (index, label) => pages[index].screenshot({
+            path: resolve(directory, `${name}-${label}.png`),
+            fullPage: true, animations: 'disabled', caret: 'hide',
+          });
+          // Page loads can overlap. Serialize raster capture to avoid concurrent
+          // Chromium screenshots of two open surfaces on the same renderer.
+          const settled = matrix ? await Promise.all(pages.map(navigate)) : undefined;
+          const before = settled?.[0] ?? await navigate(pages[0], 0);
+          const beforePng = await screenshot(0, 'main');
+          const after = settled?.[1] ?? await navigate(pages[1], 1);
+          const afterPng = await screenshot(1, 'current');
+          const equal = beforePng.equals(afterPng);
           const item = { route, demo, width, equal, textEqual: before.text === after.text,
             overflow: [before.overflow, after.overflow], errors,
-            baselineSha256: hash(before.buffer), currentSha256: hash(after.buffer) };
+            baselineSha256: hash(beforePng), currentSha256: hash(afterPng) };
           if (matrix) {
             item.routeEqual = before.status === 200 && after.status === 200 && before.url === after.url;
             item.apiEqual = ['requests','responses','httpErrors'].every(key => JSON.stringify(before[key]) === JSON.stringify(after[key]));
