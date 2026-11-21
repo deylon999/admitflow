@@ -1,7 +1,7 @@
 # Архитектура AdmitFlow
 
-Актуально на S203, 2026-11-10. Один frontend и один backend; новая БД,
-сервис или миграция при очистке не создавались.
+Текущий контур React v3 и FastAPI, сверено с `main@a3f5078` 21 ноября 2026 года.
+[Эксплуатация](RUNBOOK.md) · [Публичные контракты](API.md)
 
 | Слой | Реализация / ответственность |
 | --- | --- |
@@ -11,16 +11,30 @@
 | Demo | AppPages/AuthPages/data/demo только при явном mode=demo; отсутствующие feature API показывают unsupported |
 | HTTP | FastAPI main, origin/body/timeout/host protection, гостевая изоляция, no-store |
 | Общие DTO | `schema_base.CamelModel`; каталог и pipeline не зависят от старой арифметики |
-| Product catalog | product_catalog + DTOs, проверенный national artifact, явный atomic catalog_import |
-| Persistence | SQLAlchemy University/Campaign/CompetitionGroup, Source/Snapshot/entries, subscriptions/history/jobs; PostgreSQL |
-| Pipeline | Reviewed parser profiles/registry, normalized scoped IDs, fetch budgets, quarantine, publishing, history, worker leases/retry |
+| Product catalog | `product_catalog` и DTO: справочник MICCEDU/аккредитации, проверенные архивные конкурсы СГУ и текущие опубликованные ревизии программ |
+| Persistence | PostgreSQL, SQLAlchemy: University, Campaign, Program, CompetitionGroup, явные M:N связи, ревизии документов, snapshots списков, подписки и задания |
+| Импорт программ | `program_catalog_batch` для ограниченного захвата и отдельной публикации. `program_catalog_import` сверяет исходник и переключает указатель в транзакции на документ |
+| Списки и worker | Аттестованные профили, проверки scope/полноты, отдельный fetch/parser/publish, история и очередь с lease/backoff |
+| Аккаунты | `account_api` и `account_mail`, отзывные сессии, подтверждение email и восстановление. Включение по `AUTH_ENABLED`, гостевой контур независим |
 | Operations | Миграции, backup/restore, retention, diagnostics/ops; старые сохранённые данные защищены |
 
-Applied Alembic 0001–0011 неизменны. SQLite — изолированный dev/test контур,
-не доказательство совместимости native PostgreSQL. Обычный Docker Compose
-сохраняет существующие volumes. В S203 Docker Desktop запущен с разрешённым доступом к Engine; реальный
-PostgreSQL/Compose проверен, прежний инфраструктурный блокер T250 снят.
-Полный старт: `python scripts/local_smoke.py`; [evidence](evidence/local-postgresql.md).
+Единственный Alembic head — `0014`. `0012` вводит хранение аккаунтов и их
+сессий. `0013` добавляет идентичности программ и явные связи с кампаниями и
+конкурсами. `0014` добавляет версии исходных документов и фактов, журнал
+импорта и указатели опубликованных ревизий. Прежние ID сохраняются.
+Применённые миграции остаются неизменными. SQLite используется в dev/test.
+Проверка миграций и конкурентного поведения PostgreSQL выполняется отдельно.
+[Миграции](../backend/alembic/versions) · [CI](operations/ci.md)
+
+HTTP выдаёт новые программы после явной публикации verified-ревизии.
+Поиск, подсчёт и пагинация списка выполняются в SQL, в PostgreSQL внутренние
+запросы каталога читают согласованный снимок. `id` сохраняет идентичность
+публичного маршрута. `programId` отдельно обозначает программу, а
+`competitionGroups` содержит подтверждённые связи. [Контракт](API.md#публичный-каталог-v3)
+
+Обычный Compose сохраняет пользовательские volumes. Ранняя проверка Compose
+на схеме `0011` остаётся датированным [доказательством](evidence/local-postgresql.md).
+Команды текущего старта находятся в [runbook](catalog-runbook.md).
 
 Старые stateless `/calculate` и `/assess` удалены. Версионированная арифметика
 остаётся только для сохранённых manual snapshot/import/export, а не модели
@@ -38,13 +52,14 @@ Playwright runner владеет временным API и previews и штат�
 Прежняя FSD/ручная архитектура сохранена в
 [архиве](archive/architecture-before-foundation.md); она не описывает v3.
 
-## Production frontend API (T253)
+## Клиент API React v3
 
 `shared/api.ts` — транспорт/ошибки/timeout/session epoch; `shared/dto.ts` и
 `catalog/decode.ts` — проверка используемых DTO; `shared/resource.ts` и
 `ResourceState` — отмена, loading/error/retry/stale/401. Каталог сохраняет прежние
 композиции. LivePages/AddSource используют существующие subscriptions, changes,
-coverage, groups и source lookup/confirm; новые feature API не создаются.
+coverage, groups и source lookup/confirm. Account UI использует отдельные auth
+routes, а demo открывается по явному параметру `mode=demo`.
 Матрица маршрутов и проверка: [evidence](evidence/v3-production-api.md).
 
 KAN-212/S209: существующий request поддерживает типизированный json и Headers,

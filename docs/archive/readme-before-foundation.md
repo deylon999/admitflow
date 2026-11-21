@@ -47,7 +47,7 @@ docker compose up --build
 
 Открой http://localhost:8080. Интерфейс, API и PostgreSQL запускаются вместе. База сохраняется между перезапусками. Остановка: `docker compose down`.
 
-Запуск без Docker — в [инструкции](../RUNBOOK.md#команды-приложения).
+Запуск без Docker того периода — в [архивной инструкции](runbook-before-documentation-cleanup.md#команды-приложения).
 
 `frontend/` — интерфейс · `backend/` — API · `shared/` — общие тестовые данные · `docs/` — документация · `scripts/` — проверка плана.
 

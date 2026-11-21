@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 291 из 324 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 297 из 330 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -327,7 +327,7 @@
 - [x] T315 KAN-218 PR1: add compatible Program and competition relationships
 - [x] T316 KAN-218 PR1: PostgreSQL regression and review handoff
 - [x] T317 KAN-218 PR2: verified official program import and stable API publication
-- [ ] T318 KAN-218 PR3: resumable bounded batch acquisition and publication — **нужна проверка / завершение**
+- [x] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
 - [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
@@ -338,6 +338,12 @@
 - [x] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff
 - [x] T327 KAN-218 PR2: owner agreement on compatible programme DTO extension
 - [x] T328 KAN-218 PR2: compatible frontend for programmes without contests
+- [ ] T329 Documentation cleanup PR 1: audit, navigation and current instructions — **нужна проверка / завершение**
+- [x] T330 Backend architecture PR 3: audit the current main and auth dependencies
+- [x] T331 Backend architecture PR 3: capture the behavior baseline
+- [x] T332 Backend architecture PR 3: relocate auth modules with compatible imports
+- [x] T333 Backend architecture PR 3: verify behavior and document the results
+- [x] T334 Backend architecture PR 3: publish and verify hosted checks
 
 ## Резерв и выпуск
 

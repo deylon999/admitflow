@@ -2,8 +2,8 @@
 import argparse
 import os
 
-from .account_mail import MailDeliveryError, configured_mailer
-from .account_security import InvalidAccountInput, normalize_email
+from .auth.account_mail import MailDeliveryError, configured_mailer
+from .auth.account_security import InvalidAccountInput, normalize_email
 from .config import Settings
 
 

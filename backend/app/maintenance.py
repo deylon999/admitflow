@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
-from .accounts import AccountActionToken, AccountCsrfContext, AccountRateBucket, AccountSession
+from .auth.accounts import AccountActionToken, AccountCsrfContext, AccountRateBucket, AccountSession
 from .config import Settings
 from .database import BrowserSession, make_engine
 
