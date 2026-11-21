@@ -7384,6 +7384,27 @@
 
 - [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 
+### T335. Frontend architecture PR 4: complete feature and app boundaries
+
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** L.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/frontend-architecture-audit.md`; `frontend/src/app`; `frontend/src/features`.
+
+**Шаги:**
+
+1. Audit every frontend source and supporting checks from current main; preserve exact rendering, API, routes and session behavior across an independently verified demo PR and a stacked app/live feature PR; document final file/dependency map and verify both branches..
+
+**Критерии закрытия:**
+
+- Audit every frontend source and supporting checks from current main; preserve exact rendering, API, routes and session behavior across an independently verified demo PR and a stacked app/live feature PR; document final file/dependency map and verify both branches..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/frontend-architecture-audit.md](../docs/frontend-architecture-audit.md) — 46 source files audited before changes; main 5ca1cca archived and 387 Chromium baseline tests passed.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.

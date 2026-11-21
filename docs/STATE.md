@@ -3,16 +3,16 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S231.
+Дата: 2026-11-21. Последняя сессия: S232.
 
 ## Продолжение
 
-- Текущая задача: нет.
+- Текущая задача: T335.
 - Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-PR 34 published and verified; owner code review follows
+Complete T335 frontend architecture as a demo PR plus a stacked app/live PR, based on main after PR34.
 
 ## Последняя завершённая работа
 

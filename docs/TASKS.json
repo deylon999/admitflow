@@ -10223,6 +10223,33 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T335",
+      "title": "Frontend architecture PR 4: complete feature and app boundaries",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "L",
+      "status": "in_progress",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/frontend-architecture-audit.md",
+        "frontend/src/app",
+        "frontend/src/features"
+      ],
+      "steps": [
+        "Audit every frontend source and supporting checks from current main; preserve exact rendering, API, routes and session behavior across an independently verified demo PR and a stacked app/live feature PR; document final file/dependency map and verify both branches."
+      ],
+      "acceptance": [
+        "Audit every frontend source and supporting checks from current main; preserve exact rendering, API, routes and session behavior across an independently verified demo PR and a stacked app/live feature PR; document final file/dependency map and verify both branches."
+      ],
+      "evidence": [
+        {
+          "path": "docs/frontend-architecture-audit.md",
+          "note": "46 source files audited before changes; main 5ca1cca archived and 387 Chromium baseline tests passed."
+        }
+      ],
+      "blockedReason": null
     }
   ]
 }
