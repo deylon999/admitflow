@@ -21,13 +21,11 @@ from app.core.config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
 from .maintenance import cleanup_expired_accounts, cleanup_expired_sessions
-from .catalog import search_universities, seed_catalog
-from .schemas import CatalogRead, CoverageRead, DataExport, HistoryPage, ImportRequest, ImportResult, SourceStatus, ValidationProblem
-from .coverage import coverage
+from .catalog import seed_catalog
+from .catalog.api import install_legacy_catalog
+from .schemas import DataExport, HistoryPage, ImportRequest, ImportResult, ValidationProblem
 from .importing import import_bundle
-from .sources.status import source_status
 from .observability import system_status
-from .national_coverage import national_coverage, with_checksum
 from .operations import begin_operation, remember_operation, retire_operations
 from .migrations import ensure_restore_complete, schema_heads, upgrade_schema
 from app.core.http import RequestBudgetMiddleware, RequestDiagnosticsMiddleware, permitted_origin
@@ -231,32 +229,7 @@ def create_app(settings: Settings | None = None, *, registration_mailer=None):
         except SQLAlchemyError:
             raise HTTPException(503,'База данных временно недоступна.') from None
 
-    @app.get('/api/v1/universities', response_model=CatalogRead)
-    def universities(q: str = Query('', max_length=120), offset: int = Query(0,ge=0,le=100000), db: Session = Depends(database)):
-        return search_universities(db, q, offset)
-
-    from .source_catalog import GroupCatalog,groups as search_groups
-    @app.get('/api/v1/groups',response_model=GroupCatalog)
-    def groups(q:str=Query('',max_length=120),university_id:str=Query('',alias='universityId',max_length=80),
-               branch_id:str=Query('',alias='branchId',max_length=80),year:int|None=Query(None,ge=2000,le=2100),
-               after:str|None=Query(None,max_length=36),limit:int=Query(20,ge=1,le=50),db:Session=Depends(database)):
-        return search_groups(db,q=q,university_id=university_id,branch_id=branch_id,year=year,after=after,limit=limit,registry=source_registry)
-
-    @app.get('/api/v1/sources/{source_id}/status', response_model=SourceStatus)
-    def get_source_status(source_id: str, db: Session = Depends(database)):
-        result = source_status(db,source_id,registry=source_registry)
-        if result is None:
-            raise HTTPException(404,'Источник не найден.')
-        return result
-
-    @app.get('/api/v1/coverage', response_model=CoverageRead)
-    def get_coverage(db: Session = Depends(database)):
-        return coverage(db,registry=source_registry)
-
-    @app.get('/api/v1/coverage/national')
-    def get_national_coverage(db: Session = Depends(database)):
-        # Aggregates only: no candidate rows, session data or raw source bodies.
-        return with_checksum(national_coverage(db,registry_rules=source_registry))
+    install_legacy_catalog(app, database, source_registry)
 
     @app.get('/api/v1/export', response_model=DataExport)
     def export_data(response: Response, owner_hash: str = Depends(write_owner), db: Session = Depends(database)):
@@ -383,7 +356,7 @@ def create_app(settings: Settings | None = None, *, registration_mailer=None):
         total = db.scalar(select(func.count()).select_from(Snapshot).where(Snapshot.watch_id == watch_id))
         return HistoryPage(items=[snapshot_read(row) for row in rows[:limit]], next_cursor=rows[limit - 1].id if len(rows) > limit else None, total=total)
 
-    from .product_catalog import install as install_product_catalog
+    from app.catalog.product_catalog import install as install_product_catalog
     install_product_catalog(app, database)
     return app
 

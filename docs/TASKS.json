@@ -10301,7 +10301,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10314,7 +10314,12 @@
       "acceptance": [
         "Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence."
+        }
+      ],
       "blockedReason": null
     },
     {

@@ -2,7 +2,7 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from ..admissions import University,Campaign,CompetitionGroup,Source
-from ..catalog_lock import lock_catalog
+from app.catalog.catalog_lock import lock_catalog
 from .contracts import AdapterError,SourceBinding
 from .registry import PRODUCTION_REGISTRY
 

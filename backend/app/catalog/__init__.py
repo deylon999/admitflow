@@ -6,10 +6,10 @@ from sqlalchemy.dialects.postgresql import insert as postgres_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session
 
-from .admissions import University
-from .schemas import CatalogRead, UniversityRead
-from .national_catalog import load_catalog
-from .catalog_lock import lock_catalog
+from app.admissions import University
+from app.schemas import CatalogRead, UniversityRead
+from app.catalog.national_catalog import load_catalog
+from app.catalog.catalog_lock import lock_catalog
 
 AUDITED_AT = datetime(2026, 11, 1, tzinfo=timezone.utc)
 INITIAL_UNIVERSITIES = [

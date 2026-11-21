@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..admissions import Campaign,CompetitionGroup,Source,University
 from ..catalog import INITIAL_UNIVERSITIES
-from ..catalog_lock import lock_catalog
+from app.catalog.catalog_lock import lock_catalog
 from .adapters.sgu2026 import GROUP_ID,SOURCE_ID,URL,VERSION
 from .contracts import AdapterError
 from .publishing import binding_from_db

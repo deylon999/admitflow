@@ -1695,3 +1695,7 @@ PR #37 обновлён от main 9f6a1d4 после слияния demo PR #36.
 ## S239 — 2026-11-22 — Backend organization: audit, baseline and core
 
 Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.
+
+## S240 — 2026-11-22 — Backend organization: catalog
+
+Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.

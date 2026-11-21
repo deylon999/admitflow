@@ -7432,7 +7432,7 @@
 
 ### T337. Backend organization: catalog
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** T334.
 
@@ -7449,7 +7449,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.
 
 ### T338. Backend organization: competitions
 

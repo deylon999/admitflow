@@ -14,7 +14,7 @@ from app.core.schema_base import CamelModel
 from .database import BrowserSession,LookupBudget,OperationRecord
 from .direction_budget import DirectionBudget,direction_budget
 from .operations import remember_operation
-from .source_catalog import GroupRead,group_read
+from app.catalog.source_catalog import GroupRead,group_read
 from .source_tokens import Confirmation,ConfirmationError,issue,verify
 from .sources.contracts import AdapterError,scoped_candidate_key
 from .sources.publishing import binding_from_db,utc

@@ -13,7 +13,7 @@ from urllib.parse import urljoin,urlsplit
 
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'backend'),str(ROOT)]
 from bs4 import BeautifulSoup
-from app.national_catalog import load_catalog,valid_url
+from app.catalog.national_catalog import load_catalog,valid_url
 from scripts.data.admissions_inventory import inspect_observation
 from scripts.data.source_inventory import target
 

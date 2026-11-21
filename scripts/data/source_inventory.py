@@ -20,7 +20,7 @@ from urllib.robotparser import RobotFileParser
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'backend'))
 from bs4 import BeautifulSoup
-from app.national_catalog import load_catalog,valid_url
+from app.catalog.national_catalog import load_catalog,valid_url
 from app.sources.fetcher import Fetcher,FetchPolicy,FetchError
 from app.sources.navigation import admissions_link_score
 

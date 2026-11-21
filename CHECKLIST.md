@@ -346,7 +346,7 @@
 - [x] T334 Backend architecture PR 3: publish and verify hosted checks
 - [ ] T335 Frontend architecture PR 4: complete feature and app boundaries — **нужна проверка / завершение**
 - [ ] T336 Backend organization: audit, baseline and core — **нужна проверка / завершение**
-- [ ] T337 Backend organization: catalog
+- [ ] T337 Backend organization: catalog — **нужна проверка / завершение**
 - [ ] T338 Backend organization: competitions
 - [ ] T339 Backend organization: watchlist
 - [ ] T340 Backend organization: operations and final verification

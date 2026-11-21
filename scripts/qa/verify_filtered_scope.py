@@ -7,7 +7,7 @@ from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 from pg_support import isolated_postgres
 from app.admissions import CandidateEntry,SourceSnapshot
-from app.coverage import coverage
+from app.catalog.coverage import coverage
 from app.jobs import enqueue
 from app.migrations import upgrade_schema
 from app.sources.audit import audit_source
