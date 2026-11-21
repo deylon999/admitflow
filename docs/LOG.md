@@ -1631,3 +1631,7 @@ moved to operations with old path kept; no historical evidence removed.
 Roadmap and link checker tests13/13;802/153 links, no issues. Alembic0014 head
 checked; legacy data/evidence/source hashes/backend/frontend/workflow unchanged.
 T329 review, T319 separate.
+
+# S231 / T330 — 2026-11-21: Capture the pre-refactor behavior baseline
+
+Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.

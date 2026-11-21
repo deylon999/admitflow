@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
-  "currentTask": null,
-  "nextTask": "T319",
+  "currentTask": "T331",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S230",
-  "resumeAction": "T329 documentation cleanup in review from main a3f5078. See docs/documentation-audit.md for preserved paths, results and scope. KAN-218 stage 4 T319 is separate and depends on already merged PR31.",
+  "lastSession": "S231",
+  "resumeAction": "Capture the pre-refactor behavior baseline",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,6 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
+    "Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.",
     "KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending."
   ],
   "environment": [

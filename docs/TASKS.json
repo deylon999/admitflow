@@ -10090,6 +10090,119 @@
         }
       ],
       "blockedReason": null
+    },
+    {
+      "id": "T330",
+      "title": "Backend architecture PR 3: audit the current main and auth dependencies",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "S",
+      "status": "done",
+      "dependsOn": [],
+      "deliverables": [
+        "docs/BACKEND_ARCHITECTURE_PR3.md"
+      ],
+      "steps": [
+        "Confirm the current main and cleanup merge; inventory runtime, ORM, tests, CLI and dynamic consumers; document the minimal auth scope before moving code."
+      ],
+      "acceptance": [
+        "Confirm the current main and cleanup merge; inventory runtime, ORM, tests, CLI and dynamic consumers; document the minimal auth scope before moving code."
+      ],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ARCHITECTURE_PR3.md",
+          "note": "Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths."
+        }
+      ],
+      "blockedReason": null
+    },
+    {
+      "id": "T331",
+      "title": "Backend architecture PR 3: capture the behavior baseline",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "in_progress",
+      "dependsOn": [
+        "T330"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ARCHITECTURE_PR3.md"
+      ],
+      "steps": [
+        "Capture reproducible OpenAPI, routes and dependencies, DTOs, SQLAlchemy metadata, migration graph and runtime checks before moving auth modules."
+      ],
+      "acceptance": [
+        "Capture reproducible OpenAPI, routes and dependencies, DTOs, SQLAlchemy metadata, migration graph and runtime checks before moving auth modules."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T332",
+      "title": "Backend architecture PR 3: relocate auth modules with compatible imports",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T331"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ARCHITECTURE_PR3.md"
+      ],
+      "steps": [
+        "Move auth API, persistence, security and mail without changing their implementation; update production imports and prove old imports, mocks and model registration still work."
+      ],
+      "acceptance": [
+        "Move auth API, persistence, security and mail without changing their implementation; update production imports and prove old imports, mocks and model registration still work."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T333",
+      "title": "Backend architecture PR 3: verify behavior and document the results",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "M",
+      "status": "todo",
+      "dependsOn": [
+        "T332"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ARCHITECTURE_PR3.md"
+      ],
+      "steps": [
+        "Compare all baseline snapshots; run Linux backend tests with native PostgreSQL, migration alignment, frontend and auth integration, CLI, Docker and roadmap checks; document exact results and remaining limitations."
+      ],
+      "acceptance": [
+        "Compare all baseline snapshots; run Linux backend tests with native PostgreSQL, migration alignment, frontend and auth integration, CLI, Docker and roadmap checks; document exact results and remaining limitations."
+      ],
+      "evidence": [],
+      "blockedReason": null
+    },
+    {
+      "id": "T334",
+      "title": "Backend architecture PR 3: publish and verify hosted checks",
+      "phase": "E5",
+      "priority": "P1",
+      "size": "S",
+      "status": "todo",
+      "dependsOn": [
+        "T333"
+      ],
+      "deliverables": [
+        "docs/BACKEND_ARCHITECTURE_PR3.md"
+      ],
+      "steps": [
+        "Publish the branch and PR to main; verify hosted checks for the latest PR head and record the PR, tested commit and Actions links."
+      ],
+      "acceptance": [
+        "Publish the branch and PR to main; verify hosted checks for the latest PR head and record the PR, tested commit and Actions links."
+      ],
+      "evidence": [],
+      "blockedReason": null
     }
   ]
 }

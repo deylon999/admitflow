@@ -3,19 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S230.
+Дата: 2026-11-21. Последняя сессия: S231.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T319.
+- Текущая задача: T331.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T329 documentation cleanup in review from main a3f5078. See docs/documentation-audit.md for preserved paths, results and scope. KAN-218 stage 4 T319 is separate and depends on already merged PR31.
+Capture the pre-refactor behavior baseline
 
 ## Последняя завершённая работа
 
+- Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
 - KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending.
 
 ## Ограничения
