@@ -10355,7 +10355,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10368,7 +10368,12 @@
       "acceptance": [
         "Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded."
+        }
+      ],
       "blockedReason": null
     },
     {

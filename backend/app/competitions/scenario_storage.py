@@ -46,7 +46,7 @@ def append_one(db,subscription,snapshot,*,previous=None,rows=None,at=None):
     from app.competitions.scenario_explanations import explain
     facts['explanation']=explain(result,facts['diff']).model_dump(mode='json',by_alias=True)
     if at is None:
-        from app.source_history import assessment_clock
+        from app.watchlist.source_history import assessment_clock
         at=assessment_clock()
     value=Assessment(subscription_id=subscription.id,group_id=group.id,snapshot_id=snapshot.id,rules_version=VERSION,assessed_at=at,state=result.state,facts=facts,assumptions=result.assumptions)
     db.add(value);db.flush()

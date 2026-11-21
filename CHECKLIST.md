@@ -348,7 +348,7 @@
 - [ ] T336 Backend organization: audit, baseline and core — **нужна проверка / завершение**
 - [ ] T337 Backend organization: catalog — **нужна проверка / завершение**
 - [ ] T338 Backend organization: competitions — **нужна проверка / завершение**
-- [ ] T339 Backend organization: watchlist
+- [ ] T339 Backend organization: watchlist — **нужна проверка / завершение**
 - [ ] T340 Backend organization: operations and final verification
 
 ## Резерв и выпуск

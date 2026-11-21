@@ -1703,3 +1703,7 @@ Catalogue package, old CLIs and resource paths verified. 107 focused tests pass.
 ## S241 — 2026-11-22 — Backend organization: competitions
 
 Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.
+
+## S242 — 2026-11-22 — Backend organization: watchlist
+
+Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.

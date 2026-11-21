@@ -7474,7 +7474,7 @@
 
 ### T339. Backend organization: watchlist
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** T334.
 
@@ -7491,7 +7491,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
 
 ### T340. Backend organization: operations and final verification
 

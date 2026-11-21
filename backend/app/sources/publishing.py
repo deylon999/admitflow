@@ -4,6 +4,8 @@ from datetime import datetime, timezone
 from sqlalchemy import select, text
 from sqlalchemy.orm import Session
 
+from app.core.time import utc
+
 from ..admissions import Campaign, CandidateEntry, CompetitionGroup, PublishedSnapshot, Source, SourceSnapshot
 from .contracts import AdapterError, CandidateRow, ParsedList, SourceBinding
 from .fetcher import FetchResult
@@ -14,10 +16,6 @@ from .validation import QualityPolicy, Quarantined, validate_list
 QUARANTINE_CODES = frozenset({'operator_quarantine','invalid_schema','identity_mismatch','invalid_fetch_time','incomplete_list','row_count_mismatch','unconfirmed_empty_list','duplicate_candidate','duplicate_reference','invalid_official_order','future_source_time','previous_identity_mismatch','source_time_regressed','row_count_drop','capacity_drop','capacity_growth','capacity_mismatch','older_fetch','nondeterministic_parser','repeated_historical_payload','stored_snapshot_corrupt'})
 STORAGE_RETRY_CODES = frozenset({'raw_lock_timeout','raw_write_failed'})
 FETCH_CODES = frozenset({'refresh_pending','invalid_url','domain_not_allowed','non_public_address','dns_unavailable','timeout','tls_error','network_error','too_many_redirects','invalid_redirect','access_denied','rate_limited','http_error','access_challenge','unsupported_encoding','unsupported_content_type','empty_response','incomplete_response','response_too_large','invalid_headers','raw_unavailable','raw_hash_mismatch','raw_size_invalid','raw_write_failed','adapter_unavailable','source_disabled','unattested_adapter','invalid_binding','invalid_format'})
-
-
-def utc(value):
-    return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value.astimezone(timezone.utc)
 
 
 def lock_source(db, engine, source_id):
@@ -104,7 +102,7 @@ def _publish(engine, source_id: str, parsed: ParsedList, raw: FetchResult, store
         source.last_checked_at = checked_at
         source.last_success_at = checked_at
         source.last_error_code = None
-        from ..source_history import append_snapshot_facts
+        from app.watchlist.source_history import append_snapshot_facts
         append_snapshot_facts(db,db.get(SourceSnapshot,snapshot_id))
         from app.competitions.scenario_storage import append_source
         append_source(db,db.get(SourceSnapshot,snapshot_id),previous=previous)

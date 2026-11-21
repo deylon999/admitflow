@@ -8,7 +8,8 @@ from app.admissions import Assessment,SourceSnapshot,Subscription
 from app.core.schema_base import CamelModel
 from app.competitions.scenarios import VERSION,ScenarioResult
 from app.competitions.scenario_explanations import Explanation,explain
-from app.sources.publishing import utc
+from app.core.time import utc
+from app.watchlist.archive import archive_directions
 
 
 class Change(CamelModel):
@@ -54,7 +55,6 @@ def install(app,database,owner,registry):
         return value
     @app.get('/api/v1/subscriptions/{subscription_id}/scenario',response_model=ScenarioRead)
     def scenario(subscription_id:str=Path(max_length=36),owner_hash:str=Depends(owner),db:Session=Depends(database)):
-        from app.source_api import archive_directions
         value=own(db,subscription_id,owner_hash);record=archive_directions(db,[value],registry)[0]
         assessment=db.scalar(select(Assessment).where(Assessment.subscription_id==value.id,Assessment.snapshot_id==record.group.snapshot_id,Assessment.rules_version==VERSION))
         if assessment is None:return ScenarioRead(subscription_id=value.id,group_id=value.group_id,source_id=record.group.source_id,available=False,snapshot_id=record.group.snapshot_id,notice='Для этого снимка ещё нет проверенного условного сценария.')
