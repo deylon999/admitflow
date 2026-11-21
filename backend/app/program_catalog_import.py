@@ -256,28 +256,40 @@ def import_sources(engine, raw_directory, raw_store, *, keys=None):
         if not keys or len(set(keys)) != len(keys) or not set(keys) <= {r['key'] for r in reviews}:
             raise ValueError('catalog_unknown_review_key')
         reviews = [r for r in reviews if r['key'] in keys]
-    results = []
-    for review in reviews:
-        path = Path(raw_directory) / (review['original_sha256'] + '.html')
-        body = None
-        try:
-            if path.is_file() and not path.is_symlink():
-                with path.open('rb') as file:
-                    body = file.read(5*1024*1024+1)
-        except OSError:
-            # Diagnose this source and continue the finite batch; never turn
-            # missing/unreadable bytes into an empty successful catalogue.
-            body = None
-        results.append(import_document(engine, review, body, raw_store))
+    results = [import_document(engine, review, read_original(raw_directory, review), raw_store) for review in reviews]
     return dict(atomicPerDocument=True, allSourcesSucceeded=all(r['outcome'] != 'rejected' for r in results), items=results)
+
+
+def read_original(raw_directory, review):
+    path = Path(raw_directory) / (review['original_sha256'] + '.html')
+    try:
+        if path.is_file() and not path.is_symlink():
+            with path.open('rb') as file:
+                return file.read(5*1024*1024+1)
+    except OSError:
+        # The caller journals an unavailable document and continues the batch.
+        pass
+    return None
+
+
+def require_import_schema(engine):
+    from .migrations import schema_heads
+    from sqlalchemy import text
+    if engine.dialect.name != 'postgresql':
+        raise ValueError('catalog_import_requires_postgresql')
+    try:
+        with engine.connect() as connection:
+            revisions = set(connection.scalars(text('SELECT version_num FROM alembic_version')))
+        if revisions != schema_heads():
+            raise ValueError('catalog_schema_not_current')
+    except SQLAlchemyError:
+        raise ValueError('catalog_schema_not_current') from None
 
 
 def main(argv=None):
     from .config import Settings
     from .database import make_engine
     from .sources.storage import RawStore
-    from .migrations import schema_heads
-    from sqlalchemy import text
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--raw-directory', required=True, type=Path)
     parser.add_argument('--source', action='append', dest='keys', choices=[r['key'] for r in load_reviews()])
@@ -285,16 +297,10 @@ def main(argv=None):
     args = parser.parse_args(argv)
     engine = make_engine(Settings.from_env().database_url)
     try:
-        if engine.dialect.name != 'postgresql':
-            print(json.dumps({'error':'catalog_import_requires_postgresql'}))
-            return 1
         try:
-            with engine.connect() as connection:
-                revisions=set(connection.scalars(text('SELECT version_num FROM alembic_version')))
-            if revisions != schema_heads():
-                raise ValueError('catalog_schema_not_current')
-        except (SQLAlchemyError, ValueError):
-            print(json.dumps({'error':'catalog_schema_not_current'}))
+            require_import_schema(engine)
+        except ValueError as error:
+            print(json.dumps({'error':str(error)}))
             return 1
         result = import_sources(engine, args.raw_directory, RawStore(args.raw_store), keys=args.keys)
         print(json.dumps(result))
