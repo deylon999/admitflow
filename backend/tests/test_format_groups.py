@@ -1,7 +1,7 @@
 import importlib.util
 from pathlib import Path
 import pytest
-spec=importlib.util.spec_from_file_location('group_source_formats',Path(__file__).resolve().parents[2]/'scripts/group_source_formats.py')
+spec=importlib.util.spec_from_file_location('group_source_formats',Path(__file__).resolve().parents[2]/'scripts/data/group_source_formats.py')
 groups=importlib.util.module_from_spec(spec);spec.loader.exec_module(groups)
 
 

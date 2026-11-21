@@ -103,7 +103,7 @@ jobs:
       # Repository tools: roadmap consistency and the weekly report generator (PDF included).
       - run: python -m pip install -r scripts/requirements-dev.txt
         working-directory: .
-      - run: python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report scripts.tests.test_auth_acceptance
+      - run: python -m unittest scripts.tests.test_roadmap scripts.tests.test_weekly_report scripts.tests.test_auth_acceptance scripts.tests.test_cli_compatibility
         working-directory: .
       - run: python scripts/roadmap.py --check
         working-directory: .
