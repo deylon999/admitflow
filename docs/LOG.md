@@ -1656,6 +1656,10 @@ PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340
 
 Audited all 46 main frontend sources and mapped route, feature, API and CSS boundaries. Tagged baseline 5ca1cca after PR34; archived frontend and passed 387 Chromium tests on unchanged main. Planned demo extraction and stacked live/app changes.
 
+# S233 / T335 — 2026-11-21: verify frontend architecture and prepare review
+
+Demo PR36 and stacked app/live branch preserve CSS, URLs, DTOs and account behavior. Typecheck, lint, build and Chromium 387 pass on both stages. Final catalog repeat 10/10 and lifecycle 3/3. 490/490 visual pairs in each stage; five mobile overflow cases match baseline. Final dependency graph covers 87 TypeScript modules with no cycles. Review pending.
+
 ## S234 — 2026-11-21: организация служебных скриптов
 
 Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
@@ -1682,3 +1686,8 @@ security evidence сохранены. Манифест, правила хран�
 
 PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #35.
 Сохранены исходная запись S232, история main и текущая задача T335.
+
+## S238 — 2026-11-22: синхронизация frontend app и live
+
+PR #37 обновлён от main 9f6a1d4 после слияния demo PR #36.
+Сохранены запись S233, результаты тестирования и история main.

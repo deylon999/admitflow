@@ -1,0 +1,173 @@
+{
+  "date": "2026-11-21",
+  "platform": "Windows",
+  "browser": "Playwright 1.64.1 Chromium",
+  "baselineCommit": "5ca1ccac10319f602f6011317f2366bc3d8a9e37",
+  "testedFrontendSourceTree": "fb128631694ea93a41a6b3f03a4dd47e1c1740c4",
+  "comparisonCommit": "cb66e2f744d3b9a6c8db5a395ca89f6852a0a43b",
+  "commandFromFrontend": "node scripts/compare-main.mjs 5ca1cca --layout-matrix",
+  "responseMode": "read-only local API visual replay",
+  "metricsFileSha256": "b83c645f89f0179f92bb44749a833ac71af55fd98d165cc5fe604daffebb7ce1",
+  "routes": [
+    "/",
+    "/app",
+    "/app/compare",
+    "/app/competitions",
+    "/app/competitions/mtuci-se",
+    "/app/competitions/mtuci-se/competitors",
+    "/app/competitions/sgu-2026-4588",
+    "/app/competitions/sgu-2026-4588/competitors",
+    "/app/coverage",
+    "/app/forecast",
+    "/app/forecast/example",
+    "/app/forecast/method",
+    "/app/history",
+    "/app/notifications",
+    "/app/profile",
+    "/app/settings",
+    "/app/sources",
+    "/app/states/empty",
+    "/app/states/error",
+    "/app/states/success",
+    "/app/watchlist",
+    "/app/watchlist/add",
+    "/auth/login",
+    "/auth/recovery",
+    "/auth/register",
+    "/auth/reset",
+    "/auth/verify",
+    "/ege-analytics",
+    "/faq",
+    "/how-it-works",
+    "/not-found",
+    "/programs",
+    "/programs/sgu-2026-4588",
+    "/universities",
+    "/universities/sgu-saratov"
+  ],
+  "modes": [
+    "default",
+    "demo"
+  ],
+  "matchingPairs": 490,
+  "unexpectedBrowserErrors": 0,
+  "matchingApiRequestAndResponseTraces": 490,
+  "inheritedOverflowPairs": [
+    {
+      "route": "/how-it-works",
+      "mode": "default",
+      "width": 320,
+      "beforePx": 2,
+      "afterPx": 2
+    },
+    {
+      "route": "/app/watchlist/add",
+      "mode": "default",
+      "width": 320,
+      "beforePx": 33,
+      "afterPx": 33
+    },
+    {
+      "route": "/how-it-works",
+      "mode": "demo",
+      "width": 320,
+      "beforePx": 2,
+      "afterPx": 2
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "demo",
+      "width": 320,
+      "beforePx": 61,
+      "afterPx": 61
+    },
+    {
+      "route": "/app/forecast/method",
+      "mode": "demo",
+      "width": 375,
+      "beforePx": 6,
+      "afterPx": 6
+    }
+  ],
+  "perWidth": [
+    {
+      "widthPx": 320,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 375,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 390,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 768,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 1024,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 1440,
+      "matchingPairs": 70
+    },
+    {
+      "widthPx": 1920,
+      "matchingPairs": 70
+    }
+  ],
+  "samplePairs": [
+    {
+      "widthPx": 320,
+      "beforeFile": "320-demo-app__forecast__example-main.png",
+      "afterFile": "320-demo-app__forecast__example-current.png",
+      "beforeSha256": "5b334d54409770e4026fee6ba74ea6d4cbb32528ff02eb3e00d96019437b9255",
+      "afterSha256": "5b334d54409770e4026fee6ba74ea6d4cbb32528ff02eb3e00d96019437b9255"
+    },
+    {
+      "widthPx": 375,
+      "beforeFile": "375-demo-app__forecast__example-main.png",
+      "afterFile": "375-demo-app__forecast__example-current.png",
+      "beforeSha256": "d267e7ea8e4490b000e19dc710d0e5da89d1696ac2def75546701776376b1f23",
+      "afterSha256": "d267e7ea8e4490b000e19dc710d0e5da89d1696ac2def75546701776376b1f23"
+    },
+    {
+      "widthPx": 390,
+      "beforeFile": "390-demo-app__forecast__example-main.png",
+      "afterFile": "390-demo-app__forecast__example-current.png",
+      "beforeSha256": "ae5d100b76823beca930660bd0bca85d57117c74d8938effcd39dc8442312031",
+      "afterSha256": "ae5d100b76823beca930660bd0bca85d57117c74d8938effcd39dc8442312031"
+    },
+    {
+      "widthPx": 768,
+      "beforeFile": "768-demo-app__forecast__example-main.png",
+      "afterFile": "768-demo-app__forecast__example-current.png",
+      "beforeSha256": "c9f8b7aba3dfee2762b928d1b7177eca8c0d7f0aa746611a5a9db670bd55be43",
+      "afterSha256": "c9f8b7aba3dfee2762b928d1b7177eca8c0d7f0aa746611a5a9db670bd55be43"
+    },
+    {
+      "widthPx": 1024,
+      "beforeFile": "1024-demo-app__forecast__example-main.png",
+      "afterFile": "1024-demo-app__forecast__example-current.png",
+      "beforeSha256": "1dbf07feb9e7e859eb882958f70637d2cc58cbd0ba39f5e82c8bb0180c219bb4",
+      "afterSha256": "1dbf07feb9e7e859eb882958f70637d2cc58cbd0ba39f5e82c8bb0180c219bb4"
+    },
+    {
+      "widthPx": 1440,
+      "beforeFile": "1440-demo-app__forecast__example-main.png",
+      "afterFile": "1440-demo-app__forecast__example-current.png",
+      "beforeSha256": "a10c844462d03d4535a8e61ff27760b8a15116472eb48feefaa2363e85d0c0ec",
+      "afterSha256": "a10c844462d03d4535a8e61ff27760b8a15116472eb48feefaa2363e85d0c0ec"
+    },
+    {
+      "widthPx": 1920,
+      "beforeFile": "1920-demo-app__forecast__example-main.png",
+      "afterFile": "1920-demo-app__forecast__example-current.png",
+      "beforeSha256": "98c9ee150c69dee498c83c826af80aa2e028810d0c2d899bcefffdad3313bc2c",
+      "afterSha256": "98c9ee150c69dee498c83c826af80aa2e028810d0c2d899bcefffdad3313bc2c"
+    }
+  ]
+}

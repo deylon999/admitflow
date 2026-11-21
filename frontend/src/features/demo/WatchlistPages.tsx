@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { Action, EmptyMessage, PageTitle, ProgramCard, Surface } from '../../shared/UI';
+import { Action, EmptyMessage, PageTitle, Surface } from '../../shared/UI';
 import { programs } from '../../data/demo';
 import type { AppPageProps } from './types';
+import { ProgramCard } from './ProgramCard';
 
 export function Watchlist({ tracked, onToggle }: AppPageProps) {
   const items = programs.filter(item => tracked.includes(item.id));

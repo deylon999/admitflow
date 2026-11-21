@@ -1,6 +1,6 @@
 import { Action, EmptyMessage, PageTitle, Pill, Surface } from '../shared/UI';
 import { RouteLink } from '../app/RouteLink';
-import { YearField } from './CatalogPages';
+import { YearField } from './fields';
 import { AccreditationNote, branchDescription, CatalogCard, ExamRequirementsView, formName, fundingName, MissingExams, Pagination, ResourceState, seatText, SourceNote, universityPath, universityTitle, unknown } from './parts';
 import { useCatalog, useCatalogFilters } from './state';
 import { program, programResults, university as decodeUniversity } from './decode';

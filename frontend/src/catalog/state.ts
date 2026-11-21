@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
-import { navigate } from '../app/navigation';
 import { useResource } from '../shared/resource';
 import { invalid, object, type Decoder } from '../shared/api';
+
+export { useUrlFilters as useCatalogFilters } from '../app/useUrlFilters';
+
 export function useCatalog<T>(path: string, decode: Decoder<T>) {
     const scoped = useMemo(() => (value: unknown) => {
         const data = decode(value);
@@ -18,27 +20,7 @@ export function useCatalog<T>(path: string, decode: Decoder<T>) {
     }, [path, decode]);
     return useResource<T>(`catalog/${path}`, scoped);
 }
-export function useCatalogFilters() {
-    const [search, setSearch] = useState(() => window.location.search);
-    useEffect(() => {
-        const update = () => setSearch(window.location.search);
-        window.addEventListener('popstate', update);
-        return () => window.removeEventListener('popstate', update);
-    }, []);
-    const params = new URLSearchParams(search);
-    function update(name: string, value: string) {
-        const next = new URLSearchParams(window.location.search);
-        if (value)
-            next.set(name, value);
-        else
-            next.delete(name);
-        if (name !== 'offset')
-            next.delete('offset');
-        const query = next.toString();
-        navigate(window.location.pathname + (query ? `?${query}` : ''));
-    }
-    return { params, update };
-}
+
 export function useDebounced(value: string) {
     const [debounced, setDebounced] = useState(value);
     useEffect(() => {

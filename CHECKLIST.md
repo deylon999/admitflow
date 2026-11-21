@@ -344,7 +344,7 @@
 - [x] T332 Backend architecture PR 3: relocate auth modules with compatible imports
 - [x] T333 Backend architecture PR 3: verify behavior and document the results
 - [x] T334 Backend architecture PR 3: publish and verify hosted checks
-- [ ] T335 Frontend architecture PR 4: complete feature and app boundaries — **в работе**
+- [ ] T335 Frontend architecture PR 4: complete feature and app boundaries — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

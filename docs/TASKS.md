@@ -7386,11 +7386,11 @@
 
 ### T335. Frontend architecture PR 4: complete feature and app boundaries
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** нет.
 
-**Результаты/файлы:** `docs/frontend-architecture-audit.md`; `frontend/src/app`; `frontend/src/features`.
+**Результаты/файлы:** `docs/frontend-architecture-audit.md`; `frontend/src/app`; `frontend/src/features`; `docs/frontend-architecture-result.md`.
 
 **Шаги:**
 
@@ -7404,6 +7404,10 @@
 **Доказательства:**
 
 - [docs/frontend-architecture-audit.md](../docs/frontend-architecture-audit.md) — 46 source files audited before changes; main 5ca1cca archived and 387 Chromium baseline tests passed.
+- [docs/evidence/frontend-architecture-demo-visual.json](../docs/evidence/frontend-architecture-demo-visual.json) — PR 36: exact 490/490 at seven widths after serialized capture; 387 Chromium tests passed.
+- [docs/frontend-architecture-result.md](../docs/frontend-architecture-result.md) — Final feature and app boundaries; 387 Chromium tests, 10 repeat catalogue journeys and 3 lifecycle tests passed.
+- [docs/evidence/frontend-architecture-visual.json](../docs/evidence/frontend-architecture-visual.json) — Final comparison with main 5ca1cca: 490/490 byte-identical pairs and matching routes and API traces, five inherited overflow cases.
+- [docs/evidence/frontend-architecture-dependencies.json](../docs/evidence/frontend-architecture-dependencies.json) — 87 TypeScript modules; no missing local paths or cycles. 54 moved declarations and six render returns match baseline.
 
 ## E6. Резерв и выпуск
 

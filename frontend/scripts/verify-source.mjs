@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { verifyAppPageModules } from './verify-app-page-modules.mjs';
+import { verifyAppPageModules, verifyDemoProgramCard } from './verify-app-page-modules.mjs';
 const manifest=JSON.parse(await readFile('../docs/evidence/frontend-v3-exact/source-manifest.json','utf8'));
 const compared=[];
 // Explicitly scoped functional integration; all other original UI remains frozen.
@@ -24,6 +24,11 @@ for(const entry of manifest.filter(entry=>(entry.path.startsWith('src/')||['inde
     const proof=await verifyAppPageModules(expected);
     compared.push({file:entry.path,exactBytes:false,typeOnlyCorrection:true,demoLabelOnly:true,deadRouteMapRemoved:false,...proof});
     continue;
+  }
+  if(entry.path==='src/shared/UI.tsx') {
+    const { remainingUi, proof } = await verifyDemoProgramCard(expected);
+    expected = remainingUi;
+    compared.push(proof);
   }
   if(copied.toString('utf8').replaceAll('\r\n','\n')!==expected.replaceAll('\r\n','\n'))throw Error('Unexpected source change: '+entry.path);
   compared.push({file:entry.path,exactBytes:copied.equals(original),typeOnlyCorrection:entry.path==='src/pages/AppPages.tsx',demoLabelOnly:entry.path in demoLabels,deadRouteMapRemoved:entry.path==='src/data/demo.ts',sha256:createHash('sha256').update(copied).digest('hex')});

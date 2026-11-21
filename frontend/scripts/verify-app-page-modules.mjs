@@ -14,7 +14,7 @@ const locations = {
   HistoryPage: 'ReferencePages.tsx', NotificationsPage: 'ReferencePages.tsx', SourcesPage: 'ReferencePages.tsx',
   StatusPage: 'StatusPage.tsx', SectionHeader: 'SectionHeader.tsx', AppPageProps: 'types.ts',
 };
-const allowedImports = new Set(['react', '../../shared/UI', '../../data/demo', '../../app/RouteLink', './SectionHeader', './types']);
+const allowedImports = new Set(['react', '../../shared/UI', '../../data/demo', '../../app/RouteLink', './ProgramCard', './SectionHeader', './types']);
 const canonical = text => text.replaceAll('\r\n', '\n');
 
 function source(text, path) {
@@ -83,4 +83,20 @@ export async function verifyAppPageModules(expectedText, frontend = '.') {
     modules.push({ path: modulePath, declarations: names });
   }
   return { modules, sha256: hash.digest('hex') };
+}
+
+export async function verifyDemoProgramCard(expectedText, frontend = '.') {
+  const path = `${directory}/ProgramCard.tsx`;
+  const shared = canonical(expectedText);
+  const reference = source(shared, 'src/shared/UI.tsx');
+  const card = reference.statements.find(node => ts.isFunctionDeclaration(node) && node.name?.text === 'ProgramCard');
+  if (!card) throw Error('ProgramCard is missing from the reference UI module');
+  const declaration = card.getText(reference);
+  const expected = "import { RouteLink } from '../../app/RouteLink';\nimport type { Program } from '../../data/demo';\n\n" + declaration + '\n';
+  const actual = await readFile(resolve(frontend, path), 'utf8');
+  if (canonical(actual) !== expected) throw Error(`Unexpected source change: ${path}`);
+  return {
+    remainingUi: shared.replace("import type { Program } from '../data/demo';\n", '').replace(declaration + '\n\n\n', ''),
+    proof: { file: path, sha256: createHash('sha256').update(actual).digest('hex'), exactDeclaration: true },
+  };
 }
