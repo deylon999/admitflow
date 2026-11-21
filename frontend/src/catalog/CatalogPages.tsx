@@ -2,19 +2,9 @@ import { EmptyMessage, PageTitle, Pill } from '../shared/UI';
 import { CatalogCard, Pagination, ResourceState } from './parts';
 import { useCatalog, useCatalogFilters, useDebounced } from './state';
 import { programResults, universityResults } from './decode';
+import { SortField, YearField } from './fields';
 
-export function SortField({ value, onChange }: { value: string; onChange: (value: string) => void }) {
-  return <label className="af-field"><span>СОРТИРОВКА</span><select value={value} onChange={e => onChange(e.target.value)}>
-    <option value="name">По названию А–Я</option><option value="name-desc">По названию Я–А</option>
-  </select></label>;
-}
-
-export function YearField({ value, years, onChange }: { value: string; years: number[]; onChange: (value: string) => void }) {
-  const options = [...new Set([...years.map(String), ...(value ? [value] : [])])].sort().reverse();
-  return <label className="af-field"><span>ГОД ПОСТУПЛЕНИЯ</span><select value={value} onChange={e => onChange(e.target.value)}>
-    <option value="">Все годы</option>{options.map(year => <option key={year}>{year}</option>)}
-  </select></label>;
-}
+export { SortField, YearField } from './fields';
 
 export function UniversityCatalog() {
   const { params, update } = useCatalogFilters();
