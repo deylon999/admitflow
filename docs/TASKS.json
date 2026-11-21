@@ -10122,7 +10122,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T330"
       ],
@@ -10135,7 +10135,12 @@
       "acceptance": [
         "Capture reproducible OpenAPI, routes and dependencies, DTOs, SQLAlchemy metadata, migration graph and runtime checks before moving auth modules."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ARCHITECTURE_PR3.md",
+          "note": "Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10144,7 +10149,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T331"
       ],

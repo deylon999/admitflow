@@ -46,3 +46,20 @@ app/
   main.py
   sources/
 ```
+
+## 5. Воспроизводимый baseline
+
+Перед переносом со снятого через `git archive` дерева `29c5902` получено девять канонических JSON-снимков. Скрипт [snapshot_backend_contract.py](../backend/tests/snapshot_backend_contract.py) сохраняет OpenAPI целиком с сортировкой ключей, эффективные маршруты FastAPI в порядке регистрации, дерево `Depends`, JSON Schema DTO в режимах validation/serialization, HTTP статусы/ответы и заголовки на безопасных сценариях. Для ORM сохраняются PostgreSQL и SQLite DDL, типы, nullable, клиентские defaults, ключи, ограничения и индексы, а также мапперы, атрибуты и relationships. Отдельно снимок получает metadata через standalone Alembic до импорта `app.main`. Граф миграций включает SHA-256 каждого файла revision. Повторный baseline с `PYTHONHASHSEED=1234` совпал побайтно.
+
+В общем Linux Python 3.12 окружении из `backend/` каждого checkout запустить одну и ту же копию скрипта. `DATABASE_URL` ниже используется для offline Alembic SQL, соединение с этой БД не открывается. HTTP smoke запускается с временной SQLite БД. Для native runtime и реальных миграций ниже используется выделенный PostgreSQL.
+
+```bash
+PYTHONPATH=. DATABASE_URL=postgresql+psycopg://fixture:fixture@localhost/fixture \
+  python /absolute/path/snapshot_backend_contract.py /absolute/path/before
+# В backend/ проверяемого checkout выполнить ту же команду с каталогом after.
+diff -ru /absolute/path/before /absolute/path/after
+```
+
+На baseline зарегистрировано 53 маршрута, из них 10 auth. В OpenAPI 45 путей, 50 операций и 71 компонентная схема, `securitySchemes` отсутствует, cookie/Origin/CSRF обрабатываются runtime. Есть 11 auth DTO и 34 таблицы/маппера, ORM `relationship()` отсутствуют. Снимки metadata приложения и standalone Alembic совпали. В Alembic 14 revisions, head `0014`. `PYTHONPATH=. python tests/check_migrations.py` на пустой PostgreSQL 17.11 БД выполнила upgrade и `alembic check` без расхождений.
+
+`python -m uvicorn app.main:app` на baseline ответил `200` для `/api/live`, `/api/health`, `/api/openapi.json`. Успешны `--help` для `app.smtp_check`, `app.maintenance`, `app.worker`, `app.program_catalog_import`, `app.program_catalog_batch`, `app.sources.cli`, `app.backup` и `python -m alembic heads`. `python -m pytest --collect-only -q tests/test_account*.py tests/test_smtp_check.py` собрал 274 проверки аккаунтов, security и SMTP. Полный baseline pytest выполняется на неизменяемом tar checkout отдельно от ветки.
