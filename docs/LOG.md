@@ -1584,3 +1584,18 @@ no explicit unique M:N link exists. No name-based matching/backfill.
 Fetched main: owner already merged PR28 at0449e66; fast-forwarded its existing
 branch. New PR prohibited; subsequent commits cannot change merged PR diff and
 will be labelled as post-merge continuation. T327 done, T325 current.
+
+# S228 / T325 / T328 / T326 — 2026-11-21: public programme catalogue continuation
+
+Existing endpoints read only current verified revisions, keep reviewed SGU IDs,
+and paginate/filter in SQL. Separate programme IDs and explicit confirmed
+contests use approved KAN-223 DTO. Legacy entries without unique links return
+nullable programId. Frontend accepts old responses and shows null conditions.
+113 nativePG tests pass, including old schema and preservation of subscriptions,
+programme IDs and historical snapshots. npm typecheck/lint/build and 387 frontend
+tests pass. Real-original Chromium journey passed against owned PG17.11/0014.
+Two HSE2027 programmes cover1/785 heads in rehearsal; 2026 remains separate.
+Branch updated over current main06fc988 with PR29 documentation retained.
+T325/T328 done; T326/T317 review. Checks on final SHA and compare link in PR28.
+Merged PR28 cannot add follow-up commits to its diff. User requested same branch
+without new PR. Working DB, user volumes, auth and workflows were untouched.

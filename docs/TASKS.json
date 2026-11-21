@@ -9734,7 +9734,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T316"
       ],
@@ -9747,7 +9747,12 @@
       "acceptance": [
         "Reviewed original official records from several universities reach existing endpoints with provenance and atomic repeatable import; compatible DTO agreed before any required public change; source errors preserve published data."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/evidence/kan-218-pr2-public-api.json",
+          "note": "Pilot official import and public API implemented and verified in continuation branch. Owner review and integration of continuation pending. National acceptance stays open; isolated target2027 scope1/785."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9925,7 +9930,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T324",
         "T327"
@@ -9941,12 +9946,12 @@
       ],
       "evidence": [
         {
-          "path": "docs/KAN-218-PR2.md",
-          "note": "Backend atomic import implemented and nativePG-tested;4real facts from2originals, repeat unchanged, old SGU responses preserved. Public API/frontend remain unchanged pending explicit T327 agreement; T325 not done."
+          "path": "docs/evidence/kan-218-pr2-public-api.json",
+          "note": "Actual verified HSE2027 and SGU2026 imported on PG17.11/0014; four new API entries, both old SGU responses unchanged on repeat. SQL filters/pages and verified revision-only hydration checked in nativePG."
         },
         {
-          "path": "docs/evidence/kan-218-pr2-real-import.json",
-          "note": "Owned PG17.11, code eecba42, schema0014,4canonical programmes/2source revisions; target2027 public API still0. Internal publication is not public coverage."
+          "path": "docs/KAN-218-PR2.md",
+          "note": "113 local tests passed with PostgreSQL required; stable IDs, new/old sources, historical revisions, failures and explicit M:N links."
         }
       ],
       "blockedReason": null
@@ -9957,7 +9962,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T325",
         "T328"
@@ -9971,7 +9976,12 @@
       "acceptance": [
         "NativePG repeat/update/conflict/failure/history/API tests; frontend loading/error/empty/unknown checks as needed; full CI on exact SHA, reproducible source/coverage report and small review PR; target2027 >=471/785 remains open unless actually achieved."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR2.md",
+          "note": "Local nativePG, metadata alignment, subscription/snapshot preservation, real-source evidence and frontend regression complete. Final Linux CI and owner review tracked in merged PR28 description with continuation branch compare; follow-up integration remains external."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10007,7 +10017,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "todo",
+      "status": "done",
       "dependsOn": [
         "T325"
       ],
@@ -10021,7 +10031,16 @@
       "acceptance": [
         "Update catalog DTO/decoder and existing pages for approved admissions/null/groups; old-server additive-field fallback, same routes/design, no fabricated form/funding/seats, loading/error/empty and no-contest browser checks; typecheck/lint/build/frontend tests pass."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR2.md",
+          "note": "Typecheck/lint/build and Playwright387 passed; decoder accepts additive fields from old servers and rejects wrong-campaign groups."
+        },
+        {
+          "path": "docs/evidence/kan-218-pr2-public-api.json",
+          "note": "Real-source Playwright journey finds HSE Fashion2027, shows unknown conditions and links to university."
+        }
+      ],
       "blockedReason": null
     }
   ]

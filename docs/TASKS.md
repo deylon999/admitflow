@@ -7002,7 +7002,7 @@
 
 ### T317. KAN-218 PR2: verified official program import and stable API publication
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T316.
 
@@ -7019,7 +7019,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/evidence/kan-218-pr2-public-api.json](../docs/evidence/kan-218-pr2-public-api.json) — Pilot official import and public API implemented and verified in continuation branch. Owner review and integration of continuation pending. National acceptance stays open; isolated target2027 scope1/785.
 
 ### T318. KAN-218 PR3: resumable bounded batch acquisition and publication
 
@@ -7170,7 +7170,7 @@
 
 ### T325. KAN-218 PR2: atomically import and publish reviewed programme records
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T324, T327.
 
@@ -7187,12 +7187,12 @@
 
 **Доказательства:**
 
-- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Backend atomic import implemented and nativePG-tested;4real facts from2originals, repeat unchanged, old SGU responses preserved. Public API/frontend remain unchanged pending explicit T327 agreement; T325 not done.
-- [docs/evidence/kan-218-pr2-real-import.json](../docs/evidence/kan-218-pr2-real-import.json) — Owned PG17.11, code eecba42, schema0014,4canonical programmes/2source revisions; target2027 public API still0. Internal publication is not public coverage.
+- [docs/evidence/kan-218-pr2-public-api.json](../docs/evidence/kan-218-pr2-public-api.json) — Actual verified HSE2027 and SGU2026 imported on PG17.11/0014; four new API entries, both old SGU responses unchanged on repeat. SQL filters/pages and verified revision-only hydration checked in nativePG.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — 113 local tests passed with PostgreSQL required; stable IDs, new/old sources, historical revisions, failures and explicit M:N links.
 
 ### T326. KAN-218 PR2: native PostgreSQL API regression and review handoff
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T325, T328.
 
@@ -7209,7 +7209,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Local nativePG, metadata alignment, subscription/snapshot preservation, real-source evidence and frontend regression complete. Final Linux CI and owner review tracked in merged PR28 description with continuation branch compare; follow-up integration remains external.
 
 ### T327. KAN-218 PR2: owner agreement on compatible programme DTO extension
 
@@ -7234,7 +7234,7 @@
 
 ### T328. KAN-218 PR2: compatible frontend for programmes without contests
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T325.
 
@@ -7251,7 +7251,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Typecheck/lint/build and Playwright387 passed; decoder accepts additive fields from old servers and rejects wrong-campaign groups.
+- [docs/evidence/kan-218-pr2-public-api.json](../docs/evidence/kan-218-pr2-public-api.json) — Real-source Playwright journey finds HSE Fashion2027, shows unknown conditions and links to university.
 
 ## E6. Резерв и выпуск
 

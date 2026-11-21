@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 287 из 324 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 289 из 324 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -326,7 +326,7 @@
 - [x] T314 KAN-218 PR1: implement reproducible scoped identity keys
 - [x] T315 KAN-218 PR1: add compatible Program and competition relationships
 - [x] T316 KAN-218 PR1: PostgreSQL regression and review handoff
-- [ ] T317 KAN-218 PR2: verified official program import and stable API publication
+- [ ] T317 KAN-218 PR2: verified official program import and stable API publication — **нужна проверка / завершение**
 - [ ] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
 - [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
@@ -334,10 +334,10 @@
 - [x] T322 KAN-218 PR2: select official documents and capture bounded source evidence
 - [x] T323 KAN-218 PR2: independently review programme facts and public response proposal
 - [x] T324 KAN-218 PR2: persist source revisions and publication provenance
-- [ ] T325 KAN-218 PR2: atomically import and publish reviewed programme records — **в работе**
-- [ ] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff
+- [x] T325 KAN-218 PR2: atomically import and publish reviewed programme records
+- [ ] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff — **нужна проверка / завершение**
 - [x] T327 KAN-218 PR2: owner agreement on compatible programme DTO extension
-- [ ] T328 KAN-218 PR2: compatible frontend for programmes without contests
+- [x] T328 KAN-218 PR2: compatible frontend for programmes without contests
 
 ## Резерв и выпуск
 
