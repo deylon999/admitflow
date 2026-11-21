@@ -1700,3 +1700,13 @@ facts, but computes global collision windows before filters three times per page
 Baseline/EXPLAIN and Python memory/ORM counts required before optimization.
 Acceptance and five-step checklist in docs/KAN-218-PR4.md. T319 in_progress,
 T320 national coverage not started. No runtime/schema change in this step.
+
+## S239 / T319 — 2026-11-22 — PostgreSQL scale baseline
+
+Benchmark7dcd24f, clean start, PG17.11:100000 current synthetic programmes and
+200000 old facts across785heads/215branches/four campaigns. Normal guards on.
+Nine timing samples per case: p95 1118–1408ms, Python peak about1.77MB, page-only
+fact hydration. EXPLAIN shows repeated global window sorts spilling to disk.
+Full original report archived losslessly with SHA; compact metrics in
+docs/evidence/kan-218-pr4-baseline.json. Prototype query consolidation follows;
+no index/migration justified yet. T319 remains in_progress.
