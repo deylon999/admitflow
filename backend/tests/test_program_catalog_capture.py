@@ -8,7 +8,7 @@ import pytest
 
 from app.sources.fetcher import FetchError, FetchResult
 
-spec = importlib.util.spec_from_file_location('capture_program_catalog', Path(__file__).resolve().parents[2] / 'scripts/capture_program_catalog.py')
+spec = importlib.util.spec_from_file_location('capture_program_catalog', Path(__file__).resolve().parents[2] / 'scripts/data/capture_program_catalog.py')
 module = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(module)
 

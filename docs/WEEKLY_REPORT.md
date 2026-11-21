@@ -4,7 +4,7 @@
 
 ```
 pip install -r scripts/requirements-report.txt
-python scripts/weekly_report.py --week 2026-W46 --extra notes.json
+python -m scripts.reports.weekly_report --week 2026-W46 --extra notes.json
 ```
 
 Скрипт печатает путь к PDF (по умолчанию во временной папке системы). Факты берутся из git и `docs/TASKS.json`. Срок, риски и строки, о которых репозиторий не знает, добавляются файлом `--extra`:
