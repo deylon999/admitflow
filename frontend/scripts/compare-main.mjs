@@ -1,15 +1,21 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, symlink, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:net';
 import { resolve } from 'node:path';
 import { build, preview } from 'vite';
 import { chromium } from '@playwright/test';
+import { stopChild } from './stop-child.mjs';
 
 // A fresh read-only Git reference, never an automatically accepted baseline.
 // API responses are captured once from the local stack and shared by both
 // previews to avoid timestamp drift. This is visual replay, not API evidence.
 const ref = process.argv[2];
-if (!ref || !/^[a-f0-9]{7,40}$/.test(ref)) throw Error('Usage: node scripts/compare-main.mjs <baseline commit SHA>');
+const matrix = process.argv[3] === '--layout-matrix';
+if (!ref || !/^[a-f0-9]{7,40}$/.test(ref) || process.argv.length > (matrix ? 4 : 3)) {
+  throw Error('Usage: node scripts/compare-main.mjs <baseline commit SHA> [--layout-matrix]');
+}
 const frontend = resolve(import.meta.dirname, '..');
 const root = resolve(frontend, '..');
 const sha = execFileSync('git', ['rev-parse', '--verify', `${ref}^{commit}`], { cwd: root, encoding: 'utf8' }).trim();
@@ -22,22 +28,92 @@ execFileSync('tar', ['-xf', archive, '-C', resolve(directory, 'source')]);
 await symlink(resolve(frontend, 'node_modules'), resolve(reference, 'node_modules'), 'junction');
 const routes = Array.from((await readFile(resolve(frontend, 'SCREEN_INVENTORY.md'), 'utf8')).matchAll(/^\|[^\n]*?\|\s*`(\/[^`]*)`\s*\|/gm), match => match[1]);
 if (routes.length !== 29) throw Error('Expected exactly 29 inventory routes');
-const api = process.env.QA_API_TARGET ?? 'http://127.0.0.1:8080';
+if (matrix) routes.push('/app/competitions', '/app/competitions/sgu-2026-4588',
+  '/app/competitions/sgu-2026-4588/competitors', '/app/coverage', '/auth/verify', '/auth/reset');
+const widths = matrix ? [320, 375, 390, 768, 1024, 1440, 1920] : [390, 1440];
+const ownsApi = matrix && !process.env.QA_API_TARGET;
+const api = process.env.QA_API_TARGET ?? `http://127.0.0.1:${ownsApi ? 5303 : 8080}`;
 const target = new URL(api);
 if (target.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(target.hostname) || target.username || target.password || target.pathname !== '/' || target.search || target.hash) throw Error('QA_API_TARGET must be a local HTTP origin');
 const servers = [];
 const results = [];
 const snapshots = new Map();
-let browser;
+let browser, apiProcess;
 const hash = value => createHash('sha256').update(value).digest('hex');
+
+async function startIsolatedApi() {
+  await new Promise((done, reject) => {
+    const socket = createServer();
+    socket.once('error', reject);
+    socket.listen(5303, '127.0.0.1', () => socket.close(done));
+  });
+  const backend = resolve(root, 'backend');
+  const python = process.env.PYTHON ?? ['.venv/Scripts/python.exe', '.venv/bin/python']
+    .map(path => resolve(backend, path)).find(existsSync) ?? 'python';
+  apiProcess = spawn(python, ['tests/catalog_runtime.py'], {
+    cwd: backend, env: { ...process.env, CATALOG_CONTROL_STDIN: '1' }, stdio: ['pipe', 'ignore', 'inherit'],
+  });
+  let startupError;
+  apiProcess.on('error', error => { startupError = error; });
+  const deadline = Date.now() + 30_000;
+  while (Date.now() < deadline) {
+    if (startupError || apiProcess.exitCode !== null) throw startupError ?? Error('Visual API exited on startup');
+    try {
+      if ((await fetch(api + '/api/live')).ok) return;
+    } catch { /* Only retry while starting the owned test process. */ }
+    await new Promise(done => setTimeout(done, 100));
+  }
+  throw Error('Visual API did not start within 30 seconds');
+}
+
+function relativeUrl(raw) {
+  const url = new URL(raw);
+  return url.pathname + url.search + url.hash;
+}
+
+async function capture(page, route, demo, port, screenshot, errors) {
+  const httpErrors = [], requests = [], responses = [];
+  page.on('pageerror', error => errors.push(error.message));
+  if (matrix) {
+    page.on('request', request => {
+      const url = relativeUrl(request.url());
+      if (url.startsWith('/api/')) requests.push(`${request.method()} ${url}`);
+    });
+    page.on('response', response => {
+      const url = relativeUrl(response.url());
+      if (url.startsWith('/api/')) responses.push(`${response.status()} ${url}`);
+    });
+    page.on('console', message => {
+      if (message.type() !== 'error') return;
+      const location = message.location().url;
+      if (location && relativeUrl(location).startsWith('/api/') && message.text().startsWith('Failed to load resource:')) {
+        httpErrors.push(relativeUrl(location) + ' ' + message.text());
+      } else errors.push(message.text());
+    });
+  }
+  const navigation = await page.goto(`http://127.0.0.1:${port}${route}${demo ? '?mode=demo' : ''}`);
+  await page.locator('#root h1, #root h2').first().waitFor();
+  await page.getByRole('status').filter({ hasText: /Загрузка данных|Обновляем данные/ }).waitFor({ state: 'hidden' });
+  if (matrix) await page.waitForLoadState('networkidle');
+  await page.evaluate(() => globalThis.document.fonts.ready);
+  return {
+    text: await page.locator('#root').innerText(),
+    overflow: await page.evaluate(() => Math.max(0, globalThis.document.documentElement.scrollWidth - globalThis.innerWidth)),
+    buffer: await page.screenshot({ path: screenshot, fullPage: true, animations: 'disabled', caret: 'hide' }),
+    status: navigation?.status(), url: relativeUrl(page.url()),
+    requests: requests.sort(), responses: responses.sort(), httpErrors: httpErrors.sort(),
+  };
+}
+
 try {
+  if (ownsApi) await startIsolatedApi();
   await build({ root: reference, configFile: false, logLevel: 'error' });
   await build({ root: frontend, configFile: false, logLevel: 'error' });
   for (const [source, port] of [[reference, 5300], [frontend, 5301]]) {
     servers.push(await preview({ root: source, configFile: false, preview: { host: '127.0.0.1', port, strictPort: true } }));
   }
   browser = await chromium.launch();
-  for (const width of [390, 1440]) {
+  for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, locale: 'ru-RU', timezoneId: 'Europe/Moscow', colorScheme: 'light', reducedMotion: 'reduce' });
     try {
       await context.route('**/api/**', async route => {
@@ -54,20 +130,20 @@ try {
         const pages = [await context.newPage(), await context.newPage()];
         const errors = [];
         try {
-          const buffers = [], texts = [], overflow = [];
           const name = `${width}-${demo ? 'demo' : 'default'}-${route === '/' ? 'landing' : route.slice(1).replaceAll('/', '__')}`;
-          for (const [index, page] of pages.entries()) {
-            page.on('pageerror', error => errors.push(error.message));
-            await page.goto(`http://127.0.0.1:${index ? 5301 : 5300}${route}${demo ? '?mode=demo' : ''}`);
-            await page.locator('#root h1, #root h2').first().waitFor();
-            await page.getByRole('status').filter({ hasText: /Загрузка данных|Обновляем данные/ }).waitFor({ state: 'hidden' });
-            await page.evaluate(() => globalThis.document.fonts.ready);
-            texts.push(await page.locator('#root').innerText());
-            overflow.push(await page.evaluate(() => Math.max(0, globalThis.document.documentElement.scrollWidth - globalThis.innerWidth)));
-            buffers.push(await page.screenshot({ path: resolve(directory, `${name}-${index ? 'current' : 'main'}.png`), fullPage: true, animations: 'disabled', caret: 'hide' }));
+          const take = (page, index) => capture(page, route, demo, index ? 5301 : 5300,
+            resolve(directory, `${name}-${index ? 'current' : 'main'}.png`), errors);
+          const [before, after] = matrix ? await Promise.all(pages.map(take)) : [await take(pages[0], 0), await take(pages[1], 1)];
+          const equal = before.buffer.equals(after.buffer);
+          const item = { route, demo, width, equal, textEqual: before.text === after.text,
+            overflow: [before.overflow, after.overflow], errors,
+            baselineSha256: hash(before.buffer), currentSha256: hash(after.buffer) };
+          if (matrix) {
+            item.routeEqual = before.status === 200 && after.status === 200 && before.url === after.url;
+            item.apiEqual = ['requests','responses','httpErrors'].every(key => JSON.stringify(before[key]) === JSON.stringify(after[key]));
+            item.httpErrors = before.httpErrors;
           }
-          const equal = buffers[0].equals(buffers[1]);
-          results.push({ route, demo, width, equal, textEqual: texts[0] === texts[1], overflow, errors, baselineSha256: hash(buffers[0]), currentSha256: hash(buffers[1]) });
+          results.push(item);
           console.log(`${equal ? 'PASS' : 'DIFF'} ${name}`);
         } finally { for (const page of pages) await page.close(); }
       }
@@ -76,7 +152,12 @@ try {
 } finally {
   await browser?.close();
   for (const server of servers) { server.httpServer.closeAllConnections(); await new Promise(done => server.httpServer.close(done)); }
-  await writeFile(resolve(directory, 'metrics.json'), JSON.stringify({ baseline: sha, responseMode: 'read-only local API visual replay', results }, null, 2) + '\n');
+  await stopChild(apiProcess);
+  await writeFile(resolve(directory, 'metrics.json'), JSON.stringify({ baseline: sha, widths, responseMode: 'read-only local API visual replay', results }, null, 2) + '\n');
   console.log(`Evidence: ${directory}`);
 }
-if (results.length !== 116 || results.some(r => !r.equal || !r.textEqual || r.errors.length || r.overflow.some(v => v !== 0))) throw Error('Visual comparison failed; inspect evidence, do not update a baseline to hide differences.');
+if (results.length !== routes.length * widths.length * 2 || results.some(r => !r.equal || !r.textEqual || r.errors.length ||
+  (matrix ? !r.routeEqual || !r.apiEqual || r.overflow[0] !== r.overflow[1] : r.overflow.some(v => v !== 0)))) {
+  throw Error('Visual comparison failed; inspect evidence, do not update a baseline to hide differences.');
+}
+if (matrix) console.log(`${results.length} identical pairs; inherited page overflow in ${results.filter(r => r.overflow[0]).length} pairs.`);
