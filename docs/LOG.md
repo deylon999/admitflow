@@ -1655,3 +1655,30 @@ PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340
 # S232 / T335 — 2026-11-21: frontend architecture audit and baseline
 
 Audited all 46 main frontend sources and mapped route, feature, API and CSS boundaries. Tagged baseline 5ca1cca after PR34; archived frontend and passed 387 Chromium tests on unchanged main. Planned demo extraction and stacked live/app changes.
+
+## S234 — 2026-11-21: организация служебных скриптов
+
+Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
+разложены по назначению, старые точки входа сохранены. Карта и аудит
+потребителей находятся в scripts/README.md и scripts/AUDIT.md.
+
+## S235 — 2026-11-21: evidence housekeeping
+
+База main a3f5078. Аудит SHA‑256: 580 файлов evidence, 171 группа совпадений,
+173 дополнительных пути. Убраны 168 повторных путей PNG после проверки
+отчётов, галерей, тестов и CI. Оригиналы, хеши, результаты проверок и
+security evidence сохранены. Манифест, правила хранения и команда
+повторного аудита находятся в docs/evidence/README.md.
+
+Ветка PR #33 обновлена от main 5ca1cca после PR #32 и #34.
+
+## S236 — 2026-11-22: синхронизация Evidence Housekeeping
+
+Ветка PR #33 обновлена от main 587f5bc после слияния PR #35.
+Запись Evidence Housekeeping получила номер S235. Номер S232
+используется параллельным frontend PR #36. Запись S234 сохранена.
+
+## S237 — 2026-11-22: синхронизация frontend demo
+
+PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #35.
+Сохранены исходная запись S232, история main и текущая задача T335.

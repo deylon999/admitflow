@@ -4,6 +4,7 @@ import { createServer } from 'node:net';
 import { resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { build, preview } from 'vite';
+import { backendPython } from './backend-python.mjs';
 import { stopChild } from './stop-child.mjs';
 
 // Own server lifetimes directly. Playwright's Windows webServer teardown can
@@ -19,8 +20,7 @@ const authDirectory = auth ? mkdtempSync(resolve(tmpdir(), 'admitflow-auth-')) :
 const existingApi = process.env.QA_API_TARGET;
 const apiTarget = existingApi ?? 'http://127.0.0.1:5303';
 const backend = resolve('../backend');
-const python = process.env.PYTHON ?? ['.venv/Scripts/python.exe', '.venv/bin/python']
-  .map(path => resolve(backend, path)).find(path => existsSync(path)) ?? 'python';
+const python = backendPython(backend);
 let api;
 const previews = [];
 
