@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S228.
+Дата: 2026-11-21. Последняя сессия: S229.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T326.
+- Текущая задача: T318.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T327 approved. API/frontend continuation of already-merged PR28 is implemented in its existing branch based on main@06fc988. T325/T328 done; T326/T317 review, exact branch CI and comparison in PR28 description. New review merge requires owner decision as merged PR28 cannot accept more commits. No new PR requested. Isolated2027 rehearsal1/785, national target471 remains open.
+Stage 3 batch acquisition/publication in separate branch at main89a98c5. Implement exact URL registry, access policy, bounded resumable journal, reviewed-only publication, native PostgreSQL proof and PR. Phase 2 merged through PR30.
 
 ## Последняя завершённая работа
 
-- T327 approved contract; T325 verified current-publication API; T328 compatible frontend. API/browser proof with two verified HSE2027 programmes and preserved legacy SGU IDs.
+- T317 and T326 accepted in main through PR30. Pilot verified2 HSE2027 programmes and1/785 heads in disposal rehearsal.
 
 ## Ограничения
 

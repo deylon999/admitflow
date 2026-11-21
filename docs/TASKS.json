@@ -9734,7 +9734,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T316"
       ],
@@ -9751,6 +9751,10 @@
         {
           "path": "docs/evidence/kan-218-pr2-public-api.json",
           "note": "Pilot official import and public API implemented and verified in continuation branch. Owner review and integration of continuation pending. National acceptance stays open; isolated target2027 scope1/785."
+        },
+        {
+          "path": "docs/KAN-218-PR3.md",
+          "note": "Review and integration completed through PR30 (main 89a98c5). Linux CI on7ee9dbe: 4/4, 1145 backend and 387 frontend tests, migration0014 and native browser auth. National campaign goal remains open."
         }
       ],
       "blockedReason": null
@@ -9761,12 +9765,13 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T317"
       ],
       "deliverables": [
-        "docs/KAN-218-ARCHITECTURE.md"
+        "docs/KAN-218-ARCHITECTURE.md",
+        "docs/KAN-218-PR3.md"
       ],
       "steps": [
         "Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete."
@@ -9774,7 +9779,12 @@
       "acceptance": [
         "Bounded official-source acquisition with access review, timeout/backoff, resumability, conflict quarantine and isolated atomic publication; incomplete import never marked complete."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR3.md",
+          "note": "Audit and batch acceptance recorded before implementation. Owner merged pilot through PR30."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -9962,7 +9972,7 @@
       "phase": "E5",
       "priority": "P0",
       "size": "M",
-      "status": "review",
+      "status": "done",
       "dependsOn": [
         "T325",
         "T328"
@@ -9980,6 +9990,10 @@
         {
           "path": "docs/KAN-218-PR2.md",
           "note": "Local nativePG, metadata alignment, subscription/snapshot preservation, real-source evidence and frontend regression complete. Final Linux CI and owner review tracked in merged PR28 description with continuation branch compare; follow-up integration remains external."
+        },
+        {
+          "path": "docs/KAN-218-PR3.md",
+          "note": "Review and integration completed through PR30 (main 89a98c5). Linux CI on7ee9dbe: 4/4, 1145 backend and 387 frontend tests, migration0014 and native browser auth. National campaign goal remains open."
         }
       ],
       "blockedReason": null

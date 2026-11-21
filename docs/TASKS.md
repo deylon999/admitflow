@@ -7002,7 +7002,7 @@
 
 ### T317. KAN-218 PR2: verified official program import and stable API publication
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T316.
 
@@ -7020,14 +7020,15 @@
 **Доказательства:**
 
 - [docs/evidence/kan-218-pr2-public-api.json](../docs/evidence/kan-218-pr2-public-api.json) — Pilot official import and public API implemented and verified in continuation branch. Owner review and integration of continuation pending. National acceptance stays open; isolated target2027 scope1/785.
+- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Review and integration completed through PR30 (main 89a98c5). Linux CI on7ee9dbe: 4/4, 1145 backend and 387 frontend tests, migration0014 and native browser auth. National campaign goal remains open.
 
 ### T318. KAN-218 PR3: resumable bounded batch acquisition and publication
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T317.
 
-**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR3.md`.
 
 **Шаги:**
 
@@ -7040,7 +7041,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Audit and batch acceptance recorded before implementation. Owner merged pilot through PR30.
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
@@ -7192,7 +7193,7 @@
 
 ### T326. KAN-218 PR2: native PostgreSQL API regression and review handoff
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P0 · **Размер:** M.
 
 **Зависимости:** T325, T328.
 
@@ -7210,6 +7211,7 @@
 **Доказательства:**
 
 - [docs/KAN-218-PR2.md](../docs/KAN-218-PR2.md) — Local nativePG, metadata alignment, subscription/snapshot preservation, real-source evidence and frontend regression complete. Final Linux CI and owner review tracked in merged PR28 description with continuation branch compare; follow-up integration remains external.
+- [docs/KAN-218-PR3.md](../docs/KAN-218-PR3.md) — Review and integration completed through PR30 (main 89a98c5). Linux CI on7ee9dbe: 4/4, 1145 backend and 387 frontend tests, migration0014 and native browser auth. National campaign goal remains open.
 
 ### T327. KAN-218 PR2: owner agreement on compatible programme DTO extension
 

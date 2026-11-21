@@ -1599,3 +1599,10 @@ Branch updated over current main06fc988 with PR29 documentation retained.
 T325/T328 done; T326/T317 review. Checks on final SHA and compare link in PR28.
 Merged PR28 cannot add follow-up commits to its diff. User requested same branch
 without new PR. Working DB, user volumes, auth and workflows were untouched.
+
+# S229 / T318 — 2026-11-21: start batch catalogue import
+
+Fetched main89a98c5 with merged PR30. T317/T326 done, T318 current. Audited
+reviewed per-document importer and HTTPS fetcher. Documented exact source
+registry, capture/publication separation, retry/resume and PostgreSQL acceptance
+before implementation. Campaign2027 stays separate from archived data.

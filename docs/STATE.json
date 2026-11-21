@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
-  "currentTask": null,
-  "nextTask": "T326",
+  "currentTask": "T318",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S228",
-  "resumeAction": "T327 approved. API/frontend continuation of already-merged PR28 is implemented in its existing branch based on main@06fc988. T325/T328 done; T326/T317 review, exact branch CI and comparison in PR28 description. New review merge requires owner decision as merged PR28 cannot accept more commits. No new PR requested. Isolated2027 rehearsal1/785, national target471 remains open.",
+  "lastSession": "S229",
+  "resumeAction": "Stage 3 batch acquisition/publication in separate branch at main89a98c5. Implement exact URL registry, access policy, bounded resumable journal, reviewed-only publication, native PostgreSQL proof and PR. Phase 2 merged through PR30.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,7 +17,7 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
-    "T327 approved contract; T325 verified current-publication API; T328 compatible frontend. API/browser proof with two verified HSE2027 programmes and preserved legacy SGU IDs."
+    "T317 and T326 accepted in main through PR30. Pilot verified2 HSE2027 programmes and1/785 heads in disposal rehearsal."
   ],
   "environment": [
     "S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.",
