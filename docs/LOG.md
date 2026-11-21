@@ -1599,3 +1599,20 @@ Branch updated over current main06fc988 with PR29 documentation retained.
 T325/T328 done; T326/T317 review. Checks on final SHA and compare link in PR28.
 Merged PR28 cannot add follow-up commits to its diff. User requested same branch
 without new PR. Working DB, user volumes, auth and workflows were untouched.
+
+# S229 / T318 — 2026-11-21: start batch catalogue import
+
+Fetched main89a98c5 with merged PR30. T317/T326 done, T318 current. Audited
+reviewed per-document importer and HTTPS fetcher. Documented exact source
+registry, capture/publication separation, retry/resume and PostgreSQL acceptance
+before implementation. Campaign2027 stays separate from archived data.
+
+# S229 / T318 — 2026-11-21: verify bounded batch acquisition and publication
+
+Exact URL registry, checked robots/limits, durable resume with host cooldown,
+supervised HTTPS deadline and atomic reviewed-only publish CLI. Three official
+candidates captured with timestamps and SHA; replay does not make requests.
+Native PostgreSQL selection101 and final16 pass without skips; CLI proof uses
+real historical originals and an owned temporary schema. HSE2027 published
+and repeated unchanged; SGU2026 separate; three candidates remain review_required.
+2027 rehearsal1/785. T318 review; CI on PR head and owner merge remain open.

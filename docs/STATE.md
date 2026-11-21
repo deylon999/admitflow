@@ -3,20 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S228.
+Дата: 2026-11-21. Последняя сессия: S229.
 
 ## Продолжение
 
 - Текущая задача: нет.
-- Следующая задача: T326.
+- Следующая задача: T318.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T327 approved. API/frontend continuation of already-merged PR28 is implemented in its existing branch based on main@06fc988. T325/T328 done; T326/T317 review, exact branch CI and comparison in PR28 description. New review merge requires owner decision as merged PR28 cannot accept more commits. No new PR requested. Isolated2027 rehearsal1/785, national target471 remains open.
+Stage 3 implemented and staged for review in feat/kan-218-batch-import. T318 is review until owner merge. Batch can resume capture and safely publish verified originals by year. CI on PR head; stage 4 depends on merged T318. Rehearsal2027 1/785. No working database import.
 
 ## Последняя завершённая работа
 
-- T327 approved contract; T325 verified current-publication API; T328 compatible frontend. API/browser proof with two verified HSE2027 programmes and preserved legacy SGU IDs.
+- T317/T326 stage 2 merged through PR30. T318 implementation and local verification complete, review pending.
 
 ## Ограничения
 
@@ -29,6 +29,7 @@ T327 approved. API/frontend continuation of already-merged PR28 is implemented i
 
 ## Проверенное окружение
 
+- S229: local disposable PG17.11 extended101/0skip49.66s and final batch16/0skip3.34s. Three official candidate captures, no candidate publication and zero network requests on resume. Real CLI replay/API proof persisted. See stage 3 PR for CI.
 - S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.
 - S227 на main@0449e66: backend 118 успешных проверок с PostgreSQL 17.11 и --require-postgres. Сборка, проверка типов и линтер прошли. Chromium: 380 успешных и 4 неуспешных проверки из-за горизонтальной прокрутки страниц вузов при 390 px. Полный Compose-прогон остановился на docker info.
 - S226 CI correction: backup/restore14pass; disposable PostgreSQL17 migration/storage/import/identity/backup/restore101passed0skip59.42s. Only exact reviewed migration trigger definitions accepted; modified/missing/extra objects rejected. Final Linux CI tracked in PR28.
