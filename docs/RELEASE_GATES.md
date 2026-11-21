@@ -1,12 +1,11 @@
 # Фактическая готовность к выпуску
 
-Обновлено 2026-11-08, S201. Публичный выпуск не подтверждён.
-Рабочая ветка очистки — `chore/product-foundation-cleanup`; main не изменён.
-V3 build/193 browser checks и доступные Windows backend tests проходят,
-но PostgreSQL/Compose smoke остаются blocked из-за запрета Docker Engine.
-[Факты и ограничения](evidence/foundation-cleanup.md). Ниже сохранены
-исторические gates прежнего MVP; они не принимаются автоматически и требуют
-пересмотра для v3 вместо ручного UI/калькулятора.
+Сверено 21 ноября 2026 года по `main@a3f5078`. `completedGates` в `STATE.json`
+пуст, публичный выпуск не подтверждён. Технические проверки PostgreSQL,
+миграций и браузеров есть. Для последнего интегрированного пакетного импорта
+проверки относятся к [PR #31](https://github.com/deylon999/admitflow/pull/31).
+Ранняя диагностика Docker и браузеров хранится в [отчёте S201](evidence/foundation-cleanup.md).
+Ниже сохранены исторические gates прежнего MVP и их внешние условия.
 Критерии — [QUALITY.md](QUALITY.md), план — [ROADMAP.md](ROADMAP.md),
 статусы задач и evidence — [TASKS.json](TASKS.json).
 

@@ -1,53 +1,64 @@
 # Документация AdmitFlow
 
-Старт: [AGENTS.md](../AGENTS.md) → [STATE.md](STATE.md) →
-`python scripts/roadmap.py --context` из корня. Проверка: `--check`.
-Для другой выбранной задачи — `--task Tnnn`.
-Полные TASKS, LOG, архив и исследования источников для старта не нужны.
+Начните с [README](../README.md) для локального запуска. Чтобы продолжить
+работу по задаче, прочитайте [AGENTS.md](../AGENTS.md), [текущий контекст](STATE.md)
+и запустите из корня `python scripts/roadmap.py --context` или
+`python scripts/roadmap.py --task Tnnn`. Остальные материалы выбирайте по вопросу.
 
-Текущий фундамент v3: [аудит очистки](foundation-cleanup-audit.md),
-[архитектура](ARCHITECTURE.md), [запуск](catalog-runbook.md),
-[итоговые проверки и Docker-блокер](evidence/foundation-cleanup.md).
-Документы `archive/*-before-foundation.md` — история, не активные требования.
+## Актуальные справочники
 
-| Информация | Авторитетный источник | Когда читать |
-| --- | --- | --- |
-| Задачи, статусы, зависимости, acceptance, evidence | [TASKS.json](TASKS.json) | Через `--task Tnnn` или `--context` |
-| Продолжение и техническое состояние сессии | [STATE.json](STATE.json) | Обычно достаточно генерируемого [STATE.md](STATE.md) |
-| Этапы и приоритеты | [ROADMAP.md](ROADMAP.md) | При выборе или изменении направления работ |
-| Требования и границы продукта | [PRODUCT.md](PRODUCT.md) | При изменении сценариев и обещаний |
-| Фактическая архитектура | [ARCHITECTURE.md](ARCHITECTURE.md) | При изменении модулей и зависимостей |
-| Контракты API | [API.md](API.md) | HTTP/DTO; [api-contract.md](api-contract.md) — указатель совместимости |
-| Формулы и ограничения данных | [DATA_RULES.md](DATA_RULES.md) | Расчёты, импорт, свежесть |
-| Приватность и хранение | [data-policy.md](data-policy.md) | Пользовательские и исходные данные |
-| Визуальная система | [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md) | UI; для backend автоматически не читать |
-| Решения и обоснования | [DECISIONS.md](DECISIONS.md) | Только релевантные ADR с учётом последующих решений |
-| DoD и критерии приёмки | [QUALITY.md](QUALITY.md) | Перед реализацией и закрытием задачи |
-| Фактическая готовность выпуска | [RELEASE_GATES.md](RELEASE_GATES.md) | Приёмка/выпуск; done не равен принятому gate |
-| Запуск, проверка, выпуск, восстановление | [RUNBOOK.md](RUNBOOK.md) | Нужный раздел по операции |
-| Риски | [RISKS.md](RISKS.md) | При затрагивании соответствующего риска |
-| История действий и результатов | [LOG.md](LOG.md) | `--log Tnnn`, `--log Snnn`, `--log --entries 3` |
+| Вопрос | Куда идти |
+| --- | --- |
+| Какие модули и миграции работают в текущем стеке? | [Архитектура](ARCHITECTURE.md) |
+| Какие API и DTO поддерживаются? | [API](API.md). Актуальный набор HTTP-маршрутов также есть в локальном OpenAPI. |
+| Какие сценарии доступны и что пока планируется? | [Продукт](PRODUCT.md), [готовность к выпуску](RELEASE_GATES.md) |
+| Как понимать кампании, неизвестные данные, свежесть и расчёты? | [Правила данных](DATA_RULES.md) |
+| Что можно хранить и публиковать? | [Политика данных](data-policy.md) |
+| Какие требования к UX и тестированию? | [Дизайн-система](DESIGN_SYSTEM.md), [критерии качества](QUALITY.md), [риски](RISKS.md) |
+| Почему принято архитектурное решение? | [ADR](DECISIONS.md). Смотрите дату решения и последующие уточнения. |
 
-`--task` показывает полную карточку и evidence прямых зависимостей без
-рекурсивной выгрузки истории. Для более глубокой зависимости запросить её ID.
-`--log ID --entries N` выбирает последние N записей с точным ID задачи/сессии.
-Команды чтения не записывают файлы. `--render` обновляет [TASKS.md](TASKS.md),
-[STATE.md](STATE.md), [CHECKLIST.md](../CHECKLIST.md); актуальность проверяет `--check`.
-Эти три файла вручную не редактировать. STATE.json хранит только актуальный
-снимок: lastCompleted/environment заменять при изменении, историю добавлять в LOG.
-Не накапливать прошлые сессии в STATE.
+## Эксплуатация
 
-Источники — только по задаче: [покрытие каталога](catalog-coverage.md),
-[цель охвата](NATIONAL_COVERAGE.md), [инвентаризация](sources/national-inventory.md),
-[fetcher](sources/fetching.md) и конкретный паспорт в `sources/`.
-Большие JSON — данные исследований, некоторые связаны хешами; их не
-переформатировать ради документации. Паспорта, `evidence/regression.md`, fixtures,
-JSON/PNG evidence и [ci-images.yaml](ci-images.yaml) имеют автоматических потребителей.
+| Операция | Инструкция |
+| --- | --- |
+| Локальный стек, тестовый API и импорт | [Запуск каталога](catalog-runbook.md) |
+| Миграции, PostgreSQL/raw backup, диагностика и HTTPS | [Runbook](RUNBOOK.md) |
+| Включение аккаунтов с SMTP на согласованном стенде | [SMTP и проверка доставки](operations/smtp.md) |
+| Проверки, платформы, поиск логов | [CI](operations/ci.md) |
 
-История: [PROGRESS до B21](archive/progress-through-b21.md),
-[старые STATE](archive/state-before-optimization.md),
-[план до FSD](archive/architecture-before-fsd.md),
-[gates на 5 ноября](archive/release-gates-2026-11-05.md),
-[рубеж 70%](MILESTONE_70.md). Это не текущие инструкции или приёмка.
-Исходные макеты `design/` не заменяют актуальную дизайн-систему.
-Датированные проверки — `evidence/`; не читать каталог целиком.
+## План и состояние
+
+- [TASKS.json](TASKS.json) хранит статусы, зависимости, критерии и доказательства.
+  [STATE.json](STATE.json) хранит точку продолжения. [LOG.md](LOG.md) хранит историю.
+  `python scripts/roadmap.py --log Tnnn` или `--log Snnn` показывает выборку.
+- [TASKS.md](TASKS.md), [STATE.md](STATE.md) и [CHECKLIST.md](../CHECKLIST.md)
+  генерируются через `python scripts/roadmap.py --render`. Редактируйте JSON-входы,
+  затем запускайте `--render --check`. Отдельно `python scripts/check_doc_links.py`
+  проверяет внутренние ссылки и якоря. [ROADMAP.md](ROADMAP.md) описывает этапы.
+- [WEEKLY_REPORT.md](WEEKLY_REPORT.md) фиксирует прошлый отчётный период.
+  Успешный тест, завершённая задача и приёмка релиза имеют разные критерии.
+
+## Источники и датированные доказательства
+
+- [Покрытие каталога](catalog-coverage.md), [цели национального охвата](NATIONAL_COVERAGE.md),
+  [инвентаризация](sources/national-inventory.md), [политика загрузки](sources/fetching.md)
+  и [паспорта программ](sources/program-catalog/README.md). При работе с конкретным
+  источником откройте его паспорт и исходный контекст кампании.
+- [evidence/](evidence/) содержит отчёты, JSON, скриншоты и эталоны.
+  Подбирайте доказательства по карточке задачи. Прогон относится к указанному SHA,
+  схеме и окружению. [Публичный каталог](evidence/kan-218-pr2-public-api.json),
+  [пакетный импорт](evidence/kan-218-pr3-batch.json),
+  [авторизация](KAN-214-PR6.md) и [аудит CI](KAN-238-CI-REPORT.md) дают примеры.
+- Пути паспортов, JSON, PNG, [карты регрессий](evidence/regression.md) и
+  [CI images](ci-images.yaml) могут использоваться автоматически. Перед переносом
+  проверьте скрипты, тесты, конфигурацию и `TASKS.json`.
+
+## Архив
+
+[archive/](archive/) хранит прежние контракты и процедуры, включая
+[старый runbook](archive/runbook-before-documentation-cleanup.md),
+[архитектуру до React v3](archive/architecture-before-foundation.md)
+и [историю до B21](archive/progress-through-b21.md).
+[design/](design/) хранит исторические макеты. Датированные отчёты PR могут
+оставаться в корне `docs/`, если их пути используются в реестре и старых ссылках.
+Классификация и карта изменений описаны в [аудите документации](documentation-audit.md).

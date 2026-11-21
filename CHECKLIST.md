@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 291 из 324 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 292 из 325 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -327,7 +327,7 @@
 - [x] T315 KAN-218 PR1: add compatible Program and competition relationships
 - [x] T316 KAN-218 PR1: PostgreSQL regression and review handoff
 - [x] T317 KAN-218 PR2: verified official program import and stable API publication
-- [ ] T318 KAN-218 PR3: resumable bounded batch acquisition and publication — **нужна проверка / завершение**
+- [x] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
 - [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
@@ -338,6 +338,7 @@
 - [x] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff
 - [x] T327 KAN-218 PR2: owner agreement on compatible programme DTO extension
 - [x] T328 KAN-218 PR2: compatible frontend for programmes without contests
+- [ ] T329 Documentation cleanup PR 1: audit, navigation and current instructions — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 
