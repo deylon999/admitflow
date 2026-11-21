@@ -64,7 +64,7 @@ diff -ru /absolute/path/before /absolute/path/after
 
 На baseline зарегистрировано 53 маршрута, из них 10 auth. В OpenAPI 45 путей, 50 операций и 71 компонентная схема, `securitySchemes` отсутствует, cookie/Origin/CSRF обрабатываются runtime. Есть 11 auth DTO и 34 таблицы/маппера, ORM `relationship()` отсутствуют. Снимки metadata приложения и standalone Alembic совпали. В Alembic 14 revisions, head `0014`. `PYTHONPATH=. python tests/check_migrations.py` на пустой PostgreSQL 17.11 БД выполнила upgrade и `alembic check` без расхождений.
 
-`python -m uvicorn app.main:app` на baseline ответил `200` для `/api/live`, `/api/health`, `/api/openapi.json`. Успешны `--help` для `app.smtp_check`, `app.maintenance`, `app.worker`, `app.program_catalog_import`, `app.program_catalog_batch`, `app.sources.cli`, `app.backup` и `python -m alembic heads`. `python -m pytest --collect-only -q tests/test_account*.py tests/test_smtp_check.py` собрал 274 проверки аккаунтов, security и SMTP. Полный baseline pytest выполняется на неизменяемом tar checkout отдельно от ветки.
+`python -m uvicorn app.main:app` на baseline ответил `200` для `/api/live`, `/api/health`, `/api/openapi.json`. Успешны `--help` для `app.smtp_check`, `app.maintenance`, `app.worker`, `app.program_catalog_import`, `app.program_catalog_batch`, `app.sources.cli`, `app.backup` и `python -m alembic heads`. `python -m pytest --collect-only -q tests/test_account*.py tests/test_smtp_check.py` собрал 274 проверки аккаунтов, security и SMTP. Полный baseline pytest выполнен на неизменяемом tar checkout отдельно от ветки.
 
 ## 6. Перемещения и обновлённые импорты
 
@@ -110,12 +110,35 @@ app.<old_module> → app.auth.<old_module>
 | `app-metadata`, `alembic-metadata` | 34 таблицы и маппера, совпадают PostgreSQL/SQLite DDL и Python defaults. ORM relationships отсутствуют в обоих снимках | `295626cfc9a59a5e5e47e5712d7e0c5d04fe2f0bc752fb84a0832f62e5ccd3ae` |
 | `alembic` | 14 revisions, граф и контрольные суммы revisions, head `0014` | `5c1a122802e4e2cb766017e4acecb589a91a052cebea01c21a8f03a9fde65c48` |
 
-Существующий `check_migrations.py` на двух отдельных пустых БД PostgreSQL 17.11 выполнил upgrade и подтвердил head `0014` с `No new upgrade operations detected` в обоих случаях. После переноса вывод `--help` семи CLI, Alembic heads и Uvicorn smoke совпал побайтно с исходным. Это проверяет точки входа без запуска реальной отправки почты или обновления источников.
+Существующий `check_migrations.py` на двух отдельных пустых БД PostgreSQL 17.11 выполнил upgrade и подтвердил head `0014` с `No new upgrade operations detected` в обоих случаях. `pg_dump --schema-only --no-owner --no-privileges` с одним fixture `--restrict-key` дал одинаковые дампы схемы на обеих БД. SHA-256 `b809984992691f3a13e230e7e3dbe2e2ac6c6a50da613dee90fe5a041474a7ff`. После переноса вывод `--help` семи CLI, Alembic heads и Uvicorn smoke совпал побайтно с исходным. Это проверяет точки входа без запуска реальной отправки почты или обновления источников.
 
-## 9. Последующие PR
+На обеих изолированных PostgreSQL БД `python -m app.maintenance cleanup-accounts` завершилась с кодом 0 и сообщила о нуле удалённых строк. `python -m app.smtp_check` с синтетической SMTP-конфигурацией обеих версий завершилась с кодом 0 и тем же сообщением. Команда без `--send` проверяет конфигурацию без сетевого подключения.
+
+## 9. Backend, frontend и Compose
+
+Из `backend/` запущен полный `python -m pytest -q -ra --require-postgres --junitxml=<file>` с `TEST_DATABASE_URL` на двух отдельных БД в одном временном контейнере PostgreSQL 17.11. Linux Python 3.12.16, зависимости из `requirements-dev.txt` и `constraints.txt`, `pip check` завершился успешно.
+
+| Код | Passed | Skipped | Failures/errors | Время |
+| --- | ---: | ---: | ---: | ---: |
+| Baseline `29c5902` | 1216 | 1 | 0 | 603,45 с |
+| Перенос `5fbcbebf337bd9344d0770045ef3f53351ec2e25` | 1223 | 1 | 0 | 569,92 с |
+
+JUnit до и после показал одинаковые результаты для всех 1217 исходных тестов. Пройдены 274 исходных account/security/SMTP теста, включая регистрацию, отказ, session/refresh/replay, CSRF, TLS и сбои транспорта. Добавились только семь проверок совместимости импортов. `--collect-only -m postgres` нашёл 387 native cases в итоговом suite, все они прошли под `--require-postgres`. В обоих прогонах пропущен `tests/test_admission_history.py::test_committed_dataset_and_passport_agree` из-за отсутствующего внешнего MICCEDU dataset. Четыре исходных предупреждения совпали. PostgreSQL контейнер и отдельная сеть удалены после проверок. Снимки и XML остались в ignored `.qa-tools/pr3`.
+
+- В `frontend/` выполнены `npm ci`, `npm run lint`, `npm run typecheck`, `npm run build` и `npm test`. Chromium прошёл **387 тестов** за 1,7 мин, включая API-интеграцию через штатный Python catalog runtime. Локально использовались Windows и Node 24.21.0. Полный backend пройден отдельно в Linux.
+- `npm run test:auth` с реальным PostgreSQL дал **6 passed** в Chromium и **6 passed** в Firefox. Windows WebKit на версии Playwright из lockfile дал **4 passed, 1 failed, 1 did not run**. Сбой `cookie.sameSite` (`None` при ожидаемом `Lax`) и те же итоги воспроизведены на неизменяемом `29c5902` командой `AUTH_BROWSER_E2E=1 AUTH_TEST_BROWSER=webkit npm test` с теми же зависимостями. Серверный `Set-Cookie` отдельно проверяет `test_login_real_credentials_new_session_cookie_and_reload` из native suite.
+- `docker compose -p admitflow-pr3-smoke -f compose.yaml -f .qa-tools/pr3/compose-tmpfs.yaml --profile automation config --quiet` и `up --build --wait` прошли. Запущены DB, backend, frontend и worker, в логах worker штатное `idle`. Через frontend получены `200` для `/`, `/api/live`, `/api/health`. Прямой backend вернул OpenAPI `200`, через nginx получен предусмотренный конфигом `404`. `python -m alembic current` в контейнере показал `0014 (head)`. БД и raw storage тестового стека работали через `tmpfs`. После `docker compose … down` проект завершён, именованные volumes не создавались.
+- `docker compose -f compose.prod.yaml -f compose.auth.yaml config --quiet` с тестовыми значениями переменных прошёл. Для реальных SMTP-провайдера, staging и доставки письма проверки не выполнялись. SMTP покрыт тестовым транспортом, включая TLS, ошибки провайдера, таймауты и порядок отправки.
+- `python scripts/roadmap.py --render --check` и `python scripts/check_doc_links.py` прошли. `python -m pytest -q scripts/tests/test_roadmap.py scripts/tests/test_check_doc_links.py` дал **13 passed**.
+
+## 10. Последующие PR
 
 1. `catalog` — выделить публичные read projections, отдельно проверить importer, канонические идентификаторы и регистрацию catalog-моделей.
 2. `competitions` — выделить HTTP и сценарные операции, сохраняя границы между admissions, источниками и calculation.
 3. `watchlist` — отделить гостевой watchlist и subscriptions от `main`, сохранить guest owner и контракт idempotency.
 4. `core` — после выделения потребителей оценить границы настроек, HTTP middleware, `Base` и engine, отдельно проверить standalone Alembic.
 5. `operations` — разложить maintenance, backup, restore и worker orchestration, сохраняя документированные `python -m` entrypoints и правила доступа к данным.
+
+## 11. Pull Request
+
+[PR #34](https://github.com/deylon999/admitflow/pull/34) открыт из `refactor/backend-auth-organization` в `main`. Локально проверен код `5fbcbebf337bd9344d0770045ef3f53351ec2e25`. Состояние проверок текущего SHA доступно в [Checks](https://github.com/deylon999/admitflow/pull/34/checks).

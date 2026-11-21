@@ -7,15 +7,16 @@
 
 ## Продолжение
 
-- Текущая задача: T333.
+- Текущая задача: T334.
 - Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Verify native PostgreSQL, browser and Docker behavior
+Verify hosted Actions for PR 34 and hand off for review
 
 ## Последняя завершённая работа
 
+- Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
 - Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
 - Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
 - Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
@@ -32,6 +33,7 @@ Verify native PostgreSQL, browser and Docker behavior
 
 ## Проверенное окружение
 
+- S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
 - S229: local disposable PG17.11 extended101/0skip49.66s and final batch16/0skip3.34s. Three official candidate captures, no candidate publication and zero network requests on resume. Real CLI replay/API proof persisted. See stage 3 PR for CI.
 - S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.

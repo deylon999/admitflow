@@ -10176,7 +10176,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T332"
       ],
@@ -10189,7 +10189,12 @@
       "acceptance": [
         "Compare all baseline snapshots; run Linux backend tests with native PostgreSQL, migration alignment, frontend and auth integration, CLI, Docker and roadmap checks; document exact results and remaining limitations."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ARCHITECTURE_PR3.md",
+          "note": "Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10198,7 +10203,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "S",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T333"
       ],

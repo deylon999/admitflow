@@ -1643,3 +1643,7 @@ Captured nine deterministic contract snapshots before edits, 274 account/SMTP te
 # S231 / T332 — 2026-11-21: Verify native PostgreSQL, browser and Docker behavior
 
 Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
+
+# S231 / T333 — 2026-11-21: Verify hosted Actions for PR 34 and hand off for review
+
+Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.

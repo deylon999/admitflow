@@ -7344,7 +7344,7 @@
 
 ### T333. Backend architecture PR 3: verify behavior and document the results
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** T332.
 
@@ -7361,11 +7361,11 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
 
 ### T334. Backend architecture PR 3: publish and verify hosted checks
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** S.
+**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** S.
 
 **Зависимости:** T333.
 
