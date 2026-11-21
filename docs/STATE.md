@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S226.
+Дата: 2026-11-21. Последняя сессия: S227.
 
 ## Продолжение
 
@@ -12,10 +12,11 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Draft PR28: fix backup verifier rejecting legitimate0014 triggers (both backend jobs failed at3b7bc1d). Exact trusted DDL verification and tampering checks now pass local nativePG101/0skip; final CI/exact SHA in PR description. T327 owner agreement on response-proposal.json remains required before DTO/frontend/publication changes. T325/T326 incomplete; public2027 coverage0/785. No automatic merge.
+Серверная часть PR #28 уже в main (0449e66). Для публичной выдачи проверенных программ нужен согласованный DTO из T327. T325 и T326 остаются открытыми. В штатной публичной выдаче за 2027 год покрытие составляет 0 из 785 головных вузов.
 
 ## Последняя завершённая работа
 
+- Обновлён корневой README по текущей версии main, включая фактическое покрытие, доступные сценарии и локальный запуск.
 - T322 bounded source captures; T323 independent fact review/proposal; T324 additive0014 storage/nativePG. T325 backend import verified; public part remains open.
 
 ## Ограничения
@@ -30,8 +31,9 @@ Draft PR28: fix backup verifier rejecting legitimate0014 triggers (both backend 
 
 ## Проверенное окружение
 
+- S227 на main@0449e66: backend 118 успешных проверок с PostgreSQL 17.11 и --require-postgres. Сборка, проверка типов и линтер прошли. Chromium: 380 успешных и 4 неуспешных проверки из-за горизонтальной прокрутки страниц вузов при 390 px. Полный Compose-прогон остановился на docker info.
 - S226 CI correction: backup/restore14pass; disposable PostgreSQL17 migration/storage/import/identity/backup/restore101passed0skip59.42s. Only exact reviewed migration trigger definitions accepted; modified/missing/extra objects rejected. Final Linux CI tracked in PR28.
-- S226: nativePG extended125/0skip + final importer20/0skip; actual originals rehearsal eecba42 on PG17.11/0014 creates4canonical facts and repeat unchanged. Old public SGU2 preserved; public2027 coverage0 pending DTO agreement. Full Linux CI/exact SHA maintained in draft PR. Own containers/schemas only.
+- S226: nativePG extended125/0skip + final importer20/0skip; actual originals rehearsal eecba42 on PG17.11/0014 creates4canonical facts and repeat unchanged. Old public SGU2 preserved; public2027 coverage0 pending DTO agreement. Own containers/schemas only.
 - S225: PostgreSQL17 identity/storage/migrations/account-foundation100 passed0skip; frontend384/typecheck/lint/build, roadmap-unit10 pass. Initial full CI1075pass/1 stale added-table expectation corrected; final Linux CI/exact SHA tracked in PR27. Windows full backend needs existing Linux resource module. No product DTO/frontend/workflow changes.
 - S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.
 - Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.
