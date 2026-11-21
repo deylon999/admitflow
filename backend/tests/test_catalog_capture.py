@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 import pytest
 
-spec = importlib.util.spec_from_file_location('capture_catalog', Path(__file__).resolve().parents[2]/'scripts/capture_catalog.py')
+spec = importlib.util.spec_from_file_location('capture_catalog', Path(__file__).resolve().parents[2]/'scripts/data/capture_catalog.py')
 capture = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(capture)
 

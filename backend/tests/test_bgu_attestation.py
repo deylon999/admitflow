@@ -11,7 +11,7 @@ from app.sources.table_profiles import PROFILES
 from test_filtered_table import KEY,binding,response
 
 ROOT=Path(__file__).resolve().parents[2]
-spec=importlib.util.spec_from_file_location('review_bgu_scope',ROOT/'scripts/review_bgu_scope.py')
+spec=importlib.util.spec_from_file_location('review_bgu_scope',ROOT/'scripts/data/review_bgu_scope.py')
 review=importlib.util.module_from_spec(spec);spec.loader.exec_module(review)
 PROFILE=PROFILES['bgu-2026-080301-contract']
 

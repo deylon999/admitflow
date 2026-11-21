@@ -3,7 +3,7 @@ import importlib.util
 from pathlib import Path
 import pytest
 
-spec=importlib.util.spec_from_file_location('stateful_research',Path(__file__).resolve().parents[2]/'scripts/research_stateful_formats.py')
+spec=importlib.util.spec_from_file_location('stateful_research',Path(__file__).resolve().parents[2]/'scripts/data/research_stateful_formats.py')
 research=importlib.util.module_from_spec(spec);spec.loader.exec_module(research)
 
 

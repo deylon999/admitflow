@@ -6,7 +6,7 @@
 
 - **Локальный PostgreSQL и каталог.** [Запуск, проверки и импорт](catalog-runbook.md). `python scripts/local_smoke.py` из корня создаёт резервную копию, запускает стек, применяет миграции через контейнер backend и проверяет сохранность истории после пересоздания. Обычная остановка — `docker compose stop`. Перед запуском на существующих данных согласуйте окно и приостановите остальные записи.
 - **Работа над интерфейсом.** [Запуск frontend](../frontend/README.md) и [временный API](catalog-runbook.md#локальная-проверка-без-изменения-пользовательской-бд). Запускайте npm-команды из `frontend/`.
-- **Тесты и диагностика CI.** [Локальные команды и артефакты Actions](operations/ci.md).
+- **Тесты и диагностика CI.** [Локальные команды и артефакты Actions](operations/ci.md). Назначение и параметры утилит собраны в [карте scripts](../scripts/README.md).
 - **HTTPS-стенд, аккаунты и почта.** [Базовый стек](#стенд-с-https) и [опциональный SMTP](operations/smtp.md).
 
 ## Миграции
@@ -51,14 +51,14 @@ docker compose -f compose.prod.yaml exec backend python -m app.observability sta
 
 ## Резервное копирование и восстановление
 
-- **PostgreSQL и raw.** [backup_production.sh](../scripts/backup_production.sh)
+- **PostgreSQL и raw.** [backup_production.sh](../scripts/ops/backup_production.sh)
   делает PostgreSQL dump и архив raw, восстанавливает dump в служебную
   `admitflow_restore_check` и сравнивает число строк. Не запускайте параллельные
   копии и не используйте зарезервированное имя для других баз. Согласуйте окно,
   остановите все записи в PostgreSQL и raw, включая операторский импорт и worker.
   Закройте доступ к незашифрованным копиям и заранее согласуйте срок хранения:
   скрипт удаляет устаревшие директории в указанном каталоге копий.
-- **Пробное восстановление.** [rehearse_postgres_restore.py](../scripts/rehearse_postgres_restore.py)
+- **Пробное восстановление.** [rehearse_postgres_restore.py](../scripts/qa/rehearse_postgres_restore.py)
   использует временный PostgreSQL. Для восстановления рабочей системы
   сначала восстановите копию в отдельной среде и проверьте schema head, raw,
   историю и smoke. Результат сравнения числа строк сам по себе не проверяет
