@@ -32,7 +32,8 @@ if (matrix) routes.push('/app/competitions', '/app/competitions/sgu-2026-4588',
   '/app/competitions/sgu-2026-4588/competitors', '/app/coverage', '/auth/verify', '/auth/reset');
 const widths = matrix ? [320, 375, 390, 768, 1024, 1440, 1920] : [390, 1440];
 const ownsApi = matrix && !process.env.QA_API_TARGET;
-const api = process.env.QA_API_TARGET ?? `http://127.0.0.1:${ownsApi ? 5303 : 8080}`;
+const apiPort = ownsApi ? await findLoopbackPort() : 8080;
+const api = process.env.QA_API_TARGET ?? `http://127.0.0.1:${apiPort}`;
 const target = new URL(api);
 if (target.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(target.hostname) || target.username || target.password || target.pathname !== '/' || target.search || target.hash) throw Error('QA_API_TARGET must be a local HTTP origin');
 const servers = [];
@@ -41,17 +42,24 @@ const snapshots = new Map();
 let browser, apiProcess;
 const hash = value => createHash('sha256').update(value).digest('hex');
 
-async function startIsolatedApi() {
+async function findLoopbackPort() {
+  const socket = createServer();
   await new Promise((done, reject) => {
-    const socket = createServer();
     socket.once('error', reject);
-    socket.listen(5303, '127.0.0.1', () => socket.close(done));
+    socket.listen(0, '127.0.0.1', done);
   });
+  const { port } = socket.address();
+  await new Promise(done => socket.close(done));
+  return port;
+}
+
+async function startIsolatedApi() {
   const backend = resolve(root, 'backend');
   const python = process.env.PYTHON ?? ['.venv/Scripts/python.exe', '.venv/bin/python']
     .map(path => resolve(backend, path)).find(existsSync) ?? 'python';
   apiProcess = spawn(python, ['tests/catalog_runtime.py'], {
-    cwd: backend, env: { ...process.env, CATALOG_CONTROL_STDIN: '1' }, stdio: ['pipe', 'ignore', 'inherit'],
+    cwd: backend, env: { ...process.env, CATALOG_CONTROL_STDIN: '1', CATALOG_RUNTIME_PORT: String(apiPort) },
+    stdio: ['pipe', 'ignore', 'inherit'],
   });
   let startupError;
   apiProcess.on('error', error => { startupError = error; });
@@ -110,8 +118,10 @@ try {
   await build({ root: reference, configFile: false, logLevel: 'error' });
   await build({ root: frontend, configFile: false, logLevel: 'error' });
   for (const [source, port] of [[reference, 5300], [frontend, 5301]]) {
-    servers.push(await preview({ root: source, configFile: false, preview: { host: '127.0.0.1', port, strictPort: true } }));
+    servers.push(await preview({ root: source, configFile: false,
+      preview: { host: '127.0.0.1', port: matrix ? 0 : port, strictPort: true } }));
   }
+  const ports = servers.map(server => server.httpServer.address().port);
   browser = await chromium.launch();
   for (const width of widths) {
     const context = await browser.newContext({ viewport: { width, height: 900 }, deviceScaleFactor: 1, locale: 'ru-RU', timezoneId: 'Europe/Moscow', colorScheme: 'light', reducedMotion: 'reduce' });
@@ -131,7 +141,7 @@ try {
         const errors = [];
         try {
           const name = `${width}-${demo ? 'demo' : 'default'}-${route === '/' ? 'landing' : route.slice(1).replaceAll('/', '__')}`;
-          const take = (page, index) => capture(page, route, demo, index ? 5301 : 5300,
+          const take = (page, index) => capture(page, route, demo, ports[index],
             resolve(directory, `${name}-${index ? 'current' : 'main'}.png`), errors);
           const [before, after] = matrix ? await Promise.all(pages.map(take)) : [await take(pages[0], 0), await take(pages[1], 1)];
           const equal = before.buffer.equals(after.buffer);
