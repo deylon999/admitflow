@@ -98,8 +98,9 @@ Playwright сравнивает реальные PNG с `threshold: 0, maxDiffPi
 горизонтальное переполнение 0 во всех вариантах.
 
 [Машинные результаты 145 пар](frontend-v3-exact/visual-results.json).
-Все 290PNG оригинала/копии сохранены в подпапках ширин. Gallery позволяет
-выбрать любой маршрут/ширину и сравнить рядом или наложением с opacity slider:
+Для каждой пары галерея показывает сохранённый PNG оригинала в обеих панелях.
+Аудит SHA‑256 подтвердил побайтовое совпадение всех 145 пар с хешами отчёта.
+[Снимки обеих сторон до дедупликации](https://github.com/deylon999/admitflow/tree/a6d2f742976880414e64435d31a15c225350cfdc/docs/evidence/frontend-v3-exact).
 
 **[Открыть интерактивное сравнение](frontend-v3-exact/comparison.html)**
 
@@ -107,10 +108,10 @@ Playwright сравнивает реальные PNG с `threshold: 0, maxDiffPi
 
 | Экран | Оригинал | Копия |
 | --- | --- | --- |
-| Landing 1440 | [PNG](frontend-v3-exact/1440/landing-original.png) | [PNG](frontend-v3-exact/1440/landing-copy.png) |
-| Кабинет 1440 | [PNG](frontend-v3-exact/1440/app-original.png) | [PNG](frontend-v3-exact/1440/app-copy.png) |
-| Вузы 390 | [PNG](frontend-v3-exact/390/universities-original.png) | [PNG](frontend-v3-exact/390/universities-copy.png) |
-| Результат 390 | [PNG](frontend-v3-exact/390/app__forecast__example-original.png) | [PNG](frontend-v3-exact/390/app__forecast__example-copy.png) |
+| Landing 1440 | [PNG](frontend-v3-exact/1440/landing-original.png) | [PNG](frontend-v3-exact/1440/landing-original.png) |
+| Кабинет 1440 | [PNG](frontend-v3-exact/1440/app-original.png) | [PNG](frontend-v3-exact/1440/app-original.png) |
+| Вузы 390 | [PNG](frontend-v3-exact/390/universities-original.png) | [PNG](frontend-v3-exact/390/universities-original.png) |
+| Результат 390 | [PNG](frontend-v3-exact/390/app__forecast__example-original.png) | [PNG](frontend-v3-exact/390/app__forecast__example-original.png) |
 
 Визуально просмотрены оригинал/копия hero, кабинета, мобильной формы и gallery;
 остальные страницы проверены полным pixel diff. В измеренных условиях

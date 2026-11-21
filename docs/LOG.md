@@ -1659,3 +1659,35 @@ Audited all 46 main frontend sources and mapped route, feature, API and CSS boun
 # S233 / T335 — 2026-11-21: verify frontend architecture and prepare review
 
 Demo PR36 and stacked app/live branch preserve CSS, URLs, DTOs and account behavior. Typecheck, lint, build and Chromium 387 pass on both stages. Final catalog repeat 10/10 and lifecycle 3/3. 490/490 visual pairs in each stage; five mobile overflow cases match baseline. Final dependency graph covers 87 TypeScript modules with no cycles. Review pending.
+
+## S234 — 2026-11-21: организация служебных скриптов
+
+Рабочая ветка обновлена на main 5ca1cca после PR32 и PR34. Скрипты
+разложены по назначению, старые точки входа сохранены. Карта и аудит
+потребителей находятся в scripts/README.md и scripts/AUDIT.md.
+
+## S235 — 2026-11-21: evidence housekeeping
+
+База main a3f5078. Аудит SHA‑256: 580 файлов evidence, 171 группа совпадений,
+173 дополнительных пути. Убраны 168 повторных путей PNG после проверки
+отчётов, галерей, тестов и CI. Оригиналы, хеши, результаты проверок и
+security evidence сохранены. Манифест, правила хранения и команда
+повторного аудита находятся в docs/evidence/README.md.
+
+Ветка PR #33 обновлена от main 5ca1cca после PR #32 и #34.
+
+## S236 — 2026-11-22: синхронизация Evidence Housekeeping
+
+Ветка PR #33 обновлена от main 587f5bc после слияния PR #35.
+Запись Evidence Housekeeping получила номер S235. Номер S232
+используется параллельным frontend PR #36. Запись S234 сохранена.
+
+## S237 — 2026-11-22: синхронизация frontend demo
+
+PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #35.
+Сохранены исходная запись S232, история main и текущая задача T335.
+
+## S238 — 2026-11-22: синхронизация frontend app и live
+
+PR #37 обновлён от main 9f6a1d4 после слияния demo PR #36.
+Сохранены запись S233, результаты тестирования и история main.

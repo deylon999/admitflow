@@ -2,7 +2,7 @@
 import importlib.util
 from pathlib import Path
 
-spec=importlib.util.spec_from_file_location('ops_check',Path(__file__).parents[2]/'scripts/ops_check.py')
+spec=importlib.util.spec_from_file_location('ops_check',Path(__file__).parents[2]/'scripts/ops/ops_check.py')
 ops=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(ops)
 HEALTHY=dict(worker=dict(state='alive'),sources=dict(byState=dict(archived=2)),jobs=dict(overdue=0))

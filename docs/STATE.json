@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "currentTask": null,
   "nextTask": "T319",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S233",
-  "resumeAction": "Review T335 frontend architecture in the demo PR 36 and stacked app/live PR. See docs/frontend-architecture-result.md.",
+  "lastSession": "S238",
+  "resumeAction": "Review T335 in frontend app/live PR #37 after the demo PR #36 merge. See docs/frontend-architecture-result.md.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -18,6 +18,8 @@
   ],
   "lastCompleted": [
     "T335 full frontend refactoring implemented and verified against main 5ca1cca. Two PRs await owner review.",
+    "S235: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.",
+    "S234: организация scripts по назначению с совместимыми CLI. См. scripts/AUDIT.md.",
     "PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.",
     "Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.",
     "Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.",

@@ -35,7 +35,7 @@ python scripts/test_postgres.py
 python scripts/test_postgres.py tests/test_product_catalog.py tests/test_program_publication_api.py
 python scripts/roadmap.py --check
 python scripts/check_doc_links.py
-python -m pytest -q scripts/tests/test_roadmap.py
+python -m pytest -q scripts/tests/test_roadmap.py scripts/tests/test_check_doc_links.py
 ```
 
 `test_postgres.py` создаёт временный контейнер и запускает выбранные тесты с

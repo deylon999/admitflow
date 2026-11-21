@@ -5,7 +5,11 @@ import os
 from pathlib import Path
 import subprocess
 import sys
-from postgres_runtime import disposable_postgres
+
+if __package__:
+    from .ops.postgres_runtime import disposable_postgres
+else:
+    from ops.postgres_runtime import disposable_postgres
 
 ROOT = Path(__file__).resolve().parents[1]
 

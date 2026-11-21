@@ -75,3 +75,4 @@ backend с архивным fixture, не новая загрузка офици
 Запуск backend/metadata import: [runbook](../docs/catalog-runbook.md).
 Прежняя инструкция дизайн-кита сохранена в
 [архиве](../docs/archive/frontend-readme-before-foundation.md).
+Общая карта служебных инструментов находится в [scripts/README.md](../scripts/README.md).
