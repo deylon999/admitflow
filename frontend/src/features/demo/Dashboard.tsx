@@ -1,8 +1,9 @@
-import { Action, EmptyMessage, Metric, PageTitle, ProgramCard, Surface } from '../../shared/UI';
+import { Action, EmptyMessage, Metric, PageTitle, Surface } from '../../shared/UI';
 import { programs, reviews } from '../../data/demo';
 import { RouteLink } from '../../app/RouteLink';
 import { SectionHeader } from './SectionHeader';
 import type { AppPageProps } from './types';
+import { ProgramCard } from './ProgramCard';
 
 export function Dashboard({ tracked }: Pick<AppPageProps, 'tracked'>) {
   const saved = programs.filter(p => tracked.includes(p.id));
