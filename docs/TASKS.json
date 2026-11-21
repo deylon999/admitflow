@@ -10230,12 +10230,13 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [],
       "deliverables": [
         "docs/frontend-architecture-audit.md",
         "frontend/src/app",
-        "frontend/src/features"
+        "frontend/src/features",
+        "docs/frontend-architecture-result.md"
       ],
       "steps": [
         "Audit every frontend source and supporting checks from current main; preserve exact rendering, API, routes and session behavior across an independently verified demo PR and a stacked app/live feature PR; document final file/dependency map and verify both branches."
@@ -10247,6 +10248,22 @@
         {
           "path": "docs/frontend-architecture-audit.md",
           "note": "46 source files audited before changes; main 5ca1cca archived and 387 Chromium baseline tests passed."
+        },
+        {
+          "path": "docs/evidence/frontend-architecture-demo-visual.json",
+          "note": "PR 36: exact 490/490 at seven widths after serialized capture; 387 Chromium tests passed."
+        },
+        {
+          "path": "docs/frontend-architecture-result.md",
+          "note": "Final feature and app boundaries; 387 Chromium tests, 10 repeat catalogue journeys and 3 lifecycle tests passed."
+        },
+        {
+          "path": "docs/evidence/frontend-architecture-visual.json",
+          "note": "Final comparison with main 5ca1cca: 490/490 byte-identical pairs and matching routes and API traces, five inherited overflow cases."
+        },
+        {
+          "path": "docs/evidence/frontend-architecture-dependencies.json",
+          "note": "87 TypeScript modules; no missing local paths or cycles. 54 moved declarations and six render returns match baseline."
         }
       ],
       "blockedReason": null

@@ -1655,3 +1655,7 @@ PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340
 # S232 / T335 — 2026-11-21: frontend architecture audit and baseline
 
 Audited all 46 main frontend sources and mapped route, feature, API and CSS boundaries. Tagged baseline 5ca1cca after PR34; archived frontend and passed 387 Chromium tests on unchanged main. Planned demo extraction and stacked live/app changes.
+
+# S233 / T335 — 2026-11-21: verify frontend architecture and prepare review
+
+Demo PR36 and stacked app/live branch preserve CSS, URLs, DTOs and account behavior. Typecheck, lint, build and Chromium 387 pass on both stages. Final catalog repeat 10/10 and lifecycle 3/3. 490/490 visual pairs in each stage; five mobile overflow cases match baseline. Final dependency graph covers 87 TypeScript modules with no cycles. Review pending.

@@ -3,19 +3,20 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S232.
+Дата: 2026-11-21. Последняя сессия: S233.
 
 ## Продолжение
 
-- Текущая задача: T335.
+- Текущая задача: нет.
 - Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Complete T335 frontend architecture as a demo PR plus a stacked app/live PR, based on main after PR34.
+Review T335 frontend architecture in the demo PR 36 and stacked app/live PR. See docs/frontend-architecture-result.md.
 
 ## Последняя завершённая работа
 
+- T335 full frontend refactoring implemented and verified against main 5ca1cca. Two PRs await owner review.
 - PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 - Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
 - Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
@@ -33,6 +34,7 @@ Complete T335 frontend architecture as a demo PR plus a stacked app/live PR, bas
 
 ## Проверенное окружение
 
+- S233: full frontend architecture with 387 Chromium tests, 10 catalogue repeat checks, 3 lifecycle tests and 490 exact main comparisons per stage. Five inherited mobile overflows documented.
 - S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
 - S229: local disposable PG17.11 extended101/0skip49.66s and final batch16/0skip3.34s. Three official candidate captures, no candidate publication and zero network requests on resume. Real CLI replay/API proof persisted. See stage 3 PR for CI.
