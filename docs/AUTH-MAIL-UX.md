@@ -1,5 +1,7 @@
 # KAN-214: receipt-driven resend UX
 
+> Датированный отчёт о разработке UX. Текущие контракты и порядок эксплуатации описаны в [API](API.md#аккаунты-и-почта) и [инструкции SMTP](operations/smtp.md).
+
 Stack: SMTP deployment PR21 -> backend dispatch/cooldown PR22 -> this frontend PR. PR20 was not merged at this branch point; its local red/error animation changes are included here. Review PR20 together with this stack to avoid merging overlapping implementations blindly.
 
 ## Acceptance and behavior

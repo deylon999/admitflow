@@ -1,15 +1,17 @@
 # API AdmitFlow
 
-Актуально на S201. Один FastAPI backend, JSON camelCase, даты с timezone,
-unknown facts — null. Dev OpenAPI: `/api/openapi.json`; production docs закрыты.
-Все ответы no-store; записи требуют same-origin и X-Requested-With: abiturient.
+Сверено с `main@a3f5078` 21 ноября 2026 года. FastAPI использует JSON camelCase,
+даты с timezone и `null` для неизвестных фактов. Локальная OpenAPI-схема
+генерируется приложением на `/api/openapi.json`. В production OpenAPI отключена
+в приложении и закрыта публичным proxy. Ответы API используют `Cache-Control: no-store`. Записи
+требуют same-origin и `X-Requested-With: abiturient`.
 
 ## Публичный каталог v3
 
 | Метод / путь | Параметры и результат |
 | --- | --- |
-| GET `/api/v1/catalog/universities` | q/region ≤120, offset 0..100000, limit 1..50 (12 default), sort name/name-desc; items/total/nextOffset/regions/registryEdition |
-| GET `/api/v1/catalog/universities/{id}` | stable ID, name/legalName/region/isBranch/officialUrl, provenance, knownProgramCount, years; additive displayName/displayNameSource/nameAliases/branchInfo |
+| GET `/api/v1/catalog/universities` | q/region ≤120, offset 0..100000, limit 1..50 (12 default), sort name/name-desc; items/total/nextOffset/regions/registryEdition/accreditationDate |
+| GET `/api/v1/catalog/universities/{id}` | stable ID, name/legalName/region/isBranch/officialUrl, provenance, knownProgramCount, years, accreditation либо null; additive displayName/displayNameSource/nameAliases/branchInfo |
 | GET `/api/v1/catalog/programs` | q/universityId/year/subject, offset/limit/sort; items/total/nextOffset/years/subjects |
 | GET `/api/v1/catalog/programs/{id}` | campaign-scoped ID, вуз/код/название, year, форма/funding/category/seats, provenance; examRequirements: испытания по порядку документа, варианты на выбор, minScore или null, additionalTests ([] = нет, null = не собрано), benefits всегда null, notes, source (url, дата документа, sha256, дата проверки, сверка). null, если проверенных правил для этого года, кода и формы нет. historicalCutoff/forecast пока null |
 
@@ -29,7 +31,8 @@ accreditation/admissions, edition и originalSha256 при наличии. Revie
 условие не подтверждено. [Согласование и полный пример](sources/program-catalog/contract.md).
 
 После миграций старый архивный набор устанавливает `python -m app.catalog_import`.
-Оператор публикует проверенный документ через `python -m app.program_catalog_import`.
+Оператор публикует проверенный документ через `python -m app.program_catalog_import`
+или выполняет [пакетную публикацию](KAN-218-PR3.md#запуск-и-восстановление).
 Только текущие verified-ревизии участвуют в публичном чтении. Исходные документы,
 черновики, заменённые ревизии и ошибки разбора остаются внутри системы.
 
@@ -46,8 +49,9 @@ accreditation/admissions, edition и originalSha256 при наличии. Revie
 | События | GET changes, POST change seen; scoped private history |
 | Legacy persistence | Watches/snapshots/history, manual export/import остаются для истории, приватности, backup/retention и совместного бюджета; текущий v3 их не вызывает |
 
-Точные пути/методы перечислены в
-[машинном инвентаре](evidence/foundation-cleanup/api-inventory.json).
+Точный актуальный набор маршрутов задаёт OpenAPI запущенного backend.
+[Инвентарь этапа очистки v3](evidence/foundation-cleanup/api-inventory.json)
+сохраняет датированный срез до последующих изменений.
 Существующие legacy data contracts не удаляются вместе с таблицами без
 [отдельного плана данных](foundation-cleanup-audit.md).
 
@@ -67,51 +71,47 @@ DTO каталога не зависят от этой арифметики. П�
 Исторический полный контракт прежнего продукта:
 [api-before-foundation](archive/api-before-foundation.md).
 
-## React v3 binding — S202
+## Клиент React v3
 
 Единый клиент и runtime DTO используют только существующие контракты.
 Гостевой POST session выполняется по явному действию, 401 не вызывает
 автоматический restart. Подписки читаются/удаляются по настоящему ID, добавление
 идёт через source lookup/confirm. History/notifications читают changes, sources —
-coverage. Account/forecast/EGE/profile feature API по-прежнему отсутствуют.
-Контрактный frontend smoke и границы: [T253](evidence/v3-production-api.md).
+coverage. Account UI использует отдельные auth endpoints. Отдельные API
+прогноза и подбора по ЕГЭ не реализованы. Подтверждённые требования ЕГЭ
+читаются из карточки программы при точном совпадении условий.
+Датированный frontend smoke: [T253](evidence/v3-production-api.md).
 
 KAN-212/S209: публичные backend DTO не менялись. Frontend дополнительно проверяет
 ISO calendar dates, идентификаторы, rank/count/null и обязательные потребляемые
 nested поля; catalog ID/year/universityId ответа должны соответствовать запросу.
 Неизвестные admission факты остаются null. HTTP 401 не создаёт гостя автоматически.
-Актуальные 29 маршрутов и негативные сценарии: [отчёт](KAN-212-FRONTEND-REPORT.md).
+Проверки маршрутов и негативных сценариев KAN-212: [отчёт](KAN-212-FRONTEND-REPORT.md).
 
-## KAN-214 PR2 account API (disabled by default)
+## Аккаунты и почта
 
-`AUTH_ENABLED=false` by default. Enabled auth requires a stable `AUTH_RATE_KEY`;
-existing production HTTPS/PostgreSQL/Secure guards remain. Separate guest API
-`/api/v1/session` and owner_hash contracts are unchanged.
-Implemented `/api/v1/auth/csrf` GET, `/register` POST, `/login` POST, `/session` GET.
-DTOs, statuses, rate policy, CSRF and safe rollout: [KAN-214-PR2.md](KAN-214-PR2.md).
-No refresh/logout/confirmation/recovery endpoint yet. Without a registration mail
-transport, register returns503 globally rather than claiming email delivery.
-Do not enable the incomplete lifecycle for production users before PR3-6 acceptance.
+Текущие операции под `/api/v1/auth` определены в
+[account_api.py](../backend/app/account_api.py). Флаг `AUTH_ENABLED` по
+умолчанию `false`. Включению нужен стабильный `AUTH_RATE_KEY`. Гостевые
+сессии `/api/v1/session` живут отдельно от аккаунтов.
 
-## KAN-214 PR3 account lifecycle
+| Операция | Метод и суффикс |
+| --- | --- |
+| Получение CSRF и чтение сессии | `GET /csrf`, `GET /session` |
+| Регистрация и вход | `POST /register`, `POST /login` |
+| Ротация токенов и выход | `POST /refresh`, `POST /logout` |
+| Подтверждение адреса | `POST /verification/request`, `POST /verification/confirm` |
+| Восстановление доступа | `POST /recovery/request`, `POST /recovery/confirm` |
 
-POST `/api/v1/auth/refresh` with body{} rotates access/refresh under server locks.
-POST `/api/v1/auth/logout` with body{} revokes the current family and deletes only
-account cookies after commit. Both require bound CSRF, Origin/custom header and
-persistent budgets. GET auth/session classifies recoverable401 as access_expired;
-GET auth/csrf can re-bootstrap bound CSRF with a current refresh after access expiry.
-Exact DTO/cookie/deadline/replay/idempotency/error policy and tested boundaries:
-[KAN-214-PR3.md](KAN-214-PR3.md). This supersedes PR2's temporary no-refresh/logout
-boundary; SMTP/confirmation/recovery and frontend integration remain unavailable.
-AUTH_ENABLED remainsfalse by default; full production acceptance is not claimed.
+Изменяющие операции используют связанный CSRF-контекст и лимиты. Refresh
+ротирует credentials, logout отзывает текущую семью сессии. Email-запросы
+возвращают общий `202` при успешной обработке, ошибка транспорта — `503`.
+Подтверждение и сброс возвращают `204` без автоматического входа. Сброс
+отзывает сессии пользователя. Frontend включает экраны входа, подтверждения
+и восстановления. [Проверенные контракты React](KAN-214-PR5.md#final-implementation-and-contracts-t299)
 
-## KAN-214 PR4 email actions
-
-POST `/api/v1/auth/verification/request`, `/verification/confirm`, `/recovery/request`
-and `/recovery/confirm` implement purpose-hashed single-use email actions. Request
-bodies/status/CSRF/rate/expiry/rollback contracts and SMTP configuration:
-[KAN-214-PR4.md](KAN-214-PR4.md). Confirm operations204 never auto-login; reset revokes
-all target user sessions and outstanding actions atomically. Requests use generic202,
-missing/failed transport explicit503. This supersedes PR3's temporary missing-mail
-boundary; real delivery and frontend link handling remain unverified external/UI
-gates. AUTH_ENABLED staysfalse. No callback URL or public test-mail retrieval route.
+SMTP по TLS включается явной [конфигурацией](operations/smtp.md).
+Автоматические тесты с записью почты подтверждают сценарии, а внешняя SMTP
+доставка и HTTPS staging требуют отдельных доказательств. Поэтапная история
+контрактов находится в отчётах [PR2](KAN-214-PR2.md), [PR3](KAN-214-PR3.md) и
+[PR4](KAN-214-PR4.md).
