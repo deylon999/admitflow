@@ -142,3 +142,7 @@ JUnit до и после показал одинаковые результат�
 ## 11. Pull Request
 
 [PR #34](https://github.com/deylon999/admitflow/pull/34) открыт из `refactor/backend-auth-organization` в `main`. Локально проверен код `5fbcbebf337bd9344d0770045ef3f53351ec2e25`. Состояние проверок текущего SHA доступно в [Checks](https://github.com/deylon999/admitflow/pull/34/checks).
+
+На SHA `5fbcbebf337bd9344d0770045ef3f53351ec2e25` все четыре job push-прогона завершились успешно. Из workflow artifacts подтверждены backend **1168 passed**, frontend **387 passed**, native PostgreSQL auth **6 passed** в каждом из Chromium, Firefox и WebKit, **32** автоматизированных auth controls. ETL дал **55 passed, 1 skipped** из-за MICCEDU. Миграционный артефакт подтвердил head `0014` и отсутствие schema drift. [Push run](https://github.com/deylon999/admitflow/actions/runs/44929340212).
+
+Все четыре job события `pull_request` для того же SHA также завершились успешно: `frontend`, `backend`, `migrations`, `etl`. Последующие коммиты фиксируют в Git результаты и состояние roadmap. SHA фактического PR head и ссылка на его прогон указаны в описании PR. [PR run](https://github.com/deylon999/admitflow/actions/runs/44929346831).

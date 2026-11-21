@@ -7,20 +7,20 @@
 
 ## Продолжение
 
-- Текущая задача: T334.
-- Следующая задача: не назначена.
+- Текущая задача: нет.
+- Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Verify hosted Actions for PR 34 and hand off for review
+PR 34 published and verified; owner code review follows
 
 ## Последняя завершённая работа
 
+- PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 - Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
 - Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
 - Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
 - Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
-- KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending.
 
 ## Ограничения
 

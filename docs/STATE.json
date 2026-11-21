@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-21",
-  "currentTask": "T334",
-  "nextTask": null,
+  "currentTask": null,
+  "nextTask": "T319",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S231",
-  "resumeAction": "Verify hosted Actions for PR 34 and hand off for review",
+  "resumeAction": "PR 34 published and verified; owner code review follows",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,11 +17,11 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
+    "PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.",
     "Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.",
     "Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.",
     "Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.",
-    "Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.",
-    "KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending."
+    "Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths."
   ],
   "environment": [
     "S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.",

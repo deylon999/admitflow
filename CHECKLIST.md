@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 296 из 330 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 297 из 330 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -343,7 +343,7 @@
 - [x] T331 Backend architecture PR 3: capture the behavior baseline
 - [x] T332 Backend architecture PR 3: relocate auth modules with compatible imports
 - [x] T333 Backend architecture PR 3: verify behavior and document the results
-- [ ] T334 Backend architecture PR 3: publish and verify hosted checks — **в работе**
+- [x] T334 Backend architecture PR 3: publish and verify hosted checks
 
 ## Резерв и выпуск
 

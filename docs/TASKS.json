@@ -10203,7 +10203,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "S",
-      "status": "in_progress",
+      "status": "done",
       "dependsOn": [
         "T333"
       ],
@@ -10216,7 +10216,12 @@
       "acceptance": [
         "Publish the branch and PR to main; verify hosted checks for the latest PR head and record the PR, tested commit and Actions links."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ARCHITECTURE_PR3.md",
+          "note": "PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks."
+        }
+      ],
       "blockedReason": null
     }
   ]

@@ -7365,7 +7365,7 @@
 
 ### T334. Backend architecture PR 3: publish and verify hosted checks
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** S.
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** S.
 
 **Зависимости:** T333.
 
@@ -7382,7 +7382,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 
 ## E6. Резерв и выпуск
 
