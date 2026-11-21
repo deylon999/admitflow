@@ -31,3 +31,24 @@ python scripts/roadmap.py --check
 Для тестов отчёта установите `scripts/requirements-dev.txt`.
 Инструкции для frontend-утилит и npm находятся в [frontend/README.md](../frontend/README.md).
 Эксплуатационный `python -m app.sources.cli --help` выполняется из `backend/`.
+
+
+## Команды, которые используют разработчики и CI
+
+| Команда из корня | Основные аргументы | Зависимости и эффект |
+| --- | --- | --- |
+| `python scripts/local_smoke.py` | `--output DIR`, `--no-build` | Docker Compose, PostgreSQL и собранный frontend. Делает backup, применяет миграции, проверяет синтетическую историю, пересоздаёт контейнеры. Выделенный проект для тестирования описан в runbook и аудите |
+| `python scripts/test_postgres.py` | `--python PYTHON`, список путей тестов относительно `backend/` | Docker, backend dev. Поднимает выделенный PostgreSQL и запускает pytest, затем останавливает свой контейнер |
+| `python scripts/roadmap.py --check` | `--context`, `--task ID`, `--log` и `--render` | Python stdlib и реестры docs. `--check` читает файлы, `--render` обновляет генерируемые Markdown |
+| `python scripts/check_auth_acceptance.py --help` | `--matrix`, `--backend-junit`, `--browser-results`, `--output` | Python stdlib, матрица auth и результаты реальных тестов. Пишет сводку в указанный файл |
+| `python scripts/check_doc_links.py` | `--help` | Python stdlib и Git. Проверяет локальные ссылки и якоря, выводит результат в stdout |
+| `python -m scripts.ops.ops_check` | `--compose`, `--backups`, `--disk` | Docker Compose. Читает состояние приложения и копий. `ALERT_WEBHOOK_URL` включает уведомления |
+| `scripts/ops/backup_production.sh OUTPUT_DIR` | `COMPOSE`, `RAW_SERVICE`, `KEEP_DAYS` | Bash, Compose и PostgreSQL. Создаёт dump/raw, использует зарезервированную служебную БД, удаляет старые каталоги копий. Перед запуском прочитайте runbook |
+| `python -m scripts.qa.rehearse_postgres_restore --help` | `--output FILE`, `--archive-sgu` | Docker и backend dev. Репетиция на выделенной БД, запись отчёта |
+| `python -m scripts.reports.weekly_report --week YYYY-WNN` | `--format {pdf,md}`, `--extra`, `--output`, `--main`, `--font` | Git и реестр задач, для PDF — ReportLab и шрифт. Пишет файл или выводит Markdown |
+
+[Все параметры и побочные эффекты](AUDIT.md#аргументы-host-утилит) описаны
+в аудите. Там же приведены [операторские CLI backend](AUDIT.md#backend-cli-и-запускаемые-тестовые-стенды)
+и [frontend-инструменты](AUDIT.md#аргументы-frontend-инструментов).
+Проверка evidence с SHA‑256 манифестом поставляется отдельно в
+[PR #33](https://github.com/deylon999/admitflow/pull/33).
