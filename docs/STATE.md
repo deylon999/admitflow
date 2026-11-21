@@ -3,16 +3,16 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-22. Последняя сессия: S238.
+Дата: 2026-11-22. Последняя сессия: S239.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T319.
+- Текущая задача: T319.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review T335 in frontend app/live PR #37 after the demo PR #36 merge. See docs/frontend-architecture-result.md.
+KAN-218 PR4 on fresh main1e7693e in isolated worktree: audit complete; next reproduce PostgreSQL baseline before optimizing SQL. No public DTO/frontend/workflow changes, no working DB access.
 
 ## Последняя завершённая работа
 

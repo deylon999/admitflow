@@ -7047,11 +7047,11 @@
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
-**Статус:** `todo` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T318.
 
-**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`.
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR4.md`.
 
 **Шаги:**
 

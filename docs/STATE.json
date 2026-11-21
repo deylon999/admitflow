@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
   "currentTask": "T319",
-  "nextTask": "T320",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
