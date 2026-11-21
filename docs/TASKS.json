@@ -10071,7 +10071,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "M",
-      "status": "in_progress",
+      "status": "review",
       "dependsOn": [],
       "deliverables": [
         "docs/README.md",
@@ -10083,7 +10083,12 @@
       "acceptance": [
         "Audit and classify tracked docs; synchronize main architecture/API/operations; archive legacy runbook and preserve machine paths, evidence and checksums; check Markdown links, roadmap, and review separate documentation PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/documentation-audit.md",
+          "note": "Audit of 665 tracked files; update current API, architecture, CI, product and operations. Legacy runbook preserved and SMTP navigation moved with pointer. 802 local links, 13 documentation tests and protected-path diff passed."
+        }
+      ],
       "blockedReason": null
     }
   ]

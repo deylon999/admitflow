@@ -7,16 +7,16 @@
 
 ## Продолжение
 
-- Текущая задача: T329.
+- Текущая задача: нет.
 - Следующая задача: T319.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Documentation Cleanup PR1 starts from main a3f5078. T329 is documentation-only. KAN-218 PR31 was merged; T318 verified, T319 remains next outside this PR.
+T329 documentation cleanup in review from main a3f5078. See docs/documentation-audit.md for preserved paths, results and scope. KAN-218 stage 4 T319 is separate and depends on already merged PR31.
 
 ## Последняя завершённая работа
 
-- KAN-218 Stage 3 merged through PR31, CI 8/8 at a648be5. No new verified coverage in the rehearsal.
+- KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending.
 
 ## Ограничения
 
@@ -29,6 +29,7 @@ Documentation Cleanup PR1 starts from main a3f5078. T329 is documentation-only. 
 
 ## Проверенное окружение
 
+- S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
 - S229: local disposable PG17.11 extended101/0skip49.66s and final batch16/0skip3.34s. Three official candidate captures, no candidate publication and zero network requests on resume. Real CLI replay/API proof persisted. See stage 3 PR for CI.
 - S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.
 - S227 на main@0449e66: backend 118 успешных проверок с PostgreSQL 17.11 и --require-postgres. Сборка, проверка типов и линтер прошли. Chromium: 380 успешных и 4 неуспешных проверки из-за горизонтальной прокрутки страниц вузов при 390 px. Полный Compose-прогон остановился на docker info.

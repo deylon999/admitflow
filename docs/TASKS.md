@@ -7260,7 +7260,7 @@
 
 ### T329. Documentation cleanup PR 1: audit, navigation and current instructions
 
-**Статус:** `in_progress` · **Приоритет:** P1 · **Размер:** M.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** M.
 
 **Зависимости:** нет.
 
@@ -7277,7 +7277,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/documentation-audit.md](../docs/documentation-audit.md) — Audit of 665 tracked files; update current API, architecture, CI, product and operations. Legacy runbook preserved and SMTP navigation moved with pointer. 802 local links, 13 documentation tests and protected-path diff passed.
 
 ## E6. Резерв и выпуск
 

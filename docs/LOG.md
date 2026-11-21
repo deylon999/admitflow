@@ -1622,3 +1622,12 @@ and repeated unchanged; SGU2026 separate; three candidates remain review_require
 Verified PR31 merged at a3f5078 and updated T318. Audited 665 tracked docs files,
 code, migration heads, CI and machine readers. Classified KEEP/MOVE/UPDATE/ARCHIVE/DELETE
 in docs/documentation-audit.md. T329 is a separate documentation-only task.
+
+# S230 / T329 — 2026-11-21: document current main and preserve history
+
+Updated single docs index, public API, architecture, product, release conditions
+and runbook. Archived previous runbook with rebased links. SMTP instructions
+moved to operations with old path kept; no historical evidence removed.
+Roadmap and link checker tests13/13;802/153 links, no issues. Alembic0014 head
+checked; legacy data/evidence/source hashes/backend/frontend/workflow unchanged.
+T329 review, T319 separate.

@@ -338,7 +338,7 @@
 - [x] T326 KAN-218 PR2: native PostgreSQL API regression and review handoff
 - [x] T327 KAN-218 PR2: owner agreement on compatible programme DTO extension
 - [x] T328 KAN-218 PR2: compatible frontend for programmes without contests
-- [ ] T329 Documentation cleanup PR 1: audit, navigation and current instructions — **в работе**
+- [ ] T329 Documentation cleanup PR 1: audit, navigation and current instructions — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 
