@@ -4,7 +4,7 @@ import re
 
 from pydantic import AfterValidator, AwareDatetime, BeforeValidator, Field, HttpUrl, field_validator
 
-from .calculation import CalculationInput, CalculationResult
+from app.competitions.calculation import CalculationInput, CalculationResult
 from app.core.schema_base import CamelModel
 
 

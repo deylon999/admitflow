@@ -5,7 +5,7 @@ from sqlalchemy import and_,func,or_,select
 from sqlalchemy.orm import Session
 from .admissions import Assessment,ChangeEvent,SourceSnapshot,Subscription,CompetitionGroup
 from app.core.schema_base import CamelModel
-from .scenario_api import ScenarioRead,read
+from app.competitions.scenario_api import ScenarioRead,read
 from .sources.publishing import utc
 
 class ChangeRead(CamelModel):

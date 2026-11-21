@@ -7453,7 +7453,7 @@
 
 ### T338. Backend organization: competitions
 
-**Статус:** `todo` · **Приоритет:** P1 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P1 · **Размер:** L.
 
 **Зависимости:** T334.
 
@@ -7470,7 +7470,7 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/BACKEND_ORGANIZATION_MASTER_PLAN.md](../docs/BACKEND_ORGANIZATION_MASTER_PLAN.md) — Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.
 
 ### T339. Backend organization: watchlist
 

@@ -253,7 +253,7 @@ def install_source_routes(app,database,owner,write_owner,registry,key,clock):
             db.add(Assessment(subscription_id=existing.id,group_id=source.group_id,snapshot_id=snapshot.id,rules_version='source-confirmation-v1',assessed_at=now,state='unsupported',
                               facts=candidate_fact(row).model_dump(mode='json',by_alias=True)|{'sourceId':source.id,'dataKind':snapshot.kind},
                               assumptions=['Сохранены факты источника; официальный результат зачисления не рассчитывался.']))
-            from .scenario_storage import append_one
+            from app.competitions.scenario_storage import append_one
             append_one(db,existing,snapshot,at=now)
         result=SubscriptionSaved(id=existing.id,group_id=existing.group_id,source_id=claims.source_id,created_at=utc(existing.created_at))
         remember_operation(db,owner_hash,operation_key,fingerprint,None,result)

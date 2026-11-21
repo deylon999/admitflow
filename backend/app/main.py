@@ -16,7 +16,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.exc import TimeoutError as SQLAlchemyTimeoutError
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from .calculation import CalculationInput, calculate_versioned
+from app.competitions.calculation import CalculationInput, calculate_versioned
 from app.core.config import Settings
 from .database import BrowserSession, Snapshot, Watch, make_engine
 from .schemas import SessionRead, SnapshotRead, WatchCreate, WatchDetail, WatchRead
@@ -145,9 +145,9 @@ def create_app(settings: Settings | None = None, *, registration_mailer=None):
 
     from .source_api import install_source_routes
     install_source_routes(app,database,owner,write_owner,source_registry,source_identity_key,lambda:utcnow())
-    from .scenario_api import install as install_scenarios
+    from app.competitions.scenario_api import install as install_scenarios
     install_scenarios(app,database,owner,source_registry)
-    from .competition_api import install as install_competitions
+    from app.competitions.competition_api import install as install_competitions
     install_competitions(app,database,owner,registry=source_registry)
     from .changes import install as install_changes
     install_changes(app,database,owner,write_owner,lambda:utcnow())

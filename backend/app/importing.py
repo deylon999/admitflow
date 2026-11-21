@@ -6,7 +6,7 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 from sqlalchemy import func, select
 
-from .calculation import calculate
+from app.competitions.calculation import calculate
 from .database import Snapshot, Watch
 from .schemas import WatchCreate
 

@@ -81,7 +81,7 @@ def rehearse(runtime, folder, *, archive_sgu=False):
                     found=owner.post(f'/api/v1/sources/{BINDING.source_id}/lookup',json={'publicCode':code},headers=HEADERS)
                     require(found.status_code==200,'Fixture lookup failed')
                     return {'confirmationToken':found.json()['confirmationToken']}
-                from app.scenario_storage import enable_scenarios
+                from app.competitions.scenario_storage import enable_scenarios
                 enable_scenarios(source,BINDING.source_id,registry=app.state.source_registry)
                 archive_body=confirm('FIXTURE-000020')
                 archive_saved=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)

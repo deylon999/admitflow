@@ -10328,7 +10328,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10341,7 +10341,12 @@
       "acceptance": [
         "Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence."
+        }
+      ],
       "blockedReason": null
     },
     {

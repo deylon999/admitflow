@@ -62,7 +62,7 @@ def main(argv=None):
             if profile is None:raise AdapterError('unsupported_source')
             result=register_profile(engine,profile,enable=args.enable,registry=runtime_registry())
         elif args.action=='enable-scenarios':
-            from ..scenario_storage import enable_scenarios
+            from app.competitions.scenario_storage import enable_scenarios
             result=enable_scenarios(engine,args.source_id,registry=runtime_registry())
         elif args.action=='enqueue-all':
             from ..jobs import enqueue_all

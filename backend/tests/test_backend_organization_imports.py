@@ -29,6 +29,12 @@ MODULES = (
     ('source_catalog', 'catalog.source_catalog'),
     ('university_name_report', 'catalog.university_name_report'),
     ('university_names', 'catalog.university_names'),
+    ('calculation', 'competitions.calculation'),
+    ('competition_api', 'competitions.competition_api'),
+    ('scenario_api', 'competitions.scenario_api'),
+    ('scenario_explanations', 'competitions.scenario_explanations'),
+    ('scenario_storage', 'competitions.scenario_storage'),
+    ('scenarios', 'competitions.scenarios'),
 )
 
 

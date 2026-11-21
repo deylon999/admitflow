@@ -1699,3 +1699,7 @@ Core and complete inventory implemented from main 1e7693e. The 26-file compariso
 ## S240 — 2026-11-22 — Backend organization: catalog
 
 Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.
+
+## S241 — 2026-11-22 — Backend organization: competitions
+
+Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.

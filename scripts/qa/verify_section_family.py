@@ -62,7 +62,7 @@ def main():
         for p in scopes:
             register_profile(engine,p,enable=True,registry=registry)
             if args.all_profiles and dict(p.catalog)['funding']=='budget':
-                from app.scenario_storage import enable_scenarios
+                from app.competitions.scenario_storage import enable_scenarios
                 enable_scenarios(engine,p.source_id,registry=registry)
             assert enqueue(engine,p.source_id)
         for _ in scopes:
