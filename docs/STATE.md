@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S230.
+Дата: 2026-11-21. Последняя сессия: S231.
 
 ## Продолжение
 
@@ -12,11 +12,15 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-T329 documentation cleanup in review from main a3f5078. See docs/documentation-audit.md for preserved paths, results and scope. KAN-218 stage 4 T319 is separate and depends on already merged PR31.
+PR 34 published and verified; owner code review follows
 
 ## Последняя завершённая работа
 
-- KAN-218 stage 3 merged through PR31. Documentation audit and validation complete, PR review pending.
+- PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
+- Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
+- Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
+- Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
+- Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
 
 ## Ограничения
 
@@ -29,6 +33,7 @@ T329 documentation cleanup in review from main a3f5078. See docs/documentation-a
 
 ## Проверенное окружение
 
+- S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
 - S229: local disposable PG17.11 extended101/0skip49.66s and final batch16/0skip3.34s. Three official candidate captures, no candidate publication and zero network requests on resume. Real CLI replay/API proof persisted. See stage 3 PR for CI.
 - S228: disposable PG17.11/0014, 113 tests without skips (85.33s), schema alignment and preserved subscriptions/snapshots. Typecheck/lint/build and Playwright387 pass; actual-original HSE journey pass in Chromium. Full Linux results linked in PR28.

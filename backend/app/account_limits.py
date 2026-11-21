@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 
-from .accounts import AccountRateBucket
+from .auth.accounts import AccountRateBucket
 
 
 @dataclass(frozen=True)

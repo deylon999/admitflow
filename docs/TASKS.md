@@ -7279,6 +7279,111 @@
 
 - [docs/documentation-audit.md](../docs/documentation-audit.md) — Audit of 665 tracked files; update current API, architecture, CI, product and operations. Legacy runbook preserved and SMTP navigation moved with pointer. 802 local links, 13 documentation tests and protected-path diff passed.
 
+### T330. Backend architecture PR 3: audit the current main and auth dependencies
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** S.
+
+**Зависимости:** нет.
+
+**Результаты/файлы:** `docs/BACKEND_ARCHITECTURE_PR3.md`.
+
+**Шаги:**
+
+1. Confirm the current main and cleanup merge; inventory runtime, ORM, tests, CLI and dynamic consumers; document the minimal auth scope before moving code..
+
+**Критерии закрытия:**
+
+- Confirm the current main and cleanup merge; inventory runtime, ORM, tests, CLI and dynamic consumers; document the minimal auth scope before moving code..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths.
+
+### T331. Backend architecture PR 3: capture the behavior baseline
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T330.
+
+**Результаты/файлы:** `docs/BACKEND_ARCHITECTURE_PR3.md`.
+
+**Шаги:**
+
+1. Capture reproducible OpenAPI, routes and dependencies, DTOs, SQLAlchemy metadata, migration graph and runtime checks before moving auth modules..
+
+**Критерии закрытия:**
+
+- Capture reproducible OpenAPI, routes and dependencies, DTOs, SQLAlchemy metadata, migration graph and runtime checks before moving auth modules..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Captured nine deterministic contract snapshots before edits, 274 account/SMTP tests collected, standalone Alembic upgrade/check on PostgreSQL 17.11, CLI and Uvicorn smoke. Full baseline pytest runs from the immutable main archive.
+
+### T332. Backend architecture PR 3: relocate auth modules with compatible imports
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T331.
+
+**Результаты/файлы:** `docs/BACKEND_ARCHITECTURE_PR3.md`.
+
+**Шаги:**
+
+1. Move auth API, persistence, security and mail without changing their implementation; update production imports and prove old imports, mocks and model registration still work..
+
+**Критерии закрытия:**
+
+- Move auth API, persistence, security and mail without changing their implementation; update production imports and prove old imports, mocks and model registration still work..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Four auth implementations relocated, production imports updated and old module paths share canonical state. All seven compatibility tests pass and nine BEFORE/AFTER JSON snapshots match.
+
+### T333. Backend architecture PR 3: verify behavior and document the results
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** M.
+
+**Зависимости:** T332.
+
+**Результаты/файлы:** `docs/BACKEND_ARCHITECTURE_PR3.md`.
+
+**Шаги:**
+
+1. Compare all baseline snapshots; run Linux backend tests with native PostgreSQL, migration alignment, frontend and auth integration, CLI, Docker and roadmap checks; document exact results and remaining limitations..
+
+**Критерии закрытия:**
+
+- Compare all baseline snapshots; run Linux backend tests with native PostgreSQL, migration alignment, frontend and auth integration, CLI, Docker and roadmap checks; document exact results and remaining limitations..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.
+
+### T334. Backend architecture PR 3: publish and verify hosted checks
+
+**Статус:** `done` · **Приоритет:** P1 · **Размер:** S.
+
+**Зависимости:** T333.
+
+**Результаты/файлы:** `docs/BACKEND_ARCHITECTURE_PR3.md`.
+
+**Шаги:**
+
+1. Publish the branch and PR to main; verify hosted checks for the latest PR head and record the PR, tested commit and Actions links..
+
+**Критерии закрытия:**
+
+- Publish the branch and PR to main; verify hosted checks for the latest PR head and record the PR, tested commit and Actions links..
+- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
+
+**Доказательства:**
+
+- [docs/BACKEND_ARCHITECTURE_PR3.md](../docs/BACKEND_ARCHITECTURE_PR3.md) — PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
+
 ## E6. Резерв и выпуск
 
 Плановый интервал: D28–D30.
