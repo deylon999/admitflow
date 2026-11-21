@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -9801,12 +9801,13 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T318"
       ],
       "deliverables": [
-        "docs/KAN-218-ARCHITECTURE.md"
+        "docs/KAN-218-ARCHITECTURE.md",
+        "docs/KAN-218-PR4.md"
       ],
       "steps": [
         "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."

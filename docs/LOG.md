@@ -1691,3 +1691,12 @@ PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #3
 
 PR #37 обновлён от main 9f6a1d4 после слияния demo PR #36.
 Сохранены запись S233, результаты тестирования и история main.
+
+## S239 / T319 — 2026-11-22 — PR4 audit and measured plan
+
+Fresh main1e7693e includes merged PR31 and architecture PRs through37. Separate
+worktree/branch avoids parallel work. Current projection hydrates only selected
+facts, but computes global collision windows before filters three times per page.
+Baseline/EXPLAIN and Python memory/ORM counts required before optimization.
+Acceptance and five-step checklist in docs/KAN-218-PR4.md. T319 in_progress,
+T320 national coverage not started. No runtime/schema change in this step.

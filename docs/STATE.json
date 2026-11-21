@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
-  "currentTask": null,
-  "nextTask": "T319",
+  "currentTask": "T319",
+  "nextTask": "T320",
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
-  "lastSession": "S238",
-  "resumeAction": "Review T335 in frontend app/live PR #37 after the demo PR #36 merge. See docs/frontend-architecture-result.md.",
+  "lastSession": "S239",
+  "resumeAction": "KAN-218 PR4 on fresh main1e7693e in isolated worktree: audit complete; next reproduce PostgreSQL baseline before optimizing SQL. No public DTO/frontend/workflow changes, no working DB access.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
