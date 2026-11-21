@@ -3,7 +3,7 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-21. Последняя сессия: S234.
+Дата: 2026-11-22. Последняя сессия: S236.
 
 ## Продолжение
 
@@ -16,6 +16,7 @@ PR 34 published and verified; owner code review follows
 
 ## Последняя завершённая работа
 
+- S235: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.
 - S234: организация scripts по назначению с совместимыми CLI. См. scripts/AUDIT.md.
 - PR34 to main. Implementation 5fbcbeb passed all four Checks in push run 44929340212 and pull_request run 44929346831. Hosted native auth passed 6 tests in each engine; the PR description records the exact final head and checks.
 - Linux full PostgreSQL pytest: 1216 before and 1223 after, same external data skip and zero failures. 387 native cases, 274 account/security/SMTP checks, 387 frontend tests. Native CLI, Compose and schema dump comparison pass; Windows WebKit reproduces the baseline failure.

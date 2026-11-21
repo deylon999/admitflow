@@ -44,7 +44,7 @@
   [инвентаризация](sources/national-inventory.md), [политика загрузки](sources/fetching.md)
   и [паспорта программ](sources/program-catalog/README.md). При работе с конкретным
   источником откройте его паспорт и исходный контекст кампании.
-- [evidence/](evidence/) содержит отчёты, JSON, скриншоты и эталоны.
+- [evidence/](evidence/README.md) содержит отчёты, JSON, скриншоты и эталоны.
   Подбирайте доказательства по карточке задачи. Прогон относится к указанному SHA,
   схеме и окружению. [Публичный каталог](evidence/kan-218-pr2-public-api.json),
   [пакетный импорт](evidence/kan-218-pr3-batch.json),
