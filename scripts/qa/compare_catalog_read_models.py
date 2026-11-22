@@ -221,7 +221,7 @@ def compare(engine, runtime, args, report, save):
                     db.exec_driver_sql('CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public')
                     db.exec_driver_sql('CREATE INDEX scale_source_search ON program_catalog_facts USING gin(search_text public.gin_trgm_ops)')
                     db.exec_driver_sql('ANALYZE')
-                    report['sourceIndexBytes']=db.scalar(text("SELECT sum(pg_relation_size(indexrelid)) FROM pg_index WHERE indexrelid::regclass::text LIKE '%scale_source_%'"))
+                    report['sourceIndexBytes']=db.scalar(text("SELECT sum(pg_relation_size(indexrelid))::bigint FROM pg_index WHERE indexrelid::regclass::text LIKE '%scale_source_%'"))
                 report['sourceIndexBuildSeconds']=time.perf_counter()-start
             if variant in ('sql','source-indexed'):
                 facade.program_index=source_index;facade.program_page=source_page
