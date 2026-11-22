@@ -14,6 +14,7 @@ def _tables():
     m=sa.MetaData()
     sa.Table('program_catalog_facts',m,sa.Column('revision_id',sa.String(36),primary_key=True),sa.Column('program_id',sa.String(36),primary_key=True))
     sa.Table('program_catalog_revisions',m,sa.Column('document_id',sa.String(36)),sa.Column('id',sa.String(36)))
+    sa.Table('universities',m,sa.Column('id',sa.String(80),primary_key=True))
     state=sa.Table('program_catalog_read_scope',m,
         sa.Column('id',sa.Integer,primary_key=True),sa.Column('scope_hash',sa.String(64),nullable=False),
         sa.Column('known_ids',sa.JSON,nullable=False),sa.Column('reserved_ids',sa.JSON,nullable=False),
@@ -38,7 +39,11 @@ def _tables():
     for name,columns in [('public',['public_id']),('scope',['program_id','campaign_id'])]:
         sa.Index('uq_program_read_'+name,*(rows.c[c] for c in columns),unique=True,
             postgresql_where=sa.text('eligible'),sqlite_where=sa.text('eligible'))
-    return state,rows
+    totals=sa.Table('program_catalog_read_totals',m,
+        sa.Column('university_id',sa.String(80),sa.ForeignKey('universities.id',ondelete='RESTRICT'),primary_key=True),
+        sa.Column('year',sa.Integer,primary_key=True),sa.Column('program_count',sa.BigInteger,nullable=False),
+        sa.CheckConstraint('program_count >= 0',name='program_read_total_nonnegative'))
+    return state,rows,totals
 
 
 ELIGIBLE="""p.in_scope
@@ -57,8 +62,8 @@ INSERT="""INSERT INTO program_catalog_read_facts
 
 
 def upgrade():
-    state,rows=_tables()
-    state.create(op.get_bind());rows.create(op.get_bind())
+    state,rows,totals=_tables()
+    state.create(op.get_bind());rows.create(op.get_bind());totals.create(op.get_bind())
     if op.get_bind().dialect.name!='postgresql':
         # SQLite continues to use the source SQL path; no stale derived rows.
         return
@@ -66,8 +71,11 @@ def upgrade():
     op.get_bind().execute(state.insert().values(id=1,epoch=0,scope_hash=policy['scope_hash'],
         known_ids=sa.cast(sa.literal(json.dumps(policy['known_ids'])),sa.JSON),
         reserved_ids=sa.cast(sa.literal(json.dumps(policy['reserved_ids'])),sa.JSON)))
+    # No pointer may commit between backfill and installation of maintenance.
+    op.execute('LOCK TABLE program_catalog_publications IN SHARE ROW EXCLUSIVE MODE')
     op.execute(INSERT)
     op.execute('UPDATE program_catalog_read_facts p SET eligible='+ELIGIBLE)
+    op.execute('INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*) FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year')
     op.execute("""CREATE FUNCTION program_read_serialize() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN
             UPDATE program_catalog_read_scope SET epoch=epoch+1 WHERE id=1;
@@ -76,26 +84,56 @@ def upgrade():
         END $$""")
     op.execute('CREATE TRIGGER program_read_serialize BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_publications FOR EACH STATEMENT EXECUTE FUNCTION program_read_serialize()')
     op.execute("""CREATE FUNCTION program_read_publish() RETURNS trigger LANGUAGE plpgsql AS $$
-        DECLARE ids TEXT[]; programs TEXT[]; old_revision TEXT; new_revision TEXT;
+        DECLARE ids TEXT[]; programs TEXT[]; old_revisions TEXT[]; new_revisions TEXT[];
+            old_documents TEXT[]; new_documents TEXT[]; before_totals JSONB; changed BIGINT;
         BEGIN
-            IF TG_OP<>'INSERT' THEN old_revision:=OLD.revision_id; END IF;
-            IF TG_OP<>'DELETE' THEN new_revision:=NEW.revision_id; END IF;
-            IF TG_OP='UPDATE' AND OLD.document_id=NEW.document_id AND OLD.revision_id=NEW.revision_id THEN RETURN NULL; END IF;
+            IF TG_OP='INSERT' THEN
+                SELECT array_agg(revision_id),array_agg(document_id) INTO new_revisions,new_documents FROM pointer_new;
+            ELSIF TG_OP='DELETE' THEN
+                SELECT array_agg(revision_id),array_agg(document_id) INTO old_revisions,old_documents FROM pointer_old;
+            ELSE
+                SELECT array_agg(o.revision_id) FILTER (WHERE o.revision_id IS NOT NULL),
+                    array_agg(o.document_id) FILTER (WHERE o.document_id IS NOT NULL),
+                    array_agg(n.revision_id) FILTER (WHERE n.revision_id IS NOT NULL),
+                    array_agg(n.document_id) FILTER (WHERE n.document_id IS NOT NULL)
+                    INTO old_revisions,old_documents,new_revisions,new_documents
+                    FROM pointer_old o FULL JOIN pointer_new n ON n.document_id=o.document_id
+                    WHERE (o.document_id,o.revision_id) IS DISTINCT FROM (n.document_id,n.revision_id);
+            END IF;
+            IF old_documents IS NULL AND new_documents IS NULL THEN RETURN NULL; END IF;
             SELECT array_agg(DISTINCT public_id),array_agg(DISTINCT program_id) INTO ids,programs
-                FROM program_catalog_facts WHERE revision_id IN (old_revision,new_revision);
+                FROM program_catalog_facts WHERE revision_id=ANY(COALESCE(old_revisions,ARRAY[]::TEXT[])||COALESCE(new_revisions,ARRAY[]::TEXT[]));
+            SELECT COALESCE(jsonb_agg(to_jsonb(t)),'[]'::JSONB) INTO before_totals FROM (
+                SELECT university_id,year,count(*) n FROM program_catalog_read_facts
+                WHERE eligible AND (public_id=ANY(ids) OR program_id=ANY(programs)) GROUP BY university_id,year) t;
             UPDATE program_catalog_read_facts SET eligible=FALSE
                 WHERE public_id=ANY(ids) OR program_id=ANY(programs);
-            IF TG_OP<>'INSERT' THEN
-                DELETE FROM program_catalog_read_facts WHERE document_id=OLD.document_id;
+            IF old_documents IS NOT NULL THEN
+                DELETE FROM program_catalog_read_facts WHERE document_id=ANY(old_documents);
             END IF;
-            IF TG_OP<>'DELETE' THEN
-                """+INSERT+""" AND s.document_id=NEW.document_id;
+            IF new_documents IS NOT NULL THEN
+                """+INSERT+""" AND s.document_id=ANY(new_documents);
             END IF;
             UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+"""
                 WHERE p.public_id=ANY(ids) OR p.program_id=ANY(programs);
+            WITH deltas AS (
+                SELECT university_id,year,sum(n)::BIGINT delta FROM (
+                    SELECT university_id,year,count(*) n FROM program_catalog_read_facts
+                    WHERE eligible AND (public_id=ANY(ids) OR program_id=ANY(programs)) GROUP BY university_id,year
+                    UNION ALL SELECT university_id,year,-n FROM jsonb_to_recordset(before_totals)
+                        AS old_counts(university_id TEXT,year INTEGER,n BIGINT)
+                ) counts GROUP BY university_id,year HAVING sum(n)<>0
+            ) INSERT INTO program_catalog_read_totals(university_id,year,program_count)
+                SELECT d.university_id,d.year,COALESCE(previous.program_count,0)+d.delta FROM deltas d
+                LEFT JOIN program_catalog_read_totals previous ON previous.university_id=d.university_id AND previous.year=d.year
+                ON CONFLICT(university_id,year) DO UPDATE SET program_count=EXCLUDED.program_count;
+            GET DIAGNOSTICS changed=ROW_COUNT;
+            IF changed>0 THEN DELETE FROM program_catalog_read_totals WHERE program_count=0; END IF;
             RETURN NULL;
         END $$""")
-    op.execute('CREATE TRIGGER program_read_publish AFTER INSERT OR UPDATE OR DELETE ON program_catalog_publications FOR EACH ROW EXECUTE FUNCTION program_read_publish()')
+    op.execute('CREATE TRIGGER program_read_insert AFTER INSERT ON program_catalog_publications REFERENCING NEW TABLE AS pointer_new FOR EACH STATEMENT EXECUTE FUNCTION program_read_publish()')
+    op.execute('CREATE TRIGGER program_read_update AFTER UPDATE ON program_catalog_publications REFERENCING OLD TABLE AS pointer_old NEW TABLE AS pointer_new FOR EACH STATEMENT EXECUTE FUNCTION program_read_publish()')
+    op.execute('CREATE TRIGGER program_read_delete AFTER DELETE ON program_catalog_publications REFERENCING OLD TABLE AS pointer_old FOR EACH STATEMENT EXECUTE FUNCTION program_read_publish()')
     op.execute("""CREATE FUNCTION program_read_guard() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN
             IF pg_trigger_depth()<2 THEN RAISE EXCEPTION 'program_read_derived_only' USING ERRCODE='23514'; END IF;
@@ -103,6 +141,7 @@ def upgrade():
             RETURN NEW;
         END $$""")
     op.execute('CREATE TRIGGER program_read_guard BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_read_facts FOR EACH ROW EXECUTE FUNCTION program_read_guard()')
+    op.execute('CREATE TRIGGER program_read_totals_guard BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_read_totals FOR EACH ROW EXECUTE FUNCTION program_read_guard()')
     op.execute("""CREATE FUNCTION program_read_policy_check() RETURNS trigger LANGUAGE plpgsql AS $$
         DECLARE expected TEXT; known_count BIGINT; known_unique BIGINT; reserved_count BIGINT; reserved_unique BIGINT;
         BEGIN
@@ -131,17 +170,24 @@ def upgrade():
             UPDATE program_catalog_read_facts SET eligible=FALSE,
                 in_scope=university_id IN (SELECT json_array_elements_text(NEW.known_ids));
             UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+""";
+            DELETE FROM program_catalog_read_totals;
+            INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*)
+                FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year;
             RETURN NULL;
         END $$""")
     op.execute('CREATE TRIGGER program_read_policy_refresh AFTER UPDATE ON program_catalog_read_scope FOR EACH ROW WHEN (OLD.scope_hash IS DISTINCT FROM NEW.scope_hash) EXECUTE FUNCTION program_read_policy_refresh()')
+    for name in ['program_read_serialize','program_read_publish','program_read_guard','program_read_policy_check','program_read_policy_refresh']:
+        op.execute(f'ALTER FUNCTION {name}() SET search_path FROM CURRENT')
 
 
 def downgrade():
     if op.get_bind().dialect.name=='postgresql':
-        for table,name in [('program_catalog_publications','program_read_serialize'),('program_catalog_publications','program_read_publish'),
+        for table,name in [('program_catalog_publications','program_read_serialize'),('program_catalog_publications','program_read_insert'),
+                ('program_catalog_publications','program_read_update'),('program_catalog_publications','program_read_delete'),
                 ('program_catalog_read_facts','program_read_guard'),('program_catalog_read_scope','program_read_policy_check'),
+                ('program_catalog_read_totals','program_read_totals_guard'),
                 ('program_catalog_read_scope','program_read_policy_refresh')]:
             op.execute(f'DROP TRIGGER {name} ON {table}')
         for name in ['program_read_policy_refresh','program_read_policy_check','program_read_guard','program_read_publish','program_read_serialize']:
             op.execute(f'DROP FUNCTION {name}()')
-    op.drop_table('program_catalog_read_facts');op.drop_table('program_catalog_read_scope')
+    op.drop_table('program_catalog_read_totals');op.drop_table('program_catalog_read_facts');op.drop_table('program_catalog_read_scope')

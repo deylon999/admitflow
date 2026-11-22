@@ -19,6 +19,7 @@ from .product_catalog_schemas import (
 from .university_names import choose_name
 from .program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
 from . import read_projection
+from .program_catalog_models import ProgramCatalogReadTotal as ReadTotal
 
 
 def legacy_programs(db, *, with_program_links=True):
@@ -164,15 +165,23 @@ def program_page(db, *, q='', university_id='', year=None, subject='', offset=0,
     base=select(index)
     if university_id:
         base=base.where(index.c.university_id==university_id)
-    scope=base.subquery()
-    years=list(db.scalars(select(scope.c.year).distinct().order_by(scope.c.year.desc())))
+    cohorts=select(ReadTotal.year,func.sum(ReadTotal.program_count)).group_by(ReadTotal.year)
+    if university_id:
+        cohorts=cohorts.where(ReadTotal.university_id==university_id)
+    counts={y:int(n) for y,n in db.execute(cohorts)}
+    for p in legacy.values():
+        if not university_id or p.university_id==university_id:
+            counts[p.year]=counts.get(p.year,0)+1
+    years=sorted(counts,reverse=True)
     if year is not None:
         base=base.where(index.c.year==year)
     if subject:
         base=base.where(literal(False))
-    for token in q.casefold().split():
+    tokens=q.casefold().split()
+    for token in tokens:
         base=base.where(index.c.search_text.contains(token,autoescape=True))
-    total=db.scalar(select(func.count()).select_from(base.subquery()))
+    total=0 if subject else (db.scalar(select(func.count()).select_from(base.subquery())) if tokens else
+        (counts.get(year,0) if year is not None else sum(counts.values())))
     order=(index.c.sort_text.desc(),index.c.id.desc()) if sort=='name-desc' else (index.c.sort_text,index.c.id)
     keys=db.execute(base.with_only_columns(index.c.id,index.c.pid,index.c.rid).order_by(*order).offset(offset).limit(limit)).all()
     return ProgramPage(items=hydrate_programs(db,keys,legacy),total=total,

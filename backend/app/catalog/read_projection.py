@@ -6,6 +6,7 @@ path until an operator synchronizes this policy in one transaction.
 """
 import argparse
 import hashlib
+from functools import lru_cache
 
 from sqlalchemy import select, update
 
@@ -15,16 +16,31 @@ from .national_catalog import load_catalog
 from .program_catalog_models import ProgramCatalogReadFact as ReadFact, ProgramCatalogReadScope as ReadScope
 
 
-def policy():
-    known=sorted(set([r.id for r in load_catalog().institutions]+[r.id for r in load_registry().registry_only]))
-    reserved=sorted(REVIEWED_IDS)
+def _inputs():
+    return (tuple(r.id for r in load_catalog().institutions),tuple(r.id for r in load_registry().registry_only),tuple(REVIEWED_IDS))
+
+
+@lru_cache(maxsize=8)
+def _fingerprint(catalog_ids,registry_ids,reserved_ids):
+    # Pure function keyed by the complete immutable input values. No database
+    # facts, publication state, TTL or stale-result window are cached.
+    known=sorted(set(catalog_ids+registry_ids))
+    reserved=sorted(reserved_ids)
     payload='known:\n'+'\n'.join(known)+'\nreserved:\n'+'\n'.join(reserved)
-    return dict(scope_hash=hashlib.sha256(payload.encode()).hexdigest(),known_ids=known,reserved_ids=reserved)
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def policy():
+    catalog,registry,reserved=_inputs()
+    return dict(scope_hash=_fingerprint(catalog,registry,reserved),
+        known_ids=sorted(set(catalog+registry)),reserved_ids=sorted(reserved))
 
 
 def statement(db):
-    scope=db.get(ReadScope,1)
-    if scope is None or scope.scope_hash!=policy()['scope_hash']:
+    if db.get_bind().dialect.name!='postgresql':
+        return None
+    scope_hash=db.scalar(select(ReadScope.scope_hash).where(ReadScope.id==1))
+    if scope_hash!=_fingerprint(*_inputs()):
         return None
     return select(ReadFact.public_id.label('id'),ReadFact.program_id.label('pid'),ReadFact.revision_id.label('rid'),
         ReadFact.university_id,ReadFact.year,ReadFact.sort_text,ReadFact.search_text).where(ReadFact.eligible)

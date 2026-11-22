@@ -107,6 +107,7 @@ def test_additive_migration_preserves_all_guest_tables(postgres_engine):
             'program_catalog_documents', 'program_catalog_revisions', 'program_catalog_facts',
             'program_catalog_group_facts', 'program_catalog_publications', 'program_catalog_import_attempts',
             'program_catalog_read_scope', 'program_catalog_read_facts',
+            'program_catalog_read_totals',
         }
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.downgrade(cfg, '0011'); command.upgrade(cfg, 'head'); command.check(cfg)

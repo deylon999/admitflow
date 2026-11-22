@@ -171,7 +171,7 @@ def main():
             upgrade_schema(engine);import_reviewed(engine)
             print('Seeding100k...',flush=True)
             start=time.perf_counter()
-            report['fixture']=seed(engine)
+            report['fixture']=seed(engine,target_year_per_campaign=100)
             report['seedWithPublicationSeconds']=time.perf_counter()-start
             with engine.connect() as db:
                 report['postgresVersion']=db.scalar(text('SHOW server_version'))
@@ -192,7 +192,7 @@ def main():
             with engine.connect().execution_options(isolation_level='AUTOCOMMIT') as db:
                 db.exec_driver_sql('VACUUM ANALYZE scale_current');db.exec_driver_sql('VACUUM ANALYZE scale_eligible')
             cases=dict(first={},university={'university_id':report['fixture']['sampleUniversity'],'year':2027},
-                code={'q':'09.03.04','year':2027},deep={'offset':99988})
+                code={'q':'09.03.04','year':2027},deep={'year':2027,'offset':99988})
             oracle={}
             for name,params in cases.items():
                 with Session(engine) as db:
@@ -237,6 +237,7 @@ def main():
                         result['singlePostgresContainerSamples']=monitor.samples
                         http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
                         for _ in range(10):client.get('/api/v1/catalog/programs',params=http_params)
+                        result['httpSingle']=load_test(client,http_params,1,engine,runtime,args.load_seconds)
                         result['concurrent']=[load_test(client,http_params,n,engine,runtime,args.load_seconds) for n in (10,25,50)]
                         report['variants'][variant][name]=result;save()
     finally:

@@ -156,3 +156,12 @@ class ProgramCatalogReadFact(Base):
     search_text: Mapped[str] = mapped_column(String(1500))
     in_scope: Mapped[bool] = mapped_column(Boolean)
     eligible: Mapped[bool] = mapped_column(Boolean)
+
+
+class ProgramCatalogReadTotal(Base):
+    """Exact eligible row counts, updated in the publication transaction."""
+    __tablename__='program_catalog_read_totals'
+    __table_args__=(CheckConstraint('program_count >= 0',name='program_read_total_nonnegative'),)
+    university_id: Mapped[str] = mapped_column(ForeignKey('universities.id',ondelete='RESTRICT'),primary_key=True)
+    year: Mapped[int] = mapped_column(Integer,primary_key=True)
+    program_count: Mapped[int] = mapped_column(BigInteger)

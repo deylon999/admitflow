@@ -39,7 +39,7 @@ from pg_support import isolated_postgres
 from scripts.ops.postgres_runtime import disposable_postgres
 
 
-def seed(engine, *, heads=785, branches=215, per_campaign=25, history=2):
+def seed(engine, *, heads=785, branches=215, per_campaign=25, history=2, target_year_per_campaign=None):
     """Bulk synthetic fixture, with all normal FK/check/immutability guards on."""
     catalog = load_catalog().institutions
     head_ids = [r.id for r in catalog if not r.is_branch and r.id != 'sgu-saratov']
@@ -60,8 +60,8 @@ def seed(engine, *, heads=785, branches=215, per_campaign=25, history=2):
         db.execute(text("""CREATE TEMP TABLE scale_keys ON COMMIT DROP AS
             SELECT md5('program:'||c.id||':'||k) pid, c.id cid, c.university_id uid, c.year, c.level,
                 'scale-'||k source_key, md5('public:'||c.id||':'||k) public_id, k
-            FROM campaigns c CROSS JOIN generate_series(1,:per) k
-            WHERE c.university_id != 'sgu-saratov'"""), {'per':per_campaign})
+            FROM campaigns c CROSS JOIN generate_series(1,CASE WHEN c.year=2027 AND :target>0 THEN :target ELSE :per END) k
+            WHERE c.university_id != 'sgu-saratov'"""), {'per':per_campaign,'target':target_year_per_campaign or 0})
         db.execute(text("""INSERT INTO programs(id,university_id,level,origin_campaign_id,source_namespace,source_key)
             SELECT pid,uid,level,cid,'synthetic-scale-v1',source_key FROM scale_keys"""))
         db.execute(text("""INSERT INTO campaign_programs(program_id,campaign_id,university_id,level)
@@ -75,30 +75,34 @@ def seed(engine, *, heads=785, branches=215, per_campaign=25, history=2):
             SELECT md5(d.id||':rev:'||v),d.id,d.campaign_id,'https://synthetic.invalid/scale',
                 'https://synthetic.invalid/scale','text/html','synthetic-benchmark','verified',
                 :now,:now,repeat(md5(d.id||v),2),'synthetic-scale-v1',repeat(md5(d.id||v),2),
-                repeat(md5(d.id||v),2),'partial',:per,0,u.name
+                repeat(md5(d.id||v),2),'partial',CASE WHEN c.year=2027 AND :target>0 THEN :target ELSE :per END,0,u.name
             FROM program_catalog_documents d JOIN campaigns c ON c.id=d.campaign_id
                 JOIN universities u ON u.id=c.university_id CROSS JOIN generate_series(0,:history) v"""),
-            {'now':now,'per':per_campaign,'history':history})
+            {'now':now,'per':per_campaign,'history':history,'target':target_year_per_campaign or 0})
         db.execute(text("""INSERT INTO program_catalog_facts
             (revision_id,program_id,campaign_id,public_id,source_key,title,code,study_form,funding,
              category,seats,evidence,search_text,sort_text)
             SELECT r.id,k.pid,k.cid,k.public_id,k.source_key,
                 'Synthetic Программа Straße ΟΣ Ёж 100%_ '||
                     CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid,
-                CASE WHEN k.k%7=0 THEN '40.05.01' ELSE '09.03.04' END,
+                CASE WHEN :target>0 AND k.level='specialist' THEN '40.05.01'
+                    WHEN k.k%7=0 THEN CASE WHEN :target>0 THEN '38.03.01' ELSE '40.05.01' END ELSE '09.03.04' END,
                 CASE WHEN k.k%3=0 THEN NULL ELSE 'full-time' END,NULL,NULL,NULL,
                 json_build_object('synthetic',true),
                 'synthetic программа strasse οσ ёж 100%_ '||
-                    CASE WHEN k.k%7=0 THEN '40.05.01 ' ELSE '09.03.04 ' END||
+                    CASE WHEN :target>0 AND k.level='specialist' THEN '40.05.01 '
+                        WHEN k.k%7=0 THEN CASE WHEN :target>0 THEN '38.03.01 ' ELSE '40.05.01 ' END ELSE '09.03.04 ' END||
                     CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid||' '||lower(r.university_name),
                 'synthetic программа strasse οσ ёж 100%_ '||
                     CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid
-            FROM scale_keys k JOIN program_catalog_revisions r ON r.campaign_id=k.cid"""))
+            FROM scale_keys k JOIN program_catalog_revisions r ON r.campaign_id=k.cid"""),{'target':target_year_per_campaign or 0})
         db.execute(text("""INSERT INTO program_catalog_publications(document_id,revision_id)
             SELECT d.id,md5(d.id||':rev:'||:history) FROM program_catalog_documents d"""),{'history':str(history)})
         db.execute(text('ANALYZE'))
-    return dict(synthetic=True,heads=heads,branches=branches,years=[2024,2025,2026,2027],
-        currentPrograms=len(campaigns)*per_campaign,previousFactVersions=len(campaigns)*per_campaign*history,
+    total=len(ids)*(3*per_campaign+(target_year_per_campaign or per_campaign))
+    return dict(synthetic=True,heads=heads,branches=branches,years=[2024,2025,2026,2027],targetYear=2027,
+        targetYearPrograms=len(ids)*(target_year_per_campaign or per_campaign),historicalCampaignPrograms=len(ids)*3*per_campaign,
+        currentPrograms=total,previousFactVersions=total*history,
         currentDocuments=len(campaigns),newCompetitionGroups=0,sampleUniversity=ids[0])
 
 

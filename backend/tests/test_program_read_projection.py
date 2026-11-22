@@ -8,12 +8,12 @@ from pathlib import Path
 from alembic import command
 from alembic.config import Config
 import pytest
-from sqlalchemy import delete, insert, select, update
+from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.orm import Session
 
 from app.catalog import product_catalog as facade, read_projection
-from app.catalog.program_catalog_models import ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision, ProgramCatalogFact as Fact, ProgramCatalogPublication as Publication, ProgramCatalogReadFact as ReadFact, ProgramCatalogReadScope as Scope
+from app.catalog.program_catalog_models import ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision, ProgramCatalogFact as Fact, ProgramCatalogPublication as Publication, ProgramCatalogReadFact as ReadFact, ProgramCatalogReadScope as Scope, ProgramCatalogReadTotal as Total
 from app.catalog.program_catalog_import import import_document
 from app.catalog.catalog_import import import_reviewed
 from app.sources.storage import RawStore
@@ -34,6 +34,11 @@ def publish(engine,store):
 
 def values(engine):
     with Session(engine) as db:
+        exact=set(db.execute(select(ReadFact.university_id,ReadFact.year,func.count())
+            .where(ReadFact.eligible).group_by(ReadFact.university_id,ReadFact.year)))
+        totals=set(db.execute(select(Total.university_id,Total.year,Total.program_count)))
+        assert exact==totals
+        assert all(n>0 for uid,year,n in totals)
         return sorted((r.revision_id,r.program_id,r.in_scope,r.eligible) for r in db.scalars(select(ReadFact)))
 
 
@@ -115,16 +120,18 @@ def test_policy_changes_are_atomic_and_mismatch_uses_exact_fallback(postgres_eng
 
 
 @pytest.mark.parametrize('operation',['update','delete','insert'])
-def test_direct_mutation_of_derived_rows_is_rejected(postgres_engine,store,operation):
+@pytest.mark.parametrize('table',[ReadFact,Total])
+def test_direct_mutation_of_derived_rows_is_rejected(postgres_engine,store,operation,table):
     publish(postgres_engine,store)
     before=values(postgres_engine)
     with pytest.raises(IntegrityError):
         with postgres_engine.begin() as db:
-            if operation=='update':db.execute(update(ReadFact).values(eligible=False))
-            elif operation=='delete':db.execute(delete(ReadFact))
+            if operation=='update':db.execute(update(table).values(**({'eligible':False} if table is ReadFact else {'program_count':0})))
+            elif operation=='delete':db.execute(delete(table))
             else:
-                row=db.execute(select(ReadFact.__table__)).mappings().first()
-                db.execute(insert(ReadFact).values(**(dict(row)|dict(revision_id='synthetic-invalid'))))
+                row=db.execute(select(table.__table__)).mappings().first()
+                override=dict(revision_id='synthetic-invalid') if table is ReadFact else dict(university_id='synthetic-invalid')
+                db.execute(insert(table).values(**(dict(row)|override)))
     assert values(postgres_engine)==before
 
 
@@ -159,6 +166,21 @@ def test_concurrent_publications_do_not_miss_each_other(postgres_engine,store):
         list(pool.map(writer,[(original,result['revisionId']),('rival-document','rival-revision')]))
     assert len(values(postgres_engine))==4 and not any(r[3] for r in values(postgres_engine))
     assert page(postgres_engine)['total']==0
+
+
+def test_statement_batch_checks_the_final_set_and_recovers_after_delete(postgres_engine,store):
+    _,_,result=publish(postgres_engine,store)
+    original=clone(postgres_engine,result['revisionId'])
+    with postgres_engine.begin() as db:db.execute(delete(Publication))
+    with postgres_engine.begin() as db:
+        db.execute(insert(Publication),[dict(document_id=original,revision_id=result['revisionId']),
+            dict(document_id='rival-document',revision_id='rival-revision')])
+    assert len(values(postgres_engine))==4 and not any(r[3] for r in values(postgres_engine))
+    with postgres_engine.begin() as db:db.execute(delete(Publication))
+    assert values(postgres_engine)==[]
+    with postgres_engine.begin() as db:
+        db.execute(insert(Publication).values(document_id=original,revision_id=result['revisionId']))
+    assert len(values(postgres_engine))==2 and all(r[3] for r in values(postgres_engine))
 
 
 def test_repeatable_read_writer_cannot_apply_an_old_global_snapshot(postgres_engine,store):
