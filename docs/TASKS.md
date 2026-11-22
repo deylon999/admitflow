@@ -7047,11 +7047,11 @@
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
-**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T318.
 
-**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR4.md`.
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR4.md`; `docs/KAN-218-PR4-READ-MODEL.md`.
 
 **Шаги:**
 
@@ -7060,6 +7060,7 @@
 **Критерии закрытия:**
 
 - SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved..
+- Owner2026-11-22: compare SQL/indexes/atomic confirmed read projection;100k current programmes,50+ warmed measurements per scenario and10–50 concurrent requests;PG CPU/memory/temp/buffers; p95 first<200ms university+year<150ms code<300ms deep<500ms, or measured objective limitation and alternatives. Adapt after backend38–42, preserve all correctness and API semantics, exact count, snapshot consistency. No self merge..
 - Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.
 
 **Доказательства:**

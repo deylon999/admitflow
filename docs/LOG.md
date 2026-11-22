@@ -1723,3 +1723,13 @@ imports existing Linux-only resource on Windows. Full Linux CI retained.
 Official-original rehearsal b19dd7a passed; repeated import unchanged and SGU
 IDs/exams/16seats preserved,2027 pilot1/785. T319 review pending owner/CI; T320
 not started. Final CI/exact SHA recorded in PR metadata; no automatic merge.
+
+## S239 / T319 — 2026-11-22 — expanded owner performance acceptance
+
+Prior d9636b2 push/PR CI8/8 success. Owner explicitly rejects treating relative
+speedup as final. New per-case targets and50+ warmed samples/concurrency10–50,
+PostgreSQL memory/load/temp metrics and architecture comparison recorded in
+KAN-218-PR4-READ-MODEL.md. T319 back in_progress; PR43 returned to draft.
+PR39–42 merged into parent feature branches, not main; full backend9ad69c6
+available for independent adaptation. Main at6fdafc9 contains onlyPR38.
+No owner PRs merged by agent; historical measurements preserved.

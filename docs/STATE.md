@@ -7,12 +7,12 @@
 
 ## Продолжение
 
-- Текущая задача: нет.
+- Текущая задача: T319.
 - Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Review KAN-218 PR4 on feat/kan-218-catalog-scale. Exact final SHA and Linux CI recorded in PR metadata. T319 review: local broad/deep p95 still exceeds500ms; no performance gate accepted. After owner review/merge, resolve T319 and continue T320 national coverage. No automatic merge.
+PR43 draft: owner expanded performance acceptance. Prior d9636b2 CI8/8 green, insufficient for new targets. Compare SQL/indexes/atomic read projection with50+ samples and10/25/50 concurrency. Full backend9ad69c6 exists on merged feature chain, main only38; prepare adaptation separately. Never self merge.
 
 ## Последняя завершённая работа
 

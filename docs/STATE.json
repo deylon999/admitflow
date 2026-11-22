@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
-  "currentTask": null,
+  "currentTask": "T319",
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S239",
-  "resumeAction": "Review KAN-218 PR4 on feat/kan-218-catalog-scale. Exact final SHA and Linux CI recorded in PR metadata. T319 review: local broad/deep p95 still exceeds500ms; no performance gate accepted. After owner review/merge, resolve T319 and continue T320 national coverage. No automatic merge.",
+  "resumeAction": "PR43 draft: owner expanded performance acceptance. Prior d9636b2 CI8/8 green, insufficient for new targets. Compare SQL/indexes/atomic read projection with50+ samples and10/25/50 concurrency. Full backend9ad69c6 exists on merged feature chain, main only38; prepare adaptation separately. Never self merge.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
