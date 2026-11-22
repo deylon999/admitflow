@@ -254,6 +254,7 @@ def main():
                         default=['first','university'])
     parser.add_argument('--profile', action='store_true')
     parser.add_argument('--client', choices=('threaded', 'node'), default='threaded')
+    parser.add_argument('--warm-concurrency', action='store_true', help='Warm all 50 concurrent HTTP slots before the timed phase')
     parser.add_argument('--docker-image', help='Run uninstrumented Uvicorn in an existing local Linux image')
     args = parser.parse_args()
     if args.initialize:
@@ -270,7 +271,8 @@ def main():
     report = dict(commit=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
                   dirty=bool(subprocess.check_output(['git','status','--porcelain'], text=True)),
                   fixture=meta['fixture'], workers=4, concurrency=50, instrumented=args.profile,
-                  servingRuntime='linux-docker' if args.docker_image else sys.platform, loadClient=args.client, cases={})
+                  servingRuntime='linux-docker' if args.docker_image else sys.platform, loadClient=args.client,
+                  warmConcurrency=args.warm_concurrency, cases={})
     try:
         with engine.connect() as db:
             report['postgresVersion'] = db.scalar(text('SHOW server_version'))
@@ -305,9 +307,13 @@ def main():
                     assert digest(response.json()) == expected_hash, name
                     warmups += 1
                 loader = node_load_test if args.client == 'node' else load_test
+                warm = loader(client, http_params, 50, engine, runtime, 2) if args.warm_concurrency else None
                 result = loader(client, http_params, 50, engine, runtime, 10)
                 result['responseSha256'] = expected_hash
                 result['warmupTransportErrors'] = warmup_errors
+                if warm is not None:
+                    result['concurrentWarmup'] = {key: warm[key] for key in ('requests','failures','totals','transportFailures')}
+                    assert warm['totals'] == [expected.total]
                 if args.profile:
                     profiles = [row['profile'] for row in result['samples'] if 'profile' in row]
                     result['profile'] = {k: dict(p50=percentile([p[k] for p in profiles], .50),
