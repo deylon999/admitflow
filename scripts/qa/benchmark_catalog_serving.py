@@ -19,6 +19,8 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'backend'), str(ROOT / 'backend/tests')]
 
 import httpx
+from alembic import command
+from alembic.config import Config
 from sqlalchemy import event, text
 from sqlalchemy.orm import Session
 from app.catalog.product_catalog import ProgramPage, source_program_page
@@ -111,6 +113,19 @@ def main():
             event.remove(engine, 'after_cursor_execute', after)
         report['seedStatements'] = timings
         print('Seed seconds', report['seedSeconds'], flush=True)
+        save()
+        # Exercise the actual additive migration over all existing immutable
+        # revisions, rather than only its empty-schema path.
+        config = Config(str(ROOT / 'backend/alembic.ini'))
+        with engine.connect() as connection:
+            config.attributes['connection'] = connection
+            command.downgrade(config, '0014')
+            started = time.perf_counter()
+            command.upgrade(config, '0015')
+            report['populatedUpgradeSeconds'] = time.perf_counter() - started
+            assert connection.scalar(text('SELECT sum(program_count) FROM program_catalog_read_totals')) == 175000
+            connection.rollback()
+        save()
         with engine.connect() as db:
             report['postgresVersion'] = db.scalar(text('SHOW server_version'))
             report['settings'] = {key: db.scalar(text('SELECT current_setting(:key)'), {'key': key}) for key in
