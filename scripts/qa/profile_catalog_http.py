@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'backend'), str(ROOT / 'backend/tests')]
 
 import fastapi.routing
+import httpx
 from sqlalchemy import event, text
 from sqlalchemy.engine import make_url
 from sqlalchemy.orm import Session
@@ -192,6 +193,11 @@ def main():
                   dirty=bool(subprocess.check_output(['git','status','--porcelain'], text=True)),
                   fixture=meta['fixture'], workers=4, concurrency=50, instrumented=args.profile, cases={})
     try:
+        with engine.connect() as db:
+            report['postgresVersion'] = db.scalar(text('SHOW server_version'))
+            report['postgresSettings'] = {key: db.scalar(text('SELECT current_setting(:key)'), {'key': key})
+                for key in ('work_mem','shared_buffers','max_parallel_workers_per_gather','max_connections',
+                            'hash_mem_multiplier','track_io_timing')}
         with server(engine, 4, args.output.with_suffix('.workers.log'),
                     factory='scripts.qa.profile_catalog_http:application',
                     environment={'ADMITFLOW_BENCH_PROFILE': str(int(args.profile))}) as client:
@@ -200,12 +206,21 @@ def main():
                 with Session(engine) as db:
                     expected = catalog.source_program_page(db, **params)
                 http_params = {('universityId' if key == 'university_id' else key): value for key,value in params.items()}
-                for _ in range(10):
-                    response = client.get(PATH, params=http_params)
+                warmups = warmup_errors = 0
+                while warmups < 10:
+                    try:
+                        response = client.get(PATH, params=http_params)
+                    except httpx.TransportError:
+                        warmup_errors += 1
+                        if warmup_errors > 2:
+                            raise
+                        continue
                     response.raise_for_status()
                     assert digest(catalog.ProgramPage.model_validate(response.json())) == digest(expected), name
+                    warmups += 1
                 result = load_test(client, http_params, 50, engine, runtime, 10)
                 result['responseSha256'] = digest(expected)
+                result['warmupTransportErrors'] = warmup_errors
                 if args.profile:
                     profiles = [row['profile'] for row in result['samples'] if 'profile' in row]
                     result['profile'] = {k: dict(p50=percentile([p[k] for p in profiles], .50),

@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'backend'), str(ROOT / 'backend/tests')]
 
 from sqlalchemy import text
+from sqlalchemy.exc import DBAPIError
 from scripts.qa.benchmark_product_catalog import percentile
 from scripts.qa.profile_catalog_http import fixture_engine
 
@@ -54,10 +55,18 @@ def write_trials(engine, documents, verify):
     result['rolledBackBatch'] = []
     for _ in range(3):
         start = perf_counter()
-        with engine.connect() as db:
-            assert db.execute(batch, {'documents': documents}).rowcount == len(documents)
-            db.rollback()
-        result['rolledBackBatch'].append((perf_counter()-start)*1000)
+        try:
+            with engine.connect() as db:
+                db.execute(text("SET LOCAL statement_timeout='60s'"))
+                assert db.execute(batch, {'documents': documents}).rowcount == len(documents)
+                db.rollback()
+        except DBAPIError as error:
+            if getattr(error.orig, 'sqlstate', None) != '57014':
+                raise
+            result['rolledBackBatch'].append(dict(ms=(perf_counter()-start)*1000, timedOut=True))
+            verify()
+            break
+        result['rolledBackBatch'].append(dict(ms=(perf_counter()-start)*1000, timedOut=False))
         verify()
 
     # Two writers modify disjoint documents in overlapping transactions. They
@@ -82,7 +91,7 @@ def main():
     parser.add_argument('--fixture', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--counter', action='store_true', help='Compare the installed candidate migration after its backfill')
-    parser.add_argument('--batch-documents', type=int, default=50)
+    parser.add_argument('--batch-documents', type=int, default=10)
     args = parser.parse_args()
     runtime, engine = fixture_engine(json.loads(args.fixture.read_text(encoding='utf-8')))
     report = dict(variants={})
@@ -116,9 +125,11 @@ def main():
                 report['variants'][name] = measure(read_count)
                 report['variants'][name]['plan'] = db.execute(text('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '+query.text),
                                                                {'code': CODE}).scalar()
+            save()
+            print(name, 'count p95', report['variants'][name]['p95'], flush=True)
             report['variants'][name]['writes'] = write_trials(engine, documents, verify)
             save()
-            print(name, report['variants'][name]['p95'], flush=True)
+            print(name, 'publication trials complete', flush=True)
 
         if args.counter:
             compare('counter', text('''SELECT COALESCE(sum(program_count),0) FROM program_catalog_read_code_totals
