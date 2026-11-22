@@ -4,6 +4,7 @@ The instrumentation lives in the benchmark workers. Production routes,
 configuration and response schemas do not depend on it.
 """
 import argparse
+from contextlib import contextmanager
 from contextvars import ContextVar
 from functools import wraps
 import hashlib
@@ -14,6 +15,7 @@ import re
 import subprocess
 import sys
 from time import monotonic, perf_counter, sleep
+from uuid import uuid4
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'backend'), str(ROOT / 'backend/tests')]
@@ -137,6 +139,49 @@ def fixture_engine(meta):
     return runtime, engine
 
 
+@contextmanager
+def linux_server(engine, runtime, image, log_path):
+    """Bridge only the disposable PG and Uvicorn containers for a Linux run."""
+    name = f'admitflow-load-{uuid4().hex}'
+    network = name + '-net'
+    subprocess.run(['docker','network','create',network], check=True, capture_output=True)
+    attached = started = False
+    try:
+        subprocess.run(['docker','network','connect',network,runtime.name], check=True, capture_output=True)
+        attached = True
+        url = engine.url.set(host=runtime.name, port=5432).render_as_string(hide_password=False)
+        subprocess.run(['docker','run','-d','--pull','never','--name',name,'--network',network,
+            '-p','127.0.0.1::8000','--mount',f'type=bind,source={ROOT},target=/bench,readonly',
+            '--workdir','/bench/backend','--env','PYTHONPATH=/bench/backend',
+            '--env',f'DATABASE_URL={url}','--env','ENVIRONMENT=development','--env','AUTO_CREATE_SCHEMA=false',
+            '--entrypoint','python',image,'-m','uvicorn','app.main:create_app','--factory',
+            '--host','0.0.0.0','--port','8000','--workers','4','--no-access-log'], check=True, capture_output=True)
+        started = True
+        ports = json.loads(subprocess.check_output(['docker','inspect','--format','{{json .NetworkSettings.Ports}}',name]))
+        port = ports['8000/tcp'][0]['HostPort']
+        with httpx.Client(base_url=f'http://127.0.0.1:{port}', trust_env=False, timeout=10,
+                          limits=httpx.Limits(max_connections=50, max_keepalive_connections=50)) as client:
+            deadline = monotonic() + 60
+            while True:
+                try:
+                    if client.get(PATH, params={'limit':1}).status_code == 200:
+                        break
+                except httpx.TransportError:
+                    pass
+                if monotonic() >= deadline:
+                    raise RuntimeError('owned Linux Uvicorn readiness timeout')
+                sleep(.25)
+            yield client
+    finally:
+        if started:
+            with log_path.open('wb') as log:
+                subprocess.run(['docker','logs',name], stdout=log, stderr=subprocess.STDOUT, check=False)
+            subprocess.run(['docker','rm','--force',name], check=True, capture_output=True)
+        if attached:
+            subprocess.run(['docker','network','disconnect',network,runtime.name], check=True, capture_output=True)
+        subprocess.run(['docker','network','rm',network], check=True, capture_output=True)
+
+
 def cases(meta):
     fixture = meta['fixture']
     return dict(first={}, university={'university_id': fixture['sampleUniversity'], 'year': 2027},
@@ -181,26 +226,36 @@ def main():
     parser.add_argument('--cases', nargs='+', choices=['first','university','code','deep','middle'],
                         default=['first','university'])
     parser.add_argument('--profile', action='store_true')
+    parser.add_argument('--docker-image', help='Run uninstrumented Uvicorn in an existing local Linux image')
     args = parser.parse_args()
     if args.initialize:
         return initialize_fixture(args.fixture, small=args.small)
     if not args.output or args.small:
         parser.error('running a profile requires --output')
+    if args.profile and args.docker_image:
+        parser.error('timing hooks run in the host workers only')
     meta = json.loads(args.fixture.read_text(encoding='utf-8'))
     runtime, engine = fixture_engine(meta)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = dict(commit=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
                   dirty=bool(subprocess.check_output(['git','status','--porcelain'], text=True)),
-                  fixture=meta['fixture'], workers=4, concurrency=50, instrumented=args.profile, cases={})
+                  fixture=meta['fixture'], workers=4, concurrency=50, instrumented=args.profile,
+                  servingRuntime='linux-docker' if args.docker_image else sys.platform, cases={})
     try:
         with engine.connect() as db:
             report['postgresVersion'] = db.scalar(text('SHOW server_version'))
             report['postgresSettings'] = {key: db.scalar(text('SELECT current_setting(:key)'), {'key': key})
                 for key in ('work_mem','shared_buffers','max_parallel_workers_per_gather','max_connections',
                             'hash_mem_multiplier','track_io_timing')}
-        with server(engine, 4, args.output.with_suffix('.workers.log'),
-                    factory='scripts.qa.profile_catalog_http:application',
-                    environment={'ADMITFLOW_BENCH_PROFILE': str(int(args.profile))}) as client:
+        worker_log = args.output.with_suffix('.workers.log')
+        if args.docker_image:
+            report['servingImage'] = subprocess.check_output(
+                ['docker', 'image', 'inspect', '--format', '{{.Id}}', args.docker_image], text=True).strip()
+            instance = linux_server(engine, runtime, args.docker_image, worker_log)
+        else:
+            instance = server(engine, 4, worker_log, factory='scripts.qa.profile_catalog_http:application',
+                              environment={'ADMITFLOW_BENCH_PROFILE': str(int(args.profile))})
+        with instance as client:
             for name in args.cases:
                 params = cases(meta)[name]
                 with Session(engine) as db:
