@@ -7047,7 +7047,7 @@
 
 ### T319. KAN-218 PR4: measured PostgreSQL catalog search and pagination
 
-**Статус:** `in_progress` · **Приоритет:** P0 · **Размер:** L.
+**Статус:** `review` · **Приоритет:** P0 · **Размер:** L.
 
 **Зависимости:** T318.
 
@@ -7064,7 +7064,8 @@
 
 **Доказательства:**
 
-Пока нет.
+- [docs/KAN-218-PR4.md](../docs/KAN-218-PR4.md) — Measured SQL optimization on b19dd7a; eight full responses equal baseline, bounded ORM/memory, no DTO/migration/frontend changes. Local 138pass plus one existing Windows resource dependency failure. Exact final Linux CI in PR. Local 500ms target remains unmet for broad/deep cases; owner review required.
+- [docs/evidence/kan-218-pr4-after.json](../docs/evidence/kan-218-pr4-after.json) — 100000 synthetic current programmes,200000 old facts,785heads/215branches,9 samples each. p95 first1196→661ms, university1174→259ms; peak1.77→1.49MB, SQL8→6. Synthetic data is not national coverage.
 
 ### T320. KAN-218 PR5: target-year national coverage and independent source audit
 

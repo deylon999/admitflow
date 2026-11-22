@@ -1710,3 +1710,16 @@ fact hydration. EXPLAIN shows repeated global window sorts spilling to disk.
 Full original report archived losslessly with SHA; compact metrics in
 docs/evidence/kan-218-pr4-baseline.json. Prototype query consolidation follows;
 no index/migration justified yet. T319 remains in_progress.
+
+## S239 / T319 — 2026-11-22 — measured SQL and regression handoff
+
+Code b19dd7a: global current-publication anti joins, one statement for facets/
+count/page, aggregated university search tokens; no DTO/migration/frontend/CI
+changes. Nine samples on100k current/200k old synthetic facts: p95first1196→661ms,
+university1174→259ms;8response hashes identical, Python peak1.77→1.49MB.
+Local500ms target remains unmet for broad/deep cases; not a staging gate pass.
+Native extended selection138passed/1failed115.01s: failed national coverage test
+imports existing Linux-only resource on Windows. Full Linux CI retained.
+Official-original rehearsal b19dd7a passed; repeated import unchanged and SGU
+IDs/exams/16seats preserved,2027 pilot1/785. T319 review pending owner/CI; T320
+not started. Final CI/exact SHA recorded in PR metadata; no automatic merge.

@@ -7,12 +7,12 @@
 
 ## Продолжение
 
-- Текущая задача: T319.
+- Текущая задача: нет.
 - Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-KAN-218 PR4 on fresh main1e7693e in isolated worktree: audit complete; next reproduce PostgreSQL baseline before optimizing SQL. No public DTO/frontend/workflow changes, no working DB access.
+Review KAN-218 PR4 on feat/kan-218-catalog-scale. Exact final SHA and Linux CI recorded in PR metadata. T319 review: local broad/deep p95 still exceeds500ms; no performance gate accepted. After owner review/merge, resolve T319 and continue T320 national coverage. No automatic merge.
 
 ## Последняя завершённая работа
 
@@ -36,6 +36,7 @@ KAN-218 PR4 on fresh main1e7693e in isolated worktree: audit complete; next repr
 
 ## Проверенное окружение
 
+- S239: PG17.11 scale benchmark clean b19dd7a,100k current/200k old facts, all8 response hashes equal baseline; firstp95 661ms, university259ms, Python1.49MB. Native selection138pass/1 Windows resource import failure; full Linux CI in PR. Official-original import/API replay passed, public pilot2027 remains1/785.
 - S233: full frontend architecture with 387 Chromium tests, 10 catalogue repeat checks, 3 lifecycle tests and 490 exact main comparisons per stage. Five inherited mobile overflows documented.
 - S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
