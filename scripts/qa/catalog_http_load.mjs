@@ -2,7 +2,7 @@
 import http from 'node:http';
 import { performance } from 'node:perf_hooks';
 
-const [origin, search, count, duration] = process.argv.slice(2);
+const [origin, search, count, duration, warm] = process.argv.slice(2);
 const url = new URL('/api/v1/catalog/programs', origin);
 if (url.protocol !== 'http:' || url.hostname !== '127.0.0.1') {
   throw new Error('Expected an owned loopback server');
@@ -37,11 +37,7 @@ function request() {
   });
 }
 
-try {
-  for (let i = 0; i < 10; i++) {
-    const response = await request();
-    if (response.status !== 200) throw new Error(`Warmup failed: ${JSON.stringify(response)}`);
-  }
+async function phase(seconds) {
   const started = performance.now();
   const deadline = started + seconds * 1000;
   const minSamples = Math.max(2, Math.ceil(50 / concurrency));
@@ -51,7 +47,18 @@ try {
     return samples;
   });
   const samples = (await Promise.all(workers)).flat();
-  console.log(JSON.stringify({ seconds: (performance.now() - started) / 1000, samples }));
+  return { seconds: (performance.now() - started) / 1000, samples };
+}
+
+try {
+  for (let i = 0; i < 10; i++) {
+    const response = await request();
+    if (response.status !== 200) throw new Error(`Warmup failed: ${JSON.stringify(response)}`);
+  }
+  const concurrentWarmup = warm === '1' ? (await phase(2)).samples : null;
+  const measured = await phase(seconds);
+  if (concurrentWarmup) measured.concurrentWarmup = concurrentWarmup;
+  console.log(JSON.stringify(measured));
 } finally {
   agent.destroy();
 }

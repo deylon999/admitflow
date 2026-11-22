@@ -64,7 +64,8 @@ def server(engine, workers, log_path, *, factory='scripts.qa.benchmark_catalog_s
                     if proc.poll() is not None:
                         raise RuntimeError('owned Uvicorn exited; see serving log')
                     try:
-                        if client.get('/api/v1/catalog/programs', params={'limit': 1}).status_code == 200:
+                        started = log_path.read_text(encoding='utf-8', errors='replace').count('Application startup complete.')
+                        if started >= workers and client.get('/api/v1/catalog/programs', params={'limit': 1}).status_code == 200:
                             break
                     except httpx.TransportError:
                         pass

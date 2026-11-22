@@ -166,7 +166,8 @@ def linux_server(engine, runtime, image, log_path, *, name):
             deadline = monotonic() + 60
             while True:
                 try:
-                    if client.get(PATH, params={'limit':1}).status_code == 200:
+                    logs = subprocess.check_output(['docker','logs',name], stderr=subprocess.STDOUT)
+                    if logs.count(b'Application startup complete.') >= 4 and client.get(PATH, params={'limit':1}).status_code == 200:
                         break
                 except httpx.TransportError:
                     pass
@@ -219,7 +220,7 @@ def initialize_fixture(path, *, small=False):
             sleep(1)
 
 
-def node_load_test(client, params, workers, engine, runtime, seconds, *, image=None, serving_container=None):
+def node_load_test(client, params, workers, engine, runtime, seconds, *, image=None, serving_container=None, warm=False):
     """Separate server latency from scheduling in the threaded Python driver."""
     before = pg_stats(engine)
     monitor = Resources(runtime.name)
@@ -234,7 +235,7 @@ def node_load_test(client, params, workers, engine, runtime, seconds, *, image=N
             command = ['docker', 'run', '--rm', '--pull', 'never', '--read-only',
                 '--network', f'container:{serving_container}', '--mount',
                 f'type=bind,source={script},target=/load.mjs,readonly', '--entrypoint', 'node', image, '/load.mjs']
-        result = subprocess.check_output(command + [origin, json.dumps(params), str(workers), str(seconds)],
+        result = subprocess.check_output(command + [origin, json.dumps(params), str(workers), str(seconds), str(int(warm))],
                                          text=True, timeout=seconds + 45)
         payload = json.loads(result)
         elapsed, rows = payload['seconds'], payload['samples']
@@ -243,12 +244,17 @@ def node_load_test(client, params, workers, engine, runtime, seconds, *, image=N
         sampler.join(6)
     after = pg_stats(engine)
     values = [row['ms'] for row in rows]
-    return dict(concurrency=workers, requests=len(rows), seconds=elapsed, rps=len(rows)/elapsed,
+    report = dict(concurrency=workers, requests=len(rows), seconds=elapsed, rps=len(rows)/elapsed,
         p50=statistics.median(values), p95=percentile(values, .95),
         failures=sum(row['status'] != 200 for row in rows),
         totals=sorted({row['total'] for row in rows if row.get('total') is not None}),
         transportFailures=sum('transportError' in row for row in rows), samples=rows,
         postgresStatsDelta={key: after[key]-before[key] for key in before},postgresContainerSamples=monitor.samples)
+    if warm_rows := payload.get('concurrentWarmup'):
+        report['concurrentWarmup'] = dict(requests=len(warm_rows), failures=sum(r['status'] != 200 for r in warm_rows),
+            totals=sorted({r['total'] for r in warm_rows if r.get('total') is not None}),
+            transportFailures=sum('transportError' in r for r in warm_rows))
+    return report
 
 
 def main():
@@ -300,7 +306,7 @@ def main():
             instance = server(engine, 4, worker_log, factory='scripts.qa.profile_catalog_http:application',
                               environment={'ADMITFLOW_BENCH_PROFILE': str(int(args.profile))})
         loader = load_test if args.client == 'threaded' else partial(
-            node_load_test, image=args.docker_client_image, serving_container=serving_container)
+            node_load_test, image=args.docker_client_image, serving_container=serving_container, warm=args.warm_concurrency)
         if args.docker_client_image:
             report['clientImage'] = subprocess.check_output(
                 ['docker', 'image', 'inspect', '--format', '{{.Id}}', args.docker_client_image], text=True).strip()
@@ -323,13 +329,15 @@ def main():
                     response.raise_for_status()
                     assert digest(response.json()) == expected_hash, name
                     warmups += 1
-                warm = loader(client, http_params, 50, engine, runtime, 2) if args.warm_concurrency else None
+                warm = (loader(client, http_params, 50, engine, runtime, 2)
+                        if args.warm_concurrency and args.client == 'threaded' else None)
                 result = loader(client, http_params, 50, engine, runtime, 10)
                 result['responseSha256'] = expected_hash
                 result['warmupTransportErrors'] = warmup_errors
                 if warm is not None:
                     result['concurrentWarmup'] = {key: warm[key] for key in ('requests','failures','totals','transportFailures')}
-                    assert warm['totals'] == [expected.total]
+                if 'concurrentWarmup' in result:
+                    assert result['concurrentWarmup']['totals'] == [expected.total]
                 if args.profile:
                     profiles = [row['profile'] for row in result['samples'] if 'profile' in row]
                     result['profile'] = {k: dict(p50=percentile([p[k] for p in profiles], .50),
