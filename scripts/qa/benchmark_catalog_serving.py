@@ -42,15 +42,16 @@ def application():
 
 
 @contextmanager
-def server(engine, workers, log_path):
+def server(engine, workers, log_path, *, factory='scripts.qa.benchmark_catalog_serving:application', environment=None):
     with socket.socket() as sock:
         sock.bind(('127.0.0.1', 0))
         port = sock.getsockname()[1]
     env = dict(os.environ, ADMITFLOW_BENCH_DATABASE=engine.url.render_as_string(hide_password=False))
+    env.update(environment or {})
     env['PYTHONPATH'] = os.pathsep.join([str(ROOT), str(ROOT / 'backend')])
     with log_path.open('w', encoding='utf-8') as log:
         proc = subprocess.Popen([sys.executable, '-m', 'uvicorn',
-            'scripts.qa.benchmark_catalog_serving:application', '--factory',
+            factory, '--factory',
             '--host', '127.0.0.1', '--port', str(port), '--workers', str(workers), '--no-access-log'],
             cwd=ROOT, env=env, stdout=log, stderr=subprocess.STDOUT,
             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0,

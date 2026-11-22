@@ -130,8 +130,11 @@ def load_test(client,params,workers,engine,runtime,seconds):
                 rows.append(dict(ms=(time.perf_counter()-start)*1000,status=None,total=None,
                     transportError=type(error).__name__))
                 continue
-            rows.append(dict(ms=(time.perf_counter()-start)*1000,status=response.status_code,
-                total=response.json().get('total') if response.status_code==200 else None))
+            sample = dict(ms=(time.perf_counter()-start)*1000,status=response.status_code,
+                total=response.json().get('total') if response.status_code==200 else None)
+            if profile := response.headers.get('x-admitflow-bench-profile'):
+                sample['profile'] = json.loads(profile)
+            rows.append(sample)
         return rows
     start=time.perf_counter()
     try:
