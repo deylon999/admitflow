@@ -8,11 +8,12 @@ from fastapi.testclient import TestClient
 from sqlalchemy import event, insert, select
 from sqlalchemy.orm import Session
 
-from app.admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
+from app.admissions import Campaign, CampaignProgram, CompetitionGroup, CompetitionGroupProgram, University
 from app.catalog_identity import campaign_id
 from app.catalog_import import import_reviewed
 from app.config import Settings
 from app.main import create_app
+from app.product_catalog import program_page
 from app.program_catalog_import import import_document
 from app.program_catalog_models import ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision, ProgramCatalogFact as Fact, ProgramCatalogPublication as Publication
 from app.program_catalog_review import EXTRACTORS
@@ -197,3 +198,110 @@ def test_conflicting_current_identity_is_quarantined(client, postgres_engine, st
     assert page['total'] == 2 and {p['id'] for p in page['items']} == {'sgu-2026-4588','sgu-2026-4576'}
     for f in facts:
         assert client.get(BASE+'/programs/'+f['public_id']).status_code == 404
+
+
+def test_facets_survive_empty_filtered_and_deep_pages(client, postgres_engine, store):
+    import_reviewed(postgres_engine)
+    publish(postgres_engine,store)
+    for params,total in [({'q':'missing'},0),({'subject':'math'},0),
+                         ({'year':2025},0),({'offset':100000},4)]:
+        response=client.get(BASE+'/programs',params=params)
+        assert response.status_code==200
+        page=response.json()
+        assert page['items']==[] and page['total']==total and page['nextOffset'] is None
+        assert page['years']==[2027,2026] and page['subjects']==[]
+    page=client.get(BASE+'/programs',params={'universityId':'miccedu-1766','year':2026}).json()
+    assert page['years']==[2027] and page['total']==0
+
+
+def test_casefold_literal_search_and_university_token_aggregation(client,postgres_engine,store):
+    body,review=source()
+    title='Straße ΟΣ Ёж 100%_ /'
+    body=body.replace(b'Example Fashion',title.encode())
+    review['original_sha256']=hashlib.sha256(body).hexdigest()
+    review['programs'][0]['title']=title
+    assert import_document(postgres_engine,review,body,store)['outcome']=='published'
+    for q in ['STRASSE','οσ','ЁЖ','100%_','%_','/']:
+        response=client.get(BASE+'/programs',params={'q':q})
+        assert response.status_code==200
+        assert response.json()['total']==1
+    # Tokens may match different confirmed programmes of the same university;
+    # counts and years describe its whole published scope, not just the hits.
+    result=client.get(BASE+'/universities',params={'q':'STRASSE Example Art'}).json()
+    assert result['total']==1
+    assert (result['items'][0]['knownProgramCount'],result['items'][0]['years'])==(2,[2027])
+
+
+def test_fact_hydration_is_bounded_by_page_not_catalogue(postgres_engine,store,monkeypatch):
+    body,review=source()
+    records=[deepcopy(review['programs'][0])|dict(source_key=f'/synthetic/{i:04}',title=f'Synthetic scale {i:04}')
+             for i in range(257)]
+    review['programs']=records
+    review['selection']=[dict(source_key=r['source_key']) for r in records]
+    monkeypatch.setitem(EXTRACTORS,review['extractor_version'],lambda doc,scope:deepcopy(records))
+    assert import_document(postgres_engine,review,body,store)['outcome']=='published'
+    hydrated=[]
+    def loaded(session,obj):
+        if isinstance(obj,Fact):
+            hydrated.append(obj.program_id)
+    event.listen(Session,'loaded_as_persistent',loaded)
+    try:
+        for offset,expected in [(0,7),(252,5),(9999,0)]:
+            hydrated.clear()
+            with Session(postgres_engine) as db:
+                page=program_page(db,offset=offset,limit=7)
+                assert (page.total,len(page.items),page.years)==(257,expected,[2027])
+                assert len(hydrated)<=expected
+                assert page.next_offset==(7 if offset==0 else None)
+    finally:
+        event.remove(Session,'loaded_as_persistent',loaded)
+
+
+@pytest.mark.parametrize('collision',['public-only','scope-only'])
+def test_collisions_remain_global_when_request_filters_hide_the_rival(client,postgres_engine,store,collision):
+    import_reviewed(postgres_engine)
+    publish(postgres_engine,store)
+    if collision=='public-only':
+        publish(postgres_engine,store,'sgu')
+    with Session(postgres_engine) as db:
+        target=db.scalars(select(Fact).where(Fact.title=='Example Fashion')).one()
+        rival=db.scalars(select(Fact).where(Fact.campaign_id!=target.campaign_id)).first() if collision=='public-only' else target
+        revision=db.get(Revision,rival.revision_id)
+        values={c.name:getattr(revision,c.name) for c in Revision.__table__.columns}
+        fact={c.name:getattr(rival,c.name) for c in Fact.__table__.columns}
+        target_id=target.public_id
+        target_pid=target.program_id
+    with postgres_engine.begin() as db:
+        db.execute(insert(Document).values(id='filtered-rival',campaign_id=values['campaign_id'],source_namespace='synthetic-filtered-rival'))
+        db.execute(insert(Revision).values(**(values|dict(id='filtered-rival-revision',document_id='filtered-rival',program_count=1))))
+        db.execute(insert(Fact).values(**(fact|dict(revision_id='filtered-rival-revision',
+            public_id=target_id if collision=='public-only' else 'different-public-id'))))
+        db.execute(insert(Publication).values(document_id='filtered-rival',revision_id='filtered-rival-revision'))
+    result=client.get(BASE+'/programs',params={'universityId':'miccedu-1766','year':2027,'q':'Fashion'}).json()
+    assert result['items']==[] and result['total']==0
+    assert client.get(BASE+'/programs/'+target_id).status_code==404
+    rows=client.get(BASE+'/programs?limit=50').json()['items']
+    assert all(r['programId']!=target_pid for r in rows)
+    assert any(r['title']=='Example Art' for r in rows)
+
+
+def test_explicit_programme_link_between_campaigns_is_not_a_duplicate(client,postgres_engine,store):
+    publish(postgres_engine,store)
+    with Session(postgres_engine) as db:
+        fact=db.scalars(select(Fact).where(Fact.title=='Example Fashion')).one()
+        revision=db.get(Revision,fact.revision_id)
+        values={c.name:getattr(revision,c.name) for c in Revision.__table__.columns}
+        item={c.name:getattr(fact,c.name) for c in Fact.__table__.columns}
+        pid=fact.program_id
+    cid=campaign_id('miccedu-1766',2026,'bachelor')
+    with postgres_engine.begin() as db:
+        db.execute(insert(Campaign).values(id=cid,university_id='miccedu-1766',year=2026,level='bachelor'))
+        db.execute(insert(CampaignProgram).values(program_id=pid,campaign_id=cid,university_id='miccedu-1766',level='bachelor'))
+        db.execute(insert(Document).values(id='explicit-continuity',campaign_id=cid,source_namespace='synthetic-continuity'))
+        db.execute(insert(Revision).values(**(values|dict(id='continuity-revision',document_id='explicit-continuity',campaign_id=cid,program_count=1))))
+        db.execute(insert(Fact).values(**(item|dict(revision_id='continuity-revision',campaign_id=cid,public_id='continuity-public-id'))))
+        db.execute(insert(Publication).values(document_id='explicit-continuity',revision_id='continuity-revision'))
+    page=client.get(BASE+'/programs',params={'q':'Fashion'}).json()
+    assert page['total']==2 and page['years']==[2027,2026]
+    assert {p['programId'] for p in page['items']}=={pid}
+    assert {p['year'] for p in page['items']}=={2027,2026}
