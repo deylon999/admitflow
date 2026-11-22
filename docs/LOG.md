@@ -1795,3 +1795,11 @@ filters, partial/empty pages, existing campaign immutability and snapshots.
 The campaign identity guard already exists in0014 and is reused unchanged.
 Overloaded prepared-current trial stopped with saved500/503 logs; remaining
 alternatives use serial-only comparison to avoid repeating resource pressure.
+
+S239 profiling continuation: cold read statistics estimated209 year rows vs
+100000 and one code hit vs64500. New0015 ANALYZE after backfill/large statements,
+document deletion index, literal substring predicate (independent source LIKE
+oracle retained). PG75passed84.34s verifies metadata/migrations/API/pagination/
+literal Unicode search. f467103c serving baseline completed45047 HTTP requests,
+zero failures, zero read temp writes; worker4 code p95 at50concurrency708ms.
+Final statistics/substring run adds midpoint pagination and1/4/8-worker comparison.

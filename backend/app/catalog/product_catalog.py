@@ -179,7 +179,7 @@ def program_page(db, *, q='', university_id='', year=None, subject='', offset=0,
         base=base.where(literal(False))
     tokens=q.casefold().split()
     for token in tokens:
-        base=base.where(index.c.search_text.contains(token,autoescape=True))
+        base=base.where(func.strpos(index.c.search_text,token)>0)
     total=0 if subject else (db.scalar(select(func.count()).select_from(base.subquery())) if tokens else
         (counts.get(year,0) if year is not None else sum(counts.values())))
     # Exact counts and page keys share the HTTP REPEATABLE READ snapshot.
@@ -196,7 +196,7 @@ def program_page(db, *, q='', university_id='', year=None, subject='', offset=0,
         def filtered(query,columns):
             if university_id:query=query.where(columns.university_id==university_id)
             if year is not None:query=query.where(columns.year==year)
-            for token in tokens:query=query.where(columns.search_text.contains(token,autoescape=True))
+            for token in tokens:query=query.where(func.strpos(columns.search_text,token)>0)
             return query
         def ordered(columns):
             return (columns.sort_text.desc(),columns.id.desc()) if descending else (columns.sort_text,columns.id)

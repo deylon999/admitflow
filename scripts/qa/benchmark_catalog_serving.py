@@ -85,7 +85,7 @@ def server(engine, workers, log_path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--workers', nargs='+', type=int, choices=[1, 4], default=[1, 4])
+    parser.add_argument('--workers', nargs='+', type=int, choices=[1, 4, 8], default=[1, 4])
     args = parser.parse_args()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = dict(sourceCommit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
@@ -129,7 +129,10 @@ def main():
         with engine.connect() as db:
             report['postgresVersion'] = db.scalar(text('SHOW server_version'))
             report['settings'] = {key: db.scalar(text('SELECT current_setting(:key)'), {'key': key}) for key in
-                ['work_mem', 'shared_buffers', 'max_parallel_workers_per_gather', 'max_connections', 'track_io_timing']}
+                ['work_mem', 'shared_buffers', 'max_parallel_workers_per_gather', 'max_connections', 'track_io_timing',
+                 'max_parallel_workers','max_worker_processes','effective_cache_size','random_page_cost',
+                 'effective_io_concurrency','checkpoint_timeout','max_wal_size']}
+            report['databaseLocale']=dict(db.execute(text('SELECT datcollate,datctype,pg_encoding_to_char(encoding) AS encoding FROM pg_database WHERE datname=current_database()')).mappings().one())
             report['postgresHardware'] = runtime.command('sh', '-c', 'nproc; head -20 /proc/cpuinfo; cat /sys/fs/cgroup/memory.max',
                 capture_output=True, text=True, check=True).stdout
             report['relationBytes'] = dict(db.execute(text("SELECT relname, pg_total_relation_size(oid) FROM pg_class WHERE relnamespace=current_schema()::regnamespace AND relkind='r' AND relname LIKE 'program_catalog%'")).all())
@@ -145,10 +148,23 @@ def main():
                     {'revision': revision, 'document': document})
             writes.append((time.perf_counter() - started) * 1000)
         report['incrementalPublicationMs'] = dict(samples=writes, p95=percentile(writes, .95))
+        report['literalSearchSQL']={}
+        for name,predicate in [('like',"search_text LIKE '%09.03.04%'"),('strpos',"strpos(search_text,'09.03.04')>0")]:
+            sql='SELECT count(*) FROM program_catalog_read_facts WHERE eligible AND year=2027 AND '+predicate
+            with engine.connect() as db:
+                for _ in range(10):assert db.scalar(text(sql))==64500
+                samples=[]
+                for _ in range(50):
+                    started=time.perf_counter()
+                    assert db.scalar(text(sql))==64500
+                    samples.append((time.perf_counter()-started)*1000)
+                plan=db.exec_driver_sql('EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) '+sql).scalar()
+                report['literalSearchSQL'][name]=dict(samples=samples,p95=percentile(samples,.95),plan=plan)
         # Query planner statistics and visibility maps are left as obtained
         # after writes; do not VACUUM away the cost of recent publication.
         cases = dict(first={}, university={'university_id': report['fixture']['sampleUniversity'], 'year': 2027},
-            code={'q': '09.03.04', 'year': 2027}, deep={'year': 2027, 'offset': 99988})
+            code={'q': '09.03.04', 'year': 2027}, deep={'year': 2027, 'offset': 99988},
+            middle={'year':2027,'offset':50000})
         oracle = {}
         for name, params in cases.items():
             with Session(engine) as db:

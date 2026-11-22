@@ -29,6 +29,7 @@ def _tables():
         sa.ForeignKeyConstraint(['document_id','revision_id'],['program_catalog_revisions.document_id','program_catalog_revisions.id'],name='fk_program_read_document',ondelete='RESTRICT'))
     for name,columns,include in [
         ('public',['public_id','revision_id','program_id'],None),('scope',['program_id','campaign_id'],None),
+        ('document',['document_id'],None),
         ('order',['sort_text','public_id'],['program_id','revision_id']),
         ('year_order',['year','sort_text','public_id'],['program_id','revision_id']),
         ('university_order',['university_id','year','sort_text','public_id'],['program_id','revision_id']),
@@ -89,8 +90,11 @@ def upgrade():
     # No pointer may commit between backfill and installation of maintenance.
     op.execute('LOCK TABLE program_catalog_publications IN SHARE ROW EXCLUSIVE MODE')
     op.execute(INSERT)
+    op.execute('ANALYZE program_catalog_read_facts')
     op.execute(refresh_eligibility('TRUE'))
     op.execute('INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*) FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year')
+    op.execute('ANALYZE program_catalog_read_facts')
+    op.execute('ANALYZE program_catalog_read_totals')
     op.execute("""CREATE FUNCTION program_read_serialize() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN
             UPDATE program_catalog_read_scope SET epoch=epoch+1 WHERE id=1;
@@ -100,7 +104,7 @@ def upgrade():
     op.execute('CREATE TRIGGER program_read_serialize BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_publications FOR EACH STATEMENT EXECUTE FUNCTION program_read_serialize()')
     op.execute("""CREATE FUNCTION program_read_publish() RETURNS trigger LANGUAGE plpgsql AS $$
         DECLARE ids TEXT[]; programs TEXT[]; old_revisions TEXT[]; new_revisions TEXT[];
-            old_documents TEXT[]; new_documents TEXT[]; before_totals JSONB; changed BIGINT;
+            old_documents TEXT[]; new_documents TEXT[]; before_totals JSONB; changed BIGINT; inserted_rows BIGINT:=0;
         BEGIN
             IF TG_OP='INSERT' THEN
                 SELECT array_agg(revision_id),array_agg(document_id) INTO new_revisions,new_documents FROM pointer_new;
@@ -128,7 +132,9 @@ def upgrade():
             END IF;
             IF new_documents IS NOT NULL THEN
                 """+INSERT+""" AND s.document_id=ANY(new_documents);
+                GET DIAGNOSTICS inserted_rows=ROW_COUNT;
             END IF;
+            IF inserted_rows>=10000 THEN ANALYZE program_catalog_read_facts; END IF;
             """+refresh_eligibility('public_id=ANY(ids) OR program_id=ANY(programs)')+""";
             WITH deltas AS (
                 SELECT university_id,year,sum(n)::BIGINT delta FROM (
@@ -143,6 +149,10 @@ def upgrade():
                 ON CONFLICT(university_id,year) DO UPDATE SET program_count=EXCLUDED.program_count;
             GET DIAGNOSTICS changed=ROW_COUNT;
             IF changed>0 THEN DELETE FROM program_catalog_read_totals WHERE program_count=0; END IF;
+            IF inserted_rows>=10000 THEN
+                ANALYZE program_catalog_read_facts;
+                ANALYZE program_catalog_read_totals;
+            END IF;
             RETURN NULL;
         END $$""")
     op.execute('CREATE TRIGGER program_read_insert AFTER INSERT ON program_catalog_publications REFERENCING NEW TABLE AS pointer_new FOR EACH STATEMENT EXECUTE FUNCTION program_read_publish()')
@@ -187,6 +197,8 @@ def upgrade():
             DELETE FROM program_catalog_read_totals;
             INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*)
                 FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year;
+            ANALYZE program_catalog_read_facts;
+            ANALYZE program_catalog_read_totals;
             RETURN NULL;
         END $$""")
     op.execute('CREATE TRIGGER program_read_policy_refresh AFTER UPDATE ON program_catalog_read_scope FOR EACH ROW WHEN (OLD.scope_hash IS DISTINCT FROM NEW.scope_hash) EXECUTE FUNCTION program_read_policy_refresh()')

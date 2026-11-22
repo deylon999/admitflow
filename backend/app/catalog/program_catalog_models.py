@@ -138,6 +138,7 @@ class ProgramCatalogReadFact(Base):
         ForeignKeyConstraint(['document_id','revision_id'],['program_catalog_revisions.document_id','program_catalog_revisions.id'],name='fk_program_read_document',ondelete='RESTRICT'),
         Index('ix_program_read_public','public_id','revision_id','program_id'),
         Index('ix_program_read_scope','program_id','campaign_id'),
+        Index('ix_program_read_document','document_id'),
         Index('uq_program_read_public','public_id',unique=True,postgresql_where=text('eligible'),sqlite_where=text('eligible')),
         Index('uq_program_read_scope','program_id','campaign_id',unique=True,postgresql_where=text('eligible'),sqlite_where=text('eligible')),
         Index('ix_program_read_order','sort_text','public_id',postgresql_include=['program_id','revision_id'],postgresql_where=text('eligible'),sqlite_where=text('eligible')),
