@@ -74,7 +74,7 @@ class FetchPolicy:
     content_types: frozenset[str] = frozenset({'text/html', 'application/json', 'text/csv', 'text/plain'})
 
     def __post_init__(self):
-        supported = frozenset({'text/html','application/json','text/csv','text/plain'})
+        supported = frozenset({'text/html','application/json','text/csv','text/plain','application/pdf'})
         if (not valid_domains(self.domains) or type(self.max_bytes) is not int or not 1<=self.max_bytes<=MAX_SOURCE_BYTES
                 or type(self.timeout) not in (int,float) or not 0<self.timeout<=30 or not math.isfinite(self.timeout)
                 or type(self.max_redirects) is not int or not 0<=self.max_redirects<=5

@@ -156,8 +156,8 @@ def _capture(source, store, fetch, pause):
     delay = robots_delay(robots.body, robots.charset, source.url)
     store.put(robots.body, robots.payload_hash)
     pause(delay)
-    result = fetch(source.url, maximum=DEFAULT_SOURCE_BYTES, content_types={'text/html'})
-    if result.url != source.url or result.content_type != 'text/html':
+    result = fetch(source.url, maximum=DEFAULT_SOURCE_BYTES, content_types={source.content_type})
+    if result.url != source.url or result.content_type != source.content_type:
         raise ValueError('unexpected_source_response')
     store.put(result.body, result.payload_hash)
     return dict(sha256=result.payload_hash, bytes=len(result.body), contentType=result.content_type,

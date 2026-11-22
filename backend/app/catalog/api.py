@@ -35,5 +35,7 @@ def install_legacy_catalog(app, database, source_registry):
 
     @app.get('/api/v1/coverage/national')
     def get_national_coverage(db: Session = Depends(database)):
-        # Aggregates only: no candidate rows, session data or raw source bodies.
+        # Only programme provenance and aggregates; no applicant or session data.
+        if db.get_bind().dialect.name == 'postgresql':
+            db.connection(execution_options={'isolation_level': 'REPEATABLE READ'})
         return with_checksum(national_coverage(db,registry_rules=source_registry))

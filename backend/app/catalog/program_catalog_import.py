@@ -15,6 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
 from app.admissions import Campaign, CampaignProgram, CompetitionGroup, CompetitionGroupProgram, Program, University
+from app.catalog.accreditation_registry import load_registry
 from app.catalog.catalog_identity import NAMESPACE_V1, campaign_id, identity_text, program_id
 from app.catalog.catalog_import import reviewed_profiles
 from app.catalog.catalog_lock import lock_catalog
@@ -88,13 +89,20 @@ def _validate(review, body):
 
 def _scope(db, review):
     catalog = load_catalog()
-    org = next((u for u in catalog.institutions if u.id == review['university_id']), None)
-    if not org or org.is_branch or (org.name, org.official_url, org.region) != (review['university_name'], review['university_url'], review['region']):
+    org = catalog.by_id.get(review['university_id'])
+    if not org or org.is_branch:
+        raise ValueError('catalog_university_scope_mismatch')
+    official_url = org.official_url
+    if not official_url:
+        accredited = load_registry().by_catalog_id.get(org.registry_id)
+        official_url = accredited.official_url if accredited and not accredited.abroad else None
+    if (not official_url or (org.name, official_url, org.region)
+            != (review['university_name'], review['university_url'], review['region'])):
         raise ValueError('catalog_university_scope_mismatch')
     university = db.get(University, org.id)
     known_profiles = (*reviewed_profiles(), *(p for p in PROFILES.values() if p.proof is not None))
     legacy = [p for p in known_profiles if dict(p.catalog)['university_id'] == org.id]
-    allowed_pairs = {(org.name, org.official_url)} | {(dict(p.catalog)['university_name'], dict(p.catalog)['university_url']) for p in legacy}
+    allowed_pairs = {(org.name, official_url)} | {(dict(p.catalog)['university_name'], dict(p.catalog)['university_url']) for p in legacy}
     if university and (university.name, university.official_url) not in allowed_pairs:
         raise ValueError('catalog_university_identity_conflict')
     if university is None:
@@ -103,7 +111,7 @@ def _scope(db, review):
         metadata = dict(legacy[0].catalog) if legacy else None
         university = _ensure(db, University, org.id,
             dict(name=metadata['university_name'] if metadata else org.name,
-                 official_url=metadata['university_url'] if metadata else org.official_url),
+                 official_url=metadata['university_url'] if metadata else official_url),
             region=org.region, provenance_url=legacy[0].url if legacy else org.provenance_url,
             verified_at=legacy[0].proof.verified_at if legacy else catalog.captured_at)
     campaign = db.scalar(select(Campaign).where(Campaign.university_id == org.id, Campaign.year == review['year'], Campaign.level == review['level']))
@@ -261,7 +269,8 @@ def import_sources(engine, raw_directory, raw_store, *, keys=None):
 
 
 def read_original(raw_directory, review):
-    path = Path(raw_directory) / (review['original_sha256'] + '.html')
+    extension = '.pdf' if review['content_type'] == 'application/pdf' else '.html'
+    path = Path(raw_directory) / (review['original_sha256'] + extension)
     try:
         if path.is_file() and not path.is_symlink():
             with path.open('rb') as file:

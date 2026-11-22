@@ -16,6 +16,7 @@ psycopg==3.3.6
 psycopg-binary==3.3.6
 pydantic==2.14.2
 pydantic_core==2.50.2
+pypdf==7.1.1
 python-dotenv==1.2.4
 PyYAML==6.0.3
 soupsieve==4.0.1

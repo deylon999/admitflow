@@ -1,6 +1,7 @@
 """Synthetic documents exercise extraction; real-original evidence lives in reviews."""
 from copy import deepcopy
 import hashlib
+from types import SimpleNamespace
 
 import pytest
 from bs4 import BeautifulSoup
@@ -86,6 +87,47 @@ def test_new_structures_are_rejected_even_after_a_new_checksum_is_declared(befor
 
 def test_review_package_keeps_actual_target_and_archive_years_separate():
     reviews = load_reviews()
-    assert [(r['university_id'], r['year']) for r in reviews] == [('miccedu-1766', 2027), ('sgu-saratov', 2026)]
-    assert all(r['completeness'] == 'partial' and r['publication_date'] is None for r in reviews)
+    assert {r['key']: (r['university_id'], r['year']) for r in reviews} == {
+        'hse-design-2027': ('miccedu-1766', 2027), 'sgu-seats-2026': ('sgu-saratov', 2026),
+        'hse-urban-planning-2027': ('miccedu-1766', 2027), 'nntu-metallurgy-2027': ('miccedu-169', 2027),
+    }
+    assert all(r['completeness'] == 'partial' for r in reviews)
     assert all(len(r['original_sha256']) == 64 for r in reviews)
+
+
+@pytest.mark.parametrize(('change', 'error'), [
+    ('archive', 'catalog_campaign_mismatch'),
+    ('branch', 'catalog_university_scope_mismatch'),
+    ('form', 'catalog_campaign_mismatch'),
+    ('profile', 'catalog_program_identity_ambiguous'),
+    ('placement', 'catalog_source_structure_changed'),
+    (None, None),
+])
+def test_pdf_requires_the_approved_admission_scope(monkeypatch, change, error):
+    import pypdf
+
+    byte_fixture = b'synthetic PDF input, page content supplied by test'
+    review = next(r for r in load_reviews() if r['key'] == 'nntu-metallurgy-2027')
+    review['original_sha256'] = hashlib.sha256(byte_fixture).hexdigest()
+    cover = ('Нижегородский государственный технический университет им. Р.Е. Алексеева\n'
+             'Кафедра «Металлургические технологии и оборудование»')
+    admission = ('В 2027 году проводится приём для ОЧНОГО обучения по следующим образовательным программам:\n'
+                 'Бакалавриат 22.03.02 «Металлургия»\nПрофиль «Производство и сбыт металлопродукции»\n'
+                 'Магистратура 22.04.02 «Металлургия»')
+    if change == 'archive':
+        admission = admission.replace('2027', '2026')
+    if change == 'branch':
+        cover = 'Иной филиал того же университета'
+    if change == 'form':
+        admission = admission.replace('ОЧНОГО', 'ЗАОЧНОГО')
+    if change == 'profile':
+        admission = admission.replace('Производство и сбыт металлопродукции', 'Иной профиль')
+    if change == 'placement':
+        admission = admission.replace('Бакалавриат', 'Перечень программ: Бакалавриат')
+    monkeypatch.setattr(pypdf, 'PdfReader', lambda *a, **kw: SimpleNamespace(is_encrypted=False,
+        pages=[SimpleNamespace(extract_text=lambda: cover), SimpleNamespace(extract_text=lambda: admission)]))
+    if error:
+        with pytest.raises(ValueError, match=error):
+            extract_reviewed(byte_fixture, review)
+    else:
+        assert extract_reviewed(byte_fixture, review) == review['programs']

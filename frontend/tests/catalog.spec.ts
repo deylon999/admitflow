@@ -42,8 +42,18 @@ test('published admissions programme can be found and opened without a contest',
   if (rehearsal) {
     await page.getByRole('link', { name: 'Университет ↗', exact: true }).click();
     await expect(page).toHaveURL(/\/universities\/miccedu-1766$/);
-    await expect(page.locator('.af-program-card')).toHaveCount(2);
+    await expect(page.locator('.af-program-card')).toHaveCount(3);
     await expect(page.locator('.af-program-card').getByRole('link', { name: 'Мода', exact: true })).toBeVisible();
+    await expect(page.locator('.af-program-card').getByRole('link', { name: 'Девелопмент и городское планирование', exact: true })).toBeVisible();
+    await page.goto('/universities?q=22.03.02');
+    await expect(page.locator('.af-program-card')).toHaveCount(1);
+    await page.locator('.af-program-card h3 a').click();
+    await expect(page).toHaveURL(/\/universities\/miccedu-169$/);
+    await page.getByRole('link', { name: 'Производство и сбыт металлопродукции', exact: true }).click();
+    await expect(page.getByRole('heading', { name: 'Производство и сбыт металлопродукции', exact: true })).toBeVisible();
+    await expect(page.locator('.af-info-row').filter({ hasText: /^Форма обучения/ })).toContainText('Очная');
+    await expect(page.locator('.af-info-row').filter({ hasText: /^Мест/ })).toContainText('Нет данных');
+    await expect(page.getByRole('link', { name: 'Источник ↗' })).toHaveAttribute('href', /^https:\/\/www\.nntu\.ru\/.*\.pdf\?/);
   }
 });
 

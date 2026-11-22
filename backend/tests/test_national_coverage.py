@@ -5,7 +5,7 @@ import pytest
 
 from app.accreditation_registry import load_registry
 from app.catalog_import import import_reviewed
-from app.national_coverage import TARGET, main, national_coverage, with_checksum
+from app.national_coverage import TARGET, layer, main, national_coverage, with_checksum
 
 
 @pytest.fixture
@@ -50,12 +50,28 @@ def test_branches_are_not_counted_as_head_organisations(imported, application):
     assert report['gaps']['branchProgramsNotCounted'] == branch_programs
 
 
+def test_target_and_archive_have_separate_denominators_and_exact_gate(imported):
+    report = imported.get('/api/v1/coverage/national').json()['programCoverage']
+    target = report['targetCampaign']
+    assert (target['year'], target['coveredHeads'], target['totalHeads'], target['requiredHeads']) == (2027, 0, 785, 471)
+    assert target['targetMet'] is False and target['headsNeeded'] == 471
+    assert target['headsWithObservedPendingPublication'] == 1
+    assert target['headsWithoutVerifiedProgrammes'] == 785
+    archive, = report['historicalCampaigns']
+    assert (archive['year'], archive['programs'], archive['competitionGroups']) == (2026, 2, 2)
+    assert archive['coveredHeads'] == archive['headsWithPartialProgrammes'] == report['historicalTotal']['coveredHeads'] == 1
+    assert sum(region['totalHeads'] for region in target['regions']) == 785
+    assert layer('test', '', 59999, 100000, '')['share'] == TARGET
+    assert layer('test', '', 59999, 100000, '')['targetMet'] is False
+
+
 def test_report_is_reproducible_and_has_no_private_fields(imported, application, tmp_path):
     from sqlalchemy.orm import Session
     with Session(application.state.engine) as db:
         first = with_checksum(national_coverage(db))
         second = with_checksum(national_coverage(db))
     assert first['inputs']['checksum'] == second['inputs']['checksum']
+    assert with_checksum(first)['inputs']['checksum'] == second['inputs']['checksum']
     assert first['inputs']['registrySha256'] == load_registry().sha256
     text = json.dumps(first, ensure_ascii=False, default=str)
     for private in ('candidateKey', 'publicCode', 'ownerHash', 'session'):
@@ -70,6 +86,11 @@ def test_cli_writes_the_same_report(imported, application, tmp_path, monkeypatch
     api = imported.get('/api/v1/coverage/national').json()
     assert written['inputs']['checksum'] == api['inputs']['checksum']
     assert written['layers'] == api['layers']
+    assert written['programCoverage'] == api['programCoverage']
+    assert main(['--target-year', '2026', '--output', str(output)]) == 0
+    historical = json.loads(output.read_text(encoding='utf-8'))['programCoverage']
+    assert historical['targetCampaign']['coveredHeads'] == 1
+    assert historical['historicalCampaigns'] == []
 
 
 def test_problem_sources_are_listed(imported, application):

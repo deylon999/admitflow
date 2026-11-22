@@ -9851,12 +9851,13 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "blocked",
       "dependsOn": [
         "T319"
       ],
       "deliverables": [
-        "docs/KAN-218-ARCHITECTURE.md"
+        "docs/RUNBOOK.md",
+        "backend/app/catalog/program_coverage.py"
       ],
       "steps": [
         "2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit."
@@ -9864,8 +9865,17 @@
       "acceptance": [
         "2027 coverage >=60% of dated official head denominator (471/785 until reviewed update); regions/levels/branches, partial university sets, historical years, errors/conflicts and source versions separate; independent original-source audit."
       ],
-      "evidence": [],
-      "blockedReason": null
+      "evidence": [
+        {
+          "path": "scripts/qa/verify_program_catalog.py",
+          "note": "On 2026-11-22, replayed four reviewed originals on isolated PostgreSQL 17.11 at Alembic 0016. Campaign 2027 reached 2/785 heads with 4 programmes and zero confirmed competition groups. Campaign 2026 had 1/785 heads with 4 programme entries and 2 groups. Re-import preserved all publication IDs. The real Chromium journey passed and 82 focused Linux tests passed."
+        },
+        {
+          "path": "backend/app/catalog/program_catalog_sources.py",
+          "note": "Dated original hashes and dispositions for the SFU, RUDN and ITMO pages. SFU states that admission information is forthcoming. The other sampled pages give insufficient evidence for programme publication in 2027."
+        }
+      ],
+      "blockedReason": "Verified coverage is 2/785 for 2027, short of the required 471. Continue in batches as official 2027 programme documents are confirmed and resume acceptance when 469 additional head organisations have at least one verified public programme."
     },
     {
       "id": "T321",

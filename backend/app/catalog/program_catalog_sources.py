@@ -15,10 +15,33 @@ class ProgrammeSource:
     year: int
     url: str
     review: dict | None = None
+    content_type: str = 'text/html'
 
     @property
     def host(self):
         return urlsplit(self.url).hostname
+
+
+@dataclass(frozen=True)
+class SourceObservation:
+    key: str
+    fetched_at: str
+    sha256: str
+    status: str
+    note: str
+
+
+OBSERVATIONS = (
+    SourceObservation('itmo-announcements-2027', '2026-11-22T17:27:37.389475+00:00',
+        'c04beda726b7a265251ec7356878481ed66b0378a01f27632160852e89957c75',
+        'programme_scope_unconfirmed', 'Календарь дней открытых дверей 2026 года для будущих абитуриентов.'),
+    SourceObservation('rudn-admission-2027', '2026-11-22T17:27:40.759420+00:00',
+        '1c02f4e256749831ce681e37656c733c88df4885b19df4362f3d5705d2c5e8b8',
+        'campaign_unconfirmed', 'Страница этапов содержит материалы приёма 2026 года и общие инструкции.'),
+    SourceObservation('sfu-admission-2027', '2026-11-22T17:27:45.016217+00:00',
+        '241ba0731d683cfb3974fed797240f93258508b8aae4ebe221120188c55c88c9',
+        'publication_pending', 'Страница обещает сведения для поступающих до 20.01.2027 и ссылается на проект перечня испытаний.'),
+)
 
 
 # Discovery is an operator decision. No links are followed from downloaded HTML.
@@ -34,7 +57,7 @@ CANDIDATES = (
 
 
 def load_sources():
-    reviews = tuple(ProgrammeSource(r['key'], r['university_id'], r['year'], r['url'], r)
+    reviews = tuple(ProgrammeSource(r['key'], r['university_id'], r['year'], r['url'], r, r['content_type'])
                     for r in load_reviews())
     sources = reviews + CANDIDATES
     known_heads = {row.id for row in load_catalog().institutions if not row.is_branch}
@@ -45,6 +68,7 @@ def load_sources():
         if (not re.fullmatch(r'[a-z0-9-]{1,80}', source.key) or source.university_id not in known_heads
                 or type(source.year) is not int or not 2000 <= source.year <= 2100
                 or url.scheme != 'https' or not valid_domains(frozenset({url.hostname}))
+                or source.content_type not in {'text/html', 'application/pdf'}
                 or url.port is not None or url.username or url.password or url.fragment or not url.path
                 or (source.review is not None and source.review['final_url'] != source.url)):
             raise ValueError('catalog_invalid_source_registry')

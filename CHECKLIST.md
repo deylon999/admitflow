@@ -329,7 +329,7 @@
 - [x] T317 KAN-218 PR2: verified official program import and stable API publication
 - [x] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
 - [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination — **нужна проверка / завершение**
-- [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
+- [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit — **заблокировано**
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
 - [x] T322 KAN-218 PR2: select official documents and capture bounded source evidence
 - [x] T323 KAN-218 PR2: independently review programme facts and public response proposal
