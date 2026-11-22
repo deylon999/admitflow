@@ -1,4 +1,4 @@
-"""T042: every mandatory domain case from docs/QUALITY.md has an explicit expected outcome.
+"""Every case in the domain regression map has an explicit expected outcome.
 
 Map of case -> proof lives in docs/evidence/regression.md. The last test keeps that map honest.
 """

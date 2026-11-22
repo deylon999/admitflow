@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts import roadmap
+from scripts import documentation_archive, roadmap
 
 
 class DocumentationToolsTest(unittest.TestCase):
@@ -24,7 +24,7 @@ class DocumentationToolsTest(unittest.TestCase):
         for item in task['acceptance']:
             self.assertIn(item, output)
         for item in task['evidence']:
-            self.assertIn(item['path'], output)
+            self.assertIn(roadmap.evidence_location(item['path']), output)
         self.assertIn('T014 [done]', output)
         self.assertNotIn('T231 [', output)
 
@@ -41,18 +41,39 @@ class DocumentationToolsTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unknown task'):
             roadmap.render_task(self.data, 'T999')
 
-    def test_generated_handoff_changes_with_state(self):
-        state = copy.deepcopy(self.state)
-        state.update(currentTask='T017', nextTask='T018', resumeAction='Unique next action')
-        output = roadmap.render_state(state)
-        for expected in ['T017', 'T018', 'Unique next action', state['lastSession']]:
-            self.assertIn(expected, output)
-        self.assertLessEqual(len(output.splitlines()), 80)
+    def test_archived_evidence_has_an_immutable_location(self):
+        archived_path = 'docs/archive/api-before-foundation.md'
+        self.assertEqual(
+            roadmap.evidence_location(archived_path),
+            f'{roadmap.ARCHIVE_URL}/{archived_path}',
+        )
+        self.assertEqual(roadmap.evidence_location('docs/not-a-real-document.md'), 'docs/not-a-real-document.md')
+        data = copy.deepcopy(self.data)
+        task = next(task for task in data['tasks'] if task['id'] == 'T017')
+        task['evidence'] = [{'path': archived_path, 'note': 'Historical contract'}]
+        self.assertFalse(roadmap.validate(data, self.state))
+        task['evidence'][0]['path'] = 'docs/not-a-real-document.md'
+        self.assertIn('T017: missing evidence file or note', roadmap.validate(data, self.state))
+
+    def test_archived_inventory_uses_original_bytes_and_allows_local_override(self):
+        archived_path = 'docs/sources/national-inventory.json'
+        ref = f'{documentation_archive.ARCHIVE_REF}:{archived_path}'
+        original = documentation_archive.archive_git('show', ref)
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            default_path = root / archived_path
+            with patch.object(documentation_archive, 'ROOT', root), \
+                    patch.object(documentation_archive, 'archive_git', return_value=original) as archive:
+                self.assertEqual(documentation_archive.read_input(default_path, archived_path), original)
+                archive.assert_called_once_with('show', ref)
+                default_path.parent.mkdir(parents=True)
+                default_path.write_bytes(b'{"local": true}')
+                self.assertEqual(documentation_archive.read_input(default_path, archived_path), b'{"local": true}')
+                archive.assert_called_once()
 
     def test_readers_do_not_mutate_registry_or_state(self):
         before = copy.deepcopy((self.data, self.state))
         roadmap.render_task(self.data, 'T017')
-        roadmap.render_state(self.state)
         self.assertEqual(before, (self.data, self.state))
 
     def test_log_handles_headed_and_unheaded_sessions(self):
@@ -86,21 +107,21 @@ class DocumentationToolsTest(unittest.TestCase):
             roadmap.main()
         self.assertEqual(error.exception.code, 2)
 
-    def test_render_and_check_detect_stale_handoff(self):
+    def test_render_and_check_detect_stale_checklist(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             docs = root / 'docs'
             docs.mkdir()
             (docs / 'TASKS.json').write_text(json.dumps(self.data), encoding='utf-8')
             (docs / 'STATE.json').write_text(json.dumps(self.state), encoding='utf-8')
-            (docs / 'LOG.md').write_text(self.state['lastSession'], encoding='utf-8')
             with patch.object(roadmap, 'ROOT', root), patch.object(roadmap, 'DOCS', docs), \
                     patch.object(roadmap, 'validate', return_value=[]), \
                     patch.object(roadmap, 'check_links', return_value=[]), \
+                    patch.object(roadmap, 'read_log', return_value=self.state['lastSession']), \
                     contextlib.redirect_stdout(io.StringIO()):
                 with patch.object(sys, 'argv', ['roadmap.py', '--render', '--check']):
                     self.assertEqual(roadmap.main(), 0)
-                (docs / 'STATE.md').write_text('stale', encoding='utf-8')
+                (root / 'CHECKLIST.md').write_text('stale', encoding='utf-8')
                 with patch.object(sys, 'argv', ['roadmap.py', '--check']):
                     self.assertEqual(roadmap.main(), 1)
 

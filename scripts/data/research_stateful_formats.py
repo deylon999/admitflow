@@ -16,6 +16,7 @@ ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'backend'),str(R
 from bs4 import BeautifulSoup
 from app.catalog.national_catalog import load_catalog,valid_url
 from scripts.data.admissions_inventory import inspect_observation
+from scripts.documentation_archive import read_input
 from scripts.data.source_inventory import target
 
 
@@ -69,7 +70,9 @@ def main():
     parser.add_argument('--cache',type=Path,default=ROOT/'backend/var/research/b16-stateful')
     parser.add_argument('--output',type=Path,default=ROOT/'docs/sources/stateful-format-research.json')
     args=parser.parse_args();args.cache.mkdir(parents=True,exist_ok=True)
-    seeds=json.loads(args.seeds.read_text(encoding='utf-8'));inventory=json.loads(args.inventory.read_text(encoding='utf-8'))
+    seeds=json.loads(args.seeds.read_text(encoding='utf-8'))
+    input_bytes = read_input(args.inventory, 'docs/sources/admissions-inventory.json')
+    inventory = json.loads(input_bytes)
     if seeds['format']!='admitflow-stateful-discovery-v1' or not 1<=len(seeds['parents'])<=10:raise ValueError('invalid research seeds')
     known={page['requestedUrl']:set(page['registryIds']) for page in inventory['pages']}
     catalog={row.registry_id:row for row in load_catalog().institutions};pages={};refused=[]
@@ -99,7 +102,7 @@ def main():
         print(f'official seed observed; accumulated pages={len(pages)}',flush=True)
     rows=sorted(pages.values(),key=lambda row:row['requestedUrl'])
     report=dict(format='admitflow-stateful-format-research-v1',seedsSha256=hashlib.sha256(args.seeds.read_bytes()).hexdigest(),
-        inventorySha256=hashlib.sha256(args.inventory.read_bytes()).hexdigest(),pages=rows,refusedLinks=refused,
+        inventorySha256=hashlib.sha256(input_bytes).hexdigest(),pages=rows,refusedLinks=refused,
         checkedPages=len(rows),institutions=len({r['registryId'] for r in rows}),states=dict(Counter(r['state'] for r in rows)),
         limits=dict(maxParents=10,maxChildrenPerParent=4,maxBytes=2*1024*1024,timeoutSeconds=5,workers=1,postRequests=0),
         supportedSourcesAdded=0,realCandidateValuesExported=False,hiddenValuesExported=False,

@@ -2,7 +2,7 @@
 
 ## База и границы
 
-База работы — `1e7693ebc4ae1761aaba8dcbf659ff5793235813`. PR #34 вошёл в main коммитом `5ca1cca`. Cleanup #32, #33 и #35 и frontend #36–37 тоже включены. Историческая база до auth — `29c5902`. На обоих SHA зафиксированы девять идентичных JSON-снимков и идентичный schema-only дамп PostgreSQL 17.11. [PR #34](https://github.com/deylon999/admitflow/pull/34), [проверки auth-этапа](BACKEND_ARCHITECTURE_PR3.md).
+База работы — `1e7693ebc4ae1761aaba8dcbf659ff5793235813`. PR #34 вошёл в main коммитом `5ca1cca`. Cleanup #32, #33 и #35 и frontend #36–37 тоже включены. Историческая база до auth — `29c5902`. На обоих SHA зафиксированы девять идентичных JSON-снимков и идентичный schema-only дамп PostgreSQL 17.11. [PR #34](https://github.com/deylon999/admitflow/pull/34), [проверки auth-этапа](https://github.com/deylon999/admitflow/blob/6fdafc999606b486b200a8eac68d732dfd0a956e/docs/BACKEND_ARCHITECTURE_PR3.md).
 
 `main.py` сохраняет ASGI entrypoint, старые точки подмены часов и порядок маршрутов. Core предоставляет настройки, общую декларативную базу SQLAlchemy, engine, Pydantic и HTTP middleware. Конфигурация лениво вызывает auth-проверку SMTP при наличии SMTP-настроек. Auth сохраняет свою ORM-модель и контракты. Catalogue и competitions проектируют данные из общей реляционной модели и зарегистрированных источников. Watchlist владеет запросами гостя, ручной историей, подписками и их доступом. Operations владеет эксплуатационными командами и runtime worker. Пакет sources сохраняет адаптеры, сетевые политики, регистрацию и транзакционную публикацию.
 

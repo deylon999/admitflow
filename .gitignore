@@ -21,3 +21,9 @@ backend/var/
 
 # Weekly reports are sent to the team chat, not kept in the project (KAN-24).
 admitflow-weekly-*.pdf
+
+# Regenerated source research. The reviewed historical inputs live in Git history.
+/docs/sources/national-inventory.json
+/docs/sources/admissions-inventory.json
+/docs/sources/format-families.json
+/docs/sources/stateful-format-research.json

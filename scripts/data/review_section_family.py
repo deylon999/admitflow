@@ -16,8 +16,9 @@ import secrets
 import sys
 from urllib.parse import urlsplit
 
-ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT/'backend'))
+ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'backend'),str(ROOT)]
 from bs4 import BeautifulSoup
+from scripts.documentation_archive import read_input
 from app.sources.contracts import SourceBinding
 from app.sources.fetcher import FetchResult
 from app.sources.table_family import SECTION_VERSION,clean,parse_table,section_metadata
@@ -96,7 +97,8 @@ def _synthetic_fixture(group_text,date_text,sections):
 
 
 def main():
-    report=json.loads((ROOT/'docs/sources/format-families.json').read_text(encoding='utf-8'))
+    source = 'docs/sources/format-families.json'
+    report = json.loads(read_input(ROOT / source, source))
     cache=ROOT/'backend/var/research/admissions-pages';root=ROOT/'backend/app/sources/profiles'
     data=read_profile_data(active_catalog(root));pending={};artifacts={};audits=[];unsupported=[];secret=secrets.token_bytes(32)
     for page in report['supplementPages']:

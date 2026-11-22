@@ -6,7 +6,7 @@
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
-Подробности и доказательства: [карточки задач](docs/TASKS.md). Файл обновляется из `docs/TASKS.json` командой `python scripts/roadmap.py --render`.
+Карточки и доказательства: python scripts/roadmap.py --task ID. Файл обновляется из `docs/TASKS.json` командой `python scripts/roadmap.py --render`.
 
 ## Стабилизация
 

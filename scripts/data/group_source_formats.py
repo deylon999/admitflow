@@ -15,6 +15,7 @@ ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'backend'),str(R
 from bs4 import BeautifulSoup
 from app.catalog.national_catalog import load_catalog,valid_url
 from scripts.data.admissions_inventory import inspect_observation
+from scripts.documentation_archive import read_input
 from scripts.data.source_inventory import target
 
 
@@ -66,7 +67,9 @@ def main():
     parser.add_argument('--seeds',type=Path,default=ROOT/'docs/sources/format-seeds.json')
     parser.add_argument('--cache',type=Path,default=ROOT/'backend/var/research/admissions-pages')
     parser.add_argument('--output',type=Path,default=ROOT/'docs/sources/format-families.json')
-    args=parser.parse_args();data=json.loads(args.input.read_text(encoding='utf-8'));seeds=json.loads(args.seeds.read_text(encoding='utf-8'))
+    args=parser.parse_args()
+    input_bytes = read_input(args.input, 'docs/sources/admissions-inventory.json')
+    data = json.loads(input_bytes);seeds=json.loads(args.seeds.read_text(encoding='utf-8'))
     if seeds['format']!='admitflow-reviewed-discovery-seeds-v1' or not 1<=len(seeds['parents'])<=20:raise ValueError('invalid discovery seeds')
     catalog={r.registry_id:r for r in load_catalog().institutions};parents=[];requests={}
     for seed in seeds['parents']:
@@ -82,7 +85,7 @@ def main():
     pages={p['requestedUrl']:p for p in data['pages']}
     pages.update({p['requestedUrl']:p for p in supplements})
     groups=group_pages(pages.values())
-    report=dict(format='admitflow-format-families-v1',admissionsInventorySha256=hashlib.sha256(args.input.read_bytes()).hexdigest(),
+    report=dict(format='admitflow-format-families-v1',admissionsInventorySha256=hashlib.sha256(input_bytes).hexdigest(),
         discoverySeedsSha256=hashlib.sha256(args.seeds.read_bytes()).hexdigest(),parents=parents,supplementPages=supplements,
         supplementCount=len(supplements),supplementStates=dict(sorted(Counter(p['state'] for p in supplements).items())),
         groups=groups,crossInstitutionCandidateGroups=sum(g['crossInstitutionCandidate'] for g in groups),
