@@ -12,8 +12,10 @@ import json
 import os
 from pathlib import Path
 import re
+import statistics
 import subprocess
 import sys
+import threading
 from time import monotonic, perf_counter, sleep
 from uuid import uuid4
 
@@ -33,7 +35,7 @@ from pg_support import isolated_postgres
 from scripts.ops.postgres_runtime import PostgresRuntime, disposable_postgres
 from scripts.qa.benchmark_catalog_serving import application as serving_application, server
 from scripts.qa.benchmark_product_catalog import percentile, seed
-from scripts.qa.compare_catalog_read_models import load_test
+from scripts.qa.compare_catalog_read_models import Resources, load_test, pg_stats
 
 PATH = '/api/v1/catalog/programs'
 request_timings = ContextVar('catalog_benchmark_timings', default=None)
@@ -218,6 +220,30 @@ def initialize_fixture(path, *, small=False):
             sleep(1)
 
 
+def node_load_test(client, params, workers, engine, runtime, seconds):
+    """Separate server latency from scheduling in the threaded Python driver."""
+    before = pg_stats(engine)
+    monitor = Resources(runtime.name)
+    sampler = threading.Thread(target=monitor.run, daemon=True)
+    sampler.start()
+    try:
+        result = subprocess.check_output(['node', str(Path(__file__).with_name('catalog_http_load.mjs')),
+            str(client.base_url), json.dumps(params), str(workers), str(seconds)], text=True, timeout=seconds + 45)
+        payload = json.loads(result)
+        elapsed, rows = payload['seconds'], payload['samples']
+    finally:
+        monitor.stop.set()
+        sampler.join(6)
+    after = pg_stats(engine)
+    values = [row['ms'] for row in rows]
+    return dict(concurrency=workers, requests=len(rows), seconds=elapsed, rps=len(rows)/elapsed,
+        p50=statistics.median(values), p95=percentile(values, .95),
+        failures=sum(row['status'] != 200 for row in rows),
+        totals=sorted({row['total'] for row in rows if row.get('total') is not None}),
+        transportFailures=sum('transportError' in row for row in rows), samples=rows,
+        postgresStatsDelta={key: after[key]-before[key] for key in before},postgresContainerSamples=monitor.samples)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--fixture', type=Path, required=True)
@@ -227,6 +253,7 @@ def main():
     parser.add_argument('--cases', nargs='+', choices=['first','university','code','deep','middle'],
                         default=['first','university'])
     parser.add_argument('--profile', action='store_true')
+    parser.add_argument('--client', choices=('threaded', 'node'), default='threaded')
     parser.add_argument('--docker-image', help='Run uninstrumented Uvicorn in an existing local Linux image')
     args = parser.parse_args()
     if args.initialize:
@@ -235,13 +262,15 @@ def main():
         parser.error('running a profile requires --output')
     if args.profile and args.docker_image:
         parser.error('timing hooks run in the host workers only')
+    if args.profile and args.client != 'threaded':
+        parser.error('the threaded driver collects phase timing headers')
     meta = json.loads(args.fixture.read_text(encoding='utf-8'))
     runtime, engine = fixture_engine(meta)
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = dict(commit=subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip(),
                   dirty=bool(subprocess.check_output(['git','status','--porcelain'], text=True)),
                   fixture=meta['fixture'], workers=4, concurrency=50, instrumented=args.profile,
-                  servingRuntime='linux-docker' if args.docker_image else sys.platform, cases={})
+                  servingRuntime='linux-docker' if args.docker_image else sys.platform, loadClient=args.client, cases={})
     try:
         with engine.connect() as db:
             report['postgresVersion'] = db.scalar(text('SHOW server_version'))
@@ -275,7 +304,8 @@ def main():
                     response.raise_for_status()
                     assert digest(response.json()) == expected_hash, name
                     warmups += 1
-                result = load_test(client, http_params, 50, engine, runtime, 10)
+                loader = node_load_test if args.client == 'node' else load_test
+                result = loader(client, http_params, 50, engine, runtime, 10)
                 result['responseSha256'] = expected_hash
                 result['warmupTransportErrors'] = warmup_errors
                 if args.profile:
