@@ -1,7 +1,7 @@
 """Versioned programme evidence extends admissions identities, never list snapshots."""
 from datetime import date, datetime
 
-from sqlalchemy import CheckConstraint, Date, DateTime, ForeignKey, ForeignKeyConstraint, Integer, JSON, String, UniqueConstraint
+from sqlalchemy import BigInteger, Boolean, CheckConstraint, Date, DateTime, ForeignKey, ForeignKeyConstraint, Index, Integer, JSON, String, UniqueConstraint, text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.admissions import new_id
@@ -117,3 +117,42 @@ class ProgramCatalogImportAttempt(Base):
     error_code: Mapped[str | None] = mapped_column(String(80))
     original_sha256: Mapped[str | None] = mapped_column(String(64))
     revision_id: Mapped[str | None] = mapped_column(String(36), index=True)
+
+
+class ProgramCatalogReadScope(Base):
+    """Policy fingerprint, not a cached response; pointer writes serialize here."""
+    __tablename__ = 'program_catalog_read_scope'
+    __table_args__ = (CheckConstraint('id = 1',name='program_read_scope_singleton'),)
+    id: Mapped[int] = mapped_column(Integer,primary_key=True)
+    scope_hash: Mapped[str] = mapped_column(String(64))
+    known_ids: Mapped[list] = mapped_column(JSON)
+    reserved_ids: Mapped[list] = mapped_column(JSON)
+    epoch: Mapped[int] = mapped_column(BigInteger,default=0)
+
+
+class ProgramCatalogReadFact(Base):
+    """Synchronous derived index of current immutable facts. Never new identity."""
+    __tablename__ = 'program_catalog_read_facts'
+    __table_args__ = (
+        ForeignKeyConstraint(['revision_id','program_id'],['program_catalog_facts.revision_id','program_catalog_facts.program_id'],name='fk_program_read_fact',ondelete='RESTRICT'),
+        ForeignKeyConstraint(['document_id','revision_id'],['program_catalog_revisions.document_id','program_catalog_revisions.id'],name='fk_program_read_document',ondelete='RESTRICT'),
+        Index('ix_program_read_public','public_id','revision_id','program_id'),
+        Index('ix_program_read_scope','program_id','campaign_id'),
+        Index('uq_program_read_public','public_id',unique=True,postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+        Index('uq_program_read_scope','program_id','campaign_id',unique=True,postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+        Index('ix_program_read_order','sort_text','public_id',postgresql_include=['program_id','revision_id'],postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+        Index('ix_program_read_year_order','year','sort_text','public_id',postgresql_include=['program_id','revision_id'],postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+        Index('ix_program_read_university_order','university_id','year','sort_text','public_id',postgresql_include=['program_id','revision_id'],postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+        Index('ix_program_read_years','university_id','year',postgresql_where=text('eligible'),sqlite_where=text('eligible')),
+    )
+    revision_id: Mapped[str] = mapped_column(String(36),primary_key=True)
+    program_id: Mapped[str] = mapped_column(String(36),primary_key=True)
+    document_id: Mapped[str] = mapped_column(String(36))
+    campaign_id: Mapped[str] = mapped_column(String(36))
+    public_id: Mapped[str] = mapped_column(String(36))
+    university_id: Mapped[str] = mapped_column(String(80))
+    year: Mapped[int] = mapped_column(Integer)
+    sort_text: Mapped[str] = mapped_column(String(300))
+    search_text: Mapped[str] = mapped_column(String(1500))
+    in_scope: Mapped[bool] = mapped_column(Boolean)
+    eligible: Mapped[bool] = mapped_column(Boolean)

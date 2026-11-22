@@ -18,6 +18,7 @@ from .product_catalog_schemas import (
 )
 from .university_names import choose_name
 from .program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
+from . import read_projection
 
 
 def legacy_programs(db, *, with_program_links=True):
@@ -65,7 +66,7 @@ def legacy_programs(db, *, with_program_links=True):
     return result
 
 
-def program_index(db):
+def source_program_index(db):
     """SQL projection of current verified publications plus the bounded archive.
 
     Identity collisions are quarantined, never resolved by title or latest date.
@@ -92,13 +93,25 @@ def program_index(db):
     published = select(*(current.c[k] for k in ('id','pid','rid','university_id','year','sort_text','search_text'))).where(
         ~public_conflict, ~scope_conflict)
     published = published.where(current.c.id.not_in(REVIEWED_IDS))
+    return archive_index(published,legacy),legacy
+
+
+def archive_index(published,legacy):
     if legacy:
         archive = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'), literal(None).label('rid'),
             literal(p.university_id).label('university_id'), literal(p.year).label('year'),
             literal(p.title.casefold()).label('sort_text'),
             literal(f'{p.title} {p.code or ""} {p.university_name}'.casefold()).label('search_text')) for p in legacy.values()]
-        return union_all(published, *archive).subquery(), legacy
-    return published.subquery(), legacy
+        return union_all(published, *archive).subquery()
+    return published.subquery()
+
+
+def program_index(db):
+    prepared=read_projection.statement(db)
+    if prepared is None:
+        return source_program_index(db)
+    legacy={p.id:p for p in legacy_programs(db)}
+    return archive_index(prepared,legacy),legacy
 
 
 def hydrate_programs(db, keys, legacy):
@@ -132,7 +145,10 @@ def programs(db):
     schema = inspect(db.connection())
     if not schema.has_table(Publication.__tablename__):
         return legacy_programs(db, with_program_links=schema.has_table(CompetitionGroupProgram.__tablename__))
-    index, legacy = program_index(db)
+    # Offline exports may run in READ COMMITTED outside the HTTP dependency.
+    # One source statement captures all keys without a policy-check/read race;
+    # their immutable revisions remain available throughout chunk hydration.
+    index, legacy = source_program_index(db)
     result = []
     for keys in db.execute(select(index).order_by(index.c.sort_text, index.c.id)).partitions(1000):
         result.extend(hydrate_programs(db, keys, legacy))
@@ -140,7 +156,31 @@ def programs(db):
 
 
 def program_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
-    index, legacy = program_index(db)
+    prepared=read_projection.statement(db)
+    if prepared is None:
+        return source_program_page(db,q=q,university_id=university_id,year=year,subject=subject,offset=offset,limit=limit,sort=sort)
+    legacy={p.id:p for p in legacy_programs(db)}
+    index=archive_index(prepared,legacy)
+    base=select(index)
+    if university_id:
+        base=base.where(index.c.university_id==university_id)
+    scope=base.subquery()
+    years=list(db.scalars(select(scope.c.year).distinct().order_by(scope.c.year.desc())))
+    if year is not None:
+        base=base.where(index.c.year==year)
+    if subject:
+        base=base.where(literal(False))
+    for token in q.casefold().split():
+        base=base.where(index.c.search_text.contains(token,autoescape=True))
+    total=db.scalar(select(func.count()).select_from(base.subquery()))
+    order=(index.c.sort_text.desc(),index.c.id.desc()) if sort=='name-desc' else (index.c.sort_text,index.c.id)
+    keys=db.execute(base.with_only_columns(index.c.id,index.c.pid,index.c.rid).order_by(*order).offset(offset).limit(limit)).all()
+    return ProgramPage(items=hydrate_programs(db,keys,legacy),total=total,
+        next_offset=offset+limit if offset+limit<total else None,years=years,subjects=[])
+
+
+def source_program_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
+    index, legacy = source_program_index(db)
     base = select(index).where(index.c.university_id == university_id) if university_id else select(index)
     # One statement reuses the verified/collision-checked scope for facets,
     # total and page. PostgreSQL materializes multiply referenced CTEs once.

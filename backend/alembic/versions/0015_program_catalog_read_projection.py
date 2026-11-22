@@ -1,0 +1,145 @@
+"""Synchronous PostgreSQL read index; original facts and IDs remain authoritative."""
+import json
+from pathlib import Path
+from alembic import op
+import sqlalchemy as sa
+
+revision='0015'
+down_revision='0014'
+branch_labels=None
+depends_on=None
+
+
+def _tables():
+    m=sa.MetaData()
+    sa.Table('program_catalog_facts',m,sa.Column('revision_id',sa.String(36),primary_key=True),sa.Column('program_id',sa.String(36),primary_key=True))
+    sa.Table('program_catalog_revisions',m,sa.Column('document_id',sa.String(36)),sa.Column('id',sa.String(36)))
+    state=sa.Table('program_catalog_read_scope',m,
+        sa.Column('id',sa.Integer,primary_key=True),sa.Column('scope_hash',sa.String(64),nullable=False),
+        sa.Column('known_ids',sa.JSON,nullable=False),sa.Column('reserved_ids',sa.JSON,nullable=False),
+        sa.Column('epoch',sa.BigInteger,nullable=False),sa.CheckConstraint('id = 1',name='program_read_scope_singleton'))
+    rows=sa.Table('program_catalog_read_facts',m,
+        sa.Column('revision_id',sa.String(36),primary_key=True),sa.Column('program_id',sa.String(36),primary_key=True),
+        sa.Column('document_id',sa.String(36),nullable=False),sa.Column('campaign_id',sa.String(36),nullable=False),
+        sa.Column('public_id',sa.String(36),nullable=False),sa.Column('university_id',sa.String(80),nullable=False),
+        sa.Column('year',sa.Integer,nullable=False),sa.Column('sort_text',sa.String(300),nullable=False),
+        sa.Column('search_text',sa.String(1500),nullable=False),sa.Column('in_scope',sa.Boolean,nullable=False),sa.Column('eligible',sa.Boolean,nullable=False),
+        sa.ForeignKeyConstraint(['revision_id','program_id'],['program_catalog_facts.revision_id','program_catalog_facts.program_id'],name='fk_program_read_fact',ondelete='RESTRICT'),
+        sa.ForeignKeyConstraint(['document_id','revision_id'],['program_catalog_revisions.document_id','program_catalog_revisions.id'],name='fk_program_read_document',ondelete='RESTRICT'))
+    for name,columns,include in [
+        ('public',['public_id','revision_id','program_id'],None),('scope',['program_id','campaign_id'],None),
+        ('order',['sort_text','public_id'],['program_id','revision_id']),
+        ('year_order',['year','sort_text','public_id'],['program_id','revision_id']),
+        ('university_order',['university_id','year','sort_text','public_id'],['program_id','revision_id']),
+        ('years',['university_id','year'],[])]:
+        kw={} if include is None else dict(postgresql_where=sa.text('eligible'),sqlite_where=sa.text('eligible'))
+        if include:kw['postgresql_include']=include
+        sa.Index('ix_program_read_'+name,*(rows.c[c] for c in columns),**kw)
+    for name,columns in [('public',['public_id']),('scope',['program_id','campaign_id'])]:
+        sa.Index('uq_program_read_'+name,*(rows.c[c] for c in columns),unique=True,
+            postgresql_where=sa.text('eligible'),sqlite_where=sa.text('eligible'))
+    return state,rows
+
+
+ELIGIBLE="""p.in_scope
+    AND p.public_id NOT IN (SELECT json_array_elements_text(reserved_ids) FROM program_catalog_read_scope WHERE id=1)
+    AND NOT EXISTS (SELECT 1 FROM program_catalog_read_facts r WHERE r.in_scope AND r.public_id=p.public_id
+        AND (r.revision_id<>p.revision_id OR r.program_id<>p.program_id))
+    AND NOT EXISTS (SELECT 1 FROM program_catalog_read_facts r WHERE r.in_scope AND r.program_id=p.program_id
+        AND r.campaign_id=p.campaign_id AND r.revision_id<>p.revision_id)"""
+INSERT="""INSERT INTO program_catalog_read_facts
+    (revision_id,program_id,document_id,campaign_id,public_id,university_id,year,sort_text,search_text,in_scope,eligible)
+    SELECT f.revision_id,f.program_id,r.document_id,f.campaign_id,f.public_id,c.university_id,c.year,f.sort_text,f.search_text,
+        c.university_id IN (SELECT json_array_elements_text(known_ids) FROM program_catalog_read_scope WHERE id=1),FALSE
+    FROM program_catalog_facts f JOIN program_catalog_revisions r ON r.id=f.revision_id
+    JOIN program_catalog_publications s ON s.revision_id=r.id
+    JOIN campaigns c ON c.id=f.campaign_id WHERE r.verification_status='verified'"""
+
+
+def upgrade():
+    state,rows=_tables()
+    state.create(op.get_bind());rows.create(op.get_bind())
+    if op.get_bind().dialect.name!='postgresql':
+        # SQLite continues to use the source SQL path; no stale derived rows.
+        return
+    policy=json.loads((Path(__file__).resolve().parents[1]/'data'/'0015_read_scope.json').read_text(encoding='utf-8'))
+    op.get_bind().execute(state.insert().values(id=1,epoch=0,**policy))
+    op.execute(INSERT)
+    op.execute('UPDATE program_catalog_read_facts p SET eligible='+ELIGIBLE)
+    op.execute("""CREATE FUNCTION program_read_serialize() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN
+            UPDATE program_catalog_read_scope SET epoch=epoch+1 WHERE id=1;
+            IF NOT FOUND THEN RAISE EXCEPTION 'program_read_scope_missing'; END IF;
+            RETURN NULL;
+        END $$""")
+    op.execute('CREATE TRIGGER program_read_serialize BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_publications FOR EACH STATEMENT EXECUTE FUNCTION program_read_serialize()')
+    op.execute("""CREATE FUNCTION program_read_publish() RETURNS trigger LANGUAGE plpgsql AS $$
+        DECLARE ids TEXT[]; programs TEXT[]; old_revision TEXT; new_revision TEXT;
+        BEGIN
+            IF TG_OP<>'INSERT' THEN old_revision:=OLD.revision_id; END IF;
+            IF TG_OP<>'DELETE' THEN new_revision:=NEW.revision_id; END IF;
+            IF TG_OP='UPDATE' AND OLD.document_id=NEW.document_id AND OLD.revision_id=NEW.revision_id THEN RETURN NULL; END IF;
+            SELECT array_agg(DISTINCT public_id),array_agg(DISTINCT program_id) INTO ids,programs
+                FROM program_catalog_facts WHERE revision_id IN (old_revision,new_revision);
+            UPDATE program_catalog_read_facts SET eligible=FALSE
+                WHERE public_id=ANY(ids) OR program_id=ANY(programs);
+            IF TG_OP<>'INSERT' THEN
+                DELETE FROM program_catalog_read_facts WHERE document_id=OLD.document_id;
+            END IF;
+            IF TG_OP<>'DELETE' THEN
+                """+INSERT+""" AND s.document_id=NEW.document_id;
+            END IF;
+            UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+"""
+                WHERE p.public_id=ANY(ids) OR p.program_id=ANY(programs);
+            RETURN NULL;
+        END $$""")
+    op.execute('CREATE TRIGGER program_read_publish AFTER INSERT OR UPDATE OR DELETE ON program_catalog_publications FOR EACH ROW EXECUTE FUNCTION program_read_publish()')
+    op.execute("""CREATE FUNCTION program_read_guard() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN
+            IF pg_trigger_depth()<2 THEN RAISE EXCEPTION 'program_read_derived_only' USING ERRCODE='23514'; END IF;
+            IF TG_OP='DELETE' THEN RETURN OLD; END IF;
+            RETURN NEW;
+        END $$""")
+    op.execute('CREATE TRIGGER program_read_guard BEFORE INSERT OR UPDATE OR DELETE ON program_catalog_read_facts FOR EACH ROW EXECUTE FUNCTION program_read_guard()')
+    op.execute("""CREATE FUNCTION program_read_policy_check() RETURNS trigger LANGUAGE plpgsql AS $$
+        DECLARE expected TEXT; known_count BIGINT; known_unique BIGINT; reserved_count BIGINT; reserved_unique BIGINT;
+        BEGIN
+            IF TG_OP='DELETE' THEN RAISE EXCEPTION 'program_read_scope_required'; END IF;
+            IF NEW.id<>1 THEN RAISE EXCEPTION 'program_read_scope_identity'; END IF;
+            IF EXISTS (SELECT 1 FROM json_array_elements_text(NEW.known_ids) v
+                WHERE v IS NULL OR length(v)=0 OR length(v)>80 OR v<>btrim(v) OR v ~ '[[:cntrl:]]')
+                OR EXISTS (SELECT 1 FROM json_array_elements_text(NEW.reserved_ids) v
+                WHERE v IS NULL OR length(v)=0 OR length(v)>36 OR v<>btrim(v) OR v ~ '[[:cntrl:]]') THEN
+                RAISE EXCEPTION 'program_read_scope_invalid_id';
+            END IF;
+            SELECT count(*),count(DISTINCT v) INTO known_count,known_unique FROM json_array_elements_text(NEW.known_ids) v;
+            SELECT count(*),count(DISTINCT v) INTO reserved_count,reserved_unique FROM json_array_elements_text(NEW.reserved_ids) v;
+            SELECT encode(sha256(convert_to('known:'||E'\\n'||
+                COALESCE((SELECT string_agg(v,E'\\n' ORDER BY v COLLATE "C") FROM json_array_elements_text(NEW.known_ids) v),'')||
+                E'\\nreserved:'||E'\\n'||COALESCE((SELECT string_agg(v,E'\\n' ORDER BY v COLLATE "C") FROM json_array_elements_text(NEW.reserved_ids) v),''),'UTF8')),'hex') INTO expected;
+            IF NEW.scope_hash<>expected OR known_count=0 OR known_count<>known_unique OR reserved_count<>reserved_unique THEN
+                RAISE EXCEPTION 'program_read_scope_invalid';
+            END IF;
+            IF TG_OP='UPDATE' THEN NEW.epoch:=OLD.epoch+1; END IF;
+            RETURN NEW;
+        END $$""")
+    op.execute('CREATE TRIGGER program_read_policy_check BEFORE UPDATE OF id,known_ids,reserved_ids,scope_hash OR DELETE ON program_catalog_read_scope FOR EACH ROW EXECUTE FUNCTION program_read_policy_check()')
+    op.execute("""CREATE FUNCTION program_read_policy_refresh() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN
+            UPDATE program_catalog_read_facts SET eligible=FALSE,
+                in_scope=university_id IN (SELECT json_array_elements_text(NEW.known_ids));
+            UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+""";
+            RETURN NULL;
+        END $$""")
+    op.execute('CREATE TRIGGER program_read_policy_refresh AFTER UPDATE ON program_catalog_read_scope FOR EACH ROW WHEN (OLD.scope_hash IS DISTINCT FROM NEW.scope_hash) EXECUTE FUNCTION program_read_policy_refresh()')
+
+
+def downgrade():
+    if op.get_bind().dialect.name=='postgresql':
+        for table,name in [('program_catalog_publications','program_read_serialize'),('program_catalog_publications','program_read_publish'),
+                ('program_catalog_read_facts','program_read_guard'),('program_catalog_read_scope','program_read_policy_check'),
+                ('program_catalog_read_scope','program_read_policy_refresh')]:
+            op.execute(f'DROP TRIGGER {name} ON {table}')
+        for name in ['program_read_policy_refresh','program_read_policy_check','program_read_guard','program_read_publish','program_read_serialize']:
+            op.execute(f'DROP FUNCTION {name}()')
+    op.drop_table('program_catalog_read_facts');op.drop_table('program_catalog_read_scope')
