@@ -63,7 +63,9 @@ def upgrade():
         # SQLite continues to use the source SQL path; no stale derived rows.
         return
     policy=json.loads((Path(__file__).resolve().parents[1]/'data'/'0015_read_scope.json').read_text(encoding='utf-8'))
-    op.get_bind().execute(state.insert().values(id=1,epoch=0,**policy))
+    op.get_bind().execute(state.insert().values(id=1,epoch=0,scope_hash=policy['scope_hash'],
+        known_ids=sa.cast(sa.literal(json.dumps(policy['known_ids'])),sa.JSON),
+        reserved_ids=sa.cast(sa.literal(json.dumps(policy['reserved_ids'])),sa.JSON)))
     op.execute(INSERT)
     op.execute('UPDATE program_catalog_read_facts p SET eligible='+ELIGIBLE)
     op.execute("""CREATE FUNCTION program_read_serialize() RETURNS trigger LANGUAGE plpgsql AS $$
