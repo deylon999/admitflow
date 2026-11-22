@@ -3,6 +3,9 @@
 from datetime import datetime, timedelta, timezone
 import importlib
 import pickle
+from pathlib import Path
+import subprocess
+import sys
 from unittest.mock import patch
 
 import pytest
@@ -44,6 +47,19 @@ MODULES = (
     ('source_api', 'watchlist.source_api'),
     ('source_history', 'watchlist.source_history'),
     ('source_tokens', 'watchlist.source_tokens'),
+    ('account_actions', 'auth.account_actions'),
+    ('account_dto', 'auth.account_dto'),
+    ('account_limits', 'auth.account_limits'),
+    ('backup', 'operations.backup'),
+    ('diagnostics', 'operations.diagnostics'),
+    ('jobs', 'operations.jobs'),
+    ('maintenance', 'operations.maintenance'),
+    ('migration_checks', 'operations.migration_checks'),
+    ('migrations', 'operations.migrations'),
+    ('observability', 'operations.observability'),
+    ('smtp_check', 'operations.smtp_check'),
+    ('source_operations', 'sources.source_operations'),
+    ('worker', 'operations.worker'),
 )
 
 
@@ -99,3 +115,30 @@ def test_utc_normalization_preserves_guest_and_source_projections():
     assert utc(naive) == naive.replace(tzinfo=timezone.utc)
     utc_plus_three = timezone(timedelta(hours=3))
     assert utc(naive.replace(tzinfo=utc_plus_three)) == datetime(2026, 11, 22, 6, tzinfo=timezone.utc)
+
+
+def test_queue_registry_is_shared_by_operation_and_status_callers():
+    from app import jobs
+    from app.core.database import Base
+    from app.operations.source_job_models import SourceCheck, SourceJob
+
+    for model in (SourceCheck, SourceJob):
+        assert getattr(jobs, model.__name__) is model
+        assert model.registry is Base.registry
+        assert Base.metadata.tables[model.__tablename__] is model.__table__
+    assert pickle.loads(b'capp.jobs\nSourceJob\n.') is SourceJob
+
+
+@pytest.mark.parametrize('legacy_first', (True, False))
+def test_import_order_in_fresh_process(legacy_first):
+    from pprint import pformat
+
+    entries = MODULES if legacy_first else tuple((target, legacy) for legacy, target in MODULES)
+    source = f'''
+from importlib import import_module
+for first, second in {pformat(entries, width=100)}:
+    assert import_module('app.' + first) is import_module('app.' + second)
+from app.main import app
+assert app.openapi()['paths']
+'''
+    subprocess.run([sys.executable, '-c', source], cwd=Path(__file__).resolve().parents[1], check=True)

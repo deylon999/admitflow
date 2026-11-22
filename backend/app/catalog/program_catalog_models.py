@@ -5,7 +5,7 @@ from sqlalchemy import CheckConstraint, Date, DateTime, ForeignKey, ForeignKeyCo
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.admissions import new_id
-from app.database import Base
+from app.core.database import Base
 
 
 class ProgramCatalogDocument(Base):

@@ -17,9 +17,9 @@ from scripts.ops.postgres_runtime import disposable_postgres
 from sqlalchemy import func,select
 from sqlalchemy.orm import Session
 from app.admissions import CandidateEntry,PublishedSnapshot,SourceSnapshot
-from app.database import make_engine
-from app.jobs import SourceJob,enqueue
-from app.migrations import upgrade_schema
+from app.core.database import make_engine
+from app.operations.jobs import SourceJob,enqueue
+from app.operations.migrations import upgrade_schema
 from app.sources.adapters.sgu2026 import SOURCE_ID
 from app.sources.storage import RawStore
 from sgu_helpers import seed_sgu
@@ -44,7 +44,7 @@ def main():
 import hashlib,json,os
 from datetime import datetime,timezone
 from app.config import Settings
-from app.database import make_engine
+from app.core.database import make_engine
 from app.sources.registry import runtime_registry
 from app.sources.fetcher import FetchResult
 from app.sources.storage import RawStore

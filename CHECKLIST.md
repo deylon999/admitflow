@@ -349,7 +349,7 @@
 - [ ] T337 Backend organization: catalog — **нужна проверка / завершение**
 - [ ] T338 Backend organization: competitions — **нужна проверка / завершение**
 - [ ] T339 Backend organization: watchlist — **нужна проверка / завершение**
-- [ ] T340 Backend organization: operations and final verification
+- [ ] T340 Backend organization: operations and final verification — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

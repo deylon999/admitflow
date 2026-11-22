@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from app.admissions import Campaign, CompetitionGroup, University
 from app.catalog.catalog_lock import lock_catalog
 from app.core.config import Settings
-from app.database import make_engine
+from app.core.database import make_engine
 from app.sources.table_profiles import PROFILES
 
 # Intentionally small first product slice. Each scope has an independent audit.

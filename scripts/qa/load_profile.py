@@ -22,8 +22,8 @@ os.environ.setdefault('SOURCE_IDENTITY_KEY',secrets.token_hex(32))
 import httpx
 from sqlalchemy.orm import Session
 from app.admissions import Campaign, CompetitionGroup, Source, University
-from app.database import make_engine
-from app.migrations import upgrade_schema
+from app.core.database import make_engine
+from app.operations.migrations import upgrade_schema
 from app.sources.contracts import SourceBinding
 from app.sources.publishing import publish
 from app.sources.storage import RawStore

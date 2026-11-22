@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from ..admissions import SourceSnapshot
 from app.catalog.program_catalog_models import ProgramCatalogRevision
 from app.core.config import Settings
-from ..database import make_engine
+from app.core.database import make_engine
 from .storage import RawStore
 
 

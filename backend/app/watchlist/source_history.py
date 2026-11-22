@@ -3,7 +3,7 @@ from datetime import datetime,timezone
 from fastapi import HTTPException
 from sqlalchemy import and_, func, or_, select
 from app.admissions import Assessment, CandidateEntry, SourceSnapshot, Subscription
-from app.watchlist.archive import candidate_fact
+from app.watchlist.candidate import candidate_fact
 
 FACT_VERSION = 'source-facts-v1'
 VERSIONS = ('source-confirmation-v1', FACT_VERSION)

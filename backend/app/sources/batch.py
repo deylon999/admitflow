@@ -2,7 +2,7 @@
 import argparse
 import json
 from app.core.config import Settings
-from ..database import make_engine
+from app.core.database import make_engine
 from .contracts import AdapterError
 from .profile_registration import register_profiles,select_profiles
 from .registry import runtime_registry

@@ -1,0 +1,201 @@
+"""Database queue: one row per source, expiring leases and fencing tokens."""
+from dataclasses import dataclass,field
+from datetime import datetime, timedelta, timezone
+from uuid import uuid4
+
+from sqlalchemy import and_, exists, or_, select, text
+from sqlalchemy.orm import Session, aliased
+
+from app.admissions import PublishedSnapshot, Source
+from app.operations.source_job_models import SourceCheck as SourceCheck, SourceJob as SourceJob
+from app.sources.source_operations import record
+from app.sources.publishing import FETCH_CODES, QUARANTINE_CODES, STORAGE_RETRY_CODES, lock_source, utc
+
+
+@dataclass(frozen=True,repr=False)
+class Lease:
+    source_id: str
+    token: str
+    attempt: int
+    run_id: str=field(default_factory=lambda:str(uuid4()))
+
+
+class LostLease(Exception):
+    pass
+
+
+def clock():
+    return datetime.now(timezone.utc)
+
+
+def enqueue(engine,source_id,*,now=None,interval_seconds=900,max_attempts=5,start_at=None):
+    now=now or clock()
+    start_at=start_at or now
+    if start_at<now:
+        raise ValueError('invalid_queue_policy')
+    if type(interval_seconds) is not int or type(max_attempts) is not int or not 60 <= interval_seconds <= 86400 or not 1 <= max_attempts <= 20:
+        raise ValueError('invalid_queue_policy')
+    with Session(engine) as db:
+        source=lock_source(db,engine,source_id)
+        if not source.enabled or source.last_error_code=='operator_quarantine':
+            record(db,source,'enqueue','deferred',now=now);db.commit();return False
+        job=db.scalar(select(SourceJob).where(SourceJob.source_id==source_id).with_for_update())
+        if job:
+            if job.state in ('queued','running') or utc(job.next_run_at)>now:
+                record(db,source,'enqueue','deferred',now=now);db.commit();return False
+            job.state='queued'
+            job.attempts=0
+            job.last_error_code=None
+            job.interval_seconds=interval_seconds
+            job.max_attempts=max_attempts
+            job.next_run_at=start_at
+        else:
+            db.add(SourceJob(source_id=source_id,state='queued',next_run_at=start_at,attempts=0,max_attempts=max_attempts,interval_seconds=interval_seconds))
+        record(db,source,'enqueue','queued',now=now)
+        db.commit()
+        return True
+
+
+def claim(engine,*,now=None,lease_seconds=120):
+    now=now or clock()
+    if not 30 <= lease_seconds <= 900:
+        raise ValueError('invalid_lease_duration')
+    with Session(engine) as db:
+        if engine.dialect.name=='sqlite':
+            db.execute(text('BEGIN IMMEDIATE'))
+        other_job,other_source=aliased(SourceJob),aliased(Source)
+        occupied=exists(select(other_job.source_id).join(other_source,other_source.id==other_job.source_id).where(
+            other_source.domain==Source.domain,other_job.source_id!=SourceJob.source_id,
+            other_job.state=='running',other_job.lease_until>now))
+        query=(select(SourceJob).join(Source).where(Source.enabled.is_(True),or_(Source.last_error_code.is_(None),Source.last_error_code!='operator_quarantine'),~occupied,or_(and_(SourceJob.state.in_(('queued','idle')),SourceJob.next_run_at<=now),and_(SourceJob.state=='running',SourceJob.lease_until<=now))).order_by(SourceJob.next_run_at,SourceJob.source_id).with_for_update(skip_locked=True,of=SourceJob))
+        # Expired final attempts are retired instead of reclaimed forever.
+        for job in db.scalars(query.limit(100)).all():
+            domain=db.scalar(select(Source.domain).where(Source.id==job.source_id))
+            if engine.dialect.name=='postgresql' and not db.scalar(text('SELECT pg_try_advisory_xact_lock(hashtextextended(:domain,173))'),{'domain':domain}):
+                continue
+            # Recheck after the domain mutex: another claimant may have committed
+            # since this transaction selected the due jobs.
+            running=db.scalar(select(SourceJob.source_id).join(Source).where(Source.domain==domain,
+                SourceJob.source_id!=job.source_id,SourceJob.state=='running',SourceJob.lease_until>now).limit(1))
+            if running:
+                continue
+            if job.attempts>=job.max_attempts:
+                job.state='failed'
+                job.token=job.lease_until=None
+                job.last_error_code='lease_exhausted'
+                job.next_run_at=now+timedelta(seconds=job.interval_seconds)
+                continue
+            job.attempts+=1
+            job.state='running'
+            job.token=str(uuid4())
+            job.lease_until=now+timedelta(seconds=lease_seconds)
+            result=Lease(job.source_id,job.token,job.attempts)
+            db.commit()
+            return result
+        db.commit()
+        return None
+
+
+def guard_lease(db,lease,*,now=None):
+    now=now or clock()
+    job=db.scalar(select(SourceJob).where(SourceJob.source_id==lease.source_id).with_for_update())
+    if not job or job.state!='running' or job.token!=lease.token or utc(job.lease_until)<=now:
+        raise LostLease('lease_lost')
+    return job
+
+
+def renew(engine,lease,*,now=None,lease_seconds=120):
+    """Progress heartbeat; expired/stolen/disabled work cannot extend a lease."""
+    now=now or clock()
+    if type(lease_seconds) is not int or not 30 <= lease_seconds <= 900:
+        raise ValueError('invalid_lease_duration')
+    with Session(engine) as db:
+        source=lock_source(db,engine,lease.source_id)
+        if not source.enabled:
+            raise LostLease('lease_lost')
+        job=guard_lease(db,lease,now=now)
+        job.lease_until=now+timedelta(seconds=lease_seconds)
+        db.commit()
+
+
+def complete(engine,lease,*,now=None):
+    now=now or clock()
+    with Session(engine) as db:
+        lock_source(db,engine,lease.source_id)
+        job=guard_lease(db,lease,now=now)
+        job.state='idle'
+        job.token=job.lease_until=None
+        job.attempts=0
+        job.last_error_code=None
+        job.next_run_at=now+timedelta(seconds=job.interval_seconds)
+        pointer=db.get(PublishedSnapshot,lease.source_id)
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='success',snapshot_id=pointer.snapshot_id if pointer else None,run_id=lease.run_id))
+        db.commit()
+        return pointer.snapshot_id if pointer else None
+
+
+def fail(engine,lease,code,*,retry_after=None,now=None):
+    now=now or clock()
+    safe_code=code if code in FETCH_CODES|QUARANTINE_CODES|STORAGE_RETRY_CODES else 'internal_error'
+    with Session(engine) as db:
+        source=lock_source(db,engine,lease.source_id)
+        job=guard_lease(db,lease,now=now)
+        retry=retry_after is not None and job.attempts<job.max_attempts
+        delay=max(job.interval_seconds,min(86400,max(30,retry_after or 0)),min(3600,30*2**(job.attempts-1)))
+        job.state='queued' if retry else 'failed'
+        job.token=job.lease_until=None
+        job.next_run_at=now+timedelta(seconds=delay)
+        job.last_error_code=safe_code
+        pointer=db.get(PublishedSnapshot,lease.source_id)
+        db.add(SourceCheck(source_id=lease.source_id,checked_at=now,outcome='failed',error_code=safe_code,snapshot_id=pointer.snapshot_id if pointer else None,run_id=lease.run_id))
+        if source.last_checked_at is None or utc(source.last_checked_at)<=now:
+            source.last_checked_at=now
+            source.last_error_code=safe_code
+        db.commit()
+
+
+def disable(engine,source_id,*,now=None):
+    now=now or clock()
+    with Session(engine) as db:
+        source=lock_source(db,engine,source_id)
+        source.enabled=False
+        job=db.scalar(select(SourceJob).where(SourceJob.source_id==source_id).with_for_update())
+        if job:
+            job.state='failed'
+            job.token=job.lease_until=None
+            job.last_error_code='source_disabled'
+            job.next_run_at=now+timedelta(seconds=job.interval_seconds)
+        record(db,source,'disable','disabled',now=now)
+        db.commit()
+
+
+def enqueue_all(engine,*,registry,now=None,interval_seconds=900,spread_seconds=60,allow_unattested=False):
+    """Queue every enabled source with a resolvable adapter; same-domain starts are spread out.
+
+    The claim step already allows one running job per domain. Spreading the first runs keeps
+    a mass enqueue from bursting at one official site. Repeated calls never duplicate a job.
+    Sources whose adapter is missing or unattested are counted by reason and left alone.
+    """
+    from app.sources.publishing import binding_from_db
+    from app.sources.contracts import AdapterError
+    now=now or clock()
+    if type(spread_seconds) is not int or not 0<=spread_seconds<=3600:
+        raise ValueError('invalid_queue_policy')
+    with Session(engine) as db:
+        sources=db.scalars(select(Source).where(Source.enabled.is_(True)).order_by(Source.domain,Source.id)).all()
+        plan,skipped=[],{}
+        for source in sources:
+            try:
+                registry.resolve(binding_from_db(db,source),allow_unattested=allow_unattested)
+            except AdapterError as error:
+                skipped[error.code]=skipped.get(error.code,0)+1
+                continue
+            plan.append((source.id,source.domain))
+    queued=deferred=0;position={}
+    for source_id,domain in plan:
+        offset=position.get(domain,0);position[domain]=offset+1
+        if enqueue(engine,source_id,now=now,interval_seconds=interval_seconds,start_at=now+timedelta(seconds=offset*spread_seconds)):
+            queued+=1
+        else:
+            deferred+=1
+    return dict(sources=len(sources),queued=queued,deferred=deferred,skipped=dict(sorted(skipped.items())),domains=len(position))

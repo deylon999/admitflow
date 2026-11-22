@@ -1707,3 +1707,13 @@ Competition and scenario package implemented. 68 focused tests pass. Parent comp
 ## S242 — 2026-11-22 — Backend organization: watchlist
 
 Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.
+
+## S243 — 2026-11-22 — Backend organization: operations and final verification
+
+All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.
+
+## S244 — 2026-11-22 — публикация организации backend
+
+PR #38, #39, #40, #41 и #42 открыты с последовательными базами. Полный backend-прогон на финальном дереве дал 1278 passed, 387 native PostgreSQL cases и тот же пропуск MICCEDU. 387 frontend checks, по шесть native auth checks в Chromium, Firefox и WebKit, плюс 32 автоматизированных auth controls.
+
+На исходных опубликованных SHA каждого PR оба события Checks прошли 4/4. Итоговый отчёт фиксирует SHA реализации, сравнение с базами и ссылки на прогоны. SHA финального отчётного коммита проверяется отдельным прогоном. Статус задач T336–T340 остаётся review до проверки владельцем.

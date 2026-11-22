@@ -5,7 +5,7 @@ from urllib.parse import urlsplit
 from sqlalchemy.orm import Session
 
 from ..admissions import PublishedSnapshot, Source, SourceSnapshot
-from ..jobs import SourceJob
+from app.operations.source_job_models import SourceJob
 from .contracts import AdapterError
 from .publishing import QUARANTINE_CODES, binding_from_db, utc
 from .registry import PRODUCTION_REGISTRY

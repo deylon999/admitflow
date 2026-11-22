@@ -11,7 +11,8 @@ from sqlalchemy.orm import Session
 from app.admissions import Assessment,Campaign,CandidateEntry,CompetitionGroup,PublishedSnapshot,Source,SourceSnapshot,Subscription,University
 from app.core.schema_base import CamelModel
 from app.watchlist.models import BrowserSession,LookupBudget,OperationRecord
-from app.watchlist.archive import ArchiveDirection, CandidateFact, archive_directions, candidate_fact
+from app.watchlist.archive import ArchiveDirection, archive_directions
+from app.watchlist.candidate import CandidateFact, candidate_fact
 from app.watchlist.direction_budget import DirectionBudget,direction_budget
 from app.watchlist.idempotency import remember_operation
 from app.catalog.source_catalog import GroupRead,group_read
@@ -97,7 +98,7 @@ def available_source(db,source_id,registry):
 def install_source_routes(app,database,owner,write_owner,registry,key,clock):
     @app.get('/api/v1/sources/{source_id}/checks',response_model=list[SourceCheckRead])
     def checks(source_id:str=Path(min_length=1,max_length=36),db:Session=Depends(database)):
-        from app.jobs import SourceCheck
+        from app.operations.source_job_models import SourceCheck
         if db.get(Source,source_id) is None:raise HTTPException(404,'Источник не найден.')
         rows=db.scalars(select(SourceCheck).where(SourceCheck.source_id==source_id).order_by(SourceCheck.checked_at.desc(),SourceCheck.id.desc()).limit(20)).all()
         return [SourceCheckRead(id=row.id,checked_at=utc(row.checked_at),outcome=row.outcome,error_code=row.error_code,snapshot_id=row.snapshot_id) for row in rows]

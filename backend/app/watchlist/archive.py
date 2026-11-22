@@ -1,8 +1,6 @@
 """Read projections shared by archive, history and scenarios."""
 
 from datetime import datetime
-from decimal import Decimal
-from typing import Literal
 
 from sqlalchemy import select, tuple_
 
@@ -10,15 +8,7 @@ from app.admissions import Assessment, Campaign, CandidateEntry, CompetitionGrou
 from app.catalog.source_catalog import GroupRead, group_read
 from app.core.schema_base import CamelModel
 from app.core.time import utc
-
-
-class CandidateFact(CamelModel):
-    row_ref:str
-    official_rank:int
-    score:Decimal|None
-    consent:bool|None
-    priority:int|None
-    participation:Literal['unknown','active','withdrawn','enrolled']
+from app.watchlist.candidate import CandidateFact, candidate_fact
 
 
 class ArchiveDirection(CamelModel):
@@ -28,10 +18,6 @@ class ArchiveDirection(CamelModel):
     candidate:CandidateFact|None
     confirmed_snapshot_id:str|None
     notice:str|None=None
-
-
-def candidate_fact(row):
-    return CandidateFact(row_ref=row.row_ref,official_rank=row.official_rank,score=row.score,consent=row.consent,priority=row.priority,participation=row.participation)
 
 
 def archive_directions(db,values,registry):

@@ -8,14 +8,14 @@ from sqlalchemy.orm import Session
 from pg_support import isolated_postgres
 from app.admissions import CandidateEntry,SourceSnapshot
 from app.catalog.coverage import coverage
-from app.jobs import enqueue
-from app.migrations import upgrade_schema
+from app.operations.jobs import enqueue
+from app.operations.migrations import upgrade_schema
 from app.sources.audit import audit_source
 from app.sources.profile_registration import register_profile
 from app.sources.registry import runtime_registry
 from app.sources.storage import RawStore
 from app.sources.table_profiles import PROFILES
-from app.worker import run_once,bounded_fetch
+from app.operations.worker import run_once,bounded_fetch
 from scripts.data.review_bgu_scope import compare_rows
 
 

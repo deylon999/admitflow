@@ -13,7 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.catalog.accreditation_registry import load_registry
 from app.catalog.catalog_import import import_reviewed
-from app.database import Base, make_engine
+from app.core.database import Base, make_engine
 from app.catalog.national_catalog import load_catalog
 from app.catalog.product_catalog import universities
 
