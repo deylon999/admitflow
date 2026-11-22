@@ -7,7 +7,7 @@
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S239",
-  "resumeAction": "PR #44 is merged. T319 remains in review. Run python scripts/roadmap.py --task T319 for the archived p95 measurements, Linux limits, and exact-count and publication evidence.",
+  "resumeAction": "Run python scripts/roadmap.py --task T320 for the PR5 coverage evidence. Continue with newly confirmed 2027 programme documents. The recorded snapshot covers 2 of 785 heads. Full acceptance requires at least 471. PR #44 is merged and T319 remains in review.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

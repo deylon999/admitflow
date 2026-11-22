@@ -13,6 +13,8 @@ docker compose exec backend python -m app.catalog_import
 
 Для официальных документов используйте `python -m app.program_catalog_import --help` из `backend/`. Нужны применённая схема PostgreSQL, явный `DATABASE_URL`, сверенные оригиналы и приватный `--raw-store`. Возобновляемый `app.program_catalog_batch` делит `capture --year YEAR --work-dir DIR` и `publish --year YEAR --captured DIR --raw-store DIR`. Перед публикацией сверяйте источники, кампанию и результат. Захват сам по себе не меняет публичную выдачу.
 
+Для отчёта о программах используйте `python -m app.national_coverage --target-year 2027 --output coverage-2027.json`. Секция `programCoverage` показывает покрытие целевой кампании, архивные годы, частичные наборы, филиалы и версии опубликованных оригиналов. Статусы наблюдений относятся к конкретным страницам и датам проверки. Для воспроизведения импорта храните сверенные HTML и PDF под именами `<sha256>.html` и `<sha256>.pdf`.
+
 ## Миграции и диагностика
 
 [Backend-контейнер](../backend/Dockerfile) выполняет `python -m alembic upgrade head` перед Uvicorn. В production `AUTO_CREATE_SCHEMA=false`. Для ручной диагностики из `backend/` с заданным `DATABASE_URL`:
