@@ -1,4 +1,5 @@
 """Read facade for v3. Old catalog and tracker contracts remain independent."""
+from contextlib import contextmanager
 from datetime import datetime, time, timezone
 from functools import lru_cache
 import re
@@ -506,10 +507,15 @@ def paginate(rows, offset, limit):
 
 
 def install(app, database):
-    def catalog_database(db: Session = Depends(database)):
+    database_session = contextmanager(database)
+
+    def catalogue_snapshot(db):
         # Counts, page IDs, facts and links must see one publication snapshot.
         if db.get_bind().dialect.name == 'postgresql':
             db.connection(execution_options={'isolation_level': 'REPEATABLE READ'})
+
+    def catalog_database(db: Session = Depends(database)):
+        catalogue_snapshot(db)
         yield db
 
     @app.get('/api/v1/catalog/universities', response_model=UniversityPage)
@@ -544,10 +550,14 @@ def install(app, database):
         q: str = Query('', max_length=120), university_id: str = Query('', alias='universityId', max_length=80),
         year: int | None = Query(None, ge=2000, le=2100), subject: str = Query('', max_length=120),
         offset: int = Query(0, ge=0, le=100000), limit: int = Query(12, ge=1, le=50),
-        sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(catalog_database),
+        sort: Literal['name', 'name-desc'] = 'name',
     ):
-        page = program_page(db, q=q, university_id=university_id, year=year, subject=subject,
-                            offset=offset, limit=limit, sort=sort)
+        # Own the read session within the sync handler so checkout, querying
+        # and checkin stay on the same worker, before response serialization.
+        with database_session() as db:
+            catalogue_snapshot(db)
+            page = program_page(db, q=q, university_id=university_id, year=year, subject=subject,
+                                offset=offset, limit=limit, sort=sort)
         # program_page already constructs and validates the declared ProgramPage.
         # Emit that DTO directly without a second validation/thread-pool dispatch.
         return Response(page.model_dump_json(by_alias=True), media_type='application/json')
