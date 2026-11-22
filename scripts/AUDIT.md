@@ -28,11 +28,11 @@
 | Решение | Файл | Назначение и вход | Основные зависимости | Тесты, CI и Docker | Документы | Пути |
 | --- | --- | --- | --- | --- | --- | --- |
 | KEEP | `local_smoke.py` | `python scripts/local_smoke.py`, запуск стека и проверка сохранности | stdlib, Docker Compose, PostgreSQL, Alembic | `test_local_start`, CI тест, Docker host | README, catalog-runbook | ROOT, абсолютный Compose-файл |
-| KEEP | `roadmap.py` | `--check`, `--render`, карточки и handoff | stdlib, реестры docs | `test_roadmap`, CI CLI | AGENTS, RUNBOOK, docs/README | ROOT, `docs/` |
+| KEEP | `roadmap.py` | `--check`, `--render`, карточки и handoff | stdlib, реестры docs | `test_roadmap`, CI CLI | AGENTS, DEVELOPMENT | ROOT, `docs/` |
 | REFACTOR | `test_postgres.py` | `python scripts/test_postgres.py` или `python -m scripts.test_postgres`, запуск pytest в отдельном PG | `ops.postgres_runtime`, Docker, pytest | проверка CLI, миграции в CI используют собственный PG, Docker host | README, RUNBOOK | ROOT, subprocess из `backend/` |
 | KEEP | `check_auth_acceptance.py` | проверка отчётов JUnit и браузерных результатов | stdlib, JSON-матрица auth | `test_auth_acceptance`, CI CLI | KAN-214-PR6 | cwd, пути отчётов из аргументов |
 | KEEP | `requirements-dev.txt` | `pip install -r`, зависимости unit-тестов | requirements-report, pypdf | CI установка | WEEKLY_REPORT, карта scripts | включение файла рядом |
-| KEEP | `requirements-report.txt` | `pip install -r`, зависимости PDF | ReportLab, системный шрифт | `test_weekly_report` через requirements-dev | WEEKLY_REPORT | рядом с requirements-dev |
+| KEEP | `requirements-report.txt` | `pip install -r`, зависимости PDF | ReportLab, системный шрифт | `test_weekly_report` через requirements-dev | scripts/README | рядом с requirements-dev |
 
 ## MOVE в scripts/data
 
@@ -96,7 +96,7 @@ CI запускает валидатор Markdown. Остальные коман
 | Бэкап и проверка восстановления | `ops/backup_production.sh`, прежний Bash-файл | Bash, Compose, pg_dump/restore, tar, find | операторская команда, Docker host | RUNBOOK и cron | cwd для Compose, wrapper находит реализацию относительно себя |
 | Сигнал по диску, бэкапам и worker | `ops/ops_check.py` | stdlib, Compose exec и optional webhook | `test_ops_check`, CI тест, Docker host | RUNBOOK и cron | cwd для Compose, аргументы для путей |
 | Управление отдельным PostgreSQL | `ops/postgres_runtime.py`, импорт | stdlib, Docker, postgres:17-alpine | test_postgres и QA, Docker host | RUNBOOK | Docker-имя и порт независимы от cwd |
-| Еженедельный отчёт | `reports/weekly_report.py`, CLI или импорт | Git, TASKS.json, ReportLab для PDF | `test_weekly_report`, CI тест | WEEKLY_REPORT | ROOT для Git/TASKS, вывод пользовательский или временный |
+| Еженедельный отчёт | `reports/weekly_report.py`, CLI или импорт | Git, TASKS.json, ReportLab для PDF | `test_weekly_report`, CI тест | scripts/README | ROOT для Git/TASKS, вывод пользовательский или временный |
 
 ## KEEP для scripts/tests
 

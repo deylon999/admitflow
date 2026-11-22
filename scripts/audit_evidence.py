@@ -11,6 +11,12 @@ import subprocess
 from urllib.parse import unquote, urlsplit
 
 
+if __package__:
+    from .documentation_archive import ARCHIVE_REF
+else:
+    from documentation_archive import ARCHIVE_REF
+
+
 ROOT = Path(__file__).resolve().parents[1]
 EVIDENCE = 'docs/evidence'
 BASELINES = f'{EVIDENCE}/visual-baselines.sha256'
@@ -81,22 +87,9 @@ def evidence_links(source, content):
                 yield line_number, target
 
 
-def check_references(files, digests, read):
+def check_references(files, read):
     required = dict(REQUIRED)
-    required.update({
-        f'{EVIDENCE}/catalog-vertical-slice/{width}/{page}.png': 'frontend/tests/catalog.spec.ts'
-        for width in WIDTHS for page in CATALOG_PAGES
-    })
     problems = [f'{consumer} -> missing {path}' for path, consumer in required.items() if path not in files]
-
-    # The manifest was introduced after some refs this utility can audit.
-    if BASELINES in files:
-        for line in read(files[BASELINES][0]).decode('ascii').splitlines():
-            digest, separator, path = line.partition('  ')
-            if not separator or not re.fullmatch('[0-9a-f]{64}', digest):
-                problems.append(f'{BASELINES}: invalid SHA-256 entry {line!r}')
-            elif digests.get(path) != digest:
-                problems.append(f'{BASELINES}: absent or changed PNG {path}')
 
     directories = {str(parent) for path in files for parent in PurePosixPath(path).parents}
     link_count = 0
@@ -112,6 +105,23 @@ def check_references(files, digests, read):
     return problems
 
 
+def check_baselines(files, read):
+    """The optional pixel tests read their inputs from a Git ref."""
+    required = {
+        f'{EVIDENCE}/catalog-vertical-slice/{width}/{page}.png'
+        for width in WIDTHS for page in CATALOG_PAGES
+    }
+    problems = [f'frontend/tests/catalog.spec.ts -> missing {path}' for path in sorted(required - files.keys())]
+    if BASELINES in files:
+        for line in read(files[BASELINES][0]).decode('ascii').splitlines():
+            digest, separator, path = line.partition('  ')
+            if not separator or not re.fullmatch('[0-9a-f]{64}', digest):
+                problems.append(f'{BASELINES}: invalid SHA-256 entry {line!r}')
+            elif path not in files or sha256(read(files[path][0])).hexdigest() != digest:
+                problems.append(f'{BASELINES}: absent or changed PNG {path}')
+    return problems
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--ref', default='HEAD', help='commit, tag or tree to inspect (default: HEAD)')
@@ -124,12 +134,10 @@ def main():
     for path, (_, size) in sorted(evidence.items(), key=lambda item: -item[1][1])[:10]:
         print(f'  {size:>10,} bytes  {path}')
 
-    digests = {}
     groups = defaultdict(list)
     with read_blobs() as read:
         for path, (oid, _) in evidence.items():
             digest = sha256(read(oid)).hexdigest()
-            digests[path] = digest
             groups[digest].append(path)
         duplicates = [(digest, paths) for digest, paths in groups.items() if len(paths) > 1]
         extra_files = sum(len(paths) - 1 for _, paths in duplicates)
@@ -146,7 +154,11 @@ def main():
         for path in generated:
             print(f'  {path}')
 
-        problems = check_references(files, digests, read)
+        problems = check_references(files, read)
+        baseline_files = files
+        if f'{EVIDENCE}/catalog-vertical-slice/gallery.html' not in files:
+            baseline_files = tree(ARCHIVE_REF)
+        problems.extend(check_baselines(baseline_files, read))
     for problem in problems:
         print(problem)
     return 1 if problems else 0

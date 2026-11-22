@@ -44,7 +44,7 @@ URL = re.compile(r'https://monitoring\.miccedu\.ru/iam/(\d{4})/_vpo/inst\.php\?i
 SOURCE = 'https://monitoring.miccedu.ru/?m=vpo'
 DATA_YEAR_EVIDENCE = ('Edition 2025, institution page: «...заработной плате ... за 2024 год носят закрытый характер, '
                       'показатель «E.5. Заработная плата ППС» не публикуется». Edition E reports year E-1.')
-# The 2025 edition was published with update date 03.02.2026 (docs/catalog-coverage.md). Data for the campaign of
+# The 2025 edition was published with update date 03.02.2026. Data for the campaign of
 # year Y appears in edition Y+1, published in the following year, so a model for campaign T may use Y <= T-2.
 PUBLICATION_LAG_YEARS = 2
 

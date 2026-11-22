@@ -53,7 +53,7 @@ node scripts/verify-postgres.mjs
 сравнение маршрута, текста, API-запросов, ошибок и горизонтального переполнения.
 Этот режим проверяет изменения относительно Git-базы. Обычный вызов на 390/1440
 сохраняет требование нулевого переполнения.
-[Карта архитектуры и исходная база](../docs/frontend-architecture-audit.md).
+[Архитектура](../docs/ARCHITECTURE.md).
 
 QA_API_TARGET разрешает только локальный HTTP origin и не запускает SQLite.
 verify-postgres создаёт отдельную PostgreSQL-базу и временный API-контейнер,
@@ -67,12 +67,11 @@ backend с архивным fixture, не новая загрузка офици
 После visual run выполнить `node scripts/summarize-visual.mjs`;
 `npm run verify:source` проверяет неизменность исходных UI-файлов с явными
 исключениями подключения каталога, demo-подписей и удаления dead route map.
-Для проверки каталога по ранее зафиксированным PNG есть `QA_BASELINE_REF`.
+Для исторической проверки каталога укажите `QA_BASELINE_REF=2a7835f05fe39e4c1259d5d292f6ee99a160e0d5`.
+Тест читает PNG из этого Git-коммита.
 
 Статические HTML previews и самописный renderer удалены. Нет второго приложения,
 отдельного Python screenshot stack или неиспользуемого React/Babel-плагина.
 Все runtime страницы перечислены в [SCREEN_INVENTORY.md](SCREEN_INVENTORY.md).
-Запуск backend/metadata import: [runbook](../docs/catalog-runbook.md).
-Прежняя инструкция дизайн-кита сохранена в
-[архиве](../docs/archive/frontend-readme-before-foundation.md).
+Запуск backend/metadata import: [runbook](../docs/RUNBOOK.md).
 Общая карта служебных инструментов находится в [scripts/README.md](../scripts/README.md).

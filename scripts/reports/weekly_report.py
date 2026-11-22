@@ -33,9 +33,15 @@ import json
 from pathlib import Path
 import re
 import subprocess
+import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
+if not __package__:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.roadmap import evidence_location
+
 REPO_URL = 'https://github.com/deylon999/admitflow'
 KAN = re.compile(r'\bKAN-\d+\b')
 COLUMNS = ('Задача', 'Что', 'Статус', 'Срок', 'Доказательства', 'Ответственный')
@@ -91,6 +97,11 @@ def tasks(path=ROOT/'docs'/'TASKS.json'):
     return json.loads(path.read_text(encoding='utf-8'))['tasks']
 
 
+def format_evidence(path):
+    location = evidence_location(path)
+    return f'[{path}]({location})' if location != path else path
+
+
 def roadmap_rows(task_list, statuses, status_name):
     rows = []
     for task in task_list:
@@ -98,7 +109,8 @@ def roadmap_rows(task_list, statuses, status_name):
             continue
         what = task['title'] if not task.get('blockedReason') else f"{task['title']}. Причина: {task['blockedReason']}"
         rows.append(dict(task=', '.join(KAN.findall(task['title'])) or task['id'], what=what, status=status_name, deadline='',
-                         evidence=', '.join(e['path'] for e in task.get('evidence', [])) or '—', owner=task.get('owner') or ''))
+                         evidence=', '.join(format_evidence(e['path']) for e in task.get('evidence', [])) or '—',
+                         owner=task.get('owner') or ''))
     return rows
 
 

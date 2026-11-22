@@ -39,7 +39,7 @@ python scripts/roadmap.py --check
 | --- | --- | --- |
 | `python scripts/local_smoke.py` | `--output DIR`, `--no-build` | Docker Compose, PostgreSQL и собранный frontend. Делает backup, применяет миграции, проверяет синтетическую историю, пересоздаёт контейнеры. Выделенный проект для тестирования описан в runbook и аудите |
 | `python scripts/test_postgres.py` | `--python PYTHON`, список путей тестов относительно `backend/` | Docker, backend dev. Поднимает выделенный PostgreSQL и запускает pytest, затем останавливает свой контейнер |
-| `python scripts/roadmap.py --check` | `--context`, `--task ID`, `--log` и `--render` | Python stdlib и реестры docs. `--check` читает файлы, `--render` обновляет генерируемые Markdown |
+| `python scripts/roadmap.py --check` | `--context`, `--task ID`, `--log` и `--render` | Python stdlib и реестры docs. `--check` сверяет локальные и архивные доказательства, `--render` обновляет CHECKLIST.md |
 | `python scripts/check_auth_acceptance.py --help` | `--matrix`, `--backend-junit`, `--browser-results`, `--output` | Python stdlib, матрица auth и результаты реальных тестов. Пишет сводку в указанный файл |
 | `python scripts/check_doc_links.py` | `--help` | Python stdlib и Git. Проверяет локальные ссылки и якоря, выводит результат в stdout |
 | `python -m scripts.ops.ops_check` | `--compose`, `--backups`, `--disk` | Docker Compose. Читает состояние приложения и копий. `ALERT_WEBHOOK_URL` включает уведомления |
@@ -50,5 +50,4 @@ python scripts/roadmap.py --check
 [Все параметры и побочные эффекты](AUDIT.md#аргументы-host-утилит) описаны
 в аудите. Там же приведены [операторские CLI backend](AUDIT.md#backend-cli-и-запускаемые-тестовые-стенды)
 и [frontend-инструменты](AUDIT.md#аргументы-frontend-инструментов).
-Проверка evidence с SHA‑256 манифестом поставляется отдельно в
-[PR #33](https://github.com/deylon999/admitflow/pull/33).
+python scripts/audit_evidence.py проверяет входы тестов и исторический SHA‑256 манифест визуальных эталонов.
