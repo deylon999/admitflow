@@ -18,6 +18,7 @@ sys.path[:0]=[str(ROOT/'backend'),str(ROOT)]
 from bs4 import BeautifulSoup
 from app.national_catalog import valid_url
 from app.sources.navigation import admissions_link_score
+from scripts.documentation_archive import read_input
 from scripts.data.source_inventory import observe,target
 
 EXCLUDED=re.compile(r'/news/|/novost|/vacanc|/press/|/smi/|замещени|при[её]м на работу|конкурс науч|конкурс работ',re.I)
@@ -102,7 +103,8 @@ def main():
     parser.add_argument('--workers',type=int,choices=range(1,9),default=6)
     parser.add_argument('--per-institution',type=int,choices=range(1,4),default=2)
     args=parser.parse_args();args.cache.mkdir(parents=True,exist_ok=True)
-    data=json.loads(args.input.read_text(encoding='utf-8'));references={};summaries=[]
+    input_bytes = read_input(args.input, 'docs/sources/national-inventory.json')
+    data = json.loads(input_bytes);references={};summaries=[]
     # Earlier capped navigation can omit real admissions links behind news.
     # Refresh only capped homepages with the context-aware ranking.
     capped={r['requestedUrl'] for r in data['institutions'] if len(r.get('links',[]))==40}
@@ -130,7 +132,7 @@ def main():
             if (i+1)%25==0:print(f'admissions pages {i+1}/{len(requests)}',flush=True)
     for row in summaries:
         if row['selectedUrls']:row['status']='observed'
-    result=dict(format='admitflow-admissions-inventory-v1',sourceInventorySha256=hashlib.sha256(args.input.read_bytes()).hexdigest(),
+    result=dict(format='admitflow-admissions-inventory-v1',sourceInventorySha256=hashlib.sha256(input_bytes).hexdigest(),
         catalogSha256=data['catalogSha256'],checkedInstitutions=len(summaries),selectedInstitutions=sum(bool(r['selectedUrls']) for r in summaries),
         uniquePages=len(pages),fetchedPageTargets=len(requests),candidateTablePages=sum(bool(r.get('listEvidence')) for r in pages.values()),
         counts=dict(sorted(Counter(r['state'] for r in pages.values()).items())),supportedSourcesAdded=0,refreshedCappedHomepages=len(refreshed),

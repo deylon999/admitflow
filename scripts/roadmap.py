@@ -1,4 +1,4 @@
-"""Validate the persistent plan and render its human-readable task cards.
+"""Validate the persistent plan, show task cards and render the checklist.
 
 Uses only Python's standard library. Does not change task statuses or run app code.
 """
@@ -8,7 +8,14 @@ import json
 import re
 import sys
 from collections import Counter
+from functools import cache
 from pathlib import Path
+
+if __package__:
+    from .documentation_archive import ARCHIVE_REF, ARCHIVE_URL, archive_git
+else:
+    from documentation_archive import ARCHIVE_REF, ARCHIVE_URL, archive_git
+
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / 'docs'
@@ -24,6 +31,28 @@ def local_path(value):
     if not path.is_relative_to(ROOT):
         raise ValueError(f'Path outside project: {value}')
     return path
+
+
+@cache
+def archived_document_paths():
+    paths = archive_git('ls-tree', '-r', '-z', '--name-only', ARCHIVE_REF, '--', 'docs')
+    return set(paths.decode('utf-8').split('\0'))
+
+
+def archived_evidence(path):
+    return path.startswith('docs/') and path in archived_document_paths()
+
+
+def evidence_location(path):
+    if not local_path(path).is_file() and archived_evidence(path):
+        return f'{ARCHIVE_URL}/{path}'
+    return path
+
+
+def read_log():
+    history = archive_git('show', f'{ARCHIVE_REF}:docs/LOG.md').decode('utf-8')
+    recent = DOCS / 'LOG.md'
+    return history.rstrip() + '\n\n' + (recent.read_text(encoding='utf-8') if recent.is_file() else '')
 
 
 def validate(data, state):
@@ -63,7 +92,8 @@ def validate(data, state):
             errors.append(f'{task_id}: done requires evidence')
         for item in task.get('evidence', []):
             try:
-                if not item.get('note') or not local_path(item['path']).is_file():
+                path = item['path']
+                if not item.get('note') or not (local_path(path).is_file() or archived_evidence(path)):
                     errors.append(f'{task_id}: missing evidence file or note')
             except (ValueError, KeyError) as error:
                 errors.append(f'{task_id}: invalid evidence: {error}')
@@ -118,38 +148,13 @@ def validate(data, state):
     return errors
 
 
-def render(data):
-    lines = ['# Карточки задач', '',
-             'Генерируется из [TASKS.json](TASKS.json) командой `python scripts/roadmap.py --render`. Не редактировать вручную.', '',
-             'Общие требования для каждой задачи: [Definition of Done](QUALITY.md), [правила расчёта](DATA_RULES.md), [протокол работы](RUNBOOK.md).', '',
-             'Пути результатов ниже — планируемые файлы; их наличие и готовность подтверждаются статусом и evidence, а не этой таблицей.', '']
-    for phase in data['phases']:
-        lines += [f'## {phase["id"]}. {phase["title"]}', '', f'Плановый интервал: {phase["window"]}.', '']
-        for task in data['tasks']:
-            if task['phase'] != phase['id']:
-                continue
-            lines += [f'### {task["id"]}. {task["title"]}', '',
-                      f'**Статус:** `{task["status"]}` · **Приоритет:** {task["priority"]} · **Размер:** {task["size"]}.', '',
-                      '**Зависимости:** ' + (', '.join(task['dependsOn']) or 'нет') + '.', '',
-                      '**Результаты/файлы:** ' + '; '.join(f'`{path}`' for path in task['deliverables']) + '.', '', '**Шаги:**', '']
-            lines += [f'{i}. {step}.' for i, step in enumerate(task['steps'], 1)]
-            lines += ['', '**Критерии закрытия:**', '']
-            lines += [f'- {item}.' for item in task['acceptance']]
-            lines += ['- Общая Definition of Done выполнена; в LOG записаны результат проверки и её ограничения.', '', '**Доказательства:**', '']
-            lines += [f'- [{item["path"]}](../{item["path"]}) — {item["note"]}' for item in task['evidence']] or ['Пока нет.']
-            if task.get('blockedReason'):
-                lines += ['', '**Причина блокировки/переноса:** ' + task['blockedReason']]
-            lines += ['']
-    return '\n'.join(lines).rstrip() + '\n'
-
-
 def render_checklist(data):
     done = sum(task['status'] == 'done' for task in data['tasks'])
     lines = ['# Чек-лист AdmitFlow', '',
              '`[x]` — сделано и проверено. `[ ]` — ещё не завершено.', '',
              f'**Закрыто {done} из {len(data["tasks"])} задач.** Это счёт задач, не процент готовности продукта.', '',
              'Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.', '',
-             'Подробности и доказательства: [карточки задач](docs/TASKS.md). '
+             'Карточки и доказательства: python scripts/roadmap.py --task ID. '
              'Файл обновляется из `docs/TASKS.json` командой `python scripts/roadmap.py --render`.', '']
     labels = {'in_progress': ' — **в работе**', 'review': ' — **нужна проверка / завершение**',
               'blocked': ' — **заблокировано**', 'deferred': ' — отложено'}
@@ -176,33 +181,6 @@ def check_links():
     return errors
 
 
-def render_state(state):
-    """A projection of STATE.json, never a second editable session record."""
-    lines = ['# Актуальная передача контекста', '',
-             'Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.',
-             'Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.', '',
-             f'Дата: {state["updatedAt"]}. Последняя сессия: {state["lastSession"]}.', '',
-             '## Продолжение', '',
-             f'- Текущая задача: {state.get("currentTask") or "нет"}.',
-             f'- Следующая задача: {state.get("nextTask") or "не назначена"}.',
-             '- Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).',
-             '- Карточка и прямые зависимости: `python scripts/roadmap.py --context`.', '',
-             state['resumeAction'], '', '## Последняя завершённая работа', '']
-    lines.extend(f'- {item}' for item in state.get('lastCompleted', []))
-    lines += ['', '## Ограничения', '']
-    lines.extend(f'- {item}' for item in state.get('externalConstraints', []))
-    lines += ['', '## Проверенное окружение', '']
-    lines.extend(f'- {item}' for item in state.get('environment', []))
-    lines += ['', '## Готовность к выпуску', '',
-              'Принятые gates в STATE.json: ' + (', '.join(state.get('completedGates', [])) or 'не зафиксированы') + '.',
-              'Технические результаты и внешние условия — [RELEASE_GATES.md](RELEASE_GATES.md).',
-              'Завершение задач не означает автоматическую приёмку gate.', '',
-              '## Чтение по задаче', '',
-              'Карта документов — [README.md](README.md). Полный TASKS, журнал и исследования',
-              'источников не входят в стартовый контекст. Старые передачи — [архив](archive/state-before-optimization.md).']
-    return '\n'.join(lines).rstrip() + '\n'
-
-
 def render_task(data, task_id):
     by_id = {task['id']: task for task in data['tasks']}
     if task_id not in by_id:
@@ -213,10 +191,11 @@ def render_task(data, task_id):
     lines.extend(f'- {item}' for item in task['steps'])
     lines += ['', 'Acceptance:']
     lines.extend(f'- {item}' for item in task['acceptance'])
-    lines += ['- Общая Definition of Done: docs/QUALITY.md.', '', 'Deliverables:']
-    lines.extend(f'- {item}' for item in task['deliverables'])
+    lines += ['- Общая Definition of Done: docs/DEVELOPMENT.md#критерии-проверки.', '', 'Deliverables:']
+    lines.extend(f'- {evidence_location(item)}' if item.startswith('docs/') else f'- {item}'
+                 for item in task['deliverables'])
     lines += ['', 'Evidence:']
-    lines.extend(f'- {item["path"]}: {item["note"]}' for item in task['evidence'])
+    lines.extend(f'- {evidence_location(item["path"])}: {item["note"]}' for item in task['evidence'])
     if not task['evidence']:
         lines.append('- none')
     if task.get('blockedReason'):
@@ -225,7 +204,7 @@ def render_task(data, task_id):
     for dependency in task['dependsOn']:
         parent = by_id[dependency]
         lines.append(f'- {dependency} [{parent["status"]}] {parent["title"]}')
-        lines.extend(f'  Evidence: {item["path"]}: {item["note"]}' for item in parent['evidence'])
+        lines.extend(f'  Evidence: {evidence_location(item["path"])}: {item["note"]}' for item in parent['evidence'])
     if not task['dependsOn']:
         lines.append('- none')
     return '\n'.join(lines) + '\n'
@@ -293,35 +272,26 @@ def main():
     if errors:
         print('\n'.join('ERROR: ' + error for error in errors))
         return 1
-    expected = render(data)
-    target = DOCS / 'TASKS.md'
     checklist = ROOT / 'CHECKLIST.md'
     expected_checklist = render_checklist(data)
-    state_target = DOCS / 'STATE.md'
-    expected_state = render_state(state)
     if args.render:
-        target.write_text(expected, encoding='utf-8')
         checklist.write_text(expected_checklist, encoding='utf-8')
-        state_target.write_text(expected_state, encoding='utf-8')
-        print('Rendered docs/TASKS.md')
         print('Rendered CHECKLIST.md')
-        print('Rendered docs/STATE.md')
     if args.check or not (args.render or args.next or args.self_test or args.context or args.task or args.log is not None):
         errors = check_links()
-        if not target.exists() or target.read_text(encoding='utf-8') != expected:
-            errors.append('TASKS.md is stale or missing; run --render')
         if not checklist.exists() or checklist.read_text(encoding='utf-8') != expected_checklist:
             errors.append('CHECKLIST.md is stale or missing; run --render')
-        if not state_target.exists() or state_target.read_text(encoding='utf-8') != expected_state:
-            errors.append('STATE.md is stale or missing; run --render')
-        if state['lastSession'] not in (DOCS / 'LOG.md').read_text(encoding='utf-8'):
-            errors.append('STATE.lastSession is missing from LOG.md')
+        try:
+            if state['lastSession'] not in read_log():
+                errors.append('STATE.lastSession is missing from the session log')
+        except ValueError as error:
+            errors.append(str(error))
         if errors:
             print('\n'.join('ERROR: ' + error for error in errors))
             return 1
         counts = Counter(task['status'] for task in data['tasks'])
         print(f'Plan valid: {len(data["tasks"])} tasks, {len(data["gates"])} gates; statuses={dict(counts)}')
-        print('Structure and evidence-file existence checked; correctness of application tests is not inferred.')
+        print('Structure and evidence paths checked against the checkout and documentation archive.')
     if args.next:
         by_id = {task['id']: task for task in data['tasks']}
         print(f'Current: {state["currentTask"] or "none"}; next: {state["nextTask"]}')
@@ -340,7 +310,7 @@ def main():
         if selected:
             print(render_task(data, selected))
         if args.log is not None:
-            print(select_log((DOCS / 'LOG.md').read_text(encoding='utf-8'), args.log, args.entries))
+            print(select_log(read_log(), args.log, args.entries))
     except ValueError as error:
         parser.error(str(error))
     return 0
