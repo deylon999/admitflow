@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -9801,20 +9801,37 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "in_progress",
       "dependsOn": [
         "T318"
       ],
       "deliverables": [
-        "docs/KAN-218-ARCHITECTURE.md"
+        "docs/KAN-218-ARCHITECTURE.md",
+        "docs/KAN-218-PR4.md",
+        "docs/KAN-218-PR4-READ-MODEL.md",
+        "docs/KAN-218-READ-PROJECTION.md"
       ],
       "steps": [
         "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
       ],
       "acceptance": [
-        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
+        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved.",
+        "Owner2026-11-22: compare SQL/indexes/atomic confirmed read projection;100k current programmes,50+ warmed measurements per scenario and10–50 concurrent requests;PG CPU/memory/temp/buffers; p95 first<200ms university+year<150ms code<300ms deep<500ms, or measured objective limitation and alternatives. Adapt after backend38–42, preserve all correctness and API semantics, exact count, snapshot consistency. No self merge."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR4.md",
+          "note": "Measured SQL optimization on b19dd7a; eight full responses equal baseline, bounded ORM/memory, no DTO/migration/frontend changes. Local 138pass plus one existing Windows resource dependency failure. Exact final Linux CI in PR. Local 500ms target remains unmet for broad/deep cases; owner review required."
+        },
+        {
+          "path": "docs/evidence/kan-218-pr4-after.json",
+          "note": "100000 synthetic current programmes,200000 old facts,785heads/215branches,9 samples each. p95 first1196→661ms, university1174→259ms; peak1.77→1.49MB, SQL8→6. Synthetic data is not national coverage."
+        },
+        {
+          "path": "docs/KAN-218-READ-PROJECTION.md",
+          "note": "Independent full-backend adaptation; new0015 synchronous derived read model with exact source fallback. Integrity and migration checks pass. Performance/load, Linux CI and owner acceptance remain open."
+        }
+      ],
       "blockedReason": null
     },
     {

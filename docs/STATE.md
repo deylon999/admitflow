@@ -3,16 +3,16 @@
 Генерируется из [STATE.json](STATE.json): `python scripts/roadmap.py --render`.
 Не редактировать вручную. История — [LOG.md](LOG.md); выборка — `--log --entries 1`.
 
-Дата: 2026-11-22. Последняя сессия: S244.
+Дата: 2026-11-22. Последняя сессия: S239.
 
 ## Продолжение
 
-- Текущая задача: нет.
-- Следующая задача: T319.
+- Текущая задача: T319.
+- Следующая задача: не назначена.
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Backend organization PRs #38–#42 await owner review in dependency order. All verification data and initial Checks are in the final report. The next independent roadmap task is T319.
+Independent feat/kan-218-read-model based on full backend9ad69c6, includes PR43 history. Owner requests separate adaptation; do not self merge. New0015 transactional projection implemented, integrity/native migration tests pass. Next finalize comparative source/index/projection 50+ samples/concurrency metrics, production regressions/Linux CI; PR43 stays draft.
 
 ## Последняя завершённая работа
 
@@ -42,7 +42,7 @@ Backend organization PRs #38–#42 await owner review in dependency order. All v
 
 ## Проверенное окружение
 
-- S244: disposable PostgreSQL 17.11, 1278 full final pytest passes, 387 native cases, one inherited external skip. Browser 387 plus native 6/6/6 and 32 automated auth controls. All five PRs published as a stack.
+- S239: PG17.11 scale benchmark clean b19dd7a,100k current/200k old facts, all8 response hashes equal baseline; firstp95 661ms, university259ms, Python1.49MB. Native selection138pass/1 Windows resource import failure; full Linux CI in PR. Official-original import/API replay passed, public pilot2027 remains1/785.
 - S233: full frontend architecture with 387 Chromium tests, 10 catalogue repeat checks, 3 lifecycle tests and 490 exact main comparisons per stage. Five inherited mobile overflows documented.
 - S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.
 - S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.
@@ -56,6 +56,7 @@ Backend organization PRs #38–#42 await owner review in dependency order. All v
 - Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.
 - Visual124 Live/Demo pairs at390/1440:123 exact;15px maxRGBdelta1 /programs border variance, repeats/raw images preserved. Identical frontend/src tree0b245e8e108d5c1a0b93e9a8290969bd6321c021; no CSS/product code/baseline changes.
 - Owned local PG container admitflow-kan214-pr5-db stopped after tests; test-only volume preserved, random schema/private mailbox/runtime processes cleaned. User data and other services untouched.
+- S244: disposable PostgreSQL 17.11, 1278 full final pytest passes, 387 native cases, one inherited external skip. Browser 387 plus native 6/6/6 and 32 automated auth controls. All five PRs published as a stack.
 
 ## Готовность к выпуску
 

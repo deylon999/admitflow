@@ -328,7 +328,7 @@
 - [x] T316 KAN-218 PR1: PostgreSQL regression and review handoff
 - [x] T317 KAN-218 PR2: verified official program import and stable API publication
 - [x] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
-- [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
+- [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination — **в работе**
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
 - [x] T322 KAN-218 PR2: select official documents and capture bounded source evidence
