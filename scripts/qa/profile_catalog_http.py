@@ -65,7 +65,7 @@ class ProfileHeaders:
         if scope.get('path') != PATH:
             return await self.app(scope, receive, send)
         timings = dict(workerPid=os.getpid(), sqlMs=0, sqlCalls=0, checkoutMs=0, poolQueueMs=0, dtoMs=0,
-                       serializeMs=0, endpointMs=0)
+                       serializeMs=0, dtoJsonMs=0, endpointMs=0)
         token = request_timings.set(timings)
         start = perf_counter()
 
@@ -106,6 +106,7 @@ def application():
     for model in (catalog.ProgramPage, catalog.CatalogProgram, catalog.CatalogCompetitionGroup,
                   catalog.Provenance, catalog.ExamRequirements):
         model.__init__ = timed(model.__init__, 'dtoMs')
+    catalog.ProgramPage.model_dump_json = timed(catalog.ProgramPage.model_dump_json, 'dtoJsonMs')
     catalog.program_page = timed(catalog.program_page, 'endpointMs')
     serialize = fastapi.routing.serialize_response
 
@@ -190,8 +191,8 @@ def cases(meta):
                 middle={'year': 2027, 'offset': fixture['targetYearPrograms'] // 2})
 
 
-def digest(model):
-    payload = json.dumps(model.model_dump(mode='json'), ensure_ascii=False, sort_keys=True)
+def digest(value):
+    payload = json.dumps(value, ensure_ascii=False, sort_keys=True)
     return hashlib.sha256(payload.encode()).hexdigest()
 
 
@@ -260,6 +261,7 @@ def main():
                 params = cases(meta)[name]
                 with Session(engine) as db:
                     expected = catalog.source_program_page(db, **params)
+                expected_hash = digest(expected.model_dump(mode='json', by_alias=True))
                 http_params = {('universityId' if key == 'university_id' else key): value for key,value in params.items()}
                 warmups = warmup_errors = 0
                 while warmups < 10:
@@ -271,10 +273,10 @@ def main():
                             raise
                         continue
                     response.raise_for_status()
-                    assert digest(catalog.ProgramPage.model_validate(response.json())) == digest(expected), name
+                    assert digest(response.json()) == expected_hash, name
                     warmups += 1
                 result = load_test(client, http_params, 50, engine, runtime, 10)
-                result['responseSha256'] = digest(expected)
+                result['responseSha256'] = expected_hash
                 result['warmupTransportErrors'] = warmup_errors
                 if args.profile:
                     profiles = [row['profile'] for row in result['samples'] if 'profile' in row]

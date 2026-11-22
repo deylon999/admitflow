@@ -220,6 +220,23 @@ def test_facets_survive_empty_filtered_and_deep_pages(client, postgres_engine, s
     assert page['years']==[2027] and page['total']==0
 
 
+def test_programme_response_json_matches_independent_source_dto(client, postgres_engine, store):
+    from app.catalog.product_catalog import source_program_page
+
+    import_reviewed(postgres_engine)
+    publish(postgres_engine, store)
+    for params in ({}, {'year': 2026}, {'year': 2027, 'university_id': 'miccedu-1766'},
+                   {'q': '09.03.04'}, {'q': 'Example', 'sort': 'name-desc'},
+                   {'year': 2027, 'subject': 'unknown'}, {'offset': 100000}):
+        with Session(postgres_engine) as db:
+            expected = source_program_page(db, **params).model_dump(mode='json', by_alias=True)
+        wire = {('universityId' if key == 'university_id' else key): value for key,value in params.items()}
+        response = client.get(BASE+'/programs', params=wire)
+        assert response.status_code == 200
+        assert response.headers['content-type'] == 'application/json'
+        assert response.json() == expected, params
+
+
 def test_casefold_literal_search_and_university_token_aggregation(client,postgres_engine,store):
     body,review=source()
     title='Straße ΟΣ Ёж 100%_ /'

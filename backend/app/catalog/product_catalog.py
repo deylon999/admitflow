@@ -4,7 +4,7 @@ from functools import lru_cache
 import re
 from typing import Literal
 
-from fastapi import Depends, HTTPException, Query
+from fastapi import Depends, HTTPException, Query, Response
 from sqlalchemy import BigInteger, Integer, String, bindparam, case, cast, exists, func, inspect, literal, null, select, true, tuple_, union_all
 from sqlalchemy.orm import Session, load_only
 
@@ -546,8 +546,11 @@ def install(app, database):
         offset: int = Query(0, ge=0, le=100000), limit: int = Query(12, ge=1, le=50),
         sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(catalog_database),
     ):
-        return program_page(db, q=q, university_id=university_id, year=year, subject=subject,
+        page = program_page(db, q=q, university_id=university_id, year=year, subject=subject,
                             offset=offset, limit=limit, sort=sort)
+        # program_page already constructs and validates the declared ProgramPage.
+        # Emit that DTO directly without a second validation/thread-pool dispatch.
+        return Response(page.model_dump_json(by_alias=True), media_type='application/json')
 
     @app.get('/api/v1/catalog/programs/{program_id}', response_model=CatalogProgram)
     def program_detail(program_id: str, db: Session = Depends(catalog_database)):
