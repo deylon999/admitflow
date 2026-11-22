@@ -6,7 +6,7 @@ from typing import Literal
 
 from fastapi import Depends, HTTPException, Query
 from sqlalchemy import BigInteger, Integer, String, bindparam, case, cast, exists, func, inspect, literal, null, select, true, tuple_, union_all
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, load_only
 
 from ..admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
 from .catalog_import import REVIEWED_IDS, expected_fields, reviewed_profiles
@@ -25,6 +25,19 @@ from .program_catalog_models import (
 )
 
 
+@lru_cache(maxsize=2)
+def legacy_rows_statement(joined_links):
+    query = (select(CompetitionGroup, Campaign, University)
+                      .join(Campaign, Campaign.id == CompetitionGroup.campaign_id)
+                      .join(University, University.id == Campaign.university_id)
+                      .where(CompetitionGroup.id.in_(bindparam('reviewed_group_ids', expanding=True))))
+    if joined_links:
+        linked_ids = (select(func.array_agg(CompetitionGroupProgram.program_id))
+                      .where(CompetitionGroupProgram.group_id == CompetitionGroup.id).scalar_subquery())
+        query = query.add_columns(linked_ids)
+    return query
+
+
 def legacy_programs(db, *, with_program_links=True, university_id='', joined_links=False):
     """The bounded, independently reviewed archive slice retains all old values."""
     profiles = {p.group_id: p for p in reviewed_profiles()
@@ -32,15 +45,7 @@ def legacy_programs(db, *, with_program_links=True, university_id='', joined_lin
     if not profiles:
         return []
     institutions = load_catalog().by_id
-    query = (select(CompetitionGroup, Campaign, University)
-                      .join(Campaign, Campaign.id == CompetitionGroup.campaign_id)
-                      .join(University, University.id == Campaign.university_id)
-                      .where(CompetitionGroup.id.in_(profiles)))
-    if joined_links:
-        linked_ids = (select(func.array_agg(CompetitionGroupProgram.program_id))
-                      .where(CompetitionGroupProgram.group_id == CompetitionGroup.id).scalar_subquery())
-        query = query.add_columns(linked_ids)
-    rows = db.execute(query).all()
+    rows = db.execute(legacy_rows_statement(joined_links), {'reviewed_group_ids': list(profiles)}).all()
     result = []
     links = {}
     if with_program_links and not joined_links:
@@ -205,20 +210,23 @@ def first_page_statement(by_university, by_year, by_code, sort, archive_size):
     code = bindparam('catalog_code', type_=String) if by_code else None
     limit = bindparam('catalog_limit', type_=Integer)
     scope = select(ReadScope.scope_hash).where(ReadScope.id == 1).scalar_subquery()
-    years = select(ReadTotal.year).distinct()
-    if by_university:
-        years = years.where(ReadTotal.university_id == university_id)
-    years_scope = years.subquery()
-    table = CodeTotal if by_code else ReadTotal
-    counts = select(func.coalesce(func.sum(table.program_count), 0))
-    if by_year:
-        counts = counts.where(table.year == year)
-    if by_university:
-        counts = counts.where(table.university_id == university_id)
     if by_code:
-        counts = counts.where(CodeTotal.code == code)
-    meta = select(scope.label('policy_hash'), counts.scalar_subquery().label('total'),
-                  select(func.array_agg(years_scope.c.year)).scalar_subquery().label('years')).cte('catalog_meta')
+        counts = select(func.coalesce(func.sum(CodeTotal.program_count), 0)).where(CodeTotal.code == code)
+        if by_year:
+            counts = counts.where(CodeTotal.year == year)
+        if by_university:
+            counts = counts.where(CodeTotal.university_id == university_id)
+        total = counts.scalar_subquery()
+    else:
+        amount = func.sum(ReadTotal.program_count)
+        if by_year:
+            amount = amount.filter(ReadTotal.year == year)
+        total = func.coalesce(amount, 0)
+    metadata = select(scope.label('policy_hash'), total.label('total'),
+                      func.array_agg(ReadTotal.year.distinct()).label('years')).select_from(ReadTotal)
+    if by_university:
+        metadata = metadata.where(ReadTotal.university_id == university_id)
+    meta = metadata.cte('catalog_meta')
 
     def ordered(columns):
         return ((columns.sort_text.desc(), columns.id.desc()) if sort == 'name-desc'
@@ -249,6 +257,11 @@ def first_page_statement(by_university, by_year, by_code, sort, archive_size):
         .where(GroupFact.revision_id == page.c.rid, GroupFact.program_id == page.c.pid).scalar_subquery())
     return (select(meta.c.policy_hash, meta.c.total, meta.c.years, page.c.id,
         Fact, Revision, Campaign, groups)
+        .options(load_only(Fact.public_id, Fact.program_id, Fact.title, Fact.code, Fact.study_form,
+                           Fact.funding, Fact.category, Fact.seats, raiseload=True),
+                 load_only(Revision.original_url, Revision.checked_at, Revision.original_sha256,
+                           Revision.university_name, raiseload=True),
+                 load_only(Campaign.university_id, Campaign.year, Campaign.level, raiseload=True))
         .select_from(meta.outerjoin(page, true()))
         .outerjoin(Fact, (Fact.revision_id == page.c.rid) & (Fact.program_id == page.c.pid))
         .outerjoin(Revision, Revision.id == page.c.rid)
