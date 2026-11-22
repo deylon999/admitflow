@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from ..admissions import SourceSnapshot
 from ..program_catalog_models import ProgramCatalogRevision
-from ..config import Settings
+from app.core.config import Settings
 from ..database import make_engine
 from .storage import RawStore
 

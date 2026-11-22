@@ -287,7 +287,7 @@ def require_import_schema(engine):
 
 
 def main(argv=None):
-    from .config import Settings
+    from app.core.config import Settings
     from .database import make_engine
     from .sources.storage import RawStore
     parser = argparse.ArgumentParser(description=__doc__)

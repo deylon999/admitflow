@@ -4,7 +4,7 @@ from typing import Annotated, Literal
 from pydantic import AfterValidator, Field, SecretStr
 
 from .auth.account_security import normalize_email, validate_password
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 
 
 def registration_password(value: SecretStr):

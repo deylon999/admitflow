@@ -1691,3 +1691,7 @@ PR #36 обновлён от main 8ff6cf4 после слияния PR #33 и #3
 
 PR #37 обновлён от main 9f6a1d4 после слияния demo PR #36.
 Сохранены запись S233, результаты тестирования и история main.
+
+## S239 — 2026-11-22 — Backend organization: audit, baseline and core
+
+Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.

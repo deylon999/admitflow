@@ -2,7 +2,7 @@
 
 `[x]` — сделано и проверено. `[ ]` — ещё не завершено.
 
-**Закрыто 297 из 331 задач.** Это счёт задач, не процент готовности продукта.
+**Закрыто 297 из 336 задач.** Это счёт задач, не процент готовности продукта.
 
 Частично реализованные пункты остаются без галочки. Последний раздел относится к развитию после MVP.
 
@@ -345,6 +345,11 @@
 - [x] T333 Backend architecture PR 3: verify behavior and document the results
 - [x] T334 Backend architecture PR 3: publish and verify hosted checks
 - [ ] T335 Frontend architecture PR 4: complete feature and app boundaries — **нужна проверка / завершение**
+- [ ] T336 Backend organization: audit, baseline and core — **нужна проверка / завершение**
+- [ ] T337 Backend organization: catalog
+- [ ] T338 Backend organization: competitions
+- [ ] T339 Backend organization: watchlist
+- [ ] T340 Backend organization: operations and final verification
 
 ## Резерв и выпуск
 

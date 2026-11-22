@@ -5,7 +5,7 @@ import re
 from pydantic import AfterValidator, AwareDatetime, BeforeValidator, Field, HttpUrl, field_validator
 
 from .calculation import CalculationInput, CalculationResult
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 
 
 def manual_timestamp(value):

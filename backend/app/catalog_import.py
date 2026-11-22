@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from .admissions import Campaign, CompetitionGroup, University
 from .catalog_lock import lock_catalog
-from .config import Settings
+from app.core.config import Settings
 from .database import make_engine
 from .sources.table_profiles import PROFILES
 

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from ..admissions import Source,SourceOperation
-from ..config import Settings
+from app.core.config import Settings
 from ..database import make_engine
 from ..jobs import SourceJob, disable, enqueue
 from .contracts import AdapterError

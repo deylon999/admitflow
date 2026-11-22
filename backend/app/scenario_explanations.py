@@ -1,6 +1,6 @@
 """Versioned templates read only verified scenario facts;no generated percentages."""
 from typing import Literal
-from .schema_base import CamelModel
+from app.core.schema_base import CamelModel
 from .scenarios import ScenarioResult
 
 
