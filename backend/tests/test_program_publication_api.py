@@ -136,22 +136,28 @@ def test_replacement_and_rejected_source_keep_history_and_public_ids(client, pos
     assert client.get(BASE+'/programs/'+before['id']).json() == after
 
 
-def test_one_response_uses_one_postgresql_publication_snapshot(client, postgres_engine, store, monkeypatch):
+@pytest.mark.parametrize('query', ['', '?q=Example'])
+def test_one_response_uses_one_postgresql_publication_snapshot(client, postgres_engine, store, monkeypatch, query):
     import app.product_catalog as facade
     body, review, _ = publish(postgres_engine, store)
-    before = client.get(BASE+'/programs').json()
-    original = facade.hydrate_programs
+    before = client.get(BASE+'/programs'+query).json()
+    # The combined first page reads the archive and then selects its canonical
+    # page in one statement. Ordinary literal search still hydrates separately.
+    boundary = 'hydrate_programs' if query else 'legacy_programs'
+    original = getattr(facade, boundary)
     new_body, changed = changed_source(body, review)
     fired = False
-    def concurrent_publish(db, keys, legacy):
+    def concurrent_publish(db, *args, **kwargs):
         nonlocal fired
+        outcome = original(db, *args, **kwargs) if not query else None
         if not fired:
             fired = True
             assert db.connection().get_isolation_level() == 'REPEATABLE READ'
             assert import_document(postgres_engine, changed, new_body, store)['outcome'] == 'published'
-        return original(db, keys, legacy)
-    monkeypatch.setattr(facade, 'hydrate_programs', concurrent_publish)
-    assert client.get(BASE+'/programs').json() == before
+        return original(db, *args, **kwargs) if query else outcome
+    monkeypatch.setattr(facade, boundary, concurrent_publish)
+    assert client.get(BASE+'/programs'+query).json() == before
+    assert fired
     assert client.get(BASE+'/programs?q=Reviewed').json()['total'] == 1
 
 

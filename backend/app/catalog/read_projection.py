@@ -40,8 +40,16 @@ def statement(db):
     if db.get_bind().dialect.name!='postgresql':
         return None
     scope_hash=db.scalar(select(ReadScope.scope_hash).where(ReadScope.id==1))
-    if scope_hash!=_fingerprint(*_inputs()):
+    if not matches_policy(scope_hash):
         return None
+    return fact_statement()
+
+
+def matches_policy(scope_hash):
+    return scope_hash == _fingerprint(*_inputs())
+
+
+def fact_statement():
     return select(ReadFact.public_id.label('id'),ReadFact.program_id.label('pid'),ReadFact.revision_id.label('rid'),
         ReadFact.university_id,ReadFact.year,ReadFact.sort_text,ReadFact.search_text).where(ReadFact.eligible)
 

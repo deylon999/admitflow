@@ -166,3 +166,13 @@ class ProgramCatalogReadTotal(Base):
     university_id: Mapped[str] = mapped_column(ForeignKey('universities.id',ondelete='RESTRICT'),primary_key=True)
     year: Mapped[int] = mapped_column(Integer,primary_key=True)
     program_count: Mapped[int] = mapped_column(BigInteger)
+
+
+class ProgramCatalogReadCodeTotal(Base):
+    """Exact substring counts for a single ASCII `dd.dd.dd` search token."""
+    __tablename__ = 'program_catalog_read_code_totals'
+    __table_args__ = (CheckConstraint('program_count >= 0', name='program_read_code_total_nonnegative'),)
+    code: Mapped[str] = mapped_column(String(8), primary_key=True)
+    year: Mapped[int] = mapped_column(Integer, primary_key=True)
+    university_id: Mapped[str] = mapped_column(ForeignKey('universities.id', ondelete='RESTRICT'), primary_key=True)
+    program_count: Mapped[int] = mapped_column(BigInteger)

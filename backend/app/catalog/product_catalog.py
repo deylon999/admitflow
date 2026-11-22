@@ -4,7 +4,7 @@ import re
 from typing import Literal
 
 from fastapi import Depends, HTTPException, Query
-from sqlalchemy import BigInteger, Integer, case, cast, exists, func, inspect, literal, null, select, tuple_, union_all
+from sqlalchemy import BigInteger, Integer, case, cast, exists, func, inspect, literal, null, select, true, tuple_, union_all
 from sqlalchemy.orm import Session
 
 from ..admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
@@ -19,24 +19,34 @@ from .product_catalog_schemas import (
 from .university_names import choose_name
 from .program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
 from . import read_projection
-from .program_catalog_models import ProgramCatalogReadTotal as ReadTotal
+from .program_catalog_models import (
+    ProgramCatalogReadCodeTotal as CodeTotal, ProgramCatalogReadScope as ReadScope, ProgramCatalogReadTotal as ReadTotal,
+)
 
 
-def legacy_programs(db, *, with_program_links=True):
+def legacy_programs(db, *, with_program_links=True, university_id='', joined_links=False):
     """The bounded, independently reviewed archive slice retains all old values."""
-    profiles = {p.group_id: p for p in reviewed_profiles()}
+    profiles = {p.group_id: p for p in reviewed_profiles()
+                if not university_id or dict(p.catalog)['university_id'] == university_id}
+    if not profiles:
+        return []
     institutions = {r.id: r for r in load_catalog().institutions}
-    rows = db.execute(select(CompetitionGroup, Campaign, University)
+    query = (select(CompetitionGroup, Campaign, University)
                       .join(Campaign, Campaign.id == CompetitionGroup.campaign_id)
                       .join(University, University.id == Campaign.university_id)
-                      .where(CompetitionGroup.id.in_(profiles))).all()
+                      .where(CompetitionGroup.id.in_(profiles)))
+    if joined_links:
+        linked_ids = (select(func.array_agg(CompetitionGroupProgram.program_id))
+                      .where(CompetitionGroupProgram.group_id == CompetitionGroup.id).scalar_subquery())
+        query = query.add_columns(linked_ids)
+    rows = db.execute(query).all()
     result = []
     links = {}
-    if with_program_links:
+    if with_program_links and not joined_links:
         for group_id, program_id in db.execute(select(CompetitionGroupProgram.group_id, CompetitionGroupProgram.program_id)
                                               .where(CompetitionGroupProgram.group_id.in_(profiles))):
             links.setdefault(group_id, []).append(program_id)
-    for group, campaign, university in rows:
+    for group, campaign, university, *projected_links in rows:
         profile = profiles[group.id]
         meta = dict(profile.catalog)
         # Operator-edited or manual rows are never silently promoted to facts.
@@ -50,7 +60,7 @@ def legacy_programs(db, *, with_program_links=True):
         code = re.match(r'^\d{2}\.\d{2}\.\d{2}\b', group.title)
         source = Provenance(url=profile.url, verified_at=profile.proof.verified_at,
                             kind='archive', original_sha256=profile.proof.original_sha256)
-        linked = links.get(group.id, [])
+        linked = (projected_links[0] or []) if joined_links else links.get(group.id, [])
         result.append(CatalogProgram(
             id=group.id, program_id=linked[0] if len(linked) == 1 else None,
             competition_groups=[CatalogCompetitionGroup(id=group.id, campaign_id=campaign.id,
@@ -97,12 +107,16 @@ def source_program_index(db):
     return archive_index(published,legacy),legacy
 
 
+def archive_search_text(program):
+    return f'{program.title} {program.code or ""} {program.university_name}'.casefold()
+
+
 def archive_index(published,legacy):
     if legacy:
         archive = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'), literal(None).label('rid'),
             literal(p.university_id).label('university_id'), literal(p.year).label('year'),
             literal(p.title.casefold()).label('sort_text'),
-            literal(f'{p.title} {p.code or ""} {p.university_name}'.casefold()).label('search_text')) for p in legacy.values()]
+            literal(archive_search_text(p)).label('search_text')) for p in legacy.values()]
         return union_all(published, *archive).subquery()
     return published.subquery()
 
@@ -115,6 +129,25 @@ def program_index(db):
     return archive_index(prepared,legacy),legacy
 
 
+def published_program(fact, revision, campaign, groups, regions):
+    source = Provenance(url=revision.original_url, verified_at=revision.checked_at,
+                        kind='admissions', original_sha256=revision.original_sha256)
+    return CatalogProgram(id=fact.public_id, program_id=fact.program_id,
+        university_id=campaign.university_id, university_name=revision.university_name,
+        region=regions[campaign.university_id], campaign_id=campaign.id, year=campaign.year, level=campaign.level,
+        code=fact.code, title=fact.title, study_form=fact.study_form, funding=fact.funding,
+        category=fact.category, seats=fact.seats, provenance=source,
+        competition_groups=[CatalogCompetitionGroup(campaign_id=campaign.id, provenance=source,
+            **{key:g[key] for key in ('id','official_id','title','study_form','funding','category','seats')})
+            for g in sorted(groups, key=lambda g:g['id'])])
+
+
+def university_regions():
+    regions = {r.id:r.region for r in load_catalog().institutions}
+    regions.update({r.id:r.region or 'Регион не указан' for r in load_registry().registry_only})
+    return regions
+
+
 def hydrate_programs(db, keys, legacy):
     """Hydrate only the selected programme page and its explicitly reviewed links."""
     selected = [(r.rid, r.pid) for r in keys if r.rid is not None]
@@ -123,21 +156,12 @@ def hydrate_programs(db, keys, legacy):
         groups = {}
         for value in db.scalars(select(GroupFact).where(tuple_(GroupFact.revision_id, GroupFact.program_id).in_(selected))):
             groups.setdefault((value.revision_id, value.program_id), []).append(value.facts)
-        regions = {r.id:r.region for r in load_catalog().institutions}
-        regions.update({r.id:r.region or 'Регион не указан' for r in load_registry().registry_only})
+        regions = university_regions()
         for fact, revision, campaign in db.execute(select(Fact, Revision, Campaign)
                 .join(Revision, Revision.id == Fact.revision_id).join(Campaign, Campaign.id == Fact.campaign_id)
                 .where(tuple_(Fact.revision_id, Fact.program_id).in_(selected))):
-            source = Provenance(url=revision.original_url, verified_at=revision.checked_at,
-                                kind='admissions', original_sha256=revision.original_sha256)
-            result[fact.public_id] = CatalogProgram(id=fact.public_id, program_id=fact.program_id,
-                university_id=campaign.university_id, university_name=revision.university_name,
-                region=regions[campaign.university_id], campaign_id=campaign.id, year=campaign.year, level=campaign.level,
-                code=fact.code, title=fact.title, study_form=fact.study_form, funding=fact.funding,
-                category=fact.category, seats=fact.seats, provenance=source,
-                competition_groups=[CatalogCompetitionGroup(campaign_id=campaign.id, provenance=source,
-                    **{key:g[key] for key in ('id','official_id','title','study_form','funding','category','seats')})
-                    for g in sorted(groups.get((fact.revision_id, fact.program_id), []), key=lambda g:g['id'])])
+            result[fact.public_id] = published_program(fact, revision, campaign,
+                groups.get((fact.revision_id, fact.program_id), []), regions)
     return [result[r.id] for r in keys]
 
 
@@ -156,11 +180,98 @@ def programs(db):
     return result
 
 
+CODE_TOKEN = re.compile(r'[0-9]{2}\.[0-9]{2}\.[0-9]{2}')
+
+
+def code_token(tokens):
+    return tokens[0] if len(tokens) == 1 and CODE_TOKEN.fullmatch(tokens[0]) else None
+
+
+def published_count(university_id, year, code):
+    table = CodeTotal if code else ReadTotal
+    query = select(func.coalesce(func.sum(table.program_count), 0))
+    if year is not None:
+        query = query.where(table.year == year)
+    if university_id:
+        query = query.where(table.university_id == university_id)
+    if code:
+        query = query.where(CodeTotal.code == code)
+    return query
+
+
+def first_prepared_page(db, *, university_id, year, code, limit, sort):
+    """Return metadata, page keys and their payload in one PostgreSQL statement.
+
+    The independently verified archive is bounded and lives in the same request
+    snapshot. No archive can belong to a university outside its reviewed scope.
+    """
+    legacy = {p.id: p for p in legacy_programs(db, university_id=university_id, joined_links=True)}
+    scope = select(ReadScope.scope_hash).where(ReadScope.id == 1).scalar_subquery()
+    years = select(ReadTotal.year).distinct()
+    if university_id:
+        years = years.where(ReadTotal.university_id == university_id)
+    years_scope = years.subquery()
+    counts = published_count(university_id, year, code)
+    meta = select(scope.label('policy_hash'), counts.scalar_subquery().label('total'),
+                  select(func.array_agg(years_scope.c.year)).scalar_subquery().label('years')).cte('catalog_meta')
+
+    def ordered(columns):
+        return ((columns.sort_text.desc(), columns.id.desc()) if sort == 'name-desc'
+                else (columns.sort_text, columns.id))
+
+    def filtered(columns):
+        query = select(columns.id, columns.pid, columns.rid, columns.sort_text)
+        if university_id:
+            query = query.where(columns.university_id == university_id)
+        if year is not None:
+            query = query.where(columns.year == year)
+        if code:
+            query = query.where(func.strpos(columns.search_text, code) > 0)
+        return query.order_by(*ordered(columns)).limit(limit)
+
+    # Limit the sorted canonical branch before combining it with the archive.
+    published = read_projection.fact_statement().subquery()
+    source_page = filtered(published.c)
+    archive = [p for p in legacy.values()
+               if (year is None or p.year == year) and (not code or code in archive_search_text(p))]
+    if archive:
+        parts = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'),
+                        literal(None).label('rid'), literal(p.title.casefold()).label('sort_text')) for p in archive]
+        merged = union_all(source_page, *parts).subquery()
+        source_page = select(merged).order_by(*ordered(merged.c)).limit(limit)
+    page = source_page.cte('catalog_first_page')
+    groups = (select(func.json_agg(GroupFact.facts))
+        .where(GroupFact.revision_id == page.c.rid, GroupFact.program_id == page.c.pid).scalar_subquery())
+    rows = db.execute(select(meta.c.policy_hash, meta.c.total, meta.c.years, page.c.id,
+        Fact, Revision, Campaign, groups)
+        .select_from(meta.outerjoin(page, true()))
+        .outerjoin(Fact, (Fact.revision_id == page.c.rid) & (Fact.program_id == page.c.pid))
+        .outerjoin(Revision, Revision.id == page.c.rid)
+        .outerjoin(Campaign, Campaign.id == Fact.campaign_id)
+        .order_by(*ordered(page.c))).all()
+    policy_hash, source_count, available_years = rows[0][:3]
+    if not read_projection.matches_policy(policy_hash):
+        return None
+    regions = university_regions()
+    items = [published_program(fact, rev, campaign, group_facts or [], regions) if fact else legacy[identifier]
+             for _, _, _, identifier, fact, rev, campaign, group_facts in rows if identifier is not None]
+    total = source_count + len(archive)
+    return ProgramPage(items=items, total=total, next_offset=limit if limit < total else None,
+                       years=sorted(set(available_years or ()) | {p.year for p in legacy.values()}, reverse=True), subjects=[])
+
+
 def program_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
+    tokens = q.casefold().split()
+    code = code_token(tokens)
+    if offset == 0 and not subject and (not tokens or code) and db.get_bind().dialect.name == 'postgresql':
+        first = first_prepared_page(db, university_id=university_id, year=year, code=code, limit=limit, sort=sort)
+        if first is not None:
+            return first
+        return source_program_page(db,q=q,university_id=university_id,year=year,subject=subject,offset=offset,limit=limit,sort=sort)
     prepared=read_projection.statement(db)
     if prepared is None:
         return source_program_page(db,q=q,university_id=university_id,year=year,subject=subject,offset=offset,limit=limit,sort=sort)
-    legacy={p.id:p for p in legacy_programs(db)}
+    legacy={p.id:p for p in legacy_programs(db, university_id=university_id, joined_links=True)}
     index=archive_index(prepared,legacy)
     base=select(index)
     if university_id:
@@ -177,11 +288,17 @@ def program_page(db, *, q='', university_id='', year=None, subject='', offset=0,
         base=base.where(index.c.year==year)
     if subject:
         base=base.where(literal(False))
-    tokens=q.casefold().split()
     for token in tokens:
         base=base.where(func.strpos(index.c.search_text,token)>0)
-    total=0 if subject else (db.scalar(select(func.count()).select_from(base.subquery())) if tokens else
-        (counts.get(year,0) if year is not None else sum(counts.values())))
+    if subject:
+        total = 0
+    elif code:
+        total = db.scalar(published_count(university_id, year, code)) + sum(
+            (year is None or p.year == year) and code in archive_search_text(p) for p in legacy.values())
+    elif tokens:
+        total = db.scalar(select(func.count()).select_from(base.subquery()))
+    else:
+        total = counts.get(year, 0) if year is not None else sum(counts.values())
     # Exact counts and page keys share the HTTP REPEATABLE READ snapshot.
     # Seek from the nearer end without changing the external OFFSET contract.
     take=min(limit,max(0,total-offset))

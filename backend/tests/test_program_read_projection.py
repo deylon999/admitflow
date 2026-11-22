@@ -1,9 +1,11 @@
 """Native PostgreSQL publication/read-index equivalence, no real source evidence."""
 from concurrent.futures import ThreadPoolExecutor
+from collections import Counter
 from copy import deepcopy
 import hashlib
 import os
 from pathlib import Path
+import re
 
 from alembic import command
 from alembic.config import Config
@@ -14,6 +16,7 @@ from sqlalchemy.orm import Session
 from app.admissions import Campaign
 
 from app.catalog import product_catalog as facade, read_projection
+from app.catalog.program_catalog_models import ProgramCatalogReadCodeTotal as CodeTotal
 from app.catalog.program_catalog_models import ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision, ProgramCatalogFact as Fact, ProgramCatalogPublication as Publication, ProgramCatalogReadFact as ReadFact, ProgramCatalogReadScope as Scope, ProgramCatalogReadTotal as Total
 from app.catalog.program_catalog_import import import_document
 from app.catalog.catalog_import import import_reviewed
@@ -29,6 +32,11 @@ pytestmark=pytest.mark.postgres
 
 def publish(engine,store):
     body,review=source()
+    record = review['programs'][1]
+    original_title = record['title']
+    record['title'] = original_title + ' 09.03.04'
+    body = body.replace(original_title.encode(), record['title'].encode())
+    review['original_sha256'] = hashlib.sha256(body).hexdigest()
     result=import_document(engine,review,body,store)
     assert result['outcome']=='published',result
     return body,review,result
@@ -41,6 +49,14 @@ def values(engine):
         totals=set(db.execute(select(Total.university_id,Total.year,Total.program_count)))
         assert exact==totals
         assert all(n>0 for uid,year,n in totals)
+        # An independent overlapping literal match verifies deltas after
+        # conflicts, policy refresh, rollback and concurrent pointer writes.
+        code_counts = Counter()
+        for uid, year, phrase in db.execute(select(ReadFact.university_id, ReadFact.year, ReadFact.search_text).where(ReadFact.eligible)):
+            for code in set(re.findall(r'(?=([0-9]{2}\.[0-9]{2}\.[0-9]{2}))', phrase)):
+                code_counts[code, year, uid] += 1
+        assert {(code,year,uid): n for code,year,uid,n in db.execute(select(
+            CodeTotal.code,CodeTotal.year,CodeTotal.university_id,CodeTotal.program_count))} == code_counts
         return sorted((r.revision_id,r.program_id,r.in_scope,r.eligible) for r in db.scalars(select(ReadFact)))
 
 
@@ -154,7 +170,7 @@ def test_policy_changes_are_atomic_and_mismatch_uses_exact_fallback(postgres_eng
 
 
 @pytest.mark.parametrize('operation',['update','delete','insert'])
-@pytest.mark.parametrize('table',[ReadFact,Total])
+@pytest.mark.parametrize('table',[ReadFact,Total,CodeTotal])
 def test_direct_mutation_of_derived_rows_is_rejected(postgres_engine,store,operation,table):
     publish(postgres_engine,store)
     before=values(postgres_engine)
@@ -242,7 +258,7 @@ def test_populated_0014_upgrade_and_downgrade_keep_source_history(postgres_engin
         _,_,result=publish(engine,RawStore(tmp_path/'migration-raw'))
         with engine.connect() as connection:
             config.attributes['connection']=connection
-            command.upgrade(config,'0015')
+            command.upgrade(config,'0016')
             command.check(config)
         assert len(values(engine))==2 and all(r[3] for r in values(engine))
         with engine.connect() as connection:
@@ -250,5 +266,22 @@ def test_populated_0014_upgrade_and_downgrade_keep_source_history(postgres_engin
             command.downgrade(config,'0014')
             assert connection.scalar(select(Publication.revision_id))==result['revisionId']
             connection.rollback()
-            command.upgrade(config,'0015')
+            command.upgrade(config,'0016')
         assert len(values(engine))==2 and all(r[3] for r in values(engine))
+
+
+def test_code_counts_track_overlapping_text_matches_after_revision_change(postgres_engine, store):
+    body, review, _ = publish(postgres_engine, store)
+    changed = deepcopy(review)
+    new_body, changed = changed_source(body, changed)
+    title = 'Example 109.03.04.05 09.03.04'
+    new_body = new_body.replace(changed['programs'][0]['title'].encode(), title.encode())
+    changed['original_sha256'] = hashlib.sha256(new_body).hexdigest()
+    changed['programs'][0]['title'] = title
+    assert import_document(postgres_engine, changed, new_body, store)['outcome'] == 'published'
+    assert len(values(postgres_engine)) == 2
+    with Session(postgres_engine) as db:
+        for q in ('09.03.04','03.04.05','042.03.04','09.03.04 example','04.05','09.03.04%'):
+            for offset in (0, 1, 100000):
+                params = dict(q=q, offset=offset, year=2027, university_id=changed['university_id'])
+                assert facade.program_page(db, **params).model_dump() == facade.source_program_page(db, **params).model_dump()
