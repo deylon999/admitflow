@@ -6,7 +6,7 @@ configuration and response schemas do not depend on it.
 import argparse
 from contextlib import contextmanager
 from contextvars import ContextVar
-from functools import wraps
+from functools import partial, wraps
 import hashlib
 import json
 import os
@@ -143,9 +143,8 @@ def fixture_engine(meta):
 
 
 @contextmanager
-def linux_server(engine, runtime, image, log_path):
+def linux_server(engine, runtime, image, log_path, *, name):
     """Bridge only the disposable PG and Uvicorn containers for a Linux run."""
-    name = f'admitflow-load-{uuid4().hex}'
     network = name + '-net'
     subprocess.run(['docker','network','create',network], check=True, capture_output=True)
     attached = started = False
@@ -220,15 +219,23 @@ def initialize_fixture(path, *, small=False):
             sleep(1)
 
 
-def node_load_test(client, params, workers, engine, runtime, seconds):
+def node_load_test(client, params, workers, engine, runtime, seconds, *, image=None, serving_container=None):
     """Separate server latency from scheduling in the threaded Python driver."""
     before = pg_stats(engine)
     monitor = Resources(runtime.name)
     sampler = threading.Thread(target=monitor.run, daemon=True)
     sampler.start()
     try:
-        result = subprocess.check_output(['node', str(Path(__file__).with_name('catalog_http_load.mjs')),
-            str(client.base_url), json.dumps(params), str(workers), str(seconds)], text=True, timeout=seconds + 45)
+        script = Path(__file__).with_name('catalog_http_load.mjs')
+        origin = str(client.base_url)
+        command = ['node', str(script)]
+        if image:
+            origin = 'http://127.0.0.1:8000'
+            command = ['docker', 'run', '--rm', '--pull', 'never', '--read-only',
+                '--network', f'container:{serving_container}', '--mount',
+                f'type=bind,source={script},target=/load.mjs,readonly', '--entrypoint', 'node', image, '/load.mjs']
+        result = subprocess.check_output(command + [origin, json.dumps(params), str(workers), str(seconds)],
+                                         text=True, timeout=seconds + 45)
         payload = json.loads(result)
         elapsed, rows = payload['seconds'], payload['samples']
     finally:
@@ -256,6 +263,7 @@ def main():
     parser.add_argument('--client', choices=('threaded', 'node'), default='threaded')
     parser.add_argument('--warm-concurrency', action='store_true', help='Warm all 50 concurrent HTTP slots before the timed phase')
     parser.add_argument('--docker-image', help='Run uninstrumented Uvicorn in an existing local Linux image')
+    parser.add_argument('--docker-client-image', help='Run the Node driver in the same Linux network namespace')
     args = parser.parse_args()
     if args.initialize:
         return initialize_fixture(args.fixture, small=args.small)
@@ -265,6 +273,8 @@ def main():
         parser.error('timing hooks run in the host workers only')
     if args.profile and args.client != 'threaded':
         parser.error('the threaded driver collects phase timing headers')
+    if args.docker_client_image and (not args.docker_image or args.client != 'node'):
+        parser.error('--docker-client-image requires --docker-image and --client node')
     meta = json.loads(args.fixture.read_text(encoding='utf-8'))
     runtime, engine = fixture_engine(meta)
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -280,13 +290,20 @@ def main():
                 for key in ('work_mem','shared_buffers','max_parallel_workers_per_gather','max_connections',
                             'hash_mem_multiplier','track_io_timing')}
         worker_log = args.output.with_suffix('.workers.log')
+        serving_container = None
         if args.docker_image:
+            serving_container = f'admitflow-load-{uuid4().hex}'
             report['servingImage'] = subprocess.check_output(
                 ['docker', 'image', 'inspect', '--format', '{{.Id}}', args.docker_image], text=True).strip()
-            instance = linux_server(engine, runtime, args.docker_image, worker_log)
+            instance = linux_server(engine, runtime, args.docker_image, worker_log, name=serving_container)
         else:
             instance = server(engine, 4, worker_log, factory='scripts.qa.profile_catalog_http:application',
                               environment={'ADMITFLOW_BENCH_PROFILE': str(int(args.profile))})
+        loader = load_test if args.client == 'threaded' else partial(
+            node_load_test, image=args.docker_client_image, serving_container=serving_container)
+        if args.docker_client_image:
+            report['clientImage'] = subprocess.check_output(
+                ['docker', 'image', 'inspect', '--format', '{{.Id}}', args.docker_client_image], text=True).strip()
         with instance as client:
             for name in args.cases:
                 params = cases(meta)[name]
@@ -306,7 +323,6 @@ def main():
                     response.raise_for_status()
                     assert digest(response.json()) == expected_hash, name
                     warmups += 1
-                loader = node_load_test if args.client == 'node' else load_test
                 warm = loader(client, http_params, 50, engine, runtime, 2) if args.warm_concurrency else None
                 result = loader(client, http_params, 50, engine, runtime, 10)
                 result['responseSha256'] = expected_hash
