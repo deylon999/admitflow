@@ -12,9 +12,9 @@ from functools import cache
 from pathlib import Path
 
 if __package__:
-    from .documentation_archive import ARCHIVE_REF, ARCHIVE_URL, archive_git
+    from .documentation_archive import ARCHIVE_REFS, GITHUB_BLOB_URL, archive_git
 else:
-    from documentation_archive import ARCHIVE_REF, ARCHIVE_URL, archive_git
+    from documentation_archive import ARCHIVE_REFS, GITHUB_BLOB_URL, archive_git
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,25 +34,31 @@ def local_path(value):
 
 
 @cache
-def archived_document_paths():
-    paths = archive_git('ls-tree', '-r', '-z', '--name-only', ARCHIVE_REF, '--', 'docs')
+def archived_document_paths(ref):
+    paths = archive_git('ls-tree', '-r', '-z', '--name-only', ref, '--', 'docs')
     return set(paths.decode('utf-8').split('\0'))
 
 
-def archived_evidence(path):
-    return path.startswith('docs/') and path in archived_document_paths()
+def archived_evidence_ref(path):
+    if not path.startswith('docs/'):
+        return None
+    return next((ref for ref in reversed(ARCHIVE_REFS) if path in archived_document_paths(ref)), None)
 
 
 def evidence_location(path):
-    if not local_path(path).is_file() and archived_evidence(path):
-        return f'{ARCHIVE_URL}/{path}'
+    if not local_path(path).is_file():
+        ref = archived_evidence_ref(path)
+        if ref:
+            return f'{GITHUB_BLOB_URL}/{ref}/{path}'
     return path
 
 
 def read_log():
-    history = archive_git('show', f'{ARCHIVE_REF}:docs/LOG.md').decode('utf-8')
+    history = [archive_git('show', f'{ref}:docs/LOG.md').decode('utf-8').rstrip() for ref in ARCHIVE_REFS]
     recent = DOCS / 'LOG.md'
-    return history.rstrip() + '\n\n' + (recent.read_text(encoding='utf-8') if recent.is_file() else '')
+    if recent.is_file():
+        history.append(recent.read_text(encoding='utf-8'))
+    return '\n\n'.join(history)
 
 
 def validate(data, state):
@@ -93,7 +99,7 @@ def validate(data, state):
         for item in task.get('evidence', []):
             try:
                 path = item['path']
-                if not item.get('note') or not (local_path(path).is_file() or archived_evidence(path)):
+                if not item.get('note') or not (local_path(path).is_file() or archived_evidence_ref(path)):
                     errors.append(f'{task_id}: missing evidence file or note')
             except (ValueError, KeyError) as error:
                 errors.append(f'{task_id}: invalid evidence: {error}')

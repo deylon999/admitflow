@@ -27,6 +27,8 @@ python -m alembic check
 
 Для списков используйте `python -m app.sources.cli --help`. Worker запускается отдельным Linux-процессом `python -m app.worker loop`. `python -m app.observability status` и `trace <runId>` показывают диагностику, а `python -m app.sources.retention --days 7` — план очистки raw. Применение очистки требует `--apply`.
 
+После изменения справочника вузов проверьте политику проекции каталога. В PostgreSQL её можно обновить из `backend/` командой `python -m app.catalog.read_projection refresh-policy` с явно заданным `DATABASE_URL`.
+
 ## HTTPS и аккаунты
 
 Используйте [production Compose](../compose.prod.yaml) и приватные переменные из [.env.production.example](../.env.production.example). Проверьте DNS, порты 80/443, `PUBLIC_ORIGIN`, `ALLOWED_HOSTS` и Secure cookies. Сохраните имя Compose-проекта, `POSTGRES_PASSWORD` и `SOURCE_IDENTITY_KEY`. Ротация ключа идентичности требует переноса ключей кандидатов.

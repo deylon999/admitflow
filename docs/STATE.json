@@ -7,7 +7,7 @@
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S239",
-  "resumeAction": "T319 is ready for owner review in PR #44. Two clean Windows runs at 50 simultaneous HTTP requests met all p95 targets on 7e00bf3; see KAN-218-PR4-P95.md for Linux limits, exact-count and publication evidence. Application commit 1b2aff3 passed Linux CI. PR #44 awaits review and integration before T320.",
+  "resumeAction": "PR #44 is merged. T319 remains in review. Run python scripts/roadmap.py --task T319 for the archived p95 measurements, Linux limits, and exact-count and publication evidence.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
