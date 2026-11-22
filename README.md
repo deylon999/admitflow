@@ -23,4 +23,4 @@ python scripts/local_smoke.py
 - [Правила данных и источников](docs/DATA_RULES.md)
 - [Эксплуатация, миграции и импорт](docs/RUNBOOK.md)
 
-Текущие задачи отслеживаются в [Jira](https://deylon.atlassian.net/browse/KAN) и в [реестре проекта](docs/TASKS.json). Исторические материалы доступны по исходным путям в [снимке документации](https://github.com/deylon999/admitflow/tree/6fdafc999606b486b200a8eac68d732dfd0a956e/docs).
+Командные задачи отслеживаются в [Jira](https://deylon.atlassian.net/browse/KAN) и в [реестре проекта](docs/TASKS.json). Исторические материалы доступны в закреплённых снимках [до чистки](https://github.com/deylon999/admitflow/tree/6fdafc999606b486b200a8eac68d732dfd0a956e/docs) и [после PR #44](https://github.com/deylon999/admitflow/tree/a54ed718d7fb944c3bb64dc82fd9d3779750a634/docs).

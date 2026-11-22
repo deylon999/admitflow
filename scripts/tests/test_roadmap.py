@@ -45,7 +45,12 @@ class DocumentationToolsTest(unittest.TestCase):
         archived_path = 'docs/archive/api-before-foundation.md'
         self.assertEqual(
             roadmap.evidence_location(archived_path),
-            f'{roadmap.ARCHIVE_URL}/{archived_path}',
+            f'{documentation_archive.GITHUB_BLOB_URL}/{documentation_archive.ARCHIVE_REF}/{archived_path}',
+        )
+        pr4_path = 'docs/evidence/kan-218-pr4-p95-final-warm-node.json.gz'
+        self.assertEqual(
+            roadmap.evidence_location(pr4_path),
+            f'{documentation_archive.GITHUB_BLOB_URL}/{documentation_archive.PR4_ARCHIVE_REF}/{pr4_path}',
         )
         self.assertEqual(roadmap.evidence_location('docs/not-a-real-document.md'), 'docs/not-a-real-document.md')
         data = copy.deepcopy(self.data)
