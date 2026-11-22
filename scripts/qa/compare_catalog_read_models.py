@@ -5,6 +5,7 @@ Transactional maintenance and correctness tests are required before adoption.
 """
 import argparse
 from concurrent.futures import ThreadPoolExecutor
+import hashlib
 import json
 import math
 from pathlib import Path
@@ -45,7 +46,7 @@ def direct_page(db, *, q='', university_id='', year=None, subject='', offset=0, 
     for token in q.casefold().split():query=query.where(index.c.search_text.contains(token,autoescape=True))
     total=db.scalar(select(facade.func.count()).select_from(query.subquery()))
     order=(index.c.sort_text.desc(),index.c.id.desc()) if sort=='name-desc' else (index.c.sort_text,index.c.id)
-    keys=db.execute(query.order_by(*order).offset(offset).limit(limit)).all()
+    keys=db.execute(query.with_only_columns(index.c.id,index.c.pid,index.c.rid).order_by(*order).offset(offset).limit(limit)).all()
     return facade.ProgramPage(items=facade.hydrate_programs(db,keys,legacy),total=total,
         next_offset=offset+limit if offset+limit<total else None,years=years,subjects=[])
 
@@ -146,13 +147,15 @@ def load_test(client,params,workers,engine,runtime,seconds):
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--variants',nargs='+',default=['sql','prepared-current','prepared-eligible'])
+    parser.add_argument('--variants',nargs='+',default=['transactional','prepared-current','prepared-eligible','sql','source-indexed'])
     parser.add_argument('--shm-size',choices=['64m','1g'],default='1g')
     parser.add_argument('--load-seconds',type=int,default=10)
     parser.add_argument('--direct',action='store_true',help='Indexable separate exact queries for prepared variants')
     args=parser.parse_args()
-    if not set(args.variants)<={'sql','prepared-current','prepared-eligible'}:
+    if not set(args.variants)<={'sql','source-indexed','transactional','prepared-current','prepared-eligible'}:
         parser.error('unknown variant')
+    if not args.direct and any(v.startswith('prepared-') for v in args.variants):
+        parser.error('frozen prepared prototypes require --direct; historical consolidated trials are preserved separately')
     report=dict(experimental=True,sourceCommit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True)),
         shmSize=args.shm_size,loadSeconds=args.load_seconds,direct=args.direct,variants={})
@@ -161,13 +164,22 @@ def main():
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     original=facade.program_index
     original_page=facade.program_page
+    source_index=facade.source_program_index
+    source_page=facade.source_program_page
     try:
         with disposable_postgres(shm_size=args.shm_size) as runtime,isolated_postgres(runtime.url()) as engine:
             upgrade_schema(engine);import_reviewed(engine)
             print('Seeding100k...',flush=True)
+            start=time.perf_counter()
             report['fixture']=seed(engine)
+            report['seedWithPublicationSeconds']=time.perf_counter()-start
+            with engine.connect() as db:
+                report['postgresVersion']=db.scalar(text('SHOW server_version'))
+                report['schemaRevision']=db.scalar(text('SELECT version_num FROM alembic_version'))
+                report['settings']={key:db.scalar(text('SELECT current_setting(:key)'),{'key':key}) for key in
+                    ['work_mem','hash_mem_multiplier','shared_buffers','max_parallel_workers_per_gather','max_connections','dynamic_shared_memory_type','track_io_timing']}
             with Session(engine) as db:
-                index,_=original(db)
+                index,_=source_index(db)
                 eligible_query=select(index).where(index.c.rid.is_not(None))
                 eligible=create_prototype(engine,'scale_eligible',eligible_query)
             current_query=(select(Fact.public_id.label('id'),Fact.program_id.label('pid'),Fact.revision_id.label('rid'),
@@ -181,10 +193,31 @@ def main():
                 db.exec_driver_sql('VACUUM ANALYZE scale_current');db.exec_driver_sql('VACUUM ANALYZE scale_eligible')
             cases=dict(first={},university={'university_id':report['fixture']['sampleUniversity'],'year':2027},
                 code={'q':'09.03.04','year':2027},deep={'offset':99988})
+            oracle={}
+            for name,params in cases.items():
+                with Session(engine) as db:
+                    result=source_page(db,**params)
+                    oracle[name]=hashlib.sha256(json.dumps(result.model_dump(mode='json'),ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+            report['oracle']=oracle
             for variant in args.variants:
-                facade.program_index=original if variant=='sql' else prepared_factory(current if variant=='prepared-current' else eligible,
-                    check_conflicts=variant=='prepared-current')
-                facade.program_page=direct_page if args.direct and variant!='sql' else original_page
+                if variant=='source-indexed':
+                    start=time.perf_counter()
+                    with engine.begin() as db:
+                        db.exec_driver_sql('CREATE INDEX scale_source_scope ON program_catalog_facts(program_id,campaign_id,revision_id)')
+                        db.exec_driver_sql('CREATE INDEX scale_source_campaign_order ON program_catalog_facts(campaign_id,sort_text,public_id)')
+                        db.exec_driver_sql('CREATE INDEX scale_source_publication ON program_catalog_publications(revision_id)')
+                        db.exec_driver_sql('CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public')
+                        db.exec_driver_sql('CREATE INDEX scale_source_search ON program_catalog_facts USING gin(search_text public.gin_trgm_ops)')
+                        db.exec_driver_sql('ANALYZE')
+                        report['sourceIndexBytes']=db.scalar(text("SELECT sum(pg_relation_size(indexrelid)) FROM pg_index WHERE indexrelid::regclass::text LIKE '%scale_source_%'"))
+                    report['sourceIndexBuildSeconds']=time.perf_counter()-start
+                if variant in ('sql','source-indexed'):
+                    facade.program_index=source_index;facade.program_page=source_page
+                elif variant=='transactional':
+                    facade.program_index=original;facade.program_page=original_page
+                else:
+                    facade.program_index=prepared_factory(current if variant=='prepared-current' else eligible,check_conflicts=variant=='prepared-current')
+                    facade.program_page=direct_page
                 benchmark.program_page=facade.program_page
                 report['variants'][variant]={}
                 url=engine.url.update_query_dict({'options':engine.url.query['options']+' -cstatement_timeout=10000'})
@@ -199,6 +232,7 @@ def main():
                         try:result=measure(engine,params,50,10000)
                         finally:monitor.stop.set();thread.join(timeout=6)
                         after=pg_stats(engine)
+                        result['matchesSourceOracle']=result.get('responseSha256')==oracle[name]
                         result['singlePostgresStatsDelta']={k:after[k]-before[k] for k in before}
                         result['singlePostgresContainerSamples']=monitor.samples
                         http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
