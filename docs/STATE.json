@@ -2,12 +2,12 @@
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
   "currentTask": null,
-  "nextTask": "T337",
+  "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S239",
-  "resumeAction": "Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.",
+  "resumeAction": "T319 is ready for owner review in PR #44. Two clean Windows runs at 50 simultaneous HTTP requests met all p95 targets on 7e00bf3; see KAN-218-PR4-P95.md for Linux limits, exact-count and publication evidence. Application commit 1b2aff3 passed Linux CI. PR #44 awaits review and integration before T320.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",
@@ -17,6 +17,11 @@
     "2026-11-14 real SMTP setup: no provider host/credentials/verified sender/HTTPS staging/controlled inbox supplied; drafts21/22 and frontend stack prepared, live register/resend/recovery receipt pending."
   ],
   "lastCompleted": [
+    "Backend organization PRs #38–#42 await owner review in dependency order. All verification data and initial Checks are in the final report. The next independent roadmap task is T319.",
+    "T340 All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report.",
+    "T339 Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded.",
+    "T338 Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence.",
+    "T337 Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence.",
     "T336 Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence.",
     "T335 full frontend refactoring implemented and verified against main 5ca1cca. Two PRs await owner review.",
     "S235: проверены потребители evidence и SHA‑256, устранены 168 повторных путей PNG с сохранением содержимого и ссылок. См. docs/evidence/README.md.",
@@ -28,6 +33,7 @@
     "Verified main at 29c5902 and cleanup PR32. Mapped ORM registration, lazy auth installation, SMTP, runtime patch points and CLI. Scope is four auth modules; remaining subsystems keep their paths."
   ],
   "environment": [
+    "S239: PG17.11 scale benchmark clean b19dd7a,100k current/200k old facts, all8 response hashes equal baseline; firstp95 661ms, university259ms, Python1.49MB. Native selection138pass/1 Windows resource import failure; full Linux CI in PR. Official-original import/API replay passed, public pilot2027 remains1/785.",
     "S233: full frontend architecture with 387 Chromium tests, 10 catalogue repeat checks, 3 lifecycle tests and 490 exact main comparisons per stage. Five inherited mobile overflows documented.",
     "S231: see the exact Linux/PostgreSQL, Compose and browser validation results in docs/BACKEND_ARCHITECTURE_PR3.md.",
     "S230: roadmap/Markdown tests 13/13, 802 internal links in 153 files without errors, Alembic head 0014. Documentation PR has no application, evidence, source data or workflow changes.",
@@ -40,6 +46,7 @@
     "S215 local backend979/0skip,315.55s; security selection112; frontend175/lint/typecheck/build; validator3/lifecycle3; migrations0012/head/no drift. ETL55+1 external dataset skip, tools20+1 optional local PDF skip.",
     "Hosted milestone79a40fc/run43478500035 all4 success: backend979/0skip, native-PG Chromium5 Firefox5 WebKit5,32 controls, tools20/0skip. Final source rechecked by CI; final head/results maintained in PR19 description.",
     "Visual124 Live/Demo pairs at390/1440:123 exact;15px maxRGBdelta1 /programs border variance, repeats/raw images preserved. Identical frontend/src tree0b245e8e108d5c1a0b93e9a8290969bd6321c021; no CSS/product code/baseline changes.",
-    "Owned local PG container admitflow-kan214-pr5-db stopped after tests; test-only volume preserved, random schema/private mailbox/runtime processes cleaned. User data and other services untouched."
+    "Owned local PG container admitflow-kan214-pr5-db stopped after tests; test-only volume preserved, random schema/private mailbox/runtime processes cleaned. User data and other services untouched.",
+    "S244: disposable PostgreSQL 17.11, 1278 full final pytest passes, 387 native cases, one inherited external skip. Browser 387 plus native 6/6/6 and 32 automated auth controls. All five PRs published as a stack."
   ]
 }

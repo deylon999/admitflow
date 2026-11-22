@@ -22,14 +22,14 @@ from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
 import uvicorn
 from app.admissions import CompetitionGroup, Program
-from app.catalog_import import import_reviewed
+from app.catalog.catalog_import import import_reviewed
 from app.config import Settings
 from app.main import create_app
-from app.migrations import upgrade_schema
-from app.national_coverage import national_coverage, with_checksum
-from app.program_catalog_import import import_sources
-from app.program_catalog_models import ProgramCatalogFact, ProgramCatalogPublication, ProgramCatalogRevision
-from app.program_catalog_review import load_reviews
+from app.operations.migrations import upgrade_schema
+from app.catalog.national_coverage import national_coverage, with_checksum
+from app.catalog.program_catalog_import import import_sources
+from app.catalog.program_catalog_models import ProgramCatalogFact, ProgramCatalogPublication, ProgramCatalogRevision
+from app.catalog.program_catalog_review import load_reviews
 from app.sources.storage import RawStore
 from pg_support import isolated_postgres
 from scripts.ops.postgres_runtime import disposable_postgres

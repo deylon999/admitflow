@@ -1,8 +1,11 @@
 """Capture all app DTOs and representative HTTP responses from a selected checkout."""
 
 import argparse
+from datetime import datetime, timezone
+from email.utils import parsedate_to_datetime
 import importlib
 import json
+import re
 from pathlib import Path
 import tempfile
 
@@ -63,13 +66,21 @@ def http_contract():
         app = create_app(Settings(database_url=f'sqlite:///{directory}/extended-snapshot.db'))
         with TestClient(app) as client:
             for method, path in requests:
+                started = datetime.now(timezone.utc).replace(microsecond=0)
                 response = client.request(method, path, headers={'X-Requested-With': 'abiturient'})
+                headers = {key: response.headers[key] for key in (
+                    'cache-control', 'set-cookie', 'retry-after', 'x-content-type-options',
+                ) if key in response.headers}
+                if method == 'DELETE' and path == '/api/v1/session':
+                    # Starlette stamps the deletion cookie with the current second.
+                    expiry = re.search(r'(?i)expires=([^;]+)', headers['set-cookie'])
+                    assert expiry
+                    assert started <= parsedate_to_datetime(expiry[1]) <= datetime.now(timezone.utc)
+                    headers['set-cookie'] = headers['set-cookie'].replace(expiry[1], '<response time>')
                 result.append({
                     'method': method, 'path': path, 'status': response.status_code,
                     'body': response.json() if response.content else None,
-                    'headers': {key: response.headers[key] for key in (
-                        'cache-control', 'set-cookie', 'retry-after', 'x-content-type-options',
-                    ) if key in response.headers},
+                    'headers': headers,
                 })
     return result
 

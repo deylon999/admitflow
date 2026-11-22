@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from ..admissions import Campaign,CompetitionGroup,Source,University
 from ..catalog import INITIAL_UNIVERSITIES
-from ..catalog_lock import lock_catalog
+from app.catalog.catalog_lock import lock_catalog
 from .adapters.sgu2026 import GROUP_ID,SOURCE_ID,URL,VERSION
 from .contracts import AdapterError
 from .publishing import binding_from_db
@@ -45,7 +45,7 @@ def register_sgu(engine,*,enable=False,registry=PRODUCTION_REGISTRY):
             registry.resolve(replace(binding_from_db(db,source),enabled=True))
             source.enabled=True
         result=dict(sourceId=SOURCE_ID,groupId=GROUP_ID,created=created,enabled=source.enabled,kind='archive',year=2026)
-        from ..source_operations import record
+        from app.sources.source_operations import record
         record(db,source,'enable' if enable else 'register','created' if created else 'updated')
         db.commit()
         return result

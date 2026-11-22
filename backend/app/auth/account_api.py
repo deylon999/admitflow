@@ -13,9 +13,9 @@ from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from ..account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, PasswordResetRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
-from ..account_actions import InvalidActionToken, action_identity, confirm_reset, confirm_verification, issue_action
-from ..account_limits import AuthRateExceeded, Budget, consume_budgets, consume_mail_cooldown
+from app.auth.account_dto import AccountRead, AccountSessionRead, CsrfRead, EmailActionRead, EmailActionRequest, EmptyAuthRequest, LoginRequest, PasswordResetRequest, RegistrationRead, RegistrationRequest, TokenConfirmation
+from app.auth.account_actions import InvalidActionToken, action_identity, confirm_reset, confirm_verification, issue_action
+from app.auth.account_limits import AuthRateExceeded, Budget, consume_budgets, consume_mail_cooldown
 from .account_mail import configured_mailer
 from .account_security import InvalidAccountInput, PasswordCapacityError, credential_digest, hash_password, new_token, verify_password
 from .accounts import AccountActionToken, AccountCsrfContext, AccountRefreshToken, AccountSession, AccountUser

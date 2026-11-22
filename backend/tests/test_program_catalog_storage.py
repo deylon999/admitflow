@@ -130,5 +130,5 @@ def test_upgrade_populated0013_keeps_program_and_group_identity(postgres_engine)
         command.check(alembic_config(connection))
     assert identities() == before
     with engine.connect() as db:
-        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0014'
+        assert db.scalar(text('SELECT version_num FROM alembic_version')) == '0016'
         assert db.scalar(select(func.count()).select_from(Publication)) == 0

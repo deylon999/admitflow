@@ -99,13 +99,16 @@ def test_additive_migration_preserves_all_guest_tables(postgres_engine):
         tables = [t for t in inspect(conn).get_table_names() if t != 'alembic_version']
         before = {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.upgrade(cfg, 'head'); command.check(cfg)
-        # Upgrade to head includes programme identity/evidence migrations0013/0014.
+        # Upgrade to head includes programme identity/evidence/read migrations 0013–0016.
         assert set(inspect(conn).get_table_names()) - set(tables) == {
             'alembic_version', 'account_users', 'account_sessions', 'account_refresh_tokens',
             'account_action_tokens', 'account_csrf_contexts', 'account_rate_buckets',
             'programs', 'campaign_programs', 'competition_group_programs',
             'program_catalog_documents', 'program_catalog_revisions', 'program_catalog_facts',
             'program_catalog_group_facts', 'program_catalog_publications', 'program_catalog_import_attempts',
+            'program_catalog_read_scope', 'program_catalog_read_facts',
+            'program_catalog_read_totals',
+            'program_catalog_read_code_totals',
         }
         assert before == {t: conn.execute(text(f'SELECT * FROM "{t}"')).all() for t in tables}
         command.downgrade(cfg, '0011'); command.upgrade(cfg, 'head'); command.check(cfg)

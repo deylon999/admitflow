@@ -21,10 +21,10 @@ from sqlalchemy import inspect, select, text
 
 from app.admissions import SourceSnapshot
 from app.config import Settings
-from app.database import make_engine
-from app.jobs import enqueue
+from app.core.database import make_engine
+from app.operations.jobs import enqueue
 from app.main import create_app
-from app.migrations import upgrade_schema
+from app.operations.migrations import upgrade_schema
 from app.sources.publishing import publish
 from app.sources.storage import RawStore, StorageError
 from source_helpers import NOW, parsed, raw, registry, seed_source
@@ -81,7 +81,7 @@ def rehearse(runtime, folder, *, archive_sgu=False):
                     found=owner.post(f'/api/v1/sources/{BINDING.source_id}/lookup',json={'publicCode':code},headers=HEADERS)
                     require(found.status_code==200,'Fixture lookup failed')
                     return {'confirmationToken':found.json()['confirmationToken']}
-                from app.scenario_storage import enable_scenarios
+                from app.competitions.scenario_storage import enable_scenarios
                 enable_scenarios(source,BINDING.source_id,registry=app.state.source_registry)
                 archive_body=confirm('FIXTURE-000020')
                 archive_saved=owner.post('/api/v1/subscriptions',json=archive_body,headers=HEADERS)

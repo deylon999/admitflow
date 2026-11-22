@@ -1,7 +1,6 @@
-"""Serialize catalog registration, including shared university/campaign rows."""
-from sqlalchemy import text
+"""Compatibility path for app.catalog.catalog_lock."""
+import sys
 
+from app.catalog import catalog_lock
 
-def lock_catalog(db,engine):
-    if engine.dialect.name=='sqlite':db.execute(text('BEGIN IMMEDIATE'))
-    else:db.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('catalog-registration-v1',173))"))
+sys.modules[__name__] = catalog_lock

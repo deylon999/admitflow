@@ -1,0 +1,5715 @@
+{
+  "baseline": "1e7693ebc4ae1761aaba8dcbf659ff5793235813",
+  "module_count": 88,
+  "eager_cycles": [],
+  "all_cycles": [
+    [
+      "app.jobs",
+      "app.source_operations"
+    ],
+    [
+      "app.jobs",
+      "app.source_operations",
+      "app.sources.publishing",
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.jobs",
+      "app.source_operations",
+      "app.sources.publishing",
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status"
+    ],
+    [
+      "app.jobs",
+      "app.source_operations",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.jobs",
+      "app.source_operations",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.scenario_storage",
+      "app.source_operations"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api",
+      "app.scenario_storage",
+      "app.source_operations"
+    ],
+    [
+      "app.jobs",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status"
+    ],
+    [
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status",
+      "app.sources.publishing"
+    ],
+    [
+      "app.scenario_storage",
+      "app.source_history",
+      "app.source_api",
+      "app.sources.publishing"
+    ],
+    [
+      "app.scenario_storage",
+      "app.source_operations",
+      "app.sources.publishing"
+    ],
+    [
+      "app.scenario_storage",
+      "app.source_operations",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.scenario_storage",
+      "app.sources.publishing"
+    ],
+    [
+      "app.scenario_storage",
+      "app.sources.publishing",
+      "app.source_history",
+      "app.source_api"
+    ],
+    [
+      "app.source_api",
+      "app.source_catalog",
+      "app.sources.status",
+      "app.sources.publishing",
+      "app.source_history"
+    ],
+    [
+      "app.source_api",
+      "app.source_history"
+    ],
+    [
+      "app.source_api",
+      "app.sources.publishing",
+      "app.source_history"
+    ],
+    [
+      "app.sources.adapters.sgu2026",
+      "app.sources.registry"
+    ],
+    [
+      "app.sources.profile_catalog",
+      "app.sources.table_profiles"
+    ],
+    [
+      "app.sources.registry",
+      "app.sources.structured_family"
+    ],
+    [
+      "app.sources.registry",
+      "app.sources.table_family"
+    ],
+    [
+      "app.sources.registry",
+      "app.sources.table_profiles"
+    ],
+    [
+      "app.sources.registry",
+      "app.sources.table_profiles",
+      "app.sources.table_family"
+    ]
+  ],
+  "modules": {
+    "app": {
+      "path": "backend/app/__init__.py",
+      "responsibility": "Package marker",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.account_actions": {
+      "path": "backend/app/account_actions.py",
+      "responsibility": "One-time activation and recovery tokens",
+      "target": "auth",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.auth.account_security",
+        "app.auth.accounts"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_recovery.py:11"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.auth.account_api"
+      ],
+      "module_class_definitions": [
+        "InvalidActionToken"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.account_api": {
+      "path": "backend/app/account_api.py",
+      "responsibility": "Alias for account router",
+      "target": "auth",
+      "action": "COMPATIBILITY SHIM",
+      "reason": "Keep PR #34 alias and canonical module identity.",
+      "eager": [
+        "app.auth.account_api"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sys"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/auth_runtime.py:13",
+        "backend/tests/test_account_email_security.py:9",
+        "backend/tests/test_account_http_security.py:103",
+        "backend/tests/test_account_http_security.py:8",
+        "backend/tests/test_account_lifecycle_security.py:129",
+        "backend/tests/test_account_lifecycle_security.py:188",
+        "backend/tests/test_account_lifecycle_security.py:220",
+        "backend/tests/test_account_lifecycle_security.py:9",
+        "backend/tests/test_account_login.py:128",
+        "backend/tests/test_account_login.py:8",
+        "backend/tests/test_account_logout.py:11",
+        "backend/tests/test_account_recovery.py:11",
+        "backend/tests/test_account_refresh.py:10",
+        "backend/tests/test_account_registration.py:11"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_auth_import_compatibility.py:54"
+      ],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_account_email_security.py:81",
+        "backend/tests/test_account_http_security.py:108",
+        "backend/tests/test_account_lifecycle_security.py:134",
+        "backend/tests/test_account_lifecycle_security.py:200",
+        "backend/tests/test_account_lifecycle_security.py:229",
+        "backend/tests/test_account_login.py:137"
+      ]
+    },
+    "app.account_dto": {
+      "path": "backend/app/account_dto.py",
+      "responsibility": "Account request and response schemas",
+      "target": "auth",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.auth.account_security",
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "pydantic",
+        "typing"
+      ],
+      "module_assignments": [
+        "Email",
+        "Password"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/snapshot_backend_contract.py:148"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.auth.account_api"
+      ],
+      "module_class_definitions": [
+        "RegistrationRequest",
+        "LoginRequest",
+        "EmailActionRequest",
+        "TokenConfirmation",
+        "PasswordResetRequest",
+        "EmailActionRead",
+        "AccountRead",
+        "AccountSessionRead",
+        "CsrfRead",
+        "EmptyAuthRequest",
+        "RegistrationRead"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.account_limits": {
+      "path": "backend/app/account_limits.py",
+      "responsibility": "Account throttling and concurrency limits",
+      "target": "auth",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.auth.accounts"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "hmac",
+        "json",
+        "math",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_email_security.py:10",
+        "backend/tests/test_account_lifecycle_security.py:10",
+        "backend/tests/test_account_limits.py:9",
+        "backend/tests/test_account_mail_dispatch.py:6"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.auth.account_api"
+      ],
+      "module_class_definitions": [
+        "Budget",
+        "AuthRateExceeded"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Budget",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.account_mail": {
+      "path": "backend/app/account_mail.py",
+      "responsibility": "Alias for SMTP transport",
+      "target": "auth",
+      "action": "COMPATIBILITY SHIM",
+      "reason": "Keep PR #34 alias and canonical module identity.",
+      "eager": [
+        "app.auth.account_mail"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sys"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_email_security.py:9",
+        "backend/tests/test_account_mail.py:7",
+        "backend/tests/test_account_mail.py:8",
+        "backend/tests/test_smtp_check.py:2"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.account_security": {
+      "path": "backend/app/account_security.py",
+      "responsibility": "Alias for credential helpers",
+      "target": "auth",
+      "action": "COMPATIBILITY SHIM",
+      "reason": "Keep PR #34 alias and canonical module identity.",
+      "eager": [
+        "app.auth.account_security"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sys"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_email_security.py:11",
+        "backend/tests/test_account_email_verification.py:9",
+        "backend/tests/test_account_lifecycle_security.py:11",
+        "backend/tests/test_account_login.py:129",
+        "backend/tests/test_account_login.py:9",
+        "backend/tests/test_account_mail.py:9",
+        "backend/tests/test_account_recovery.py:12",
+        "backend/tests/test_account_refresh.py:11",
+        "backend/tests/test_account_registration.py:12"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.accounts": {
+      "path": "backend/app/accounts.py",
+      "responsibility": "Alias for account ORM and registry",
+      "target": "auth",
+      "action": "COMPATIBILITY SHIM",
+      "reason": "Keep PR #34 alias and canonical module identity.",
+      "eager": [
+        "app.auth.accounts"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sys"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_email_security.py:12",
+        "backend/tests/test_account_email_verification.py:10",
+        "backend/tests/test_account_foundation.py:12",
+        "backend/tests/test_account_http_security.py:9",
+        "backend/tests/test_account_lifecycle_security.py:12",
+        "backend/tests/test_account_limits.py:10",
+        "backend/tests/test_account_login.py:10",
+        "backend/tests/test_account_logout.py:12",
+        "backend/tests/test_account_mail_dispatch.py:7",
+        "backend/tests/test_account_recovery.py:13",
+        "backend/tests/test_account_refresh.py:12",
+        "backend/tests/test_account_registration.py:13",
+        "backend/tests/test_auth_import_compatibility.py:28"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.migrations"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.accreditation_registry": {
+      "path": "backend/app/accreditation_registry.py",
+      "responsibility": "Accreditation dataset, schema and provenance",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.national_catalog"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "functools",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "types"
+      ],
+      "module_assignments": [
+        "DEFAULT_PATH",
+        "SOURCE_URL",
+        "MATCH_METHODS",
+        "CODE"
+      ],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_accreditation_registry.py:9",
+        "backend/tests/test_coverage.py:1",
+        "backend/tests/test_national_coverage.py:6",
+        "backend/tests/test_product_catalog.py:4",
+        "backend/tests/test_section_family.py:1",
+        "backend/tests/test_university_names.py:11"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.coverage",
+        "app.national_coverage",
+        "app.product_catalog",
+        "app.university_name_report",
+        "app.university_names"
+      ],
+      "module_class_definitions": [
+        "Organisation",
+        "Registry"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Organisation",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Registry",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_registry",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.admissions": {
+      "path": "backend/app/admissions.py",
+      "responsibility": "Shared relational models for catalogue, sources, contests and subscriptions",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Cross-domain FKs and mapper events use one shared registry.",
+      "eager": [
+        "app.catalog_search",
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "decimal",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:4",
+        "backend/tests/sgu_helpers.py:3",
+        "backend/tests/source_helpers.py:7",
+        "backend/tests/test_account_acceptance.py:10",
+        "backend/tests/test_admissions.py:7",
+        "backend/tests/test_bgu_runtime.py:7",
+        "backend/tests/test_catalog.py:3",
+        "backend/tests/test_catalog_sql.py:9",
+        "backend/tests/test_changes.py:8",
+        "backend/tests/test_competitions.py:5",
+        "backend/tests/test_coverage.py:6",
+        "backend/tests/test_domain_queue.py:7",
+        "backend/tests/test_group_catalog.py:5",
+        "backend/tests/test_jobs.py:7",
+        "backend/tests/test_mass_queue.py:13",
+        "backend/tests/test_migrations.py:245",
+        "backend/tests/test_next_scope.py:59",
+        "backend/tests/test_pilot_registration.py:7",
+        "backend/tests/test_postgres_publishing.py:10",
+        "backend/tests/test_postgres_sgu.py:12",
+        "backend/tests/test_product_catalog.py:10",
+        "backend/tests/test_profile_batch.py:112",
+        "backend/tests/test_profile_batch.py:8",
+        "backend/tests/test_program_catalog_import.py:13",
+        "backend/tests/test_program_catalog_storage.py:9",
+        "backend/tests/test_program_identity_storage.py:16",
+        "backend/tests/test_program_publication_api.py:11",
+        "backend/tests/test_publishing.py:8",
+        "backend/tests/test_retention.py:10",
+        "backend/tests/test_reviewed_sources.py:9",
+        "backend/tests/test_scenario_storage.py:9",
+        "backend/tests/test_section_family.py:85",
+        "backend/tests/test_sgu_quarantine.py:8",
+        "backend/tests/test_sgu_worker.py:6",
+        "backend/tests/test_source_audit.py:5",
+        "backend/tests/test_source_deletion.py:5",
+        "backend/tests/test_source_history.py:52",
+        "backend/tests/test_source_history.py:7",
+        "backend/tests/test_source_lookup.py:8",
+        "backend/tests/test_source_operations.py:6",
+        "backend/tests/test_source_recovery.py:6",
+        "backend/tests/test_source_security.py:4",
+        "backend/tests/test_source_status.py:7",
+        "backend/tests/test_structured_family.py:10",
+        "backend/tests/test_structured_family.py:147",
+        "backend/tests/test_subscriptions.py:10",
+        "backend/tests/test_subscriptions.py:86",
+        "backend/tests/test_university_names.py:12",
+        "backend/tests/test_worker.py:9",
+        "scripts/qa/load_profile.py:24",
+        "scripts/qa/rehearse_compose.py:140",
+        "scripts/qa/rehearse_compose.py:93",
+        "scripts/qa/rehearse_postgres_restore.py:22",
+        "scripts/qa/rehearse_reviewed_worker.py:12",
+        "scripts/qa/rehearse_sgu_worker.py:19",
+        "scripts/qa/verify_filtered_scope.py:9",
+        "scripts/qa/verify_program_catalog.py:24",
+        "scripts/qa/verify_reviewed_scope.py:20",
+        "scripts/qa/verify_section_family.py:20"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.catalog",
+        "app.catalog_import",
+        "app.changes",
+        "app.competition_api",
+        "app.coverage",
+        "app.direction_budget",
+        "app.jobs",
+        "app.national_coverage",
+        "app.observability",
+        "app.product_catalog",
+        "app.program_catalog_import",
+        "app.program_catalog_models",
+        "app.scenario_api",
+        "app.scenario_storage",
+        "app.source_api",
+        "app.source_catalog",
+        "app.source_history",
+        "app.source_operations",
+        "app.sources.audit",
+        "app.sources.cli",
+        "app.sources.pilots",
+        "app.sources.profile_registration",
+        "app.sources.publishing",
+        "app.sources.retention",
+        "app.sources.status",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "University",
+        "Campaign",
+        "Program",
+        "CampaignProgram",
+        "CompetitionGroup",
+        "CompetitionGroupProgram",
+        "Source",
+        "SourceSnapshot",
+        "CandidateEntry",
+        "PublishedSnapshot",
+        "Subscription",
+        "Assessment",
+        "ChangeEvent",
+        "SourceOperation"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "normalize_university_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_university_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_group_search",
+          "decorator": "event.listens_for"
+        },
+        {
+          "symbol": "normalize_group_search",
+          "decorator": "event.listens_for"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.auth": {
+      "path": "backend/app/auth/__init__.py",
+      "responsibility": "Package marker",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:1"
+      ],
+      "string_references": [
+        "backend/tests/test_auth_import_compatibility.py:21",
+        "backend/tests/test_auth_import_compatibility.py:26",
+        "backend/tests/test_auth_import_compatibility.py:42"
+      ],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.auth.account_api": {
+      "path": "backend/app/auth/account_api.py",
+      "responsibility": "Account routes and session lifecycle",
+      "target": "auth",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.account_actions",
+        "app.account_dto",
+        "app.account_limits",
+        "app.auth.account_mail",
+        "app.auth.account_security",
+        "app.auth.accounts",
+        "app.http"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "logging",
+        "secrets",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [
+        "ACCESS_COOKIE",
+        "CSRF_COOKIE",
+        "REFRESH_COOKIE",
+        "ACCESS_PATH",
+        "REFRESH_PATH",
+        "ACCESS_SECONDS",
+        "IDLE_SECONDS",
+        "ANONYMOUS_CSRF_SECONDS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_auth_import_compatibility.py:49"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.account_api",
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "AuthProblem",
+        "AuthRoute"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.auth.account_mail": {
+      "path": "backend/app/auth/account_mail.py",
+      "responsibility": "Bounded SMTP transport",
+      "target": "auth",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.auth.account_security"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "email",
+        "smtplib",
+        "ssl",
+        "threading",
+        "typing"
+      ],
+      "module_assignments": [
+        "_SEND_SLOTS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.account_mail",
+        "app.auth.account_api",
+        "app.smtp_check"
+      ],
+      "module_class_definitions": [
+        "MailDeliveryError",
+        "RegistrationMailer",
+        "UnavailableRegistrationMailer",
+        "SmtpAccountMailer"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.auth.account_security": {
+      "path": "backend/app/auth/account_security.py",
+      "responsibility": "Password and credential primitives",
+      "target": "auth",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "argon2",
+        "contextlib",
+        "dataclasses",
+        "hashlib",
+        "re",
+        "secrets",
+        "threading"
+      ],
+      "module_assignments": [
+        "_HASHER",
+        "_HASH_SLOTS",
+        "_DUMMY_HASH",
+        "_COMMON_PASSWORDS",
+        "_LOCAL",
+        "_LABEL",
+        "_TOKEN",
+        "_PURPOSES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.account_actions",
+        "app.account_dto",
+        "app.account_security",
+        "app.auth.account_api",
+        "app.auth.account_mail",
+        "app.config",
+        "app.smtp_check"
+      ],
+      "module_class_definitions": [
+        "InvalidAccountInput",
+        "PasswordCapacityError",
+        "PasswordCheck"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "_hash_slot",
+          "decorator": "contextmanager"
+        },
+        {
+          "symbol": "PasswordCheck",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.auth.accounts": {
+      "path": "backend/app/auth/accounts.py",
+      "responsibility": "Account persistence mapping",
+      "target": "auth",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.account_actions",
+        "app.account_limits",
+        "app.accounts",
+        "app.auth.account_api",
+        "app.maintenance"
+      ],
+      "module_class_definitions": [
+        "AccountUser",
+        "AccountSession",
+        "AccountRefreshToken",
+        "AccountActionToken",
+        "AccountCsrfContext",
+        "AccountRateBucket"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.backup": {
+      "path": "backend/app/backup.py",
+      "responsibility": "Backup manifests, validation, backup and restore CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.config",
+        "app.database",
+        "app.schema_base",
+        "app.sources.storage"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "alembic",
+        "argparse",
+        "contextlib",
+        "datetime",
+        "functools",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pydantic",
+        "re",
+        "shutil",
+        "sqlite3",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_backup.py:7",
+        "backend/tests/test_backup.py:8",
+        "backend/tests/test_restore.py:10",
+        "backend/tests/test_restore.py:138",
+        "backend/tests/test_source_size_policy.py:60"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_restore.py:104"
+      ],
+      "inbound": [],
+      "module_class_definitions": [
+        "BackupError",
+        "BackupManifest"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "expected_schema_objects",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.calculation": {
+      "path": "backend/app/calculation.py",
+      "responsibility": "Versioned manual calculation",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "pydantic",
+        "types",
+        "typing"
+      ],
+      "module_assignments": [
+        "MANUAL_CALCULATORS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_calculation.py:7",
+        "backend/tests/test_domain_regression.py:12",
+        "backend/tests/test_history_versions.py:10",
+        "backend/tests/test_history_versions.py:4",
+        "backend/tests/test_import.py:8"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.importing",
+        "app.main",
+        "app.schemas"
+      ],
+      "module_class_definitions": [
+        "CalculationInput",
+        "CalculationResult"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_history_versions.py:14"
+      ]
+    },
+    "app.catalog": {
+      "path": "backend/app/catalog.py",
+      "responsibility": "University seeding and university search",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.catalog_lock",
+        "app.national_catalog",
+        "app.schemas"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "AUDITED_AT",
+        "INITIAL_UNIVERSITIES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/auth_runtime.py:14",
+        "backend/tests/catalog_runtime.py:11",
+        "backend/tests/sgu_helpers.py:4",
+        "backend/tests/test_catalog.py:4",
+        "backend/tests/test_section_family.py:86",
+        "frontend/scripts/postgres-runtime.py:17",
+        "scripts/qa/verify_section_family.py:21"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.coverage",
+        "app.main",
+        "app.sources.pilots"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.catalog_identity": {
+      "path": "backend/app/catalog_identity.py",
+      "responsibility": "Stable campaign and programme identifiers",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "json",
+        "re",
+        "uuid"
+      ],
+      "module_assignments": [
+        "NAMESPACE_V1",
+        "LEVELS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_catalog_identity.py:9",
+        "backend/tests/test_program_catalog_import.py:14",
+        "backend/tests/test_program_identity_storage.py:18",
+        "backend/tests/test_program_publication_api.py:12"
+      ],
+      "string_references": [
+        "backend/tests/test_catalog_identity.py:18"
+      ],
+      "patch_references": [],
+      "inbound": [
+        "app.program_catalog_import"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.catalog_import": {
+      "path": "backend/app/catalog_import.py",
+      "responsibility": "Reviewed catalogue and group registration CLI",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.catalog_lock",
+        "app.config",
+        "app.database",
+        "app.sources.table_profiles"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "REVIEWED_IDS"
+      ],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/auth_runtime.py:15",
+        "backend/tests/catalog_runtime.py:12",
+        "backend/tests/test_national_coverage.py:7",
+        "backend/tests/test_product_catalog.py:11",
+        "backend/tests/test_program_catalog_import.py:15",
+        "backend/tests/test_program_identity_storage.py:19",
+        "backend/tests/test_program_publication_api.py:13",
+        "backend/tests/test_university_names.py:13",
+        "frontend/scripts/postgres-runtime.py:18",
+        "scripts/qa/verify_program_catalog.py:25",
+        "scripts/qa/verify_program_catalog_batch.py:18"
+      ],
+      "string_references": [
+        "scripts/local_smoke.py:168",
+        "scripts/local_smoke.py:171"
+      ],
+      "patch_references": [],
+      "inbound": [
+        "app.product_catalog",
+        "app.program_catalog_import",
+        "app.university_name_report"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.catalog_lock": {
+      "path": "backend/app/catalog_lock.py",
+      "responsibility": "Transactional catalogue write lock",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.catalog",
+        "app.catalog_import",
+        "app.program_catalog_import",
+        "app.sources.pilots",
+        "app.sources.profile_registration"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.catalog_search": {
+      "path": "backend/app/catalog_search.py",
+      "responsibility": "Pure search keys consumed by shared ORM listeners",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Shared mapper callbacks use pure search keys without loading the catalogue package.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.admissions"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.changes": {
+      "path": "backend/app/changes.py",
+      "responsibility": "Subscription event feed and read markers",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.scenario_api",
+        "app.schema_base",
+        "app.sources.publishing"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "ChangeRead",
+        "ChangePage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.competition_api": {
+      "path": "backend/app/competition_api.py",
+      "responsibility": "Public competition projections and archive API",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.schema_base",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.status"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "collections",
+        "decimal",
+        "fastapi",
+        "pydantic",
+        "sqlalchemy",
+        "typing"
+      ],
+      "module_assignments": [
+        "PARTICIPATION"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "SnapshotMeta",
+        "SnapshotHistoryItem",
+        "CompetitionRead",
+        "CompetitionRow",
+        "CompetitionRows",
+        "Bin",
+        "Above",
+        "CompetitionSummary"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.config": {
+      "path": "backend/app/config.py",
+      "responsibility": "Environment and deployment settings",
+      "target": "core",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [
+        "app.auth.account_security"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "os",
+        "re",
+        "sqlalchemy",
+        "urllib"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:8",
+        "backend/tests/account_support.py:6",
+        "backend/tests/auth_runtime.py:16",
+        "backend/tests/catalog_runtime.py:13",
+        "backend/tests/conftest.py:5",
+        "backend/tests/replay_case.py:7",
+        "backend/tests/snapshot_backend_contract.py:149",
+        "backend/tests/test_account_acceptance.py:11",
+        "backend/tests/test_account_email_security.py:13",
+        "backend/tests/test_account_email_verification.py:118",
+        "backend/tests/test_account_http_security.py:10",
+        "backend/tests/test_account_lifecycle_security.py:13",
+        "backend/tests/test_account_mail.py:10",
+        "backend/tests/test_account_registration.py:14",
+        "backend/tests/test_auth_import_compatibility.py:10",
+        "backend/tests/test_bgu_runtime.py:8",
+        "backend/tests/test_config.py:3",
+        "backend/tests/test_config_strict.py:2",
+        "backend/tests/test_config_strict.py:21",
+        "backend/tests/test_group_catalog.py:6",
+        "backend/tests/test_origin.py:5",
+        "backend/tests/test_pilot_registration.py:37",
+        "backend/tests/test_postgres_sgu.py:11",
+        "backend/tests/test_postgres_writes.py:8",
+        "backend/tests/test_product_catalog.py:12",
+        "backend/tests/test_program_identity_storage.py:20",
+        "backend/tests/test_program_publication_api.py:14",
+        "backend/tests/test_restart.py:15",
+        "backend/tests/test_restore.py:11",
+        "backend/tests/test_reviewed_sources.py:10",
+        "backend/tests/test_smtp_check.py:3",
+        "backend/tests/test_source_lookup.py:9",
+        "backend/tests/test_university_names.py:14",
+        "frontend/scripts/postgres-runtime.py:16",
+        "scripts/local_smoke.py:156",
+        "scripts/qa/measure_archive.py:21",
+        "scripts/qa/rehearse_compose.py:141",
+        "scripts/qa/rehearse_compose.py:94",
+        "scripts/qa/rehearse_postgres_restore.py:23",
+        "scripts/qa/rehearse_sgu_worker.py:46",
+        "scripts/qa/verify_program_catalog.py:26",
+        "scripts/qa/verify_program_catalog_batch.py:19"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.backup",
+        "app.catalog_import",
+        "app.main",
+        "app.maintenance",
+        "app.national_coverage",
+        "app.observability",
+        "app.program_catalog_batch",
+        "app.program_catalog_import",
+        "app.smtp_check",
+        "app.sources.audit",
+        "app.sources.batch",
+        "app.sources.cli",
+        "app.sources.retention",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "Settings"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Settings",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.coverage": {
+      "path": "backend/app/coverage.py",
+      "responsibility": "Source and competition coverage counts",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.accreditation_registry",
+        "app.admissions",
+        "app.catalog",
+        "app.national_catalog",
+        "app.sources.contracts",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.status"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_bgu_runtime.py:9",
+        "backend/tests/test_coverage.py:7",
+        "backend/tests/test_section_family.py:87",
+        "backend/tests/test_source_status.py:8",
+        "scripts/qa/verify_filtered_scope.py:10",
+        "scripts/qa/verify_section_family.py:22"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.database": {
+      "path": "backend/app/database.py",
+      "responsibility": "SQLAlchemy base, engine and guest persistence registry",
+      "target": "core",
+      "action": "REFACTOR",
+      "reason": "Separate Base and engine from guest persistence and retain the legacy registry import.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:9",
+        "backend/tests/check_migrations.py:11",
+        "backend/tests/conftest.py:23",
+        "backend/tests/pg_support.py:8",
+        "backend/tests/snapshot_backend_contract.py:141",
+        "backend/tests/test_account_acceptance.py:12",
+        "backend/tests/test_account_foundation.py:13",
+        "backend/tests/test_account_limits.py:11",
+        "backend/tests/test_account_login.py:11",
+        "backend/tests/test_account_refresh.py:13",
+        "backend/tests/test_admissions.py:8",
+        "backend/tests/test_api.py:8",
+        "backend/tests/test_auth_import_compatibility.py:29",
+        "backend/tests/test_batch_reads.py:4",
+        "backend/tests/test_catalog_sql.py:79",
+        "backend/tests/test_connection_timeout.py:7",
+        "backend/tests/test_export.py:3",
+        "backend/tests/test_history_pages.py:3",
+        "backend/tests/test_history_versions.py:5",
+        "backend/tests/test_import.py:7",
+        "backend/tests/test_migrations.py:12",
+        "backend/tests/test_migrations.py:244",
+        "backend/tests/test_postgres_jobs.py:9",
+        "backend/tests/test_product_catalog.py:13",
+        "backend/tests/test_program_catalog_storage.py:10",
+        "backend/tests/test_restart.py:16",
+        "backend/tests/test_retention.py:11",
+        "backend/tests/test_sessions.py:6",
+        "backend/tests/test_source_deletion.py:6",
+        "backend/tests/test_source_lookup.py:10",
+        "backend/tests/test_source_lookup.py:72",
+        "backend/tests/test_source_security.py:5",
+        "backend/tests/test_subscriptions.py:11",
+        "backend/tests/test_subscriptions.py:87",
+        "backend/tests/test_writes.py:6",
+        "scripts/local_smoke.py:157",
+        "scripts/qa/load_profile.py:25",
+        "scripts/qa/measure_archive.py:22",
+        "scripts/qa/rehearse_catalog_migration.py:17",
+        "scripts/qa/rehearse_compose.py:142",
+        "scripts/qa/rehearse_compose.py:95",
+        "scripts/qa/rehearse_postgres_restore.py:24",
+        "scripts/qa/rehearse_reviewed_worker.py:13",
+        "scripts/qa/rehearse_sgu_worker.py:20",
+        "scripts/qa/rehearse_sgu_worker.py:47",
+        "scripts/qa/replay_archives.py:9"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.admissions",
+        "app.auth.accounts",
+        "app.backup",
+        "app.catalog_import",
+        "app.diagnostics",
+        "app.direction_budget",
+        "app.importing",
+        "app.jobs",
+        "app.main",
+        "app.maintenance",
+        "app.national_coverage",
+        "app.observability",
+        "app.operations",
+        "app.program_catalog_batch",
+        "app.program_catalog_import",
+        "app.program_catalog_models",
+        "app.source_api",
+        "app.sources.batch",
+        "app.sources.cli",
+        "app.sources.retention",
+        "app.university_name_report",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "Base",
+        "BrowserSession",
+        "Watch",
+        "LookupBudget",
+        "Snapshot",
+        "OperationRecord"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.diagnostics": {
+      "path": "backend/app/diagnostics.py",
+      "responsibility": "Read-only database diagnostics and CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "alembic",
+        "datetime",
+        "json",
+        "os",
+        "pathlib",
+        "sqlalchemy",
+        "sqlite3"
+      ],
+      "module_assignments": [
+        "MANUAL_TABLES"
+      ],
+      "cli_guard": true,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_database_diagnostics.py:9"
+      ],
+      "string_references": [
+        "scripts/qa/rehearse_compose.py:162"
+      ],
+      "patch_references": [
+        "backend/tests/test_database_diagnostics.py:71"
+      ],
+      "inbound": [
+        "app.sources.audit"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.direction_budget": {
+      "path": "backend/app/direction_budget.py",
+      "responsibility": "Shared manual and automatic direction quota",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.database",
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "LIMIT"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.importing",
+        "app.main",
+        "app.source_api"
+      ],
+      "module_class_definitions": [
+        "DirectionBudget"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.exam_requirements": {
+      "path": "backend/app/exam_requirements.py",
+      "responsibility": "Reviewed EGE data and lookup",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.national_catalog"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "functools",
+        "hashlib",
+        "json",
+        "logging",
+        "pathlib",
+        "re"
+      ],
+      "module_assignments": [
+        "DEFAULT_PATH",
+        "FORMAT",
+        "SUBJECTS",
+        "LEVELS",
+        "FORMS",
+        "CODE",
+        "log"
+      ],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_exam_requirements.py:9"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.product_catalog"
+      ],
+      "module_class_definitions": [
+        "Option",
+        "Test",
+        "Source",
+        "GroupRules",
+        "Artifact"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Option",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Test",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Source",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "GroupRules",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Artifact",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.http": {
+      "path": "backend/app/http.py",
+      "responsibility": "HTTP request budgets, origin and diagnostic middleware",
+      "target": "core",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "asyncio",
+        "json",
+        "logging",
+        "math",
+        "starlette",
+        "time",
+        "urllib",
+        "uuid"
+      ],
+      "module_assignments": [
+        "MAX_REQUEST_BYTES",
+        "DEFAULT_REQUEST_BYTES",
+        "LARGE_BODY_PATHS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_http_budget.py:5",
+        "backend/tests/test_http_budget.py:51"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.auth.account_api",
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "BodyTooLarge",
+        "RequestBudgetMiddleware",
+        "RequestDiagnosticsMiddleware"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.importing": {
+      "path": "backend/app/importing.py",
+      "responsibility": "Manual history bundle validation and import",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.calculation",
+        "app.database",
+        "app.schemas"
+      ],
+      "deferred": [
+        "app.direction_budget"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "pydantic",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.jobs": {
+      "path": "backend/app/jobs.py",
+      "responsibility": "Source job leases, scheduling and persistence",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.database",
+        "app.source_operations",
+        "app.sources.publishing"
+      ],
+      "deferred": [
+        "app.sources.contracts",
+        "app.sources.publishing"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:6",
+        "backend/tests/replay_case.py:9",
+        "backend/tests/test_bgu_runtime.py:10",
+        "backend/tests/test_domain_queue.py:8",
+        "backend/tests/test_jobs.py:8",
+        "backend/tests/test_mass_queue.py:14",
+        "backend/tests/test_national_coverage.py:85",
+        "backend/tests/test_next_scope.py:60",
+        "backend/tests/test_observability.py:8",
+        "backend/tests/test_postgres_jobs.py:10",
+        "backend/tests/test_postgres_sgu.py:13",
+        "backend/tests/test_profile_batch.py:113",
+        "backend/tests/test_queue_policy.py:3",
+        "backend/tests/test_reviewed_sources.py:12",
+        "backend/tests/test_section_family.py:88",
+        "backend/tests/test_sgu_worker.py:7",
+        "backend/tests/test_source_operations.py:7",
+        "backend/tests/test_source_recovery.py:7",
+        "backend/tests/test_source_size_policy.py:11",
+        "backend/tests/test_source_status.py:9",
+        "backend/tests/test_structured_family.py:11",
+        "backend/tests/test_worker.py:10",
+        "scripts/qa/rehearse_compose.py:143",
+        "scripts/qa/rehearse_compose.py:96",
+        "scripts/qa/rehearse_postgres_restore.py:25",
+        "scripts/qa/rehearse_reviewed_worker.py:14",
+        "scripts/qa/rehearse_sgu_worker.py:21",
+        "scripts/qa/verify_filtered_scope.py:11",
+        "scripts/qa/verify_reviewed_scope.py:21",
+        "scripts/qa/verify_section_family.py:23"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.observability",
+        "app.source_api",
+        "app.source_operations",
+        "app.sources.cli",
+        "app.sources.status",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "SourceJob",
+        "SourceCheck",
+        "Lease",
+        "LostLease"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Lease",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.main": {
+      "path": "backend/app/main.py",
+      "responsibility": "FastAPI startup, middleware, dependency and router assembly",
+      "target": "app",
+      "action": "REFACTOR",
+      "reason": "Retain ASGI and route order; extract functional installers.",
+      "eager": [
+        "app.calculation",
+        "app.catalog",
+        "app.config",
+        "app.coverage",
+        "app.database",
+        "app.http",
+        "app.importing",
+        "app.maintenance",
+        "app.migrations",
+        "app.national_coverage",
+        "app.observability",
+        "app.operations",
+        "app.schemas",
+        "app.sources.status"
+      ],
+      "deferred": [
+        "app.auth.account_api",
+        "app.changes",
+        "app.competition_api",
+        "app.direction_budget",
+        "app.product_catalog",
+        "app.scenario_api",
+        "app.source_api",
+        "app.source_catalog",
+        "app.sources.registry"
+      ],
+      "runtime_imports": [
+        "asyncio",
+        "contextlib",
+        "datetime",
+        "fastapi",
+        "hashlib",
+        "logging",
+        "secrets",
+        "sqlalchemy",
+        "starlette",
+        "uuid"
+      ],
+      "module_assignments": [
+        "COOKIE",
+        "SESSION_DAYS",
+        "app"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/account_support.py:7",
+        "backend/tests/auth_runtime.py:17",
+        "backend/tests/catalog_runtime.py:14",
+        "backend/tests/conftest.py:6",
+        "backend/tests/replay_case.py:8",
+        "backend/tests/snapshot_backend_contract.py:150",
+        "backend/tests/test_account_acceptance.py:13",
+        "backend/tests/test_account_email_security.py:14",
+        "backend/tests/test_account_email_verification.py:119",
+        "backend/tests/test_account_http_security.py:11",
+        "backend/tests/test_account_lifecycle_security.py:14",
+        "backend/tests/test_account_login.py:12",
+        "backend/tests/test_account_logout.py:13",
+        "backend/tests/test_account_registration.py:15",
+        "backend/tests/test_api.py:9",
+        "backend/tests/test_auth_import_compatibility.py:11",
+        "backend/tests/test_bgu_runtime.py:11",
+        "backend/tests/test_config_strict.py:20",
+        "backend/tests/test_database_diagnostics.py:10",
+        "backend/tests/test_draft_scope.py:1",
+        "backend/tests/test_export.py:4",
+        "backend/tests/test_group_catalog.py:7",
+        "backend/tests/test_history_pages.py:4",
+        "backend/tests/test_origin.py:6",
+        "backend/tests/test_pilot_registration.py:38",
+        "backend/tests/test_postgres_sgu.py:14",
+        "backend/tests/test_postgres_writes.py:9",
+        "backend/tests/test_product_catalog.py:14",
+        "backend/tests/test_program_identity_storage.py:21",
+        "backend/tests/test_program_publication_api.py:15",
+        "backend/tests/test_restart.py:17",
+        "backend/tests/test_restore.py:12",
+        "backend/tests/test_reviewed_sources.py:11",
+        "backend/tests/test_sessions.py:7",
+        "backend/tests/test_source_lookup.py:11",
+        "backend/tests/test_source_lookup.py:71",
+        "backend/tests/test_source_security.py:26",
+        "backend/tests/test_subscriptions.py:68",
+        "backend/tests/test_subscriptions.py:88",
+        "backend/tests/test_university_names.py:15",
+        "backend/tests/test_writes.py:7",
+        "frontend/scripts/postgres-runtime.py:15",
+        "scripts/qa/load_server.py:11",
+        "scripts/qa/measure_archive.py:23",
+        "scripts/qa/rehearse_postgres_restore.py:26",
+        "scripts/qa/verify_program_catalog.py:27",
+        "scripts/qa/verify_program_catalog_batch.py:20"
+      ],
+      "string_references": [
+        "backend/Dockerfile:18",
+        "backend/tests/snapshot_backend_contract.py:140",
+        "backend/tests/test_auth_import_compatibility.py:16",
+        "backend/tests/test_restart.py:26",
+        "docs/archive/frontend-before-exact-copy-ci.yaml:128",
+        "docs/archive/frontend-before-exact-copy-ci.yaml:68"
+      ],
+      "patch_references": [
+        "backend/tests/test_snapshot_clock.py:12",
+        "backend/tests/test_snapshot_clock.py:17",
+        "backend/tests/test_snapshot_clock.py:25",
+        "backend/tests/test_snapshot_clock.py:26",
+        "backend/tests/test_snapshot_clock.py:35",
+        "backend/tests/test_snapshot_clock.py:8",
+        "backend/tests/test_source_lookup.py:75",
+        "backend/tests/test_source_lookup.py:82",
+        "backend/tests/test_source_security.py:31",
+        "backend/tests/test_subscriptions.py:70"
+      ],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.maintenance": {
+      "path": "backend/app/maintenance.py",
+      "responsibility": "Expired guest and account data maintenance CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.auth.accounts",
+        "app.config",
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_foundation.py:14",
+        "backend/tests/test_sessions.py:8",
+        "backend/tests/test_subscriptions.py:89"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.migration_checks": {
+      "path": "backend/app/migration_checks.py",
+      "responsibility": "Schema inspection and guarded migration expectations",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "re",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [
+        "_TOKENS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/versions/0001_initial.py:6",
+        "backend/alembic/versions/0002_operation_records.py:7"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.migrations": {
+      "path": "backend/app/migrations.py",
+      "responsibility": "Alembic runtime integration and restore sentinel",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.accounts",
+        "app.program_catalog_models"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "alembic",
+        "functools",
+        "pathlib"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/auth_runtime.py:18",
+        "backend/tests/catalog_runtime.py:15",
+        "backend/tests/native_support.py:6",
+        "frontend/scripts/postgres-runtime.py:19",
+        "scripts/qa/load_profile.py:26",
+        "scripts/qa/measure_archive.py:24",
+        "scripts/qa/rehearse_catalog_migration.py:18",
+        "scripts/qa/rehearse_postgres_restore.py:27",
+        "scripts/qa/rehearse_reviewed_worker.py:15",
+        "scripts/qa/rehearse_sgu_worker.py:22",
+        "scripts/qa/replay_archives.py:10",
+        "scripts/qa/verify_filtered_scope.py:12",
+        "scripts/qa/verify_program_catalog.py:28",
+        "scripts/qa/verify_program_catalog_batch.py:21",
+        "scripts/qa/verify_reviewed_scope.py:22",
+        "scripts/qa/verify_section_family.py:24"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.program_catalog_import"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [
+        {
+          "symbol": "schema_heads",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.national_catalog": {
+      "path": "backend/app/national_catalog.py",
+      "responsibility": "National university dataset and CLI",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "dataclasses",
+        "datetime",
+        "functools",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "tempfile",
+        "types",
+        "urllib"
+      ],
+      "module_assignments": [
+        "DEFAULT_PATH",
+        "LEGACY_IDS"
+      ],
+      "cli_guard": true,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_accreditation_registry.py:10",
+        "backend/tests/test_national_catalog.py:3",
+        "backend/tests/test_national_coverage.py:44",
+        "backend/tests/test_product_catalog.py:5",
+        "backend/tests/test_university_names.py:16",
+        "scripts/data/admissions_inventory.py:19",
+        "scripts/data/group_source_formats.py:16",
+        "scripts/data/research_stateful_formats.py:17",
+        "scripts/data/source_inventory.py:23"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.accreditation_registry",
+        "app.catalog",
+        "app.coverage",
+        "app.exam_requirements",
+        "app.national_coverage",
+        "app.product_catalog",
+        "app.program_catalog_import",
+        "app.program_catalog_sources",
+        "app.university_name_report",
+        "app.university_names"
+      ],
+      "module_class_definitions": [
+        "Institution",
+        "CatalogSnapshot"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Institution",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "CatalogSnapshot",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_catalog",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.national_coverage": {
+      "path": "backend/app/national_coverage.py",
+      "responsibility": "National programme coverage and audit CLI",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.accreditation_registry",
+        "app.admissions",
+        "app.national_catalog",
+        "app.observability",
+        "app.product_catalog",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.status"
+      ],
+      "deferred": [
+        "app.config",
+        "app.database"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "collections",
+        "datetime",
+        "hashlib",
+        "json",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "TARGET",
+        "PROBLEM_STATES"
+      ],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_national_coverage.py:8",
+        "scripts/qa/verify_program_catalog.py:29",
+        "scripts/qa/verify_program_catalog_batch.py:22"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.observability": {
+      "path": "backend/app/observability.py",
+      "responsibility": "Worker heartbeat, status and event logging CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.database",
+        "app.jobs",
+        "app.sources.publishing",
+        "app.sources.status"
+      ],
+      "deferred": [
+        "app.config",
+        "app.database"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "collections",
+        "datetime",
+        "json",
+        "logging",
+        "sqlalchemy",
+        "sys"
+      ],
+      "module_assignments": [
+        "WORKER_STALE_SECONDS",
+        "HEARTBEAT_RETENTION",
+        "UNHEALTHY_SOURCE_STATES"
+      ],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:7",
+        "backend/tests/test_observability.py:74",
+        "backend/tests/test_observability.py:9"
+      ],
+      "string_references": [
+        "scripts/ops/ops_check.py:19"
+      ],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.national_coverage",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "WorkerHeartbeat"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.operations": {
+      "path": "backend/app/operations.py",
+      "responsibility": "Legacy watch-write idempotency and retirement",
+      "target": "operations",
+      "action": "REFACTOR",
+      "reason": "Preserve the old idempotency namespace and make it the compatibility surface for the package.",
+      "eager": [
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "hashlib",
+        "json",
+        "re",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.source_api"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.product_catalog": {
+      "path": "backend/app/product_catalog.py",
+      "responsibility": "Public universities, programmes and EGE routers/projections",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.accreditation_registry",
+        "app.admissions",
+        "app.catalog_import",
+        "app.exam_requirements",
+        "app.national_catalog",
+        "app.product_catalog_schemas",
+        "app.program_catalog_models",
+        "app.university_names"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "re",
+        "sqlalchemy",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_national_coverage.py:45",
+        "backend/tests/test_program_identity_storage.py:22",
+        "backend/tests/test_program_publication_api.py:139",
+        "backend/tests/test_university_names.py:17"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.national_coverage",
+        "app.university_name_report"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_program_publication_api.py:152"
+      ]
+    },
+    "app.product_catalog_schemas": {
+      "path": "backend/app/product_catalog_schemas.py",
+      "responsibility": "Public catalogue DTOs",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_university_names.py:18"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.product_catalog"
+      ],
+      "module_class_definitions": [
+        "Provenance",
+        "Accreditation",
+        "UniversityNameSource",
+        "BranchInfo",
+        "CatalogUniversity",
+        "ExamOption",
+        "ExamTest",
+        "ExamSource",
+        "ExamRequirements",
+        "CatalogCompetitionGroup",
+        "CatalogProgram",
+        "UniversityPage",
+        "ProgramPage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.program_catalog_batch": {
+      "path": "backend/app/program_catalog_batch.py",
+      "responsibility": "Durable reviewed programme capture/publish CLI",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.program_catalog_batch_fetch",
+        "app.program_catalog_import",
+        "app.program_catalog_sources",
+        "app.sources.fetcher",
+        "app.sources.storage"
+      ],
+      "deferred": [
+        "app.config",
+        "app.database"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "contextlib",
+        "datetime",
+        "json",
+        "math",
+        "os",
+        "pathlib",
+        "re",
+        "sqlalchemy",
+        "tempfile",
+        "time",
+        "urllib"
+      ],
+      "module_assignments": [
+        "MAX_ATTEMPTS",
+        "MAX_PER_RUN",
+        "MIN_DELAY",
+        "IN_PROGRESS_COOLDOWN",
+        "MAX_ROBOTS_BYTES",
+        "TRANSIENT"
+      ],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_program_catalog_batch.py:11",
+        "backend/tests/test_program_catalog_batch.py:230"
+      ],
+      "string_references": [
+        "scripts/qa/verify_program_catalog_batch.py:32"
+      ],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.program_catalog_batch_fetch": {
+      "path": "backend/app/program_catalog_batch_fetch.py",
+      "responsibility": "Bounded subprocess for programme retrieval",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.sources.fetcher"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "hashlib",
+        "json",
+        "multiprocessing",
+        "os",
+        "pathlib",
+        "tempfile",
+        "time"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_program_catalog_batch.py:12"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_program_catalog_batch.py:171"
+      ],
+      "inbound": [
+        "app.program_catalog_batch"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.program_catalog_import": {
+      "path": "backend/app/program_catalog_import.py",
+      "responsibility": "Reviewed programme ingestion and publication CLI",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.catalog_identity",
+        "app.catalog_import",
+        "app.catalog_lock",
+        "app.national_catalog",
+        "app.program_catalog_models",
+        "app.program_catalog_review",
+        "app.sources.storage",
+        "app.sources.table_profiles"
+      ],
+      "deferred": [
+        "app.config",
+        "app.database",
+        "app.migrations",
+        "app.sources.storage"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "datetime",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "sqlalchemy",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_program_catalog_import.py:131",
+        "backend/tests/test_program_catalog_import.py:19",
+        "backend/tests/test_program_catalog_import.py:277",
+        "backend/tests/test_program_catalog_import.py:291",
+        "backend/tests/test_program_catalog_import.py:307",
+        "backend/tests/test_program_publication_api.py:16",
+        "scripts/qa/verify_program_catalog.py:30"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.program_catalog_batch"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_program_catalog_import.py:134",
+        "backend/tests/test_program_catalog_import.py:309"
+      ]
+    },
+    "app.program_catalog_models": {
+      "path": "backend/app/program_catalog_models.py",
+      "responsibility": "Programme evidence and publication ORM",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.database"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/alembic/env.py:5",
+        "backend/tests/test_program_catalog_batch.py:13",
+        "backend/tests/test_program_catalog_import.py:16",
+        "backend/tests/test_program_catalog_storage.py:11",
+        "backend/tests/test_program_publication_api.py:17",
+        "scripts/qa/verify_program_catalog.py:31",
+        "scripts/qa/verify_program_catalog_batch.py:23"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.migrations",
+        "app.product_catalog",
+        "app.program_catalog_import",
+        "app.sources.retention"
+      ],
+      "module_class_definitions": [
+        "ProgramCatalogDocument",
+        "ProgramCatalogRevision",
+        "ProgramCatalogFact",
+        "ProgramCatalogGroupFact",
+        "ProgramCatalogPublication",
+        "ProgramCatalogImportAttempt"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.program_catalog_review": {
+      "path": "backend/app/program_catalog_review.py",
+      "responsibility": "Review declarations and bounded programme parsers",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "bs4",
+        "hashlib",
+        "json",
+        "pathlib",
+        "re",
+        "urllib"
+      ],
+      "module_assignments": [
+        "REVIEWS",
+        "EXTRACTORS"
+      ],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_program_catalog_import.py:20",
+        "backend/tests/test_program_catalog_review.py:8",
+        "backend/tests/test_program_publication_api.py:18",
+        "scripts/qa/verify_program_catalog.py:32"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.program_catalog_import",
+        "app.program_catalog_sources"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.program_catalog_sources": {
+      "path": "backend/app/program_catalog_sources.py",
+      "responsibility": "Reviewed programme source selection",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.national_catalog",
+        "app.program_catalog_review",
+        "app.sources.fetcher"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "re",
+        "urllib"
+      ],
+      "module_assignments": [
+        "CANDIDATES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_program_catalog_batch.py:14"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.program_catalog_batch"
+      ],
+      "module_class_definitions": [
+        "ProgrammeSource"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "ProgrammeSource",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.scenario_api": {
+      "path": "backend/app/scenario_api.py",
+      "responsibility": "Scenario and archived subscription projections",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.scenario_explanations",
+        "app.scenarios",
+        "app.schema_base",
+        "app.sources.publishing"
+      ],
+      "deferred": [
+        "app.source_api"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "sqlalchemy",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.changes",
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "Change",
+        "ScenarioRead",
+        "ScenarioPage"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.scenario_explanations": {
+      "path": "backend/app/scenario_explanations.py",
+      "responsibility": "Scenario explanation contract and mapping",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.scenarios",
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "typing"
+      ],
+      "module_assignments": [
+        "REASONS",
+        "LABELS",
+        "STATE",
+        "PARTICIPATION"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_scenario_explanations.py:1"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.scenario_api",
+        "app.scenario_storage"
+      ],
+      "module_class_definitions": [
+        "Explanation"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.scenario_storage": {
+      "path": "backend/app/scenario_storage.py",
+      "responsibility": "Scenario persistence and publication callbacks",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.scenarios"
+      ],
+      "deferred": [
+        "app.admissions",
+        "app.scenario_explanations",
+        "app.source_history",
+        "app.source_operations",
+        "app.sources.contracts",
+        "app.sources.publishing",
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/replay_case.py:10",
+        "backend/tests/test_changes.py:9",
+        "backend/tests/test_coverage.py:52",
+        "backend/tests/test_scenario_storage.py:10",
+        "backend/tests/test_scenarios.py:67",
+        "scripts/qa/rehearse_postgres_restore.py:84",
+        "scripts/qa/verify_section_family.py:65"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_scenario_storage.py:45",
+        "backend/tests/test_scenario_storage.py:59"
+      ],
+      "inbound": [
+        "app.source_api",
+        "app.sources.cli",
+        "app.sources.publishing"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.scenarios": {
+      "path": "backend/app/scenarios.py",
+      "responsibility": "Versioned scenario calculation",
+      "target": "competitions",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "types",
+        "typing"
+      ],
+      "module_assignments": [
+        "VERSION",
+        "ASSUMPTIONS",
+        "MODELS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_domain_regression.py:13",
+        "backend/tests/test_domain_regression.py:177",
+        "backend/tests/test_scenario_storage.py:11",
+        "backend/tests/test_scenarios.py:3"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.scenario_api",
+        "app.scenario_explanations",
+        "app.scenario_storage"
+      ],
+      "module_class_definitions": [
+        "ScenarioNumbers",
+        "ScenarioResult",
+        "PreparedRows"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.schema_base": {
+      "path": "backend/app/schema_base.py",
+      "responsibility": "Shared camel-case Pydantic model base",
+      "target": "core",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "pydantic"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.account_dto",
+        "app.backup",
+        "app.calculation",
+        "app.changes",
+        "app.competition_api",
+        "app.direction_budget",
+        "app.product_catalog_schemas",
+        "app.scenario_api",
+        "app.scenario_explanations",
+        "app.scenarios",
+        "app.schemas",
+        "app.source_api",
+        "app.source_catalog"
+      ],
+      "module_class_definitions": [
+        "CamelModel"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.schemas": {
+      "path": "backend/app/schemas.py",
+      "responsibility": "Shared legacy FastAPI DTO import surface",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Shared DTO and response-schema surface; its distinct model names are public contracts.",
+      "eager": [
+        "app.calculation",
+        "app.schema_base"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "pydantic",
+        "re",
+        "typing"
+      ],
+      "module_assignments": [
+        "ManualTimestamp"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_contracts.py:4",
+        "backend/tests/test_timestamp_bounds.py:3"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.catalog",
+        "app.importing",
+        "app.main"
+      ],
+      "module_class_definitions": [
+        "ValidationProblem",
+        "WatchCreate",
+        "SessionRead",
+        "UniversityRead",
+        "CatalogRead",
+        "SnapshotRead",
+        "WatchRead",
+        "WatchDetail",
+        "DataExport",
+        "ImportRequest",
+        "ImportResult",
+        "CoverageRead",
+        "HistoryPage",
+        "SourceStatus"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.smtp_check": {
+      "path": "backend/app/smtp_check.py",
+      "responsibility": "SMTP configuration and opt-in test delivery CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.auth.account_mail",
+        "app.auth.account_security",
+        "app.config"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "os"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_smtp_check.py:1"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_smtp_check.py:15",
+        "backend/tests/test_smtp_check.py:25"
+      ]
+    },
+    "app.source_api": {
+      "path": "backend/app/source_api.py",
+      "responsibility": "Guest source lookup and subscription API",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.database",
+        "app.direction_budget",
+        "app.operations",
+        "app.schema_base",
+        "app.source_catalog",
+        "app.source_tokens",
+        "app.sources.contracts",
+        "app.sources.publishing"
+      ],
+      "deferred": [
+        "app.jobs",
+        "app.scenario_storage",
+        "app.source_history"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "decimal",
+        "fastapi",
+        "hashlib",
+        "pydantic",
+        "sqlalchemy",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_source_security.py:12"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.scenario_api",
+        "app.source_history"
+      ],
+      "module_class_definitions": [
+        "LookupInput",
+        "CandidateFact",
+        "LookupResult",
+        "ConfirmInput",
+        "SubscriptionSaved",
+        "ArchiveDirection",
+        "ArchiveHistoryItem",
+        "ArchiveHistoryPage",
+        "SourceCheckRead",
+        "ArchiveExport"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_source_security.py:19"
+      ]
+    },
+    "app.source_catalog": {
+      "path": "backend/app/source_catalog.py",
+      "responsibility": "Search and projection for source-backed contest groups",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.schema_base",
+        "app.sources.registry",
+        "app.sources.status"
+      ],
+      "deferred": [
+        "app.admissions",
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "pydantic",
+        "sqlalchemy",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_catalog_sql.py:10"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.main",
+        "app.source_api"
+      ],
+      "module_class_definitions": [
+        "GroupRead",
+        "BranchRead",
+        "CatalogFacets",
+        "GroupCatalog"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.source_history": {
+      "path": "backend/app/source_history.py",
+      "responsibility": "Subscription snapshot and candidate event history",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions"
+      ],
+      "deferred": [
+        "app.source_api"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "fastapi",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "FACT_VERSION",
+        "VERSIONS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_source_history.py:57",
+        "backend/tests/test_source_history.py:92",
+        "backend/tests/test_source_history.py:98"
+      ],
+      "inbound": [
+        "app.scenario_storage",
+        "app.source_api",
+        "app.sources.publishing"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.source_operations": {
+      "path": "backend/app/source_operations.py",
+      "responsibility": "Source operation history and state controls",
+      "target": "sources",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.sources.contracts",
+        "app.sources.publishing"
+      ],
+      "deferred": [
+        "app.jobs"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "ACTIONS",
+        "OUTCOMES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_profile_batch.py:68",
+        "backend/tests/test_source_operations.py:8"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.jobs",
+        "app.scenario_storage",
+        "app.sources.cli",
+        "app.sources.pilots",
+        "app.sources.profile_registration"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.source_tokens": {
+      "path": "backend/app/source_tokens.py",
+      "responsibility": "Signed lookup confirmation tokens",
+      "target": "watchlist",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "base64",
+        "hashlib",
+        "hmac",
+        "json",
+        "pydantic",
+        "re"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_source_lookup.py:12"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.source_api"
+      ],
+      "module_class_definitions": [
+        "Confirmation",
+        "ConfirmationError"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources": {
+      "path": "backend/app/sources/__init__.py",
+      "responsibility": "Package marker",
+      "target": "app",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_profile_batch.py:111"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.adapters": {
+      "path": "backend/app/sources/adapters/__init__.py",
+      "responsibility": "Package marker",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.adapters.sgu2026": {
+      "path": "backend/app/sources/adapters/sgu2026.py",
+      "responsibility": "Reviewed SGU 2026 parser",
+      "target": "sources.adapters",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts",
+        "app.sources.html_inspection",
+        "app.sources.registry"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "decimal",
+        "hashlib",
+        "re"
+      ],
+      "module_assignments": [
+        "VERSION",
+        "SOURCE_ID",
+        "GROUP_ID",
+        "URL",
+        "ROWS",
+        "METADATA",
+        "LABELS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/sgu_helpers.py:5",
+        "backend/tests/test_pilot_registration.py:8",
+        "backend/tests/test_profile_batch.py:98",
+        "backend/tests/test_reviewed_sources.py:83",
+        "backend/tests/test_sgu_adapter.py:7",
+        "frontend/scripts/postgres-runtime.py:25",
+        "scripts/data/audit_sgu.py:16",
+        "scripts/qa/rehearse_sgu_worker.py:23"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.pilots",
+        "app.sources.registry"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.audit": {
+      "path": "backend/app/sources/audit.py",
+      "responsibility": "Read-only source and database audit",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.config",
+        "app.diagnostics",
+        "app.sources.contracts",
+        "app.sources.fetcher",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.storage",
+        "app.sources.validation"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "contextlib",
+        "json",
+        "os",
+        "pathlib",
+        "sqlalchemy",
+        "urllib"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_bgu_runtime.py:12",
+        "backend/tests/test_section_family.py:89",
+        "backend/tests/test_source_audit.py:6",
+        "scripts/qa/verify_filtered_scope.py:13",
+        "scripts/qa/verify_reviewed_scope.py:23",
+        "scripts/qa/verify_section_family.py:25"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [
+        {
+          "symbol": "readonly_connection",
+          "decorator": "contextmanager"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.batch": {
+      "path": "backend/app/sources/batch.py",
+      "responsibility": "Source batch operator workflows",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.config",
+        "app.database",
+        "app.sources.contracts",
+        "app.sources.profile_registration",
+        "app.sources.registry"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "json"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_profile_batch.py:9"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_profile_batch.py:52",
+        "backend/tests/test_profile_batch.py:60"
+      ],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.capture": {
+      "path": "backend/app/sources/capture.py",
+      "responsibility": "Source capture and bounded fetch orchestration",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts",
+        "app.sources.fetcher",
+        "app.worker"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pydantic",
+        "urllib",
+        "uuid"
+      ],
+      "module_assignments": [
+        "TARGETS",
+        "MAX_BYTES"
+      ],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_capture.py:6"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [
+        "CaptureError",
+        "Manifest"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.cli": {
+      "path": "backend/app/sources/cli.py",
+      "responsibility": "Source operator CLI and dispatch",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.config",
+        "app.database",
+        "app.jobs",
+        "app.sources.contracts",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.status"
+      ],
+      "deferred": [
+        "app.jobs",
+        "app.scenario_storage",
+        "app.source_operations",
+        "app.sources.pilots",
+        "app.sources.profile_registration",
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "json",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_source_operations.py:9",
+        "backend/tests/test_worker.py:11"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.contracts": {
+      "path": "backend/app/sources/contracts.py",
+      "responsibility": "Adapter contracts and scoped identifiers",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "decimal",
+        "hashlib",
+        "hmac",
+        "json",
+        "pydantic",
+        "typing"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/source_helpers.py:8",
+        "backend/tests/test_adapter_contract.py:7",
+        "backend/tests/test_attestation.py:8",
+        "backend/tests/test_bgu_attestation.py:7",
+        "backend/tests/test_domain_regression.py:14",
+        "backend/tests/test_filtered_table.py:9",
+        "backend/tests/test_next_scope.py:7",
+        "backend/tests/test_pilot_fixtures.py:7",
+        "backend/tests/test_pilot_registration.py:9",
+        "backend/tests/test_profile_batch.py:10",
+        "backend/tests/test_registry_contract.py:3",
+        "backend/tests/test_reviewed_sources.py:71",
+        "backend/tests/test_reviewed_sources.py:82",
+        "backend/tests/test_section_family.py:11",
+        "backend/tests/test_sgu_adapter.py:8",
+        "backend/tests/test_sgu_quarantine.py:9",
+        "backend/tests/test_source_operations.py:10",
+        "backend/tests/test_source_validation.py:6",
+        "backend/tests/test_structured_family.py:12",
+        "backend/tests/test_table_family.py:9",
+        "frontend/scripts/postgres-runtime.py:23",
+        "scripts/data/audit_sgu.py:17",
+        "scripts/data/audit_table_family.py:13",
+        "scripts/data/review_bgu_scope.py:13",
+        "scripts/data/review_section_family.py:21",
+        "scripts/data/review_sgu_scope.py:23",
+        "scripts/qa/load_profile.py:27",
+        "scripts/qa/load_support.py:7"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.coverage",
+        "app.jobs",
+        "app.scenario_storage",
+        "app.source_api",
+        "app.source_operations",
+        "app.sources.adapters.sgu2026",
+        "app.sources.audit",
+        "app.sources.batch",
+        "app.sources.capture",
+        "app.sources.cli",
+        "app.sources.html_inspection",
+        "app.sources.pilots",
+        "app.sources.profile_registration",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.status",
+        "app.sources.structured_family",
+        "app.sources.table_family",
+        "app.sources.validation",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "CandidateRow",
+        "ParsedList",
+        "SourceBinding",
+        "AdapterError"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "SourceBinding",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.fetcher": {
+      "path": "backend/app/sources/fetcher.py",
+      "responsibility": "Network fetch safety, policy and limits",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "email",
+        "hashlib",
+        "http",
+        "ipaddress",
+        "math",
+        "re",
+        "socket",
+        "ssl",
+        "time",
+        "urllib"
+      ],
+      "module_assignments": [
+        "DEFAULT_SOURCE_BYTES",
+        "MAX_SOURCE_BYTES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/source_helpers.py:9",
+        "backend/tests/test_capture.py:7",
+        "backend/tests/test_fetch_exchange.py:8",
+        "backend/tests/test_fetcher.py:7",
+        "backend/tests/test_filtered_table.py:10",
+        "backend/tests/test_national_coverage.py:86",
+        "backend/tests/test_next_scope.py:8",
+        "backend/tests/test_observability.py:10",
+        "backend/tests/test_page_cache.py:5",
+        "backend/tests/test_program_catalog_batch.py:15",
+        "backend/tests/test_program_catalog_capture.py:9",
+        "backend/tests/test_reviewed_sources.py:17",
+        "backend/tests/test_section_family.py:12",
+        "backend/tests/test_sgu_adapter.py:9",
+        "backend/tests/test_source_size_policy.py:7",
+        "backend/tests/test_structured_family.py:13",
+        "backend/tests/test_table_family.py:10",
+        "backend/tests/test_worker.py:12",
+        "frontend/scripts/postgres-runtime.py:24",
+        "scripts/data/audit_sgu.py:18",
+        "scripts/data/audit_table_family.py:14",
+        "scripts/data/capture_program_catalog.py:17",
+        "scripts/data/review_bgu_scope.py:14",
+        "scripts/data/review_section_family.py:22",
+        "scripts/data/review_sgu_scope.py:24",
+        "scripts/data/source_inventory.py:24",
+        "scripts/qa/load_support.py:8",
+        "scripts/qa/rehearse_sgu_worker.py:49"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_fetcher.py:135",
+        "backend/tests/test_fetcher.py:147",
+        "backend/tests/test_fetcher.py:166"
+      ],
+      "inbound": [
+        "app.program_catalog_batch",
+        "app.program_catalog_batch_fetch",
+        "app.program_catalog_sources",
+        "app.sources.audit",
+        "app.sources.capture",
+        "app.sources.page_cache",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.table_family",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "FetchError",
+        "FetchPolicy",
+        "RawResponse",
+        "FetchResult",
+        "PinnedHTTPSConnection",
+        "HTTPSReader",
+        "Fetcher"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "FetchPolicy",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "RawResponse",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "FetchResult",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.html_inspection": {
+      "path": "backend/app/sources/html_inspection.py",
+      "responsibility": "HTML structure and attestation inspection",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "bs4"
+      ],
+      "module_assignments": [
+        "MAX_INSPECTION_BYTES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_pilot_fixtures.py:8",
+        "scripts/data/sanitize_pilot.py:15"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.adapters.sgu2026",
+        "app.sources.table_family"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.navigation": {
+      "path": "backend/app/sources/navigation.py",
+      "responsibility": "Source page navigation and candidate discovery",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "re",
+        "urllib"
+      ],
+      "module_assignments": [
+        "EXCLUDED",
+        "LIST_LABEL",
+        "ADMISSION_LABEL",
+        "ADMISSION_SCOPE",
+        "LIST_PATH"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "scripts/data/admissions_inventory.py:20",
+        "scripts/data/source_inventory.py:25"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.page_cache": {
+      "path": "backend/app/sources/page_cache.py",
+      "responsibility": "Conditional source fetch cache",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.fetcher"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "collections",
+        "datetime",
+        "hashlib",
+        "math",
+        "time",
+        "urllib"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_page_cache.py:6",
+        "scripts/qa/verify_section_family.py:27"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "PageFetchCache"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.pilots": {
+      "path": "backend/app/sources/pilots.py",
+      "responsibility": "Reviewed pilot source registration",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.catalog",
+        "app.catalog_lock",
+        "app.sources.adapters.sgu2026",
+        "app.sources.contracts",
+        "app.sources.publishing",
+        "app.sources.registry"
+      ],
+      "deferred": [
+        "app.source_operations"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "CAMPAIGN_ID",
+        "GROUP_FIELDS",
+        "SOURCE_FIELDS"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_account_acceptance.py:14",
+        "backend/tests/test_coverage.py:48",
+        "backend/tests/test_group_catalog.py:8",
+        "backend/tests/test_pilot_registration.py:10",
+        "backend/tests/test_postgres_sgu.py:51",
+        "backend/tests/test_profile_batch.py:97",
+        "backend/tests/test_reviewed_sources.py:81",
+        "backend/tests/test_source_lookup.py:13",
+        "backend/tests/test_source_operations.py:13",
+        "frontend/scripts/postgres-runtime.py:20",
+        "scripts/qa/measure_archive.py:25",
+        "scripts/qa/rehearse_postgres_restore.py:53"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.cli"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.profile_catalog": {
+      "path": "backend/app/sources/profile_catalog.py",
+      "responsibility": "Profile resource catalogue I/O and atomic publication",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "re",
+        "tempfile"
+      ],
+      "module_assignments": [
+        "MAX_MANIFEST_BYTES",
+        "MAX_SHARD_BYTES",
+        "MAX_TOTAL_BYTES",
+        "MAX_SHARDS",
+        "MAX_PROFILES",
+        "SHARD_PROFILES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_profile_catalog.py:6",
+        "scripts/data/pack_profiles.py:7",
+        "scripts/data/review_bgu_scope.py:15",
+        "scripts/data/review_section_family.py:25",
+        "scripts/data/review_sgu_scope.py:27"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.table_profiles"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.profile_registration": {
+      "path": "backend/app/sources/profile_registration.py",
+      "responsibility": "Register reviewed source profiles",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.catalog_lock",
+        "app.sources.contracts",
+        "app.sources.registry"
+      ],
+      "deferred": [
+        "app.source_operations",
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "MAX_BATCH_PROFILES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/replay_case.py:11",
+        "backend/tests/test_bgu_runtime.py:13",
+        "backend/tests/test_coverage.py:49",
+        "backend/tests/test_next_scope.py:61",
+        "backend/tests/test_profile_batch.py:11",
+        "backend/tests/test_reviewed_sources.py:13",
+        "backend/tests/test_scenario_storage.py:66",
+        "backend/tests/test_section_family.py:90",
+        "scripts/qa/rehearse_reviewed_worker.py:17",
+        "scripts/qa/verify_filtered_scope.py:14",
+        "scripts/qa/verify_reviewed_scope.py:24",
+        "scripts/qa/verify_section_family.py:26"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.batch",
+        "app.sources.cli"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.publishing": {
+      "path": "backend/app/sources/publishing.py",
+      "responsibility": "Transactional publication and snapshot replay",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.sources.contracts",
+        "app.sources.fetcher",
+        "app.sources.registry",
+        "app.sources.storage",
+        "app.sources.validation"
+      ],
+      "deferred": [
+        "app.scenario_storage",
+        "app.source_history"
+      ],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy"
+      ],
+      "module_assignments": [
+        "QUARANTINE_CODES",
+        "STORAGE_RETRY_CODES",
+        "FETCH_CODES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/replay_case.py:14",
+        "backend/tests/test_account_acceptance.py:15",
+        "backend/tests/test_backup.py:9",
+        "backend/tests/test_changes.py:10",
+        "backend/tests/test_coverage.py:53",
+        "backend/tests/test_coverage.py:8",
+        "backend/tests/test_group_catalog.py:9",
+        "backend/tests/test_postgres_sgu.py:17",
+        "backend/tests/test_publishing.py:9",
+        "backend/tests/test_restore.py:14",
+        "backend/tests/test_retention.py:12",
+        "backend/tests/test_scenario_storage.py:12",
+        "backend/tests/test_sgu_quarantine.py:10",
+        "backend/tests/test_source_history.py:8",
+        "backend/tests/test_source_lookup.py:14",
+        "backend/tests/test_source_operations.py:11",
+        "backend/tests/test_source_size_policy.py:61",
+        "backend/tests/test_source_status.py:10",
+        "backend/tests/test_subscriptions.py:12",
+        "frontend/scripts/postgres-runtime.py:21",
+        "scripts/qa/load_profile.py:28",
+        "scripts/qa/measure_archive.py:26",
+        "scripts/qa/rehearse_postgres_restore.py:28"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.changes",
+        "app.competition_api",
+        "app.coverage",
+        "app.jobs",
+        "app.national_coverage",
+        "app.observability",
+        "app.scenario_api",
+        "app.scenario_storage",
+        "app.source_api",
+        "app.source_operations",
+        "app.sources.audit",
+        "app.sources.cli",
+        "app.sources.pilots",
+        "app.sources.status",
+        "app.worker"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.registry": {
+      "path": "backend/app/sources/registry.py",
+      "responsibility": "Adapters, runtime registry and attestation checks",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts",
+        "app.sources.fetcher"
+      ],
+      "deferred": [
+        "app.sources.adapters.sgu2026",
+        "app.sources.structured_family",
+        "app.sources.table_family",
+        "app.sources.table_profiles"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "os",
+        "pathlib",
+        "re",
+        "typing",
+        "urllib"
+      ],
+      "module_assignments": [
+        "PRODUCTION_REGISTRY"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/source_helpers.py:10",
+        "backend/tests/test_adapter_contract.py:8",
+        "backend/tests/test_attestation.py:9",
+        "backend/tests/test_bgu_attestation.py:8",
+        "backend/tests/test_bgu_runtime.py:14",
+        "backend/tests/test_coverage.py:51",
+        "backend/tests/test_coverage.py:9",
+        "backend/tests/test_next_scope.py:62",
+        "backend/tests/test_pilot_registration.py:11",
+        "backend/tests/test_postgres_sgu.py:15",
+        "backend/tests/test_profile_batch.py:12",
+        "backend/tests/test_registry_contract.py:2",
+        "backend/tests/test_reviewed_sources.py:15",
+        "backend/tests/test_section_family.py:91",
+        "backend/tests/test_sgu_adapter.py:10",
+        "backend/tests/test_sgu_adapter.py:76",
+        "backend/tests/test_sgu_quarantine.py:11",
+        "backend/tests/test_sgu_worker.py:8",
+        "backend/tests/test_source_audit.py:7",
+        "backend/tests/test_source_operations.py:15",
+        "backend/tests/test_source_recovery.py:46",
+        "backend/tests/test_source_size_policy.py:8",
+        "backend/tests/test_source_status.py:11",
+        "backend/tests/test_structured_family.py:14",
+        "backend/tests/test_structured_family.py:148",
+        "backend/tests/test_worker.py:13",
+        "scripts/data/review_sgu_scope.py:25",
+        "scripts/qa/load_server.py:12",
+        "scripts/qa/load_support.py:9",
+        "scripts/qa/rehearse_reviewed_worker.py:18",
+        "scripts/qa/rehearse_sgu_worker.py:48",
+        "scripts/qa/verify_filtered_scope.py:15",
+        "scripts/qa/verify_reviewed_scope.py:25",
+        "scripts/qa/verify_section_family.py:28"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.competition_api",
+        "app.coverage",
+        "app.main",
+        "app.national_coverage",
+        "app.source_catalog",
+        "app.sources.adapters.sgu2026",
+        "app.sources.audit",
+        "app.sources.batch",
+        "app.sources.cli",
+        "app.sources.pilots",
+        "app.sources.profile_registration",
+        "app.sources.publishing",
+        "app.sources.status",
+        "app.sources.structured_family",
+        "app.sources.table_family",
+        "app.sources.table_profiles",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "Attestation",
+        "Adapter",
+        "Registry"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "Attestation",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "Adapter",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.retention": {
+      "path": "backend/app/sources/retention.py",
+      "responsibility": "Raw source retention and reconciliation",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.config",
+        "app.database",
+        "app.program_catalog_models",
+        "app.sources.storage"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "datetime",
+        "json",
+        "os",
+        "re",
+        "sqlalchemy"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_postgres_sgu.py:123",
+        "backend/tests/test_program_catalog_import.py:22",
+        "backend/tests/test_retention.py:13"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.status": {
+      "path": "backend/app/sources/status.py",
+      "responsibility": "Freshness and source publication status",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.admissions",
+        "app.jobs",
+        "app.sources.contracts",
+        "app.sources.publishing",
+        "app.sources.registry"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "sqlalchemy",
+        "urllib"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_next_scope.py:72",
+        "backend/tests/test_section_family.py:92",
+        "backend/tests/test_source_status.py:12"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.competition_api",
+        "app.coverage",
+        "app.main",
+        "app.national_coverage",
+        "app.observability",
+        "app.source_catalog",
+        "app.sources.cli"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.sources.storage": {
+      "path": "backend/app/sources/storage.py",
+      "responsibility": "Raw source storage backends",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [],
+      "deferred": [],
+      "runtime_imports": [
+        "contextlib",
+        "fcntl",
+        "hashlib",
+        "math",
+        "msvcrt",
+        "os",
+        "pathlib",
+        "re",
+        "tempfile",
+        "threading",
+        "time"
+      ],
+      "module_assignments": [
+        "_states",
+        "_states_guard"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/replay_case.py:13",
+        "backend/tests/test_account_acceptance.py:16",
+        "backend/tests/test_backup.py:10",
+        "backend/tests/test_bgu_runtime.py:15",
+        "backend/tests/test_changes.py:11",
+        "backend/tests/test_coverage.py:10",
+        "backend/tests/test_group_catalog.py:10",
+        "backend/tests/test_national_coverage.py:87",
+        "backend/tests/test_next_scope.py:63",
+        "backend/tests/test_observability.py:11",
+        "backend/tests/test_postgres_publishing.py:11",
+        "backend/tests/test_postgres_sgu.py:16",
+        "backend/tests/test_program_catalog_batch.py:16",
+        "backend/tests/test_program_catalog_import.py:21",
+        "backend/tests/test_publishing.py:10",
+        "backend/tests/test_raw_store.py:6",
+        "backend/tests/test_restore.py:13",
+        "backend/tests/test_retention.py:14",
+        "backend/tests/test_reviewed_sources.py:16",
+        "backend/tests/test_scenario_storage.py:13",
+        "backend/tests/test_section_family.py:93",
+        "backend/tests/test_sgu_quarantine.py:12",
+        "backend/tests/test_sgu_worker.py:9",
+        "backend/tests/test_source_audit.py:8",
+        "backend/tests/test_source_history.py:9",
+        "backend/tests/test_source_lookup.py:15",
+        "backend/tests/test_source_operations.py:12",
+        "backend/tests/test_source_recovery.py:9",
+        "backend/tests/test_source_size_policy.py:9",
+        "backend/tests/test_source_status.py:13",
+        "backend/tests/test_storage_deadline.py:6",
+        "backend/tests/test_structured_family.py:15",
+        "backend/tests/test_subscriptions.py:13",
+        "backend/tests/test_worker.py:14",
+        "frontend/scripts/postgres-runtime.py:22",
+        "scripts/qa/load_profile.py:29",
+        "scripts/qa/measure_archive.py:27",
+        "scripts/qa/rehearse_compose.py:157",
+        "scripts/qa/rehearse_compose.py:97",
+        "scripts/qa/rehearse_postgres_restore.py:29",
+        "scripts/qa/rehearse_reviewed_worker.py:19",
+        "scripts/qa/rehearse_sgu_worker.py:24",
+        "scripts/qa/rehearse_sgu_worker.py:50",
+        "scripts/qa/verify_filtered_scope.py:16",
+        "scripts/qa/verify_program_catalog.py:33",
+        "scripts/qa/verify_reviewed_scope.py:26",
+        "scripts/qa/verify_section_family.py:29"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.backup",
+        "app.program_catalog_batch",
+        "app.program_catalog_import",
+        "app.sources.audit",
+        "app.sources.publishing",
+        "app.sources.retention",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "LockState",
+        "StorageError",
+        "RawStore"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "thread_lock",
+          "decorator": "contextmanager"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.structured_family": {
+      "path": "backend/app/sources/structured_family.py",
+      "responsibility": "Structured candidate list adapters",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts",
+        "app.sources.registry"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "csv",
+        "dataclasses",
+        "decimal",
+        "io",
+        "json",
+        "re",
+        "urllib"
+      ],
+      "module_assignments": [
+        "JSON_VERSION",
+        "CSV_VERSION",
+        "VERSIONS",
+        "EMPTY",
+        "FIELDS",
+        "MAX_RECORDS",
+        "PROFILES"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_structured_family.py:16"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.registry"
+      ],
+      "module_class_definitions": [
+        "StructuredProfile"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "StructuredProfile",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.table_family": {
+      "path": "backend/app/sources/table_family.py",
+      "responsibility": "Review-bound table list adapters",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts",
+        "app.sources.html_inspection",
+        "app.sources.registry"
+      ],
+      "deferred": [
+        "app.sources.fetcher"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "decimal",
+        "hashlib",
+        "re",
+        "urllib"
+      ],
+      "module_assignments": [
+        "VERSION",
+        "SCHEMA_SET_VERSION",
+        "SECTION_VERSION",
+        "FILTERED_VERSION"
+      ],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_bgu_attestation.py:9",
+        "backend/tests/test_filtered_table.py:11",
+        "backend/tests/test_next_scope.py:9",
+        "backend/tests/test_section_family.py:13",
+        "backend/tests/test_table_family.py:7",
+        "scripts/data/audit_table_family.py:11",
+        "scripts/data/review_bgu_scope.py:16",
+        "scripts/data/review_section_family.py:23",
+        "scripts/data/review_sgu_scope.py:26",
+        "scripts/qa/verify_section_family.py:30"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.registry",
+        "app.sources.table_profiles"
+      ],
+      "module_class_definitions": [
+        "TableProfile"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "TableProfile",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.sources.table_profiles": {
+      "path": "backend/app/sources/table_profiles.py",
+      "responsibility": "Load and validate reviewed table profiles",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.profile_catalog",
+        "app.sources.registry",
+        "app.sources.table_family"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "datetime",
+        "pathlib",
+        "re",
+        "types"
+      ],
+      "module_assignments": [
+        "PROFILES",
+        "SGU",
+        "GUAP"
+      ],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/replay_case.py:12",
+        "backend/tests/test_bgu_attestation.py:10",
+        "backend/tests/test_bgu_runtime.py:16",
+        "backend/tests/test_coverage.py:50",
+        "backend/tests/test_filtered_table.py:63",
+        "backend/tests/test_next_scope.py:10",
+        "backend/tests/test_next_scope.py:42",
+        "backend/tests/test_profile_batch.py:13",
+        "backend/tests/test_profile_catalog.py:7",
+        "backend/tests/test_reviewed_sources.py:14",
+        "backend/tests/test_scenario_storage.py:67",
+        "backend/tests/test_section_family.py:14",
+        "backend/tests/test_table_family.py:8",
+        "scripts/data/audit_table_family.py:12",
+        "scripts/data/review_bgu_scope.py:17",
+        "scripts/data/review_section_family.py:24",
+        "scripts/qa/rehearse_reviewed_worker.py:16",
+        "scripts/qa/verify_filtered_scope.py:17",
+        "scripts/qa/verify_reviewed_scope.py:27",
+        "scripts/qa/verify_section_family.py:31"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.catalog_import",
+        "app.program_catalog_import",
+        "app.scenario_storage",
+        "app.source_catalog",
+        "app.sources.cli",
+        "app.sources.profile_catalog",
+        "app.sources.profile_registration",
+        "app.sources.registry"
+      ],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": [
+        "backend/tests/test_profile_batch.py:121"
+      ]
+    },
+    "app.sources.validation": {
+      "path": "backend/app/sources/validation.py",
+      "responsibility": "Publication checks and quarantine",
+      "target": "sources",
+      "action": "KEEP",
+      "reason": "Existing package owns this responsibility.",
+      "eager": [
+        "app.sources.contracts"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "hashlib",
+        "pydantic"
+      ],
+      "module_assignments": [],
+      "cli_guard": false,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_domain_regression.py:15",
+        "backend/tests/test_publishing.py:11",
+        "backend/tests/test_sgu_quarantine.py:13",
+        "backend/tests/test_source_validation.py:7"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [
+        "app.sources.audit",
+        "app.sources.publishing",
+        "app.worker"
+      ],
+      "module_class_definitions": [
+        "Quarantined",
+        "QualityPolicy",
+        "ValidatedList"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "QualityPolicy",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "ValidatedList",
+          "decorator": "dataclass"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.university_name_report": {
+      "path": "backend/app/university_name_report.py",
+      "responsibility": "Coverage and diagnostics CLI for names",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.accreditation_registry",
+        "app.catalog_import",
+        "app.database",
+        "app.national_catalog",
+        "app.product_catalog"
+      ],
+      "deferred": [],
+      "runtime_imports": [
+        "argparse",
+        "collections",
+        "json",
+        "pathlib",
+        "sqlalchemy",
+        "tempfile"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/test_university_names.py:19"
+      ],
+      "string_references": [],
+      "patch_references": [],
+      "inbound": [],
+      "module_class_definitions": [],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    },
+    "app.university_names": {
+      "path": "backend/app/university_names.py",
+      "responsibility": "Reviewed university display names",
+      "target": "catalog",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.national_catalog"
+      ],
+      "deferred": [
+        "app.accreditation_registry"
+      ],
+      "runtime_imports": [
+        "dataclasses",
+        "datetime",
+        "functools",
+        "json",
+        "pathlib",
+        "re"
+      ],
+      "module_assignments": [
+        "DEFAULT_PATH",
+        "RULE_VERSION",
+        "LEGAL_PREFIXES",
+        "QUOTES"
+      ],
+      "cli_guard": false,
+      "resource_paths": true,
+      "consumers": [
+        "backend/tests/test_university_names.py:20"
+      ],
+      "string_references": [],
+      "patch_references": [
+        "backend/tests/test_university_names.py:112",
+        "backend/tests/test_university_names.py:115"
+      ],
+      "inbound": [
+        "app.product_catalog"
+      ],
+      "module_class_definitions": [
+        "NameChoice"
+      ],
+      "module_decorators": [
+        {
+          "symbol": "NameChoice",
+          "decorator": "dataclass"
+        },
+        {
+          "symbol": "load_reviews",
+          "decorator": "lru_cache"
+        }
+      ],
+      "imported_module_patch_references": []
+    },
+    "app.worker": {
+      "path": "backend/app/worker.py",
+      "responsibility": "Bounded source fetch and background scheduling CLI",
+      "target": "operations",
+      "action": "MOVE",
+      "reason": "Place implementation with its owner; retain the legacy import and CLI as applicable.",
+      "eager": [
+        "app.admissions",
+        "app.config",
+        "app.database",
+        "app.jobs",
+        "app.observability",
+        "app.sources.contracts",
+        "app.sources.fetcher",
+        "app.sources.publishing",
+        "app.sources.registry",
+        "app.sources.storage",
+        "app.sources.validation"
+      ],
+      "deferred": [
+        "app.sources.page_cache"
+      ],
+      "runtime_imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "logging",
+        "math",
+        "multiprocessing",
+        "os",
+        "pathlib",
+        "pydantic",
+        "resource",
+        "sqlalchemy",
+        "tempfile",
+        "time",
+        "typing",
+        "uuid"
+      ],
+      "module_assignments": [],
+      "cli_guard": true,
+      "resource_paths": false,
+      "consumers": [
+        "backend/tests/replay_case.py:15",
+        "backend/tests/test_bgu_runtime.py:26",
+        "backend/tests/test_fetch_exchange.py:9",
+        "backend/tests/test_national_coverage.py:88",
+        "backend/tests/test_next_scope.py:64",
+        "backend/tests/test_observability.py:12",
+        "backend/tests/test_postgres_sgu.py:18",
+        "backend/tests/test_reviewed_sources.py:18",
+        "backend/tests/test_section_family.py:94",
+        "backend/tests/test_sgu_worker.py:10",
+        "backend/tests/test_source_recovery.py:8",
+        "backend/tests/test_source_size_policy.py:10",
+        "backend/tests/test_structured_family.py:17",
+        "backend/tests/test_worker.py:144",
+        "backend/tests/test_worker.py:15",
+        "backend/tests/test_worker.py:161",
+        "scripts/qa/rehearse_sgu_worker.py:51",
+        "scripts/qa/verify_filtered_scope.py:18",
+        "scripts/qa/verify_reviewed_scope.py:28",
+        "scripts/qa/verify_section_family.py:32"
+      ],
+      "string_references": [
+        "compose.prod.yaml:68",
+        "compose.yaml:46",
+        "scripts/qa/rehearse_reviewed_worker.py:32",
+        "scripts/qa/rehearse_sgu_worker.py:40"
+      ],
+      "patch_references": [
+        "backend/tests/test_fetch_exchange.py:33",
+        "backend/tests/test_fetch_exchange.py:34",
+        "backend/tests/test_fetch_exchange.py:47",
+        "backend/tests/test_fetch_exchange.py:48",
+        "backend/tests/test_fetch_exchange.py:67",
+        "backend/tests/test_fetch_exchange.py:68",
+        "backend/tests/test_postgres_sgu.py:110",
+        "backend/tests/test_worker.py:119",
+        "backend/tests/test_worker.py:153",
+        "backend/tests/test_worker.py:154",
+        "backend/tests/test_worker.py:87"
+      ],
+      "inbound": [
+        "app.sources.capture"
+      ],
+      "module_class_definitions": [
+        "FetchMetadata"
+      ],
+      "module_decorators": [],
+      "imported_module_patch_references": []
+    }
+  },
+  "after": {
+    "module_count": 148,
+    "eager_cycles": [],
+    "all_cycles": [
+      [
+        "app.competitions.scenario_storage",
+        "app.sources.publishing"
+      ],
+      [
+        "app.competitions.scenario_storage",
+        "app.sources.source_operations",
+        "app.sources.publishing"
+      ],
+      [
+        "app.sources.adapters.sgu2026",
+        "app.sources.registry"
+      ],
+      [
+        "app.sources.profile_catalog",
+        "app.sources.table_profiles"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.structured_family"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_family"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_profiles"
+      ],
+      [
+        "app.sources.registry",
+        "app.sources.table_profiles",
+        "app.sources.table_family"
+      ]
+    ],
+    "modules": {
+      "app": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.account_actions": {
+        "eager": [
+          "app.auth.account_actions"
+        ],
+        "deferred": []
+      },
+      "app.account_api": {
+        "eager": [
+          "app.auth.account_api"
+        ],
+        "deferred": []
+      },
+      "app.account_dto": {
+        "eager": [
+          "app.auth.account_dto"
+        ],
+        "deferred": []
+      },
+      "app.account_limits": {
+        "eager": [
+          "app.auth.account_limits"
+        ],
+        "deferred": []
+      },
+      "app.account_mail": {
+        "eager": [
+          "app.auth.account_mail"
+        ],
+        "deferred": []
+      },
+      "app.account_security": {
+        "eager": [
+          "app.auth.account_security"
+        ],
+        "deferred": []
+      },
+      "app.accounts": {
+        "eager": [
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.accreditation_registry": {
+        "eager": [
+          "app.catalog.accreditation_registry"
+        ],
+        "deferred": []
+      },
+      "app.admissions": {
+        "eager": [
+          "app.catalog_search",
+          "app.database"
+        ],
+        "deferred": []
+      },
+      "app.auth": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.auth.account_actions": {
+        "eager": [
+          "app.auth.account_security",
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_api": {
+        "eager": [
+          "app.auth.account_actions",
+          "app.auth.account_dto",
+          "app.auth.account_limits",
+          "app.auth.account_mail",
+          "app.auth.account_security",
+          "app.auth.accounts",
+          "app.core.http"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_dto": {
+        "eager": [
+          "app.auth.account_security",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_limits": {
+        "eager": [
+          "app.auth.accounts"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_mail": {
+        "eager": [
+          "app.auth.account_security"
+        ],
+        "deferred": []
+      },
+      "app.auth.account_security": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.auth.accounts": {
+        "eager": [
+          "app.database"
+        ],
+        "deferred": []
+      },
+      "app.backup": {
+        "eager": [
+          "app.operations.backup"
+        ],
+        "deferred": []
+      },
+      "app.calculation": {
+        "eager": [
+          "app.competitions.calculation"
+        ],
+        "deferred": []
+      },
+      "app.catalog": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.catalog.national_catalog",
+          "app.schemas"
+        ],
+        "deferred": []
+      },
+      "app.catalog.accreditation_registry": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.catalog.api": {
+        "eager": [
+          "app.catalog",
+          "app.catalog.coverage",
+          "app.catalog.national_coverage",
+          "app.catalog.source_catalog",
+          "app.schemas",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.catalog.catalog_identity": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.catalog_import": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.core.config",
+          "app.core.database",
+          "app.sources.table_profiles"
+        ],
+        "deferred": []
+      },
+      "app.catalog.catalog_lock": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.coverage": {
+        "eager": [
+          "app.admissions",
+          "app.catalog",
+          "app.catalog.accreditation_registry",
+          "app.catalog.national_catalog",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.catalog.exam_requirements": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.catalog.national_catalog": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.national_coverage": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.accreditation_registry",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog",
+          "app.operations.observability",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.catalog.product_catalog": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.accreditation_registry",
+          "app.catalog.catalog_import",
+          "app.catalog.exam_requirements",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog_schemas",
+          "app.catalog.program_catalog_models",
+          "app.catalog.university_names"
+        ],
+        "deferred": []
+      },
+      "app.catalog.product_catalog_schemas": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_batch": {
+        "eager": [
+          "app.catalog.program_catalog_batch_fetch",
+          "app.catalog.program_catalog_import",
+          "app.catalog.program_catalog_sources",
+          "app.sources.fetcher",
+          "app.sources.storage"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.catalog.program_catalog_batch_fetch": {
+        "eager": [
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_import": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_identity",
+          "app.catalog.catalog_import",
+          "app.catalog.catalog_lock",
+          "app.catalog.national_catalog",
+          "app.catalog.program_catalog_models",
+          "app.catalog.program_catalog_review",
+          "app.sources.storage",
+          "app.sources.table_profiles"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database",
+          "app.operations.migrations",
+          "app.sources.storage"
+        ]
+      },
+      "app.catalog.program_catalog_models": {
+        "eager": [
+          "app.admissions",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_review": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.catalog.program_catalog_sources": {
+        "eager": [
+          "app.catalog.national_catalog",
+          "app.catalog.program_catalog_review",
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.catalog.source_catalog": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.admissions",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.catalog.university_name_report": {
+        "eager": [
+          "app.catalog.accreditation_registry",
+          "app.catalog.catalog_import",
+          "app.catalog.national_catalog",
+          "app.catalog.product_catalog",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.catalog.university_names": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": [
+          "app.catalog.accreditation_registry"
+        ]
+      },
+      "app.catalog_identity": {
+        "eager": [
+          "app.catalog.catalog_identity"
+        ],
+        "deferred": []
+      },
+      "app.catalog_import": {
+        "eager": [
+          "app.catalog.catalog_import"
+        ],
+        "deferred": []
+      },
+      "app.catalog_lock": {
+        "eager": [
+          "app.catalog.catalog_lock"
+        ],
+        "deferred": []
+      },
+      "app.catalog_search": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.changes": {
+        "eager": [
+          "app.watchlist.changes"
+        ],
+        "deferred": []
+      },
+      "app.competition_api": {
+        "eager": [
+          "app.competitions.competition_api"
+        ],
+        "deferred": []
+      },
+      "app.competitions": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.competitions.calculation": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.competitions.competition_api": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_api": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenario_explanations",
+          "app.competitions.scenarios",
+          "app.core.schema_base",
+          "app.core.time",
+          "app.watchlist.archive"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_explanations": {
+        "eager": [
+          "app.competitions.scenarios",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.competitions.scenario_storage": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenarios"
+        ],
+        "deferred": [
+          "app.admissions",
+          "app.competitions.scenario_explanations",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.source_operations",
+          "app.sources.table_profiles",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.competitions.scenarios": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.config": {
+        "eager": [
+          "app.core.config"
+        ],
+        "deferred": []
+      },
+      "app.core": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.config": {
+        "eager": [],
+        "deferred": [
+          "app.auth.account_security"
+        ]
+      },
+      "app.core.database": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.http": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.schema_base": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.core.time": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.coverage": {
+        "eager": [
+          "app.catalog.coverage"
+        ],
+        "deferred": []
+      },
+      "app.database": {
+        "eager": [
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.diagnostics": {
+        "eager": [
+          "app.operations.diagnostics"
+        ],
+        "deferred": []
+      },
+      "app.direction_budget": {
+        "eager": [
+          "app.watchlist.direction_budget"
+        ],
+        "deferred": []
+      },
+      "app.exam_requirements": {
+        "eager": [
+          "app.catalog.exam_requirements"
+        ],
+        "deferred": []
+      },
+      "app.http": {
+        "eager": [
+          "app.core.http"
+        ],
+        "deferred": []
+      },
+      "app.importing": {
+        "eager": [
+          "app.watchlist.importing"
+        ],
+        "deferred": []
+      },
+      "app.jobs": {
+        "eager": [
+          "app.operations.jobs"
+        ],
+        "deferred": []
+      },
+      "app.main": {
+        "eager": [
+          "app.catalog",
+          "app.catalog.api",
+          "app.core.config",
+          "app.core.database",
+          "app.core.http",
+          "app.core.time",
+          "app.operations.api",
+          "app.operations.maintenance",
+          "app.operations.migrations",
+          "app.schemas",
+          "app.watchlist.api"
+        ],
+        "deferred": [
+          "app.auth.account_api",
+          "app.catalog.product_catalog",
+          "app.competitions.competition_api",
+          "app.competitions.scenario_api",
+          "app.sources.registry",
+          "app.watchlist.changes",
+          "app.watchlist.source_api"
+        ]
+      },
+      "app.maintenance": {
+        "eager": [
+          "app.operations.maintenance"
+        ],
+        "deferred": []
+      },
+      "app.migration_checks": {
+        "eager": [
+          "app.operations.migration_checks"
+        ],
+        "deferred": []
+      },
+      "app.migrations": {
+        "eager": [
+          "app.operations.migrations"
+        ],
+        "deferred": []
+      },
+      "app.national_catalog": {
+        "eager": [
+          "app.catalog.national_catalog"
+        ],
+        "deferred": []
+      },
+      "app.national_coverage": {
+        "eager": [
+          "app.catalog.national_coverage"
+        ],
+        "deferred": []
+      },
+      "app.observability": {
+        "eager": [
+          "app.operations.observability"
+        ],
+        "deferred": []
+      },
+      "app.operations": {
+        "eager": [
+          "app.watchlist.idempotency"
+        ],
+        "deferred": []
+      },
+      "app.operations.api": {
+        "eager": [
+          "app.operations.migrations",
+          "app.operations.observability"
+        ],
+        "deferred": []
+      },
+      "app.operations.backup": {
+        "eager": [
+          "app.core.config",
+          "app.core.database",
+          "app.core.schema_base",
+          "app.sources.storage"
+        ],
+        "deferred": []
+      },
+      "app.operations.diagnostics": {
+        "eager": [
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.operations.jobs": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.publishing",
+          "app.sources.source_operations"
+        ],
+        "deferred": [
+          "app.sources.contracts",
+          "app.sources.publishing"
+        ]
+      },
+      "app.operations.maintenance": {
+        "eager": [
+          "app.auth.accounts",
+          "app.core.config",
+          "app.core.database",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.operations.migration_checks": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.operations.migrations": {
+        "eager": [
+          "app.auth.accounts",
+          "app.catalog.program_catalog_models"
+        ],
+        "deferred": []
+      },
+      "app.operations.observability": {
+        "eager": [
+          "app.admissions",
+          "app.core.database",
+          "app.operations.source_job_models",
+          "app.sources.publishing",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.core.config",
+          "app.core.database"
+        ]
+      },
+      "app.operations.smtp_check": {
+        "eager": [
+          "app.auth.account_mail",
+          "app.auth.account_security",
+          "app.core.config"
+        ],
+        "deferred": []
+      },
+      "app.operations.source_job_models": {
+        "eager": [
+          "app.admissions",
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.operations.worker": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.core.database",
+          "app.operations.jobs",
+          "app.operations.observability",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": [
+          "app.sources.page_cache"
+        ]
+      },
+      "app.product_catalog": {
+        "eager": [
+          "app.catalog.product_catalog"
+        ],
+        "deferred": []
+      },
+      "app.product_catalog_schemas": {
+        "eager": [
+          "app.catalog.product_catalog_schemas"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_batch": {
+        "eager": [
+          "app.catalog.program_catalog_batch"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_batch_fetch": {
+        "eager": [
+          "app.catalog.program_catalog_batch_fetch"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_import": {
+        "eager": [
+          "app.catalog.program_catalog_import"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_models": {
+        "eager": [
+          "app.catalog.program_catalog_models"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_review": {
+        "eager": [
+          "app.catalog.program_catalog_review"
+        ],
+        "deferred": []
+      },
+      "app.program_catalog_sources": {
+        "eager": [
+          "app.catalog.program_catalog_sources"
+        ],
+        "deferred": []
+      },
+      "app.scenario_api": {
+        "eager": [
+          "app.competitions.scenario_api"
+        ],
+        "deferred": []
+      },
+      "app.scenario_explanations": {
+        "eager": [
+          "app.competitions.scenario_explanations"
+        ],
+        "deferred": []
+      },
+      "app.scenario_storage": {
+        "eager": [
+          "app.competitions.scenario_storage"
+        ],
+        "deferred": []
+      },
+      "app.scenarios": {
+        "eager": [
+          "app.competitions.scenarios"
+        ],
+        "deferred": []
+      },
+      "app.schema_base": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.schemas": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.smtp_check": {
+        "eager": [
+          "app.operations.smtp_check"
+        ],
+        "deferred": []
+      },
+      "app.source_api": {
+        "eager": [
+          "app.watchlist.source_api"
+        ],
+        "deferred": []
+      },
+      "app.source_catalog": {
+        "eager": [
+          "app.catalog.source_catalog"
+        ],
+        "deferred": []
+      },
+      "app.source_history": {
+        "eager": [
+          "app.watchlist.source_history"
+        ],
+        "deferred": []
+      },
+      "app.source_operations": {
+        "eager": [
+          "app.sources.source_operations"
+        ],
+        "deferred": []
+      },
+      "app.source_tokens": {
+        "eager": [
+          "app.watchlist.source_tokens"
+        ],
+        "deferred": []
+      },
+      "app.sources": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.adapters": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.adapters.sgu2026": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.html_inspection",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.audit": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.operations.diagnostics",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": []
+      },
+      "app.sources.batch": {
+        "eager": [
+          "app.core.config",
+          "app.core.database",
+          "app.sources.contracts",
+          "app.sources.profile_registration",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.capture": {
+        "eager": [
+          "app.operations.worker",
+          "app.sources.contracts",
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.sources.cli": {
+        "eager": [
+          "app.admissions",
+          "app.core.config",
+          "app.core.database",
+          "app.operations.jobs",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry",
+          "app.sources.status"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.operations.jobs",
+          "app.sources.pilots",
+          "app.sources.profile_registration",
+          "app.sources.source_operations",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.contracts": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.fetcher": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.html_inspection": {
+        "eager": [
+          "app.sources.contracts"
+        ],
+        "deferred": []
+      },
+      "app.sources.navigation": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.page_cache": {
+        "eager": [
+          "app.sources.fetcher"
+        ],
+        "deferred": []
+      },
+      "app.sources.pilots": {
+        "eager": [
+          "app.admissions",
+          "app.catalog",
+          "app.catalog.catalog_lock",
+          "app.sources.adapters.sgu2026",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.source_operations"
+        ]
+      },
+      "app.sources.profile_catalog": {
+        "eager": [],
+        "deferred": [
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.profile_registration": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.catalog_lock",
+          "app.sources.contracts",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.source_operations",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.publishing": {
+        "eager": [
+          "app.admissions",
+          "app.core.time",
+          "app.sources.contracts",
+          "app.sources.fetcher",
+          "app.sources.registry",
+          "app.sources.storage",
+          "app.sources.validation"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.sources.registry": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.fetcher"
+        ],
+        "deferred": [
+          "app.sources.adapters.sgu2026",
+          "app.sources.structured_family",
+          "app.sources.table_family",
+          "app.sources.table_profiles"
+        ]
+      },
+      "app.sources.retention": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.program_catalog_models",
+          "app.core.config",
+          "app.core.database",
+          "app.sources.storage"
+        ],
+        "deferred": []
+      },
+      "app.sources.source_operations": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing"
+        ],
+        "deferred": []
+      },
+      "app.sources.status": {
+        "eager": [
+          "app.admissions",
+          "app.operations.source_job_models",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.storage": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.sources.structured_family": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.registry"
+        ],
+        "deferred": []
+      },
+      "app.sources.table_family": {
+        "eager": [
+          "app.sources.contracts",
+          "app.sources.html_inspection",
+          "app.sources.registry"
+        ],
+        "deferred": [
+          "app.sources.fetcher"
+        ]
+      },
+      "app.sources.table_profiles": {
+        "eager": [
+          "app.sources.profile_catalog",
+          "app.sources.registry",
+          "app.sources.table_family"
+        ],
+        "deferred": []
+      },
+      "app.sources.validation": {
+        "eager": [
+          "app.sources.contracts"
+        ],
+        "deferred": []
+      },
+      "app.university_name_report": {
+        "eager": [
+          "app.catalog.university_name_report"
+        ],
+        "deferred": []
+      },
+      "app.university_names": {
+        "eager": [
+          "app.catalog.university_names"
+        ],
+        "deferred": []
+      },
+      "app.watchlist": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.watchlist.api": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.core.time",
+          "app.schemas",
+          "app.watchlist.direction_budget",
+          "app.watchlist.idempotency",
+          "app.watchlist.importing",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.archive": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.source_catalog",
+          "app.core.schema_base",
+          "app.core.time",
+          "app.watchlist.candidate"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.candidate": {
+        "eager": [
+          "app.core.schema_base"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.changes": {
+        "eager": [
+          "app.admissions",
+          "app.competitions.scenario_api",
+          "app.core.schema_base",
+          "app.sources.publishing"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.direction_budget": {
+        "eager": [
+          "app.admissions",
+          "app.core.schema_base",
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.idempotency": {
+        "eager": [
+          "app.watchlist.models"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.importing": {
+        "eager": [
+          "app.competitions.calculation",
+          "app.schemas",
+          "app.watchlist.models"
+        ],
+        "deferred": [
+          "app.watchlist.direction_budget"
+        ]
+      },
+      "app.watchlist.models": {
+        "eager": [
+          "app.core.database"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.source_api": {
+        "eager": [
+          "app.admissions",
+          "app.catalog.source_catalog",
+          "app.core.schema_base",
+          "app.sources.contracts",
+          "app.sources.publishing",
+          "app.watchlist.archive",
+          "app.watchlist.candidate",
+          "app.watchlist.direction_budget",
+          "app.watchlist.idempotency",
+          "app.watchlist.models",
+          "app.watchlist.source_tokens"
+        ],
+        "deferred": [
+          "app.competitions.scenario_storage",
+          "app.operations.source_job_models",
+          "app.watchlist.source_history"
+        ]
+      },
+      "app.watchlist.source_history": {
+        "eager": [
+          "app.admissions",
+          "app.watchlist.candidate"
+        ],
+        "deferred": []
+      },
+      "app.watchlist.source_tokens": {
+        "eager": [],
+        "deferred": []
+      },
+      "app.worker": {
+        "eager": [
+          "app.operations.worker"
+        ],
+        "deferred": []
+      }
+    }
+  }
+}

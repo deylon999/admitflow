@@ -328,7 +328,7 @@
 - [x] T316 KAN-218 PR1: PostgreSQL regression and review handoff
 - [x] T317 KAN-218 PR2: verified official program import and stable API publication
 - [x] T318 KAN-218 PR3: resumable bounded batch acquisition and publication
-- [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination
+- [ ] T319 KAN-218 PR4: measured PostgreSQL catalog search and pagination — **нужна проверка / завершение**
 - [ ] T320 KAN-218 PR5: target-year national coverage and independent source audit
 - [ ] T321 KAN-218 PR6: full acceptance and KAN-227 handoff
 - [x] T322 KAN-218 PR2: select official documents and capture bounded source evidence
@@ -346,10 +346,10 @@
 - [x] T334 Backend architecture PR 3: publish and verify hosted checks
 - [ ] T335 Frontend architecture PR 4: complete feature and app boundaries — **нужна проверка / завершение**
 - [ ] T336 Backend organization: audit, baseline and core — **нужна проверка / завершение**
-- [ ] T337 Backend organization: catalog
-- [ ] T338 Backend organization: competitions
-- [ ] T339 Backend organization: watchlist
-- [ ] T340 Backend organization: operations and final verification
+- [ ] T337 Backend organization: catalog — **нужна проверка / завершение**
+- [ ] T338 Backend organization: competitions — **нужна проверка / завершение**
+- [ ] T339 Backend organization: watchlist — **нужна проверка / завершение**
+- [ ] T340 Backend organization: operations and final verification — **нужна проверка / завершение**
 
 ## Резерв и выпуск
 

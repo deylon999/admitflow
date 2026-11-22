@@ -7,8 +7,9 @@ from sqlalchemy.orm import Session
 
 from ..admissions import Source,SourceOperation
 from app.core.config import Settings
-from ..database import make_engine
-from ..jobs import SourceJob, disable, enqueue
+from app.core.database import make_engine
+from app.operations.jobs import disable, enqueue
+from app.operations.source_job_models import SourceJob
 from .contracts import AdapterError
 from .publishing import binding_from_db
 from .registry import PRODUCTION_REGISTRY, runtime_registry
@@ -30,7 +31,7 @@ def operate(engine,action,source_id,*,registry=PRODUCTION_REGISTRY):
         if action=='enqueue':
             registry.resolve(binding_from_db(db,source))
     if action in ('enable','quarantine','resume'):
-        from ..source_operations import control
+        from app.sources.source_operations import control
         return control(engine,source_id,action,registry=registry)
     if action=='enqueue':
         return {'sourceId':source_id,'queued':enqueue(engine,source_id)}
@@ -62,10 +63,10 @@ def main(argv=None):
             if profile is None:raise AdapterError('unsupported_source')
             result=register_profile(engine,profile,enable=args.enable,registry=runtime_registry())
         elif args.action=='enable-scenarios':
-            from ..scenario_storage import enable_scenarios
+            from app.competitions.scenario_storage import enable_scenarios
             result=enable_scenarios(engine,args.source_id,registry=runtime_registry())
         elif args.action=='enqueue-all':
-            from ..jobs import enqueue_all
+            from app.operations.jobs import enqueue_all
             result=enqueue_all(engine,registry=runtime_registry())
         elif args.action=='list':
             with Session(engine) as db:

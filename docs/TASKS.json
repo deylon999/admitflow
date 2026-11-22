@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updatedAt": "2026-11-21",
+  "updatedAt": "2026-11-22",
   "owner": "maintainer",
   "statusLegend": {
     "todo": "Запланировано",
@@ -9801,20 +9801,48 @@
       "phase": "E5",
       "priority": "P0",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T318"
       ],
       "deliverables": [
-        "docs/KAN-218-ARCHITECTURE.md"
+        "docs/KAN-218-ARCHITECTURE.md",
+        "docs/KAN-218-PR4.md",
+        "docs/KAN-218-PR4-READ-MODEL.md",
+        "docs/KAN-218-READ-PROJECTION.md",
+        "docs/KAN-218-PR4-RESULTS.md",
+        "docs/KAN-218-PR4-P95.md"
       ],
       "steps": [
         "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
       ],
       "acceptance": [
-        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
+        "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved.",
+        "Owner2026-11-22: compare SQL/indexes/atomic confirmed read projection;100k current programmes,50+ warmed measurements per scenario and10–50 concurrent requests;PG CPU/memory/temp/buffers; p95 first<200ms university+year<150ms code<300ms deep<500ms, or measured objective limitation and alternatives. Adapt after backend38–42, preserve all correctness and API semantics, exact count, snapshot consistency. No self merge.",
+        "Follow-up: profile connection wait, SQL calls, DTO and real HTTP; compare pg_trgm and exact transactional counts with rollback and concurrent writer cost; repeat all p95 at 50 simultaneous HTTP requests with four workers and the same PostgreSQL settings. Report measured limits by environment and preserve independent full API parity."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/KAN-218-PR4.md",
+          "note": "Measured SQL optimization on b19dd7a; eight full responses equal baseline, bounded ORM/memory, no DTO/migration/frontend changes. Local 138pass plus one existing Windows resource dependency failure. Exact final Linux CI in PR. Local 500ms target remains unmet for broad/deep cases; owner review required."
+        },
+        {
+          "path": "docs/evidence/kan-218-pr4-after.json",
+          "note": "100000 synthetic current programmes,200000 old facts,785heads/215branches,9 samples each. p95 first1196→661ms, university1174→259ms; peak1.77→1.49MB, SQL8→6. Synthetic data is not national coverage."
+        },
+        {
+          "path": "docs/KAN-218-READ-PROJECTION.md",
+          "note": "Independent adaptation to the full backend tree. Migration 0015 maintains verified read keys and exact totals atomically and falls back to source SQL when the policy changes. Native integrity, migration and API checks passed."
+        },
+        {
+          "path": "docs/KAN-218-PR4-RESULTS.md",
+          "note": "Clean cc86e58, 100,000 current 2027 programs, 50 warmed measurements per scenario, 59,830 HTTP requests across 40 phases with exact totals and no errors. All targets pass at 10 requests with 4 workers. At 50 the first page, university filter and frequent code miss their targets. Linux CI 4/4. Separate integration and owner review remain open."
+        },
+        {
+          "path": "docs/KAN-218-PR4-P95.md",
+          "note": "Two clean 7e00bf3 Windows runs with four workers at 50 simultaneous HTTP requests, 63,723 requests with zero failures, p95 at most 142.7 / 137.1 / 156.2 / 338.3 ms. Linux filter p95 remains 167–170 ms in measured alternative runs. Exact counts, rollback and writer cost verified. Linux CI 4/4 for application commit 1b2aff3. PR #44 awaits review."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10291,6 +10319,10 @@
         {
           "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
           "note": "Core and complete inventory implemented from main 1e7693e. The 26-file comparison and 16 focused tests pass. Full Linux and browser runs and publication are tracked in the stage evidence."
+        },
+        {
+          "path": "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md",
+          "note": "PR #38 ready for review. Linux PostgreSQL 1227 passed, one inherited skip. Both Checks events passed at a579518de239."
         }
       ],
       "blockedReason": null
@@ -10301,7 +10333,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10314,7 +10346,16 @@
       "acceptance": [
         "Group catalogue search, projections, reviewed data imports and publication models. Preserve DTO, CLI, resource paths, metadata and compatibility. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Catalogue package, old CLIs and resource paths verified. 107 focused tests pass. Parent comparison preserves contracts, with five callable names relocated. Full Linux and browser results are tracked in the stage evidence."
+        },
+        {
+          "path": "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md",
+          "note": "PR #39 ready for review. Linux PostgreSQL 1246 passed, one inherited skip. Both Checks events passed at c8d869ee7370."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10323,7 +10364,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10336,7 +10377,16 @@
       "acceptance": [
         "Group competition and scenario rules, models and routes. Preserve scenario calculations, route order, DTO and published identifiers. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Competition and scenario package implemented. 68 focused tests pass. Parent comparison matches all 26 items, including dependency layout and schema. Full Linux and browser results are tracked in the stage evidence."
+        },
+        {
+          "path": "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md",
+          "note": "PR #40 ready for review. Linux PostgreSQL 1252 passed, one inherited skip. Both Checks events passed at 6840f96035f6."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10345,7 +10395,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10358,7 +10408,16 @@
       "acceptance": [
         "Group manual history, guest sessions and subscriptions. Preserve cookie, authorization, transaction and idempotency semantics. Verify and publish a stacked PR."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "Watchlist and guest ORM implemented, with existing paths, cookie, owner lock and clock hooks. 88 focused tests pass. 26 parent comparisons match, with route and owner callable relocations recorded."
+        },
+        {
+          "path": "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md",
+          "note": "PR #41 ready for review. Linux PostgreSQL 1262 passed, one inherited skip. Both Checks events passed at ee8d246198a6."
+        }
+      ],
       "blockedReason": null
     },
     {
@@ -10367,7 +10426,7 @@
       "phase": "E5",
       "priority": "P1",
       "size": "L",
-      "status": "todo",
+      "status": "review",
       "dependsOn": [
         "T334"
       ],
@@ -10381,7 +10440,16 @@
       "acceptance": [
         "Group backup, diagnostics, migrations, maintenance, monitoring and worker tooling. Verify the complete stack against the original behavior and document exact SHAs, checks and remaining conditions."
       ],
-      "evidence": [],
+      "evidence": [
+        {
+          "path": "docs/BACKEND_ORGANIZATION_MASTER_PLAN.md",
+          "note": "All five implementation stages are ready for review. Final code 8b4d481: Linux PostgreSQL 1278 passed, 387 native cases and one inherited MICCEDU skip. Frontend 387 and PostgreSQL browser auth 6/6/6. Final comparisons, Compose and CLI verified. Hosted runs and PR links are recorded in the organization report."
+        },
+        {
+          "path": "docs/BACKEND_ORGANIZATION_FINAL_REPORT.md",
+          "note": "PR #42 ready for review. Linux PostgreSQL 1278 passed, one inherited skip. Both Checks events passed at 1c7a9f1f753e."
+        }
+      ],
       "blockedReason": null
     }
   ]

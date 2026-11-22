@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from fastapi import HTTPException
 from sqlalchemy import func, select, update
 
-from .database import OperationRecord
+from app.watchlist.models import OperationRecord
 
 
 def begin_operation(request, body, owner_hash, db):

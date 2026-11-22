@@ -16,7 +16,7 @@ from urllib.parse import urlsplit
 ROOT=Path(__file__).resolve().parents[2]
 sys.path[:0]=[str(ROOT/'backend'),str(ROOT)]
 from bs4 import BeautifulSoup
-from app.national_catalog import valid_url
+from app.catalog.national_catalog import valid_url
 from app.sources.navigation import admissions_link_score
 from scripts.documentation_archive import read_input
 from scripts.data.source_inventory import observe,target

@@ -19,9 +19,9 @@ from sqlalchemy.orm import Session
 from pg_support import isolated_postgres
 from app.admissions import CandidateEntry,SourceSnapshot
 from app.catalog import catalog_size
-from app.coverage import coverage
-from app.jobs import enqueue
-from app.migrations import upgrade_schema
+from app.catalog.coverage import coverage
+from app.operations.jobs import enqueue
+from app.operations.migrations import upgrade_schema
 from app.sources.audit import audit_source
 from app.sources.profile_registration import register_profile
 from app.sources.page_cache import PageFetchCache
@@ -29,7 +29,7 @@ from app.sources.registry import runtime_registry
 from app.sources.storage import RawStore
 from app.sources.table_family import SECTION_VERSION
 from app.sources.table_profiles import PROFILES
-from app.worker import run_once,bounded_fetch
+from app.operations.worker import run_once,bounded_fetch
 from scripts.data.review_section_family import compare_rows
 
 
@@ -62,7 +62,7 @@ def main():
         for p in scopes:
             register_profile(engine,p,enable=True,registry=registry)
             if args.all_profiles and dict(p.catalog)['funding']=='budget':
-                from app.scenario_storage import enable_scenarios
+                from app.competitions.scenario_storage import enable_scenarios
                 enable_scenarios(engine,p.source_id,registry=registry)
             assert enqueue(engine,p.source_id)
         for _ in scopes:

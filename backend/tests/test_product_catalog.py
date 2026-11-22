@@ -68,6 +68,17 @@ def test_no_implicit_program_seed_or_demo_fallback(client):
     assert client.get(BASE + '/universities/mtuci').status_code == 404
 
 
+def test_sqlite_never_enables_an_unmaintained_read_projection(application):
+    from app.catalog.read_projection import policy,statement
+    from app.catalog.program_catalog_models import ProgramCatalogReadScope
+    from sqlalchemy import insert
+    with TestClient(application):
+        with Session(application.state.engine) as db:
+            db.execute(insert(ProgramCatalogReadScope).values(id=1,epoch=0,**policy()))
+            db.commit()
+            assert statement(db) is None
+
+
 def test_import_is_repeatable_without_activating_sources(catalog, application):
     before = catalog.get(BASE + '/programs').json()
     import_reviewed(application.state.engine)

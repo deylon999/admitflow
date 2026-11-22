@@ -1,0 +1,2450 @@
+{
+  "sourceCommit": "467103cfa9d7e1c96d3c860d76cb1011f50605a6",
+  "dirty": false,
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.0",
+  "logicalCPUs": 16,
+  "synthetic": true,
+  "fixture": {
+    "synthetic": true,
+    "heads": 785,
+    "branches": 215,
+    "years": [
+      2024,
+      2025,
+      2026,
+      2027
+    ],
+    "targetYear": 2027,
+    "targetYearPrograms": 100000,
+    "historicalCampaignPrograms": 75000,
+    "currentPrograms": 175000,
+    "previousFactVersions": 350000,
+    "currentDocuments": 4000,
+    "newCompetitionGroups": 0,
+    "sampleUniversity": "miccedu-1"
+  },
+  "seedSeconds": 490.83512429999973,
+  "populatedUpgradeSeconds": 185.88789499999984,
+  "postgresVersion": "17.11",
+  "settings": {
+    "work_mem": "4MB",
+    "shared_buffers": "128MB",
+    "max_parallel_workers_per_gather": "2",
+    "max_connections": "100",
+    "track_io_timing": "off"
+  },
+  "postgresHardware": "16\nprocessor\t: 0\nvendor_id\t: AuthenticAMD\ncpu family\t: 25\nmodel\t\t: 33\nmodel name\t: AMD Ryzen 7 5700X 8-Core Processor\nstepping\t: 2\nmicrocode\t: 0xffffffff\ncpu MHz\t\t: 3400.043\ncache size\t: 512 KB\nphysical id\t: 0\nsiblings\t: 16\ncore id\t\t: 0\ncpu cores\t: 8\napicid\t\t: 0\ninitial apicid\t: 0\nfpu\t\t: yes\nfpu_exception\t: yes\ncpuid level\t: 13\nwp\t\t: yes\nflags\t\t: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext perfctr_core ssbd ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves clzero xsaveerptr arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm\nmax\n",
+  "relationBytes": {
+    "program_catalog_documents": 1728512,
+    "program_catalog_revisions": 14221312,
+    "program_catalog_facts": 565002240,
+    "program_catalog_group_facts": 16384,
+    "program_catalog_publications": 745472,
+    "program_catalog_import_attempts": 24576,
+    "program_catalog_read_scope": 49152,
+    "program_catalog_read_facts": 463560704,
+    "program_catalog_read_totals": 483328
+  },
+  "oracle": {
+    "first": "82de480a16c5c72aea3236aaa2bd6f642de0b1aeb4a6a3b45e7ca476d747194d",
+    "university": "efa3518dd7e70cf360fce9c2d893e3f897cb049482b5ffc7e6206a4affd57607",
+    "code": "c0e726a2ea72ec24ccbc6ea1188e08ecaf349dea702e4ee65923a6e1f31d9c93",
+    "deep": "bc82f14305ceee3ccc3a33c0f87ab1d662f701153d8c99f5ea7daff4ae2b6ce6"
+  },
+  "finalPostgresStats": {
+    "temp_bytes": 2721377123,
+    "temp_files": 523,
+    "blks_read": 28477657,
+    "blks_hit": 148430648,
+    "xact_commit": 57381,
+    "tup_returned": 1144750826
+  },
+  "rawArtifact": {
+    "originalPath": "test-results/kan218-read/final-serving.json",
+    "sha256": "eee0f3cdb1ea9c24ae9520dc6b49eeb1cfa8936a4bb95ed24b44e29c153c6e6a",
+    "bytes": 6311043,
+    "gzipPath": "docs/evidence/kan-218-pr4-serving-before-statistics.json.gz",
+    "gzipSha256": "4716bf6d90a1d1e75c31f0999dcf763b392c14539e3610cc68d62d1044dcf246",
+    "gzipBytes": 462831
+  },
+  "facade": {
+    "first": {
+      "params": {},
+      "total": 175002,
+      "items": 12,
+      "nextOffset": 12,
+      "responseSha256": "82de480a16c5c72aea3236aaa2bd6f642de0b1aeb4a6a3b45e7ca476d747194d",
+      "years": [
+        2027,
+        2026,
+        2025,
+        2024
+      ],
+      "pythonPeakBytes": 420405,
+      "sqlStatements": 8,
+      "hydratedObjects": {
+        "CompetitionGroup": 2,
+        "Campaign": 11,
+        "University": 1,
+        "ProgramCatalogFact": 10,
+        "ProgramCatalogRevision": 10
+      },
+      "latencyMs": {
+        "p50": 13.643000000229222,
+        "p95": 16.704800000297837,
+        "samples": 50
+      },
+      "plans": [
+        {
+          "Planning Time": 0.043,
+          "Execution Time": 0.043,
+          "sharedHitBlocks": 2,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_read_scope_pkey",
+              "Relation Name": "program_catalog_read_scope",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.374,
+          "Execution Time": 0.084,
+          "sharedHitBlocks": 10,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_groups",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Memoize",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "universities_pkey",
+              "Relation Name": "universities",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.024,
+          "Execution Time": 0.005,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_group_programs",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.023,
+          "Execution Time": 0.573,
+          "sharedHitBlocks": 29,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Aggregate",
+              "Plan Rows": 200,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_read_totals",
+              "Plan Rows": 1073,
+              "Actual Rows": 4000,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.147,
+          "Execution Time": 0.097,
+          "sharedHitBlocks": 14,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 12,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Merge Append",
+              "Plan Rows": 14,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 12,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 12,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Only Scan",
+              "Index Name": "ix_program_read_order",
+              "Relation Name": "program_catalog_read_facts",
+              "Plan Rows": 41826,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Sort",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Sort Method": "quicksort",
+              "Sort Space Used": 25,
+              "Sort Space Type": "Memory"
+            },
+            {
+              "Node Type": "Result",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Sort",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1,
+              "Sort Method": "quicksort",
+              "Sort Space Used": 25,
+              "Sort Space Type": "Memory"
+            },
+            {
+              "Node Type": "Result",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.042,
+          "Execution Time": 0.008,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_group_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.484,
+          "Execution Time": 0.351,
+          "sharedHitBlocks": 100,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 10,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "BitmapOr",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_revisions_pkey",
+              "Relation Name": "program_catalog_revisions",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 10
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 10
+            }
+          ]
+        }
+      ]
+    },
+    "university": {
+      "params": {
+        "university_id": "miccedu-1",
+        "year": 2027
+      },
+      "total": 100,
+      "items": 12,
+      "nextOffset": 12,
+      "responseSha256": "efa3518dd7e70cf360fce9c2d893e3f897cb049482b5ffc7e6206a4affd57607",
+      "years": [
+        2027,
+        2026,
+        2025,
+        2024
+      ],
+      "pythonPeakBytes": 471979,
+      "sqlStatements": 8,
+      "hydratedObjects": {
+        "CompetitionGroup": 2,
+        "Campaign": 2,
+        "University": 1,
+        "ProgramCatalogFact": 12,
+        "ProgramCatalogRevision": 1
+      },
+      "latencyMs": {
+        "p50": 13.624650000565453,
+        "p95": 17.5851000003604,
+        "samples": 50
+      },
+      "plans": [
+        {
+          "Planning Time": 0.02,
+          "Execution Time": 0.036,
+          "sharedHitBlocks": 2,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_read_scope_pkey",
+              "Relation Name": "program_catalog_read_scope",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.336,
+          "Execution Time": 0.089,
+          "sharedHitBlocks": 10,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_groups",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Memoize",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "universities_pkey",
+              "Relation Name": "universities",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.022,
+          "Execution Time": 0.005,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_group_programs",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.031,
+          "Execution Time": 0.053,
+          "sharedHitBlocks": 6,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Aggregate",
+              "Plan Rows": 5,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Sort",
+              "Plan Rows": 5,
+              "Actual Rows": 4,
+              "Actual Loops": 1,
+              "Sort Method": "quicksort",
+              "Sort Space Used": 25,
+              "Sort Space Type": "Memory"
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_read_totals",
+              "Plan Rows": 5,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_read_totals_pkey",
+              "Plan Rows": 5,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.175,
+          "Execution Time": 0.14,
+          "sharedHitBlocks": 40,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Sort",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1,
+              "Sort Method": "top-N heapsort",
+              "Sort Space Used": 30,
+              "Sort Space Type": "Memory"
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "ix_program_read_years",
+              "Relation Name": "program_catalog_read_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 100,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.047,
+          "Execution Time": 0.009,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_group_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.311,
+          "Execution Time": 0.347,
+          "sharedHitBlocks": 113,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "BitmapOr",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_revisions_pkey",
+              "Relation Name": "program_catalog_revisions",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            }
+          ]
+        }
+      ]
+    },
+    "code": {
+      "params": {
+        "q": "09.03.04",
+        "year": 2027
+      },
+      "total": 64500,
+      "items": 12,
+      "nextOffset": 12,
+      "responseSha256": "c0e726a2ea72ec24ccbc6ea1188e08ecaf349dea702e4ee65923a6e1f31d9c93",
+      "years": [
+        2027,
+        2026,
+        2025,
+        2024
+      ],
+      "pythonPeakBytes": 495662,
+      "sqlStatements": 9,
+      "hydratedObjects": {
+        "CompetitionGroup": 2,
+        "Campaign": 13,
+        "University": 1,
+        "ProgramCatalogFact": 12,
+        "ProgramCatalogRevision": 12
+      },
+      "latencyMs": {
+        "p50": 111.34564999974828,
+        "p95": 124.56589999965217,
+        "samples": 50
+      },
+      "plans": [
+        {
+          "Planning Time": 0.031,
+          "Execution Time": 0.064,
+          "sharedHitBlocks": 2,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_read_scope_pkey",
+              "Relation Name": "program_catalog_read_scope",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.397,
+          "Execution Time": 0.107,
+          "sharedHitBlocks": 10,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_groups",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Memoize",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "universities_pkey",
+              "Relation Name": "universities",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.023,
+          "Execution Time": 0.005,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_group_programs",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.022,
+          "Execution Time": 0.594,
+          "sharedHitBlocks": 29,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Aggregate",
+              "Plan Rows": 200,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_read_totals",
+              "Plan Rows": 1073,
+              "Actual Rows": 4000,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.145,
+          "Execution Time": 45.053,
+          "sharedHitBlocks": 14141,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Aggregate",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 64500,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_read_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 64500,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "ix_program_read_year_order",
+              "Plan Rows": 209,
+              "Actual Rows": 100000,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.154,
+          "Execution Time": 56.774,
+          "sharedHitBlocks": 14141,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Sort",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1,
+              "Sort Method": "top-N heapsort",
+              "Sort Space Used": 34,
+              "Sort Space Type": "Memory"
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_read_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 64500,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "ix_program_read_year_order",
+              "Plan Rows": 209,
+              "Actual Rows": 100000,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.05,
+          "Execution Time": 0.01,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_group_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.484,
+          "Execution Time": 0.394,
+          "sharedHitBlocks": 120,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "BitmapOr",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_revisions_pkey",
+              "Relation Name": "program_catalog_revisions",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            }
+          ]
+        }
+      ]
+    },
+    "deep": {
+      "params": {
+        "year": 2027,
+        "offset": 99988
+      },
+      "total": 100000,
+      "items": 12,
+      "nextOffset": null,
+      "responseSha256": "bc82f14305ceee3ccc3a33c0f87ab1d662f701153d8c99f5ea7daff4ae2b6ce6",
+      "years": [
+        2027,
+        2026,
+        2025,
+        2024
+      ],
+      "pythonPeakBytes": 490492,
+      "sqlStatements": 8,
+      "hydratedObjects": {
+        "CompetitionGroup": 2,
+        "Campaign": 13,
+        "University": 1,
+        "ProgramCatalogFact": 12,
+        "ProgramCatalogRevision": 12
+      },
+      "latencyMs": {
+        "p50": 14.439700000366429,
+        "p95": 20.782199999302975,
+        "samples": 50
+      },
+      "plans": [
+        {
+          "Planning Time": 0.027,
+          "Execution Time": 0.038,
+          "sharedHitBlocks": 2,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_read_scope_pkey",
+              "Relation Name": "program_catalog_read_scope",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.371,
+          "Execution Time": 0.084,
+          "sharedHitBlocks": 10,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_groups",
+              "Plan Rows": 2,
+              "Actual Rows": 2,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Memoize",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "universities_pkey",
+              "Relation Name": "universities",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 2
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.023,
+          "Execution Time": 0.005,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "competition_group_programs",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.021,
+          "Execution Time": 0.566,
+          "sharedHitBlocks": 29,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Aggregate",
+              "Plan Rows": 200,
+              "Actual Rows": 4,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_read_totals",
+              "Plan Rows": 1073,
+              "Actual Rows": 4000,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.163,
+          "Execution Time": 0.048,
+          "sharedHitBlocks": 5,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Subquery Scan",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Limit",
+              "Plan Rows": 12,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Only Scan",
+              "Index Name": "ix_program_read_year_order",
+              "Relation Name": "program_catalog_read_facts",
+              "Plan Rows": 209,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.045,
+          "Execution Time": 0.008,
+          "sharedHitBlocks": 0,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Seq Scan",
+              "Relation Name": "program_catalog_group_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            }
+          ]
+        },
+        {
+          "Planning Time": 0.497,
+          "Execution Time": 0.463,
+          "sharedHitBlocks": 120,
+          "sharedReadBlocks": 0,
+          "tempWrittenBlocks": 0,
+          "tempReadBlocks": 0,
+          "nodes": [
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Nested Loop",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Heap Scan",
+              "Relation Name": "program_catalog_facts",
+              "Plan Rows": 1,
+              "Actual Rows": 12,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "BitmapOr",
+              "Plan Rows": 1,
+              "Actual Rows": 0,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Bitmap Index Scan",
+              "Index Name": "program_catalog_facts_pkey",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 1
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "program_catalog_revisions_pkey",
+              "Relation Name": "program_catalog_revisions",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            },
+            {
+              "Node Type": "Index Scan",
+              "Index Name": "uq_campaign_program_scope",
+              "Relation Name": "campaigns",
+              "Plan Rows": 1,
+              "Actual Rows": 1,
+              "Actual Loops": 12
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "serving": {
+    "1": {
+      "first": [
+        {
+          "concurrency": 1,
+          "requests": 620,
+          "seconds": 11.156094699999812,
+          "rps": 55.57500332083148,
+          "p50": 15.28365000103804,
+          "p95": 18.183300000600866,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 127,
+            "blks_hit": 118596,
+            "xact_commit": 608,
+            "tup_returned": 2461549
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 23.57,
+            "cpuPercentMax": 24.12,
+            "workingSetMiBMin": 1131.52,
+            "workingSetMiBMax": 1134.592
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 1065,
+          "seconds": 10.05486270000074,
+          "rps": 105.9189003147623,
+          "p50": 89.74810000108846,
+          "p95": 145.5619000007573,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 11,
+            "blks_hit": 227333,
+            "xact_commit": 1057,
+            "tup_returned": 4287304
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 46.45,
+            "cpuPercentMax": 47.56,
+            "workingSetMiBMin": 1162.24,
+            "workingSetMiBMax": 1167.36
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 1162,
+          "seconds": 10.148129499999413,
+          "rps": 114.50386004633339,
+          "p50": 210.8553000007305,
+          "p95": 282.99040000092646,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 240341,
+            "xact_commit": 1177,
+            "tup_returned": 4791914
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 45.75,
+            "cpuPercentMax": 46.86,
+            "workingSetMiBMin": 1181.696,
+            "workingSetMiBMax": 1183.744
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 1035,
+          "seconds": 11.910696799999641,
+          "rps": 86.89667929419807,
+          "p50": 438.11989999994694,
+          "p95": 1016.995500000121,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 3,
+            "blks_hit": 214517,
+            "xact_commit": 1045,
+            "tup_returned": 4229493
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 44.545,
+            "cpuPercentMax": 45.42,
+            "workingSetMiBMin": 1154.048,
+            "workingSetMiBMax": 1183.744
+          }
+        }
+      ],
+      "university": [
+        {
+          "concurrency": 1,
+          "requests": 609,
+          "seconds": 10.008424199999354,
+          "rps": 60.84873980461773,
+          "p50": 15.73400000052061,
+          "p95": 18.87889999852632,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 3,
+            "blks_hit": 93959,
+            "xact_commit": 583,
+            "tup_returned": 38756
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 20.76,
+            "cpuPercentMax": 21.29,
+            "workingSetMiBMin": 1154.048,
+            "workingSetMiBMax": 1155.072
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 1019,
+          "seconds": 10.05341910000061,
+          "rps": 101.3585517388744,
+          "p50": 94.13379999932658,
+          "p95": 151.1878000001161,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 184896,
+            "xact_commit": 1034,
+            "tup_returned": 81474
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 37.75,
+            "cpuPercentMax": 42.45,
+            "workingSetMiBMin": 1164.288,
+            "workingSetMiBMax": 1172.48
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 1036,
+          "seconds": 11.8389987999999,
+          "rps": 87.50739969667104,
+          "p50": 237.80059999990044,
+          "p95": 318.45240000075137,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 183600,
+            "xact_commit": 1039,
+            "tup_returned": 80072
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 37.61,
+            "cpuPercentMax": 38.89,
+            "workingSetMiBMin": 1154.048,
+            "workingSetMiBMax": 1182.72
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 1010,
+          "seconds": 12.038933399999223,
+          "rps": 83.89447523649106,
+          "p50": 498.56234999970184,
+          "p95": 755.2107999999862,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 176643,
+            "xact_commit": 1001,
+            "tup_returned": 78383
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 36.85,
+            "cpuPercentMax": 38.26,
+            "workingSetMiBMin": 1153.024,
+            "workingSetMiBMax": 1182.72
+          }
+        }
+      ],
+      "code": [
+        {
+          "concurrency": 1,
+          "requests": 202,
+          "seconds": 11.438363300001583,
+          "rps": 17.659869222721056,
+          "p50": 48.00050000085321,
+          "p95": 56.7828000002919,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 1071431,
+            "blks_hit": 3157657,
+            "xact_commit": 1003,
+            "tup_returned": 35675284
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 168.51999999999998,
+            "cpuPercentMax": 173.62,
+            "workingSetMiBMin": 1161.216,
+            "workingSetMiBMax": 1165.312
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 694,
+          "seconds": 10.080387300000439,
+          "rps": 68.84656108401408,
+          "p50": 135.06435000090278,
+          "p95": 211.26769999864337,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 3032728,
+            "blks_hit": 11780919,
+            "xact_commit": 2685,
+            "tup_returned": 123569551
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 799.97,
+            "cpuPercentMax": 830.96,
+            "workingSetMiBMin": 1175.552,
+            "workingSetMiBMax": 1183.744
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 667,
+          "seconds": 12.001853100000517,
+          "rps": 55.57475120237651,
+          "p50": 378.2518000007258,
+          "p95": 488.7698000002274,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 2864016,
+            "blks_hit": 11462792,
+            "xact_commit": 2616,
+            "tup_returned": 119727805
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 808.4849999999999,
+            "cpuPercentMax": 864.88,
+            "workingSetMiBMin": 1161.216,
+            "workingSetMiBMax": 1208.32
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 681,
+          "seconds": 12.064270300001226,
+          "rps": 56.44767425344663,
+          "p50": 769.7420000004058,
+          "p95": 1169.9915999997756,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 2999295,
+            "blks_hit": 11819707,
+            "xact_commit": 2702,
+            "tup_returned": 123805507
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 796.685,
+            "cpuPercentMax": 830.45,
+            "workingSetMiBMin": 1160.192,
+            "workingSetMiBMax": 1208.32
+          }
+        }
+      ],
+      "deep": [
+        {
+          "concurrency": 1,
+          "requests": 581,
+          "seconds": 11.742111499999737,
+          "rps": 49.48002750612724,
+          "p50": 16.16199999989476,
+          "p95": 21.603999999570078,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 8,
+            "blks_hit": 113786,
+            "xact_commit": 554,
+            "tup_returned": 2213128
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 22.735,
+            "cpuPercentMax": 23.81,
+            "workingSetMiBMin": 1161.216,
+            "workingSetMiBMax": 1162.24
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 1082,
+          "seconds": 10.06533219999983,
+          "rps": 107.49769391615493,
+          "p50": 88.17475000068953,
+          "p95": 142.50279999941995,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 163,
+            "blks_hit": 247906,
+            "xact_commit": 1077,
+            "tup_returned": 4414115
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 43.41,
+            "cpuPercentMax": 48.64,
+            "workingSetMiBMin": 1167.36,
+            "workingSetMiBMax": 1175.552
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 1027,
+          "seconds": 10.150378500000443,
+          "rps": 101.17849299904977,
+          "p50": 239.32169999898179,
+          "p95": 334.90440000059607,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 235693,
+            "xact_commit": 1045,
+            "tup_returned": 4268412
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 44.57,
+            "cpuPercentMax": 47.56,
+            "workingSetMiBMin": 1185.792,
+            "workingSetMiBMax": 1188.864
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 1096,
+          "seconds": 11.899574700000812,
+          "rps": 92.10413209137005,
+          "p50": 464.18554999945627,
+          "p95": 709.3934000004083,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 244680,
+            "xact_commit": 1092,
+            "tup_returned": 4443250
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 43.504999999999995,
+            "cpuPercentMax": 46.72,
+            "workingSetMiBMin": 1157.12,
+            "workingSetMiBMax": 1187.84
+          }
+        }
+      ]
+    },
+    "4": {
+      "first": [
+        {
+          "concurrency": 1,
+          "requests": 595,
+          "seconds": 11.160043199999564,
+          "rps": 53.315205804940184,
+          "p50": 16.13299999917217,
+          "p95": 20.09879999968689,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 50,
+            "blks_hit": 109813,
+            "xact_commit": 560,
+            "tup_returned": 2255486
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 23.23,
+            "cpuPercentMax": 23.8,
+            "workingSetMiBMin": 1141.76,
+            "workingSetMiBMax": 1142.784
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 2981,
+          "seconds": 10.040611700000227,
+          "rps": 296.8942619302699,
+          "p50": 27.43960000043444,
+          "p95": 52.53960000118241,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 551789,
+            "xact_commit": 2816,
+            "tup_returned": 11412990
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 144.39,
+            "cpuPercentMax": 169.17,
+            "workingSetMiBMin": 1170.432,
+            "workingSetMiBMax": 1172.48
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 3218,
+          "seconds": 10.045509199999287,
+          "rps": 320.3421485095279,
+          "p50": 79.39280000027793,
+          "p95": 124.22890000016196,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 647341,
+            "xact_commit": 3267,
+            "tup_returned": 13266864
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 165.47,
+            "cpuPercentMax": 169.54,
+            "workingSetMiBMin": 1216.512,
+            "workingSetMiBMax": 1221.632
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 3118,
+          "seconds": 10.11489900000015,
+          "rps": 308.258144742716,
+          "p50": 160.43415000058303,
+          "p95": 253.7879999999859,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            175002
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 690546,
+            "xact_commit": 3221,
+            "tup_returned": 13109892
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 165.33,
+            "cpuPercentMax": 216.99,
+            "workingSetMiBMin": 1283.072,
+            "workingSetMiBMax": 1292.288
+          }
+        }
+      ],
+      "university": [
+        {
+          "concurrency": 1,
+          "requests": 615,
+          "seconds": 11.66331480000008,
+          "rps": 52.729435031625464,
+          "p50": 15.71460000013758,
+          "p95": 18.341699998927652,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 17,
+            "blks_hit": 109200,
+            "xact_commit": 666,
+            "tup_returned": 335590
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 20.79,
+            "cpuPercentMax": 21.22,
+            "workingSetMiBMin": 1231.872,
+            "workingSetMiBMax": 1232.896
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 2808,
+          "seconds": 10.039693400000033,
+          "rps": 279.68981602565583,
+          "p50": 34.0342999998029,
+          "p95": 50.909300000057556,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 432020,
+            "xact_commit": 2731,
+            "tup_returned": 178194
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 110.77,
+            "cpuPercentMax": 114.31,
+            "workingSetMiBMin": 1232.896,
+            "workingSetMiBMax": 1233.92
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 3009,
+          "seconds": 10.08578320000015,
+          "rps": 298.3407376831137,
+          "p50": 77.20589999917138,
+          "p95": 153.73660000113887,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 487408,
+            "xact_commit": 2963,
+            "tup_returned": 203658
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 132.37,
+            "cpuPercentMax": 135.05,
+            "workingSetMiBMin": 1240.064,
+            "workingSetMiBMax": 1243.136
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 2920,
+          "seconds": 10.13321999999971,
+          "rps": 288.16111759145497,
+          "p50": 161.0555999995995,
+          "p95": 308.36679999993066,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 552251,
+            "xact_commit": 2995,
+            "tup_returned": 247637
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 142.09,
+            "cpuPercentMax": 163.66,
+            "workingSetMiBMin": 1277.952,
+            "workingSetMiBMax": 1291.264
+          }
+        }
+      ],
+      "code": [
+        {
+          "concurrency": 1,
+          "requests": 215,
+          "seconds": 11.196828600001027,
+          "rps": 19.20186578545824,
+          "p50": 45.75710000062827,
+          "p95": 50.08099999940896,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 1002070,
+            "blks_hit": 3407641,
+            "xact_commit": 1131,
+            "tup_returned": 37300905
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 165.65,
+            "cpuPercentMax": 170.8,
+            "workingSetMiBMin": 1236.992,
+            "workingSetMiBMax": 1240.064
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 928,
+          "seconds": 10.072629800000868,
+          "rps": 92.13085543955165,
+          "p50": 94.20499999941967,
+          "p95": 154.48499999911292,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 3887948,
+            "blks_hit": 15382511,
+            "xact_commit": 3109,
+            "tup_returned": 161445232
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 1203.94,
+            "cpuPercentMax": 1245.01,
+            "workingSetMiBMin": 1254.4,
+            "workingSetMiBMax": 1264.64
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 1010,
+          "seconds": 10.14917979999882,
+          "rps": 99.51543079373936,
+          "p50": 249.52479999956267,
+          "p95": 360.05760000080045,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 4669950,
+            "blks_hit": 16687026,
+            "xact_commit": 2171,
+            "tup_returned": 179857120
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 1406.52,
+            "cpuPercentMax": 1440.24,
+            "workingSetMiBMin": 1265.664,
+            "workingSetMiBMax": 1271.808
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 1070,
+          "seconds": 11.950686599999244,
+          "rps": 89.53460464774197,
+          "p50": 473.74759999911475,
+          "p95": 707.8959999998915,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            64500
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 5041299,
+            "blks_hit": 18146441,
+            "xact_commit": 1737,
+            "tup_returned": 195505665
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 1413.51,
+            "cpuPercentMax": 1449.84,
+            "workingSetMiBMin": 1248.256,
+            "workingSetMiBMax": 1340.416
+          }
+        }
+      ],
+      "deep": [
+        {
+          "concurrency": 1,
+          "requests": 595,
+          "seconds": 11.680722099999912,
+          "rps": 50.938631610797806,
+          "p50": 15.99770000029821,
+          "p95": 19.050099999731174,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 77107,
+            "blks_hit": 437056,
+            "xact_commit": 592,
+            "tup_returned": 5586492
+          },
+          "postgresResources": {
+            "samples": 6,
+            "cpuPercentMedian": 22.5,
+            "cpuPercentMax": 22.95,
+            "workingSetMiBMin": 1248.256,
+            "workingSetMiBMax": 1249.28
+          }
+        },
+        {
+          "concurrency": 10,
+          "requests": 2654,
+          "seconds": 10.039608799999769,
+          "rps": 264.3529297675484,
+          "p50": 27.20789999966655,
+          "p95": 67.38099999893166,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 8,
+            "blks_hit": 523143,
+            "xact_commit": 2531,
+            "tup_returned": 10174437
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 119.89,
+            "cpuPercentMax": 122.87,
+            "workingSetMiBMin": 1249.28,
+            "workingSetMiBMax": 1250.304
+          }
+        },
+        {
+          "concurrency": 25,
+          "requests": 2856,
+          "seconds": 10.077543299999888,
+          "rps": 283.4024042347733,
+          "p50": 83.55694999954721,
+          "p95": 160.21330000148737,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 610698,
+            "xact_commit": 2906,
+            "tup_returned": 11880852
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 153.79,
+            "cpuPercentMax": 157.82,
+            "workingSetMiBMin": 1250.304,
+            "workingSetMiBMax": 1253.376
+          }
+        },
+        {
+          "concurrency": 50,
+          "requests": 2869,
+          "seconds": 10.137669499999902,
+          "rps": 283.00389946624597,
+          "p50": 163.51050000048417,
+          "p95": 270.33269999992626,
+          "failures": 0,
+          "transportFailures": null,
+          "totals": [
+            100000
+          ],
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 151,
+            "blks_hit": 672819,
+            "xact_commit": 2904,
+            "tup_returned": 11855854
+          },
+          "postgresResources": {
+            "samples": 5,
+            "cpuPercentMedian": 157.36,
+            "cpuPercentMax": 160.28,
+            "workingSetMiBMin": 1292.288,
+            "workingSetMiBMax": 1304.576
+          }
+        }
+      ]
+    }
+  },
+  "seedStatements": [
+    {
+      "sql": "INSERT INTO universities (id, name, search_name, region, parent_id, official_url, provenance_url, verified_at) VALUES (%(id)s::VARCHAR, %(name)s::VARCHAR, %(search_name)s::VARCHAR, %(region)s::VARCHAR, %(parent_id)s::VARCHAR, %(official_url)s::VARCHAR, %(provenance_url)s::VARCHAR, %(verified_at)s::TIMESTAMP WITH TIME ZONE)",
+      "seconds": 0.0451467999992019
+    },
+    {
+      "sql": "INSERT INTO campaigns (id, university_id, year, level) VALUES (%(id)s::VARCHAR, %(university_id)s::VARCHAR, %(year)s::INTEGER, %(level)s::VARCHAR)",
+      "seconds": 0.2704276000004029
+    },
+    {
+      "sql": "CREATE TEMP TABLE scale_keys ON COMMIT DROP AS\n            SELECT md5('program:'||c.id||':'||k) pid, c.id cid, c.university_id uid, c.year, c.level,\n                'scale-'||k source_key, md5('public:'||c.id||':'||k) public_id, k\n            FROM campaigns c CROSS JOIN generate_series(1,CASE WHEN c.year=2027 AND %(target)s>0 THEN %(target)s ELSE %(per)s END) k\n            WHERE c.university_id != 'sgu-saratov'",
+      "seconds": 0.38960450000013225
+    },
+    {
+      "sql": "INSERT INTO programs(id,university_id,level,origin_campaign_id,source_namespace,source_key)\n            SELECT pid,uid,level,cid,'synthetic-scale-v1',source_key FROM scale_keys",
+      "seconds": 5.582241899999644
+    },
+    {
+      "sql": "INSERT INTO campaign_programs(program_id,campaign_id,university_id,level)\n            SELECT pid,cid,uid,level FROM scale_keys",
+      "seconds": 9.017118399999163
+    },
+    {
+      "sql": "INSERT INTO program_catalog_documents(id,campaign_id,source_namespace)\n            SELECT md5('doc:'||id),id,'synthetic-scale-v1' FROM campaigns WHERE university_id != 'sgu-saratov'",
+      "seconds": 0.1010932999997749
+    },
+    {
+      "sql": "INSERT INTO program_catalog_revisions\n            (id,document_id,campaign_id,original_url,final_url,content_type,document_type,verification_status,\n             fetched_at,checked_at,original_sha256,extractor_version,review_sha256,normalized_sha256,\n             completeness,program_count,group_count,university_name)\n            SELECT md5(d.id||':rev:'||v),d.id,d.campaign_id,'https://synthetic.invalid/scale',\n                'https://synthetic.invalid/scale','text/html','synthetic-benchmark','verified',\n                %(now)s,%(now)s,repeat(md5(d.id||v),2),'synthetic-scale-v1',repeat(md5(d.id||v),2),\n                repeat(md5(d.id||v),2),'partial',CASE WHEN c.year=2027 AND %(target)s>0 THEN %(target)s ELSE %(per)s END,0,u.name\n            FROM program_catalog_documents d JOIN campaigns c ON c.id=d.campaign_id\n                JOIN universities u ON u.id=c.university_id CROSS JOIN generate_series(0,%(history)s) v",
+      "seconds": 0.47741189999942435
+    },
+    {
+      "sql": "INSERT INTO program_catalog_facts\n            (revision_id,program_id,campaign_id,public_id,source_key,title,code,study_form,funding,\n             category,seats,evidence,search_text,sort_text)\n            SELECT r.id,k.pid,k.cid,k.public_id,k.source_key,\n                'Synthetic Программа Straße ΟΣ Ёж 100%%_ '||\n                    CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid,\n                CASE WHEN %(target)s>0 AND k.level='specialist' THEN '40.05.01'\n                    WHEN k.k%%7=0 THEN CASE WHEN %(target)s>0 THEN '38.03.01' ELSE '40.05.01' END ELSE '09.03.04' END,\n                CASE WHEN k.k%%3=0 THEN NULL ELSE 'full-time' END,NULL,NULL,NULL,\n                json_build_object('synthetic',true),\n                'synthetic программа strasse οσ ёж 100%%_ '||\n                    CASE WHEN %(target)s>0 AND k.level='specialist' THEN '40.05.01 '\n                        WHEN k.k%%7=0 THEN CASE WHEN %(target)s>0 THEN '38.03.01 ' ELSE '40.05.01 ' END ELSE '09.03.04 ' END||\n                    CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid||' '||lower(r.university_name),\n                'synthetic программа strasse οσ ёж 100%%_ '||\n                    CASE WHEN k.k=1 THEN 'уникальный ' ELSE '' END||k.source_key||' '||k.cid\n            FROM scale_keys k JOIN program_catalog_revisions r ON r.campaign_id=k.cid",
+      "seconds": 202.098633900001
+    },
+    {
+      "sql": "INSERT INTO program_catalog_publications(document_id,revision_id)\n            SELECT d.id,md5(d.id||':rev:'||%(history)s) FROM program_catalog_documents d",
+      "seconds": 271.5165257000008
+    },
+    {
+      "sql": "ANALYZE",
+      "seconds": 1.2565528999984963
+    }
+  ],
+  "incrementalPublicationMs": {
+    "p95": 1431.9220000015775,
+    "samples": 50,
+    "p50": 155.68350000012288,
+    "max": 22286.443000000872
+  }
+}

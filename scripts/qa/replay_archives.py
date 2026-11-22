@@ -6,8 +6,8 @@ import json,os,sys,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path[:0]=[str(ROOT/'backend'),str(ROOT/'backend/tests'), str(ROOT)]
 from scripts.ops.postgres_runtime import disposable_postgres
-from app.database import make_engine
-from app.migrations import upgrade_schema
+from app.core.database import make_engine
+from app.operations.migrations import upgrade_schema
 from replay_case import replay_case
 from test_sgu_adapter import KEY
 

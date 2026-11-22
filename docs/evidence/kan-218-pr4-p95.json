@@ -1,0 +1,2260 @@
+{
+  "baseline-profile": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/baseline-profile.json",
+      "sha256": "17f86abf05b4a81f335b0df8e12caecb14b5957b676bd4d343ba8c0e5c604988",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-baseline-profile.json.gz",
+      "gzipSha256": "9043a9de6c28bca58157cfc3d70403bb4e70adf9f33d193f361886bd3d92f604"
+    },
+    "summary": {
+      "commit": "20f0743713a6ae2e002e3b16c0b5277abe1c689c",
+      "dirty": true,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": true,
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 3032,
+          "seconds": 11.896340899998904,
+          "rps": 254.8682847513456,
+          "p50": 93.29874999821186,
+          "p95": 473.0257999981404,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 15,
+            "blks_hit": 656096,
+            "xact_commit": 2920,
+            "tup_returned": 11842518
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "82de480a16c5c72aea3236aaa2bd6f642de0b1aeb4a6a3b45e7ca476d747194d",
+          "profile": {
+            "sqlMs": {
+              "p50": 39.478,
+              "p95": 119.722
+            },
+            "sqlCalls": {
+              "p50": 7,
+              "p95": 7
+            },
+            "checkoutMs": {
+              "p50": 3.543,
+              "p95": 205.294
+            },
+            "poolQueueMs": {
+              "p50": 0.006,
+              "p95": 179.072
+            },
+            "dtoMs": {
+              "p50": 0.169,
+              "p95": 0.273
+            },
+            "serializeMs": {
+              "p50": 4.859,
+              "p95": 28.696
+            },
+            "endpointMs": {
+              "p50": 48.011,
+              "p95": 132.316
+            },
+            "appMs": {
+              "p50": 84.078,
+              "p95": 445.387
+            }
+          },
+          "requestsByWorker": {
+            "7880": 752,
+            "10944": 745,
+            "14852": 741,
+            "17856": 794
+          },
+          "peakPostgresCpuPercent": 174.35,
+          "memorySamples": [
+            "1.142GiB / 7.717GiB",
+            "1.176GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.172GiB / 7.717GiB",
+            "1.174GiB / 7.717GiB",
+            "1.137GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 2829,
+          "seconds": 11.445741600000474,
+          "rps": 247.16616003281803,
+          "p50": 109.63489999994636,
+          "p95": 522.9125000005297,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 36968,
+            "blks_hit": 508055,
+            "xact_commit": 2818,
+            "tup_returned": 1265623
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "efa3518dd7e70cf360fce9c2d893e3f897cb049482b5ffc7e6206a4affd57607",
+          "profile": {
+            "sqlMs": {
+              "p50": 43.708,
+              "p95": 135.721
+            },
+            "sqlCalls": {
+              "p50": 7,
+              "p95": 7
+            },
+            "checkoutMs": {
+              "p50": 3.517,
+              "p95": 228.174
+            },
+            "poolQueueMs": {
+              "p50": 0.006,
+              "p95": 218.918
+            },
+            "dtoMs": {
+              "p50": 0.184,
+              "p95": 0.33
+            },
+            "serializeMs": {
+              "p50": 5.72,
+              "p95": 36.87
+            },
+            "endpointMs": {
+              "p50": 52.525,
+              "p95": 147.848
+            },
+            "appMs": {
+              "p50": 98.765,
+              "p95": 496.354
+            }
+          },
+          "requestsByWorker": {
+            "7880": 706,
+            "10944": 702,
+            "14852": 713,
+            "17856": 708
+          },
+          "peakPostgresCpuPercent": 147.58,
+          "memorySamples": [
+            "1.172GiB / 7.717GiB",
+            "1.175GiB / 7.717GiB",
+            "1.175GiB / 7.717GiB",
+            "1.181GiB / 7.717GiB",
+            "1.178GiB / 7.717GiB",
+            "1.139GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "candidate-profile": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/candidate-profile.json",
+      "sha256": "62a755d1db566a23c976d595e532762778f7cc40f40170304c9acb617f19a486",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-candidate-profile.json.gz",
+      "gzipSha256": "3608a6004dfd48e857d876ac2a68d0e2f611e5cf077bdd04acc5ca17c2499f6b"
+    },
+    "summary": {
+      "commit": "dd42df17eb0bbb1a5af93a63a2c0b2446da36ce6",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": true,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 3293,
+          "seconds": 10.162489999998797,
+          "rps": 324.03475919783335,
+          "p50": 94.0654000005452,
+          "p95": 459.4677999994019,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 20,
+            "blks_hit": 726355,
+            "xact_commit": 3151,
+            "tup_returned": 25316808
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "82de480a16c5c72aea3236aaa2bd6f642de0b1aeb4a6a3b45e7ca476d747194d",
+          "warmupTransportErrors": 0,
+          "profile": {
+            "sqlMs": {
+              "p50": 17.635,
+              "p95": 72.808
+            },
+            "sqlCalls": {
+              "p50": 2,
+              "p95": 2
+            },
+            "checkoutMs": {
+              "p50": 3.71,
+              "p95": 173.111
+            },
+            "poolQueueMs": {
+              "p50": 0.006,
+              "p95": 160.117
+            },
+            "dtoMs": {
+              "p50": 0.173,
+              "p95": 0.258
+            },
+            "serializeMs": {
+              "p50": 5.48,
+              "p95": 40.787
+            },
+            "endpointMs": {
+              "p50": 24.987,
+              "p95": 86.011
+            },
+            "appMs": {
+              "p50": 79.923,
+              "p95": 428.277
+            }
+          },
+          "requestsByWorker": {
+            "672": 789,
+            "1848": 807,
+            "10912": 818,
+            "19716": 879
+          },
+          "peakPostgresCpuPercent": 200.02,
+          "memorySamples": [
+            "1.267GiB / 7.717GiB",
+            "1.259GiB / 7.717GiB",
+            "1.273GiB / 7.717GiB",
+            "1.27GiB / 7.717GiB",
+            "1.267GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 3841,
+          "seconds": 19.495558999999048,
+          "rps": 197.01922884079332,
+          "p50": 78.52379999894765,
+          "p95": 375.025999997888,
+          "failures": 32,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 36756,
+            "blks_hit": 666715,
+            "xact_commit": 3977,
+            "tup_returned": 2138394
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "efa3518dd7e70cf360fce9c2d893e3f897cb049482b5ffc7e6206a4affd57607",
+          "warmupTransportErrors": 0,
+          "profile": {
+            "sqlMs": {
+              "p50": 11.932,
+              "p95": 37.195
+            },
+            "sqlCalls": {
+              "p50": 1,
+              "p95": 1
+            },
+            "checkoutMs": {
+              "p50": 3.248,
+              "p95": 136.115
+            },
+            "poolQueueMs": {
+              "p50": 0.006,
+              "p95": 125.536
+            },
+            "dtoMs": {
+              "p50": 0.138,
+              "p95": 0.217
+            },
+            "serializeMs": {
+              "p50": 4.695,
+              "p95": 34.025
+            },
+            "endpointMs": {
+              "p50": 17.351,
+              "p95": 44.339
+            },
+            "appMs": {
+              "p50": 64.557,
+              "p95": 346.567
+            }
+          },
+          "requestsByWorker": {
+            "672": 973,
+            "1848": 911,
+            "10912": 952,
+            "19716": 1005
+          },
+          "peakPostgresCpuPercent": 177.47,
+          "memorySamples": [
+            "1.269GiB / 7.717GiB",
+            "1.268GiB / 7.717GiB",
+            "1.267GiB / 7.717GiB",
+            "1.262GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 3487,
+          "seconds": 11.126662699996814,
+          "rps": 313.3913639712471,
+          "p50": 133.46829999863985,
+          "p95": 242.82440000024508,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1091270,
+            "xact_commit": 3340,
+            "tup_returned": 16133334
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "c0e726a2ea72ec24ccbc6ea1188e08ecaf349dea702e4ee65923a6e1f31d9c93",
+          "warmupTransportErrors": 0,
+          "profile": {
+            "sqlMs": {
+              "p50": 29.671,
+              "p95": 70.596
+            },
+            "sqlCalls": {
+              "p50": 2,
+              "p95": 2
+            },
+            "checkoutMs": {
+              "p50": 5.745,
+              "p95": 20.173
+            },
+            "poolQueueMs": {
+              "p50": 0.006,
+              "p95": 0.009
+            },
+            "dtoMs": {
+              "p50": 0.194,
+              "p95": 0.284
+            },
+            "serializeMs": {
+              "p50": 10.988,
+              "p95": 33.267
+            },
+            "endpointMs": {
+              "p50": 36.928,
+              "p95": 83.478
+            },
+            "appMs": {
+              "p50": 116.51,
+              "p95": 218.854
+            }
+          },
+          "requestsByWorker": {
+            "672": 873,
+            "1848": 872,
+            "10912": 866,
+            "19716": 876
+          },
+          "peakPostgresCpuPercent": 367.1,
+          "memorySamples": [
+            "1.301GiB / 7.717GiB",
+            "1.302GiB / 7.717GiB",
+            "1.251GiB / 7.717GiB",
+            "1.306GiB / 7.717GiB",
+            "1.311GiB / 7.717GiB",
+            "1.245GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "search-baseline-10": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/search-baseline-10.json",
+      "sha256": "13e2d60364db9126acf428e45140521d5fcd0f29291ef2b6d911730f8d296e0a",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-search-baseline-10.json.gz",
+      "gzipSha256": "3d4a19be01a12a4752be647d1b1abe123af545467e6f5adf46a1ff875ac18c96"
+    },
+    "summary": {
+      "batchDocuments": 10,
+      "postgresVersion": "17.11",
+      "count": 64500,
+      "trigramIndexBytes": 50126848,
+      "trigramBuildSeconds": 8.097724799998105,
+      "variants": {
+        "strpos": {
+          "p50": 28.12380000250414,
+          "p95": 37.41209999861894,
+          "plan": {
+            "executionMs": 31.388,
+            "sharedBlocks": 11441,
+            "nodes": [
+              "Aggregate",
+              "Gather",
+              "Aggregate",
+              "Seq Scan"
+            ]
+          },
+          "writes": {
+            "incremental": {
+              "p50": 60.79909999971278,
+              "p95": 319.40530000065337
+            },
+            "rolledBackBatch": [
+              {
+                "ms": 3537.790700000187,
+                "timedOut": false
+              },
+              {
+                "ms": 3452.8676999980235,
+                "timedOut": false
+              },
+              {
+                "ms": 5146.655199998349,
+                "timedOut": false
+              }
+            ],
+            "concurrentWriters": [
+              [
+                2065.716799999791,
+                1897.759399998904
+              ],
+              [
+                633.242899999459,
+                298.1733000015083
+              ]
+            ]
+          }
+        },
+        "trigram": {
+          "p50": 63.27509999755421,
+          "p95": 78.09339999948861,
+          "plan": {
+            "executionMs": 30.632,
+            "sharedBlocks": 11404,
+            "nodes": [
+              "Aggregate",
+              "Gather",
+              "Aggregate",
+              "Seq Scan"
+            ]
+          },
+          "writes": {
+            "incremental": {
+              "p50": 110.86620000060066,
+              "p95": 223.28050000214716
+            },
+            "rolledBackBatch": [
+              {
+                "ms": 9129.345499997726,
+                "timedOut": false
+              },
+              {
+                "ms": 3532.4825000025157,
+                "timedOut": false
+              },
+              {
+                "ms": 3400.1087000033294,
+                "timedOut": false
+              }
+            ],
+            "concurrentWriters": [
+              [
+                448.086799999146,
+                521.079699999973
+              ],
+              [
+                118.24519999936456,
+                205.76960000107647
+              ]
+            ]
+          }
+        }
+      },
+      "forcedTrigramPlan": {
+        "executionMs": 79.426,
+        "sharedBlocks": 1646,
+        "nodes": [
+          "Aggregate",
+          "Bitmap Heap Scan",
+          "bench_catalog_trgm"
+        ]
+      }
+    }
+  },
+  "search-counter": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/search-counter.json",
+      "sha256": "a8864fdcc1196abb30df1dffe6dc853fffbd6611de6f8eaa104e69b43345df5e",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-search-counter.json.gz",
+      "gzipSha256": "d6169cf97451520fb51de59c7c979eb8f613a7bf17413df312e1ed4dfdcf518b"
+    },
+    "summary": {
+      "batchDocuments": 10,
+      "postgresVersion": "17.11",
+      "count": 64500,
+      "variants": {
+        "counter": {
+          "p50": 0.7111000013537705,
+          "p95": 0.7624999998370185,
+          "plan": {
+            "executionMs": 0.176,
+            "sharedBlocks": 70,
+            "nodes": [
+              "Aggregate",
+              "Bitmap Heap Scan",
+              "program_catalog_read_code_totals_pkey"
+            ]
+          },
+          "writes": {
+            "incremental": {
+              "p50": 73.5917000019981,
+              "p95": 431.35780000011437
+            },
+            "rolledBackBatch": [
+              {
+                "ms": 3432.6989999972284,
+                "timedOut": false
+              },
+              {
+                "ms": 3483.54819999804,
+                "timedOut": false
+              },
+              {
+                "ms": 3439.1162000029,
+                "timedOut": false
+              }
+            ],
+            "concurrentWriters": [
+              [
+                187.65239999993355,
+                74.97420000072452
+              ],
+              [
+                155.15699999741628,
+                87.8502000014123
+              ]
+            ]
+          }
+        }
+      }
+    }
+  },
+  "paired-write": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/paired-write.json",
+      "sha256": "ff052a0f58b06e2a6575b18c190d9e45f7e1870775b6e163f1481233ee10367a",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-paired-write.json.gz",
+      "gzipSha256": "7f680fccd5bcd88bc94b0d8328d108e3e13ee2e49eaa195d434d7bbb3d774e71"
+    },
+    "summary": {
+      "counterViaRollback": true,
+      "expectedCount": 64500,
+      "relationBytes": 1155072,
+      "one": {
+        "True": [
+          95.12779999931809,
+          68.54300000122748,
+          71.28440000087721,
+          69.89339999927324,
+          67.97079999887501,
+          61.18179999975837,
+          62.963599997601705,
+          342.8265000002284,
+          64.62729999839212,
+          64.73710000136634,
+          64.44199999896227,
+          63.449999997828854
+        ],
+        "False": [
+          61.796900001354516,
+          61.35999999969499,
+          69.56549999813433,
+          60.127600001578685,
+          53.84100000082981,
+          53.858899998886045,
+          52.87799999859999,
+          52.743399999599205,
+          59.69769999865093,
+          55.3211000005831,
+          59.34790000173962,
+          57.086599998001475
+        ]
+      },
+      "batch": {
+        "True": [
+          3737.3392000008607,
+          3638.819899999362,
+          3601.718999998411
+        ],
+        "False": [
+          3582.9011000023456,
+          3622.650999997859,
+          3167.160299999523
+        ]
+      }
+    }
+  },
+  "session-windows": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/session-windows.json",
+      "sha256": "74a380a10cede487b9aade734d4f0483730372197a2ccf853f1c2b480c7d42ba",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-session-windows.json.gz",
+      "gzipSha256": "26b28d9fed2a2f3ee460a810bdf060e22521140d877a73cc4642b545da0825dd"
+    },
+    "summary": {
+      "commit": "1b2aff3f5e860a9d6a16ece702689842261b22e4",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "win32",
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 5556,
+          "seconds": 11.207431599999836,
+          "rps": 495.74248572706716,
+          "p50": 78.18730000144569,
+          "p95": 171.00989999744343,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1080718,
+            "xact_commit": 5284,
+            "tup_returned": 21447739
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 369.56,
+          "memorySamples": [
+            "1.192GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.169GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 6459,
+          "seconds": 11.54398420000507,
+          "rps": 559.5122003023153,
+          "p50": 61.85430000186898,
+          "p95": 149.41260000341572,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 36440,
+            "blks_hit": 1019324,
+            "xact_commit": 6353,
+            "tup_returned": 1950609
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 222.45,
+          "memorySamples": [
+            "1.196GiB / 7.717GiB",
+            "1.196GiB / 7.717GiB",
+            "1.196GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 5763,
+          "seconds": 11.217556600000535,
+          "rps": 513.7482435345792,
+          "p50": 77.11379999818746,
+          "p95": 152.60999999736669,
+          "failures": 1,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 1,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1640546,
+            "xact_commit": 5605,
+            "tup_returned": 25501429
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 318.55,
+          "memorySamples": [
+            "1.21GiB / 7.717GiB",
+            "1.21GiB / 7.717GiB",
+            "1.213GiB / 7.717GiB",
+            "1.21GiB / 7.717GiB",
+            "1.21GiB / 7.717GiB",
+            "1.209GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 3632,
+          "seconds": 11.17643169999792,
+          "rps": 324.9695517756956,
+          "p50": 126.03990000206977,
+          "p95": 273.39860000211047,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1311922,
+            "xact_commit": 3781,
+            "tup_returned": 16017993
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 345.56,
+          "memorySamples": [
+            "1.242GiB / 7.717GiB",
+            "1.236GiB / 7.717GiB",
+            "1.232GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.228GiB / 7.717GiB",
+            "1.206GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 3042,
+          "seconds": 11.221145200004685,
+          "rps": 271.0953245662243,
+          "p50": 150.55439999923692,
+          "p95": 317.3696000012569,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 6465286,
+            "xact_commit": 3079,
+            "tup_returned": 157895230
+          },
+          "resourcePolicy": "Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.",
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 765.6,
+          "memorySamples": [
+            "1.224GiB / 7.717GiB",
+            "1.23GiB / 7.717GiB",
+            "1.237GiB / 7.717GiB",
+            "1.227GiB / 7.717GiB",
+            "1.231GiB / 7.717GiB",
+            "1.209GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "node-windows": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/node-windows.json",
+      "sha256": "fa629c77ef5c46e3dae6c361db562ad678199d9f499a7496035e9212de8054f0",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-node-windows.json.gz",
+      "gzipSha256": "8828af773c6b004318f55d3d215f725d56cb9576a59f7bb24e8208d59af08001"
+    },
+    "summary": {
+      "commit": "6c7345d95ca7af436035523b0f3b882ba13d21cd",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "win32",
+      "loadClient": "node",
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 7257,
+          "seconds": 10.0479341,
+          "rps": 722.2380170666127,
+          "p50": 63.076500000000124,
+          "p95": 136.7570999999998,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 2223251,
+            "xact_commit": 7008,
+            "tup_returned": 28948225
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 875.21,
+          "memorySamples": [
+            "1.25GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.232GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.219GiB / 7.717GiB",
+            "1.201GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 10146,
+          "seconds": 10.052102399999999,
+          "rps": 1009.3410906757179,
+          "p50": 44.38189999999986,
+          "p95": 94.52970000000096,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 35800,
+            "blks_hit": 2385150,
+            "xact_commit": 9900,
+            "tup_returned": 2337086
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 751.29,
+          "memorySamples": [
+            "1.223GiB / 7.717GiB",
+            "1.221GiB / 7.717GiB",
+            "1.223GiB / 7.717GiB",
+            "1.227GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.205GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 7453,
+          "seconds": 10.052967800000001,
+          "rps": 741.3731097397924,
+          "p50": 60.86029999999937,
+          "p95": 142.76639999999952,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 2994594,
+            "xact_commit": 7544,
+            "tup_returned": 35206878
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 893.87,
+          "memorySamples": [
+            "1.234GiB / 7.717GiB",
+            "1.248GiB / 7.717GiB",
+            "1.246GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 3696,
+          "seconds": 10.1066014,
+          "rps": 365.7015700648885,
+          "p50": 109.43230000000005,
+          "p95": 282.9859,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1200996,
+            "xact_commit": 3801,
+            "tup_returned": 15952268
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 316.05,
+          "memorySamples": [
+            "1.23GiB / 7.717GiB",
+            "1.24GiB / 7.717GiB",
+            "1.232GiB / 7.717GiB",
+            "1.235GiB / 7.717GiB",
+            "1.227GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 2719,
+          "seconds": 10.1818145,
+          "rps": 267.0447394224281,
+          "p50": 147.76499999999942,
+          "p95": 270.60939999999937,
+          "failures": 8,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 8,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 5885810,
+            "xact_commit": 2687,
+            "tup_returned": 142100070
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 543.17,
+          "memorySamples": [
+            "1.243GiB / 7.717GiB",
+            "1.239GiB / 7.717GiB",
+            "1.243GiB / 7.717GiB",
+            "1.241GiB / 7.717GiB",
+            "1.241GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "node-windows-repeat": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/node-windows-repeat.json",
+      "sha256": "581d36a407e6c450e86997ecc993093c57a4f8a9de2929deeba3aaf106b966f2",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-node-windows-repeat.json.gz",
+      "gzipSha256": "0a23c4747e25c67e222be1d2da0981cfe10fd6d5f077d980313b1ba58750c78a"
+    },
+    "summary": {
+      "commit": "664ab1f4691fbd5c3323cc1270fc5fdb37fba3e3",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "win32",
+      "loadClient": "node",
+      "warmConcurrency": false,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 4987,
+          "seconds": 10.0727343,
+          "rps": 495.098932570871,
+          "p50": 85.17510000000038,
+          "p95": 215.22630000000026,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 35608,
+            "blks_hit": 2131308,
+            "xact_commit": 8294,
+            "tup_returned": 32173644
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 1155.81,
+          "memorySamples": [
+            "1.322GiB / 7.717GiB",
+            "1.355GiB / 7.717GiB",
+            "1.347GiB / 7.717GiB",
+            "1.312GiB / 7.717GiB",
+            "1.344GiB / 7.717GiB",
+            "1.281GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 8040,
+          "seconds": 10.0521771,
+          "rps": 799.8267360410911,
+          "p50": 53.30424999999968,
+          "p95": 133.95110000000022,
+          "failures": 10,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 465441012,
+            "temp_files": 48,
+            "blks_read": 71120,
+            "blks_hit": 2360577,
+            "xact_commit": 11119,
+            "tup_returned": 2895748
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 877.63,
+          "memorySamples": [
+            "1.342GiB / 7.717GiB",
+            "1.338GiB / 7.717GiB",
+            "1.352GiB / 7.717GiB",
+            "1.341GiB / 7.717GiB",
+            "1.325GiB / 7.717GiB",
+            "1.339GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 4011,
+          "seconds": 10.342699399999999,
+          "rps": 387.80978203813993,
+          "p50": 57.19950000000017,
+          "p95": 128.26500000000124,
+          "failures": 26,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 25,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 2864137,
+            "xact_commit": 7991,
+            "tup_returned": 37429720
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 975.68,
+          "memorySamples": [
+            "1.352GiB / 7.717GiB",
+            "1.341GiB / 7.717GiB",
+            "1.336GiB / 7.717GiB",
+            "1.341GiB / 7.717GiB",
+            "1.343GiB / 7.717GiB",
+            "1.423GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 2647,
+          "seconds": 10.227864599999998,
+          "rps": 258.8028003421164,
+          "p50": 139.34210000000007,
+          "p95": 445.14520000000016,
+          "failures": 88,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1431434,
+            "xact_commit": 5292,
+            "tup_returned": 21839968
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 665.21,
+          "memorySamples": [
+            "1.349GiB / 7.717GiB",
+            "1.362GiB / 7.717GiB",
+            "1.372GiB / 7.717GiB",
+            "1.374GiB / 7.717GiB",
+            "1.369GiB / 7.717GiB",
+            "1.349GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 1673,
+          "seconds": 10.4153584,
+          "rps": 160.62817387061781,
+          "p50": 168.49860000000012,
+          "p95": 527.9567,
+          "failures": 133,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 15,
+          "postgresStatsDelta": {
+            "temp_bytes": 423483604,
+            "temp_files": 48,
+            "blks_read": 35384,
+            "blks_hit": 7587353,
+            "xact_commit": 3631,
+            "tup_returned": 188744208
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 1147.66,
+          "memorySamples": [
+            "1.375GiB / 7.717GiB",
+            "1.356GiB / 7.717GiB",
+            "1.379GiB / 7.717GiB",
+            "1.378GiB / 7.717GiB",
+            "1.378GiB / 7.717GiB",
+            "1.359GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "in-linux-1": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/in-linux-1.json",
+      "sha256": "0f9b6c3421c319f238e3f4534f06e42cce880fdea47c8f28fb8252ed0d60f435",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-in-linux-1.json.gz",
+      "gzipSha256": "9c8233751a9c6363c9eaf1f6d833616eb2ab63dae09785aa4f6ce8649d038f05"
+    },
+    "summary": {
+      "commit": "bada1cfd67e16aeb5f2770415a3e0c46101425e5",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "linux-docker",
+      "loadClient": "node",
+      "warmConcurrency": false,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "servingImage": "sha256:740ea619f2a37a2d3045ff6b0afe7ea75bf62bc57d95cb17e467afc19f9791d4",
+      "clientImage": "sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5",
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 3905,
+          "seconds": 10.079299564,
+          "rps": 387.427715111018,
+          "p50": 133.59041100000013,
+          "p95": 197.6419890000002,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1063502,
+            "xact_commit": 3795,
+            "tup_returned": 15571935
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 238.32,
+          "memorySamples": [
+            "1.205GiB / 7.717GiB",
+            "1.191GiB / 7.717GiB",
+            "1.184GiB / 7.717GiB",
+            "1.188GiB / 7.717GiB",
+            "1.191GiB / 7.717GiB",
+            "1.162GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 5286,
+          "seconds": 10.082674589999998,
+          "rps": 524.2656551906036,
+          "p50": 102.23148349999992,
+          "p95": 169.5245020000002,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 35160,
+            "blks_hit": 1316929,
+            "xact_commit": 5290,
+            "tup_returned": 1552504
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 266.55,
+          "memorySamples": [
+            "1.171GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.172GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.159GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 4032,
+          "seconds": 10.103332347,
+          "rps": 399.0762514307696,
+          "p50": 130.8384275000003,
+          "p95": 196.205148,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1710022,
+            "xact_commit": 3936,
+            "tup_returned": 19170666
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 238.39,
+          "memorySamples": [
+            "1.188GiB / 7.717GiB",
+            "1.195GiB / 7.717GiB",
+            "1.186GiB / 7.717GiB",
+            "1.198GiB / 7.717GiB",
+            "1.186GiB / 7.717GiB",
+            "1.164GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 1856,
+          "seconds": 10.207805251,
+          "rps": 181.8216506254543,
+          "p50": 277.2669804999996,
+          "p95": 415.43742999999995,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 540932,
+            "xact_commit": 1905,
+            "tup_returned": 7910890
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 92.65,
+          "memorySamples": [
+            "1.215GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.209GiB / 7.717GiB",
+            "1.162GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 1714,
+          "seconds": 10.226718541,
+          "rps": 167.60019287989516,
+          "p50": 289.3144875,
+          "p95": 410.511801,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 3713768,
+            "xact_commit": 1709,
+            "tup_returned": 91966600
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 214.29,
+          "memorySamples": [
+            "1.215GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.164GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "in-linux-2": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/in-linux-2.json",
+      "sha256": "f9700e6932b71f9568eb3a026344ac09ceba4920c2b6a50d7fc2ad3e1ea385ec",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-in-linux-2.json.gz",
+      "gzipSha256": "66dfcebdf80be1734f312092500d1f64f4e2a112d6334ac10f9939d9b5ad45ae"
+    },
+    "summary": {
+      "commit": "bada1cfd67e16aeb5f2770415a3e0c46101425e5",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "linux-docker",
+      "loadClient": "node",
+      "warmConcurrency": false,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "servingImage": "sha256:740ea619f2a37a2d3045ff6b0afe7ea75bf62bc57d95cb17e467afc19f9791d4",
+      "clientImage": "sha256:116b800c3754b440ee0aa3ed2f20f5bf3d99a554bfd9adeea09ea8017f6e85f5",
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 4031,
+          "seconds": 10.102249057,
+          "rps": 399.02005753925255,
+          "p50": 132.803672,
+          "p95": 211.33003100000133,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1217210,
+            "xact_commit": 3952,
+            "tup_returned": 16304810
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 248.91,
+          "memorySamples": [
+            "1.178GiB / 7.717GiB",
+            "1.188GiB / 7.717GiB",
+            "1.189GiB / 7.717GiB",
+            "1.182GiB / 7.717GiB",
+            "1.181GiB / 7.717GiB",
+            "1.161GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 5350,
+          "seconds": 10.086265185,
+          "rps": 530.4242850918063,
+          "p50": 101.82215150000002,
+          "p95": 167.0891419999998,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 35000,
+            "blks_hit": 1222631,
+            "xact_commit": 5262,
+            "tup_returned": 1430901
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 224.14,
+          "memorySamples": [
+            "1.168GiB / 7.717GiB",
+            "1.171GiB / 7.717GiB",
+            "1.174GiB / 7.717GiB",
+            "1.17GiB / 7.717GiB",
+            "1.172GiB / 7.717GiB",
+            "1.158GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 4012,
+          "seconds": 10.128122745,
+          "rps": 396.1247410810284,
+          "p50": 134.07971599999973,
+          "p95": 208.71052600000002,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1667072,
+            "xact_commit": 3985,
+            "tup_returned": 19194778
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 245.36,
+          "memorySamples": [
+            "1.2GiB / 7.717GiB",
+            "1.192GiB / 7.717GiB",
+            "1.187GiB / 7.717GiB",
+            "1.196GiB / 7.717GiB",
+            "1.189GiB / 7.717GiB",
+            "1.162GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 1843,
+          "seconds": 10.152735,
+          "rps": 181.52744063545438,
+          "p50": 265.33089499999915,
+          "p95": 368.2063440000002,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 548100,
+            "xact_commit": 1874,
+            "tup_returned": 7809925
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 93.86,
+          "memorySamples": [
+            "1.216GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.21GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.161GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 1662,
+          "seconds": 10.170065003,
+          "rps": 163.42078438139163,
+          "p50": 305.1443314999997,
+          "p95": 457.43812400000024,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 3624652,
+            "xact_commit": 1659,
+            "tup_returned": 88773035
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 219.25,
+          "memorySamples": [
+            "1.209GiB / 7.717GiB",
+            "1.21GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.165GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "final-warm-node": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/final-warm-node.json",
+      "sha256": "4f4c798d0c01915b0e8eb95971669fc4948f351693bbf3ae3eeb17007e5104a2",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-final-warm-node.json.gz",
+      "gzipSha256": "0538c80e61a091c21cd4124ee0ad1a2d40586c782a373e9ab3c869fd0a9f9c03"
+    },
+    "summary": {
+      "commit": "7e00bf30ae6bfc64a740f4b995f29420a4ca1aee",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "win32",
+      "loadClient": "node",
+      "warmConcurrency": true,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 7624,
+          "seconds": 10.064386899999999,
+          "rps": 757.5225471508852,
+          "p50": 56.85344999999961,
+          "p95": 142.70809999999983,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 2601523,
+            "xact_commit": 8531,
+            "tup_returned": 35227053
+          },
+          "concurrentWarmup": {
+            "requests": 1313,
+            "failures": 0,
+            "totals": [
+              175002
+            ],
+            "transportFailures": 0
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 874.29,
+          "memorySamples": [
+            "1.233GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.229GiB / 7.717GiB",
+            "1.242GiB / 7.717GiB",
+            "1.218GiB / 7.717GiB",
+            "1.225GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 10620,
+          "seconds": 10.047455,
+          "rps": 1056.9840820386855,
+          "p50": 21.340949999999793,
+          "p95": 137.07819999999992,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 34840,
+            "blks_hit": 2259730,
+            "xact_commit": 11573,
+            "tup_returned": 3204358
+          },
+          "concurrentWarmup": {
+            "requests": 1018,
+            "failures": 42,
+            "totals": [
+              100
+            ],
+            "transportFailures": 42
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 569.86,
+          "memorySamples": [
+            "1.204GiB / 7.717GiB",
+            "1.204GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.203GiB / 7.717GiB",
+            "1.219GiB / 7.717GiB",
+            "1.225GiB / 7.717GiB",
+            "1.218GiB / 7.717GiB",
+            "1.222GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.212GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 7321,
+          "seconds": 10.059482599999999,
+          "rps": 727.7710287008201,
+          "p50": 57.407100000000355,
+          "p95": 156.1828999999998,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 3562150,
+            "xact_commit": 8645,
+            "tup_returned": 40742609
+          },
+          "concurrentWarmup": {
+            "requests": 1344,
+            "failures": 15,
+            "totals": [
+              64500
+            ],
+            "transportFailures": 15
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 895.0,
+          "memorySamples": [
+            "1.231GiB / 7.717GiB",
+            "1.213GiB / 7.717GiB",
+            "1.212GiB / 7.717GiB",
+            "1.212GiB / 7.717GiB",
+            "1.212GiB / 7.717GiB",
+            "1.252GiB / 7.717GiB",
+            "1.231GiB / 7.717GiB",
+            "1.244GiB / 7.717GiB",
+            "1.231GiB / 7.717GiB",
+            "1.242GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 3626,
+          "seconds": 10.1649784,
+          "rps": 356.71497344254067,
+          "p50": 126.86879999999974,
+          "p95": 316.4430000000002,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1726614,
+            "xact_commit": 4559,
+            "tup_returned": 19285101
+          },
+          "concurrentWarmup": {
+            "requests": 774,
+            "failures": 0,
+            "totals": [
+              100000
+            ],
+            "transportFailures": 0
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 367.51,
+          "memorySamples": [
+            "1.249GiB / 7.717GiB",
+            "1.254GiB / 7.717GiB",
+            "1.232GiB / 7.717GiB",
+            "1.243GiB / 7.717GiB",
+            "1.245GiB / 7.717GiB",
+            "1.25GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 3085,
+          "seconds": 10.0769293,
+          "rps": 306.14484910596724,
+          "p50": 146.95780000000013,
+          "p95": 289.3732999999993,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 7855222,
+            "xact_commit": 3718,
+            "tup_returned": 193351812
+          },
+          "concurrentWarmup": {
+            "requests": 578,
+            "failures": 10,
+            "totals": [
+              100000
+            ],
+            "transportFailures": 10
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 661.93,
+          "memorySamples": [
+            "1.235GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.244GiB / 7.717GiB",
+            "1.242GiB / 7.717GiB",
+            "1.238GiB / 7.717GiB",
+            "1.243GiB / 7.717GiB",
+            "1.236GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  },
+  "final-warm-node-repeat": {
+    "artifact": {
+      "originalPath": "test-results/kan218-p95/final-warm-node-repeat.json",
+      "sha256": "e9431f9337117335512665b83284e8d3fb2ccbfb7ca06a93295e1dffec5edcf3",
+      "gzipPath": "docs/evidence/kan-218-pr4-p95-final-warm-node-repeat.json.gz",
+      "gzipSha256": "2cda71bc18b7aa958fa324f81a17393a80a05f32c0152ef4c54dd7b24198ed95"
+    },
+    "summary": {
+      "commit": "7e00bf30ae6bfc64a740f4b995f29420a4ca1aee",
+      "dirty": false,
+      "fixture": {
+        "synthetic": true,
+        "heads": 785,
+        "branches": 215,
+        "years": [
+          2024,
+          2025,
+          2026,
+          2027
+        ],
+        "targetYear": 2027,
+        "targetYearPrograms": 100000,
+        "historicalCampaignPrograms": 75000,
+        "currentPrograms": 175000,
+        "previousFactVersions": 350000,
+        "currentDocuments": 4000,
+        "newCompetitionGroups": 0,
+        "sampleUniversity": "miccedu-1"
+      },
+      "workers": 4,
+      "concurrency": 50,
+      "instrumented": false,
+      "servingRuntime": "win32",
+      "loadClient": "node",
+      "warmConcurrency": true,
+      "postgresVersion": "17.11",
+      "postgresSettings": {
+        "work_mem": "4MB",
+        "shared_buffers": "128MB",
+        "max_parallel_workers_per_gather": "2",
+        "max_connections": "100",
+        "hash_mem_multiplier": "2",
+        "track_io_timing": "off"
+      },
+      "cases": {
+        "first": {
+          "concurrency": 50,
+          "requests": 7778,
+          "seconds": 10.047376,
+          "rps": 774.1324700100803,
+          "p50": 51.196500000000015,
+          "p95": 137.35959999999977,
+          "failures": 0,
+          "totals": [
+            175002
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 2487620,
+            "xact_commit": 8706,
+            "tup_returned": 35830828
+          },
+          "concurrentWarmup": {
+            "requests": 1227,
+            "failures": 15,
+            "totals": [
+              175002
+            ],
+            "transportFailures": 15
+          },
+          "responseSha256": "4a9216c80c7bb957c41bda8dcdfee62990dcaa7cb40e8a4ce5780b33fe6ea657",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 900.18,
+          "memorySamples": [
+            "1.192GiB / 7.717GiB",
+            "1.174GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.173GiB / 7.717GiB",
+            "1.226GiB / 7.717GiB",
+            "1.233GiB / 7.717GiB",
+            "1.231GiB / 7.717GiB",
+            "1.241GiB / 7.717GiB",
+            "1.224GiB / 7.717GiB",
+            "1.207GiB / 7.717GiB"
+          ]
+        },
+        "university": {
+          "concurrency": 50,
+          "requests": 10116,
+          "seconds": 10.044893799999999,
+          "rps": 1007.0788403955054,
+          "p50": 40.99070000000029,
+          "p95": 109.40500000000065,
+          "failures": 0,
+          "totals": [
+            100
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 69690100,
+            "temp_files": 1,
+            "blks_read": 34680,
+            "blks_hit": 2890545,
+            "xact_commit": 11579,
+            "tup_returned": 3096897
+          },
+          "concurrentWarmup": {
+            "requests": 1592,
+            "failures": 27,
+            "totals": [
+              100
+            ],
+            "transportFailures": 27
+          },
+          "responseSha256": "c0d4d940c7d8194aa007e0c28280db51b3c431f1cd57b1e0be66bd74b50f2958",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 750.12,
+          "memorySamples": [
+            "1.215GiB / 7.717GiB",
+            "1.206GiB / 7.717GiB",
+            "1.206GiB / 7.717GiB",
+            "1.206GiB / 7.717GiB",
+            "1.206GiB / 7.717GiB",
+            "1.213GiB / 7.717GiB",
+            "1.22GiB / 7.717GiB",
+            "1.217GiB / 7.717GiB",
+            "1.229GiB / 7.717GiB",
+            "1.223GiB / 7.717GiB",
+            "1.208GiB / 7.717GiB"
+          ]
+        },
+        "code": {
+          "concurrency": 50,
+          "requests": 6730,
+          "seconds": 10.0678236,
+          "rps": 668.4662214383652,
+          "p50": 69.45629999999983,
+          "p95": 149.63930000000255,
+          "failures": 0,
+          "totals": [
+            64500
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 3700829,
+            "xact_commit": 7967,
+            "tup_returned": 37577656
+          },
+          "concurrentWarmup": {
+            "requests": 1129,
+            "failures": 26,
+            "totals": [
+              64500
+            ],
+            "transportFailures": 26
+          },
+          "responseSha256": "949480bf70e76a76f280a5169e11e1844852b963f792275b31d737d07c343b60",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 926.58,
+          "memorySamples": [
+            "1.236GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB",
+            "1.255GiB / 7.717GiB",
+            "1.246GiB / 7.717GiB",
+            "1.241GiB / 7.717GiB",
+            "1.246GiB / 7.717GiB",
+            "1.258GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB"
+          ]
+        },
+        "deep": {
+          "concurrency": 50,
+          "requests": 3711,
+          "seconds": 10.2099633,
+          "rps": 363.46849552338745,
+          "p50": 106.5635999999995,
+          "p95": 338.33020000000033,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 1614312,
+            "xact_commit": 4479,
+            "tup_returned": 18841297
+          },
+          "concurrentWarmup": {
+            "requests": 758,
+            "failures": 0,
+            "totals": [
+              100000
+            ],
+            "transportFailures": 0
+          },
+          "responseSha256": "5799132135729f6e0b673446807a39153143b13c933d0f3195cb43d4f282ae55",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 336.09,
+          "memorySamples": [
+            "1.241GiB / 7.717GiB",
+            "1.243GiB / 7.717GiB",
+            "1.232GiB / 7.717GiB",
+            "1.235GiB / 7.717GiB",
+            "1.226GiB / 7.717GiB",
+            "1.25GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB"
+          ]
+        },
+        "middle": {
+          "concurrency": 50,
+          "requests": 3112,
+          "seconds": 10.1098485,
+          "rps": 307.81865821233623,
+          "p50": 148.04569999999967,
+          "p95": 292.1137999999992,
+          "failures": 0,
+          "totals": [
+            100000
+          ],
+          "transportFailures": 0,
+          "postgresStatsDelta": {
+            "temp_bytes": 0,
+            "temp_files": 0,
+            "blks_read": 0,
+            "blks_hit": 7812916,
+            "xact_commit": 3674,
+            "tup_returned": 192099117
+          },
+          "concurrentWarmup": {
+            "requests": 567,
+            "failures": 13,
+            "totals": [
+              100000
+            ],
+            "transportFailures": 13
+          },
+          "responseSha256": "e3a39d29ce06eb9d9af19a5c90a918eb772bb208cc4293e6ad8b985c54820580",
+          "warmupTransportErrors": 0,
+          "peakPostgresCpuPercent": 689.03,
+          "memorySamples": [
+            "1.236GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.215GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB",
+            "1.214GiB / 7.717GiB",
+            "1.236GiB / 7.717GiB",
+            "1.247GiB / 7.717GiB",
+            "1.242GiB / 7.717GiB",
+            "1.239GiB / 7.717GiB",
+            "1.239GiB / 7.717GiB",
+            "1.216GiB / 7.717GiB"
+          ]
+        }
+      }
+    }
+  }
+}
