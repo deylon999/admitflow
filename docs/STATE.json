@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
   "updatedAt": "2026-11-22",
-  "currentTask": "T319",
+  "currentTask": null,
   "nextTask": null,
   "cycleStartDate": "2026-11-01",
   "targetDays": 30,
   "completedGates": [],
   "lastSession": "S239",
-  "resumeAction": "Review separate feat/kan-218-read-model after the full backend chain reaches main. PR43 stays draft during separate preparation. Measured cc86e58 passes Linux CI and meets all read targets at 10 simultaneous requests with 4 workers. At 50, first page, university filter and frequent code exceed their targets. See KAN-218-PR4-RESULTS.md for alternatives, scale evidence and migration cost. T319 remains in progress pending integration and owner review.",
+  "resumeAction": "T319 is ready for owner review in PR #44. Two clean Windows runs at 50 simultaneous HTTP requests met all p95 targets on 7e00bf3; see KAN-218-PR4-P95.md for Linux limits, exact-count and publication evidence. Application commit 1b2aff3 passed Linux CI. PR #44 awaits review and integration before T320.",
   "externalConstraints": [
     "HTTPS staging/production: сервер, домен, бюджет и регион не выбраны.",
     "Оператор данных, сроки хранения, основание использования источников и настоящие данные в fixtures требуют решения владельца.",

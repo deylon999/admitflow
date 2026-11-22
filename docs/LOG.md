@@ -127,3 +127,15 @@ extra source indexes, frozen candidates, frozen eligible keys and the
 transactional projection. Raw samples and plan archives retain original
 path, tested SHA and checksums. T319 remains in progress, with PR #43 draft
 and the adaptation kept on its own branch pending integration and review.
+
+
+## S239 / T319 — 2026-11-22 — repeated 50-request load verification
+
+Two warmed 7e00bf3 Windows runs used four Uvicorn workers and the same PG17.11 settings.
+63,723 requests, no failures. Both runs meet p95 targets including OFFSET 50,000
+and 99,988. Report preserves initial stalls, failed alternatives and different
+Linux p95. Exact code count p95 37.4→0.76 ms with atomic 0016 counters, collision
+checks, rollback, and measured writer cost. Independent full JSON and official
+original replay passed. Application 1b2aff3 CI 1254 backend tests, four green jobs.
+PR #44 synced with main documentation without changing tested application code.
+T319 moves to review. No PR merge or national-coverage claim. [Report](KAN-218-PR4-P95.md).
