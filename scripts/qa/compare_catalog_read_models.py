@@ -151,6 +151,7 @@ def main():
     parser.add_argument('--shm-size',choices=['64m','1g'],default='1g')
     parser.add_argument('--load-seconds',type=int,default=10)
     parser.add_argument('--direct',action='store_true',help='Indexable separate exact queries for prepared variants')
+    parser.add_argument('--no-http',action='store_true',help='Compare expensive alternatives sequentially; no concurrent HTTP stress')
     args=parser.parse_args()
     if not set(args.variants)<={'sql','source-indexed','transactional','prepared-current','prepared-eligible'}:
         parser.error('unknown variant')
@@ -158,7 +159,7 @@ def main():
         parser.error('frozen prepared prototypes require --direct; historical consolidated trials are preserved separately')
     report=dict(experimental=True,sourceCommit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
         dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True)),
-        shmSize=args.shm_size,loadSeconds=args.load_seconds,direct=args.direct,variants={})
+        shmSize=args.shm_size,loadSeconds=args.load_seconds,direct=args.direct,http=not args.no_http,variants={})
     def save():
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
@@ -226,7 +227,9 @@ def main():
                     for name,params in cases.items():
                         print(variant+' '+name,flush=True)
                         for _ in range(10):
-                            with Session(engine) as db:facade.program_page(db,**params)
+                            with Session(engine) as db:
+                                db.execute(text('SET LOCAL statement_timeout=10000'))
+                                facade.program_page(db,**params)
                         monitor=Resources(runtime.name);thread=threading.Thread(target=monitor.run,daemon=True)
                         before=pg_stats(engine);thread.start()
                         try:result=measure(engine,params,50,10000)
@@ -235,6 +238,11 @@ def main():
                         result['matchesSourceOracle']=result.get('responseSha256')==oracle[name]
                         result['singlePostgresStatsDelta']={k:after[k]-before[k] for k in before}
                         result['singlePostgresContainerSamples']=monitor.samples
+                        # Persist successful serial evidence even if a later
+                        # overload trial must be stopped for resource pressure.
+                        report['variants'][variant][name]=result;save()
+                        if args.no_http or result.get('timedOut'):
+                            continue
                         http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
                         for _ in range(10):client.get('/api/v1/catalog/programs',params=http_params)
                         result['httpSingle']=load_test(client,http_params,1,engine,runtime,args.load_seconds)
