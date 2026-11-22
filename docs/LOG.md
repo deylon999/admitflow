@@ -1786,3 +1786,12 @@ TestClient contention from PostgreSQL load, record seed statement timings and
 50 committed100-program revision replacements before50 read samples. Captures
 every measured SELECT plan, including prepared pagination/totals. Compile/help
 checks pass; full execution follows the running architecture comparison.
+
+S239 further profiling: preceding transactional deep-page load wrote30.2GB
+temporary data. Added exact bidirectional OFFSET with bounded indexed source
+prefix before archive UNION; no DTO/order/count change. Native PostgreSQL57pass
+56.89s verifies both sort directions, duplicate titles, legacy interleaving,
+filters, partial/empty pages, existing campaign immutability and snapshots.
+The campaign identity guard already exists in0014 and is reused unchanged.
+Overloaded prepared-current trial stopped with saved500/503 logs; remaining
+alternatives use serial-only comparison to avoid repeating resource pressure.

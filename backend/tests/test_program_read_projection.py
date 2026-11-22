@@ -11,12 +11,14 @@ import pytest
 from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.orm import Session
+from app.admissions import Campaign
 
 from app.catalog import product_catalog as facade, read_projection
 from app.catalog.program_catalog_models import ProgramCatalogDocument as Document, ProgramCatalogRevision as Revision, ProgramCatalogFact as Fact, ProgramCatalogPublication as Publication, ProgramCatalogReadFact as ReadFact, ProgramCatalogReadScope as Scope, ProgramCatalogReadTotal as Total
 from app.catalog.program_catalog_import import import_document
 from app.catalog.catalog_import import import_reviewed
 from app.sources.storage import RawStore
+from app.catalog.program_catalog_review import EXTRACTORS
 from native_support import postgres_engine  # noqa: F401
 from pg_support import isolated_postgres
 from test_program_catalog_import import source, store  # noqa: F401
@@ -68,6 +70,38 @@ def test_projection_matches_source_and_is_actually_used(postgres_engine,store,mo
     assert len(values(postgres_engine))==2 and all(r[3] for r in values(postgres_engine))
     monkeypatch.setattr(facade,'source_program_page',lambda *a,**kw:pytest.fail('unexpected slow fallback'))
     assert page(postgres_engine)['total']==2
+
+
+def test_existing_campaign_guard_preserves_projection_and_counts(postgres_engine,store):
+    _,review,result=publish(postgres_engine,store)
+    before=page(postgres_engine)
+    with Session(postgres_engine) as db:
+        cid=db.get(Revision,result['revisionId']).campaign_id
+    with pytest.raises(IntegrityError,match='program_catalog_campaign_identity_immutable'):
+        with postgres_engine.begin() as db:
+            db.execute(update(Campaign).where(Campaign.id==cid).values(year=review['year']+1))
+    assert page(postgres_engine)==before
+    assert len(values(postgres_engine))==2
+
+
+def test_bounded_bidirectional_pages_match_global_source_order(postgres_engine,store,monkeypatch):
+    import_reviewed(postgres_engine)
+    body,review=source()
+    records=[deepcopy(review['programs'][0])|dict(source_key=f'/synthetic/page/{i}',
+        title=['Example same','Программа same','яя same'][i%3]) for i in range(15)]
+    review['programs']=records
+    review['selection']=[dict(source_key=r['source_key']) for r in records]
+    monkeypatch.setitem(EXTRACTORS,review['extractor_version'],lambda doc,scope:deepcopy(records))
+    assert import_document(postgres_engine,review,body,store)['outcome']=='published'
+    for sort in ('name','name-desc'):
+        for filters in ({},{'year':2027},{'q':'same'},{'university_id':review['university_id']},{'subject':'unknown'}):
+            with Session(postgres_engine) as db:
+                for offset in (0,1,8,14,16,17,100000):
+                    for limit in (3,12):
+                        params=dict(filters,sort=sort,offset=offset,limit=limit)
+                        actual=facade.program_page(db,**params)
+                        expected=facade.source_program_page(db,**params)
+                        assert actual.model_dump()==expected.model_dump(),params
 
 
 def test_revision_switch_and_transaction_failure_preserve_cache(postgres_engine,store):

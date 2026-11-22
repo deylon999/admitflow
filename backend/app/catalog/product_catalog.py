@@ -182,8 +182,33 @@ def program_page(db, *, q='', university_id='', year=None, subject='', offset=0,
         base=base.where(index.c.search_text.contains(token,autoescape=True))
     total=0 if subject else (db.scalar(select(func.count()).select_from(base.subquery())) if tokens else
         (counts.get(year,0) if year is not None else sum(counts.values())))
-    order=(index.c.sort_text.desc(),index.c.id.desc()) if sort=='name-desc' else (index.c.sort_text,index.c.id)
-    keys=db.execute(base.with_only_columns(index.c.id,index.c.pid,index.c.rid).order_by(*order).offset(offset).limit(limit)).all()
+    # Exact counts and page keys share the HTTP REPEATABLE READ snapshot.
+    # Seek from the nearer end without changing the external OFFSET contract.
+    take=min(limit,max(0,total-offset))
+    skip=offset
+    reverse=False
+    if take and total-offset-take < offset:
+        skip=total-offset-take
+        reverse=True
+    keys=[]
+    if take:
+        descending=(sort=='name-desc') != reverse
+        def filtered(query,columns):
+            if university_id:query=query.where(columns.university_id==university_id)
+            if year is not None:query=query.where(columns.year==year)
+            for token in tokens:query=query.where(columns.search_text.contains(token,autoescape=True))
+            return query
+        def ordered(columns):
+            return (columns.sort_text.desc(),columns.id.desc()) if descending else (columns.sort_text,columns.id)
+        # Bound the indexed branch before UNION with the reviewed archive.
+        # The global prefix cannot contain more than skip+take source rows;
+        # this lets PostgreSQL use its order index instead of sorting all rows.
+        published=prepared.subquery()
+        prefix=filtered(select(published),published.c).order_by(*ordered(published.c)).limit(skip+take).subquery()
+        bounded=archive_index(select(prefix),legacy)
+        page_query=filtered(select(bounded.c.id,bounded.c.pid,bounded.c.rid),bounded.c)
+        keys=db.execute(page_query.order_by(*ordered(bounded.c)).offset(skip).limit(take)).all()
+        if reverse:keys.reverse()
     return ProgramPage(items=hydrate_programs(db,keys,legacy),total=total,
         next_offset=offset+limit if offset+limit<total else None,years=years,subjects=[])
 
