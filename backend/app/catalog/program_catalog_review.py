@@ -4,6 +4,7 @@ Original bytes must match a versioned review. Extractors preserve the scope of
 the official document; aggregate places never become general-competition seats.
 """
 import hashlib
+from io import BytesIO
 import json
 from pathlib import Path
 import re
@@ -115,7 +116,62 @@ def sgu_admission_plan(doc, review):
     return records
 
 
-EXTRACTORS = {'hse-moscow-announcement-v1': hse_announcement, 'sgu-head-full-time-plan-v1': sgu_admission_plan}
+def hse_urban_announcement(doc, review):
+    if review['university_id'] != 'miccedu-1766' or review['level'] != 'bachelor':
+        raise ValueError('catalog_university_scope_mismatch')
+    year = review['year']
+    headings = [clean(node.get_text(' ', strip=True)) for node in doc.select('.post__text h4.block-title')]
+    if headings.count(f'5. Как поступить в бакалавриат в {year} году?') != 1:
+        raise ValueError('catalog_campaign_mismatch')
+    key = '/ba/up/'
+    title = 'Девелопмент и городское планирование'
+    links = doc.select('.post__text p a[href="https://www.hse.ru/ba/up/"]')
+    lead = [link for link in links
+            if clean(link.get_text(' ', strip=True)) == f'«{title}»'
+            and f'от поступления в {year} году' in clean(link.parent.get_text(' ', strip=True))]
+    titles = doc.select('.post__content h1.post-title')
+    if (len(lead) != 1 or len(titles) != 1
+            or not clean(titles[0].get_text(' ', strip=True)).startswith(f'Бакалавриат «{title}»:')
+            or [selection['source_key'] for selection in review['selection']] != [key]):
+        raise ValueError('catalog_source_structure_changed')
+    return [_record(key, title)]
+
+
+EXTRACTORS = {'hse-moscow-announcement-v1': hse_announcement, 'sgu-head-full-time-plan-v1': sgu_admission_plan,
+              'hse-urban-announcement-v1': hse_urban_announcement}
+
+
+def nntu_department_brochure(body, review):
+    from pypdf import PdfReader
+    from pypdf.errors import PyPdfError
+
+    if review['university_id'] != 'miccedu-169' or review['level'] != 'bachelor':
+        raise ValueError('catalog_university_scope_mismatch')
+    try:
+        pdf = PdfReader(BytesIO(body), strict=True)
+        if pdf.is_encrypted or len(pdf.pages) != 2:
+            raise ValueError('catalog_source_structure_changed')
+        cover, admission = (clean(page.extract_text()) for page in pdf.pages)
+    except PyPdfError as error:
+        raise ValueError('catalog_invalid_pdf') from error
+    if ('Нижегородский государственный технический университет им. Р.Е. Алексеева' not in cover
+            or 'Металлургические технологии и оборудование' not in cover):
+        raise ValueError('catalog_university_scope_mismatch')
+    heading = f'В {review["year"]} году проводится приём для ОЧНОГО обучения по следующим образовательным программам:'
+    if admission.count(heading) != 1:
+        raise ValueError('catalog_campaign_mismatch')
+    contents = admission.split(heading, 1)[1].strip()
+    match = re.match(r'Бакалавриат ([0-9]{2}\.03\.[0-9]{2}) «Металлургия» Профиль «([^»]+)»', contents)
+    if not match or len(re.findall(r'Бакалавриат [0-9]{2}\.03\.[0-9]{2}', contents)) != 1:
+        raise ValueError('catalog_source_structure_changed')
+    code, profile = match.groups()
+    key = f'{code}:{profile}'
+    if [s['source_key'] for s in review['selection']] != [key]:
+        raise ValueError('catalog_program_identity_ambiguous')
+    return [_record(key, profile, code, 'full-time')]
+
+
+PDF_EXTRACTORS = {'nntu-metallurgy-brochure-v1': nntu_department_brochure}
 
 
 def extract_reviewed(body, review):
@@ -125,11 +181,13 @@ def extract_reviewed(body, review):
         raise ValueError('catalog_invalid_document_size')
     if hashlib.sha256(body).hexdigest() != review['original_sha256']:
         raise ValueError('catalog_original_hash_mismatch')
-    extractor = EXTRACTORS.get(review['extractor_version'])
+    content_type = review.get('content_type', 'text/html')
+    extractors = {'text/html': EXTRACTORS, 'application/pdf': PDF_EXTRACTORS}.get(content_type, {})
+    extractor = extractors.get(review['extractor_version'])
     if not extractor:
         raise ValueError('catalog_unsupported_extractor')
-    doc = BeautifulSoup(body.decode('utf-8', errors='strict'), 'html.parser')
-    records = extractor(doc, review)
+    original = BeautifulSoup(body.decode('utf-8', errors='strict'), 'html.parser') if content_type == 'text/html' else body
+    records = extractor(original, review)
     if records != review['programs']:
         raise ValueError('catalog_review_facts_mismatch')
     if len({p['source_key'] for p in records}) != len(records):

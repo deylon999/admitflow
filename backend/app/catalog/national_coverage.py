@@ -18,9 +18,9 @@ from sqlalchemy.orm import Session
 from app.catalog.accreditation_registry import SOURCE_URL as REGISTRY_URL, load_registry
 from app.admissions import Campaign, CompetitionGroup, PublishedSnapshot, Source, SourceSnapshot, University
 from app.catalog.national_catalog import load_catalog
+from app.catalog.program_coverage import DEFAULT_TARGET_YEAR, program_counts, programme_coverage
 from app.operations.observability import system_status
-from app.catalog.product_catalog import programs, region_key
-from app.sources.publishing import utc
+from app.catalog.product_catalog import region_key
 from app.sources.registry import PRODUCTION_REGISTRY
 from app.sources.status import source_status
 
@@ -33,9 +33,8 @@ def share(covered, total):
 
 
 def layer(key, title, covered, total, note):
-    value = share(covered, total)
-    return dict(id=key, title=title, covered=covered, total=total, share=value,
-                targetMet=value is not None and value >= TARGET, note=note)
+    return dict(id=key, title=title, covered=covered, total=total, share=share(covered, total),
+                targetMet=bool(total) and 5 * covered >= 3 * total, note=note)
 
 
 def head_ogrn_by_university(registry, catalog):
@@ -43,7 +42,7 @@ def head_ogrn_by_university(registry, catalog):
     matched = registry.by_catalog_id
     result = {}
     for row in catalog.institutions:
-        if not row.is_branch and row.registry_id in matched:
+        if not row.is_branch and row.registry_id in matched and not matched[row.registry_id].abroad:
             result[row.id] = matched[row.registry_id].ogrn
     for org in registry.registry_only:
         result[org.id] = org.ogrn
@@ -80,24 +79,26 @@ def sources_report(db, registry, now):
     return dict(total=sum(counts.values()), byState=dict(sorted(counts.items())), problems=problems)
 
 
-def national_coverage(db, *, now=None, registry_rules=PRODUCTION_REGISTRY):
+def national_coverage(db, *, now=None, registry_rules=PRODUCTION_REGISTRY, target_year=DEFAULT_TARGET_YEAR):
     now = now or datetime.now(timezone.utc)
     registry, catalog = load_registry(), load_catalog()
     heads = {o.ogrn: o for o in registry.organisations if not o.abroad}
     to_ogrn = head_ogrn_by_university(registry, catalog)
     catalog_region = {r.registry_id: r.region for r in catalog.institutions}
+    branch_ids = {r.id for r in catalog.institutions if r.is_branch}
 
-    verified = programs(db)
+    counts, archive = program_counts(db)
     program_heads, branch_programs, by_year = set(), 0, {}
-    for program in verified:
-        ogrn = to_ogrn.get(program.university_id)
+    for (year, uid, _), count in counts.items():
+        ogrn = to_ogrn.get(uid)
         if ogrn is None:
-            branch_programs += 1
+            if uid in branch_ids:
+                branch_programs += count.programs
             continue
         program_heads.add(ogrn)
-        by_year.setdefault(program.year, dict(programs=set(), exams=set()))['programs'].add(ogrn)
-        if program.exam_requirements is not None:
-            by_year[program.year]['exams'].add(ogrn)
+        by_year.setdefault(year, dict(programs=set(), exams=set()))['programs'].add(ogrn)
+        if count.exams:
+            by_year[year]['exams'].add(ogrn)
     exam_heads = set().union(*(v['exams'] for v in by_year.values())) if by_year else set()
 
     list_universities, list_states = imported_lists(db, registry_rules)
@@ -109,18 +110,19 @@ def national_coverage(db, *, now=None, registry_rules=PRODUCTION_REGISTRY):
     layers = [
         layer('registry', 'Вуз есть в опорном каталоге', catalog_heads, total,
               'Сопоставление каталога MICCEDU с реестром аккредитации. Записи только из реестра не засчитываются.'),
-        layer('programs', 'Есть проверенные программы', len(program_heads), total,
-              'Хотя бы одна программа с официальным источником и проверкой. Архивные кампании засчитываются по своему году.'),
+        layer('programs', 'Есть проверенные программы за все годы', len(program_heads), total,
+              'Исторический охват. Покрытие целевой кампании считается отдельно.'),
         layer('examRequirements', 'Есть подтверждённые требования ЕГЭ', len(exam_heads), total,
               'Перечень испытаний и минимальные баллы из официального документа вуза, сверенные с его текстом. Только для проверенных программ.'),
         layer('competitionLists', 'Импортирован конкурсный список', len(list_heads), total,
               'Есть опубликованный полный снимок хотя бы одного конкурса. Свежесть показана отдельно.'),
     ]
 
-    regions = {}
+    regions, head_regions = {}, {}
     for org in heads.values():
         region = catalog_region.get(org.catalog_registry_id) or org.region or 'Регион не указан'
         row = regions.setdefault(region_key(region) or region, dict(region=region, total=0, catalog=0, programs=0, lists=0))
+        head_regions[org.ogrn] = region
         row['total'] += 1
         row['catalog'] += bool(org.catalog_registry_id)
         row['programs'] += org.ogrn in program_heads
@@ -144,8 +146,10 @@ def national_coverage(db, *, now=None, registry_rules=PRODUCTION_REGISTRY):
         regions=sorted(regions.values(), key=lambda r: (-r['total'], r['region'])),
         sources=sources_report(db, registry_rules, now),
         operations=system_status(db, now=now, registry=registry_rules),
+        programCoverage=programme_coverage(db, counts, archive, target_year=target_year, heads=heads, to_ogrn=to_ogrn,
+            branch_ids=branch_ids, head_regions=head_regions, known_ids=set(catalog.institution_ids) | set(registry.registry_only_ids)),
         inputs=dict(registrySha256=registry.sha256, catalogSha256=catalog.sha256, catalogEdition=catalog.edition,
-                    verifiedPrograms=len(verified), checksum=None),
+                    verifiedPrograms=sum(row.programs for row in counts.values()), checksum=None),
     )
 
 
@@ -153,6 +157,7 @@ def with_checksum(report):
     """Checksum over everything except times, so equal inputs give an equal checksum."""
     stable = {k: v for k, v in report.items() if k not in ('generatedAt', 'operations')}
     stable['sources'] = {k: v for k, v in report['sources'].items() if k != 'problems'}
+    stable['inputs'] = {k: v for k, v in report['inputs'].items() if k != 'checksum'}
     body = json.dumps(stable, sort_keys=True, ensure_ascii=False).encode()
     report['inputs']['checksum'] = hashlib.sha256(body).hexdigest()
     return report
@@ -163,11 +168,14 @@ def main(argv=None):
     from app.core.database import make_engine
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', help='Write the JSON report to this file instead of stdout')
+    parser.add_argument('--target-year', type=int, default=DEFAULT_TARGET_YEAR, choices=range(2000, 2101), metavar='YEAR')
     args = parser.parse_args(argv)
     engine = make_engine(Settings.from_env().database_url)
     try:
         with Session(engine) as db:
-            report = with_checksum(national_coverage(db))
+            if engine.dialect.name == 'postgresql':
+                db.connection(execution_options={'isolation_level': 'REPEATABLE READ'})
+            report = with_checksum(national_coverage(db, target_year=args.target_year))
     finally:
         engine.dispose()
     body = json.dumps(report, ensure_ascii=False, indent=2, default=str) + '\n'

@@ -120,6 +120,78 @@
       ],
       "document_type": "admission-plan",
       "verification_status": "verified"
+    },
+    {
+      "key": "hse-urban-planning-2027",
+      "university_id": "miccedu-1766",
+      "year": 2027,
+      "level": "bachelor",
+      "source_namespace": "urban-planning-admissions",
+      "university_name": "Федеральное государственное автономное образовательное учреждение высшего образования «Национальный исследовательский университет «Высшая школа экономики»",
+      "university_url": "http://www.hse.ru",
+      "region": "г.Москва",
+      "url": "https://www.hse.ru/ba/up/news/1210949468.html",
+      "final_url": "https://www.hse.ru/ba/up/news/1210949468.html",
+      "content_type": "text/html",
+      "publication_date": "2026-10-19",
+      "fetched_at": "2026-11-22T17:28:03.426326+00:00",
+      "checked_at": "2026-11-22T17:30:00+00:00",
+      "original_sha256": "bcf5efcb59891c30c3952a3379443fd203f80dae1656c4d4e6f6d1c53cd33686",
+      "extractor_version": "hse-urban-announcement-v1",
+      "completeness": "partial",
+      "review_method": "Checked the official programme announcement and its explicit 2027 admissions section. Older examination results belong to 2026.",
+      "selection": [{"source_key": "/ba/up/"}],
+      "programs": [
+        {
+          "source_key": "/ba/up/",
+          "title": "Девелопмент и городское планирование",
+          "code": null,
+          "study_form": null,
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": null,
+          "groups": []
+        }
+      ],
+      "document_type": "programme-announcement",
+      "verification_status": "verified"
+    },
+    {
+      "key": "nntu-metallurgy-2027",
+      "university_id": "miccedu-169",
+      "year": 2027,
+      "level": "bachelor",
+      "source_namespace": "metallurgy-department-admissions",
+      "university_name": "Федеральное государственное бюджетное образовательное учреждение высшего образования «Нижегородский государственный технический университет им. Р.Е. Алексеева»",
+      "university_url": "https://api.nntu.ru/",
+      "region": "Нижегородская область",
+      "url": "https://www.nntu.ru/frontend/web/ngtu/files/org_structura/instit_fakul_kaf_shkoly/ifhtim/kaf_mto/abiturient/priem-och-obuch-2026.pdf?27-10-26=",
+      "final_url": "https://www.nntu.ru/frontend/web/ngtu/files/org_structura/instit_fakul_kaf_shkoly/ifhtim/kaf_mto/abiturient/priem-och-obuch-2026.pdf?27-10-26=",
+      "content_type": "application/pdf",
+      "publication_date": null,
+      "fetched_at": "2026-11-22T17:29:46.128601+00:00",
+      "checked_at": "2026-11-22T17:31:00+00:00",
+      "original_sha256": "eb62246c1cd02bc34de9bafd6b9227834df5c16c63b335b751c9171517f9071a",
+      "extractor_version": "nntu-metallurgy-brochure-v1",
+      "completeness": "partial",
+      "review_method": "Checked the head and department on the cover and the explicit 2027 full-time bachelor code and profile on page 2. Matched the head to accreditation OGRN 1025203034537.",
+      "selection": [{"source_key": "22.03.02:Производство и сбыт металлопродукции"}],
+      "programs": [
+        {
+          "source_key": "22.03.02:Производство и сбыт металлопродукции",
+          "title": "Производство и сбыт металлопродукции",
+          "code": "22.03.02",
+          "study_form": "full-time",
+          "funding": null,
+          "category": null,
+          "seats": null,
+          "admission_totals": null,
+          "groups": []
+        }
+      ],
+      "document_type": "department-admission-brochure",
+      "verification_status": "verified"
     }
   ]
 }

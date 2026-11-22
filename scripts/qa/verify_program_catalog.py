@@ -1,6 +1,6 @@
 """Rehearse real reviewed programme import in an owned disposable PostgreSQL.
 
-Requires original content-addressed HTML captured outside Git. Does not access
+Requires original content-addressed HTML/PDF captured outside Git. Does not access
 the working DATABASE_URL, applicant sources or production configuration.
 """
 import argparse
@@ -84,23 +84,40 @@ def main(argv=None):
             for identifier, expected in before.items():
                 assert request(f'{path}/{identifier}') == expected
             target = request(path+'?year=2027&universityId=miccedu-1766')
-            assert target['total'] == 2
+            assert target['total'] == 3
             fashion = next(p for p in target['items'] if p['title'] == 'Мода')
             proposal = json.loads((ROOT/'docs/sources/program-catalog/response-proposal.json').read_text(encoding='utf-8'))
             assert fashion == proposal, fashion
             assert request(f'{path}/{fashion["id"]}') == fashion
+            urban = next(p for p in target['items'] if p['title'] == 'Девелопмент и городское планирование')
+            assert all(urban[k] is None for k in ('code', 'studyForm', 'funding', 'seats', 'examRequirements'))
+            assert urban['competitionGroups'] == [] and request(f'{path}/{urban["id"]}') == urban
+            metallurgy = request(path+'?year=2027&universityId=miccedu-169&q=22.03.02')
+            assert metallurgy['total'] == 1
+            metal, = metallurgy['items']
+            assert (metal['title'], metal['code'], metal['level'], metal['studyForm']) == (
+                'Производство и сбыт металлопродукции', '22.03.02', 'bachelor', 'full-time')
+            assert all(metal[k] is None for k in ('funding', 'category', 'seats', 'examRequirements'))
+            assert metal['competitionGroups'] == [] and request(f'{path}/{metal["id"]}') == metal
             assert request(path+'?year=2026')['total'] == 4
-            assert request('/api/v1/catalog/universities/miccedu-1766')['knownProgramCount'] == 2
-            report['apiExamples'] = {'legacySgu':before['sgu-2026-4588'], 'target2027':target}
+            assert request('/api/v1/catalog/universities/miccedu-1766')['knownProgramCount'] == 3
+            assert request('/api/v1/catalog/universities/miccedu-169')['knownProgramCount'] == 1
+            assert request('/api/v1/catalog/universities?q=22.03.02')['total'] == 1
+            actual_coverage = request('/api/v1/coverage/national')['programCoverage']
+            assert actual_coverage['targetCampaign']['coveredHeads'] == 2
+            assert actual_coverage['targetCampaign']['programs'] == request(path+'?year=2027')['total'] == 4
+            assert actual_coverage['targetCampaign']['competitionGroups'] == 0
+            report['apiExamples'] = {'legacySgu':before['sgu-2026-4588'], 'target2027':target, 'metallurgy2027':metallurgy}
         with Session(engine) as db:
             coverage = with_checksum(national_coverage(db))
-            report['coverage'] = {key:coverage[key] for key in ('generatedAt','denominator','byYear','inputs')}
+            assert coverage['programCoverage'] == actual_coverage
+            report['coverage'] = {key:coverage[key] for key in ('generatedAt','denominator','byYear','inputs','programCoverage')}
             report.update(postgresVersion=db.scalar(text('SHOW server_version')), schemaRevision=db.scalar(text('SELECT version_num FROM alembic_version')),
                 internalDocumentPublications=db.scalar(select(func.count()).select_from(ProgramCatalogPublication)),
                 canonicalPrograms=db.scalar(select(func.count()).select_from(Program)),
                 programmeFacts=db.scalar(select(func.count()).select_from(ProgramCatalogFact)),
                 legacyCompetitionGroups=db.scalar(select(func.count()).select_from(CompetitionGroup)),
-                existingPublicPrograms=len(before), target2027PublicPrograms=target['total'])
+                existingPublicPrograms=len(before), target2027PublicPrograms=actual_coverage['targetCampaign']['programs'])
             sources=[]
             for review,result in zip(load_reviews(),first['items']):
                 revision=db.get(ProgramCatalogRevision,result['revisionId'])

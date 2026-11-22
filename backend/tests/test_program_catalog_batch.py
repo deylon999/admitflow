@@ -40,7 +40,8 @@ def response(url, body):
 
 def test_registry_separates_campaigns_and_rejects_unknown_keys():
     assert {s.key for s in select_sources(2027)} == {
-        'hse-design-2027', 'itmo-announcements-2027', 'rudn-admission-2027', 'sfu-admission-2027'}
+        'hse-design-2027', 'hse-urban-planning-2027', 'nntu-metallurgy-2027',
+        'itmo-announcements-2027', 'rudn-admission-2027', 'sfu-admission-2027'}
     assert [s.key for s in select_sources(2026)] == ['sgu-seats-2026']
     for keys in (['sgu-seats-2026'], ['hse-design-2027']*2, []):
         with pytest.raises(ValueError):

@@ -14,22 +14,24 @@ from urllib.robotparser import RobotFileParser
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / 'backend'))
+from app.catalog.program_catalog_sources import load_sources
 from app.sources.fetcher import Fetcher, FetchPolicy
 
-SOURCES = {
-    'hse-design-2027': 'https://design.hse.ru/ba/join',
-    'sgu-seats-2026': 'https://www.sgu.ru/node/240763',
-}
+SOURCES = {source.key:source for source in load_sources() if source.review}
 
 
 def capture(key, output, *, fetch=None, pause=time.sleep):
-    url = SOURCES[key]
+    source = SOURCES[key]
+    url = source.url
     domain = urlsplit(url).hostname
-    fetch = fetch or Fetcher(FetchPolicy(frozenset({domain}), timeout=15)).fetch
+    fetch = fetch or Fetcher(FetchPolicy(frozenset({domain}), timeout=15, max_redirects=0,
+        content_types=frozenset({'text/plain', source.content_type}))).fetch
     output = Path(output)
     # All failures leave any previous successful capture intact.
     robots_url = f'https://{domain}/robots.txt'
     robots = fetch(robots_url)
+    if robots.url != robots_url or robots.content_type != 'text/plain':
+        raise ValueError('unexpected_robots_response')
     parser = RobotFileParser(robots_url)
     lines = robots.body.decode(robots.charset or 'utf-8', errors='strict').splitlines()
     if not any(line.strip().lower().startswith('user-agent:') for line in lines):
@@ -43,9 +45,12 @@ def capture(key, output, *, fetch=None, pause=time.sleep):
         raise ValueError('source_requires_longer_delay')
     pause(delay)
     result = fetch(url)
+    if result.url != url or result.content_type != source.content_type:
+        raise ValueError('unexpected_source_response')
     output.mkdir(parents=True, exist_ok=True)
     # Content addressing preserves old documents when a source changes.
-    for response, suffix in [(robots, '.robots'), (result, '.html')]:
+    suffix = '.pdf' if source.content_type == 'application/pdf' else '.html'
+    for response, suffix in [(robots, '.robots'), (result, suffix)]:
         if hashlib.sha256(response.body).hexdigest() != response.payload_hash:
             raise ValueError('capture_hash_mismatch')
         path = output / (response.payload_hash + suffix)

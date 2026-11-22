@@ -50,7 +50,7 @@ def proof(args):
         assert before['attemptedSources'] == 0 and all(x['reused'] for x in before['items'])
         before_post = run_cli('publish','--year',2027,*captures,*candidate_keys,database_url=url,expected_exit=1)
         assert all(x['outcome'] == 'review_required' for x in before_post['items'])
-        hse = run_cli('publish','--year',2027,*offline,database_url=url,expected_exit=1)
+        hse = run_cli('publish','--year',2027,'--source','hse-design-2027',*candidate_keys,*offline,database_url=url,expected_exit=1)
         assert [x['outcome'] for x in hse['items']] == ['published']+['review_required']*3
         sgu = run_cli('publish','--year',2026,*offline,database_url=url)
         assert sgu['items'][0]['outcome'] == 'published'

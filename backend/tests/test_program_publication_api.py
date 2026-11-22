@@ -134,6 +134,14 @@ def test_replacement_and_rejected_source_keep_history_and_public_ids(client, pos
     assert import_document(postgres_engine, review, body, store)['outcome'] == 'rejected'
     assert import_document(postgres_engine, changed, b'broken', store)['outcome'] == 'rejected'
     assert client.get(BASE+'/programs/'+before['id']).json() == after
+    coverage = client.get('/api/v1/coverage/national').json()['programCoverage']
+    assert coverage['targetCampaign']['sourceErrors'] == 1
+    assert coverage['targetCampaign']['programs'] == 2
+    document, = coverage['sources']['documents']
+    assert document['originalSha256'] == changed['original_sha256']
+    assert document['extractorVersion'] == changed['extractor_version']
+    assert import_document(postgres_engine, changed, new_body, store)['outcome'] == 'unchanged'
+    assert client.get('/api/v1/coverage/national').json()['programCoverage']['targetCampaign']['sourceErrors'] == 0
 
 
 @pytest.mark.parametrize('query', ['', '?q=Example'])
@@ -161,6 +169,28 @@ def test_one_response_uses_one_postgresql_publication_snapshot(client, postgres_
     assert client.get(BASE+'/programs?q=Reviewed').json()['total'] == 1
 
 
+def test_national_report_uses_one_publication_snapshot(client, postgres_engine, store, monkeypatch):
+    from app.catalog import program_coverage
+
+    body, review, _ = publish(postgres_engine, store)
+    url = '/api/v1/coverage/national'
+    before = client.get(url).json()['programCoverage']
+    original = program_coverage._source_status
+    new_body, changed = changed_source(body, review)
+
+    def concurrent_publish(db, *args):
+        assert db.connection().get_isolation_level() == 'REPEATABLE READ'
+        assert import_document(postgres_engine, changed, new_body, store)['outcome'] == 'published'
+        return original(db, *args)
+
+    with monkeypatch.context() as patch:
+        patch.setattr(program_coverage, '_source_status', concurrent_publish)
+        assert client.get(url).json()['programCoverage'] == before
+    after = client.get(url).json()['programCoverage']
+    assert after['targetCampaign'] == before['targetCampaign']
+    assert after['sources']['documents'][0]['originalSha256'] == changed['original_sha256']
+
+
 def test_shared_confirmed_contest_is_explicit_and_never_summed(client, postgres_engine, store, monkeypatch):
     body, review = source()
     group = dict(id='synthetic-shared',official_id='source-group-1',title='Synthetic combined competition',study_form='full-time',funding='budget',category='separate-quota',seats=0)
@@ -186,6 +216,8 @@ def test_shared_confirmed_contest_is_explicit_and_never_summed(client, postgres_
         g, = p['competitionGroups']
         assert (g['id'],g['campaignId'],g['category'],g['seats']) == ('synthetic-shared',cid,'separate-quota',0)
         assert g['provenance'] == p['provenance']
+    target = client.get('/api/v1/coverage/national').json()['programCoverage']['targetCampaign']
+    assert (target['coveredHeads'], target['programs'], target['competitionGroups']) == (1, 2, 1)
 
 
 def test_conflicting_current_identity_is_quarantined(client, postgres_engine, store):
@@ -204,6 +236,9 @@ def test_conflicting_current_identity_is_quarantined(client, postgres_engine, st
     assert page['total'] == 2 and {p['id'] for p in page['items']} == {'sgu-2026-4588','sgu-2026-4576'}
     for f in facts:
         assert client.get(BASE+'/programs/'+f['public_id']).status_code == 404
+    coverage = client.get('/api/v1/coverage/national').json()['programCoverage']
+    assert (coverage['targetCampaign']['programs'], coverage['targetCampaign']['conflictingRecords']) == (0, 4)
+    assert coverage['historicalTotal']['programs'] == 2
 
 
 def test_facets_survive_empty_filtered_and_deep_pages(client, postgres_engine, store):
