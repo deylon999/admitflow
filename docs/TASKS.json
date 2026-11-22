@@ -9809,7 +9809,8 @@
         "docs/KAN-218-ARCHITECTURE.md",
         "docs/KAN-218-PR4.md",
         "docs/KAN-218-PR4-READ-MODEL.md",
-        "docs/KAN-218-READ-PROJECTION.md"
+        "docs/KAN-218-READ-PROJECTION.md",
+        "docs/KAN-218-PR4-RESULTS.md"
       ],
       "steps": [
         "SQL filters, counts and pagination avoid loading all programs per HTTP request; representative scale, EXPLAIN and memory/latency evidence; existing v3 contracts and old SGU paths preserved."
@@ -9829,7 +9830,11 @@
         },
         {
           "path": "docs/KAN-218-READ-PROJECTION.md",
-          "note": "Independent full-backend adaptation; new0015 synchronous derived read model with exact source fallback. Integrity and migration checks pass. Performance/load, Linux CI and owner acceptance remain open."
+          "note": "Independent adaptation to the full backend tree. Migration 0015 maintains verified read keys and exact totals atomically and falls back to source SQL when the policy changes. Native integrity, migration and API checks passed."
+        },
+        {
+          "path": "docs/KAN-218-PR4-RESULTS.md",
+          "note": "Clean cc86e58, 100,000 current 2027 programs, 50 warmed measurements per scenario, 59,830 HTTP requests across 40 phases with exact totals and no errors. All targets pass at 10 requests with 4 workers. At 50 the first page, university filter and frequent code miss their targets. Linux CI 4/4. Separate integration and owner review remain open."
         }
       ],
       "blockedReason": null

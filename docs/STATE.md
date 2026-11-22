@@ -12,7 +12,7 @@
 - Статусы, зависимости и acceptance: только [TASKS.json](TASKS.json).
 - Карточка и прямые зависимости: `python scripts/roadmap.py --context`.
 
-Independent feat/kan-218-read-model based on full backend9ad69c6, includes PR43 history. Owner requests separate adaptation; do not self merge. New0015 transactional projection implemented, integrity/native migration tests pass. Next finalize comparative source/index/projection 50+ samples/concurrency metrics, production regressions/Linux CI; PR43 stays draft.
+Review separate feat/kan-218-read-model after the full backend chain reaches main. PR43 stays draft during separate preparation. Measured cc86e58 passes Linux CI and meets all read targets at 10 simultaneous requests with 4 workers. At 50, first page, university filter and frequent code exceed their targets. See KAN-218-PR4-RESULTS.md for alternatives, scale evidence and migration cost. T319 remains in progress pending integration and owner review.
 
 ## Последняя завершённая работа
 

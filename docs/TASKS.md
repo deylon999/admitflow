@@ -7051,7 +7051,7 @@
 
 **Зависимости:** T318.
 
-**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR4.md`; `docs/KAN-218-PR4-READ-MODEL.md`; `docs/KAN-218-READ-PROJECTION.md`.
+**Результаты/файлы:** `docs/KAN-218-ARCHITECTURE.md`; `docs/KAN-218-PR4.md`; `docs/KAN-218-PR4-READ-MODEL.md`; `docs/KAN-218-READ-PROJECTION.md`; `docs/KAN-218-PR4-RESULTS.md`.
 
 **Шаги:**
 
@@ -7067,7 +7067,8 @@
 
 - [docs/KAN-218-PR4.md](../docs/KAN-218-PR4.md) — Measured SQL optimization on b19dd7a; eight full responses equal baseline, bounded ORM/memory, no DTO/migration/frontend changes. Local 138pass plus one existing Windows resource dependency failure. Exact final Linux CI in PR. Local 500ms target remains unmet for broad/deep cases; owner review required.
 - [docs/evidence/kan-218-pr4-after.json](../docs/evidence/kan-218-pr4-after.json) — 100000 synthetic current programmes,200000 old facts,785heads/215branches,9 samples each. p95 first1196→661ms, university1174→259ms; peak1.77→1.49MB, SQL8→6. Synthetic data is not national coverage.
-- [docs/KAN-218-READ-PROJECTION.md](../docs/KAN-218-READ-PROJECTION.md) — Independent full-backend adaptation; new0015 synchronous derived read model with exact source fallback. Integrity and migration checks pass. Performance/load, Linux CI and owner acceptance remain open.
+- [docs/KAN-218-READ-PROJECTION.md](../docs/KAN-218-READ-PROJECTION.md) — Independent adaptation to the full backend tree. Migration 0015 maintains verified read keys and exact totals atomically and falls back to source SQL when the policy changes. Native integrity, migration and API checks passed.
+- [docs/KAN-218-PR4-RESULTS.md](../docs/KAN-218-PR4-RESULTS.md) — Clean cc86e58, 100,000 current 2027 programs, 50 warmed measurements per scenario, 59,830 HTTP requests across 40 phases with exact totals and no errors. All targets pass at 10 requests with 4 workers. At 50 the first page, university filter and frequent code miss their targets. Linux CI 4/4. Separate integration and owner review remain open.
 
 ### T320. KAN-218 PR5: target-year national coverage and independent source audit
 

@@ -1803,3 +1803,23 @@ oracle retained). PG75passed84.34s verifies metadata/migrations/API/pagination/
 literal Unicode search. f467103c serving baseline completed45047 HTTP requests,
 zero failures, zero read temp writes; worker4 code p95 at50concurrency708ms.
 Final statistics/substring run adds midpoint pagination and1/4/8-worker comparison.
+
+## S239 / T319 — 2026-11-22 — separate adaptation performance evidence
+
+Pinned `cc86e5814e1b8bc13aa3a750361110335cb2e4d3`. The 100,000-program 2027
+fixture also includes 75,000 archived programs and 350,000 previous fact
+versions. The read harness saved 50 warm facade samples per scenario and
+59,830 real HTTP requests across 40 phases. Verified exact totals in every
+phase and no HTTP or transport errors. PostgreSQL wrote no temporary files
+during HTTP reading. Four workers p95 at 50 requests was 233/296/646/284 ms
+for first/university+year/code/tail and 322 ms for midpoint. All targets pass
+at 10 requests. Three miss at 50. The code count reaches 1408% PG CPU.
+
+Populated 0015 backfill took 141.8 s and incremental publication of a
+100-program revision took 83.3 ms p95 across 50 transactions. Linux CI on
+that code is green (run 45015752335, backend 1248, frontend 387, migrations
+and ETL green). The [results](KAN-218-PR4-RESULTS.md) compare source CTE,
+extra source indexes, frozen candidates, frozen eligible keys and the
+transactional projection. Raw samples and plan archives retain original
+path, tested SHA and checksums. T319 remains in progress, with PR #43 draft
+and the adaptation kept on its own branch pending integration and review.
