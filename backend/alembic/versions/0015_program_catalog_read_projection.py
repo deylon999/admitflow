@@ -46,12 +46,27 @@ def _tables():
     return state,rows,totals
 
 
-ELIGIBLE="""p.in_scope
-    AND p.public_id NOT IN (SELECT json_array_elements_text(reserved_ids) FROM program_catalog_read_scope WHERE id=1)
-    AND NOT EXISTS (SELECT 1 FROM program_catalog_read_facts r WHERE r.in_scope AND r.public_id=p.public_id
-        AND (r.revision_id<>p.revision_id OR r.program_id<>p.program_id))
-    AND NOT EXISTS (SELECT 1 FROM program_catalog_read_facts r WHERE r.in_scope AND r.program_id=p.program_id
-        AND r.campaign_id=p.campaign_id AND r.revision_id<>p.revision_id)"""
+def refresh_eligibility(condition):
+    # Set-based counts avoid correlated EXISTS choosing a cold-table sequential
+    # scan for every row during initial bulk publication/backfill.
+    return """WITH touched AS MATERIALIZED (
+        SELECT revision_id,program_id,campaign_id,public_id,in_scope FROM program_catalog_read_facts
+        WHERE """+condition+"""
+    ), public_counts AS (
+        SELECT r.public_id,count(*) n FROM program_catalog_read_facts r
+        JOIN (SELECT DISTINCT public_id FROM touched) k ON k.public_id=r.public_id
+        WHERE r.in_scope GROUP BY r.public_id
+    ), scope_counts AS (
+        SELECT r.program_id,r.campaign_id,count(*) n FROM program_catalog_read_facts r
+        JOIN (SELECT DISTINCT program_id,campaign_id FROM touched) k
+            ON k.program_id=r.program_id AND k.campaign_id=r.campaign_id
+        WHERE r.in_scope GROUP BY r.program_id,r.campaign_id
+    ) UPDATE program_catalog_read_facts p SET eligible=(t.in_scope AND
+        t.public_id NOT IN (SELECT json_array_elements_text(reserved_ids) FROM program_catalog_read_scope WHERE id=1)
+        AND COALESCE(pub.n,0)=1 AND COALESCE(scope.n,0)=1)
+        FROM touched t LEFT JOIN public_counts pub ON pub.public_id=t.public_id
+        LEFT JOIN scope_counts scope ON scope.program_id=t.program_id AND scope.campaign_id=t.campaign_id
+        WHERE p.revision_id=t.revision_id AND p.program_id=t.program_id"""
 INSERT="""INSERT INTO program_catalog_read_facts
     (revision_id,program_id,document_id,campaign_id,public_id,university_id,year,sort_text,search_text,in_scope,eligible)
     SELECT f.revision_id,f.program_id,r.document_id,f.campaign_id,f.public_id,c.university_id,c.year,f.sort_text,f.search_text,
@@ -74,7 +89,7 @@ def upgrade():
     # No pointer may commit between backfill and installation of maintenance.
     op.execute('LOCK TABLE program_catalog_publications IN SHARE ROW EXCLUSIVE MODE')
     op.execute(INSERT)
-    op.execute('UPDATE program_catalog_read_facts p SET eligible='+ELIGIBLE)
+    op.execute(refresh_eligibility('TRUE'))
     op.execute('INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*) FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year')
     op.execute("""CREATE FUNCTION program_read_serialize() RETURNS trigger LANGUAGE plpgsql AS $$
         BEGIN
@@ -114,8 +129,7 @@ def upgrade():
             IF new_documents IS NOT NULL THEN
                 """+INSERT+""" AND s.document_id=ANY(new_documents);
             END IF;
-            UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+"""
-                WHERE p.public_id=ANY(ids) OR p.program_id=ANY(programs);
+            """+refresh_eligibility('public_id=ANY(ids) OR program_id=ANY(programs)')+""";
             WITH deltas AS (
                 SELECT university_id,year,sum(n)::BIGINT delta FROM (
                     SELECT university_id,year,count(*) n FROM program_catalog_read_facts
@@ -169,7 +183,7 @@ def upgrade():
         BEGIN
             UPDATE program_catalog_read_facts SET eligible=FALSE,
                 in_scope=university_id IN (SELECT json_array_elements_text(NEW.known_ids));
-            UPDATE program_catalog_read_facts p SET eligible="""+ELIGIBLE+""";
+            """+refresh_eligibility('TRUE')+""";
             DELETE FROM program_catalog_read_totals;
             INSERT INTO program_catalog_read_totals SELECT university_id,year,count(*)
                 FROM program_catalog_read_facts WHERE eligible GROUP BY university_id,year;

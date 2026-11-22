@@ -1773,3 +1773,10 @@ Experimental frozen direct-projection p95 (50samples):69/17/74/270ms; not yet
 final production metrics. Ten-second concurrency10/25/50 run saved separately;
 64MB shared-memory failures retained, controlled1GB profile has no HTTP failures.
 T319 remains in_progress, PR43 draft, adaptation separate per owner response.
+
+S239 continuation: replaced correlated eligibility maintenance with set-based
+global counts for affected identities after the231s bulk-seed observation.
+Native PostgreSQL selection33passed/0skip46.80s (projection/publication/metadata/
+migration offline SQL). f100f5c Linux CI44999820936 green; final new SHA pending.
+Target-year100k comparative read trial is running; preliminary production-only
+facade p95 56/15/117/134ms, exact source response hashes equal. Not final acceptance.
