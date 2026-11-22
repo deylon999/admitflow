@@ -192,7 +192,8 @@ def render_task(data, task_id):
     lines += ['', 'Acceptance:']
     lines.extend(f'- {item}' for item in task['acceptance'])
     lines += ['- Общая Definition of Done: docs/DEVELOPMENT.md#критерии-проверки.', '', 'Deliverables:']
-    lines.extend(f'- {item}' for item in task['deliverables'])
+    lines.extend(f'- {evidence_location(item)}' if item.startswith('docs/') else f'- {item}'
+                 for item in task['deliverables'])
     lines += ['', 'Evidence:']
     lines.extend(f'- {evidence_location(item["path"])}: {item["note"]}' for item in task['evidence'])
     if not task['evidence']:
