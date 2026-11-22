@@ -31,6 +31,23 @@ from app.migrations import upgrade_schema
 from pg_support import isolated_postgres
 from scripts.ops.postgres_runtime import disposable_postgres
 from scripts.qa.benchmark_product_catalog import seed, measure
+import scripts.qa.benchmark_product_catalog as benchmark
+
+
+def direct_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
+    index,legacy=facade.program_index(db)
+    query=select(index)
+    if university_id:query=query.where(index.c.university_id==university_id)
+    scope=query.subquery()
+    years=list(db.scalars(select(scope.c.year).distinct().order_by(scope.c.year.desc())))
+    if year is not None:query=query.where(index.c.year==year)
+    if subject:query=query.where(literal(False))
+    for token in q.casefold().split():query=query.where(index.c.search_text.contains(token,autoescape=True))
+    total=db.scalar(select(facade.func.count()).select_from(query.subquery()))
+    order=(index.c.sort_text.desc(),index.c.id.desc()) if sort=='name-desc' else (index.c.sort_text,index.c.id)
+    keys=db.execute(query.order_by(*order).offset(offset).limit(limit)).all()
+    return facade.ProgramPage(items=facade.hydrate_programs(db,keys,legacy),total=total,
+        next_offset=offset+limit if offset+limit<total else None,years=years,subjects=[])
 
 
 def archive_union(query,legacy):
@@ -59,8 +76,9 @@ def prepared_factory(table,*,check_conflicts):
     def index(db):
         legacy={p.id:p for p in facade.legacy_programs(db)}
         fields=['id','pid','rid','university_id','year','sort_text','search_text']
-        query=select(*(table.c[k] for k in fields)).where(table.c.university_id.in_(known))
+        query=select(*(table.c[k] for k in fields))
         if check_conflicts:
+            query=query.where(table.c.university_id.in_(known))
             rival=table.alias('rival_public')
             other=table.alias('rival_scope')
             query=query.where(~exists(select(1).select_from(rival).where(rival.c.id==table.c.id,
@@ -93,7 +111,7 @@ class Resources:
             self.stop.wait(.25)
 
 
-def load_test(client,params,workers,engine,runtime):
+def load_test(client,params,workers,engine,runtime,seconds):
     barrier=threading.Barrier(workers)
     before=pg_stats(engine)
     monitor=Resources(runtime.name)
@@ -101,7 +119,8 @@ def load_test(client,params,workers,engine,runtime):
     def worker(_):
         barrier.wait(timeout=30)
         rows=[]
-        for i in range(max(2,math.ceil(50/workers))):
+        deadline=time.monotonic()+seconds
+        while len(rows)<max(2,math.ceil(50/workers)) or time.monotonic()<deadline:
             start=time.perf_counter()
             response=client.get('/api/v1/catalog/programs',params=params)
             rows.append(dict(ms=(time.perf_counter()-start)*1000,status=response.status_code,
@@ -128,17 +147,22 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output',type=Path,required=True)
     parser.add_argument('--variants',nargs='+',default=['sql','prepared-current','prepared-eligible'])
+    parser.add_argument('--shm-size',choices=['64m','1g'],default='1g')
+    parser.add_argument('--load-seconds',type=int,default=10)
+    parser.add_argument('--direct',action='store_true',help='Indexable separate exact queries for prepared variants')
     args=parser.parse_args()
     if not set(args.variants)<={'sql','prepared-current','prepared-eligible'}:
         parser.error('unknown variant')
     report=dict(experimental=True,sourceCommit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True)),variants={})
+        dirty=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True)),
+        shmSize=args.shm_size,loadSeconds=args.load_seconds,direct=args.direct,variants={})
     def save():
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     original=facade.program_index
+    original_page=facade.program_page
     try:
-        with disposable_postgres() as runtime,isolated_postgres(runtime.url()) as engine:
+        with disposable_postgres(shm_size=args.shm_size) as runtime,isolated_postgres(runtime.url()) as engine:
             upgrade_schema(engine);import_reviewed(engine)
             print('Seeding100k...',flush=True)
             report['fixture']=seed(engine)
@@ -160,20 +184,31 @@ def main():
             for variant in args.variants:
                 facade.program_index=original if variant=='sql' else prepared_factory(current if variant=='prepared-current' else eligible,
                     check_conflicts=variant=='prepared-current')
+                facade.program_page=direct_page if args.direct and variant!='sql' else original_page
+                benchmark.program_page=facade.program_page
                 report['variants'][variant]={}
-                app=create_app(Settings(database_url=engine.url.render_as_string(hide_password=False),auto_create_schema=False))
+                url=engine.url.update_query_dict({'options':engine.url.query['options']+' -cstatement_timeout=10000'})
+                app=create_app(Settings(database_url=url.render_as_string(hide_password=False),auto_create_schema=False))
                 with TestClient(app,raise_server_exceptions=False) as client:
                     for name,params in cases.items():
                         print(variant+' '+name,flush=True)
                         for _ in range(10):
                             with Session(engine) as db:facade.program_page(db,**params)
-                        result=measure(engine,params,50,10000)
+                        monitor=Resources(runtime.name);thread=threading.Thread(target=monitor.run,daemon=True)
+                        before=pg_stats(engine);thread.start()
+                        try:result=measure(engine,params,50,10000)
+                        finally:monitor.stop.set();thread.join(timeout=6)
+                        after=pg_stats(engine)
+                        result['singlePostgresStatsDelta']={k:after[k]-before[k] for k in before}
+                        result['singlePostgresContainerSamples']=monitor.samples
                         http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
                         for _ in range(10):client.get('/api/v1/catalog/programs',params=http_params)
-                        result['concurrent']=[load_test(client,http_params,n,engine,runtime) for n in (10,25,50)]
+                        result['concurrent']=[load_test(client,http_params,n,engine,runtime,args.load_seconds) for n in (10,25,50)]
                         report['variants'][variant][name]=result;save()
     finally:
         facade.program_index=original
+        facade.program_page=original_page
+        benchmark.program_page=original_page
     save()
 
 

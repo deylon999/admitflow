@@ -20,12 +20,15 @@ class PostgresRuntime:
 
 
 @contextmanager
-def disposable_postgres():
+def disposable_postgres(*, shm_size=None):
+    if shm_size not in (None, '64m', '1g'):
+        raise ValueError('unsupported disposable shared-memory profile')
     name = f'admitflow-test-{uuid4().hex}'
     created = False
     try:
         subprocess.run([
             'docker', 'run', '--detach', '--rm', '--name', name,
+            *(['--shm-size', shm_size] if shm_size else []),
             '--publish', '127.0.0.1::5432',
             '--env', 'POSTGRES_USER=admitflow', '--env', 'POSTGRES_PASSWORD=admitflow',
             '--env', 'POSTGRES_DB=admitflow_test_native', 'postgres:17-alpine',
