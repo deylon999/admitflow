@@ -1780,3 +1780,9 @@ Native PostgreSQL selection33passed/0skip46.80s (projection/publication/metadata
 migration offline SQL). f100f5c Linux CI44999820936 green; final new SHA pending.
 Target-year100k comparative read trial is running; preliminary production-only
 facade p95 56/15/117/134ms, exact source response hashes equal. Not final acceptance.
+
+Added an isolated loopback Uvicorn1/4-worker benchmark to distinguish Python
+TestClient contention from PostgreSQL load, record seed statement timings and
+50 committed100-program revision replacements before50 read samples. Captures
+every measured SELECT plan, including prepared pagination/totals. Compile/help
+checks pass; full execution follows the running architecture comparison.

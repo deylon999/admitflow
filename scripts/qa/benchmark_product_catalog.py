@@ -155,7 +155,7 @@ def measure(engine, params, repeats, timeout_ms):
     with engine.connect() as db:
         db.execute(text(f'SET LOCAL statement_timeout={timeout_ms}'))
         for sql,parameters in statements:
-            if 'count(*)' in sql.lower() or ('LIMIT' in sql and 'program_catalog_facts' in sql):
+            if sql.lstrip().upper().startswith(('SELECT', 'WITH')):
                 plan=db.exec_driver_sql('EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON) '+sql,parameters).scalar()
                 plans.append(dict(sql=sql,plan=plan))
     digest=hashlib.sha256(json.dumps(result.model_dump(mode='json'),ensure_ascii=False,sort_keys=True).encode()).hexdigest()
