@@ -17,7 +17,7 @@ from .program_catalog_models import ProgramCatalogReadFact as ReadFact, ProgramC
 
 
 def _inputs():
-    return (tuple(r.id for r in load_catalog().institutions),tuple(r.id for r in load_registry().registry_only),tuple(REVIEWED_IDS))
+    return load_catalog().institution_ids, load_registry().registry_only_ids, tuple(REVIEWED_IDS)
 
 
 @lru_cache(maxsize=8)

@@ -1,10 +1,11 @@
 """Read facade for v3. Old catalog and tracker contracts remain independent."""
 from datetime import datetime, time, timezone
+from functools import lru_cache
 import re
 from typing import Literal
 
 from fastapi import Depends, HTTPException, Query
-from sqlalchemy import BigInteger, Integer, case, cast, exists, func, inspect, literal, null, select, true, tuple_, union_all
+from sqlalchemy import BigInteger, Integer, String, bindparam, case, cast, exists, func, inspect, literal, null, select, true, tuple_, union_all
 from sqlalchemy.orm import Session
 
 from ..admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
@@ -30,7 +31,7 @@ def legacy_programs(db, *, with_program_links=True, university_id='', joined_lin
                 if not university_id or dict(p.catalog)['university_id'] == university_id}
     if not profiles:
         return []
-    institutions = {r.id: r for r in load_catalog().institutions}
+    institutions = load_catalog().by_id
     query = (select(CompetitionGroup, Campaign, University)
                       .join(Campaign, Campaign.id == CompetitionGroup.campaign_id)
                       .join(University, University.id == Campaign.university_id)
@@ -129,23 +130,19 @@ def program_index(db):
     return archive_index(prepared,legacy),legacy
 
 
-def published_program(fact, revision, campaign, groups, regions):
+def published_program(fact, revision, campaign, groups, institutions, registry_only):
     source = Provenance(url=revision.original_url, verified_at=revision.checked_at,
                         kind='admissions', original_sha256=revision.original_sha256)
+    institution = institutions.get(campaign.university_id)
+    region = institution.region if institution else registry_only[campaign.university_id].region or 'Регион не указан'
     return CatalogProgram(id=fact.public_id, program_id=fact.program_id,
         university_id=campaign.university_id, university_name=revision.university_name,
-        region=regions[campaign.university_id], campaign_id=campaign.id, year=campaign.year, level=campaign.level,
+        region=region, campaign_id=campaign.id, year=campaign.year, level=campaign.level,
         code=fact.code, title=fact.title, study_form=fact.study_form, funding=fact.funding,
         category=fact.category, seats=fact.seats, provenance=source,
         competition_groups=[CatalogCompetitionGroup(campaign_id=campaign.id, provenance=source,
             **{key:g[key] for key in ('id','official_id','title','study_form','funding','category','seats')})
             for g in sorted(groups, key=lambda g:g['id'])])
-
-
-def university_regions():
-    regions = {r.id:r.region for r in load_catalog().institutions}
-    regions.update({r.id:r.region or 'Регион не указан' for r in load_registry().registry_only})
-    return regions
 
 
 def hydrate_programs(db, keys, legacy):
@@ -156,12 +153,13 @@ def hydrate_programs(db, keys, legacy):
         groups = {}
         for value in db.scalars(select(GroupFact).where(tuple_(GroupFact.revision_id, GroupFact.program_id).in_(selected))):
             groups.setdefault((value.revision_id, value.program_id), []).append(value.facts)
-        regions = university_regions()
+        institutions = load_catalog().by_id
+        registry_only = load_registry().registry_only_by_id
         for fact, revision, campaign in db.execute(select(Fact, Revision, Campaign)
                 .join(Revision, Revision.id == Fact.revision_id).join(Campaign, Campaign.id == Fact.campaign_id)
                 .where(tuple_(Fact.revision_id, Fact.program_id).in_(selected))):
             result[fact.public_id] = published_program(fact, revision, campaign,
-                groups.get((fact.revision_id, fact.program_id), []), regions)
+                groups.get((fact.revision_id, fact.program_id), []), institutions, registry_only)
     return [result[r.id] for r in keys]
 
 
@@ -199,19 +197,26 @@ def published_count(university_id, year, code):
     return query
 
 
-def first_prepared_page(db, *, university_id, year, code, limit, sort):
-    """Return metadata, page keys and their payload in one PostgreSQL statement.
-
-    The independently verified archive is bounded and lives in the same request
-    snapshot. No archive can belong to a university outside its reviewed scope.
-    """
-    legacy = {p.id: p for p in legacy_programs(db, university_id=university_id, joined_links=True)}
+@lru_cache(maxsize=64)
+def first_page_statement(by_university, by_year, by_code, sort, archive_size):
+    """Reuse parameterized SQL shapes, never request data or a page result."""
+    university_id = bindparam('catalog_university', type_=String) if by_university else None
+    year = bindparam('catalog_year', type_=Integer) if by_year else None
+    code = bindparam('catalog_code', type_=String) if by_code else None
+    limit = bindparam('catalog_limit', type_=Integer)
     scope = select(ReadScope.scope_hash).where(ReadScope.id == 1).scalar_subquery()
     years = select(ReadTotal.year).distinct()
-    if university_id:
+    if by_university:
         years = years.where(ReadTotal.university_id == university_id)
     years_scope = years.subquery()
-    counts = published_count(university_id, year, code)
+    table = CodeTotal if by_code else ReadTotal
+    counts = select(func.coalesce(func.sum(table.program_count), 0))
+    if by_year:
+        counts = counts.where(table.year == year)
+    if by_university:
+        counts = counts.where(table.university_id == university_id)
+    if by_code:
+        counts = counts.where(CodeTotal.code == code)
     meta = select(scope.label('policy_hash'), counts.scalar_subquery().label('total'),
                   select(func.array_agg(years_scope.c.year)).scalar_subquery().label('years')).cte('catalog_meta')
 
@@ -221,39 +226,54 @@ def first_prepared_page(db, *, university_id, year, code, limit, sort):
 
     def filtered(columns):
         query = select(columns.id, columns.pid, columns.rid, columns.sort_text)
-        if university_id:
+        if by_university:
             query = query.where(columns.university_id == university_id)
-        if year is not None:
+        if by_year:
             query = query.where(columns.year == year)
-        if code:
-            query = query.where(func.strpos(columns.search_text, code) > 0)
+        if by_code:
+            query = query.where(select(meta.c.total).scalar_subquery() > 0, func.strpos(columns.search_text, code) > 0)
         return query.order_by(*ordered(columns)).limit(limit)
 
     # Limit the sorted canonical branch before combining it with the archive.
     published = read_projection.fact_statement().subquery()
     source_page = filtered(published.c)
-    archive = [p for p in legacy.values()
-               if (year is None or p.year == year) and (not code or code in archive_search_text(p))]
-    if archive:
-        parts = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'),
-                        literal(None).label('rid'), literal(p.title.casefold()).label('sort_text')) for p in archive]
+    if archive_size:
+        parts = [select(bindparam(f'archive_id_{i}', type_=String).label('id'),
+                        bindparam(f'archive_program_{i}', type_=String).label('pid'),
+                        literal(None).label('rid'), bindparam(f'archive_sort_{i}', type_=String).label('sort_text'))
+                 for i in range(archive_size)]
         merged = union_all(source_page, *parts).subquery()
         source_page = select(merged).order_by(*ordered(merged.c)).limit(limit)
     page = source_page.cte('catalog_first_page')
     groups = (select(func.json_agg(GroupFact.facts))
         .where(GroupFact.revision_id == page.c.rid, GroupFact.program_id == page.c.pid).scalar_subquery())
-    rows = db.execute(select(meta.c.policy_hash, meta.c.total, meta.c.years, page.c.id,
+    return (select(meta.c.policy_hash, meta.c.total, meta.c.years, page.c.id,
         Fact, Revision, Campaign, groups)
         .select_from(meta.outerjoin(page, true()))
         .outerjoin(Fact, (Fact.revision_id == page.c.rid) & (Fact.program_id == page.c.pid))
         .outerjoin(Revision, Revision.id == page.c.rid)
         .outerjoin(Campaign, Campaign.id == Fact.campaign_id)
-        .order_by(*ordered(page.c))).all()
+        .order_by(*ordered(page.c)))
+
+
+def first_prepared_page(db, *, university_id, year, code, limit, sort):
+    """Read metadata, selected keys and payload in one statement, plus the bounded archive."""
+    legacy = {p.id: p for p in legacy_programs(db, university_id=university_id, joined_links=True)}
+    archive = [p for p in legacy.values()
+               if (year is None or p.year == year) and (not code or code in archive_search_text(p))]
+    statement = first_page_statement(bool(university_id), year is not None, bool(code), sort, len(archive))
+    parameters = dict(catalog_university=university_id, catalog_year=year, catalog_code=code, catalog_limit=limit)
+    for i, program in enumerate(archive):
+        parameters[f'archive_id_{i}'] = program.id
+        parameters[f'archive_program_{i}'] = program.program_id
+        parameters[f'archive_sort_{i}'] = program.title.casefold()
+    rows = db.execute(statement, parameters).all()
     policy_hash, source_count, available_years = rows[0][:3]
     if not read_projection.matches_policy(policy_hash):
         return None
-    regions = university_regions()
-    items = [published_program(fact, rev, campaign, group_facts or [], regions) if fact else legacy[identifier]
+    institutions = load_catalog().by_id
+    registry_only = load_registry().registry_only_by_id
+    items = [published_program(fact, rev, campaign, group_facts or [], institutions, registry_only) if fact else legacy[identifier]
              for _, _, _, identifier, fact, rev, campaign, group_facts in rows if identifier is not None]
     total = source_count + len(archive)
     return ProgramPage(items=items, total=total, next_offset=limit if limit < total else None,

@@ -8,7 +8,7 @@ artifact is never partly trusted.
 """
 from dataclasses import dataclass
 from datetime import date, datetime
-from functools import lru_cache
+from functools import cached_property, lru_cache
 import hashlib
 import json
 from pathlib import Path
@@ -63,10 +63,18 @@ class Registry:
     def by_catalog_id(self):
         return {o.catalog_registry_id: o for o in self.organisations if o.catalog_registry_id}
 
-    @property
+    @cached_property
     def registry_only(self):
         """Domestic organisations absent from the monitoring catalog, without ambiguous duplicates."""
         return tuple(o for o in self.organisations if not o.abroad and o.catalog_registry_id is None and o.ogrn not in self.ambiguous)
+
+    @cached_property
+    def registry_only_by_id(self):
+        return MappingProxyType({row.id: row for row in self.registry_only})
+
+    @cached_property
+    def registry_only_ids(self):
+        return tuple(self.registry_only_by_id)
 
 
 def _optional_text(value, maximum):

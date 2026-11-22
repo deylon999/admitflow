@@ -6,7 +6,7 @@ subscriptions and the small operator-owned source registry remain in the DB.
 import argparse
 from dataclasses import dataclass
 from datetime import datetime
-from functools import lru_cache
+from functools import cached_property, lru_cache
 import hashlib
 import json
 import os
@@ -45,6 +45,14 @@ class CatalogSnapshot:
     sha256: str
     region_count: int
     source_url: str
+
+    @cached_property
+    def by_id(self):
+        return MappingProxyType({row.id: row for row in self.institutions})
+
+    @cached_property
+    def institution_ids(self):
+        return tuple(self.by_id)
 
 
 def valid_url(value, *, provenance=False):
