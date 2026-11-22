@@ -1,7 +1,7 @@
 """Owned PG serving/write benchmark; synthetic fixtures, no production settings.
 
 Measure real loopback HTTP separately from in-process TestClient contention.
-One and four Uvicorn worker processes use the unchanged application/pool policy.
+One, four or eight Uvicorn workers use the unchanged application/pool policy.
 """
 import argparse
 from contextlib import contextmanager
@@ -14,6 +14,7 @@ import socket
 import subprocess
 import sys
 import time
+from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path[:0] = [str(ROOT), str(ROOT / 'backend'), str(ROOT / 'backend/tests')]
@@ -31,7 +32,7 @@ from app.migrations import upgrade_schema
 from pg_support import isolated_postgres
 from scripts.ops.postgres_runtime import disposable_postgres
 from scripts.qa.benchmark_product_catalog import measure, percentile, seed
-from scripts.qa.compare_catalog_read_models import load_test, pg_stats
+from scripts.qa.compare_catalog_read_models import compare, load_test, pg_stats
 
 
 def application():
@@ -56,7 +57,7 @@ def server(engine, workers, log_path):
             start_new_session=os.name != 'nt')
         try:
             with httpx.Client(base_url=f'http://127.0.0.1:{port}', trust_env=False,
-                    timeout=60, limits=httpx.Limits(max_connections=50, max_keepalive_connections=50)) as client:
+                    timeout=10, limits=httpx.Limits(max_connections=50, max_keepalive_connections=50)) as client:
                 deadline = time.monotonic() + 60
                 while True:
                     if proc.poll() is not None:
@@ -86,12 +87,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--workers', nargs='+', type=int, choices=[1, 4, 8], default=[1, 4])
+    parser.add_argument('--smoke',action='store_true',help='Small fixture/one-second phases to validate the harness; never scale acceptance evidence')
+    parser.add_argument('--compare-output',type=Path,help='Run serial SQL alternatives on the same disposable fixture after serving')
     args = parser.parse_args()
+    if args.smoke and args.compare_output:
+        parser.error('--compare-output requires the scale fixture')
     args.output.parent.mkdir(parents=True, exist_ok=True)
     report = dict(sourceCommit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         dirty=bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True)),
         platform=platform.platform(), python=platform.python_version(), logicalCPUs=os.cpu_count(),
-        synthetic=True, serving={}, facade={})
+        synthetic=True, smoke=args.smoke, serving={}, facade={})
     def save():
         args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     with disposable_postgres(shm_size='1g') as runtime, isolated_postgres(runtime.url()) as engine:
@@ -106,7 +111,8 @@ def main():
         event.listen(engine, 'after_cursor_execute', after)
         try:
             started = time.perf_counter()
-            report['fixture'] = seed(engine, target_year_per_campaign=100)
+            report['fixture'] = seed(engine, heads=4 if args.smoke else 785,branches=1 if args.smoke else 215,
+                per_campaign=2 if args.smoke else 25,target_year_per_campaign=4 if args.smoke else 100)
             report['seedSeconds'] = time.perf_counter() - started
         finally:
             event.remove(engine, 'before_cursor_execute', before)
@@ -123,7 +129,7 @@ def main():
             started = time.perf_counter()
             command.upgrade(config, '0015')
             report['populatedUpgradeSeconds'] = time.perf_counter() - started
-            assert connection.scalar(text('SELECT sum(program_count) FROM program_catalog_read_totals')) == 175000
+            assert connection.scalar(text('SELECT sum(program_count) FROM program_catalog_read_totals')) == report['fixture']['currentPrograms']
             connection.rollback()
         save()
         with engine.connect() as db:
@@ -148,23 +154,29 @@ def main():
                     {'revision': revision, 'document': document})
             writes.append((time.perf_counter() - started) * 1000)
         report['incrementalPublicationMs'] = dict(samples=writes, p95=percentile(writes, .95))
+        save()
         report['literalSearchSQL']={}
+        with engine.connect() as db:
+            expected=db.scalar(text("SELECT count(*) FROM program_catalog_facts f JOIN program_catalog_publications p ON p.revision_id=f.revision_id JOIN campaigns c ON c.id=f.campaign_id WHERE c.year=2027 AND f.code='09.03.04'"))
+        report['literalSearchExpectedTotal']=expected
         for name,predicate in [('like',"search_text LIKE '%09.03.04%'"),('strpos',"strpos(search_text,'09.03.04')>0")]:
             sql='SELECT count(*) FROM program_catalog_read_facts WHERE eligible AND year=2027 AND '+predicate
             with engine.connect() as db:
-                for _ in range(10):assert db.scalar(text(sql))==64500
+                for _ in range(10):assert db.scalar(text(sql))==expected
                 samples=[]
                 for _ in range(50):
                     started=time.perf_counter()
-                    assert db.scalar(text(sql))==64500
+                    assert db.scalar(text(sql))==expected
                     samples.append((time.perf_counter()-started)*1000)
-                plan=db.exec_driver_sql('EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) '+sql).scalar()
+                plan=db.execute(text('EXPLAIN (ANALYZE,BUFFERS,FORMAT JSON) '+sql)).scalar()
                 report['literalSearchSQL'][name]=dict(samples=samples,p95=percentile(samples,.95),plan=plan)
+        save()
         # Query planner statistics and visibility maps are left as obtained
         # after writes; do not VACUUM away the cost of recent publication.
         cases = dict(first={}, university={'university_id': report['fixture']['sampleUniversity'], 'year': 2027},
-            code={'q': '09.03.04', 'year': 2027}, deep={'year': 2027, 'offset': 99988},
-            middle={'year':2027,'offset':50000})
+            code={'q': '09.03.04', 'year': 2027},
+            deep={'year': 2027, 'offset':max(0,report['fixture']['targetYearPrograms']-12)},
+            middle={'year':2027,'offset':report['fixture']['targetYearPrograms']//2})
         oracle = {}
         for name, params in cases.items():
             with Session(engine) as db:
@@ -172,6 +184,7 @@ def main():
             oracle[name] = hashlib.sha256(json.dumps(value.model_dump(mode='json'), ensure_ascii=False, sort_keys=True).encode()).hexdigest()
             report['facade'][name] = measure(engine, params, 50, 10000)
             assert report['facade'][name]['responseSha256'] == oracle[name]
+            save()
         report['oracle'] = oracle
         save()
         for workers in args.workers:
@@ -186,11 +199,21 @@ def main():
                     digest = hashlib.sha256(json.dumps(value.model_dump(mode='json'), ensure_ascii=False, sort_keys=True).encode()).hexdigest()
                     assert digest == oracle[name], (workers, name, 'HTTP/source mismatch')
                     print('HTTP workers', workers, name, flush=True)
-                    report['serving'][str(workers)][name] = [load_test(client, http_params, n, engine, runtime, 10)
-                        for n in (1, 10, 25, 50)]
-                    save()
+                    phases = report['serving'][str(workers)][name] = []
+                    for concurrency in (1, 10, 25, 50):
+                        phases.append(load_test(client, http_params, concurrency, engine, runtime, 1 if args.smoke else 10))
+                        save()
         report['finalPostgresStats'] = pg_stats(engine)
         save()
+        if args.compare_output:
+            alternatives = dict(sourceCommit=report['sourceCommit'], dirty=report['dirty'],
+                fixture=report['fixture'], experimental=True, http=False, shmSize='1g',
+                variants={}, seedWithPublicationSeconds=report['seedSeconds'])
+            def save_alternatives():
+                args.compare_output.parent.mkdir(parents=True, exist_ok=True)
+                args.compare_output.write_text(json.dumps(alternatives, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')
+            compare(engine, runtime, SimpleNamespace(variants=['sql','prepared-current','prepared-eligible','source-indexed'],
+                no_http=True), alternatives, save_alternatives)
 
 
 if __name__ == '__main__':

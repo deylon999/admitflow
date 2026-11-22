@@ -20,6 +20,7 @@ sys.path[:0]=[str(ROOT),str(ROOT/'backend'),str(ROOT/'backend/tests')]
 from sqlalchemy import MetaData, Table, exists, literal, select, text, union_all
 from sqlalchemy.orm import Session
 from fastapi.testclient import TestClient
+import httpx
 import app.catalog.product_catalog as facade
 from app.catalog.program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication
 from app.admissions import Campaign
@@ -123,7 +124,12 @@ def load_test(client,params,workers,engine,runtime,seconds):
         deadline=time.monotonic()+seconds
         while len(rows)<max(2,math.ceil(50/workers)) or time.monotonic()<deadline:
             start=time.perf_counter()
-            response=client.get('/api/v1/catalog/programs',params=params)
+            try:
+                response=client.get('/api/v1/catalog/programs',params=params)
+            except httpx.TransportError as error:
+                rows.append(dict(ms=(time.perf_counter()-start)*1000,status=None,total=None,
+                    transportError=type(error).__name__))
+                continue
             rows.append(dict(ms=(time.perf_counter()-start)*1000,status=response.status_code,
                 total=response.json().get('total') if response.status_code==200 else None))
         return rows
@@ -139,6 +145,7 @@ def load_test(client,params,workers,engine,runtime,seconds):
     return dict(concurrency=workers,requests=len(rows),seconds=elapsed,rps=len(rows)/elapsed,
         p50=statistics.median(values),p95=values[math.ceil(.95*len(values))-1],
         failures=sum(r['status']!=200 for r in rows),totals=sorted({r['total'] for r in rows if r['total'] is not None}),
+        transportFailures=sum('transportError' in r for r in rows),
         samples=rows,postgresStatsDelta={k:after[k]-before[k] for k in before},
         postgresContainerSamples=monitor.samples,
         resourcePolicy='Docker working-set/CPU of the owned PostgreSQL container; includes background PG activity, excludes Python. pg_stat_database counters may lag by one statistics flush interval.')
@@ -163,91 +170,95 @@ def main():
     def save():
         args.output.parent.mkdir(parents=True,exist_ok=True)
         args.output.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+    with disposable_postgres(shm_size=args.shm_size) as runtime,isolated_postgres(runtime.url()) as engine:
+        upgrade_schema(engine);import_reviewed(engine)
+        print('Seeding100k...',flush=True)
+        start=time.perf_counter()
+        report['fixture']=seed(engine,target_year_per_campaign=100)
+        report['seedWithPublicationSeconds']=time.perf_counter()-start
+        compare(engine, runtime, args, report, save)
+
+
+def compare(engine, runtime, args, report, save):
     original=facade.program_index
     original_page=facade.program_page
     source_index=facade.source_program_index
     source_page=facade.source_program_page
     try:
-        with disposable_postgres(shm_size=args.shm_size) as runtime,isolated_postgres(runtime.url()) as engine:
-            upgrade_schema(engine);import_reviewed(engine)
-            print('Seeding100k...',flush=True)
-            start=time.perf_counter()
-            report['fixture']=seed(engine,target_year_per_campaign=100)
-            report['seedWithPublicationSeconds']=time.perf_counter()-start
-            with engine.connect() as db:
-                report['postgresVersion']=db.scalar(text('SHOW server_version'))
-                report['schemaRevision']=db.scalar(text('SELECT version_num FROM alembic_version'))
-                report['settings']={key:db.scalar(text('SELECT current_setting(:key)'),{'key':key}) for key in
-                    ['work_mem','hash_mem_multiplier','shared_buffers','max_parallel_workers_per_gather','max_connections','dynamic_shared_memory_type','track_io_timing']}
+        with engine.connect() as db:
+            report['postgresVersion']=db.scalar(text('SHOW server_version'))
+            report['schemaRevision']=db.scalar(text('SELECT version_num FROM alembic_version'))
+            report['settings']={key:db.scalar(text('SELECT current_setting(:key)'),{'key':key}) for key in
+                ['work_mem','hash_mem_multiplier','shared_buffers','max_parallel_workers_per_gather','max_connections','dynamic_shared_memory_type','track_io_timing']}
+        with Session(engine) as db:
+            index,_=source_index(db)
+            eligible_query=select(index).where(index.c.rid.is_not(None))
+            eligible=create_prototype(engine,'scale_eligible',eligible_query)
+        current_query=(select(Fact.public_id.label('id'),Fact.program_id.label('pid'),Fact.revision_id.label('rid'),
+            Fact.campaign_id.label('cid'),Campaign.university_id,Campaign.year,Fact.sort_text,Fact.search_text)
+            .join(Revision,Revision.id==Fact.revision_id).join(Publication,Publication.revision_id==Revision.id)
+            .join(Campaign,Campaign.id==Fact.campaign_id).where(Revision.verification_status=='verified'))
+        current=create_prototype(engine,'scale_current',current_query)
+        # Visibility-map state is recorded; steady-state and subsequent
+        # transactional-update benchmarks must be reported separately.
+        with engine.connect().execution_options(isolation_level='AUTOCOMMIT') as db:
+            db.exec_driver_sql('VACUUM ANALYZE scale_current');db.exec_driver_sql('VACUUM ANALYZE scale_eligible')
+        cases=dict(first={},university={'university_id':report['fixture']['sampleUniversity'],'year':2027},
+            code={'q':'09.03.04','year':2027},deep={'year':2027,'offset':99988})
+        oracle={}
+        for name,params in cases.items():
             with Session(engine) as db:
-                index,_=source_index(db)
-                eligible_query=select(index).where(index.c.rid.is_not(None))
-                eligible=create_prototype(engine,'scale_eligible',eligible_query)
-            current_query=(select(Fact.public_id.label('id'),Fact.program_id.label('pid'),Fact.revision_id.label('rid'),
-                Fact.campaign_id.label('cid'),Campaign.university_id,Campaign.year,Fact.sort_text,Fact.search_text)
-                .join(Revision,Revision.id==Fact.revision_id).join(Publication,Publication.revision_id==Revision.id)
-                .join(Campaign,Campaign.id==Fact.campaign_id).where(Revision.verification_status=='verified'))
-            current=create_prototype(engine,'scale_current',current_query)
-            # Visibility-map state is recorded; steady-state and subsequent
-            # transactional-update benchmarks must be reported separately.
-            with engine.connect().execution_options(isolation_level='AUTOCOMMIT') as db:
-                db.exec_driver_sql('VACUUM ANALYZE scale_current');db.exec_driver_sql('VACUUM ANALYZE scale_eligible')
-            cases=dict(first={},university={'university_id':report['fixture']['sampleUniversity'],'year':2027},
-                code={'q':'09.03.04','year':2027},deep={'year':2027,'offset':99988})
-            oracle={}
-            for name,params in cases.items():
-                with Session(engine) as db:
-                    result=source_page(db,**params)
-                    oracle[name]=hashlib.sha256(json.dumps(result.model_dump(mode='json'),ensure_ascii=False,sort_keys=True).encode()).hexdigest()
-            report['oracle']=oracle
-            for variant in args.variants:
-                if variant=='source-indexed':
-                    start=time.perf_counter()
-                    with engine.begin() as db:
-                        db.exec_driver_sql('CREATE INDEX scale_source_scope ON program_catalog_facts(program_id,campaign_id,revision_id)')
-                        db.exec_driver_sql('CREATE INDEX scale_source_campaign_order ON program_catalog_facts(campaign_id,sort_text,public_id)')
-                        db.exec_driver_sql('CREATE INDEX scale_source_publication ON program_catalog_publications(revision_id)')
-                        db.exec_driver_sql('CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public')
-                        db.exec_driver_sql('CREATE INDEX scale_source_search ON program_catalog_facts USING gin(search_text public.gin_trgm_ops)')
-                        db.exec_driver_sql('ANALYZE')
-                        report['sourceIndexBytes']=db.scalar(text("SELECT sum(pg_relation_size(indexrelid)) FROM pg_index WHERE indexrelid::regclass::text LIKE '%scale_source_%'"))
-                    report['sourceIndexBuildSeconds']=time.perf_counter()-start
-                if variant in ('sql','source-indexed'):
-                    facade.program_index=source_index;facade.program_page=source_page
-                elif variant=='transactional':
-                    facade.program_index=original;facade.program_page=original_page
-                else:
-                    facade.program_index=prepared_factory(current if variant=='prepared-current' else eligible,check_conflicts=variant=='prepared-current')
-                    facade.program_page=direct_page
-                benchmark.program_page=facade.program_page
-                report['variants'][variant]={}
-                url=engine.url.update_query_dict({'options':engine.url.query['options']+' -cstatement_timeout=10000'})
-                app=create_app(Settings(database_url=url.render_as_string(hide_password=False),auto_create_schema=False))
-                with TestClient(app,raise_server_exceptions=False) as client:
-                    for name,params in cases.items():
-                        print(variant+' '+name,flush=True)
-                        for _ in range(10):
-                            with Session(engine) as db:
-                                db.execute(text('SET LOCAL statement_timeout=10000'))
-                                facade.program_page(db,**params)
-                        monitor=Resources(runtime.name);thread=threading.Thread(target=monitor.run,daemon=True)
-                        before=pg_stats(engine);thread.start()
-                        try:result=measure(engine,params,50,10000)
-                        finally:monitor.stop.set();thread.join(timeout=6)
-                        after=pg_stats(engine)
-                        result['matchesSourceOracle']=result.get('responseSha256')==oracle[name]
-                        result['singlePostgresStatsDelta']={k:after[k]-before[k] for k in before}
-                        result['singlePostgresContainerSamples']=monitor.samples
-                        # Persist successful serial evidence even if a later
-                        # overload trial must be stopped for resource pressure.
-                        report['variants'][variant][name]=result;save()
-                        if args.no_http or result.get('timedOut'):
-                            continue
-                        http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
-                        for _ in range(10):client.get('/api/v1/catalog/programs',params=http_params)
-                        result['httpSingle']=load_test(client,http_params,1,engine,runtime,args.load_seconds)
-                        result['concurrent']=[load_test(client,http_params,n,engine,runtime,args.load_seconds) for n in (10,25,50)]
-                        report['variants'][variant][name]=result;save()
+                result=source_page(db,**params)
+                oracle[name]=hashlib.sha256(json.dumps(result.model_dump(mode='json'),ensure_ascii=False,sort_keys=True).encode()).hexdigest()
+        report['oracle']=oracle
+        for variant in args.variants:
+            if variant=='source-indexed':
+                start=time.perf_counter()
+                with engine.begin() as db:
+                    db.exec_driver_sql('CREATE INDEX scale_source_scope ON program_catalog_facts(program_id,campaign_id,revision_id)')
+                    db.exec_driver_sql('CREATE INDEX scale_source_campaign_order ON program_catalog_facts(campaign_id,sort_text,public_id)')
+                    db.exec_driver_sql('CREATE INDEX scale_source_publication ON program_catalog_publications(revision_id)')
+                    db.exec_driver_sql('CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public')
+                    db.exec_driver_sql('CREATE INDEX scale_source_search ON program_catalog_facts USING gin(search_text public.gin_trgm_ops)')
+                    db.exec_driver_sql('ANALYZE')
+                    report['sourceIndexBytes']=db.scalar(text("SELECT sum(pg_relation_size(indexrelid)) FROM pg_index WHERE indexrelid::regclass::text LIKE '%scale_source_%'"))
+                report['sourceIndexBuildSeconds']=time.perf_counter()-start
+            if variant in ('sql','source-indexed'):
+                facade.program_index=source_index;facade.program_page=source_page
+            elif variant=='transactional':
+                facade.program_index=original;facade.program_page=original_page
+            else:
+                facade.program_index=prepared_factory(current if variant=='prepared-current' else eligible,check_conflicts=variant=='prepared-current')
+                facade.program_page=direct_page
+            benchmark.program_page=facade.program_page
+            report['variants'][variant]={}
+            url=engine.url.update_query_dict({'options':engine.url.query['options']+' -cstatement_timeout=10000'})
+            app=create_app(Settings(database_url=url.render_as_string(hide_password=False),auto_create_schema=False))
+            with TestClient(app,raise_server_exceptions=False) as client:
+                for name,params in cases.items():
+                    print(variant+' '+name,flush=True)
+                    for _ in range(10):
+                        with Session(engine) as db:
+                            db.execute(text('SET LOCAL statement_timeout=10000'))
+                            facade.program_page(db,**params)
+                    monitor=Resources(runtime.name);thread=threading.Thread(target=monitor.run,daemon=True)
+                    before=pg_stats(engine);thread.start()
+                    try:result=measure(engine,params,50,10000)
+                    finally:monitor.stop.set();thread.join(timeout=6)
+                    after=pg_stats(engine)
+                    result['matchesSourceOracle']=result.get('responseSha256')==oracle[name]
+                    result['singlePostgresStatsDelta']={k:after[k]-before[k] for k in before}
+                    result['singlePostgresContainerSamples']=monitor.samples
+                    # Persist successful serial evidence even if a later
+                    # overload trial must be stopped for resource pressure.
+                    report['variants'][variant][name]=result;save()
+                    if args.no_http or result.get('timedOut'):
+                        continue
+                    http_params={('universityId' if k=='university_id' else k):v for k,v in params.items()}
+                    for _ in range(10):client.get('/api/v1/catalog/programs',params=http_params)
+                    result['httpSingle']=load_test(client,http_params,1,engine,runtime,args.load_seconds)
+                    result['concurrent']=[load_test(client,http_params,n,engine,runtime,args.load_seconds) for n in (10,25,50)]
+                    report['variants'][variant][name]=result;save()
     finally:
         facade.program_index=original
         facade.program_page=original_page
