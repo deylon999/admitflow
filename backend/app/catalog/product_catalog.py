@@ -4,20 +4,20 @@ import re
 from typing import Literal
 
 from fastapi import Depends, HTTPException, Query
-from sqlalchemy import func, inspect, literal, select, tuple_, union_all
+from sqlalchemy import BigInteger, Integer, case, cast, exists, func, inspect, literal, null, select, tuple_, union_all
 from sqlalchemy.orm import Session
 
-from app.admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
-from app.catalog.catalog_import import REVIEWED_IDS, expected_fields, reviewed_profiles
-from app.catalog.accreditation_registry import SOURCE_URL as ACCREDITATION_URL, load_registry
-from app.catalog.national_catalog import load_catalog
-from app.catalog.exam_requirements import SUBJECTS, for_group
-from app.catalog.product_catalog_schemas import (
+from ..admissions import Campaign, CompetitionGroup, CompetitionGroupProgram, University
+from .catalog_import import REVIEWED_IDS, expected_fields, reviewed_profiles
+from .accreditation_registry import SOURCE_URL as ACCREDITATION_URL, load_registry
+from .national_catalog import load_catalog
+from .exam_requirements import SUBJECTS, for_group
+from .product_catalog_schemas import (
     Accreditation, CatalogCompetitionGroup, CatalogProgram, CatalogUniversity, ExamOption, ExamRequirements, ExamSource, ExamTest, ProgramPage,
     Provenance, UniversityPage, UniversityNameSource, BranchInfo,
 )
-from app.catalog.university_names import choose_name
-from app.catalog.program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
+from .university_names import choose_name
+from .program_catalog_models import ProgramCatalogFact as Fact, ProgramCatalogRevision as Revision, ProgramCatalogPublication as Publication, ProgramCatalogGroupFact as GroupFact
 
 
 def legacy_programs(db, *, with_program_links=True):
@@ -74,15 +74,23 @@ def program_index(db):
     legacy = {row.id: row for row in legacy_programs(db)}
     known = [r.id for r in load_catalog().institutions] + [r.id for r in load_registry().registry_only]
     current = (select(Fact.public_id.label('id'), Fact.program_id.label('pid'), Fact.revision_id.label('rid'),
-        Campaign.university_id, Campaign.year, Fact.sort_text, Fact.search_text,
-        func.count().over(partition_by=Fact.public_id).label('public_count'),
-        func.count().over(partition_by=(Fact.program_id, Fact.campaign_id)).label('scope_count'))
+        Fact.campaign_id.label('cid'), Campaign.university_id, Campaign.year, Fact.sort_text, Fact.search_text)
         .join(Revision, Revision.id == Fact.revision_id)
         .join(Publication, Publication.revision_id == Revision.id)
         .join(Campaign, Campaign.id == Fact.campaign_id)
-        .where(Revision.verification_status == 'verified', Campaign.university_id.in_(known)).subquery())
+        .where(Revision.verification_status == 'verified', Campaign.university_id.in_(known)).cte('catalog_current'))
+    # Global collision checks compare identity keys, never titles or request
+    # filters. Anti joins avoid sorting wide strings for two windows.
+    rival_public = current.alias('rival_public')
+    rival_scope = current.alias('rival_scope')
+    public_conflict = exists(select(1).select_from(rival_public).where(
+        rival_public.c.id == current.c.id,
+        (rival_public.c.rid != current.c.rid) | (rival_public.c.pid != current.c.pid))).correlate(current)
+    scope_conflict = exists(select(1).select_from(rival_scope).where(
+        rival_scope.c.pid == current.c.pid, rival_scope.c.cid == current.c.cid,
+        rival_scope.c.rid != current.c.rid)).correlate(current)
     published = select(*(current.c[k] for k in ('id','pid','rid','university_id','year','sort_text','search_text'))).where(
-        current.c.public_count == 1, current.c.scope_count == 1)
+        ~public_conflict, ~scope_conflict)
     published = published.where(current.c.id.not_in(REVIEWED_IDS))
     if legacy:
         archive = [select(literal(p.id).label('id'), literal(p.program_id).label('pid'), literal(None).label('rid'),
@@ -134,18 +142,34 @@ def programs(db):
 def program_page(db, *, q='', university_id='', year=None, subject='', offset=0, limit=12, sort='name'):
     index, legacy = program_index(db)
     base = select(index).where(index.c.university_id == university_id) if university_id else select(index)
-    scope = base.subquery()
-    years = list(db.scalars(select(scope.c.year).distinct().order_by(scope.c.year.desc())))
-    matches = base
+    # One statement reuses the verified/collision-checked scope for facets,
+    # total and page. PostgreSQL materializes multiply referenced CTEs once.
+    # Metadata rows survive empty/deep pages; no full catalogue reaches Python.
+    scope = base.cte('catalog_scope')
+    matches = select(scope.c.id, scope.c.pid, scope.c.rid, scope.c.sort_text)
     if year is not None:
-        matches = matches.where(index.c.year == year)
+        matches = matches.where(scope.c.year == year)
     if subject:
         matches = matches.where(literal(False))
     for token in q.casefold().split():
-        matches = matches.where(index.c.search_text.contains(token, autoescape=True))
-    total = db.scalar(select(func.count()).select_from(matches.subquery()))
-    order = (index.c.sort_text.desc(), index.c.id.desc()) if sort == 'name-desc' else (index.c.sort_text, index.c.id)
-    keys = db.execute(matches.order_by(*order).offset(offset).limit(limit)).all()
+        matches = matches.where(scope.c.search_text.contains(token, autoescape=True))
+    matches = matches.cte('catalog_matches')
+    order = (matches.c.sort_text.desc(), matches.c.id.desc()) if sort == 'name-desc' else (matches.c.sort_text, matches.c.id)
+    page = select(matches).order_by(*order).offset(offset).limit(limit).cte('catalog_page')
+    page_order = (page.c.sort_text.desc(), page.c.id.desc()) if sort == 'name-desc' else (page.c.sort_text, page.c.id)
+    records = union_all(
+        select(literal('page').label('kind'), page.c.id, page.c.pid, page.c.rid,
+               cast(null(), Integer).label('year'), cast(null(), BigInteger).label('total'),
+               func.row_number().over(order_by=page_order).label('position')),
+        select(literal('total'), null(), null(), null(), cast(null(), Integer),
+               func.count(), literal(0)).select_from(matches),
+        select(literal('year'), null(), null(), null(), scope.c.year,
+               cast(null(), BigInteger), literal(0)).distinct(),
+    ).order_by('kind', 'position')
+    rows = db.execute(records).all()
+    keys = [r for r in rows if r.kind == 'page']
+    total = next(r.total for r in rows if r.kind == 'total')
+    years = sorted((r.year for r in rows if r.kind == 'year'), reverse=True)
     return ProgramPage(items=hydrate_programs(db, keys, legacy), total=total,
                        next_offset=offset+limit if offset+limit < total else None, years=years, subjects=[])
 
@@ -217,17 +241,23 @@ def with_display_names(rows, snapshot, registry):
     return rows
 
 
-def universities(db, projection=None):
+def universities(db, projection=None, *, course_tokens=(), course_matches=None):
     snapshot = load_catalog()
     registry = load_registry()
     matched = registry.by_catalog_id
     index, legacy = projection if projection is not None else program_index(db)
     by_university = {}
-    for uid, year, count in db.execute(select(index.c.university_id, index.c.year, func.count())
-                                      .group_by(index.c.university_id, index.c.year)):
+    token_flags = [func.max(case((index.c.search_text.contains(token, autoescape=True), 1), else_=0))
+                   for token in course_tokens]
+    for uid, year, count, *flags in db.execute(select(index.c.university_id, index.c.year, func.count(), *token_flags)
+                                             .group_by(index.c.university_id, index.c.year)):
         stats = by_university.setdefault(uid, dict(count=0, years=[]))
         stats['count'] += count
         stats['years'].append(year)
+        if course_matches is not None:
+            for token, found in zip(course_tokens, flags):
+                if found:
+                    course_matches.setdefault(token, set()).add(uid)
     legacy_names = {p.university_id:p.university_name for p in legacy.values()}
     rows = [CatalogUniversity(
         id=row.id, name=legacy_names.get(row.id, row.name),
@@ -265,15 +295,10 @@ def install(app, database):
         sort: Literal['name', 'name-desc'] = 'name', db: Session = Depends(catalog_database),
     ):
         projection = program_index(db)
-        rows = universities(db, projection)
-        regions = sorted({row.region for row in rows})
         tokens = q.casefold().split()
         course_matches = {}
-        if tokens:
-            index, _ = projection
-            for token in tokens:
-                course_matches[token] = set(db.scalars(select(index.c.university_id).distinct()
-                    .where(index.c.search_text.contains(token, autoescape=True))))
+        rows = universities(db, projection, course_tokens=tokens, course_matches=course_matches)
+        regions = sorted({row.region for row in rows})
         matches = [row for row in rows if (not region or row.region == region)
                    and all(token in f'{row.name} {row.legal_name} {row.display_name or ""} {" ".join(row.name_aliases)} {row.region} {row.id}'.casefold()
                            or row.id in course_matches.get(token, ()) for token in tokens)]
